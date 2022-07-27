@@ -54,46 +54,14 @@
 		723FE65B288108A400A987E7 /* Untitled-Study */ = {
 			isa = PBXGroup;
 			children = (
-				723FE673288108C200A987E7 /* View */,
-				723FE672288108BC00A987E7 /* Controller */,
-				723FE671288108B100A987E7 /* ViewModel */,
-				723FE670288108AC00A987E7 /* Model */,
 				723FE65C288108A400A987E7 /* AppDelegate.swift */,
 				723FE65E288108A400A987E7 /* SceneDelegate.swift */,
+				723FE662288108A400A987E7 /* Main.storyboard */,
+				723FE667288108A500A987E7 /* LaunchScreen.storyboard */,
 				723FE665288108A500A987E7 /* Assets.xcassets */,
 				723FE66A288108A500A987E7 /* Info.plist */,
 			);
 			path = "Untitled-Study";
-			sourceTree = "<group>";
-		};
-		723FE670288108AC00A987E7 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		723FE671288108B100A987E7 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		723FE672288108BC00A987E7 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		723FE673288108C200A987E7 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				723FE662288108A400A987E7 /* Main.storyboard */,
-				723FE667288108A500A987E7 /* LaunchScreen.storyboard */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
