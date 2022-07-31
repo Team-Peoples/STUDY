@@ -6,6 +6,6 @@ target 'Untitled-Study' do
   use_frameworks!
 
   # Pods for Untitled-Study
-	pod 'SnapKit', '~> 5.6.0'
+    pod 'SnapKit', '~> 5.6.0'
 
 end
