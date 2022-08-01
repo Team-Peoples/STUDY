@@ -12,8 +12,9 @@
 		723FE664288108A400A987E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 723FE662288108A400A987E7 /* Main.storyboard */; };
 		723FE666288108A500A987E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723FE665288108A500A987E7 /* Assets.xcassets */; };
 		723FE669288108A500A987E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 723FE667288108A500A987E7 /* LaunchScreen.storyboard */; };
-		7248CA4D289107CB00DDF939 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7248CA4C289107CB00DDF939 /* Component.swift */; };
-		7276AFE328968EC00071EDAD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7276AFE228968EC00071EDAD /* SignInViewController.swift */; };
+		7248CA4D289107CB00DDF939 /* Component-BasicInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7248CA4C289107CB00DDF939 /* Component-BasicInputView.swift */; };
+		7276AFE92897618C0071EDAD /* Component-SignUpInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7276AFE82897618C0071EDAD /* Component-SignUpInputView.swift */; };
+		7276AFEB289761E10071EDAD /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7276AFEA289761E10071EDAD /* CustomColor.swift */; };
 		D87A54383F46935594DFD652 /* Pods_Untitled_Study.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 467835EECC6FF5805B503166 /* Pods_Untitled_Study.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,8 +29,9 @@
 		723FE665288108A500A987E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		723FE668288108A500A987E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		723FE66A288108A500A987E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7248CA4C289107CB00DDF939 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
-		7276AFE228968EC00071EDAD /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		7248CA4C289107CB00DDF939 /* Component-BasicInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Component-BasicInputView.swift"; sourceTree = "<group>"; };
+		7276AFE82897618C0071EDAD /* Component-SignUpInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Component-SignUpInputView.swift"; sourceTree = "<group>"; };
+		7276AFEA289761E10071EDAD /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +73,9 @@
 				723FE667288108A500A987E7 /* LaunchScreen.storyboard */,
 				723FE665288108A500A987E7 /* Assets.xcassets */,
 				723FE66A288108A500A987E7 /* Info.plist */,
-				7248CA4C289107CB00DDF939 /* Component.swift */,
-				7276AFE228968EC00071EDAD /* SignInViewController.swift */,
+				7248CA4C289107CB00DDF939 /* Component-BasicInputView.swift */,
+				7276AFEA289761E10071EDAD /* CustomColor.swift */,
+				7276AFE82897618C0071EDAD /* Component-SignUpInputView.swift */,
 			);
 			path = "Untitled-Study";
 			sourceTree = "<group>";
@@ -209,9 +212,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7276AFE328968EC00071EDAD /* SignInViewController.swift in Sources */,
 				723FE65D288108A400A987E7 /* AppDelegate.swift in Sources */,
-				7248CA4D289107CB00DDF939 /* Component.swift in Sources */,
+				7276AFE92897618C0071EDAD /* Component-SignUpInputView.swift in Sources */,
+				7248CA4D289107CB00DDF939 /* Component-BasicInputView.swift in Sources */,
+				7276AFEB289761E10071EDAD /* CustomColor.swift in Sources */,
 				723FE65F288108A400A987E7 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

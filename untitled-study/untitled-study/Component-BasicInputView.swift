@@ -8,91 +8,6 @@
 import UIKit
 import SnapKit
 
-enum CustomColor {
-    case purple
-    case black
-    case placeholder
-    case defaultGray
-}
-
-extension CustomColor {
-    var color: UIColor {
-        switch self {
-            case .purple:
-                return UIColor(red: 0.424, green: 0.275, blue: 0.91, alpha: 1)
-            case .black:
-                return UIColor(red: 0.208, green: 0.178, blue: 0.283, alpha: 1)
-            case .placeholder:
-                return UIColor(red: 0.827, green: 0.824, blue: 0.863, alpha: 1)
-            case .defaultGray:
-                return UIColor(red: 0.839, green: 0.82, blue: 0.91, alpha: 1)
-        }
-    }
-}
-
-class SignUpInputView: UIStackView {
-    //MARK: - Properties
-    
-    let basicInputView: BasicInputView?
-    private let validationLabel = UILabel()
-    
-    //MARK: - Actions
-    
-    func setSeparator(color: UIColor) {
-        
-        basicInputView?.setSeparator(color: color)
-    }
-    
-    //MARK: - Life Cycle
-    
-    init(titleText: String, placeholderText: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, validationLText: String, isSecure: Bool? = nil) {
-        basicInputView = BasicInputView(titleText: titleText, placeholderText: placeholderText, keyBoardType: keyBoardType, returnType: returnType, isSecure: isSecure)
-        
-        super.init(frame: .zero)
-        basicInputView?.textField.delegate = self
-        
-        addArrangedSubview(basicInputView!)
-        addArrangedSubview(validationLabel)
-        
-        configureStackView()
-        configureValidationLabel(text: validationLText)
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Configure Views
-    
-    private func configureStackView() {
-        
-        axis = .vertical
-        distribution = .equalSpacing
-        spacing = 5
-    }
-    
-    private func configureValidationLabel(text: String) {
-        
-        validationLabel.text = text
-        validationLabel.textColor = CustomColor.black.color
-        validationLabel.font = UIFont.systemFont(ofSize: 14)
-    }
-    
-    //MARK: - Setting Constraints
-}
-
-extension SignUpInputView: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        basicInputView?.setSeparator(color: CustomColor.purple.color)
-        return true
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        basicInputView?.setSeparator(color: CustomColor.defaultGray.color)
-        return true
-    }
-}
-
 class BasicInputView: UIView {
     // MARK: - Properties
     
@@ -103,7 +18,6 @@ class BasicInputView: UIView {
     // MARK: - Actions
     
     func toggleSecureTextEntry() {
-        
         if textField.isSecureTextEntry == true {
             textField.isSecureTextEntry = false
         } else {
@@ -112,7 +26,6 @@ class BasicInputView: UIView {
     }
     
     func setSeparator(color: UIColor) {
-        
         separator.backgroundColor = color
     }
     
@@ -133,20 +46,17 @@ class BasicInputView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Cofigure Views
     
     private func configureNameLabel(title: String) {
-        
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         nameLabel.text = title
     }
     
     private func configureTextField(placeholder: String, keyboardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool?) {
-        
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.keyboardType = keyboardType
         textField.borderStyle = .none
@@ -160,13 +70,11 @@ class BasicInputView: UIView {
     }
     
     private func configureSeparator(color: UIColor) {
-        
         separator.backgroundColor = color
     }
     
     // MARK: - Setting Constraints
     private func setConstraints() {
-        
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
