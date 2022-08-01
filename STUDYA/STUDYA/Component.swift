@@ -20,9 +20,6 @@ class CustomButton: UIButton {
         
         setTitle(placeholder, for: .normal)
         setTitleColor(UIColor.appColor(.purple), for: .normal)
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     required init?(coder: NSCoder) {
@@ -86,17 +83,8 @@ class BasicInputView: UIView {
     
     private let nameLabel = UILabel()
     private var separator = UIView()
-    let textField = UITextField()
     
     // MARK: - Actions
-    
-    func toggleSecureTextEntry() {
-        if textField.isSecureTextEntry == true {
-            textField.isSecureTextEntry = false
-        } else {
-            textField.isSecureTextEntry = true
-        }
-    }
     
     func setSeparator(color: UIColor) {
         separator.backgroundColor = color
@@ -104,15 +92,13 @@ class BasicInputView: UIView {
     
     // MARK: - Life Cycle
     
-    init(titleText: String, placeholderText: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool?) {
+    init(titleText: String) {
         super.init(frame: .zero)
        
         addSubview(nameLabel)
-        addSubview(textField)
         addSubview(separator)
         
         configureNameLabel(title: titleText)
-        configureTextField(placeholder: placeholderText, keyboardType: keyBoardType, returnType: returnType, isSecure: isSecure)
         configureSeparator(color: UIColor.appColor(.defaultGray))
         
         setConstraints()
@@ -129,18 +115,6 @@ class BasicInputView: UIView {
         nameLabel.text = title
     }
     
-    private func configureTextField(placeholder: String, keyboardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool?) {
-        textField.font = UIFont.systemFont(ofSize: 16)
-        textField.keyboardType = keyboardType
-        textField.borderStyle = .none
-        textField.autocapitalizationType = .none
-        textField.returnKeyType = returnType
-        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            .foregroundColor: UIColor.lightGray,
-            .font: UIFont.systemFont(ofSize: 16)])
-        textField.isSecureTextEntry = isSecure ?? false
-        textField.delegate = self
-    }
     
     private func configureSeparator(color: UIColor) {
         separator.backgroundColor = color
@@ -151,87 +125,97 @@ class BasicInputView: UIView {
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(13)
-            make.leading.trailing.equalTo(self)
-        }
+        
         separator.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.top.equalTo(textField.snp.bottom).offset(10)
+            make.top.equalTo(nameLabel.snp.bottom).offset(46)
             make.leading.trailing.equalTo(self)
             make.bottom.equalTo(self)
         }
     }
 }
 
-extension BasicInputView: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        setSeparator(color: UIColor.appColor(.purple))
-        return true
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        setSeparator(color: UIColor.appColor(.defaultGray))
-        return true
-    }
-}
-
 class SignUpInputView: UIStackView {
-    //MARK: - Properties
-    
-    let basicInputView: BasicInputView?
+    // MARK: - Properties
+
+    private let basicInputView: BasicInputView?
     private let validationLabel = UILabel()
-    
-    //MARK: - Actions
-    
+
+    // MARK: - Actions
+
     func setSeparator(color: UIColor) {
         basicInputView?.setSeparator(color: color)
     }
-    
-    //MARK: - Life Cycle
-    
-    init(titleText: String, placeholderText: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, validationLText: String, isSecure: Bool? = nil) {
-        basicInputView = BasicInputView(titleText: titleText, placeholderText: placeholderText, keyBoardType: keyBoardType, returnType: returnType, isSecure: isSecure)
-        
+
+    // MARK: - Life Cycle
+
+    init(titleText: String, validationLText: String) {
+        basicInputView = BasicInputView(titleText: titleText)
+
         super.init(frame: .zero)
-        basicInputView?.textField.delegate = self
-        
+
         addArrangedSubview(basicInputView!)
         addArrangedSubview(validationLabel)
-        
+
         configureStackView()
         configureValidationLabel(text: validationLText)
     }
-    
+
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - Configure Views
-    
+
+    // MARK: - Configure Views
+
     private func configureStackView() {
         axis = .vertical
         distribution = .equalSpacing
         spacing = 5
     }
-    
+
     private func configureValidationLabel(text: String) {
         validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.black)
         validationLabel.font = UIFont.systemFont(ofSize: 14)
     }
-    
-    //MARK: - Setting Constraints
 }
 
-extension SignUpInputView: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        basicInputView?.setSeparator(color: UIColor.appColor(.purple))
-        return true
+class TitleLabel: UILabel {
+    
+    init(title: String) {
+        super.init(frame: .zero)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.95
+        attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.kern: -0.24, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        textColor = UIColor.appColor(.black)
+        font = UIFont.boldSystemFont(ofSize: 30)
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        basicInputView?.setSeparator(color: UIColor.appColor(.defaultGray))
-        return true
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}
+
+class CustomTextField: UITextField {
+    
+    init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool? = nil) {
+        super.init(frame: .zero)
+        
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        
+        font = UIFont.systemFont(ofSize: 16)
+        keyboardType = keyboardType
+        borderStyle = .none
+        returnKeyType = returnType
+        attributedPlaceholder = NSAttributedString(string: placeholder,
+                                                   attributes: [.foregroundColor: UIColor.lightGray,
+                                                                .font: UIFont.systemFont(ofSize: 16)])
+        isSecureTextEntry = isSecure ?? false
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
 }
