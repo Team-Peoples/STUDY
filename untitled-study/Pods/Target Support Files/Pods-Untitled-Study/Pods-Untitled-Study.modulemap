@@ -1,6 +1,0 @@
-framework module Pods_Untitled_Study {
-  umbrella header "Pods-Untitled-Study-umbrella.h"
-
-  export *
-  module * { export * }
-}
