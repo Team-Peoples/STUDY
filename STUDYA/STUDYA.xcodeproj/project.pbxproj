@@ -16,6 +16,8 @@
 		72ED25BC289778A200031AD1 /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25BB289778A200031AD1 /* Component.swift */; };
 		72ED25BE289778CB00031AD1 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25BD289778CB00031AD1 /* Color.swift */; };
 		72ED25C128978AA400031AD1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 72ED25C028978AA400031AD1 /* SnapKit */; };
+		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
+		72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		72ED25B52897788A00031AD1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		72ED25BB289778A200031AD1 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		72ED25BD289778CB00031AD1 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
+				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
+				72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
@@ -152,8 +158,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
+				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
