@@ -9,73 +9,151 @@ import UIKit
 import SnapKit
 
 class CustomButton: UIButton {
-    init(placeholder: String, isFill: Bool = false) {
+    
+    init(placeholder: String, isBold: Bool = true, isFill: Bool = false) {
         super.init(frame: .zero)
-        
-        layer.borderColor = UIColor.appColor(.purple).cgColor
-        layer.borderWidth = 1
-        layer.cornerRadius = 24
-        
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        backgroundColor = isFill ? UIColor.appColor(.purple) : .systemBackground
-        isFill ? setTitleColor(.white, for: .normal) : setTitleColor(UIColor.appColor(.purple), for: .normal)
-        setTitle(placeholder, for: .normal)
+
+        configure(placeholder: placeholder, isBold: isBold, isFill: isFill)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func configure(placeholder: String, isBold: Bool, isFill: Bool) {
+        
+        setTitle(placeholder, for: .normal)
+        
+        layer.borderColor = UIColor.appColor(.purple).cgColor
+        layer.borderWidth = 1
+        layer.cornerRadius = 24
+
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 20) : UIFont.systemFont(ofSize: 20)
+        
+        backgroundColor = isFill ? UIColor.appColor(.purple) : .systemBackground
+        isFill ? setTitleColor(.white, for: .normal) : setTitleColor(UIColor.appColor(.purple), for: .normal)
+    }
+    
     func fill() {
+        
         backgroundColor = UIColor.appColor(.purple)
         setTitleColor(.white, for: .normal)
     }
 }
 
-class GrayBorderTextView: UITextView {
+class TitleLabelAndTextViewStackView: UIStackView {
     
-    init(placeholder: String, maxCharactersNumber: Int, height: Int = 50) {
-        super.init(frame: .zero, textContainer: nil)
+    init(upperLabelTitle: String, isNeccessary: Bool = true, placeholder: String, maxCharactersNumber: Int, height: Int = 50) {
+        super.init(frame: .zero)
         
-        autocorrectionType = .no
-        autocapitalizationType = .none
+        let titleLabel = TitleLabel(title: upperLabelTitle, isNecessaryTitle: isNeccessary)
+        let grayBorderTextView = GrayBorderTextView(placeholder: placeholder, maxCharactersNumber: 10, height: 50)
         
-        text = placeholder
-        font = UIFont.systemFont(ofSize: 16)
-        textColor = .systemGray3
-        textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        addArrangedSubview(titleLabel)
+        addArrangedSubview(grayBorderTextView)
         
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.systemGray3.cgColor
-        layer.cornerRadius = 10
+        configure()
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configure() {
         
-        isScrollEnabled = false
-        translatesAutoresizingMaskIntoConstraints = false
-        heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
+        spacing = 20
+        distribution = .fillEqually
+        axis = .vertical
+    }
 
-        let charactersNumberLabel: UILabel = {
-            
-            let label = UILabel(frame: .zero)
-            
-            label.text = "0/\(maxCharactersNumber)"
-            label.font = UIFont.systemFont(ofSize: 12)
-            label.textColor = .systemGray3
-            translatesAutoresizingMaskIntoConstraints = false
-            
-            return label
-        }()
+    class TitleLabel: UILabel {
         
-        self.addSubview(charactersNumberLabel)
+        init(title: String, isNecessaryTitle: Bool = true) {
+            super.init(frame: .zero)
+
+            configure(title: title, isNecessaryTitle: isNecessaryTitle)
+        }
         
-        charactersNumberLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-8)
-            make.right.equalTo(self.safeAreaLayoutGuide).offset(-8)
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        func setTitleAndRedStar(upperLabelTitle: String, label: UILabel) {
+            
+            let title = (upperLabelTitle + "*") as NSString
+            let range = (title).range(of: "*")
+            let attribute = NSMutableAttributedString(string: title as String)
+            
+            attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
+            self.attributedText = attribute
+        }
+        
+        private func configure(title: String, isNecessaryTitle: Bool) {
+            font = UIFont.boldSystemFont(ofSize: 18)
+            
+            if isNecessaryTitle {
+                setTitleAndRedStar(upperLabelTitle: title, label: self)
+            } else {
+                text = title
+            }
         }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    class GrayBorderTextView: UITextView {
+        
+        let charactersNumberLabel = UILabel(frame: .zero)
+        
+        init(placeholder: String, maxCharactersNumber: Int, height: Int) {
+            super.init(frame: .zero, textContainer: nil)
+            
+            addSubview(charactersNumberLabel)
+            
+            configureTextView(placeholder: placeholder, height: height)
+            configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+            
+            setConstraints(height: height)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        private func configureTextView(placeholder: String, height: Int) {
+            
+            autocorrectionType = .no
+            autocapitalizationType = .none
+            
+            text = placeholder
+            font = UIFont.systemFont(ofSize: 16)
+            textColor = .systemGray3
+            textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+            
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.systemGray3.cgColor
+            layer.cornerRadius = 10
+            
+            isScrollEnabled = false
+        }
+        
+        private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
+            
+            charactersNumberLabel.text = "0/\(maxCharactersNumber)"
+            charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
+            charactersNumberLabel.textColor = .systemGray3
+        }
+        
+        
+        private func setConstraints(height: Int) {
+            
+            translatesAutoresizingMaskIntoConstraints = false
+            heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
+            
+            charactersNumberLabel.snp.makeConstraints { make in
+                make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-8)
+                make.right.equalTo(self.safeAreaLayoutGuide).offset(-8)
+            }
+        }
+        
     }
 }
 
@@ -123,6 +201,7 @@ class BasicInputView: UIView {
     
     // MARK: - Setting Constraints
     private func setConstraints() {
+        
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
