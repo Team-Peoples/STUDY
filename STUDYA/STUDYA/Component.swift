@@ -13,23 +13,27 @@ class CustomButton: UIButton {
     init(placeholder: String, isBold: Bool = true) {
         super.init(frame: .zero)
         
-        configure(placeholder: placeholder)
+        configure(placeholder: placeholder, isBold: isBold)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(placeholder: String) {
+    private func configure(placeholder: String, isBold: Bool) {
+        
+        setTitle(placeholder, for: .normal)
+        setTitleColor(UIColor.appColor(.purple), for: .normal)
         
         layer.borderColor = UIColor.appColor(.purple).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 24
-        
-        titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        setTitle(placeholder, for: .normal)
-        setTitleColor(UIColor.appColor(.purple), for: .normal)
+
+        if isBold {
+            titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        } else {
+            titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        }
     }
     
     func fill() {
@@ -68,7 +72,7 @@ class TitleLabelAndTextViewStackView: UIStackView {
         
         init(title: String, isNecessaryTitle: Bool = true) {
             super.init(frame: .zero)
-            
+
             configure(title: title, isNecessaryTitle: isNecessaryTitle)
         }
         
@@ -134,6 +138,7 @@ class TitleLabelAndTextViewStackView: UIStackView {
         }
         
         private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
+            
             charactersNumberLabel.text = "0/\(maxCharactersNumber)"
             charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
             charactersNumberLabel.textColor = .systemGray3
@@ -187,6 +192,7 @@ class BasicInputView: UIView {
     // MARK: - Cofigure Views
     
     private func configureNameLabel(title: String) {
+        
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         nameLabel.text = title
     }
@@ -198,6 +204,7 @@ class BasicInputView: UIView {
     
     // MARK: - Setting Constraints
     private func setConstraints() {
+        
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
@@ -260,7 +267,9 @@ class TitleLabel: UILabel {
     
     init(title: String) {
         super.init(frame: .zero)
+        
         let paragraphStyle = NSMutableParagraphStyle()
+        
         paragraphStyle.lineHeightMultiple = 0.95
         attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.kern: -0.24, NSAttributedString.Key.paragraphStyle: paragraphStyle])
         textColor = UIColor.appColor(.black)
