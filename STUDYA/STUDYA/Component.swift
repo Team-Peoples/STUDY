@@ -28,6 +28,7 @@ class CustomButton: UIButton {
         layer.borderColor = UIColor.appColor(.purple).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 24
+        heightAnchor.constraint(equalToConstant: 48).isActive = true
 
         if isBold {
             titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -165,12 +166,6 @@ class BasicInputView: UIView {
     private let nameLabel = UILabel()
     private var separator = UIView()
     
-    // MARK: - Actions
-    
-    func setSeparator(color: UIColor) {
-        separator.backgroundColor = color
-    }
-    
     // MARK: - Life Cycle
     
     init(titleText: String) {
@@ -180,7 +175,7 @@ class BasicInputView: UIView {
         addSubview(separator)
         
         configureNameLabel(title: titleText)
-        configureSeparator(color: UIColor.appColor(.defaultGray))
+        setSeparator(color: UIColor.appColor(.defaultGray))
         
         setConstraints()
     }
@@ -198,8 +193,16 @@ class BasicInputView: UIView {
     }
     
     
-    private func configureSeparator(color: UIColor) {
+    internal func setSeparator(color: UIColor) {
         separator.backgroundColor = color
+    }
+    
+    internal func setText(color: UIColor) {
+        nameLabel.textColor = color
+    }
+    
+    internal func makeTextBold() {
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
     }
     
     // MARK: - Setting Constraints
@@ -211,11 +214,18 @@ class BasicInputView: UIView {
         
         separator.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.top.equalTo(nameLabel.snp.bottom).offset(46)
+            make.top.equalTo(nameLabel.snp.bottom).offset(46).priority(.medium)
             make.leading.trailing.equalTo(self)
             make.bottom.equalTo(self)
         }
     }
+    
+    internal func stickBarToText() {
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(0).priority(.high)
+        }
+    }
+    
 }
 
 class SignUpInputView: UIStackView {
