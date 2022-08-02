@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class CustomButton: UIButton {
-    init(placeholder: String, isBold: Bool = true) {
+    init(placeholder: String, isFill: Bool = false) {
         super.init(frame: .zero)
         
         layer.borderColor = UIColor.appColor(.purple).cgColor
@@ -18,8 +18,9 @@ class CustomButton: UIButton {
         
         titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         
+        backgroundColor = isFill ? UIColor.appColor(.purple) : .systemBackground
+        isFill ? setTitleColor(.white, for: .normal) : setTitleColor(UIColor.appColor(.purple), for: .normal)
         setTitle(placeholder, for: .normal)
-        setTitleColor(UIColor.appColor(.purple), for: .normal)
     }
     
     required init?(coder: NSCoder) {
@@ -90,7 +91,7 @@ class BasicInputView: UIView {
         separator.backgroundColor = color
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Initialize
     
     init(titleText: String) {
         super.init(frame: .zero)
@@ -111,7 +112,7 @@ class BasicInputView: UIView {
     // MARK: - Cofigure Views
     
     private func configureNameLabel(title: String) {
-        nameLabel.font = UIFont.systemFont(ofSize: 18)
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
         nameLabel.text = title
     }
     
@@ -147,7 +148,7 @@ class SignUpInputView: UIStackView {
         basicInputView?.setSeparator(color: color)
     }
 
-    // MARK: - Life Cycle
+    // MARK: - Initialize
 
     init(titleText: String, validationLText: String) {
         basicInputView = BasicInputView(titleText: titleText)
@@ -180,15 +181,16 @@ class SignUpInputView: UIStackView {
     }
 }
 
-class TitleLabel: UILabel {
+class CustomLabel: UILabel {
+    // MARK: - Initialize
     
-    init(title: String) {
+    init(title: String, color: AssetColor, isBold: Bool = false, size: CGFloat) {
         super.init(frame: .zero)
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 0.95
-        attributedText = NSMutableAttributedString(string: title, attributes: [NSAttributedString.Key.kern: -0.24, NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        
+        text = title
         textColor = UIColor.appColor(.black)
-        font = UIFont.boldSystemFont(ofSize: 30)
+        font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        numberOfLines = 0
     }
     
     required init?(coder: NSCoder) {
@@ -197,25 +199,34 @@ class TitleLabel: UILabel {
 }
 
 class CustomTextField: UITextField {
+    // MARK: - Initialize
     
     init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool? = nil) {
         super.init(frame: .zero)
         
         autocorrectionType = .no
         autocapitalizationType = .none
-        
-        font = UIFont.systemFont(ofSize: 16)
+        font = UIFont.systemFont(ofSize: 18)
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
-        attributedPlaceholder = NSAttributedString(string: placeholder,
-                                                   attributes: [.foregroundColor: UIColor.lightGray,
-                                                                .font: UIFont.systemFont(ofSize: 16)])
         isSecureTextEntry = isSecure ?? false
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
     
+}
+
+class SimpleAlert: UIAlertController {
+    // MARK: - Initialize
+    convenience init(message: String?) {
+        self.init(title: nil, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        
+        self.addAction(okAction)
+    }
 }
