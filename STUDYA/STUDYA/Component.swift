@@ -27,15 +27,18 @@ class CustomButton: UIButton {
         layer.borderColor = UIColor.appColor(.purple).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 24
-
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 20) : UIFont.systemFont(ofSize: 20)
+      
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 18) : UIFont.systemFont(ofSize: 18)
         
         backgroundColor = isFill ? UIColor.appColor(.purple) : .systemBackground
         isFill ? setTitleColor(.white, for: .normal) : setTitleColor(UIColor.appColor(.purple), for: .normal)
+
+        heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    func fill() {
+    internal func fill(title: String) {
         
+        setTitle(title, for: .normal)
         backgroundColor = UIColor.appColor(.purple)
         setTitleColor(.white, for: .normal)
     }
@@ -169,8 +172,6 @@ class BasicInputView: UIView {
         separator.backgroundColor = color
     }
     
-    // MARK: - Initialize
-    
     init(titleText: String) {
         super.init(frame: .zero)
        
@@ -178,7 +179,7 @@ class BasicInputView: UIView {
         addSubview(separator)
         
         configureNameLabel(title: titleText)
-        configureSeparator(color: UIColor.appColor(.defaultGray))
+        setSeparator(color: UIColor.appColor(.defaultGray))
         
         setConstraints()
     }
@@ -195,8 +196,16 @@ class BasicInputView: UIView {
     }
     
     
-    private func configureSeparator(color: UIColor) {
+    internal func setSeparator(color: UIColor) {
         separator.backgroundColor = color
+    }
+    
+    internal func setText(color: UIColor) {
+        nameLabel.textColor = color
+    }
+    
+    internal func makeTextBold() {
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
     }
     
     // MARK: - Setting Constraints
@@ -208,11 +217,18 @@ class BasicInputView: UIView {
         
         separator.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.top.equalTo(nameLabel.snp.bottom).offset(46)
+            make.top.equalTo(nameLabel.snp.bottom).offset(46).priority(.medium)
             make.leading.trailing.equalTo(self)
             make.bottom.equalTo(self)
         }
     }
+    
+    internal func stickBarToText() {
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(0).priority(.high)
+        }
+    }
+    
 }
 
 class SignUpInputView: UIStackView {
