@@ -14,7 +14,7 @@ class FindPasswordViewController: UIViewController {
     private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", color: .black, isBold: true, size: 30)
     private lazy var emailInputView = BasicInputView(titleText: "이메일")
     private let emailTextField = CustomTextField(placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default)
-    private let completeButton = CustomButton(placeholder: "다음")
+    private let completeButton = CustomButton(title: "다음")
     
     // MARK: - Actions
     

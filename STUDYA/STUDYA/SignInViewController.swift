@@ -17,7 +17,7 @@ class SignInViewController: UIViewController {
     private let emailInputView = BasicInputView(titleText: "이메일")
     private let passwordInputView = BasicInputView(titleText: "패스워드")
     private let findPasswordButton = UIButton(type: .custom)
-    private let completeButton = CustomButton(placeholder: "완료")
+    private let completeButton = CustomButton(title: "완료")
     
     private lazy var pwSecureToggleButton: UIButton = {
         let btn = UIButton(type: .custom)

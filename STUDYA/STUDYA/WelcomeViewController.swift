@@ -9,7 +9,7 @@ import UIKit
 
 class WelcomViewController: UIViewController {
     
-    private let welcomeLabel = TitleLabel(title: "환영합니다 :)")
+    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", color: .black, isBold: true, size: 30)
     private let kakaoLoginButton = CustomButton(title: "카카오톡으로 로그인")
     private let naverLoginButton = CustomButton(title: "네이버로 로그인")
     private let emailLoginButton = CustomButton(title: "이메일로 로그인")

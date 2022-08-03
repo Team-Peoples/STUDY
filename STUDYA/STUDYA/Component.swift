@@ -10,10 +10,10 @@ import SnapKit
 
 class CustomButton: UIButton {
     
-    init(placeholder: String, isBold: Bool = true, isFill: Bool = false) {
+    init(title: String, isBold: Bool = true, isFill: Bool = false) {
         super.init(frame: .zero)
 
-        configure(placeholder: placeholder, isBold: isBold, isFill: isFill)
+        configure(placeholder: title, isBold: isBold, isFill: isFill)
     }
     
     required init?(coder: NSCoder) {
@@ -167,10 +167,6 @@ class BasicInputView: UIView {
     private var separator = UIView()
     
     // MARK: - Actions
-    
-    func setSeparator(color: UIColor) {
-        separator.backgroundColor = color
-    }
     
     init(titleText: String) {
         super.init(frame: .zero)
