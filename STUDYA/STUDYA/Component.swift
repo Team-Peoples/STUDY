@@ -120,6 +120,25 @@ class BasicInputView: UIView {
         separator.backgroundColor = color
     }
     
+    internal func modifyTitle(size: CGFloat, isBold: Bool) {
+        if isBold {
+            nameLabel.font = UIFont.boldSystemFont(ofSize: size)
+        } else {
+            nameLabel.font = UIFont.systemFont(ofSize: size)
+        }
+        
+    }
+    
+    internal func adjust(distance: Int) {
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(distance).priority(.high)
+        }
+    }
+    
+    internal func changeSeparatorColor(into color: UIColor) {
+        separator.backgroundColor = color
+    }
+    
     // MARK: - Setting Constraints
     private func setConstraints() {
         nameLabel.snp.makeConstraints { make in
@@ -128,7 +147,7 @@ class BasicInputView: UIView {
         
         separator.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.top.equalTo(nameLabel.snp.bottom).offset(46)
+            make.top.equalTo(nameLabel.snp.bottom).offset(46).priority(.medium)
             make.leading.trailing.equalTo(self)
             make.bottom.equalTo(self)
         }
@@ -177,6 +196,20 @@ class SignUpInputView: UIStackView {
         validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.black)
         validationLabel.font = UIFont.systemFont(ofSize: 14)
+    }
+    
+    internal func modifyBasicInputView(TitleSize: CGFloat, isTitleBold: Bool, distance: Int) {
+        basicInputView?.modifyTitle(size: TitleSize, isBold: isTitleBold)
+        basicInputView?.adjust(distance: distance)
+    }
+    
+    internal func changeSeparatorColor(into color: UIColor) {
+        
+        basicInputView?.changeSeparatorColor(into: color)
+    }
+    
+    internal func changeLabelColor(into color: UIColor) {
+        validationLabel.textColor = color
     }
 }
 
