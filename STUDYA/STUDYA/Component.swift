@@ -10,35 +10,33 @@ import SnapKit
 
 class CustomButton: UIButton {
     
-    init(placeholder: String, isBold: Bool = true) {
+    init(title: String, isBold: Bool = true) {
         super.init(frame: .zero)
         
-        configure(placeholder: placeholder, isBold: isBold)
+        configure(title: title, isBold: isBold)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(placeholder: String, isBold: Bool) {
+    private func configure(title: String, isBold: Bool) {
         
-        setTitle(placeholder, for: .normal)
+        setTitle(title, for: .normal)
         setTitleColor(UIColor.appColor(.purple), for: .normal)
         
         layer.borderColor = UIColor.appColor(.purple).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = 24
-        heightAnchor.constraint(equalToConstant: 48).isActive = true
-
-        if isBold {
-            titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        } else {
-            titleLabel?.font = UIFont.systemFont(ofSize: 20)
-        }
+        
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 18) : UIFont.systemFont(ofSize: 18)
+        
+        heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    func fill() {
+    internal func fill(title: String) {
         
+        setTitle(title, for: .normal)
         backgroundColor = UIColor.appColor(.purple)
         setTitleColor(.white, for: .normal)
     }
@@ -314,3 +312,6 @@ class CustomTextField: UITextField {
     }
     
 }
+
+
+

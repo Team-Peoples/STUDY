@@ -10,11 +10,10 @@ import UIKit
 class WelcomViewController: UIViewController {
     
     private let welcomeLabel = TitleLabel(title: "환영합니다 :)")
-    private let kakaoLoginButton = CustomButton(placeholder: "")
-    private let naverLoginButton = CustomButton(placeholder: "")
-    private let emailLoginButton = CustomButton(placeholder: "이메일로 로그인", isBold: false)
+    private let kakaoLoginButton = CustomButton(title: "카카오톡으로 로그인")
+    private let naverLoginButton = CustomButton(title: "네이버로 로그인")
+    private let emailLoginButton = CustomButton(title: "이메일로 로그인")
     private let signUpView = BasicInputView(titleText: "회원가입")
-
     private let buttonsStackView = UIStackView()
     
     override func viewDidLoad() {
@@ -32,38 +31,43 @@ class WelcomViewController: UIViewController {
         addConstraints()
     }
     
-    func addSubviews() {
+    private func addSubviews() {
         
         view.addSubview(welcomeLabel)
         view.addSubview(buttonsStackView)
         view.addSubview(signUpView)
     }
     
-    func addArangedSubviewsToStack() {
+    private func addArangedSubviewsToStack() {
         
         buttonsStackView.addArrangedSubview(kakaoLoginButton)
         buttonsStackView.addArrangedSubview(naverLoginButton)
         buttonsStackView.addArrangedSubview(emailLoginButton)
     }
     
-    func configureButtons() {
-        kakaoLoginButton.setBackgroundImage(UIImage(named: "kakao"), for: .normal)
+    private func configureButtons() {
+        
+        kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
+        kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
+        kakaoLoginButton.backgroundColor = .appColor(.kakao)
         kakaoLoginButton.layer.borderWidth = 0
+        kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
         
-        naverLoginButton.setBackgroundImage(UIImage(named: "naver"), for: .normal)
+        naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
+        naverLoginButton.setTitleColor(.white, for: .normal)
+        naverLoginButton.backgroundColor = .appColor(.naver)
         naverLoginButton.layer.borderWidth = 0
-        
-        emailLoginButton.fill()
+        naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
     }
     
-    func configureStackView() {
+    private func configureStackView() {
         
-        buttonsStackView.spacing = 16
+        buttonsStackView.spacing = 14
         buttonsStackView.distribution = .fillEqually
         buttonsStackView.axis = .vertical
     }
     
-    func configureSignUpView() {
+    private func configureSignUpView() {
         
         signUpView.makeTextBold()
         signUpView.setText(color: UIColor.appColor(.purple))
@@ -71,13 +75,14 @@ class WelcomViewController: UIViewController {
         signUpView.stickBarToText()
     }
     
-    func addConstraints() {
+    private func addConstraints() {
         
         welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
+        
         buttonsStackView.centerXY(inView: view, yConstant: 50)
         buttonsStackView.anchor(leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
-        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 16)
-        signUpView
-            .centerX(inView: view)
+        
+        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
+        signUpView.centerX(inView: view)
     }
 }

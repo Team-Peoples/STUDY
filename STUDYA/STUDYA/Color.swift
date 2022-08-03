@@ -8,11 +8,7 @@
 import UIKit
 
 enum AssetColor {
-    case purple
-    case black
-    case placeholder
-    case defaultGray
-    case lightPurple
+    case purple, black, placeholder, defaultGray, lightPurple, kakao, naver, kakaoBrown
 }
 
 extension UIColor {
@@ -29,6 +25,12 @@ extension UIColor {
             return UIColor(red: 0.827, green: 0.824, blue: 0.863, alpha: 1)
         case .defaultGray:
             return UIColor(red: 0.839, green: 0.82, blue: 0.91, alpha: 1)
+        case .kakao:
+            return UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1)
+        case .kakaoBrown:
+            return UIColor(red: 60/255, green: 30/255, blue: 30/255, alpha: 1)
+        case .naver:
+            return UIColor(red: 3/255, green: 199/255, blue: 90/255, alpha: 1)
         }
     }
 }

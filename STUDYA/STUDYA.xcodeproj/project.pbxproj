@@ -18,8 +18,8 @@
 		72ED25C128978AA400031AD1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 72ED25C028978AA400031AD1 /* SnapKit */; };
 		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
 		72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */; };
-		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
+		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +35,8 @@
 		72ED25BD289778CB00031AD1 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
-		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

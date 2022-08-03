@@ -17,7 +17,7 @@ class SignInViewController: UIViewController {
     private let emailInputView = BasicInputView(titleText: "이메일")
     private let passwordInputView = BasicInputView(titleText: "패스워드")
     private lazy var completeButton: CustomButton = {
-        let btn = CustomButton(placeholder: "완료")
+        let btn = CustomButton(title: "완료")
         btn.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         return btn
     }()
