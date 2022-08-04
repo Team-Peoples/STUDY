@@ -18,6 +18,11 @@
 		72ED25C128978AA400031AD1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 72ED25C028978AA400031AD1 /* SnapKit */; };
 		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
 		72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */; };
+		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
+		72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */; };
+		D352B1E3289BFB4F0035E3BB /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D352B1E2289BFB4F0035E3BB /* ProfileSettingView.swift */; };
+		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
+		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +39,11 @@
 		72ED25BD289778CB00031AD1 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
+		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
+		72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheckViewController.swift; sourceTree = "<group>"; };
+		D352B1E2289BFB4F0035E3BB /* ProfileSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
+		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,10 +82,15 @@
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
+				D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */,
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
+				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */,
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
+				D352B1E2289BFB4F0035E3BB /* ProfileSettingView.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
+				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
+				72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -161,14 +176,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
+				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
+				D352B1E3289BFB4F0035E3BB /* ProfileSettingView.swift in Sources */,
+				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
+				72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
