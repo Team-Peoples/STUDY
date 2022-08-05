@@ -13,7 +13,7 @@ class WelcomViewController: UIViewController {
     private let kakaoLoginButton = CustomButton(title: "카카오톡으로 로그인")
     private let naverLoginButton = CustomButton(title: "네이버로 로그인")
     private let emailLoginButton = CustomButton(title: "이메일로 로그인")
-    private let signUpView = BasicInputView(titleText: "회원가입")
+//    private let signUpView = BasicInputView(titleText: "회원가입")
     private let buttonsStackView = UIStackView()
     
     override func viewDidLoad() {
@@ -26,7 +26,7 @@ class WelcomViewController: UIViewController {
         addArangedSubviewsToStack()
         configureButtons()
         configureStackView()
-        configureSignUpView()
+//        configureSignUpView()
         
         addConstraints()
     }
@@ -35,7 +35,7 @@ class WelcomViewController: UIViewController {
         
         view.addSubview(welcomeLabel)
         view.addSubview(buttonsStackView)
-        view.addSubview(signUpView)
+//        view.addSubview(signUpView)
     }
     
     private func addArangedSubviewsToStack() {
@@ -67,13 +67,13 @@ class WelcomViewController: UIViewController {
         buttonsStackView.axis = .vertical
     }
     
-    private func configureSignUpView() {
-        
-        signUpView.makeTextBold()
-        signUpView.setText(color: UIColor.appColor(.purple))
-        signUpView.changeSeparatorColor(into: UIColor.appColor(.lightPurple))
-        signUpView.stickBarToText()
-    }
+//    private func configureSignUpView() {
+//
+//        signUpView.makeTextBold()
+//        signUpView.setText(color: UIColor.appColor(.purple))
+//        signUpView.setSeparatorColor(as: UIColor.appColor(.lightPurple))
+//        signUpView.stickSeparatorToText()
+//    }
     
     private func addConstraints() {
         
@@ -82,7 +82,7 @@ class WelcomViewController: UIViewController {
         buttonsStackView.centerXY(inView: view, yConstant: 50)
         buttonsStackView.anchor(leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
         
-        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
-        signUpView.centerX(inView: view)
+//        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
+//        signUpView.centerX(inView: view)
     }
 }

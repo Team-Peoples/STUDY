@@ -21,6 +21,8 @@
 		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
 		72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */; };
 		D352B1E3289BFB4F0035E3BB /* ProfileSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D352B1E2289BFB4F0035E3BB /* ProfileSettingView.swift */; };
+		D3B19AED289CFDA600C842B1 /* MemberJoiningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* MemberJoiningViewController.swift */; };
+		D3B19AEF289D010400C842B1 /* MemberJoiningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEE289D010400C842B1 /* MemberJoiningView.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
@@ -42,6 +44,8 @@
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheckViewController.swift; sourceTree = "<group>"; };
 		D352B1E2289BFB4F0035E3BB /* ProfileSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingView.swift; sourceTree = "<group>"; };
+		D3B19AEC289CFDA600C842B1 /* MemberJoiningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberJoiningViewController.swift; sourceTree = "<group>"; };
+		D3B19AEE289D010400C842B1 /* MemberJoiningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberJoiningView.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */,
+				D3B19AEC289CFDA600C842B1 /* MemberJoiningViewController.swift */,
+				D3B19AEE289D010400C842B1 /* MemberJoiningView.swift */,
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */,
@@ -179,6 +185,7 @@
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
+				D3B19AEF289D010400C842B1 /* MemberJoiningView.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
@@ -187,6 +194,7 @@
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
+				D3B19AED289CFDA600C842B1 /* MemberJoiningViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */,
 			);

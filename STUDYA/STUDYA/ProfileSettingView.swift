@@ -9,9 +9,10 @@ import UIKit
 
 class ProfileSettingView: UIView {
     
-    private let nickNameInputView = SignUpInputView(titleText: "닉네임을 설정해주세요", validationLText: "*닉네임은 프로필에서 언제든 변경할 수 있어요")
-    private let nickNameTextField
-    = CustomTextField(placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done)
+//    private let nickNameInputView = GeneralInputView(titleText: "닉네임을 설정해주세요", validationLText: "*닉네임은 프로필에서 언제든 변경할 수 있어요")
+    private let nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .next, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요")
+//    private let nickNameTextField
+//    = CustomTextField(placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done)
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", color: .black, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", color: .subTitleGeneral, isBold: false, size: 12)
     private let profileImageSelectorView = ProfileImageSelectorView(size: 120)
@@ -30,8 +31,16 @@ class ProfileSettingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        configureNickNameInputView()
+        addConstraints()
+    }
+    
     internal func assignDelegate(to vc: UIViewController) {
-        nickNameTextField.delegate = vc as? UITextFieldDelegate
+        nickNameInputView.getInputField().delegate = vc as? UITextFieldDelegate
     }
     
     
@@ -43,12 +52,6 @@ class ProfileSettingView: UIView {
         profileImageSelectorView.isUserInteractionEnabled = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        configureNickNameInputView()
-        addConstraints()
-    }
     
     internal func setProfileImage(into newImage: UIImage?) {
         if let newImage = newImage {
@@ -57,7 +60,7 @@ class ProfileSettingView: UIView {
     }
     
     internal func toggleDoneButton() {
-        if let nickName = nickNameTextField.text {
+        if let nickName = nickNameInputView.getInputField().text {
             
             if nickName.count > 0 {
                 
@@ -72,12 +75,12 @@ class ProfileSettingView: UIView {
     }
     
     internal func nickNameTextFieldAddTarget(target: UIViewController, action: Selector) {
-        nickNameTextField.addTarget(target, action: action, for: .editingChanged)
+        nickNameInputView.getInputField().addTarget(target, action: action, for: .editingChanged)
     }
     
     private func addSubViews() {
         addSubview(nickNameInputView)
-        addSubview(nickNameTextField)
+//        addSubview(nickNameTextField)
         addSubview(askingRegisterProfileLabel)
         addSubview(descriptionLabel)
         addSubview(profileImageSelectorView)
@@ -86,25 +89,26 @@ class ProfileSettingView: UIView {
     }
     
     private func configureNickNameInputView() {
-        nickNameInputView.modifyBasicInputView(TitleSize: 24, isTitleBold: true, distance: 98)
-        nickNameInputView.changeLabelColor(into: UIColor.appColor(.descriptionGeneral))
-        nickNameInputView.changeSeparatorColor(into: UIColor.appColor(.brandMedium))
+        nickNameInputView.adjust(distance: 66)
+        nickNameInputView.modifyTitle(size: 24, isBold: true)
+        let heightConstant = nickNameInputView.heightAnchor.constraint(equalToConstant: 141)    //이부분도 계산기 뚜드려서 하드코딩
+        heightConstant.priority = .required
+        heightConstant.isActive = true
+        
     }
     
     private func addConstraints() {
         nickNameInputView.anchor(top: safeAreaLayoutGuide.topAnchor, topConstant: 40, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
         
-        nickNameTextField.anchor(bottom: nickNameInputView.bottomAnchor, bottomConstant: 32, leading: nickNameInputView.leadingAnchor, trailing: nickNameInputView.trailingAnchor)
-        
         askingRegisterProfileLabel.anchor(top: nickNameInputView.bottomAnchor, topConstant: 70, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-        
+
         descriptionLabel.anchor(top: askingRegisterProfileLabel.bottomAnchor, topConstant: 8, leading: askingRegisterProfileLabel.leadingAnchor)
-        
+
         profileImageSelectorView.anchor(top: descriptionLabel.bottomAnchor, topConstant: 46)
         profileImageSelectorView.centerX(inView: self)
-        
+
         plusCircleView.anchor(bottom: profileImageSelectorView.bottomAnchor, trailing: profileImageSelectorView.trailingAnchor)
-        
+
         doneButton.anchor(bottom: bottomAnchor, bottomConstant: 30, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
     }
 }

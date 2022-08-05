@@ -12,8 +12,8 @@ class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
     private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", color: .black, isBold: true, size: 30)
-    private lazy var emailInputView = BasicInputView(titleText: "이메일")
-    private let emailTextField = CustomTextField(placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default)
+    private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false)
+//    private let emailTextField = CustomTextField(placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default)
     private let completeButton = CustomButton(title: "다음")
     
     // MARK: - Actions
@@ -36,7 +36,7 @@ class FindPasswordViewController: UIViewController {
     }
     
     @objc private func completeButtonDidTapped() {
-        guard let text = emailTextField.text else { return }
+        guard let text = emailInputView.getInputField().text else { return }
         if text.isEmpty {
             let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
             present(okAlert, animated: true)
@@ -78,13 +78,13 @@ class FindPasswordViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(emailInputView)
-        view.addSubview(emailTextField)
+//        view.addSubview(emailTextField)
         view.addSubview(completeButton)
     }
     
     private func configureTextFieldDelegateAndNotification() {
-        emailTextField.delegate = self
-        emailTextField.becomeFirstResponder()
+        emailInputView.getInputField().delegate = self
+        emailInputView.getInputField().becomeFirstResponder()
     }
     
     private func configureCompleteButton() {
@@ -103,10 +103,11 @@ class FindPasswordViewController: UIViewController {
             make.leading.equalTo(view).offset(20)
             make.trailing.equalTo(view).offset(-20)
         }
-        emailTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(emailInputView)
-            make.bottom.equalTo(emailInputView).offset(-7)
-        }
+        
+//        emailTextField.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(emailInputView)
+//            make.bottom.equalTo(emailInputView).offset(-7)
+//        }
         
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
@@ -123,12 +124,12 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.changeSeparatorColor(into: UIColor.appColor(.purple))
+        emailInputView.setSeparatorColor(as: UIColor.appColor(.purple))
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        emailInputView.changeSeparatorColor(into: UIColor.appColor(.defaultGray))
+        emailInputView.setSeparatorColor(as: UIColor.appColor(.defaultGray))
         return true
     }
 

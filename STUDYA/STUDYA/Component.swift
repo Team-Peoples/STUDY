@@ -166,22 +166,62 @@ class TitleLabelAndTextViewStackView: UIStackView {
     }
 }
 
+class ValidationInputView: BasicInputView {
+
+    private let validationLabel = UILabel(frame: .zero)
+    
+
+    init(titleText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool, validationText: String) {
+        super.init(titleText: titleText, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
+
+        addSubview(validationLabel)
+
+        configureValidationLabel(validationText: validationText)
+        setConstraints()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configureValidationLabel(validationText: String) {
+        validationLabel.text = validationText
+        validationLabel.textColor = UIColor.appColor(.black)    //description color로 바꿔야
+        validationLabel.font = UIFont.systemFont(ofSize: 14)
+    }
+
+    private func setConstraints() {
+
+        validationLabel.snp.makeConstraints { make in
+            make.top.equalTo(separator.snp.bottom).offset(10)
+            make.leading.equalTo(separator.snp.leading)
+        }
+        
+        let heightContstant = heightAnchor.constraint(equalToConstant: 84)  //이부분도 계산기 뚜드려서 하드코딩
+        heightContstant.priority = .defaultHigh
+        heightContstant.isActive = true
+    }
+}
+
 class BasicInputView: UIView {
     // MARK: - Properties
     
-    private let nameLabel = UILabel()
-    private var separator = UIView()
+    fileprivate let nameLabel = UILabel()
+    fileprivate var separator = UIView()
+    fileprivate var inputField: CustomTextField!
     
     // MARK: - Actions
     
-    init(titleText: String) {
+    init(titleText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool) {
         super.init(frame: .zero)
-       
+        
+        inputField = CustomTextField(placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
+        
         addSubview(nameLabel)
         addSubview(separator)
+        addSubview(inputField)
         
-        configureNameLabel(title: titleText)
-        changeSeparatorColor(into: UIColor.appColor(.defaultGray))
+        configure(title: titleText)
         
         setConstraints()
     }
@@ -190,120 +230,131 @@ class BasicInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Cofigure Views
-    
-    private func configureNameLabel(title: String) {
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        nameLabel.text = title
+    internal func getInputField() -> CustomTextField {
+        inputField
     }
     
     internal func modifyTitle(size: CGFloat, isBold: Bool) {
-        if isBold {
-            nameLabel.font = UIFont.boldSystemFont(ofSize: size)
-        } else {
-            nameLabel.font = UIFont.systemFont(ofSize: size)
-        }
-        
+        nameLabel.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
     }
     
     internal func adjust(distance: Int) {
-        separator.snp.makeConstraints { make in
+        inputField.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(distance).priority(.high)
         }
     }
     
-    internal func changeSeparatorColor(into color: UIColor) {
+    internal func setSeparatorColor(as color: UIColor) {
         separator.backgroundColor = color
     }
     
-    internal func setText(color: UIColor) {
-        nameLabel.textColor = color
+    // MARK: - Cofigure Views
+    
+    private func configure(title: String) {
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        nameLabel.text = title
+        
+        separator.backgroundColor = UIColor.appColor(.brandLight)
     }
     
-    internal func makeTextBold() {
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
-    }
+    
     
     // MARK: - Setting Constraints
     private func setConstraints() {
-        
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
         
-        separator.snp.makeConstraints { make in
-            make.height.equalTo(2)
-            make.top.equalTo(nameLabel.snp.bottom).offset(46).priority(.medium)
+        inputField.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(13).priority(.medium)
             make.leading.trailing.equalTo(self)
-            make.bottom.equalTo(self)
         }
+        
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(inputField.snp.bottom).offset(4)
+            make.height.equalTo(2)
+            make.leading.trailing.equalTo(self)
+        }
+        
+        let heightConstant = heightAnchor.constraint(equalToConstant: 59)    //자꾸 height ambigious 떠서 내가 초깃값 토대로 계산기 뚜드려서 하드코딩. 이거 왜이러지
+        heightConstant.priority = .defaultHigh
+        heightConstant.isActive = true
     }
+
     
-    internal func stickBarToText() {
+    internal func stickSeparatorToText() {
         separator.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(0).priority(.high)
         }
     }
-    
 }
+//🚨 이거 오브젝트간 spacing이 왜 이상하게 먹는지 알 수 없음
+//class GeneralInputView: UIStackView {
+//    // MARK: - Properties
+//
+//    private let basicInputView: BasicInputView?
+//    private let validationLabel = UILabel()
+//
+//    // MARK: - Actions
+//
+//    func setSeparator(color: UIColor) {
+//        basicInputView?.setSeparator(color: color)
+//    }
+//
+//    // MARK: - Life Cycle
+//
+//    init(titleText: String, validationText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType) {
+//        basicInputView = BasicInputView(titleText: titleText, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: false)
+//
+//        super.init(frame: .zero)
+//
+//        addArrangedSubview(basicInputView!)
+//        addArrangedSubview(validationLabel)
+//
+//        configureStackView()
+//        configureValidationLabel(text: validationText)
+//    }
+//
+//    required init(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
+//    // MARK: - Configure Views
+//
+//    private func configureStackView() {
+//        axis = .vertical
+//        distribution = .equalSpacing
+//        spacing = 70
+//    }
+//
+//    private func configureValidationLabel(text: String) {
+//        validationLabel.text = text
+//        validationLabel.textColor = UIColor.appColor(.black)
+//        validationLabel.font = UIFont.systemFont(ofSize: 14)
+//    }
+//}
+//
 
-class SignUpInputView: UIStackView {
-    // MARK: - Properties
-
-    private let basicInputView: BasicInputView?
-    private let validationLabel = UILabel()
-
-    // MARK: - Actions
-
-    func setSeparator(color: UIColor) {
-        basicInputView?.changeSeparatorColor(into: color)
-    }
-
+class CustomTextField: UITextField {
     // MARK: - Initialize
-
-    init(titleText: String, validationLText: String) {
-        basicInputView = BasicInputView(titleText: titleText)
-
+    
+    init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool? = nil) {
         super.init(frame: .zero)
-
-        addArrangedSubview(basicInputView!)
-        addArrangedSubview(validationLabel)
-
-        configureStackView()
-        configureValidationLabel(text: validationLText)
-    }
-
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Configure Views
-
-    private func configureStackView() {
-        axis = .vertical
-        distribution = .equalSpacing
-        spacing = 5
-    }
-
-    private func configureValidationLabel(text: String) {
-        validationLabel.text = text
-        validationLabel.textColor = UIColor.appColor(.black)
-        validationLabel.font = UIFont.systemFont(ofSize: 14)
-    }
-    
-    internal func modifyBasicInputView(TitleSize: CGFloat, isTitleBold: Bool, distance: Int) {
-        basicInputView?.modifyTitle(size: TitleSize, isBold: isTitleBold)
-        basicInputView?.adjust(distance: distance)
-    }
-    
-    internal func changeSeparatorColor(into color: UIColor) {
         
-        basicInputView?.changeSeparatorColor(into: color)
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        font = UIFont.systemFont(ofSize: 18)
+        keyboardType = keyboardType
+        borderStyle = .none
+        returnKeyType = returnType
+        isSecureTextEntry = isFieldSecure ?? false
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
     }
     
-    internal func changeLabelColor(into color: UIColor) {
-        validationLabel.textColor = color
+    required init?(coder: NSCoder) {
+        fatalError()
     }
+    
 }
 
 class CustomLabel: UILabel {
@@ -321,28 +372,6 @@ class CustomLabel: UILabel {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-class CustomTextField: UITextField {
-    // MARK: - Initialize
-    
-    init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isSecure: Bool? = nil) {
-        super.init(frame: .zero)
-        
-        autocorrectionType = .no
-        autocapitalizationType = .none
-        font = UIFont.systemFont(ofSize: 18)
-        keyboardType = keyboardType
-        borderStyle = .none
-        returnKeyType = returnType
-        isSecureTextEntry = isSecure ?? false
-        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
 }
 
 class SimpleAlert: UIAlertController {
