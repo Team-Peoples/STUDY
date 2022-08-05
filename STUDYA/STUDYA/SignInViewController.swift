@@ -185,41 +185,45 @@ extension SignInViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         switch textField {
-            case emailTextField:
-                emailInputView.setSeparator(color: UIColor.appColor(.purple))
-                return true
-            case passwordTextField:
-                passwordInputView.setSeparator(color: UIColor.appColor(.purple))
-                NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-                NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-                return true
-            default:
-                return true
+        case emailTextField:
+            
+            emailInputView.changeSeparatorColor(into: UIColor.appColor(.purple))
+            return true
+        case passwordTextField:
+            
+            emailInputView.changeSeparatorColor(into: UIColor.appColor(.purple))
+            
+            NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+            
+            return true
+        default:
+            return true
         }
     }
-
+    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         switch textField {
-            case emailTextField:
-                emailInputView.setSeparator(color: UIColor.appColor(.defaultGray))
-                return true
-            case passwordTextField:
-                passwordInputView.setSeparator(color: UIColor.appColor(.defaultGray))
-                return true
-            default:
-                return true
+        case emailTextField:
+            emailInputView.changeSeparatorColor(into: UIColor.appColor(.defaultGray))
+            return true
+        case passwordTextField:
+            emailInputView.changeSeparatorColor(into: UIColor.appColor(.defaultGray))
+            return true
+        default:
+            return true
         }
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-            case emailTextField:
-                passwordTextField.becomeFirstResponder()
-                return true
-            case passwordTextField:
-                return true
-            default:
-                return true
+        case emailTextField:
+            passwordTextField.becomeFirstResponder()
+            return true
+        case passwordTextField:
+            return true
+        default:
+            return true
         }
     }
     

@@ -123,12 +123,12 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparator(color: UIColor.appColor(.purple))
+        emailInputView.changeSeparatorColor(into: UIColor.appColor(.purple))
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparator(color: UIColor.appColor(.defaultGray))
+        emailInputView.changeSeparatorColor(into: UIColor.appColor(.defaultGray))
         return true
     }
 

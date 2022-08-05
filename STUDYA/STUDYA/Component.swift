@@ -36,10 +36,17 @@ class CustomButton: UIButton {
         heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
-    internal func fill(title: String) {
+    internal func fillOut(title: String) {
         
         setTitle(title, for: .normal)
-        backgroundColor = UIColor.appColor(.purple)
+        backgroundColor = .systemBackground
+        setTitleColor(UIColor.appColor(.brandThick), for: .normal)
+    }
+    
+    internal func fillIn(title: String) {
+        
+        setTitle(title, for: .normal)
+        backgroundColor = UIColor.appColor(.brandThick)
         setTitleColor(.white, for: .normal)
     }
 }
@@ -63,7 +70,6 @@ class TitleLabelAndTextViewStackView: UIStackView {
     }
     
     private func configure() {
-        
         spacing = 20
         distribution = .fillEqually
         axis = .vertical
@@ -175,7 +181,7 @@ class BasicInputView: UIView {
         addSubview(separator)
         
         configureNameLabel(title: titleText)
-        setSeparator(color: UIColor.appColor(.defaultGray))
+        changeSeparatorColor(into: UIColor.appColor(.defaultGray))
         
         setConstraints()
     }
@@ -191,8 +197,22 @@ class BasicInputView: UIView {
         nameLabel.text = title
     }
     
+    internal func modifyTitle(size: CGFloat, isBold: Bool) {
+        if isBold {
+            nameLabel.font = UIFont.boldSystemFont(ofSize: size)
+        } else {
+            nameLabel.font = UIFont.systemFont(ofSize: size)
+        }
+        
+    }
     
-    internal func setSeparator(color: UIColor) {
+    internal func adjust(distance: Int) {
+        separator.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(distance).priority(.high)
+        }
+    }
+    
+    internal func changeSeparatorColor(into color: UIColor) {
         separator.backgroundColor = color
     }
     
@@ -236,7 +256,7 @@ class SignUpInputView: UIStackView {
     // MARK: - Actions
 
     func setSeparator(color: UIColor) {
-        basicInputView?.setSeparator(color: color)
+        basicInputView?.changeSeparatorColor(into: color)
     }
 
     // MARK: - Initialize
@@ -269,6 +289,20 @@ class SignUpInputView: UIStackView {
         validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.black)
         validationLabel.font = UIFont.systemFont(ofSize: 14)
+    }
+    
+    internal func modifyBasicInputView(TitleSize: CGFloat, isTitleBold: Bool, distance: Int) {
+        basicInputView?.modifyTitle(size: TitleSize, isBold: isTitleBold)
+        basicInputView?.adjust(distance: distance)
+    }
+    
+    internal func changeSeparatorColor(into color: UIColor) {
+        
+        basicInputView?.changeSeparatorColor(into: color)
+    }
+    
+    internal func changeLabelColor(into color: UIColor) {
+        validationLabel.textColor = color
     }
 }
 
@@ -319,5 +353,49 @@ class SimpleAlert: UIAlertController {
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
         
         self.addAction(okAction)
+    }
+}
+
+class ProfileImageSelectorView: UIImageView {
+    
+    init(size: CGFloat) {
+        super.init(frame: .zero)
+        
+        image = UIImage(named: "defaultProfile")
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.appColor(.brandLight).cgColor
+        layer.cornerRadius = size / 2
+        
+        clipsToBounds = true
+        isUserInteractionEnabled = true
+        contentMode = .scaleAspectFill
+        
+        heightAnchor.constraint(equalToConstant: size).isActive = true
+        widthAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class PlusCircleFillView: UIImageView {
+    
+    init(size: CGFloat) {
+        super.init(frame: .zero)
+        
+        image = UIImage(named: "plusCircleFill")
+        layer.cornerRadius = size / 2
+        
+        clipsToBounds = true
+        isUserInteractionEnabled = true
+        contentMode = .scaleAspectFit
+        
+        heightAnchor.constraint(equalToConstant: size).isActive = true
+        widthAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

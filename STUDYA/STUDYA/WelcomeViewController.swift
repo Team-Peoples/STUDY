@@ -71,7 +71,7 @@ class WelcomViewController: UIViewController {
         
         signUpView.makeTextBold()
         signUpView.setText(color: UIColor.appColor(.purple))
-        signUpView.setSeparator(color: UIColor.appColor(.lightPurple))
+        signUpView.changeSeparatorColor(into: UIColor.appColor(.lightPurple))
         signUpView.stickBarToText()
     }
     
