@@ -227,7 +227,7 @@ class ValidationInputView: UIStackView {
 
     // MARK: - Actions
 
-    func setSeparator(color: UIColor) {
+    func setSeparator(color: AssetColor) {
         basicInputView?.setSeparatorColor(as: color)
     }
 
@@ -260,6 +260,10 @@ class ValidationInputView: UIStackView {
         basicInputView.getInputField()
     }
 
+    internal func getValidationLabel() -> UILabel {
+        validationLabel
+    }
+    
     internal func toggleSecureText() {
         basicInputView.getInputField().isSecureTextEntry = basicInputView.getInputField().isSecureTextEntry == true ? false : true
     }
@@ -272,7 +276,7 @@ class ValidationInputView: UIStackView {
         let buttonImage: UIImage?
 
         guard let isEraseButton = isEraseButton, let action = action else { return }
-        
+
         buttonImage = isEraseButton == true ? UIImage(systemName: "xmark.circle.fill") : UIImage(named: "eye-close")
         rightButton.setBackgroundImage(buttonImage, for: .normal)
         rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
@@ -343,8 +347,8 @@ class BasicInputView: UIView {
         }
     }
     
-    internal func setSeparatorColor(as color: UIColor) {
-        separator.backgroundColor = color
+    internal func setSeparatorColor(as color: AssetColor) {
+        separator.backgroundColor = UIColor.appColor(color)
     }
     
     // MARK: - Cofigure Views

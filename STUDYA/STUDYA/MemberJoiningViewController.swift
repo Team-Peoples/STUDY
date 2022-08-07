@@ -10,6 +10,7 @@ import UIKit
 class MemberJoiningViewController: UIViewController {
     
     let memberJoiningView = MemberJoiningView(frame: .zero)
+
     
     override func loadView() {
         view = memberJoiningView
