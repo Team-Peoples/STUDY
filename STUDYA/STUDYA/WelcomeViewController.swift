@@ -9,11 +9,12 @@ import UIKit
 
 class WelcomViewController: UIViewController {
     
-    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", color: .black, isBold: true, size: 30)
+    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", color: .titleGeneral, isBold: true, size: 30)
     private let kakaoLoginButton = CustomButton(title: "카카오톡으로 로그인")
     private let naverLoginButton = CustomButton(title: "네이버로 로그인")
     private let emailLoginButton = CustomButton(title: "이메일로 로그인")
-//    private let signUpView = BasicInputView(titleText: "회원가입")
+    private let signUpView = CustomLabel(title: "회원가입", color: .brandThick, isBold: true, size: 16)
+    private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
     
     override func viewDidLoad() {
@@ -21,21 +22,28 @@ class WelcomViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         view.addSubview(buttonsStackView)
+        signUpView.isUserInteractionEnabled = true
         
         addSubviews()
         addArangedSubviewsToStack()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
         configureButtons()
         configureStackView()
-//        configureSignUpView()
-        
         addConstraints()
+        
+        underBar.backgroundColor = UIColor.appColor(.brandLight)
     }
     
     private func addSubviews() {
         
         view.addSubview(welcomeLabel)
         view.addSubview(buttonsStackView)
-//        view.addSubview(signUpView)
+        view.addSubview(signUpView)
+        view.addSubview(underBar)
     }
     
     private func addArangedSubviewsToStack() {
@@ -67,22 +75,15 @@ class WelcomViewController: UIViewController {
         buttonsStackView.axis = .vertical
     }
     
-//    private func configureSignUpView() {
-//
-//        signUpView.makeTextBold()
-//        signUpView.setText(color: UIColor.appColor(.purple))
-//        signUpView.setSeparatorColor(as: UIColor.appColor(.lightPurple))
-//        signUpView.stickSeparatorToText()
-//    }
-    
     private func addConstraints() {
         
         welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
         
-        buttonsStackView.centerXY(inView: view, yConstant: 50)
-        buttonsStackView.anchor(leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+        buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
         
-//        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
-//        signUpView.centerX(inView: view)
+        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
+        signUpView.centerX(inView: view)
+        
+        underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
     }
 }

@@ -9,9 +9,21 @@ import UIKit
 
 class MemberJoiningViewController: UIViewController {
     
-    let meberJoiningView = MemberJoiningView(frame: .zero)
+    let memberJoiningView = MemberJoiningView(frame: .zero)
     
     override func loadView() {
-        view = meberJoiningView
+        view = memberJoiningView
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
+    func erase() {
+        print("지워짐")
     }
 }
+
+

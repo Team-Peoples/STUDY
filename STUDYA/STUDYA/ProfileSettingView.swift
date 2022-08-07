@@ -9,11 +9,8 @@ import UIKit
 
 class ProfileSettingView: UIView {
     
-//    private let nickNameInputView = GeneralInputView(titleText: "닉네임을 설정해주세요", validationLText: "*닉네임은 프로필에서 언제든 변경할 수 있어요")
     private let nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .next, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요")
-//    private let nickNameTextField
-//    = CustomTextField(placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done)
-    private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", color: .black, size: 24)
+    private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", color: .titleGeneral, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", color: .subTitleGeneral, isBold: false, size: 12)
     private let profileImageSelectorView = ProfileImageSelectorView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
@@ -89,12 +86,8 @@ class ProfileSettingView: UIView {
     }
     
     private func configureNickNameInputView() {
-        nickNameInputView.adjust(distance: 66)
-        nickNameInputView.modifyTitle(size: 24, isBold: true)
-        let heightConstant = nickNameInputView.heightAnchor.constraint(equalToConstant: 141)    //이부분도 계산기 뚜드려서 하드코딩
-        heightConstant.priority = .required
-        heightConstant.isActive = true
-        
+        nickNameInputView.getInputview().adjust(distance: 66)
+        nickNameInputView.getInputview().modifyTitle(size: 24, isBold: true)
     }
     
     private func addConstraints() {

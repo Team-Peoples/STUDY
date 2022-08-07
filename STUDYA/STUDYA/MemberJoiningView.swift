@@ -10,9 +10,9 @@ import UIKit
 class MemberJoiningView: UIView {
     
     private let titleLabel = CustomLabel(title: "회원가입", color: .titleGeneral, isBold: true, size: 30)
-    private let emailInputView = ValidationInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isFieldSecure: false, validationText: "이메일 형식을 올바르게 입력해주세요.")
-    private let passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 대문자, 소문자를 포함해주세요")
-    private let passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "")
+    private lazy var emailInputView = ValidationInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isFieldSecure: false, validationText: "이메일 형식을 올바르게 입력해주세요.", isEraseButton: true, target: self, action: #selector(erase))
+    private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 대문자, 소문자를 포함해주세요", isEraseButton: false, target: self, action: #selector(toggleIsSecure))
+    private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "", isEraseButton: false, target: self, action: #selector(toggleIsSecure))
     private lazy var stackView: UIStackView = {
        
         let stackView = UIStackView(frame: .zero)
@@ -24,17 +24,20 @@ class MemberJoiningView: UIView {
         stackView.spacing = 40
         stackView.distribution = .fillEqually
         stackView.axis = .vertical
-        stackView.heightAnchor.constraint(equalToConstant: 332).isActive = true //이부분도 계산기 뚜드려서 하드코딩.
         
         return stackView
     }()
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
+    private var eyeButton: UIButton?
     
     //MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubviews()
+        
+        passwordInputView.getInputField().rightView?.tag = 1
+        passwordCheckInputView.getInputField().rightView?.tag = 2
     }
     
     required init?(coder: NSCoder) {
@@ -46,6 +49,22 @@ class MemberJoiningView: UIView {
         
         backgroundColor = .systemBackground
         setConstraints()
+    }
+    
+    @objc func erase() {
+        emailInputView.getInputField().text = ""
+    }
+    
+    @objc func toggleIsSecure(sender: UIButton) {
+        if sender.tag == 1 {
+            
+            sender.isSelected.toggle()
+            passwordInputView.getInputField().isSecureTextEntry = passwordInputView.getInputField().isSecureTextEntry == true ? false : true
+        } else {
+            
+            sender.isSelected.toggle()
+            passwordCheckInputView.getInputField().isSecureTextEntry = passwordCheckInputView.getInputField().isSecureTextEntry == true ? false : true
+        }
     }
     
     private func addSubviews() {
@@ -60,3 +79,5 @@ class MemberJoiningView: UIView {
         doneButton.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 30, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
     }
 }
+
+

@@ -98,6 +98,7 @@ class FindPasswordViewController: UIViewController {
             make.top.equalTo(view).offset(160)
             make.leading.equalTo(view).offset(20)
         }
+        
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(70)
             make.leading.equalTo(view).offset(20)
@@ -111,7 +112,7 @@ class FindPasswordViewController: UIViewController {
         
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
-            make.height.equalTo(50)
+            
             make.leading.equalTo(view).offset(20)
             make.trailing.equalTo(view).offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
