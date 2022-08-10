@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "eye-close.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "eye-close.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

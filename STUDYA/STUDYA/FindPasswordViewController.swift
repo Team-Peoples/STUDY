@@ -11,9 +11,8 @@ import SnapKit
 class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
-    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", color: .black, isBold: true, size: 30)
-    private lazy var emailInputView = BasicInputView(titleText: "이메일")
-    private let emailTextField = CustomTextField(placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default)
+    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .black, size: 30, isBold: true)
+    private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private let completeButton = CustomButton(title: "다음")
     
     // MARK: - Actions
@@ -36,7 +35,7 @@ class FindPasswordViewController: UIViewController {
     }
     
     @objc private func completeButtonDidTapped() {
-        guard let text = emailTextField.text else { return }
+        guard let text = emailInputView.getInputField().text else { return }
         if text.isEmpty {
             let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
             present(okAlert, animated: true)
@@ -44,6 +43,10 @@ class FindPasswordViewController: UIViewController {
             let nextVC = EmailCheckViewController()
             navigationController?.pushViewController(nextVC, animated: true)
         }
+    }
+    
+    @objc func cancelButtonDidTapped() {
+        emailInputView.getInputField().text = nil
     }
     
     // MARK: - Life Cycle
@@ -78,13 +81,13 @@ class FindPasswordViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(emailInputView)
-        view.addSubview(emailTextField)
+//        view.addSubview(emailTextField)
         view.addSubview(completeButton)
     }
     
     private func configureTextFieldDelegateAndNotification() {
-        emailTextField.delegate = self
-        emailTextField.becomeFirstResponder()
+        emailInputView.getInputField().delegate = self
+        emailInputView.getInputField().becomeFirstResponder()
     }
     
     private func configureCompleteButton() {
@@ -98,19 +101,21 @@ class FindPasswordViewController: UIViewController {
             make.top.equalTo(view).offset(160)
             make.leading.equalTo(view).offset(20)
         }
+        
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(70)
             make.leading.equalTo(view).offset(20)
             make.trailing.equalTo(view).offset(-20)
         }
-        emailTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(emailInputView)
-            make.bottom.equalTo(emailInputView).offset(-7)
-        }
+        
+//        emailTextField.snp.makeConstraints { make in
+//            make.leading.trailing.equalTo(emailInputView)
+//            make.bottom.equalTo(emailInputView).offset(-7)
+//        }
         
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
-            make.height.equalTo(50)
+            
             make.leading.equalTo(view).offset(20)
             make.trailing.equalTo(view).offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
@@ -123,12 +128,12 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparator(color: UIColor.appColor(.purple))
+        emailInputView.setUnderlineColor(as: .brandThick)
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparator(color: UIColor.appColor(.defaultGray))
+        emailInputView.setUnderlineColor(as: .brandLight)
         return true
     }
 

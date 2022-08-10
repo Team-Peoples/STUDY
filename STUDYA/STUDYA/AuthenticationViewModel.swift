@@ -13,8 +13,6 @@ protocol formViewModel {
 
 protocol AuthenticationViewModel {
     var formIsValid: Bool { get }
-    var backgroundColor: UIColor { get }
-    var titleColor: UIColor { get }
 }
 
 struct LoginViewModel: AuthenticationViewModel {
@@ -23,14 +21,6 @@ struct LoginViewModel: AuthenticationViewModel {
     
     var formIsValid: Bool {
         return email?.isEmpty == false && password?.isEmpty == false
-    }
-    
-    var backgroundColor: UIColor {
-        return formIsValid ? UIColor.appColor(.purple) : .white
-    }
-    
-    var titleColor: UIColor {
-        return formIsValid ? .white : UIColor.appColor(.purple)
     }
 }
 
