@@ -13,16 +13,16 @@ class CustomButton: UIButton {
     init(title: String, isBold: Bool = true, isFill: Bool = false) {
         super.init(frame: .zero)
 
-        configure(placeholder: title, isBold: isBold, isFill: isFill)
+        configure(title: title, isBold: isBold, isFill: isFill)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(placeholder: String, isBold: Bool, isFill: Bool) {
+    private func configure(title: String, isBold: Bool, isFill: Bool) {
         
-        setTitle(placeholder, for: .normal)
+        setTitle(title, for: .normal)
         
         layer.borderColor = UIColor.appColor(.purple).cgColor
         layer.borderWidth = 1
@@ -30,10 +30,15 @@ class CustomButton: UIButton {
       
         titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 18) : UIFont.systemFont(ofSize: 18)
         
-        backgroundColor = isFill ? UIColor.appColor(.purple) : .systemBackground
-        isFill ? setTitleColor(.white, for: .normal) : setTitleColor(UIColor.appColor(.purple), for: .normal)
+        if isFill {
+            backgroundColor = UIColor.appColor(.purple)
+            setTitleColor(.white, for: .normal)
+        } else {
+            backgroundColor = .systemBackground
+            setTitleColor(UIColor.appColor(.purple), for: .normal)
+        }
 
-        heightAnchor.constraint(equalToConstant: 50).isActive = true
+        setHeight(50)
     }
     
     internal func fillOut(title: String) {
@@ -53,11 +58,11 @@ class CustomButton: UIButton {
 
 class TitleLabelAndTextViewStackView: UIStackView {
     
-    init(upperLabelTitle: String, isNeccessary: Bool = true, placeholder: String, maxCharactersNumber: Int, height: Int = 50) {
+    init(title: String, isNeccessary: Bool = true, placeholder: String, maxCharactersNumber: Int, height: CGFloat = 50) {
         super.init(frame: .zero)
         
-        let titleLabel = TitleLabel(title: upperLabelTitle, isNecessaryTitle: isNeccessary)
-        let grayBorderTextView = GrayBorderTextView(placeholder: placeholder, maxCharactersNumber: 10, height: 50)
+        let titleLabel = CustomLabel(title: title, tintColor: .black, size: 18, isBold: true, isNecessaryTitle: isNeccessary)
+        let grayBorderTextView = GrayBorderTextView(placeholder: placeholder, maxCharactersNumber: 10, height: height)
         
         addArrangedSubview(titleLabel)
         addArrangedSubview(grayBorderTextView)
@@ -74,150 +79,58 @@ class TitleLabelAndTextViewStackView: UIStackView {
         distribution = .fillEqually
         axis = .vertical
     }
+}
 
-    class TitleLabel: UILabel {
+class GrayBorderTextView: UITextView {
+    
+    let charactersNumberLabel = UILabel(frame: .zero)
+    
+    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+        super.init(frame: .zero, textContainer: nil)
         
-        init(title: String, isNecessaryTitle: Bool = true) {
-            super.init(frame: .zero)
-
-            configure(title: title, isNecessaryTitle: isNecessaryTitle)
-        }
+        addSubview(charactersNumberLabel)
         
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
+        configureTextView(placeholder: placeholder, height: height)
+        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
         
-        func setTitleAndRedStar(upperLabelTitle: String, label: UILabel) {
-            
-            let title = (upperLabelTitle + "*") as NSString
-            let range = (title).range(of: "*")
-            let attribute = NSMutableAttributedString(string: title as String)
-            
-            attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
-            self.attributedText = attribute
-        }
-        
-        private func configure(title: String, isNecessaryTitle: Bool) {
-            font = UIFont.boldSystemFont(ofSize: 18)
-            
-            if isNecessaryTitle {
-                setTitleAndRedStar(upperLabelTitle: title, label: self)
-            } else {
-                text = title
-            }
-        }
+        setConstraints(height: height)
     }
     
-    class GrayBorderTextView: UITextView {
-        
-        let charactersNumberLabel = UILabel(frame: .zero)
-        
-        init(placeholder: String, maxCharactersNumber: Int, height: Int) {
-            super.init(frame: .zero, textContainer: nil)
-            
-            addSubview(charactersNumberLabel)
-            
-            configureTextView(placeholder: placeholder, height: height)
-            configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
-            
-            setConstraints(height: height)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        private func configureTextView(placeholder: String, height: Int) {
-            
-            autocorrectionType = .no
-            autocapitalizationType = .none
-            
-            text = placeholder
-            font = UIFont.systemFont(ofSize: 16)
-            textColor = .systemGray3
-            textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-            
-            layer.borderWidth = 1
-            layer.borderColor = UIColor.systemGray3.cgColor
-            layer.cornerRadius = 10
-            
-            isScrollEnabled = false
-        }
-        
-        private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
-            
-            charactersNumberLabel.text = "0/\(maxCharactersNumber)"
-            charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
-            charactersNumberLabel.textColor = .systemGray3
-        }
-        
-        
-        private func setConstraints(height: Int) {
-            
-            translatesAutoresizingMaskIntoConstraints = false
-            heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-            
-            charactersNumberLabel.snp.makeConstraints { make in
-                make.bottom.equalTo(self.safeAreaLayoutGuide).offset(-8)
-                make.right.equalTo(self.safeAreaLayoutGuide).offset(-8)
-            }
-        }
-        
-    }
-}
-/*
-class ValidationInputView: BasicInputView {
-
-    private let validationLabel = UILabel(frame: .zero)
-
-
-    init(titleText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool, validationText: String, rightButtonImage: String?, target: UIViewController?, action: Selector?) {
-        super.init(titleText: titleText, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
-
-        addSubview(validationLabel)
-
-        configureValidationLabel(validationText: validationText)
-        addRightViewOnField(imageName: rightButtonImage, target: target, action: action)
-        setConstraints()
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    private func addRightViewOnField(imageName: String?, target: AnyObject?, action: Selector?) {
-
-        let rightButton = UIButton(frame: .zero)
-        let buttonImage: UIImage?
-
-        guard let imageName = imageName, let action = action else { return }
-
-        buttonImage = imageName == "xmark" ? UIImage(systemName: "xmark.circle.fill") : UIImage(named: imageName)
-        rightButton.setBackgroundImage(buttonImage, for: .normal)
-        rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
-        rightButton.tintColor = UIColor.appColor(.brandLight)
-        rightButton.frame = CGRect(origin: .zero, size: CGSize(width: 36, height: 36))
-        rightButton.addTarget(target, action: action, for: .touchUpInside)
-
-        inputField.rightView = rightButton
-        inputField.rightViewMode = .always
+    
+    private func configureTextView(placeholder: String, height: CGFloat) {
+        
+        autocorrectionType = .no
+        autocapitalizationType = .none
+        
+        text = placeholder
+        font = UIFont.systemFont(ofSize: 16)
+        textColor = .systemGray3
+        textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.systemGray3.cgColor
+        layer.cornerRadius = 10
+        
+        isScrollEnabled = false
     }
-
-    private func configureValidationLabel(validationText: String) {
-        validationLabel.text = validationText
-        validationLabel.textColor = UIColor.appColor(.subTitleGeneral)    //description color로 바꿔야
-        validationLabel.font = UIFont.systemFont(ofSize: 14)
+    
+    private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
+        
+        charactersNumberLabel.text = "0/\(maxCharactersNumber)"
+        charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
+        charactersNumberLabel.textColor = .systemGray3
     }
-
-    private func setConstraints() {
-
-        validationLabel.snp.makeConstraints { make in
-            make.top.equalTo(separator.snp.bottom).offset(10)
-            make.leading.equalTo(separator.snp.leading)
-        }
+    
+    
+    private func setConstraints(height: CGFloat) {
+        
+        setHeight(height)
+        charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
     }
 }
-*/
 
 class ValidationInputView: UIStackView {
     // MARK: - Properties
@@ -225,32 +138,29 @@ class ValidationInputView: UIStackView {
     private let basicInputView: BasicInputView!
     private let validationLabel = UILabel()
 
-    // MARK: - Actions
+    // MARK: - Ininitalize
 
-    func setSeparator(color: AssetColor) {
-        basicInputView?.setSeparatorColor(as: color)
-    }
+    init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, validationText: String, cancelButton: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
 
-    // MARK: - Life Cycle
-
-    init(titleText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool, validationText: String, isEraseButton: Bool? = nil, target: AnyObject? = nil, action: Selector? = nil) {
-
-        basicInputView = BasicInputView(titleText: titleText, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
+        basicInputView = BasicInputView(titleText: titleText, fontSize: fontSize, titleBottomPadding: titleBottomPadding, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure, isCancel: cancelButton, target: target, textFieldAction: textFieldAction)
 
         super.init(frame: .zero)
 
-        addArrangedSubview(basicInputView!)
+        addArrangedSubview(basicInputView)
         addArrangedSubview(validationLabel)
 
-        addRightViewOnField(isEraseButton: isEraseButton, target: target, action: action)
-        configureValidationLabel(validationText: validationText)
+        configureValidationLabel(text: validationText)
         configureStackView()
     }
 
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    // MARK: - Actions
 
+    func setUnderlineColor(as color: AssetColor) {
+        basicInputView?.setUnderlineColor(as: color)
+    }
 
     internal func getInputview() -> BasicInputView {
         basicInputView
@@ -260,33 +170,14 @@ class ValidationInputView: UIStackView {
         basicInputView.getInputField()
     }
 
-    internal func getValidationLabel() -> UILabel {
+    internal func toggleSecureText() {
+        basicInputView.getInputField().isSecureTextEntry.toggle()
+    }
+    func getValidationLabel() -> UILabel {
         validationLabel
     }
-    
-    internal func toggleSecureText() {
-        basicInputView.getInputField().isSecureTextEntry = basicInputView.getInputField().isSecureTextEntry == true ? false : true
-    }
-    
+
      //MARK: - Configure Views
-
-    private func addRightViewOnField(isEraseButton: Bool?, target: AnyObject?, action: Selector?) {
-
-        let rightButton = UIButton(frame: .zero)
-        let buttonImage: UIImage?
-
-        guard let isEraseButton = isEraseButton, let action = action else { return }
-
-        buttonImage = isEraseButton == true ? UIImage(systemName: "xmark.circle.fill") : UIImage(named: "eye-close")
-        rightButton.setBackgroundImage(buttonImage, for: .normal)
-        rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
-        rightButton.tintColor = UIColor.appColor(.brandLight)
-        rightButton.frame = CGRect(origin: .zero, size: CGSize(width: 36, height: 36))
-        rightButton.addTarget(target, action: action, for: .touchUpInside)
-
-        basicInputView.inputField.rightView = rightButton
-        basicInputView.inputField.rightViewMode = .always
-    }
     
     private func configureStackView() {
         axis = .vertical
@@ -294,88 +185,99 @@ class ValidationInputView: UIStackView {
         spacing = 6
     }
 
-    private func configureValidationLabel(validationText: String) {
-        validationLabel.text = validationText
+    private func configureValidationLabel(text: String) {
+        validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.subTitleGeneral)
         validationLabel.font = UIFont.systemFont(ofSize: 14)
     }
 }
 
-
 class BasicInputView: UIView {
     // MARK: - Properties
     
     fileprivate let nameLabel = UILabel()
-    fileprivate var separator = UIView()
+    fileprivate var underline = UIView()
     fileprivate var inputField: CustomTextField!
     
-    // MARK: - Actions
+    // MARK: - Initialize
     
-    init(titleText: String, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool) {
+    init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, isCancel: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
         super.init(frame: .zero)
         
         inputField = CustomTextField(placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
         
         addSubview(nameLabel)
-        addSubview(separator)
+        addSubview(underline)
         addSubview(inputField)
         
-        configure(title: titleText)
+        configure(text: titleText, fontSize: fontSize)
+        addRightViewOnField(cancel: isCancel, target: target, action: textFieldAction)
+        
+        setConstraints(padding: titleBottomPadding)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        setConstraints()
-    }
+    // MARK: - Actions
     
     internal func getInputField() -> CustomTextField {
         inputField
     }
     
-    internal func modifyTitle(size: CGFloat, isBold: Bool) {
-        nameLabel.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+    internal func setUnderlineColor(as color: AssetColor) {
+        underline.backgroundColor = UIColor.appColor(color)
     }
     
-    internal func adjust(distance: Int) {
-        inputField.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(distance).priority(.high)
+    internal func toggleSecureText() {
+        inputField.isSecureTextEntry.toggle()
+    }
+    
+    private func addRightViewOnField(cancel: Bool, target: AnyObject?, action: Selector) {
+        
+        let rightButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 36, height: 36)))
+        
+        rightButton.tintColor = UIColor.appColor(.brandLight)
+        rightButton.addTarget(target, action: action, for: .touchUpInside)
+        
+        if cancel {
+            rightButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        } else {
+            rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
+            rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
         }
-    }
-    
-    internal func setSeparatorColor(as color: AssetColor) {
-        separator.backgroundColor = UIColor.appColor(color)
+        
+        inputField.rightView = rightButton
+        inputField.rightViewMode = .always
     }
     
     // MARK: - Cofigure Views
     
-    private func configure(title: String) {
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        nameLabel.text = title
+    private func configure(text: String, fontSize size: CGFloat) {
+        nameLabel.font = UIFont.boldSystemFont(ofSize: size)
+        nameLabel.text = text
         
-        separator.backgroundColor = UIColor.appColor(.brandLight)
+        setUnderlineColor(as: .brandLight)
     }
     
     // MARK: - Setting Constraints
-    private func setConstraints() {
+    
+    private func setConstraints(padding: CGFloat) {
         
         nameLabel.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self)
         }
         
         inputField.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(20)
-            make.bottom.equalTo(separator.snp.top).offset(5)
+            make.top.equalTo(nameLabel.snp.bottom).offset(padding)
+            make.bottom.equalTo(underline.snp.top).offset(-5)
             make.leading.trailing.equalTo(self)
         }
         
-        separator.snp.makeConstraints { make in
+        underline.snp.makeConstraints { make in
             make.height.equalTo(2)
-            make.top.equalTo(nameLabel.snp.bottom).offset(46)
+            make.top.equalTo(inputField.snp.bottom).offset(4)
             make.leading.trailing.equalTo(self)
             make.bottom.equalTo(self)
         }
@@ -391,11 +293,12 @@ class CustomTextField: UITextField {
         autocorrectionType = .no
         autocapitalizationType = .none
         font = UIFont.systemFont(ofSize: 18)
+    
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
         isSecureTextEntry = isFieldSecure ?? false
-        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 16)])
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 18)])
     }
     
     required init?(coder: NSCoder) {
@@ -407,17 +310,41 @@ class CustomTextField: UITextField {
 class CustomLabel: UILabel {
     // MARK: - Initialize
     
-    init(title: String, color: AssetColor, isBold: Bool = false, size: CGFloat) {
+    init(title: String, tintColor: AssetColor, size: CGFloat, isBold: Bool = false, isNecessaryTitle: Bool = false) {
         super.init(frame: .zero)
         
-        text = title
-        textColor = UIColor.appColor(color)
+        textColor = UIColor.appColor(tintColor)
         font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         numberOfLines = 0
+        
+        configure(title: title, isNecessaryTitle: isNecessaryTitle)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Actions
+    
+    func setTitleAndRedStar(upperLabelTitle: String, label: UILabel) {
+        
+        let title = (upperLabelTitle + "*") as NSString
+        let range = (title).range(of: "*")
+        let attribute = NSMutableAttributedString(string: title as String)
+        
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
+        attributedText = attribute
+    }
+    
+    // MARK: - Configure
+    
+    private func configure(title: String, isNecessaryTitle: Bool) {
+
+        if isNecessaryTitle {
+            setTitleAndRedStar(upperLabelTitle: title, label: self)
+        } else {
+            text = title
+        }
     }
 }
 
@@ -446,8 +373,7 @@ class ProfileImageSelectorView: UIImageView {
         isUserInteractionEnabled = true
         contentMode = .scaleAspectFill
         
-        heightAnchor.constraint(equalToConstant: size).isActive = true
-        widthAnchor.constraint(equalToConstant: size).isActive = true
+        setDimensions(height: size, width: size)
     }
     
     required init?(coder: NSCoder) {
@@ -467,8 +393,7 @@ class PlusCircleFillView: UIImageView {
         isUserInteractionEnabled = true
         contentMode = .scaleAspectFit
         
-        heightAnchor.constraint(equalToConstant: size).isActive = true
-        widthAnchor.constraint(equalToConstant: size).isActive = true
+        setDimensions(height: size, width: size)
     }
     
     required init?(coder: NSCoder) {

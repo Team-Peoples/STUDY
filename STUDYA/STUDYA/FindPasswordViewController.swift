@@ -11,9 +11,8 @@ import SnapKit
 class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
-    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", color: .black, isBold: true, size: 30)
-    private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false)
-//    private let emailTextField = CustomTextField(placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default)
+    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .black, size: 30, isBold: true)
+    private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private let completeButton = CustomButton(title: "다음")
     
     // MARK: - Actions
@@ -44,6 +43,10 @@ class FindPasswordViewController: UIViewController {
             let nextVC = EmailCheckViewController()
             navigationController?.pushViewController(nextVC, animated: true)
         }
+    }
+    
+    @objc func cancelButtonDidTapped() {
+        emailInputView.getInputField().text = nil
     }
     
     // MARK: - Life Cycle
@@ -125,12 +128,12 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparatorColor(as: .brandThick)
+        emailInputView.setUnderlineColor(as: .brandThick)
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setSeparatorColor(as: .brandLight)
+        emailInputView.setUnderlineColor(as: .brandLight)
         return true
     }
 

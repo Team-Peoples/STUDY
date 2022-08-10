@@ -9,20 +9,26 @@ import UIKit
 
 class WelcomViewController: UIViewController {
     
-    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", color: .titleGeneral, isBold: true, size: 30)
-    private let kakaoLoginButton = CustomButton(title: "카카오톡으로 로그인")
-    private let naverLoginButton = CustomButton(title: "네이버로 로그인")
+    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
+    private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
     private let emailLoginButton = CustomButton(title: "이메일로 로그인")
-    private let signUpView = CustomLabel(title: "회원가입", color: .brandThick, isBold: true, size: 16)
+    private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .brandThick, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
+        navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         view.backgroundColor = .systemBackground
-        view.addSubview(buttonsStackView)
         signUpView.isUserInteractionEnabled = true
+        emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTapped), for: .touchUpInside)
+        signUpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(signUpViewDidTapped)))
         
         addSubviews()
         addArangedSubviewsToStack()
@@ -68,6 +74,16 @@ class WelcomViewController: UIViewController {
         naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
     }
     
+    @objc func emailLoginButtonDidTapped() {
+        let signInVC = SignInViewController()
+        navigationController?.pushViewController(signInVC, animated: true)
+    }
+    
+    @objc func signUpViewDidTapped() {
+        let signUpVC = MemberJoiningViewController()
+        navigationController?.pushViewController(signUpVC, animated: true)
+    }
+    
     private func configureStackView() {
         
         buttonsStackView.spacing = 14
@@ -80,6 +96,7 @@ class WelcomViewController: UIViewController {
         welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
         
         buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+//        buttonsStackView.setHeight(150 + 28)
         
         signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
         signUpView.centerX(inView: view)
