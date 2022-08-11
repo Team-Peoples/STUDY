@@ -22,19 +22,13 @@ class ProfileSettingView: UIView {
         backgroundColor = .systemBackground
         
         addSubViews()
+        addConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    
-        addConstraints()
-    }
-    
+
     internal func assignDelegate(to vc: UIViewController) {
         nickNameInputView.getInputField().delegate = vc as? UITextFieldDelegate
     }
