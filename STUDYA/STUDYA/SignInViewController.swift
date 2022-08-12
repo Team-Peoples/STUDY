@@ -64,7 +64,7 @@ class SignInViewController: UIViewController {
     
     private func configureFindPasswordButton() {
         
-        findPasswordButton.setTitleColor(UIColor.appColor(.subTitleGeneral), for: .normal)
+        findPasswordButton.setTitleColor(UIColor.appColor(.descriptionGeneral), for: .normal)
         findPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         findPasswordButton.setTitle("비밀번호를 잊으셨나요", for: .normal)
         findPasswordButton.addTarget(self, action: #selector(findPasswordButtonDidTapped), for: .touchUpInside)
