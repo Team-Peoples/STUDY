@@ -22,6 +22,6 @@
 		</dict>
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>우리앱이 갤러리 사용권한을 요청합니다.</string>
+	<string>PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.</string>
 </dict>
 </plist>

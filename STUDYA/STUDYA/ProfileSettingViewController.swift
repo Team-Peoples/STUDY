@@ -11,28 +11,64 @@ import Photos
 
 class ProfileSettingViewController: UIViewController {
     
-    let profileSettingView = ProfileSettingView(frame: .zero)
-    let isButtonFilled = false
-    
-    override func loadView() {
-        view = profileSettingView
-    }
+    private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .next, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
+    private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .titleGeneral, size: 24)
+    private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .subTitleGeneral, size: 12, isBold: false)
+    private let profileImageSelectorView = ProfileImageSelectorView(size: 120)
+    private let plusCircleView = PlusCircleFillView(size: 30)
+    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
+    private let isButtonFilled = false
+    private var isAuthForAlbum: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        profileSettingView.assignDelegate(to: self)
-        profileSettingView.nickNameTextFieldAddTarget(target: self, action: #selector(textFieldDidChange))
-        profileSettingView.setupTapGestures(target: self, selector: #selector(touchUpImageView))
+        view.backgroundColor = .systemBackground
+        
+        nickNameInputView.getInputField().delegate = self
+        nickNameInputView.getInputField().addTarget(target, action: #selector(toggleDoneButton), for: .editingChanged)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
+        
+        profileImageSelectorView.addGestureRecognizer(tapGesture)
+        profileImageSelectorView.isUserInteractionEnabled = true
+        
+        addSubViews()
+        
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        addConstraints()
+    }
+    
+    @objc private func clearButtonDidTapped() {
+        nickNameInputView.getInputField().text = nil
+    }
     
     @objc private func touchUpImageView() {
-        checkAlbumPermission()
-    }
-    
-    @objc func textFieldDidChange() {
-        profileSettingView.toggleDoneButton()
+        PHPhotoLibrary.requestAuthorization( { status in
+            
+            switch status {
+            case .authorized:
+                DispatchQueue.main.async {
+                    self.setupImagePicker()
+                }
+            case .denied:
+                if self.isAuthForAlbum == false {
+                    DispatchQueue.main.async {
+                        self.AuthSettingOpen()
+                    }
+                }
+                self.isAuthForAlbum = false
+                
+            case .restricted, .notDetermined:
+                break
+            default:
+                break
+            }
+        })
     }
     
     private func setupImagePicker() {
@@ -49,25 +85,104 @@ class ProfileSettingViewController: UIViewController {
         self.present(picker, animated: true, completion: nil)
     }
     
-    private func checkAlbumPermission(){
-            PHPhotoLibrary.requestAuthorization( { status in
-                switch status {
-                case .authorized:
-                    self.setupImagePicker()
-                case .denied:
-                    print("Album: 권한 거부")
-                case .restricted, .notDetermined:
-                    print("Album: 선택하지 않음")
-                default:
-                    break
-                }
-                
-            })
+    
+    private func AuthSettingOpen() {
+
+        let message = "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다"
+        let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        
+        //alert 사이즈 변경
+        let widthConstraints = alert.view.constraints.filter({ return $0.firstAttribute == .width })
+        
+        alert.view.removeConstraints(widthConstraints)
+        
+        let newWidth = UIScreen.main.bounds.width * 0.6
+        let widthConstraint = NSLayoutConstraint(item: alert.view!,
+                                                 attribute: .width,
+                                                 relatedBy: .equal,
+                                                 toItem: nil,
+                                                 attribute: .notAnAttribute,
+                                                 multiplier: 1,
+                                                 constant: newWidth)
+        
+        alert.view.addConstraint(widthConstraint)
+        
+        let firstContainer = alert.view.subviews[0]
+        let constraint = firstContainer.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
+        
+        firstContainer.removeConstraints(constraint)
+        alert.view.addConstraint(NSLayoutConstraint(item: firstContainer,
+                                                    attribute: .width,
+                                                    relatedBy: .equal,
+                                                    toItem: alert.view,
+                                                    attribute: .width,
+                                                    multiplier: 1.0,
+                                                    constant: 0))
+        
+        let innerBackground = firstContainer.subviews[0]
+        let innerConstraints = innerBackground.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
+        
+        innerBackground.removeConstraints(innerConstraints)
+        firstContainer.addConstraint(NSLayoutConstraint(item: innerBackground,
+                                                        attribute: .width,
+                                                        relatedBy: .equal,
+                                                        toItem: firstContainer,
+                                                        attribute: .width,
+                                                        multiplier: 1.0,
+                                                        constant: 0))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func toggleDoneButton() {
+        if let nickName = nickNameInputView.getInputField().text {
+            
+            if nickName.count > 0 {
+                
+                doneButton.isEnabled = true
+                doneButton.fillIn(title: "완료")
+            } else {
+                
+                doneButton.isEnabled = false
+                doneButton.fillOut(title: "완료")
+            }
+        }
+    }
+    
+    private func addSubViews() {
+        view.addSubview(nickNameInputView)
+        view.addSubview(askingRegisterProfileLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(profileImageSelectorView)
+        view.addSubview(plusCircleView)
+        view.addSubview(doneButton)
+    }
+    
+    private func addConstraints() {
+        nickNameInputView.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 40, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+        
+        askingRegisterProfileLabel.anchor(top: nickNameInputView.bottomAnchor, topConstant: 70, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+
+        descriptionLabel.anchor(top: askingRegisterProfileLabel.bottomAnchor, topConstant: 8, leading: askingRegisterProfileLabel.leadingAnchor)
+
+        profileImageSelectorView.anchor(top: descriptionLabel.bottomAnchor, topConstant: 46)
+        profileImageSelectorView.centerX(inView: view)
+
+        plusCircleView.anchor(bottom: profileImageSelectorView.bottomAnchor, trailing: profileImageSelectorView.trailingAnchor)
+
+        doneButton.anchor(bottom: view.bottomAnchor, bottomConstant: 30, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+    }
 }
 
 extension ProfileSettingViewController: PHPickerViewControllerDelegate {
-//    권한 묻기
+    
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
         picker.dismiss(animated: true)
@@ -77,8 +192,12 @@ extension ProfileSettingViewController: PHPickerViewControllerDelegate {
         if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
             
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                
                 DispatchQueue.main.async {
-                    self.profileSettingView.setProfileImage(into: image as? UIImage)
+                    
+                    if let image = image as? UIImage {
+                        self.profileImageSelectorView.image = image
+                    }
                 }
             }
         } else {
@@ -107,6 +226,10 @@ extension ProfileSettingViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         
         return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
 
