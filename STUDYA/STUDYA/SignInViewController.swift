@@ -11,7 +11,7 @@ import SnapKit
 class SignInViewController: UIViewController {
     // MARK: - Properties
     
-    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .black, size: 30, isBold: true)
+    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .titleGeneral, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
@@ -64,7 +64,7 @@ class SignInViewController: UIViewController {
     
     private func configureFindPasswordButton() {
         
-        findPasswordButton.setTitleColor(UIColor.appColor(.defaultGray), for: .normal)
+        findPasswordButton.setTitleColor(UIColor.appColor(.subTitleGeneral), for: .normal)
         findPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         findPasswordButton.setTitle("비밀번호를 잊으셨나요", for: .normal)
         findPasswordButton.addTarget(self, action: #selector(findPasswordButtonDidTapped), for: .touchUpInside)
@@ -144,14 +144,12 @@ class SignInViewController: UIViewController {
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(loginLabel).offset(70)
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(view).inset(20)
         }
         
         passwordInputView.snp.makeConstraints { make in
             make.top.equalTo(emailInputView.snp.bottom).offset(40)
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(view).inset(20)
         }
         
         //        pwSecureToggleButton.snp.makeConstraints { make in
@@ -162,8 +160,7 @@ class SignInViewController: UIViewController {
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.height.equalTo(50)
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(view).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
@@ -181,10 +178,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .purple)
+                emailInputView.setUnderlineColor(as: .brandDark)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .purple)
+                passwordInputView.setUnderlineColor(as: .brandDark)
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -198,10 +195,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .defaultGray)
+                emailInputView.setUnderlineColor(as: .brandLight)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .defaultGray)
+                passwordInputView.setUnderlineColor(as: .brandLight)
             default:
                 return true
         }

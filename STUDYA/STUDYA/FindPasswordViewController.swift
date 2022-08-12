@@ -11,7 +11,7 @@ import SnapKit
 class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
-    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .black, size: 30, isBold: true)
+    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .titleGeneral, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private let completeButton = CustomButton(title: "다음")
     
@@ -40,7 +40,7 @@ class FindPasswordViewController: UIViewController {
             let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
             present(okAlert, animated: true)
         } else {
-            let nextVC = EmailCheckViewController()
+            let nextVC = FindPasswordCompleteViewController()
             navigationController?.pushViewController(nextVC, animated: true)
         }
     }
@@ -104,14 +104,8 @@ class FindPasswordViewController: UIViewController {
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(70)
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(view).inset(20)
         }
-        
-//        emailTextField.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(emailInputView)
-//            make.bottom.equalTo(emailInputView).offset(-7)
-//        }
         
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
@@ -128,7 +122,7 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setUnderlineColor(as: .brandThick)
+        emailInputView.setUnderlineColor(as: .brandDark)
         return true
     }
 
