@@ -12,7 +12,7 @@ class ProfileSettingView: UIView {
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .next, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .titleGeneral, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .subTitleGeneral, size: 12, isBold: false)
-    private let profileImageSelectorView = ProfileImageSelectorView(size: 120)
+    let profileImageSelectorView = ProfileImageSelectorView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
     

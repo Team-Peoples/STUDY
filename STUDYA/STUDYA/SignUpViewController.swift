@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MemberJoiningViewController: UIViewController {
+class SignUpViewController: UIViewController {
     
     private let scrollView = UIScrollView()
     private let containerView = UIView()
@@ -188,7 +188,7 @@ class MemberJoiningViewController: UIViewController {
 }
 
 
-extension MemberJoiningViewController: UITextFieldDelegate {
+extension SignUpViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
@@ -323,7 +323,7 @@ extension MemberJoiningViewController: UITextFieldDelegate {
     }
 }
 
-extension MemberJoiningViewController: NavigationControllerDelegate {
+extension SignUpViewController: NavigationControllerDelegate {
     func push(_ vc: UIViewController) {
         navigationController?.pushViewController(vc, animated: true)
     }
