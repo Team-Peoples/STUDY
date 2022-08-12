@@ -1,5 +1,5 @@
 //
-//  EmailCheckViewController.swift
+//  FindPasswordCompleteViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/02.
@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-class EmailCheckViewController: UIViewController {
+class FindPasswordCompleteViewController: UIViewController {
     // MARK: - Properties
     
-    private let titleLabel = CustomLabel(title: "이메일울\n확인해주세요", tintColor: .black, size: 30, isBold: true)
-    private let nickNameLabel = CustomLabel(title: "{닉네임}님,", tintColor: .black, size: 20, isBold: true)
-    private let descriptionLabel = CustomLabel(title: "가입하신 이메일로 비밀번호를\n보내드렸어요!😊", tintColor: .black, size: 20)
+    private let titleLabel = CustomLabel(title: "이메일울\n확인해주세요", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let nickNameLabel = CustomLabel(title: "{닉네임}님,", tintColor: .titleGeneral, size: 20, isBold: true)
+    private let descriptionLabel = CustomLabel(title: "가입하신 이메일로 비밀번호를\n보내드렸어요!😊", tintColor: .titleGeneral, size: 20)
     private let completeButton = CustomButton(title: "확인", isFill: true)
     
     // MARK: - Actions
@@ -67,8 +67,7 @@ class EmailCheckViewController: UIViewController {
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.height.equalTo(50)
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.trailing.equalTo(view).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
     }

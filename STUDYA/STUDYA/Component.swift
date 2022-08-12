@@ -10,74 +10,53 @@ import SnapKit
 
 class CustomButton: UIButton {
     
-    init(title: String, isBold: Bool = true, isFill: Bool = false) {
+    init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
 
-        configure(title: title, isBold: isBold, isFill: isFill)
+        configure(title: title, isBold: isBold, isFill: isFill, size: size, height: height)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure(title: String, isBold: Bool, isFill: Bool) {
+    private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
-        
-        layer.borderColor = UIColor.appColor(.purple).cgColor
+        layer.borderColor = UIColor.appColor(.brandDark).cgColor
         layer.borderWidth = 1
-        layer.cornerRadius = 24
+        layer.cornerRadius = height / 2
       
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: 18) : UIFont.systemFont(ofSize: 18)
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         
         if isFill {
-            backgroundColor = UIColor.appColor(.purple)
+            backgroundColor = UIColor.appColor(.brandDark)
             setTitleColor(.white, for: .normal)
         } else {
             backgroundColor = .systemBackground
-            setTitleColor(UIColor.appColor(.purple), for: .normal)
+            setTitleColor(UIColor.appColor(.brandDark), for: .normal)
         }
 
-        setHeight(50)
+        setHeight(height)
     }
     
     internal func fillOut(title: String) {
         
         setTitle(title, for: .normal)
         backgroundColor = .systemBackground
-        setTitleColor(UIColor.appColor(.brandThick), for: .normal)
+        setTitleColor(UIColor.appColor(.brandDark), for: .normal)
     }
     
     internal func fillIn(title: String) {
         
         setTitle(title, for: .normal)
-        backgroundColor = UIColor.appColor(.brandThick)
+        backgroundColor = UIColor.appColor(.brandDark)
         setTitleColor(.white, for: .normal)
     }
-}
 
-class TitleLabelAndTextViewStackView: UIStackView {
-    
-    init(title: String, isNeccessary: Bool = true, placeholder: String, maxCharactersNumber: Int, height: CGFloat = 50) {
-        super.init(frame: .zero)
-        
-        let titleLabel = CustomLabel(title: title, tintColor: .black, size: 18, isBold: true, isNecessaryTitle: isNeccessary)
-        let grayBorderTextView = GrayBorderTextView(placeholder: placeholder, maxCharactersNumber: 10, height: height)
-        
-        addArrangedSubview(titleLabel)
-        addArrangedSubview(grayBorderTextView)
-        
-        configure()
-    }
-    
-    required init(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configure() {
-        spacing = 20
-        distribution = .fillEqually
-        axis = .vertical
+    func resetColorFor(normal: AssetColor, forSelected: AssetColor) {
+        setTitleColor(UIColor.appColor(forSelected), for: .selected)
+        setTitleColor(UIColor.appColor(normal), for: .normal)
     }
 }
 
@@ -85,10 +64,18 @@ class GrayBorderTextView: UITextView {
     
     let charactersNumberLabel = UILabel(frame: .zero)
     
+    private let placeHolderLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.systemFont(ofSize: 16)
+        lbl.textColor = .appColor(.subTitleGeneral)
+        return lbl
+    }()
+    
     init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
         super.init(frame: .zero, textContainer: nil)
         
         addSubview(charactersNumberLabel)
+        addSubview(placeHolderLabel)
         
         configureTextView(placeholder: placeholder, height: height)
         configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
@@ -105,16 +92,21 @@ class GrayBorderTextView: UITextView {
         autocorrectionType = .no
         autocapitalizationType = .none
         
-        text = placeholder
+        placeHolderLabel.text = placeholder
         font = UIFont.systemFont(ofSize: 16)
-        textColor = .systemGray3
-        textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        textColor = UIColor.appColor(.titleGeneral)
+        textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
         
         layer.borderWidth = 1
         layer.borderColor = UIColor.systemGray3.cgColor
         layer.cornerRadius = 10
         
         isScrollEnabled = false
+    }
+    
+    
+    func hidePlaceholder(_ isHided: Bool) {
+        placeHolderLabel.isHidden = isHided ? true : false
     }
     
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
@@ -124,11 +116,11 @@ class GrayBorderTextView: UITextView {
         charactersNumberLabel.textColor = .systemGray3
     }
     
-    
     private func setConstraints(height: CGFloat) {
         
         setHeight(height)
         charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
+        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
     }
 }
 
@@ -399,4 +391,39 @@ class PlusCircleFillView: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+class CheckBoxButton: UIButton {
+    // MARK: - Properties
+    
+    // MARK: - Initialize
+    init(title: String, selected: String, unselected: String) {
+        super.init(frame: .zero)
+
+        configure(title: title, selected: selected, unselected: unselected)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Configure
+    
+    private func configure(title: String, selected: String, unselected: String) {
+        titleLabel?.font = .systemFont(ofSize: 16)
+        
+        titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
+        contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        
+        setTitle(title, for: .normal)
+        [.normal, .selected].forEach { setTitleColor(.appColor(.titleGeneral), for: $0) }
+        setImage(UIImage(named: unselected), for: .normal)
+        setImage(UIImage(named: selected), for: .selected)
+    }
+    // MARK: - Actions
+    
+    func toggleState() {
+        isSelected.toggle()
+    }
+    // MARK: - Setting Constraints
 }
