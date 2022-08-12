@@ -21,10 +21,7 @@
 			</array>
 		</dict>
 	</dict>
-<<<<<<< HEAD
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.</string>
-=======
->>>>>>> main
 </dict>
 </plist>

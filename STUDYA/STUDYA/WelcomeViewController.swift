@@ -80,7 +80,7 @@ class WelcomViewController: UIViewController {
     }
     
     @objc func signUpViewDidTapped() {
-        let signUpVC = MemberJoiningViewController()
+        let signUpVC = SignUpViewController()
         navigationController?.pushViewController(signUpVC, animated: true)
     }
     
