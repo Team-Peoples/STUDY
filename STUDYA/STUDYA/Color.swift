@@ -8,7 +8,7 @@
 import UIKit
 
 enum AssetColor: String {
-    case brandLight, brandMedium, brandDark, descriptionGeneral, subTitleGeneral, titleGeneral,background, kakao, kakaoBrown, naver
+    case brandLight, brandMedium, brandDark, descriptionGeneral, subTitleGeneral, titleGeneral, background, highlightDeep, highlightMedium, highlightLight, kakao, kakaoBrown, naver
 }
 
 extension UIColor {
@@ -29,6 +29,12 @@ extension UIColor {
                 return UIColor(named: AssetColor.titleGeneral.rawValue)!
             case .background:
                 return UIColor(named: AssetColor.background.rawValue)!
+            case .highlightDeep:
+                return UIColor(named: AssetColor.highlightDeep.rawValue)!
+            case .highlightMedium:
+                return UIColor(named: AssetColor.highlightMedium.rawValue)!
+            case .highlightLight:
+                return UIColor(named: AssetColor.highlightLight.rawValue)!
             case .kakao:
                 return UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1)
             case .kakaoBrown:
