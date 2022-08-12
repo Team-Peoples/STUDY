@@ -13,7 +13,7 @@ class WelcomViewController: UIViewController {
     private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
     private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
     private let emailLoginButton = CustomButton(title: "이메일로 로그인")
-    private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .brandThick, size: 16, isBold: true)
+    private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .brandDark, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
     

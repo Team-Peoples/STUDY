@@ -67,7 +67,7 @@ class GrayBorderTextView: UITextView {
     private let placeHolderLabel: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = .appColor(.subTitleGeneral)
+        lbl.textColor = .appColor(.descriptionGeneral)
         return lbl
     }()
     
@@ -98,7 +98,7 @@ class GrayBorderTextView: UITextView {
         textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
         
         layer.borderWidth = 1
-        layer.borderColor = UIColor.systemGray3.cgColor
+        backgroundColor = UIColor.appColor(.background)
         layer.cornerRadius = 10
         
         isScrollEnabled = false
@@ -290,7 +290,7 @@ class CustomTextField: UITextField {
         borderStyle = .none
         returnKeyType = returnType
         isSecureTextEntry = isFieldSecure ?? false
-        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.lightGray, .font: UIFont.systemFont(ofSize: 18)])
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.descriptionGeneral), .font: UIFont.systemFont(ofSize: 18)])
     }
     
     required init?(coder: NSCoder) {
