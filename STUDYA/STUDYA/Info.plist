@@ -21,7 +21,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>우리앱이 갤러리 사용권한을 요청합니다.</string>
 </dict>
 </plist>
