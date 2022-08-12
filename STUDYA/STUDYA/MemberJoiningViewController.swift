@@ -194,11 +194,11 @@ extension MemberJoiningViewController: UITextFieldDelegate {
         
         switch textField {
         case emailInputView.getInputField():
-            emailInputView.setUnderlineColor(as: .brandThick)
+            emailInputView.setUnderlineColor(as: .brandDark)
         case passwordInputView.getInputField():
-            passwordInputView.setUnderlineColor(as: .brandThick)
+            passwordInputView.setUnderlineColor(as: .brandDark)
         case passwordCheckInputView.getInputField():
-            passwordCheckInputView.setUnderlineColor(as: .brandThick)
+            passwordCheckInputView.setUnderlineColor(as: .brandDark)
         default:
             break
         }
