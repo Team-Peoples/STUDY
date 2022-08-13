@@ -40,7 +40,7 @@ class FindPasswordViewController: UIViewController {
             let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
             present(okAlert, animated: true)
         } else {
-            let nextVC = FindPasswordCompleteViewController()
+//            let nextVC = FindPasswordCompleteViewController()
             navigationController?.pushViewController(nextVC, animated: true)
         }
     }
