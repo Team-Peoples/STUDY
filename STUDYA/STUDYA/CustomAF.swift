@@ -95,7 +95,8 @@ extension RequestPurpose {
             case .signIn(let credential):
                 return .body(credential)
             case .signUp(let user):
-                return .body(user)
+//                return .body(user)
+                return .none
             case .emailCheck(let email):
                 return .body(["userId": email])
             case .create(let object):
@@ -122,8 +123,10 @@ extension RequestPurpose {
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path), method: method)
         
         switch self {
-            case .signUp(_), .profileImageChange(_):
+            case .profileImageChange(_):
                 urlRequest.headers.add(HTTPHeader.contentType("multipartFormData"))
+            case .signUp(_):
+                return urlRequest
             default:
                 urlRequest.headers.add(HTTPHeader.contentType("application/json"))
         }
