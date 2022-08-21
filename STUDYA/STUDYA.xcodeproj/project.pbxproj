@@ -28,6 +28,8 @@
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
+		D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */; };
+		D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +54,8 @@
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
+		D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMainViewController.swift; sourceTree = "<group>"; };
+		D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,8 @@
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
+				D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */,
+				D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
@@ -200,10 +206,12 @@
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
+				D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
+				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
