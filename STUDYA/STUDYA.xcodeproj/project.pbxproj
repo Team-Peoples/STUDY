@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
+		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -21,15 +22,21 @@
 		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
 		72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */; };
 		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
+		72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */; };
+		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
+		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
+		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
+		D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,10 +50,14 @@
 		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
+		72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailCheckViewController.swift; sourceTree = "<group>"; };
+		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
+		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
+		D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72ED25C128978AA400031AD1 /* SnapKit in Frameworks */,
+				D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +78,7 @@
 			children = (
 				72ED25A62897788900031AD1 /* STUDYA */,
 				72ED25A52897788900031AD1 /* Products */,
+				D3F2C6F828B2878300CEC549 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,21 +98,32 @@
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */,
-				D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */,
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
+				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
+				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
 				72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */,
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
+				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
+				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
 				72ED25B52897788A00031AD1 /* Info.plist */,
 			);
 			path = STUDYA;
+			sourceTree = "<group>";
+		};
+		D3F2C6F828B2878300CEC549 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				72ED25CC2899499200031AD1 /* EmailCheckViewController.swift */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,6 +144,7 @@
 			name = STUDYA;
 			packageProductDependencies = (
 				72ED25C028978AA400031AD1 /* SnapKit */,
+				D3AFCE1928A7F53D004FBAB9 /* Alamofire */,
 			);
 			productName = STUDYA;
 			productReference = 72ED25A42897788900031AD1 /* STUDYA.app */;
@@ -151,6 +176,7 @@
 			mainGroup = 72ED259B2897788900031AD1;
 			packageReferences = (
 				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 72ED25A52897788900031AD1 /* Products */;
 			projectDirPath = "";
@@ -184,15 +210,19 @@
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
+				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
+				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
-				D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
+				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
+				72ED25CD2899499200031AD1 /* EmailCheckViewController.swift in Sources */,
+				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,6 +454,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -431,6 +469,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		D3AFCE1928A7F53D004FBAB9 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

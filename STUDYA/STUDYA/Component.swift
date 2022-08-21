@@ -263,7 +263,6 @@ class BasicInputView: UIView {
         
         inputField.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(padding)
-            make.bottom.equalTo(underline.snp.top).offset(-5)
             make.leading.trailing.equalTo(self)
         }
         
