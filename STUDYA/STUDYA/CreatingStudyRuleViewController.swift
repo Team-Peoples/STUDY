@@ -60,7 +60,17 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return v
     }()
-    private let descriptionLabel = CustomLabel(title: "나중에 결정하시겠어요?", tintColor: .subTitleGeneral, size: 14)
+    private let descriptionLabel: CustomLabel = {
+        
+        let label = CustomLabel(title: "", tintColor: .brandMedium, size: 14)
+        let attributedString = NSMutableAttributedString.init(string: "나중에 결정하시겠어요?")
+        
+        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
+            NSRange.init(location: 0, length: attributedString.length));
+        label.attributedText = attributedString
+        
+        return label
+    }()
     private lazy var doneButton: CustomButton = {
        
         let button = CustomButton(title: "다음", isBold: true, isFill: false)
@@ -74,10 +84,12 @@ class CreatingStudyRuleViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        title = "스터디 만들기"
         
         addsubViews()
 //        settingGeneralStudyRuleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(generalRuleViewTapped)))
 //        settingStudyRuleDetailView.add
+        colorBorder(of: settingStudyRuleDetailView)
     }
     
     override func viewDidLayoutSubviews() {
@@ -96,6 +108,10 @@ class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         print(#function)
+    }
+    
+    private func colorBorder(of settingView: UIView) {
+        settingView.layer.borderColor = UIColor.appColor(.brandDark).cgColor
     }
     
     private func addsubViews() {
