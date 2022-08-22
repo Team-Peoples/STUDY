@@ -20,12 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-<<<<<<< Updated upstream
-        window?.rootViewController = UINavigationController(rootViewController: ProfileSettingViewController())
-//        window?.rootViewController = MemberJoiningViewController()
-=======
         window?.rootViewController = UINavigationController(rootViewController: CreatingStudyRuleViewController())
->>>>>>> Stashed changes
         window?.makeKeyAndVisible()
     }
 
