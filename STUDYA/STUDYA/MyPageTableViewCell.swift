@@ -42,7 +42,6 @@ class MyPageTableViewCell: UITableViewCell {
         circleView.layer.cornerRadius = 12.5
         circleView.backgroundColor = .systemGray
         disclosureIndicator.tintColor = UIColor.appColor(.subTitleGeneral)
-        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 999)
     }
     
     private func setConstraints() {

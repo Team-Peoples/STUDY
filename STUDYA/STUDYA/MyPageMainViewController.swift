@@ -22,6 +22,7 @@ final class MyPageMainViewController: UIViewController {
         
         tableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.identifier)
         tableView.rowHeight = 55
+        tableView.separatorStyle = .none
         
         return tableView
     }()
