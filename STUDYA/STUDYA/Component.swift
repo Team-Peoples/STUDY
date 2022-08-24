@@ -60,25 +60,16 @@ class CustomButton: UIButton {
     }
 }
 
-class GrayBorderTextView: UITextView {
+class BaseTextView: UITextView {
     
-    let charactersNumberLabel = UILabel(frame: .zero)
+    private let placeHolderLabel = UILabel()
     
-    private let placeHolderLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = .appColor(.descriptionGeneral)
-        return lbl
-    }()
-    
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+    init(placeholder: String, fontSize: CGFloat, height: CGFloat) {
         super.init(frame: .zero, textContainer: nil)
         
-        addSubview(charactersNumberLabel)
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, height: height)
-        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        configureTextView(placeholder: placeholder, size: fontSize, height: height)
         
         setConstraints(height: height)
     }
@@ -87,19 +78,18 @@ class GrayBorderTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, height: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, height: CGFloat) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
         
         placeHolderLabel.text = placeholder
-        font = UIFont.systemFont(ofSize: 16)
+        placeHolderLabel.font = UIFont.systemFont(ofSize: size)
+        placeHolderLabel.textColor = .appColor(.descriptionGeneral)
+        
+        font = UIFont.systemFont(ofSize: size)
         textColor = UIColor.appColor(.titleGeneral)
         textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
-        
-        layer.borderWidth = 1
-        backgroundColor = UIColor.appColor(.background)
-        layer.cornerRadius = 10
         
         isScrollEnabled = false
     }
@@ -109,6 +99,38 @@ class GrayBorderTextView: UITextView {
         placeHolderLabel.isHidden = isHided ? true : false
     }
     
+    private func setConstraints(height: CGFloat) {
+        
+        setHeight(height)
+        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
+    }
+}
+
+class GrayBorderTextView: BaseTextView {
+    
+    let charactersNumberLabel = UILabel(frame: .zero)
+    
+    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+        super.init(placeholder: placeholder, fontSize: 16, height: height)
+        
+        addSubview(charactersNumberLabel)
+        
+        configureTextView()
+        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureTextView() {
+        layer.borderWidth = 1
+        backgroundColor = UIColor.appColor(.background)
+        layer.cornerRadius = 10
+    }
+    
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
         
         charactersNumberLabel.text = "0/\(maxCharactersNumber)"
@@ -116,11 +138,9 @@ class GrayBorderTextView: UITextView {
         charactersNumberLabel.textColor = .systemGray3
     }
     
-    private func setConstraints(height: CGFloat) {
+    private func setConstraints() {
         
-        setHeight(height)
         charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
-        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
     }
 }
 
