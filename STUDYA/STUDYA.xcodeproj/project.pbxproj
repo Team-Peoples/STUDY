@@ -23,6 +23,10 @@
 		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
 		72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */; };
 		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
+		D398B46A28B4C23A00598B03 /* MyPageStudyHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46928B4C23A00598B03 /* MyPageStudyHistoryViewController.swift */; };
+		D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */; };
+		D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */; };
+		D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */; };
@@ -51,6 +55,10 @@
 		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
+		D398B46928B4C23A00598B03 /* MyPageStudyHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageStudyHistoryViewController.swift; sourceTree = "<group>"; };
+		D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyHistoryTableViewCell.swift; sourceTree = "<group>"; };
+		D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAlertTableViewCell.swift; sourceTree = "<group>"; };
+		D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingAlertTableViewController.swift; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +117,10 @@
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */,
 				D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */,
+				D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */,
+				D398B46928B4C23A00598B03 /* MyPageStudyHistoryViewController.swift */,
+				D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */,
+				D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
@@ -199,9 +211,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */,
+				D398B46A28B4C23A00598B03 /* MyPageStudyHistoryViewController.swift in Sources */,
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
+				D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
@@ -214,7 +228,9 @@
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
+				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
+				D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */,
 				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
 			);

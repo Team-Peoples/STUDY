@@ -12,6 +12,7 @@ final class MyPageMainViewController: UIViewController {
     internal var nickName: String?
     internal var myMail: String?
     private let titles = ["참여한 스터디", "푸시알림 설정", "앱정보", "로그아웃", "회원 탈퇴"]
+    private var delegate: NavigationControllerDelegate?
     
     private let profileImageSelectorView = ProfileImageSelectorView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: nickName ?? "닉네임", tintColor: .titleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
@@ -30,9 +31,10 @@ final class MyPageMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor.appColor(.background)
         title = "마이페이지"
         tableView.dataSource = self
+        tableView.delegate = self
         
         addSubviews()
     }
@@ -70,5 +72,22 @@ extension MyPageMainViewController: UITableViewDataSource {
         cell.title = titles[indexPath.row]
         
         return cell
+    }
+}
+
+extension MyPageMainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            push(MyPageStudyHistoryViewController())
+        default: break
+        }
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+}
+
+extension MyPageMainViewController: NavigationControllerDelegate {
+    func push(_ vc: UIViewController) {
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -10,16 +10,16 @@ import UIKit
 class MyPageTableViewCell: UITableViewCell {
     
     static let identifier = "MyPageTableViewCell"
-    var title: String? {
+    internal var title: String? {
         didSet {
             titleLabel.text = title
         }
     }
     
     private let circleView = UIView(frame: .zero)
-    private lazy var titleLabel = CustomLabel(title: title ?? "제목", tintColor: .subTitleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "제목", tintColor: .subTitleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
     private let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator")?.withRenderingMode(.alwaysTemplate))
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
