@@ -14,7 +14,8 @@ class NoticeBoardTableViewCell: UITableViewCell {
     var isPinned: Bool? {
         willSet(value) {
             if value == true {
-                cell.backgroundColor = UIColor.appColor(.background)
+                
+                cell.backgroundColor = UIColor.appColor(.brandMilky)
                 cell.layer.borderColor = UIColor.appColor(.brandLight).cgColor
                 cell.layer.borderWidth = 2
             }
@@ -22,6 +23,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     }
     var notice: Notice? {
         didSet {
+            
             titleLabel.text = notice?.title
             contentLabel.text = notice?.content
             timeLabel.text = notice?.date
@@ -33,24 +35,30 @@ class NoticeBoardTableViewCell: UITableViewCell {
     
     private let contentLabel: UILabel = {
         let lbl = UILabel()
+        
         lbl.textColor = UIColor.appColor(.subTitleGeneral)
         lbl.font = UIFont.systemFont(ofSize: 14)
         lbl.numberOfLines = 2
+        
         return lbl
     }()
     
     private let timeLabel: UILabel = {
         let lbl = UILabel()
+        
         lbl.textColor = UIColor.appColor(.subTitleGeneral)
         lbl.font = UIFont.systemFont(ofSize: 12)
+        
         return lbl
     }()
     
     private let cell: UIView = {
         let v = UIView()
+        
         v.layer.cornerRadius = 24
         v.clipsToBounds = true
         v.backgroundColor = .white
+        
         return v
     }()
     
@@ -59,7 +67,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor.appColor(.background)
         self.addSubview(cell)
         
         titleLabel.numberOfLines = 1
