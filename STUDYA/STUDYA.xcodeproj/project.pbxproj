@@ -10,6 +10,7 @@
 		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
+		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
+		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */,
 				D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
+				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -195,6 +198,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */,
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
@@ -364,7 +368,7 @@
 				DEVELOPMENT_TEAM = G8228CR939;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = STUDYA/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "우리앱이 갤러리 사용권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -393,7 +397,7 @@
 				DEVELOPMENT_TEAM = G8228CR939;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = STUDYA/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "우리앱이 갤러리 사용권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
