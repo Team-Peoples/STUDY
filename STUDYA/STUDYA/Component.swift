@@ -64,30 +64,34 @@ class BaseTextView: UITextView {
     
     private let placeHolderLabel = UILabel()
     
-    init(placeholder: String, fontSize: CGFloat, height: CGFloat) {
+    init(placeholder: String, fontSize: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
         super.init(frame: .zero, textContainer: nil)
         
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, size: fontSize, height: height)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold)
         
-        setConstraints(height: height)
+        setConstraints(topConstant: topInset, leadingConstant: leadingInset)
+    }
+    
+    convenience init(placeholder: String, fontSize: CGFloat, isBold: Bool = false) {
+        self.init(placeholder: placeholder, fontSize: fontSize, isBold: isBold, topInset: 11, leadingInset: 15)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, size: CGFloat, height: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
         
         placeHolderLabel.text = placeholder
-        placeHolderLabel.font = UIFont.systemFont(ofSize: size)
+        placeHolderLabel.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         placeHolderLabel.textColor = .appColor(.descriptionGeneral)
         
-        font = UIFont.systemFont(ofSize: size)
+        font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         textColor = UIColor.appColor(.titleGeneral)
         textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
         
@@ -99,10 +103,9 @@ class BaseTextView: UITextView {
         placeHolderLabel.isHidden = isHided ? true : false
     }
     
-    private func setConstraints(height: CGFloat) {
-        
-        setHeight(height)
-        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
+    private func setConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
+
+        placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
 
@@ -111,7 +114,7 @@ class GrayBorderTextView: BaseTextView {
     let charactersNumberLabel = UILabel(frame: .zero)
     
     init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
-        super.init(placeholder: placeholder, fontSize: 16, height: height)
+        super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
         
         addSubview(charactersNumberLabel)
         

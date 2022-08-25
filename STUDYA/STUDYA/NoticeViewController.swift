@@ -6,18 +6,24 @@
 //
 
 import UIKit
-import SwiftUI
 
 class NoticeViewController: UIViewController {
     // MARK: - Properties
     
+    ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
         didSet {
             if isMaster == true {
-                titleTextField.isUserInteractionEnabled = true
+                titleTextView.isUserInteractionEnabled = true
+                titleTextView.isEditable = true
+                
+                contentTextView.isUserInteractionEnabled = true
                 contentTextView.isEditable = true
             } else {
-                titleTextField.isUserInteractionEnabled = false
+                titleTextView.isUserInteractionEnabled = false
+                titleTextView.isEditable = false
+                
+                contentTextView.isUserInteractionEnabled = false
                 contentTextView.isEditable = false
             }
         }
@@ -25,40 +31,39 @@ class NoticeViewController: UIViewController {
     
     var notice: Notice? {
         didSet {
-            titleTextField.text = notice?.title
+            titleTextView.text = notice?.title
             contentTextView.text = notice?.content
             timeLabel.text = notice?.date
         }
     }
     
-    private lazy var editButton: UIButton = {
-        let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(systemName: "pencil"), for: .normal)
-        return btn
-    }()
-    
-    private let titleTextField: UITextField = {
-        let tf = UITextField()
-        tf.font = UIFont.boldSystemFont(ofSize: 18)
-        tf.isUserInteractionEnabled = false
-        tf.placeholder = "제목을 입력해주세요."
-        tf.tintColor = UIColor.appColor(.titleGeneral)
-        return tf
+    private let titleTextView: BaseTextView = {
+        let tv = BaseTextView(placeholder: "제목을 입력해주세요.", fontSize: 18, isBold: true, topInset: 0, leadingInset: 0)
+        tv.textColor = UIColor.appColor(.titleGeneral)
+        tv.tintColor = .black
+        tv.isEditable = false
+
+        tv.isScrollEnabled = false
+        tv.enablesReturnKeyAutomatically = true
+        tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        return tv
     }()
     
     private let contentTextView: BaseTextView = {
-        let tv = BaseTextView(placeholder: "내용을 입력해주세요.", fontSize: 14, height: 100)
+        let tv = BaseTextView(placeholder: "내용을 입력해주세요.", fontSize: 14, topInset: 0, leadingInset: 0)
         tv.textColor = UIColor.appColor(.subTitleGeneral)
         tv.tintColor = .black
         tv.isEditable = false
+        
         tv.dataDetectorTypes = .link
-        tv.isScrollEnabled = false
         tv.enablesReturnKeyAutomatically = true
         tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
        
         return tv
     }()
     
+    // 공지 만들기에서는 보이지않음.
     private let timeLabel: UILabel = {
         let lbl = UILabel()
         lbl.textColor = UIColor.appColor(.subTitleGeneral)
@@ -73,11 +78,13 @@ class NoticeViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        titleTextField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        titleTextField.delegate = self
+        titleTextView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        titleTextView.delegate = self
         contentTextView.delegate = self
         
-        view.addSubview(titleTextField)
+        checkIfUserIsMaster()
+        
+        view.addSubview(titleTextView)
         view.addSubview(timeLabel)
         view.addSubview(contentTextView)
         
@@ -87,13 +94,49 @@ class NoticeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if contentTextView.text != "" {
+        if !contentTextView.text.isEmpty || !titleTextView.text.isEmpty {
             contentTextView.hidePlaceholder(true)
+            titleTextView.hidePlaceholder(true)
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    
     }
 
     // MARK: - Configure
     // MARK: - Actions
+    
+    @objc func createNotice() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func cancel() {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    private func checkIfUserIsMaster() {
+        if isMaster {
+            checkIfCreateOrEdit()
+        }
+    }
+    
+    private func checkIfCreateOrEdit() {
+        
+        if titleTextView.text.isEmpty && contentTextView.text.isEmpty {
+            self.navigationItem.title = "공지사항 만들기"
+        } else {
+            self.navigationItem.title = "공지사항 수정"
+        }
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(createNotice))
+        self.navigationItem.rightBarButtonItem?.tintColor = .orange
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
+        self.navigationItem.leftBarButtonItem?.tintColor = .orange
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+    }
+    
     // MARK: - Setting Constraints
     
     func setConstraints() {
@@ -103,13 +146,13 @@ class NoticeViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(9)
         }
         
-        titleTextField.snp.makeConstraints { make in
+        titleTextView.snp.makeConstraints { make in
             make.top.equalTo(timeLabel.snp.bottom).offset(8)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
         }
         
         contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(25)
+            make.top.equalTo(titleTextView.snp.bottom).offset(25)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
         }
     }
@@ -118,17 +161,34 @@ class NoticeViewController: UIViewController {
 extension NoticeViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        contentTextView.hidePlaceholder(true)
+        switch textView {
+            case titleTextView:
+                titleTextView.hidePlaceholder(true)
+            case contentTextView:
+                contentTextView.hidePlaceholder(true)
+            default:
+                return
+        }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        
-        if textView.text == "" {
-            contentTextView.hidePlaceholder(false)
+        switch textView {
+            case titleTextView:
+                titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
+            case contentTextView:
+                contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
+            default:
+                return
         }
     }
-}
-
-extension NoticeViewController: UITextFieldDelegate {
-    
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: view.frame.width, height: .infinity)
+        let estimatedSize = textView.sizeThatFits(size)
+        
+        textView.constraints.forEach { (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = estimatedSize.height
+            }
+        }
+    }
 }
