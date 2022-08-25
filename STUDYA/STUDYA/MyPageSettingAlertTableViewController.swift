@@ -35,7 +35,7 @@ final class MyPageSettingAlertTableViewController: UIViewController {
         view.addSubview(tableView)
         
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 12, leading: view.leadingAnchor, leadingConstant: 20)
-        tableView.anchor(top: titleLabel.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 210)
+        tableView.anchor(top: titleLabel.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 70 * 3)
     }
 }
 

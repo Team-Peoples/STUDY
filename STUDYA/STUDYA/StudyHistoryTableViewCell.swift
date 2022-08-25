@@ -27,16 +27,12 @@ final class StudyHistoryTableViewCell: UITableViewCell {
         addSubview(titleLabel)
         addSubview(durationLabel)
         
-        setConstraints()
+        titleLabel.anchor(top: topAnchor, topConstant: 15, leading: leadingAnchor, leadingConstant: 20)
+        durationLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 10, leading: titleLabel.leadingAnchor)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setConstraints() {
-        titleLabel.anchor(top: topAnchor, topConstant: 15, leading: leadingAnchor, leadingConstant: 20)
-        durationLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 10, leading: titleLabel.leadingAnchor)
     }
 }
 
