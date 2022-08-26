@@ -12,6 +12,14 @@
 				<string>kakaoed23abff026b1ec548a706e81bd6ea22</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.sm3609824475.studymanagerapplication01</string>
+			</array>
+		</dict>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>

@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = UINavigationController(rootViewController: CreatingStudyViewController())
+        window?.rootViewController = UINavigationController(rootViewController: WelcomViewController())
 //        window?.rootViewController = MemberJoiningViewController()
         window?.makeKeyAndVisible()
     }
