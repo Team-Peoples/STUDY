@@ -69,7 +69,7 @@ class NoticeBoardViewController: UIViewController {
         noticeBoardTableView.delegate = self
         
         noticeBoardTableView.register(NoticeBoardTableViewCell.self, forCellReuseIdentifier: "Cell")
-        noticeBoardTableView.rowHeight = 137
+        noticeBoardTableView.rowHeight = 147
         noticeBoardTableView.separatorStyle = .none
         noticeBoardTableView.backgroundColor = .systemBackground
         noticeBoardTableView.tableHeaderView = headerView
@@ -169,6 +169,7 @@ extension NoticeBoardViewController: UITableViewDataSource {
         return cell
     }
 }
+
 // MARK: - UITableViewDelegate
 
 extension NoticeBoardViewController: UITableViewDelegate {
@@ -181,6 +182,8 @@ extension NoticeBoardViewController: UITableViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 }
+
+// MARK: - Date Formatter
 
 extension Date {
     func formatted() -> String {

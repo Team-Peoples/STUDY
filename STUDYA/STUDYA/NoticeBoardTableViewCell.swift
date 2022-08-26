@@ -31,13 +31,20 @@ class NoticeBoardTableViewCell: UITableViewCell {
         }
     }
     
-    private let titleLabel = CustomLabel(title: "", tintColor: .titleGeneral, size: 18, isBold: true)
+    private let titleLabel: CustomLabel = {
+        let lbl = CustomLabel(title: "", tintColor: .titleGeneral, size: 18, isBold: true)
+        
+        lbl.numberOfLines = 1
+        lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        
+        return lbl
+    }()
     
     private let contentLabel: UILabel = {
         let lbl = UILabel()
         
         lbl.textColor = UIColor.appColor(.subTitleGeneral)
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        lbl.font = UIFont.systemFont(ofSize: 18)
         lbl.numberOfLines = 2
         
         return lbl
@@ -47,7 +54,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         let lbl = UILabel()
         
         lbl.textColor = UIColor.appColor(.subTitleGeneral)
-        lbl.font = UIFont.systemFont(ofSize: 12)
+        lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
     }()
@@ -67,15 +74,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.backgroundColor = UIColor.appColor(.background)
-        self.addSubview(cell)
-        
-        titleLabel.numberOfLines = 1
-        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        
-        cell.addSubview(titleLabel)
-        cell.addSubview(timeLabel)
-        cell.addSubview(contentLabel)
+        configureViews()
         
         setConstraints()
     }
@@ -89,7 +88,16 @@ class NoticeBoardTableViewCell: UITableViewCell {
     }
     
     // MARK: - Configure
-    // MARK: - Actions
+    
+    private func configureViews() {
+        backgroundColor = UIColor.appColor(.background)
+        addSubview(cell)
+        
+        cell.addSubview(titleLabel)
+        cell.addSubview(timeLabel)
+        cell.addSubview(contentLabel)
+    }
+    
     // MARK: - Setting Constraints
     func setConstraints() {
         cell.snp.makeConstraints { make in
