@@ -28,6 +28,7 @@
 		D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */; };
 		D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */; };
 		D398B47228B7617F00598B03 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47128B7617F00598B03 /* InformationViewController.swift */; };
+		D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */; };
@@ -61,6 +62,7 @@
 		D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAlertTableViewCell.swift; sourceTree = "<group>"; };
 		D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingAlertTableViewController.swift; sourceTree = "<group>"; };
 		D398B47128B7617F00598B03 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
+		D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatingPersonalDataViewController.swift; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 				D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */,
 				D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */,
 				D398B47128B7617F00598B03 /* InformationViewController.swift */,
+				D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
@@ -233,6 +236,7 @@
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
+				D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */,
 				D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */,
 				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,

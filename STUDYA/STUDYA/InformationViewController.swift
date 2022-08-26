@@ -45,6 +45,7 @@ final class InformationViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "앱 정보"
         tableView.dataSource = self
+        tableView.delegate = self
         contributorCollectionView.dataSource = self
         
         view.addSubview(tableView)
@@ -85,6 +86,21 @@ extension InformationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count + 1
+    }
+}
+
+extension InformationViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0: break
+        case 1:
+            navigationController?.pushViewController(TreatingPersonalDataViewController(), animated: true)
+        case 2:
+            navigationController?.pushViewController(AgreementViewController(), animated: true)
+            
+        default: break
+        }
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
