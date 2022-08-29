@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
@@ -37,9 +38,16 @@
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
 		D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */; };
 		D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */; };
+		D3F2C6FD28B380C900CEC549 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */; };
+		D3F2C6FF28B380C900CEC549 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */; };
+		D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70028B380C900CEC549 /* KakaoSDKShare */; };
+		D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */; };
+		D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70428B380C900CEC549 /* KakaoSDKUser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +71,7 @@
 		D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingAlertTableViewController.swift; sourceTree = "<group>"; };
 		D398B47128B7617F00598B03 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatingPersonalDataViewController.swift; sourceTree = "<group>"; };
+		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -77,8 +86,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3F2C6FF28B380C900CEC549 /* KakaoSDKCommon in Frameworks */,
 				72ED25C128978AA400031AD1 /* SnapKit in Frameworks */,
+				D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */,
+				D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */,
 				D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */,
+				D3F2C6FD28B380C900CEC549 /* KakaoSDKAuth in Frameworks */,
+				D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */,
+				3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +105,8 @@
 			children = (
 				72ED25A62897788900031AD1 /* STUDYA */,
 				72ED25A52897788900031AD1 /* Products */,
+				CE1FB378DAB2943B6B34B4CF /* Pods */,
+				E2C71478A3E60D54C78B36FC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +154,23 @@
 			path = STUDYA;
 			sourceTree = "<group>";
 		};
+		CE1FB378DAB2943B6B34B4CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */,
+				81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E2C71478A3E60D54C78B36FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -144,9 +178,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72ED25B82897788A00031AD1 /* Build configuration list for PBXNativeTarget "STUDYA" */;
 			buildPhases = (
+				6C00C674107D25437A4A019C /* [CP] Check Pods Manifest.lock */,
 				72ED25A02897788900031AD1 /* Sources */,
 				72ED25A12897788900031AD1 /* Frameworks */,
 				72ED25A22897788900031AD1 /* Resources */,
+				66CE49C2B4ED6F88B2EE8A69 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -156,6 +192,11 @@
 			packageProductDependencies = (
 				72ED25C028978AA400031AD1 /* SnapKit */,
 				D3AFCE1928A7F53D004FBAB9 /* Alamofire */,
+				D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */,
+				D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */,
+				D3F2C70028B380C900CEC549 /* KakaoSDKShare */,
+				D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */,
+				D3F2C70428B380C900CEC549 /* KakaoSDKUser */,
 			);
 			productName = STUDYA;
 			productReference = 72ED25A42897788900031AD1 /* STUDYA.app */;
@@ -188,6 +229,7 @@
 			packageReferences = (
 				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 72ED25A52897788900031AD1 /* Products */;
 			projectDirPath = "";
@@ -210,6 +252,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		66CE49C2B4ED6F88B2EE8A69 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C00C674107D25437A4A019C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-STUDYA-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		72ED25A02897788900031AD1 /* Sources */ = {
@@ -384,6 +468,7 @@
 		};
 		72ED25B92897788A00031AD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -413,6 +498,7 @@
 		};
 		72ED25BA2897788A00031AD1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -480,6 +566,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -492,6 +586,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		D3F2C70028B380C900CEC549 /* KakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKShare;
+		};
+		D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTemplate;
+		};
+		D3F2C70428B380C900CEC549 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
