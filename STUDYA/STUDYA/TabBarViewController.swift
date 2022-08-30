@@ -9,30 +9,25 @@ import UIKit
 
 class TabBarViewController: UITabBarController {
     // MARK: - Properties
+    var user: User? {
+        didSet {
+            configureTabbarController()
+        }
+    }
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureTabbarController()
-        presentUserCheckVC()
+        checkIfUserIsLoggedIn()
         // Do any additional setup after loading the view.
     }
     
     // MARK: - Configure
     
-    func presentUserCheckVC() {
-        DispatchQueue.main.async { [weak self] in
-            let welcomeVC = WelcomViewController()
-            
-            let nav = UINavigationController(rootViewController: welcomeVC)
-            nav.modalPresentationStyle = .fullScreen
-            
-            self?.present(nav, animated: false, completion: nil)
-        }
-    }
-    
     private func configureTabbarController() {
+        
         tabBar.tintColor = .appColor(.subTitleGeneral)
         tabBar.backgroundColor = .systemBackground
         
@@ -46,15 +41,39 @@ class TabBarViewController: UITabBarController {
     }
     
     private func templateNavigationController(selectedImage: UIImage, unselectedImage: UIImage, rootViewController: UIViewController, title: String) -> UINavigationController {
+        
         let nav = UINavigationController(rootViewController: rootViewController)
+        
         nav.tabBarItem.image = unselectedImage
         nav.tabBarItem.selectedImage = selectedImage
         nav.navigationBar.tintColor = .black
         nav.title = title
         nav.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         return nav
     }
 
     // MARK: - Actions
+    
+    private func presentWelcomeVC() {
+        DispatchQueue.main.async { [weak self] in
+
+            let welcomeVC = WelcomViewController()
+            let nav = UINavigationController(rootViewController: welcomeVC)
+            
+            nav.modalPresentationStyle = .fullScreen
+            
+            self?.present(nav, animated: false, completion: nil)
+        }
+    }
+    
+    private func checkIfUserIsLoggedIn() {
+        
+        if user == nil {
+            presentWelcomeVC()
+        } else {
+        }
+    }
+    
     // MARK: - Setting Constraints
 }

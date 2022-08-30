@@ -129,8 +129,7 @@ class SignInViewController: UIViewController {
     
     @objc private func completeButtonDidTapped() {
         
-        let okAlert = SimpleAlert(message: "이메일 또는 비밀번호를\n확인해주세요 😮")
-        present(okAlert, animated: true)
+        self.dismiss(animated: true)
     }
     
     // MARK: - Setting Constraints
