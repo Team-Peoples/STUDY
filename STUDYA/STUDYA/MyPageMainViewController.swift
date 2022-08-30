@@ -68,7 +68,12 @@ final class MyPageMainViewController: UIViewController {
     }
     
     @objc private func settingViewTapped() {
-        print("세팅")
+        
+        let nextVC = AccountManagementViewController()
+        nextVC.email = "sem789456@gmail.com"
+        nextVC.nickName = "사람개발자살려~"
+        
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func giveShadow() {

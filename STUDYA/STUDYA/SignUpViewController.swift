@@ -9,6 +9,10 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
+    private var validationCheck1 = false
+    private var validationCheck2 = false
+    private var validationCheck3 = false
+    
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     private let titleLabel = CustomLabel(title: "회원가입", tintColor: .titleGeneral, size: 30, isBold: true)
@@ -34,14 +38,13 @@ class SignUpViewController: UIViewController {
     }()
     
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
-    private var keyboardheight: CGFloat = 0
-    private var validationCheck1 = false
-    private var validationCheck2 = false
-    private var validationCheck3 = false
+
     var bottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
         
         emailInputView.getInputField().delegate = self
         passwordInputView.getInputField().delegate = self
@@ -70,18 +73,13 @@ class SignUpViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        view.backgroundColor = .systemBackground
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
         setConstraints()
-        
     }
     
     @objc private func clear() {

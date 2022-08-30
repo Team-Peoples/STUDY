@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPageTableViewCell: UITableViewCell {
+final class MyPageTableViewCell: UITableViewCell {
     
     static let identifier = "MyPageTableViewCell"
     internal var title: String? {
