@@ -172,9 +172,9 @@ class NoticeViewController: UIViewController {
             navigationItem.title = "공지사항 수정"
         }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: section: #selector(createNotice))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(createNotice))
         navigationItem.rightBarButtonItem?.tintColor = .orange
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: section: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .orange
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }

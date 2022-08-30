@@ -74,13 +74,13 @@ class NoticeBoardViewController: UIViewController {
     }
     
     private func configureMasterSwitch() {
-        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .touchUpInside)
+        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
     }
     
     // MARK: - Actions
     
-    @objc private func toggleMaster(_ sender: UISwitch) {
+    @objc private func toggleMaster(_ sender: BrandSwitch) {
         if sender.isOn {
             
             navigationController?.navigationBar.backgroundColor = .appColor(.brandDark)
@@ -89,7 +89,17 @@ class NoticeBoardViewController: UIViewController {
             
             let floatingButton: UIButton = {
                 let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+                let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 26))
                 let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
+                
+                lbl.text = "   공지 추가"
+                lbl.textAlignment = .left
+                lbl.layer.backgroundColor = UIColor(red: 0.208, green: 0.176, blue: 0.282, alpha: 0.5).cgColor
+                lbl.layer.cornerRadius = 26 / 2
+                lbl.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+                lbl.textColor = .white
+                lbl.font = UIFont.systemFont(ofSize: 12)
+
                 
                 btn.backgroundColor = .black
                 btn.setImage(image, for: .normal)
@@ -98,6 +108,16 @@ class NoticeBoardViewController: UIViewController {
                 btn.layer.shadowRadius = 10
                 btn.layer.shadowOpacity = 0.3
                 btn.layer.cornerRadius = 50 / 2
+                
+                btn.addSubview(lbl)
+                lbl.sendSubviewToBack(btn)
+                
+                lbl.snp.makeConstraints { make in
+                    make.bottom.equalTo(btn.snp.bottom)
+                    make.width.equalTo(80)
+                    make.height.equalTo(24)
+                    make.trailing.equalTo(btn.snp.centerX).offset(-2)
+                }
                 
                 return btn
             }()
