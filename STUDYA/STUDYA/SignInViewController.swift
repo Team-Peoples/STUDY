@@ -11,27 +11,12 @@ import SnapKit
 class SignInViewController: UIViewController {
     // MARK: - Properties
     
-    /// 뷰 타이틀
     private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .titleGeneral, size: 30, isBold: true)
-    
-    /// 이메일 입력
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
-    
-    /// 패스워드 입력
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
-    
-    /// 비밀번호 찾기 버튼
     private let findPasswordButton = UIButton(type: .custom)
-    
-    /// 완료 버튼
     private let completeButton = CustomButton(title: "완료")
-    
-    /// 완료버튼 토글을 위한 뷰모델
     private var loginViewModel = LoginViewModel()
-    
-    /// Scrollalbe Container View
-    private let scrollView = UIScrollView()
-    private let containerView = UIView()
     
     // MARK: - Life Cycle
     
@@ -60,16 +45,11 @@ class SignInViewController: UIViewController {
     private func configureViews() {
         view.backgroundColor = .systemBackground
         
-        view.addSubview(scrollView)
-        
-        scrollView.showsVerticalScrollIndicator = false
-        scrollView.addSubview(containerView)
-        
-        containerView.addSubview(loginLabel)
-        containerView.addSubview(emailInputView)
-        containerView.addSubview(passwordInputView)
-        containerView.addSubview(findPasswordButton)
-        containerView.addSubview(completeButton)
+        view.addSubview(loginLabel)
+        view.addSubview(emailInputView)
+        view.addSubview(passwordInputView)
+        view.addSubview(findPasswordButton)
+        view.addSubview(completeButton)
     }
     
     private func configureTextFieldDelegateAndNotification() {
@@ -116,9 +96,7 @@ class SignInViewController: UIViewController {
                 guard let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 UIView.animate(withDuration: 0.3) {
-                    print(keyboardRectangle.height)
-                    print(self.completeButton.frame.origin.y)
-                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height)
+                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height + 30)
                 }
                 
             case UIResponder.keyboardWillHideNotification :
@@ -129,7 +107,8 @@ class SignInViewController: UIViewController {
     }
     
     @objc private func textDidChanged(_ sender: UITextField) {
-       
+        // 구조체를 하나만 생성하는게 맞는지...모르겠네..
+        
         switch sender.superview {
             case emailInputView:
                 loginViewModel.email = emailInputView.getInputField().text
@@ -158,36 +137,31 @@ class SignInViewController: UIViewController {
     
     private func setConstraints() {
         
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.height.equalTo(view)
-        }
-        containerView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
-            make.width.equalTo(scrollView.snp.width)
-            make.height.greaterThanOrEqualTo(view.snp.height)
-        }
-        
         loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(130)
-            make.leading.equalTo(containerView).offset(20)
+            make.top.equalTo(view).offset(130)
+            make.leading.equalTo(view).offset(20)
         }
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(loginLabel).offset(70)
-            make.leading.trailing.equalTo(containerView).inset(20)
+            make.leading.trailing.equalTo(view).inset(20)
         }
         
         passwordInputView.snp.makeConstraints { make in
             make.top.equalTo(emailInputView.snp.bottom).offset(40)
-            make.leading.trailing.equalTo(containerView).inset(20)
+            make.leading.trailing.equalTo(view).inset(20)
         }
         
+        //        pwSecureToggleButton.snp.makeConstraints { make in
+        //            make.trailing.equalTo(passwordInputView)
+        //            make.bottom.equalTo(passwordInputView).offset(-15)
+        //        }
+        
         completeButton.snp.makeConstraints { make in
-            make.centerX.equalTo(containerView)
+            make.centerX.equalTo(view)
             make.height.equalTo(50)
-            make.leading.trailing.equalTo(containerView).inset(20)
-            make.bottom.equalTo(containerView.snp.bottom).offset(-16)
+            make.leading.trailing.equalTo(view).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
         findPasswordButton.snp.makeConstraints { make in
@@ -254,5 +228,6 @@ extension SignInViewController: formViewModel {
     func formUpdate() {
         completeButton.isUserInteractionEnabled = loginViewModel.formIsValid
         completeButton.isUserInteractionEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
+        
     }
 }
