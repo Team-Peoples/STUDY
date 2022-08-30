@@ -108,7 +108,7 @@ class BaseTextView: UITextView {
         placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
-
+// gray 아니라서 바꿔야함.
 class GrayBorderTextView: BaseTextView {
     
     let charactersNumberLabel = UILabel(frame: .zero)
@@ -129,9 +129,8 @@ class GrayBorderTextView: BaseTextView {
     }
     
     private func configureTextView() {
-        layer.borderWidth = 1
         backgroundColor = UIColor.appColor(.background)
-        layer.cornerRadius = 10
+        layer.cornerRadius = 20
     }
     
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {

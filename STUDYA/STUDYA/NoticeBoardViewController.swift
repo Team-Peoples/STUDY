@@ -99,7 +99,6 @@ class NoticeBoardViewController: UIViewController {
                 lbl.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
                 lbl.textColor = .white
                 lbl.font = UIFont.systemFont(ofSize: 12)
-
                 
                 btn.backgroundColor = .black
                 btn.setImage(image, for: .normal)
@@ -112,12 +111,7 @@ class NoticeBoardViewController: UIViewController {
                 btn.addSubview(lbl)
                 lbl.sendSubviewToBack(btn)
                 
-                lbl.snp.makeConstraints { make in
-                    make.bottom.equalTo(btn.snp.bottom)
-                    make.width.equalTo(80)
-                    make.height.equalTo(24)
-                    make.trailing.equalTo(btn.snp.centerX).offset(-2)
-                }
+                setConstraints(lbl, btn)
                 
                 return btn
             }()
@@ -125,7 +119,7 @@ class NoticeBoardViewController: UIViewController {
             view.addSubview(floatingButton)
             
             floatingButton.addTarget(nil, action: #selector(floatingButtonDidTapped), for: .touchUpInside)
-            floatingButton.frame.origin = CGPoint(x: view.frame.size.width-50-10, y: view.frame.size.height-60-90)
+            floatingButton.frame.origin = CGPoint(x: view.frame.size.width - 50 - 10, y: view.frame.size.height - 60 - 90)
             
         } else {
             navigationController?.navigationBar.backgroundColor = .systemBackground
@@ -177,6 +171,16 @@ class NoticeBoardViewController: UIViewController {
         headerLabel.snp.makeConstraints { make in
             make.centerY.equalTo(headerView)
             make.leading.equalTo(headerView).inset(30)
+        }
+    }
+    
+    private func setConstraints(_ lbl: UILabel, _ btn: UIButton) {
+        
+        lbl.snp.makeConstraints { make in
+            make.bottom.equalTo(btn.snp.bottom)
+            make.width.equalTo(80)
+            make.height.equalTo(24)
+            make.trailing.equalTo(btn.snp.centerX).offset(-2)
         }
     }
 }
