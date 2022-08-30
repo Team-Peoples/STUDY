@@ -449,3 +449,130 @@ class CheckBoxButton: UIButton {
     }
     // MARK: - Setting Constraints
 }
+
+final class BrandSwitch: UIControl {
+    private enum Constant {
+        static let duration = 0.25
+    }
+    
+    // MARK: UI
+    private let outerView: RoundableView = {
+        let view = RoundableView()
+        
+        view.backgroundColor = UIColor.appColor(.brandDark)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        return view
+    }()
+    
+    private let barView: RoundableView = {
+        let view = RoundableView()
+        view.backgroundColor = UIColor.appColor(.background)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let circleView: RoundableView = {
+        let view = RoundableView()
+        view.backgroundColor = .white
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowRadius = 4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    // MARK: Properties
+    var isOn = false {
+        didSet {
+            self.sendActions(for: .valueChanged)
+            
+            UIView.animate(
+                withDuration: Constant.duration,
+                delay: 0,
+                options: .curveEaseInOut,
+                animations: {
+                    self.barView.backgroundColor = self.isOn ? self.barTintColor : self.barColor
+                    self.outerView.backgroundColor = self.isOn ? UIColor.appColor(.grayBackground) : UIColor.appColor(.brandMedium)
+                    
+                    self.circleViewConstraints.forEach { $0.isActive = false }
+                    self.circleViewConstraints.removeAll()
+                    
+                    if self.isOn {
+                        self.circleViewConstraints = [
+                            self.circleView.rightAnchor.constraint(equalTo: self.barView.rightAnchor, constant: -2),
+                            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+                            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+                            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+                            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+                        ]
+                    } else {
+                        self.circleViewConstraints = [
+                            self.circleView.leftAnchor.constraint(equalTo: self.barView.leftAnchor, constant: 2),
+                            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+                            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+                            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+                            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+                        ]
+                    }
+                    
+                    NSLayoutConstraint.activate(self.circleViewConstraints)
+                    self.layoutIfNeeded()
+                },
+                completion: nil
+            )
+        }
+    }
+    var barColor = UIColor.appColor(.background) {
+        didSet { self.barView.backgroundColor = self.barColor }
+    }
+    var barTintColor = UIColor.appColor(.brandDark)
+    var circleColor = UIColor.white {
+        didSet { self.circleView.backgroundColor = self.circleColor }
+    }
+    private var circleViewConstraints = [NSLayoutConstraint]()
+    
+    @available(*, unavailable)
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("xib is not implemented")
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(outerView)
+        self.addSubview(self.barView)
+        self.barView.addSubview(self.circleView)
+        setDimensions(height: 28, width: 50)
+        outerView.anchor(top: topAnchor, topConstant: -1, bottom: bottomAnchor, bottomConstant: -1, leading: leadingAnchor, leadingConstant: -1, trailing: trailingAnchor, trailingConstant: -1)
+        NSLayoutConstraint.activate([
+            self.barView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.barView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.barView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.barView.topAnchor.constraint(equalTo: self.topAnchor),
+        ])
+        self.circleViewConstraints = [
+            self.circleView.leftAnchor.constraint(equalTo: self.barView.leftAnchor, constant: 2),
+            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+        ]
+        NSLayoutConstraint.activate(self.circleViewConstraints)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        self.isOn = !self.isOn
+    }
+}
+
+final class RoundableView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.frame.height / 2
+    }
+}
