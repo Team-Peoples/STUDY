@@ -16,8 +16,6 @@ class SignUpViewController: UIViewController {
     private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
     private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "",target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
     
-    weak var delegate: NavigationControllerDelegate?
-    
     private lazy var stackView: UIStackView = {
         
         let stackView = UIStackView(frame: .zero)
@@ -102,8 +100,7 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
-        let profileSettingVC = ProfileSettingViewController()
-        delegate?.push(profileSettingVC)
+        print(#function)
     }
     
     private func setScrollView() {
@@ -321,14 +318,4 @@ extension SignUpViewController: UITextFieldDelegate {
         }
         return true
     }
-}
-
-extension SignUpViewController: NavigationControllerDelegate {
-    func push(_ vc: UIViewController) {
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-protocol NavigationControllerDelegate: NSObject {
-    func push(_ vc: UIViewController)
 }

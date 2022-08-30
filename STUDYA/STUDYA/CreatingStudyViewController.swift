@@ -150,6 +150,7 @@ final class CreatingStudyViewController: UIViewController {
             make.edges.equalToSuperview()
             make.height.equalTo(view)
         }
+        
         containerView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.snp.width)
@@ -157,49 +158,59 @@ final class CreatingStudyViewController: UIViewController {
         }
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(41)
-            make.leading.trailing.equalTo(containerView.safeAreaLayoutGuide).inset(17)
+            make.top.equalTo(containerView).offset(40)
+            make.leading.trailing.equalTo(containerView.safeAreaLayoutGuide).inset(20)
         }
+        
         studyCategoryLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(40)
-            make.leading.equalTo(titleLabel)
+            make.leading.equalTo(containerView).offset(26)
         }
+        
         studyCategoryCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(studyCategoryLabel.snp.bottom).offset(17)
+            make.top.equalTo(studyCategoryLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(titleLabel)
             make.height.equalTo(110)
         }
+        
         studyNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(studyCategoryCollectionView.snp.bottom).offset(40)
-            make.leading.equalTo(studyCategoryCollectionView)
+            make.top.equalTo(studyCategoryCollectionView.snp.bottom).offset(44)
+            make.leading.equalTo(studyCategoryLabel)
         }
+        
         studyNameTextView.snp.makeConstraints { make in
-            make.top.equalTo(studyNameLabel.snp.bottom).offset(17)
+            make.top.equalTo(studyNameLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(studyCategoryCollectionView)
             make.height.equalTo(42).priority(.low)
         }
+        
         studyTypeLabel.snp.makeConstraints { make in
             make.top.equalTo(studyNameTextView.snp.bottom).offset(40)
-            make.leading.equalTo(titleLabel)
+            make.leading.equalTo(studyCategoryLabel)
         }
+        
         studyTypeGuideLabel.snp.makeConstraints { make in
             make.leading.equalTo(studyTypeLabel.snp.trailing).offset(7)
             make.bottom.equalTo(studyTypeLabel.snp.bottom)
         }
+        
         studyTypeStackView.snp.makeConstraints { make in
             make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
-            make.leading.equalTo(studyCategoryCollectionView)
+            make.leading.equalTo(containerView).offset(28)
             make.height.equalTo(46)
         }
+        
         studyIntroductionLabel.snp.makeConstraints { make in
             make.top.equalTo(studyTypeStackView.snp.bottom).offset(40)
-            make.leading.trailing.equalTo(titleLabel)
+            make.leading.trailing.equalTo(studyCategoryLabel)
         }
+        
         studyIntroductionTextView.snp.makeConstraints { make in
             make.top.equalTo(studyIntroductionLabel.snp.bottom).offset(17)
-            make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.leading.trailing.equalTo(containerView).inset(30)
             make.height.greaterThanOrEqualTo(105)
         }
+        
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.width.equalTo(320)
