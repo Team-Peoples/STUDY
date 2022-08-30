@@ -15,8 +15,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         willSet(value) {
             if value == true {
                 
-                cell.backgroundColor = UIColor.appColor(.brandMilky)
-                cell.layer.borderColor = UIColor.appColor(.brandLight).cgColor
+                cell.layer.borderColor = UIColor.appColor(.brandDark).cgColor
                 cell.layer.borderWidth = 2
             }
         }
@@ -90,7 +89,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     // MARK: - Configure
     
     private func configureViews() {
-        backgroundColor = UIColor.appColor(.background)
+        backgroundColor = .systemBackground
         addSubview(cell)
         
         cell.addSubview(titleLabel)

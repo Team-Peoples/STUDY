@@ -138,7 +138,7 @@ class NoticeViewController: UIViewController {
     
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     private func enableTapGesture() {
@@ -150,11 +150,11 @@ class NoticeViewController: UIViewController {
     }
     
     @objc func createNotice() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func cancel() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     private func checkIfUserIsMaster() {
@@ -166,17 +166,17 @@ class NoticeViewController: UIViewController {
     private func checkIfCreateOrEdit() {
         
         if titleTextView.text.isEmpty && contentTextView.text.isEmpty {
-            self.navigationItem.title = "공지사항 만들기"
+            navigationItem.title = "공지사항 만들기"
             titleTextView.setHeight(24)
         } else {
-            self.navigationItem.title = "공지사항 수정"
+            navigationItem.title = "공지사항 수정"
         }
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(createNotice))
-        self.navigationItem.rightBarButtonItem?.tintColor = .orange
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
-        self.navigationItem.leftBarButtonItem?.tintColor = .orange
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: section: #selector(createNotice))
+        navigationItem.rightBarButtonItem?.tintColor = .orange
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: section: #selector(cancel))
+        navigationItem.leftBarButtonItem?.tintColor = .orange
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     private func addNotification() {

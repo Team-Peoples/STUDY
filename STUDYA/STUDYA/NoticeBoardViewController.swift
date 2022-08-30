@@ -27,18 +27,15 @@ class NoticeBoardViewController: UIViewController {
         Notice(title: "sdfsdf", content: "sfsdf:", date: Date().formatted())]
     
     private let noticeBoardTableView = UITableView()
-    private let masterSwitch = UISwitch()
+    private let masterSwitch = BrandSwitch()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(noticeBoardTableView)
         configureTableView()
-        
-        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .touchUpInside)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        configureMasterSwitch()
         
         setConstraints()
     }
@@ -56,6 +53,7 @@ class NoticeBoardViewController: UIViewController {
     // MARK: - Configure
     
     private func configureTableView() {
+        view.addSubview(noticeBoardTableView)
         
         let headerView: UIView = {
             let v = UIView(frame: CGRect(origin: .zero, size: CGSize(width: view.frame.width, height: 48)))
@@ -75,13 +73,20 @@ class NoticeBoardViewController: UIViewController {
         noticeBoardTableView.tableHeaderView = headerView
     }
     
+    private func configureMasterSwitch() {
+        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+    }
+    
     // MARK: - Actions
     
     @objc private func toggleMaster(_ sender: UISwitch) {
         if sender.isOn {
-            self.navigationController?.navigationBar.backgroundColor = .appColor(.brandDark)
-            self.navigationItem.title = "관리자 모드"
-            self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            
+            navigationController?.navigationBar.backgroundColor = .appColor(.brandDark)
+            navigationItem.title = "관리자 모드"
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            
             let floatingButton: UIButton = {
                 let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
                 let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
@@ -96,15 +101,17 @@ class NoticeBoardViewController: UIViewController {
                 
                 return btn
             }()
+            
             view.addSubview(floatingButton)
             
             floatingButton.addTarget(nil, action: #selector(floatingButtonDidTapped), for: .touchUpInside)
             floatingButton.frame.origin = CGPoint(x: view.frame.size.width-50-10, y: view.frame.size.height-60-90)
             
         } else {
-            self.navigationController?.navigationBar.backgroundColor = .systemBackground
-            self.navigationItem.title = nil
-            self.navigationController?.navigationBar.tintColor = .black
+            navigationController?.navigationBar.backgroundColor = .systemBackground
+            navigationItem.title = nil
+            navigationController?.navigationBar.tintColor = .black
+            
             view.subviews.last?.removeFromSuperview()
         }
     }
@@ -177,8 +184,10 @@ extension NoticeBoardViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: false)
         
         let vc = NoticeViewController()
+        
         vc.isMaster = masterSwitch.isOn
         vc.notice = notice[indexPath.row]
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -188,8 +197,8 @@ extension NoticeBoardViewController: UITableViewDelegate {
 extension Date {
     func formatted() -> String {
         let dateFormatter = DateFormatter()
-        
         dateFormatter.dateFormat = "YY.M.d"
+        
         let result = dateFormatter.string(from: self)
         return result
     }
