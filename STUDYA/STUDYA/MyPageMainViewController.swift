@@ -11,12 +11,29 @@ final class MyPageMainViewController: UIViewController {
     
     internal var nickName: String?
     internal var myMail: String?
-    private let titles = ["참여한 스터디", "푸시알림 설정", "앱정보", "로그아웃", "회원 탈퇴"]
+    private let titles = ["참여한 스터디", "푸시알림 설정", "앱 정보"]
     private var delegate: NavigationControllerDelegate?
     
+    private let headerView: UIView = {
+       
+        let view = UIView(frame: .zero)
+        
+        view.backgroundColor = .systemBackground
+        view.layer.cornerRadius = 24
+        
+        return view
+    }()
     private let profileImageSelectorView = ProfileImageSelectorView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: nickName ?? "닉네임", tintColor: .titleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
     private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .subTitleGeneral, size: 12)
+    private let settingImageView = UIImageView(image: UIImage(named: "setting"))
+    private let separatorView: RoundableView = {
+       
+        let view = RoundableView()
+        view.backgroundColor = UIColor.appColor(.grayBackground)
+        
+        return view
+    }()
     private let tableView: UITableView = {
         
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -33,8 +50,13 @@ final class MyPageMainViewController: UIViewController {
         
         view.backgroundColor = UIColor.appColor(.background)
         title = "마이페이지"
+        
         tableView.dataSource = self
         tableView.delegate = self
+        
+        giveShadow()
+        settingImageView.isUserInteractionEnabled = true
+        settingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(settingViewTapped)))
         
         addSubviews()
     }
@@ -45,18 +67,37 @@ final class MyPageMainViewController: UIViewController {
         setConstraints()
     }
     
+    @objc private func settingViewTapped() {
+        print("세팅")
+    }
+    
+    private func giveShadow() {
+        headerView.layer.borderWidth = 0
+        headerView.layer.masksToBounds = false
+        headerView.layer.shadowColor = UIColor.black.cgColor
+        headerView.layer.shadowOffset = CGSize(width: 0, height: 0)
+        headerView.layer.shadowOpacity = 0.08
+        headerView.layer.shadowRadius = 24
+    }
+    
     private func addSubviews() {
-        view.addSubview(profileImageSelectorView)
-        view.addSubview(nickNameLabel)
-        view.addSubview(myMailLabel)
+        view.addSubview(headerView)
+        headerView.addSubview(profileImageSelectorView)
+        headerView.addSubview(nickNameLabel)
+        headerView.addSubview(myMailLabel)
+        headerView.addSubview(settingImageView)
+        headerView.addSubview(separatorView)
         view.addSubview(tableView)
     }
     
     private func setConstraints() {
-        profileImageSelectorView.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 35, leading: view.leadingAnchor, leadingConstant: 28)
-        nickNameLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 50, leading: profileImageSelectorView.trailingAnchor, leadingConstant: 24)
+        headerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 15, leading: view.leadingAnchor, leadingConstant: 10, trailing: view.trailingAnchor, trailingConstant: 10, height: 134)
+        profileImageSelectorView.anchor(top: headerView.topAnchor, topConstant: 20, leading: headerView.leadingAnchor, leadingConstant: 20)
+        nickNameLabel.anchor(top: headerView.topAnchor, topConstant: 35, leading: profileImageSelectorView.trailingAnchor, leadingConstant: 24)
         myMailLabel.anchor(top: nickNameLabel.bottomAnchor, topConstant: 7, leading: nickNameLabel.leadingAnchor)
-        tableView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 61, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 5)
+        settingImageView.anchor(top: headerView.topAnchor, topConstant: 12, trailing: headerView.trailingAnchor, trailingConstant: 12)
+        separatorView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
+        tableView.anchor(top: headerView.bottomAnchor, topConstant: 15, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
     }
 }
 
@@ -79,15 +120,14 @@ extension MyPageMainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            push(MyPageStudyHistoryViewController())
+            navigationController?.pushViewController(MyPageStudyHistoryViewController(), animated: true)
+        case 1:
+            navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
+        case 2:
+            navigationController?.pushViewController(InformationViewController(), animated: true)
         default: break
         }
         tableView.deselectRow(at: indexPath, animated: false)
     }
 }
 
-extension MyPageMainViewController: NavigationControllerDelegate {
-    func push(_ vc: UIViewController) {
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}

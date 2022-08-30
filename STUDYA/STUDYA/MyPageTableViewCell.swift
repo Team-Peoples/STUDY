@@ -40,7 +40,7 @@ class MyPageTableViewCell: UITableViewCell {
     
     private func configure() {
         circleView.layer.cornerRadius = 12.5
-        circleView.backgroundColor = .systemGray
+        circleView.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1)
         disclosureIndicator.tintColor = UIColor.appColor(.subTitleGeneral)
     }
     
