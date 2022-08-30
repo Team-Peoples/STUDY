@@ -10,7 +10,6 @@ import UIKit
 class NoticeBoardTableViewCell: UITableViewCell {
     // MARK: - Properties
     
-    ///ViewModel
     var isPinned: Bool? {
         willSet(value) {
             if value == true {
@@ -98,7 +97,9 @@ class NoticeBoardTableViewCell: UITableViewCell {
     }
     
     // MARK: - Setting Constraints
+    
     func setConstraints() {
+        
         cell.snp.makeConstraints { make in
             make.top.bottom.equalTo(self).inset(7.5)
             make.leading.trailing.equalTo(self).inset(10)
@@ -121,3 +122,4 @@ class NoticeBoardTableViewCell: UITableViewCell {
         }
     }
 }
+

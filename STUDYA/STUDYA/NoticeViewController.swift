@@ -141,20 +141,20 @@ class NoticeViewController: UIViewController {
         view.endEditing(true)
     }
     
-    private func enableTapGesture() {
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
-        singleTapGestureRecognizer.numberOfTapsRequired = 1
-        singleTapGestureRecognizer.isEnabled = true
-        singleTapGestureRecognizer.cancelsTouchesInView = false
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-    }
-    
     @objc func createNotice() {
         navigationController?.popViewController(animated: true)
     }
     
     @objc func cancel() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func enableTapGesture() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     private func checkIfUserIsMaster() {
@@ -217,6 +217,8 @@ class NoticeViewController: UIViewController {
     }
 }
 
+// MARK: - UITextViewDelegate
+
 extension NoticeViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -252,3 +254,4 @@ extension NoticeViewController: UITextViewDelegate {
         }
     }
 }
+
