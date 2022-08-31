@@ -6,13 +6,15 @@
 //
 
 import UIKit
+import KakaoSDKUser
+import KakaoSDKAuth
 
-class WelcomViewController: UIViewController {
+final class WelcomViewController: UIViewController {
     
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .titleGeneral, size: 30, isBold: true)
     private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
     private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
-    private let emailLoginButton = CustomButton(title: "이메일로 로그인")
+    private let emailLoginButton = CustomButton(title: "이메일로 시작하기")
     private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .brandDark, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
@@ -20,14 +22,18 @@ class WelcomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        view.backgroundColor = .systemBackground
+        
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
         navigationController?.navigationBar.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-        view.backgroundColor = .systemBackground
-        signUpView.isUserInteractionEnabled = true
+        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped), for: .touchUpInside)
+        naverLoginButton.addTarget(self, action: #selector(naverLoginButtonTapped), for: .touchUpInside)
         emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTapped), for: .touchUpInside)
+        
+        signUpView.isUserInteractionEnabled = true
         signUpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(signUpViewDidTapped)))
         
         addSubviews()
@@ -42,6 +48,36 @@ class WelcomViewController: UIViewController {
         addConstraints()
         
         underBar.backgroundColor = UIColor.appColor(.brandLight)
+    }
+    
+    @objc private func kakaoLoginButtonTapped() {
+        if (UserApi.isKakaoTalkLoginAvailable()) {
+            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+                if let error = error {
+                    print(error)
+                }
+                else {
+                    print("loginWithKakaoTalk() success.")
+//                    인가 코드 넘기기
+                    
+                    _ = oauthToken
+                }
+            }
+        }
+    }
+    
+    @objc private func naverLoginButtonTapped() {
+        
+    }
+    
+    @objc private func emailLoginButtonDidTapped() {
+        let signInVC = SignInViewController()
+        navigationController?.pushViewController(signInVC, animated: true)
+    }
+    
+    @objc private func signUpViewDidTapped() {
+        let signUpVC = SignUpViewController()
+        navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     private func addSubviews() {
@@ -72,16 +108,6 @@ class WelcomViewController: UIViewController {
         naverLoginButton.backgroundColor = .appColor(.naver)
         naverLoginButton.layer.borderWidth = 0
         naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
-    }
-    
-    @objc func emailLoginButtonDidTapped() {
-        let signInVC = SignInViewController()
-        navigationController?.pushViewController(signInVC, animated: true)
-    }
-    
-    @objc func signUpViewDidTapped() {
-        let signUpVC = SignUpViewController()
-        navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     private func configureStackView() {

@@ -1,0 +1,6 @@
+framework module Pods_STUDYA {
+  umbrella header "Pods-STUDYA-umbrella.h"
+
+  export *
+  module * { export * }
+}

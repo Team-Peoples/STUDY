@@ -16,7 +16,7 @@ protocol Requestable: URLRequestConvertible {
 
 enum RequestPurpose: Requestable {
     case signIn(Credential)
-    case signUp(User?)
+    case signUp
     case emailCheck(Id)
     case create(Object)
     case issued
@@ -35,7 +35,7 @@ enum RequestPurpose: Requestable {
 
 extension RequestPurpose {
     var baseUrl: String {
-        return "http://localhost:8082/api/v1"
+        return "http://13.209.99.229:8082/api/v1"
     }
     
     var path: String {
@@ -94,8 +94,7 @@ extension RequestPurpose {
         switch self {
             case .signIn(let credential):
                 return .body(credential)
-            case .signUp(let user):
-//                return .body(user)
+            case .signUp:
                 return .none
             case .emailCheck(let email):
                 return .body(["userId": email])
@@ -125,7 +124,7 @@ extension RequestPurpose {
         switch self {
             case .profileImageChange(_):
                 urlRequest.headers.add(HTTPHeader.contentType("multipartFormData"))
-            case .signUp(_):
+            case .signUp:
                 return urlRequest
             default:
                 urlRequest.headers.add(HTTPHeader.contentType("application/json"))
@@ -196,7 +195,7 @@ struct UserProfile: Codable {
 }
 
 struct User: Codable {
-    let userId: String
+    let userId: String?
     let password: String?
     let password_check: String?
     let nickname: String?
