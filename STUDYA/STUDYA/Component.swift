@@ -575,3 +575,36 @@ final class RoundableView: UIView {
         self.layer.cornerRadius = self.frame.height / 2
     }
 }
+
+final class RoundedNumberField: UITextField {
+    
+    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+        super.init(frame: .zero)
+        
+        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.grayBackground)
+        isEnabled = enable ? true : false
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.subTitleGeneral)
+        textAlignment = centerAlign ? .center : .right
+        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        rightViewMode = .always
+        
+        if let placeholder = numPlaceholder {
+            text = Formatter.formatIntoDecimal(number: placeholder)
+        } else {
+            text = "--"
+        }
+    }
+    
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+        setHeight(42)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
