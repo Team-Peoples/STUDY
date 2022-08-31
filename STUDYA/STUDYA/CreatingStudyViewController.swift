@@ -19,6 +19,7 @@ enum StudyCategory: String, CaseIterable {
 }
 // to be fixed: 키보드의 자동완성 기능이 next button을 가림.
 // to be fixed: 텍스트 뷰에서 엔터를 누르면 텍스트 뷰의 바깥으로 나가버림.
+// to be fixed: category의 noti가 잘 전달되지않음.
 
 final class CreatingStudyViewController: UIViewController {
     // MARK: - Properties
@@ -111,21 +112,21 @@ final class CreatingStudyViewController: UIViewController {
         
         scrollView.contentInset = insets
 
-        var viewFrame = self.view.frame
-        
-        viewFrame.size.height -= keyboardSize.height
-
-        let activeTextView: UITextView? = [studyNameTextView, studyIntroductionTextView].first { $0.isFirstResponder }
-        
-        if let activeTextView = activeTextView {
-            
-            if !viewFrame.contains(activeTextView.frame.origin) {
-                
-                let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height)
-                
-                scrollView.setContentOffset(scrollPoint, animated: true)
-            }
-        }
+//        var viewFrame = self.view.frame
+//
+//        viewFrame.size.height -= keyboardSize.height
+//
+//        let activeTextView: UITextView? = [studyNameTextView, studyIntroductionTextView].first { $0.isFirstResponder }
+//
+//        if let activeTextView = activeTextView {
+//
+//            if !viewFrame.contains(activeTextView.frame.origin) {
+//
+//                let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height)
+//
+//                scrollView.setContentOffset(scrollPoint, animated: true)
+//            }
+//        }
     }
     
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
@@ -175,6 +176,7 @@ final class CreatingStudyViewController: UIViewController {
         studyNameTextView.snp.makeConstraints { make in
             make.top.equalTo(studyNameLabel.snp.bottom).offset(17)
             make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.height.equalTo(42).priority(.low)
         }
         studyTypeLabel.snp.makeConstraints { make in
             make.top.equalTo(studyNameTextView.snp.bottom).offset(40)
@@ -187,6 +189,7 @@ final class CreatingStudyViewController: UIViewController {
         studyTypeStackView.snp.makeConstraints { make in
             make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
             make.leading.equalTo(studyCategoryCollectionView)
+            make.height.equalTo(46)
         }
         studyIntroductionLabel.snp.makeConstraints { make in
             make.top.equalTo(studyTypeStackView.snp.bottom).offset(40)
@@ -195,11 +198,13 @@ final class CreatingStudyViewController: UIViewController {
         studyIntroductionTextView.snp.makeConstraints { make in
             make.top.equalTo(studyIntroductionLabel.snp.bottom).offset(17)
             make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.height.greaterThanOrEqualTo(105)
         }
         nextButton.snp.makeConstraints { make in
             make.height.equalTo(50)
             make.width.equalTo(320)
             make.centerX.equalTo(containerView)
+            make.top.equalTo(studyIntroductionTextView.snp.bottom).offset(40)
             make.bottom.equalTo(containerView.snp.bottom).inset(40)
         }
     }
