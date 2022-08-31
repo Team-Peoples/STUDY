@@ -154,21 +154,21 @@ class SignUpViewController: UIViewController {
         scrollView.contentInset = insets
         scrollView.scrollIndicatorInsets = insets
         
-        var viewFrame = self.view.frame
-        
-        viewFrame.size.height -= keyboardSize.height
-        
-        let activeField: UITextField? = [emailInputView.getInputField(), passwordInputView.getInputField(), passwordCheckInputView.getInputField()].first { $0.isFirstResponder }
-        
-        if let activeField = activeField {
-            
-            if !viewFrame.contains(activeField.frame.origin) {
-                
-                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
-                
-                scrollView.setContentOffset(scrollPoint, animated: true)
-            }
-        }
+//        var viewFrame = self.view.frame
+//        
+//        viewFrame.size.height -= keyboardSize.height
+//        
+//        let activeField: UITextField? = [emailInputView.getInputField(), passwordInputView.getInputField(), passwordCheckInputView.getInputField()].first { $0.isFirstResponder }
+//        
+//        if let activeField = activeField {
+//            
+//            if !viewFrame.contains(activeField.frame.origin) {
+//                
+//                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
+//                
+//                scrollView.setContentOffset(scrollPoint, animated: true)
+//            }
+//        }
     }
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
