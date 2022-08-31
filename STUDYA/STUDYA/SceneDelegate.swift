@@ -12,7 +12,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
             if let url = URLContexts.first?.url {
                 if (AuthApi.isKakaoTalkLoginUrl(url)) {
@@ -29,8 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = UINavigationController(rootViewController: WelcomViewController())
-//        window?.rootViewController = MemberJoiningViewController()
+        window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
     }
 
