@@ -8,7 +8,6 @@
 import UIKit
 
 enum AssetColor: String {
-    
     case brandLight, brandMilky, brandMedium, brandDark, descriptionGeneral, subTitleGeneral, titleGeneral, background, highlightDeep, highlightMedium, highlightLight, grayBackground, kakao, kakaoBrown, naver, whiteLabel
 }
 
