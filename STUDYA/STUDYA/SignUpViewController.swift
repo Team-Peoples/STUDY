@@ -16,7 +16,7 @@ class SignUpViewController: UIViewController {
     
     private let scrollView = UIScrollView()
     private let containerView = UIView()
-    private let titleLabel = CustomLabel(title: "회원가입", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let titleLabel = CustomLabel(title: "회원가입", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = ValidationInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default, isFieldSecure: false, validationText: "이메일 형식을 올바르게 입력해주세요.", cancelButton: true, target: self, textFieldAction: #selector(clear))
     private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
     private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "비밀번호가 맞지 않아요.",target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
@@ -234,7 +234,7 @@ class SignUpViewController: UIViewController {
         } else {
             let text = emailInputField.text
             
-            emailValidationLabel.textColor = text == nil ? UIColor.appColor(.subTitleGeneral) : UIColor.appColor(.highlightDeep)
+            emailValidationLabel.textColor = text == nil ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
             emailValidationLabel.text = isExistingEmail ? "이미 가입된 이메일이에요.😮" : "이메일 형식을 올바르게 입력해주세요."
         }
     }
@@ -245,7 +245,7 @@ class SignUpViewController: UIViewController {
         } else {
             let text = passwordInputField.text
             
-            passwordValidationLabel.textColor = text == "" ? UIColor.appColor(.subTitleGeneral) : UIColor.appColor(.highlightDeep)
+            passwordValidationLabel.textColor = text == "" ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
         }
     }
     
@@ -255,7 +255,7 @@ class SignUpViewController: UIViewController {
         } else {
             let text = checkInputField.text
             
-            checkValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.highlightDeep)
+            checkValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.subColor1)
         }
     }
 }
@@ -267,11 +267,11 @@ extension SignUpViewController: UITextFieldDelegate {
         
         switch textField {
         case emailInputField:
-            emailInputView.setUnderlineColor(as: .brandDark)
+            emailInputView.setUnderlineColor(as: .keyColor1)
         case passwordInputField:
-            passwordInputView.setUnderlineColor(as: .brandDark)
+            passwordInputView.setUnderlineColor(as: .keyColor1)
         case checkInputField:
-            passwordCheckInputView.setUnderlineColor(as: .brandDark)
+            passwordCheckInputView.setUnderlineColor(as: .keyColor1)
         default: break
         }
         return true
@@ -285,7 +285,7 @@ extension SignUpViewController: UITextFieldDelegate {
             checkValidation1Label()
             checkDoneButtonPossible()
             
-            emailInputView.setUnderlineColor(as: .brandLight)
+            emailInputView.setUnderlineColor(as: .keyColor3)
             
         case passwordInputField:
             
@@ -295,7 +295,7 @@ extension SignUpViewController: UITextFieldDelegate {
             checkValidation3Label()
             checkDoneButtonPossible()
             
-            passwordInputView.setUnderlineColor(as: .brandLight)
+            passwordInputView.setUnderlineColor(as: .keyColor3)
             
         case checkInputField:
             
@@ -303,7 +303,7 @@ extension SignUpViewController: UITextFieldDelegate {
             checkValidation3Label()
             checkDoneButtonPossible()
             
-            passwordCheckInputView.setUnderlineColor(as: .brandLight)
+            passwordCheckInputView.setUnderlineColor(as: .keyColor3)
         default: break
         }
         return true

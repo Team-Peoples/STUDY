@@ -45,7 +45,7 @@ class NoticeViewController: UIViewController {
     private let titleTextView: BaseTextView = {
         let tv = BaseTextView(placeholder: "제목을 입력해주세요.", fontSize: 18, isBold: true, topInset: 0, leadingInset: 0)
         
-        tv.textColor = UIColor.appColor(.titleGeneral)
+        tv.textColor = UIColor.appColor(.ppsBlack)
         tv.tintColor = .black
         tv.isEditable = false
         tv.isScrollEnabled = false
@@ -58,7 +58,7 @@ class NoticeViewController: UIViewController {
     private let contentTextView: BaseTextView = {
         let tv = BaseTextView(placeholder: "내용을 입력해주세요.", fontSize: 16, topInset: 0, leadingInset: 0)
         
-        tv.textColor = UIColor.appColor(.subTitleGeneral)
+        tv.textColor = UIColor.appColor(.ppsGray1)
         tv.tintColor = .black
         tv.isEditable = false
         tv.dataDetectorTypes = .link
@@ -72,7 +72,7 @@ class NoticeViewController: UIViewController {
     private let timeLabel: UILabel = {
         let lbl = UILabel()
         
-        lbl.textColor = UIColor.appColor(.subTitleGeneral)
+        lbl.textColor = UIColor.appColor(.ppsGray1)
         lbl.font = UIFont.systemFont(ofSize: 12)
         
         return lbl

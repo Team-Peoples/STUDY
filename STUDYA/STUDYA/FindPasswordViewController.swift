@@ -11,7 +11,7 @@ import SnapKit
 class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
-    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .done, isFieldSecure: false, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private let completeButton = CustomButton(title: "다음")
     
@@ -122,12 +122,12 @@ class FindPasswordViewController: UIViewController {
 extension FindPasswordViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setUnderlineColor(as: .brandDark)
+        emailInputView.setUnderlineColor(as: .keyColor1)
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        emailInputView.setUnderlineColor(as: .brandLight)
+        emailInputView.setUnderlineColor(as: .keyColor3)
         return true
     }
 

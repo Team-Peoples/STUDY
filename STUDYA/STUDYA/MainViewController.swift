@@ -70,7 +70,7 @@ class MainViewController: UIViewController {
             
             let studyEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
             studyEmptyImageView.backgroundColor = .lightGray
-            let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .titleGeneral, size: 20, isBold: true)
+            let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
             let createStudyButton = CustomButton(title: "스터디 만들기", isBold: true, isFill: true, size: 20, height: 50)
             createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
             

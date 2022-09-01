@@ -11,7 +11,7 @@ import SnapKit
 class SignInViewController: UIViewController {
     // MARK: - Properties
     
-    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
@@ -64,7 +64,7 @@ class SignInViewController: UIViewController {
     
     private func configureFindPasswordButton() {
         
-        findPasswordButton.setTitleColor(UIColor.appColor(.descriptionGeneral), for: .normal)
+        findPasswordButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
         findPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         findPasswordButton.setTitle("비밀번호를 잊으셨나요", for: .normal)
         findPasswordButton.addTarget(self, action: #selector(findPasswordButtonDidTapped), for: .touchUpInside)
@@ -177,10 +177,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .brandDark)
+                emailInputView.setUnderlineColor(as: .keyColor1)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .brandDark)
+                passwordInputView.setUnderlineColor(as: .keyColor1)
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -194,10 +194,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .brandLight)
+                emailInputView.setUnderlineColor(as: .keyColor3)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .brandLight)
+                passwordInputView.setUnderlineColor(as: .keyColor3)
             default:
                 return true
         }
