@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
+		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
+		7299968028AF54190008A1C1 /* NoticeBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */; };
+		7299968228AF5C480008A1C1 /* NoticeBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */; };
+		7299968428B09B110008A1C1 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* NoticeViewController.swift */; };
+		7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */; };
+		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -26,16 +33,31 @@
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */; };
+		D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053528BF901700AF7D3B /* Formatter.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
 		D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */; };
+		D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */; };
+		D3F2C6FD28B380C900CEC549 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */; };
+		D3F2C6FF28B380C900CEC549 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */; };
+		D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70028B380C900CEC549 /* KakaoSDKShare */; };
+		D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */; };
+		D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70428B380C900CEC549 /* KakaoSDKUser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
+		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
+		7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBoardViewController.swift; sourceTree = "<group>"; };
+		7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBoardTableViewCell.swift; sourceTree = "<group>"; };
+		7299968328B09B110008A1C1 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
+		7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,12 +72,15 @@
 		72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
+		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
 		D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailCheckViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,8 +88,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3F2C6FF28B380C900CEC549 /* KakaoSDKCommon in Frameworks */,
 				72ED25C128978AA400031AD1 /* SnapKit in Frameworks */,
+				D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */,
+				D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */,
 				D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */,
+				D3F2C6FD28B380C900CEC549 /* KakaoSDKAuth in Frameworks */,
+				D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */,
+				3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +108,8 @@
 				72ED25A62897788900031AD1 /* STUDYA */,
 				72ED25A52897788900031AD1 /* Products */,
 				D3F2C6F828B2878300CEC549 /* Recovered References */,
+				CE1FB378DAB2943B6B34B4CF /* Pods */,
+				E2C71478A3E60D54C78B36FC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,7 +128,10 @@
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
+				D3BF053528BF901700AF7D3B /* Formatter.swift */,
 				D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */,
+				D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */,
+				D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */,
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
@@ -104,16 +140,39 @@
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
+				7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */,
+				7299968728BE44090008A1C1 /* MainViewController.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
+				7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */,
+				7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */,
+				7299968328B09B110008A1C1 /* NoticeViewController.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
+				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
 				72ED25B52897788A00031AD1 /* Info.plist */,
 			);
 			path = STUDYA;
+			sourceTree = "<group>";
+		};
+		CE1FB378DAB2943B6B34B4CF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */,
+				81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E2C71478A3E60D54C78B36FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -123,9 +182,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 72ED25B82897788A00031AD1 /* Build configuration list for PBXNativeTarget "STUDYA" */;
 			buildPhases = (
+				6C00C674107D25437A4A019C /* [CP] Check Pods Manifest.lock */,
 				72ED25A02897788900031AD1 /* Sources */,
 				72ED25A12897788900031AD1 /* Frameworks */,
 				72ED25A22897788900031AD1 /* Resources */,
+				66CE49C2B4ED6F88B2EE8A69 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -135,6 +196,11 @@
 			packageProductDependencies = (
 				72ED25C028978AA400031AD1 /* SnapKit */,
 				D3AFCE1928A7F53D004FBAB9 /* Alamofire */,
+				D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */,
+				D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */,
+				D3F2C70028B380C900CEC549 /* KakaoSDKShare */,
+				D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */,
+				D3F2C70428B380C900CEC549 /* KakaoSDKUser */,
 			);
 			productName = STUDYA;
 			productReference = 72ED25A42897788900031AD1 /* STUDYA.app */;
@@ -167,6 +233,7 @@
 			packageReferences = (
 				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			productRefGroup = 72ED25A52897788900031AD1 /* Products */;
 			projectDirPath = "";
@@ -190,25 +257,77 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		66CE49C2B4ED6F88B2EE8A69 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-STUDYA/Pods-STUDYA-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C00C674107D25437A4A019C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-STUDYA-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		72ED25A02897788900031AD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */,
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* AuthenticationViewModel.swift in Sources */,
+				7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */,
+				7299968828BE44090008A1C1 /* MainViewController.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
+				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
+				7299968228AF5C480008A1C1 /* NoticeBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
+
+				7299968028AF54190008A1C1 /* NoticeBoardViewController.swift in Sources */,
+				D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */,
+				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
+				7299968428B09B110008A1C1 /* NoticeViewController.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
@@ -355,6 +474,7 @@
 		};
 		72ED25B92897788A00031AD1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -363,7 +483,7 @@
 				DEVELOPMENT_TEAM = G8228CR939;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = STUDYA/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "우리앱이 갤러리 사용권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -384,6 +504,7 @@
 		};
 		72ED25BA2897788A00031AD1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -392,7 +513,7 @@
 				DEVELOPMENT_TEAM = G8228CR939;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = STUDYA/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "우리앱이 갤러리 사용권한을 요청합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PEOPLES의 프로필 사진 변경 기능 이용을 위해 사진 라이브러리에 접근하도록 허용합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -451,6 +572,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -463,6 +592,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		D3F2C6FC28B380C900CEC549 /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		D3F2C6FE28B380C900CEC549 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		D3F2C70028B380C900CEC549 /* KakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKShare;
+		};
+		D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKTemplate;
+		};
+		D3F2C70428B380C900CEC549 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

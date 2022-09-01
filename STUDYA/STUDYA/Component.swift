@@ -60,46 +60,40 @@ class CustomButton: UIButton {
     }
 }
 
-class GrayBorderTextView: UITextView {
+class BaseTextView: UITextView {
     
-    let charactersNumberLabel = UILabel(frame: .zero)
+    private let placeHolderLabel = UILabel()
     
-    private let placeHolderLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 16)
-        lbl.textColor = .appColor(.descriptionGeneral)
-        return lbl
-    }()
-    
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+    init(placeholder: String, fontSize: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
         super.init(frame: .zero, textContainer: nil)
         
-        addSubview(charactersNumberLabel)
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, height: height)
-        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold)
         
-        setConstraints(height: height)
+        setConstraints(topConstant: topInset, leadingConstant: leadingInset)
+    }
+    
+    convenience init(placeholder: String, fontSize: CGFloat, isBold: Bool = false) {
+        self.init(placeholder: placeholder, fontSize: fontSize, isBold: isBold, topInset: 11, leadingInset: 15)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, height: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
         
         placeHolderLabel.text = placeholder
-        font = UIFont.systemFont(ofSize: 16)
+        placeHolderLabel.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        placeHolderLabel.textColor = .appColor(.descriptionGeneral)
+        
+        font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         textColor = UIColor.appColor(.titleGeneral)
         textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
-        
-        layer.borderWidth = 1
-        backgroundColor = UIColor.appColor(.background)
-        layer.cornerRadius = 10
         
         isScrollEnabled = false
     }
@@ -109,6 +103,36 @@ class GrayBorderTextView: UITextView {
         placeHolderLabel.isHidden = isHided ? true : false
     }
     
+    private func setConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
+
+        placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
+    }
+}
+// gray 아니라서 바꿔야함.
+class GrayBorderTextView: BaseTextView {
+    
+    let charactersNumberLabel = UILabel(frame: .zero)
+    
+    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+        super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
+        
+        addSubview(charactersNumberLabel)
+        
+        configureTextView()
+        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureTextView() {
+        backgroundColor = UIColor.appColor(.background)
+        layer.cornerRadius = 20
+    }
+    
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
         
         charactersNumberLabel.text = "0/\(maxCharactersNumber)"
@@ -116,11 +140,9 @@ class GrayBorderTextView: UITextView {
         charactersNumberLabel.textColor = .systemGray3
     }
     
-    private func setConstraints(height: CGFloat) {
+    private func setConstraints() {
         
-        setHeight(height)
         charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
-        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
     }
 }
 
@@ -425,4 +447,164 @@ class CheckBoxButton: UIButton {
         isSelected.toggle()
     }
     // MARK: - Setting Constraints
+}
+
+final class BrandSwitch: UIControl {
+    private enum Constant {
+        static let duration = 0.25
+    }
+    
+    // MARK: UI
+    private let outerView: RoundableView = {
+        let view = RoundableView()
+        
+        view.backgroundColor = UIColor.appColor(.brandDark)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        return view
+    }()
+    
+    private let barView: RoundableView = {
+        let view = RoundableView()
+        view.backgroundColor = UIColor.appColor(.background)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let circleView: RoundableView = {
+        let view = RoundableView()
+        view.backgroundColor = .white
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowRadius = 4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    // MARK: Properties
+    var isOn = false {
+        didSet {
+            self.sendActions(for: .valueChanged)
+            
+            UIView.animate(
+                withDuration: Constant.duration,
+                delay: 0,
+                options: .curveEaseInOut,
+                animations: {
+                    self.barView.backgroundColor = self.isOn ? self.barTintColor : self.barColor
+                    self.outerView.backgroundColor = self.isOn ? UIColor.appColor(.grayBackground) : UIColor.appColor(.brandMedium)
+                    
+                    self.circleViewConstraints.forEach { $0.isActive = false }
+                    self.circleViewConstraints.removeAll()
+                    
+                    if self.isOn {
+                        self.circleViewConstraints = [
+                            self.circleView.rightAnchor.constraint(equalTo: self.barView.rightAnchor, constant: -2),
+                            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+                            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+                            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+                            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+                        ]
+                    } else {
+                        self.circleViewConstraints = [
+                            self.circleView.leftAnchor.constraint(equalTo: self.barView.leftAnchor, constant: 2),
+                            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+                            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+                            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+                            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+                        ]
+                    }
+                    
+                    NSLayoutConstraint.activate(self.circleViewConstraints)
+                    self.layoutIfNeeded()
+                },
+                completion: nil
+            )
+        }
+    }
+    var barColor = UIColor.appColor(.background) {
+        didSet { self.barView.backgroundColor = self.barColor }
+    }
+    var barTintColor = UIColor.appColor(.brandDark)
+    var circleColor = UIColor.white {
+        didSet { self.circleView.backgroundColor = self.circleColor }
+    }
+    private var circleViewConstraints = [NSLayoutConstraint]()
+    
+    @available(*, unavailable)
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("xib is not implemented")
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.addSubview(outerView)
+        self.addSubview(self.barView)
+        self.barView.addSubview(self.circleView)
+        setDimensions(height: 28, width: 50)
+        outerView.anchor(top: topAnchor, topConstant: -1, bottom: bottomAnchor, bottomConstant: -1, leading: leadingAnchor, leadingConstant: -1, trailing: trailingAnchor, trailingConstant: -1)
+        NSLayoutConstraint.activate([
+            self.barView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.barView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.barView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.barView.topAnchor.constraint(equalTo: self.topAnchor),
+        ])
+        self.circleViewConstraints = [
+            self.circleView.leftAnchor.constraint(equalTo: self.barView.leftAnchor, constant: 2),
+            self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
+            self.circleView.topAnchor.constraint(equalTo: self.barView.topAnchor, constant: 2),
+            self.circleView.heightAnchor.constraint(equalToConstant: 24),
+            self.circleView.widthAnchor.constraint(equalToConstant: 24)
+        ]
+        NSLayoutConstraint.activate(self.circleViewConstraints)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        self.isOn = !self.isOn
+    }
+}
+
+final class RoundableView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.frame.height / 2
+    }
+}
+
+final class RoundedNumberField: UITextField {
+    
+    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+        super.init(frame: .zero)
+        
+        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.grayBackground)
+        isEnabled = enable ? true : false
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.subTitleGeneral)
+        textAlignment = centerAlign ? .center : .right
+        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        rightViewMode = .always
+        
+        if let placeholder = numPlaceholder {
+            text = Formatter.formatIntoDecimal(number: placeholder)
+        } else {
+            text = "--"
+        }
+    }
+    
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+        setHeight(42)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }

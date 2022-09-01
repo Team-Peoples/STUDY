@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "Vector 42.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "mailCheck.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

@@ -34,8 +34,9 @@ class ProfileSettingViewController: UIViewController {
         profileImageSelectorView.addGestureRecognizer(tapGesture)
         profileImageSelectorView.isUserInteractionEnabled = true
         
-        addSubViews()
+        doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
         
+        addSubViews()
     }
     
     override func viewWillLayoutSubviews() {
@@ -72,11 +73,18 @@ class ProfileSettingViewController: UIViewController {
         })
     }
     
+    @objc private func doneButtonDidTapped() {
+        let vc = MailCheckViewController()
+        
+        vc.modalPresentationStyle = .fullScreen
+        show(vc, sender: nil)
+    }
+    
     private func setupImagePicker() {
         
         var configuration = PHPickerConfiguration()
         
-        configuration.selectionLimit = 0
+        configuration.selectionLimit = 1
         configuration.filter = .any(of: [.images])
         
         let picker = PHPickerViewController(configuration: configuration)
