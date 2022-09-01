@@ -76,7 +76,7 @@ class ProfileSettingViewController: UIViewController {
         
         var configuration = PHPickerConfiguration()
         
-        configuration.selectionLimit = 0
+        configuration.selectionLimit = 1
         configuration.filter = .any(of: [.images])
         
         let picker = PHPickerViewController(configuration: configuration)
