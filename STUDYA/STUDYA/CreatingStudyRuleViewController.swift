@@ -9,13 +9,13 @@ import UIKit
 
 class CreatingStudyRuleViewController: UIViewController {
 
-    private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .titleGeneral, size: 24, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
     private lazy var settingGeneralStudyRuleView: UIView = {
         
         let v = UIView()
         
-        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .titleGeneral, size: 18, isBold: true, isNecessaryTitle: false)
-        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .subTitleGeneral, size: 18, isBold: false, isNecessaryTitle: false)
+        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .ppsBlack, size: 18, isBold: true, isNecessaryTitle: false)
+        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .ppsGray1, size: 18, isBold: false, isNecessaryTitle: false)
         let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator"))
         
         v.addSubview(titleLabel)
@@ -26,7 +26,7 @@ class CreatingStudyRuleViewController: UIViewController {
         subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 1, leading: titleLabel.leadingAnchor)
         disclosureIndicator.anchor(top: v.topAnchor, topConstant: 29, bottom: v.bottomAnchor, bottomConstant: 29, trailing: v.trailingAnchor, trailingConstant: 15)
         
-        v.layer.borderColor = UIColor.appColor(.descriptionGeneral).cgColor
+        v.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         v.layer.borderWidth = 1
         v.layer.cornerRadius = 24
         
@@ -39,8 +39,8 @@ class CreatingStudyRuleViewController: UIViewController {
         
         let v = UIView()
         
-        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .titleGeneral, size: 18, isBold: true, isNecessaryTitle: false)
-        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .subTitleGeneral, size: 18, isBold: false, isNecessaryTitle: false)
+        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .ppsBlack, size: 18, isBold: true, isNecessaryTitle: false)
+        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .ppsGray1, size: 18, isBold: false, isNecessaryTitle: false)
         let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator"))
         
         v.addSubview(titleLabel)
@@ -51,7 +51,7 @@ class CreatingStudyRuleViewController: UIViewController {
         subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 1, leading: titleLabel.leadingAnchor)
         disclosureIndicator.anchor(top: v.topAnchor, topConstant: 29, bottom: v.bottomAnchor, bottomConstant: 29, trailing: v.trailingAnchor, trailingConstant: 15)
         
-        v.layer.borderColor = UIColor.appColor(.descriptionGeneral).cgColor
+        v.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         v.layer.borderWidth = 1
         v.layer.cornerRadius = 24
         
@@ -62,7 +62,7 @@ class CreatingStudyRuleViewController: UIViewController {
     }()
     private let descriptionLabel: CustomLabel = {
         
-        let label = CustomLabel(title: "", tintColor: .brandMedium, size: 14)
+        let label = CustomLabel(title: "", tintColor: .keyColor2, size: 14)
         let attributedString = NSMutableAttributedString.init(string: "나중에 결정하시겠어요?")
         
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
@@ -99,7 +99,12 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func generalRuleViewTapped() {
-        print(#function)
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: "MakingDetailStudyRuleViewController")
+        vc.modalPresentationStyle = .automatic
+        present(vc, animated: true)
+//        show(MakingDetailStudyRuleViewController(), sender: nil)
     }
     
     @objc private func detailRuleViewTapped() {
@@ -111,7 +116,7 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     private func colorBorder(of settingView: UIView) {
-        settingView.layer.borderColor = UIColor.appColor(.brandDark).cgColor
+        settingView.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
     }
     
     private func addsubViews() {
