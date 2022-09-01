@@ -74,7 +74,10 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        navigationController?.pushViewController(MailCheckViewController(), animated: true)
+        let vc = MailCheckViewController()
+        
+        vc.modalPresentationStyle = .fullScreen
+        show(vc, sender: nil)
     }
     
     private func setupImagePicker() {
