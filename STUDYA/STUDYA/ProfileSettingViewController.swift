@@ -34,8 +34,9 @@ class ProfileSettingViewController: UIViewController {
         profileImageSelectorView.addGestureRecognizer(tapGesture)
         profileImageSelectorView.isUserInteractionEnabled = true
         
-        addSubViews()
+        doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
         
+        addSubViews()
     }
     
     override func viewWillLayoutSubviews() {
@@ -70,6 +71,10 @@ class ProfileSettingViewController: UIViewController {
                 break
             }
         })
+    }
+    
+    @objc private func doneButtonDidTapped() {
+        navigationController?.pushViewController(MailCheckViewController(), animated: true)
     }
     
     private func setupImagePicker() {
