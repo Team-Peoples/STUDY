@@ -39,23 +39,23 @@ final class CreatingStudyViewController: UIViewController {
     private let containerView = UIView()
     
     /// Scene Title
-    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .titleGeneral, size: 24, isBold: true)
+    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .ppsBlack, size: 24, isBold: true)
     
     /// Study category
-    private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
+    private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private lazy var studyCategoryCollectionView: UICollectionView = getCollectionView()
     
     /// Study Name
-    private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
+    private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyNameTextView = GrayBorderTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, height: 42)
     
     /// Study Type
-    private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
-    private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .subTitleGeneral, size: 12, isBold: false)
+    private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
     private lazy var studyTypeStackView: UIStackView = getCheckBoxStackView()
     
     /// Study Introduction
-    private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
+    private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyIntroductionTextView = GrayBorderTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 30, height: 105)
     
     /// Bottom Button

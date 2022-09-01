@@ -28,11 +28,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-<<<<<<< HEAD
-        window?.rootViewController = UINavigationController(rootViewController: CreatingStudyRuleViewController())
-=======
-        window?.rootViewController = ProfileSettingViewController()
->>>>>>> main
+//        window?.rootViewController = UINavigationController(rootViewController: CreatingStudyRuleViewController())
+        window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
     }
 

@@ -29,7 +29,7 @@ class RoundedPurpleCell: UICollectionViewCell {
         
         addSubview(button)
         button.backgroundColor = UIColor.appColor(.background)
-        button.resetColorFor(normal: .subTitleGeneral, forSelected: .brandDark)
+        button.resetColorFor(normal: .ppsGray1, forSelected: .keyColor1)
         button.layer.borderWidth = 0
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         setConstraints(button)

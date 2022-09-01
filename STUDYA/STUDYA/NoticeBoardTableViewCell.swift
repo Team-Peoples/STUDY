@@ -14,7 +14,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         willSet(value) {
             if value == true {
                 
-                cell.layer.borderColor = UIColor.appColor(.brandDark).cgColor
+                cell.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
                 cell.layer.borderWidth = 2
             }
         }
@@ -30,7 +30,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     }
     
     private let titleLabel: CustomLabel = {
-        let lbl = CustomLabel(title: "", tintColor: .titleGeneral, size: 18, isBold: true)
+        let lbl = CustomLabel(title: "", tintColor: .ppsBlack, size: 18, isBold: true)
         
         lbl.numberOfLines = 1
         lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
@@ -41,7 +41,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     private let contentLabel: UILabel = {
         let lbl = UILabel()
         
-        lbl.textColor = UIColor.appColor(.subTitleGeneral)
+        lbl.textColor = UIColor.appColor(.ppsGray1)
         lbl.font = UIFont.systemFont(ofSize: 18)
         lbl.numberOfLines = 2
         
@@ -51,7 +51,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
     private let timeLabel: UILabel = {
         let lbl = UILabel()
         
-        lbl.textColor = UIColor.appColor(.subTitleGeneral)
+        lbl.textColor = UIColor.appColor(.ppsGray1)
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl

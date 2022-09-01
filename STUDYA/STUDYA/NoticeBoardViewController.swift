@@ -52,7 +52,7 @@ class NoticeBoardViewController: UIViewController {
         
         let headerView: UIView = {
             let v = UIView(frame: CGRect(origin: .zero, size: CGSize(width: view.frame.width, height: 48)))
-            let lbl = CustomLabel(title: "공지사항", tintColor: .titleGeneral, size: 16, isBold: true)
+            let lbl = CustomLabel(title: "공지사항", tintColor: .ppsBlack, size: 16, isBold: true)
             v.addSubview(lbl)
             setConstraints(of: lbl, in: v)
             return v
@@ -80,7 +80,7 @@ class NoticeBoardViewController: UIViewController {
         
         if sender.isOn {
             
-            navigationController?.navigationBar.backgroundColor = .appColor(.brandDark)
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
             navigationItem.title = "관리자 모드"
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             
@@ -142,7 +142,7 @@ class NoticeBoardViewController: UIViewController {
             
             let noticeEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
             noticeEmptyImageView.backgroundColor = .lightGray
-            let noticeEmptyLabel = CustomLabel(title: "공지가 없어요😴", tintColor: .titleGeneral, size: 20, isBold: true)
+            let noticeEmptyLabel = CustomLabel(title: "공지가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
             
             view.addSubview(noticeEmptyImageView)
             view.addSubview(noticeEmptyLabel)
