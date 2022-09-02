@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarViewController: UITabBarController {
+final class TabBarViewController: UITabBarController {
     // MARK: - Properties
     var user: User? {
         didSet {
@@ -33,7 +33,7 @@ class TabBarViewController: UITabBarController {
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         
-        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: ViewController(), title: "캘린더")
+        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: NoticeBoardViewController(), title: "캘린더")
         
         let profileViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "myPage-selected"), unselectedImage: #imageLiteral(resourceName: "myPage-unselected"), rootViewController: ViewController(), title: "마이페이지")
         
@@ -48,6 +48,8 @@ class TabBarViewController: UITabBarController {
         nav.tabBarItem.selectedImage = selectedImage
         nav.navigationBar.tintColor = .black
         nav.title = title
+        nav.navigationBar.backIndicatorImage = UIImage(named: "back")
+        nav.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
         nav.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         return nav
@@ -72,6 +74,7 @@ class TabBarViewController: UITabBarController {
         if user == nil {
             presentWelcomeVC()
         } else {
+            
         }
     }
     

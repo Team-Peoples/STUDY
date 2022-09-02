@@ -15,12 +15,30 @@ struct Notice {
     var isPined = false
 }
 
-class NoticeBoardViewController: UIViewController {
+final class NoticeBoardViewController: UIViewController {
     // MARK: - Properties
     var notice: [Notice] = [
-        ]
+        Notice(title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", date: Date().formatToString()),
+                            Notice(title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", date: Date().formatToString()),
+                            Notice(title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", date: Date().formatToString(), isPined: true)]
     
-    private let noticeBoardTableView = UITableView()
+    private lazy var noticeEmptyView: UIView = {
+        let v = UIView()
+        let noticeEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
+        let noticeEmptyLabel = CustomLabel(title: "공지가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
+        
+        view.addSubview(noticeEmptyImageView)
+        view.addSubview(noticeEmptyLabel)
+        
+        noticeEmptyImageView.backgroundColor = .lightGray
+        
+        setConstraints(noticeEmptyImageView, in: v)
+        setConstraints(of: noticeEmptyLabel, with: noticeEmptyImageView)
+        
+        return v
+    }()
+    
+    private lazy var noticeBoardTableView = UITableView()
     private let masterSwitch = BrandSwitch()
     
     // MARK: - Life Cycle
@@ -28,16 +46,15 @@ class NoticeBoardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkNoticeBoardIsEmpty()
         configureTableView()
         configureMasterSwitch()
         
-        setConstraints()
+        setConstraints(view: noticeBoardTableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        checkNoticeBoardIsEmpty()
     }
     
     override func viewDidLayoutSubviews() {
@@ -140,29 +157,19 @@ class NoticeBoardViewController: UIViewController {
         
         if notice.isEmpty {
             
-            let noticeEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
-            noticeEmptyImageView.backgroundColor = .lightGray
-            let noticeEmptyLabel = CustomLabel(title: "공지가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
-            
-            view.addSubview(noticeEmptyImageView)
-            view.addSubview(noticeEmptyLabel)
-            
-            setConstraints(noticeEmptyImageView)
-            
-            setConstraints(of: noticeEmptyLabel, with: noticeEmptyImageView)
         }
     }
                                                 
     // MARK: - Setting Constraints
     
-    private func setConstraints() {
+    private func setConstraints(view selectedView: UIView) {
         
-        noticeBoardTableView.snp.makeConstraints { make in
+        selectedView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
     }
     
-    private func setConstraints(_ noticeEmptyImageView: UIImageView) {
+    private func setConstraints(_ noticeEmptyImageView: UIImageView, in view: UIView) {
         
         noticeEmptyImageView.snp.makeConstraints { make in
             make.width.equalTo(120)
@@ -226,18 +233,6 @@ extension NoticeBoardViewController: UITableViewDelegate {
         vc.notice = notice[indexPath.row]
         
         navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-// MARK: - Date Formatter
-
-extension Date {
-    func formatted() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YY.M.d"
-        
-        let result = dateFormatter.string(from: self)
-        return result
     }
 }
 

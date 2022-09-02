@@ -7,11 +7,12 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     // MARK: - Properties
     
     var study: [Study] = []
-    
+    private let masterSwitch = BrandSwitch()
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -32,7 +33,6 @@ class MainViewController: UIViewController {
     
     private func configureNavigationItem() {
         let noticeBtn = UIButton(type: .custom)
-        let masterSwitch = BrandSwitch()
         
         noticeBtn.setImage(UIImage(named: "noti"), for: .normal)
         noticeBtn.setTitleColor(.black, for: .normal)
@@ -56,7 +56,18 @@ class MainViewController: UIViewController {
     }
     
     @objc func switchValueChanged(sender: BrandSwitch) {
-        print(sender.isOn)
+        
+        if sender.isOn {
+            
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+            navigationItem.title = "관리자 모드"
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        } else {
+            
+            navigationController?.navigationBar.backgroundColor = .systemBackground
+            navigationItem.title = nil
+            navigationController?.navigationBar.tintColor = .black
+        }
     }
     
     @objc func createStudyButtonDidTapped() {

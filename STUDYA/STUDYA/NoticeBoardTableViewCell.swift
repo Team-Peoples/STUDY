@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NoticeBoardTableViewCell: UITableViewCell {
+final class NoticeBoardTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     var isPinned: Bool? {
@@ -15,7 +15,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
             if value == true {
                 
                 cell.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-                cell.layer.borderWidth = 2
+                cell.layer.borderWidth = 1
             }
         }
     }
@@ -42,7 +42,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         let lbl = UILabel()
         
         lbl.textColor = UIColor.appColor(.ppsGray1)
-        lbl.font = UIFont.systemFont(ofSize: 18)
+        lbl.font = UIFont.systemFont(ofSize: 14)
         lbl.numberOfLines = 2
         
         return lbl
@@ -52,7 +52,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         let lbl = UILabel()
         
         lbl.textColor = UIColor.appColor(.ppsGray1)
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        lbl.font = UIFont.systemFont(ofSize: 12)
         
         return lbl
     }()
@@ -62,7 +62,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         
         v.layer.cornerRadius = 24
         v.clipsToBounds = true
-        v.backgroundColor = .white
+        v.backgroundColor = .appColor(.background)
         
         return v
     }()
@@ -106,6 +106,7 @@ class NoticeBoardTableViewCell: UITableViewCell {
         }
         
         titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(24)
             make.top.equalTo(cell).offset(28)
             make.leading.equalTo(cell).offset(24)
         }
@@ -117,7 +118,8 @@ class NoticeBoardTableViewCell: UITableViewCell {
         }
         
         contentLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(cell).inset(28)
+            make.top.equalTo(titleLabel.snp.bottom).offset(13)
+            make.bottom.greaterThanOrEqualTo(cell).inset(18)
             make.leading.trailing.equalTo(cell).inset(24)
         }
     }

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class FindPasswordViewController: UIViewController {
+final class FindPasswordViewController: UIViewController {
     // MARK: - Properties
     
     private let titleLabel = CustomLabel(title: "가입하신 이메일을 \n입력해주세요.", tintColor: .ppsBlack, size: 30, isBold: true)
@@ -24,7 +24,7 @@ class FindPasswordViewController: UIViewController {
                 guard let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                 let keyboardRectangle = keyboardFrame.cgRectValue
                 UIView.animate(withDuration: 0.3) {
-                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height + 30)
+                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height + 16)
                 }
                 
             case UIResponder.keyboardWillHideNotification :
@@ -81,7 +81,7 @@ class FindPasswordViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(emailInputView)
-//        view.addSubview(emailTextField)
+
         view.addSubview(completeButton)
     }
     
@@ -97,21 +97,22 @@ class FindPasswordViewController: UIViewController {
     // MARK: - Setting Constraints
     
     private func setConstraints() {
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view).offset(160)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
             make.leading.equalTo(view).offset(20)
         }
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(70)
-            make.leading.trailing.equalTo(view).inset(20)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         completeButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
             
-            make.leading.equalTo(view).offset(20)
-            make.trailing.equalTo(view).offset(-20)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
     }

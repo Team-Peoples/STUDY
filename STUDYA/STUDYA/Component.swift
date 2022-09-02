@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
@@ -69,9 +69,9 @@ class BaseTextView: UITextView {
         
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset)
         
-        setConstraints(topConstant: topInset, leadingConstant: leadingInset)
+        setPlaceHolderLabelConstraints(topConstant: topInset, leadingConstant: leadingInset)
     }
     
     convenience init(placeholder: String, fontSize: CGFloat, isBold: Bool = false) {
@@ -82,7 +82,7 @@ class BaseTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
@@ -93,7 +93,7 @@ class BaseTextView: UITextView {
         
         font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         textColor = UIColor.appColor(.ppsBlack)
-        textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
+        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: 15)
         
         isScrollEnabled = false
     }
@@ -103,34 +103,43 @@ class BaseTextView: UITextView {
         placeHolderLabel.isHidden = isHided ? true : false
     }
     
-    private func setConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
+    private func setPlaceHolderLabelConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
 
         placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
-// gray 아니라서 바꿔야함.
-class GrayBorderTextView: BaseTextView {
+
+final class CharactersNumberLimitedTextView: BaseTextView {
+    // MARK: - Properties
     
-    let charactersNumberLabel = UILabel(frame: .zero)
+    private let charactersNumberLabel = UILabel(frame: .zero)
     
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+    // MARK: - Initialize
+    
+    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat, radius: CGFloat) {
         super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
         
         addSubview(charactersNumberLabel)
         
-        configureTextView()
+        configureTextView(radius)
         configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
         
         setConstraints()
+    }
+    
+    convenience init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+        self.init(placeholder: placeholder, maxCharactersNumber: maxCharactersNumber, height: height, radius: height / 2)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView() {
+    // MARK: - Configure
+    
+    private func configureTextView(_ radius: CGFloat) {
         backgroundColor = UIColor.appColor(.background)
-        layer.cornerRadius = 20
+        layer.cornerRadius = radius
     }
     
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
@@ -139,6 +148,14 @@ class GrayBorderTextView: BaseTextView {
         charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
         charactersNumberLabel.textColor = .systemGray3
     }
+    
+    // MARK: - Actions
+    
+    func getCharactersNumerLabel() -> UILabel {
+        charactersNumberLabel
+    }
+    
+    // MARK: - Setting Constraints
     
     private func setConstraints() {
         
@@ -170,6 +187,7 @@ class ValidationInputView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - Actions
 
     func setUnderlineColor(as color: AssetColor) {
@@ -187,6 +205,7 @@ class ValidationInputView: UIStackView {
     internal func toggleSecureText() {
         basicInputView.getInputField().isSecureTextEntry.toggle()
     }
+    
     func getValidationLabel() -> UILabel {
         validationLabel
     }
@@ -210,7 +229,7 @@ class BasicInputView: UIView {
     // MARK: - Properties
     
     fileprivate let nameLabel = UILabel()
-    fileprivate var underline = UIView()
+    fileprivate let underline = UIView()
     fileprivate var inputField: CustomTextField!
     
     // MARK: - Initialize
@@ -317,7 +336,6 @@ class CustomTextField: UITextField {
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
 }
 
 class CustomLabel: UILabel {
@@ -446,6 +464,7 @@ class CheckBoxButton: UIButton {
     func toggleState() {
         isSelected.toggle()
     }
+    
     // MARK: - Setting Constraints
 }
 

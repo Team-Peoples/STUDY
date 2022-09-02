@@ -14,4 +14,20 @@ final class Formatter {
         
         return numberFormatter.string(from: NSNumber(value: number))!
     }
+    
+    static func formatDateToString(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM.dd"
+        return dateFormatter.string(from: date)
+    }
+}
+
+// MARK: - Date Format
+
+extension Date {
+    func formatToString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM.dd"
+        return dateFormatter.string(from: self)
+    }
 }
