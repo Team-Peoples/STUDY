@@ -165,6 +165,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pEL-Ec-jRB"/>
+                    <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="cancelButton" destination="e0J-rk-PiU" id="e0g-Mu-OFQ"/>
                         <outlet property="collectionView" destination="Xj4-dt-g0B" id="GLQ-Or-HkE"/>
@@ -179,8 +180,113 @@
             </objects>
             <point key="canvasLocation" x="971.01449275362324" y="124.55357142857142"/>
         </scene>
+        <!--Writing How To Proceed Study View Controller-->
+        <scene sceneID="RWJ-5d-CSQ">
+            <objects>
+                <viewController storyboardIdentifier="WritingHowToProceedStudyViewController" id="cSp-IO-dlv" customClass="WritingHowToProceedStudyViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pV6-cG-2S7">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLS-au-ccC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                <color key="barTintColor" name="keyColor1"/>
+                                <textAttributes key="titleTextAttributes">
+                                    <color key="textColor" name="background"/>
+                                </textAttributes>
+                                <items>
+                                    <navigationItem title="진행방식" id="Edw-mM-NEp">
+                                        <barButtonItem key="leftBarButtonItem" title="취소" id="5gg-Yk-fy1">
+                                            <color key="tintColor" name="cancel"/>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ra4-dK-QwV">
+                                <rect key="frame" x="17" y="64" width="380" height="160"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWt-oX-zF1">
+                                        <rect key="frame" x="20" y="20" width="340" height="120"/>
+                                        <color key="backgroundColor" name="background"/>
+                                        <color key="textColor" name="ppsBlack"/>
+                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="rect" keyPath="textContainerInset">
+                                                <rect key="value" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="진행방식을 입력해주세요." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4l-rO-xiw">
+                                        <rect key="frame" x="20" y="20" width="161" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" name="ppsGray2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="background"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="CWt-oX-zF1" secondAttribute="bottom" constant="20" id="2Rx-eJ-Xdf"/>
+                                    <constraint firstItem="Y4l-rO-xiw" firstAttribute="top" secondItem="CWt-oX-zF1" secondAttribute="top" id="DKq-jK-Tmg"/>
+                                    <constraint firstAttribute="height" constant="160" id="Ogb-bH-cWS"/>
+                                    <constraint firstItem="Y4l-rO-xiw" firstAttribute="leading" secondItem="CWt-oX-zF1" secondAttribute="leading" id="aap-gN-GWm"/>
+                                    <constraint firstItem="CWt-oX-zF1" firstAttribute="top" secondItem="Ra4-dK-QwV" secondAttribute="top" constant="20" id="d7N-0c-Pmh"/>
+                                    <constraint firstItem="CWt-oX-zF1" firstAttribute="leading" secondItem="Ra4-dK-QwV" secondAttribute="leading" constant="20" id="sen-9E-f2h"/>
+                                    <constraint firstAttribute="trailing" secondItem="CWt-oX-zF1" secondAttribute="trailing" constant="20" id="tPX-6u-AZ0"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="24"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Re0-F6-Sj2">
+                                <rect key="frame" x="17" y="234" width="380" height="129"/>
+                                <string key="text">* 예상 진행 기간은 어느 정도인가요?
+* 스터디 커리큘럼은 무엇인가요?
+* 어떤 방식으로 진행하나요? 
+   (발표, 토론 문제풀이 등)
+* 참여자는 무엇을 준비해와야 하나요?
+* 교재나 준비물이 있나요?
+* 회비가 있나요?
+* 소통/기록은 어떤 방식으로 하나요? 
+   ★링크 첨부 가능</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" name="ppsGray1"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="OgV-q2-fFd"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ra4-dK-QwV" firstAttribute="top" secondItem="OLS-au-ccC" secondAttribute="bottom" constant="20" id="Dq9-ua-xr8"/>
+                            <constraint firstItem="OLS-au-ccC" firstAttribute="top" secondItem="pV6-cG-2S7" secondAttribute="top" id="HZ4-hT-aea"/>
+                            <constraint firstItem="OLS-au-ccC" firstAttribute="leading" secondItem="pV6-cG-2S7" secondAttribute="leading" id="J9b-8d-Wqc"/>
+                            <constraint firstItem="Re0-F6-Sj2" firstAttribute="leading" secondItem="OgV-q2-fFd" secondAttribute="leading" constant="17" id="PHZ-O1-DBj"/>
+                            <constraint firstItem="Ra4-dK-QwV" firstAttribute="leading" secondItem="OgV-q2-fFd" secondAttribute="leading" constant="17" id="Pfb-iz-TkD"/>
+                            <constraint firstItem="OgV-q2-fFd" firstAttribute="trailing" secondItem="Ra4-dK-QwV" secondAttribute="trailing" constant="17" id="SUc-XA-dYw"/>
+                            <constraint firstAttribute="trailing" secondItem="OLS-au-ccC" secondAttribute="trailing" id="X9e-jl-wGI"/>
+                            <constraint firstItem="OgV-q2-fFd" firstAttribute="trailing" secondItem="Re0-F6-Sj2" secondAttribute="trailing" constant="17" id="djh-h3-sIZ"/>
+                            <constraint firstItem="Re0-F6-Sj2" firstAttribute="top" secondItem="Ra4-dK-QwV" secondAttribute="bottom" constant="10" id="tlE-3a-arp"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="414" height="896"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="5gg-Yk-fy1" id="gG3-wk-27U"/>
+                        <outlet property="placeholderLabel" destination="Y4l-rO-xiw" id="c7i-nw-96z"/>
+                        <outlet property="textView" destination="CWt-oX-zF1" id="4fN-Jy-SuO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1MD-5A-7sA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1953.6231884057972" y="124.55357142857142"/>
+        </scene>
     </scenes>
     <resources>
+        <namedColor name="background">
+            <color red="0.97600001096725464" green="0.97600001096725464" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="cancel">
             <color red="0.99199998378753662" green="1" blue="0.58799999952316284" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -192,6 +298,9 @@
         </namedColor>
         <namedColor name="ppsBlack">
             <color red="0.20800000429153442" green="0.17599999904632568" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ppsGray1">
+            <color red="0.46700000762939453" green="0.43500000238418579" blue="0.53700000047683716" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ppsGray2">
             <color red="0.82700002193450928" green="0.82400000095367432" blue="0.86299997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

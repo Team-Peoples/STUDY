@@ -17,6 +17,7 @@
 		7299968428B09B110008A1C1 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* NoticeViewController.swift */; };
 		7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */; };
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
+		7299968E28C1EEC00008A1C1 /* WritingHowToProceedStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* WritingHowToProceedStudyViewController.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -61,6 +62,7 @@
 		7299968328B09B110008A1C1 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
 		7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		7299968D28C1EEC00008A1C1 /* WritingHowToProceedStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingHowToProceedStudyViewController.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				D3BF054128C0E9EC00AF7D3B /* MakingDetailStudyRuleViewController.swift */,
 				D3BF054528C116DB00AF7D3B /* ExcommunicationRuleCollectionViewCell.swift */,
 				D3BF054728C116FD00AF7D3B /* AttendanceRuleCollectionViewCell.swift */,
+				7299968D28C1EEC00008A1C1 /* WritingHowToProceedStudyViewController.swift */,
 				72ED25C42897FCFC00031AD1 /* AuthenticationViewModel.swift */,
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
@@ -322,6 +325,7 @@
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
+				7299968E28C1EEC00008A1C1 /* WritingHowToProceedStudyViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
