@@ -20,7 +20,7 @@ class MakingDetailStudyRuleViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .systemBackground
         
         collectionView.delegate = self
@@ -81,6 +81,7 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
         switch indexPath.row {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
+            
             return cell
             
         case 1:

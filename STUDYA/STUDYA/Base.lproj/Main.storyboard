@@ -147,7 +147,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="4Fj-bf-mS8" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="5ut-eo-2FX"/>
-                            <constraint firstItem="NPP-1h-mKl" firstAttribute="bottom" secondItem="Xj4-dt-g0B" secondAttribute="bottom" constant="-814" id="87b-df-osv"/>
+                            <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="bottom" secondItem="Xj4-dt-g0B" secondAttribute="bottom" id="87b-df-osv"/>
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="top" secondItem="NPP-1h-mKl" secondAttribute="bottom" constant="34" id="ADg-cS-HQx"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="Xj4-dt-g0B" secondAttribute="trailing" id="AIQ-oo-Xsw"/>
                             <constraint firstItem="Xj4-dt-g0B" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="bottom" constant="3" id="CHr-hm-knm"/>

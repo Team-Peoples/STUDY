@@ -8,9 +8,6 @@
 import UIKit
 import SnapKit
 
-extension Notification.Name {
-    static let categoryDidChange = Notification.Name(rawValue: "categoryDidChange")
-}
 
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
