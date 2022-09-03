@@ -351,13 +351,26 @@ class CustomLabel: UILabel {
         configure(title: title, isNecessaryTitle: isNecessaryTitle)
     }
     
+    convenience init(title: String, boldPart: String) {
+        self.init(title: title, tintColor: .ppsBlack, size: 16)
+        
+        let fontSize = self.font.pointSize
+        let font = UIFont.boldSystemFont(ofSize: fontSize)
+        let fullText = self.text ?? ""
+        let range = (fullText as NSString).range(of: boldPart)
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        attributedString.addAttribute(.font, value: font, range: range)
+        self.attributedText = attributedString
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Actions
     
-    func setTitleAndRedStar(upperLabelTitle: String, label: UILabel) {
+    func setTitleAndRedStar(upperLabelTitle: String) {
         
         let title = (upperLabelTitle + "*") as NSString
         let range = (title).range(of: "*")
@@ -372,7 +385,7 @@ class CustomLabel: UILabel {
     private func configure(title: String, isNecessaryTitle: Bool) {
 
         if isNecessaryTitle {
-            setTitleAndRedStar(upperLabelTitle: title, label: self)
+            setTitleAndRedStar(upperLabelTitle: title)
         } else {
             text = title
         }
@@ -595,24 +608,35 @@ final class RoundableView: UIView {
     }
 }
 
-final class RoundedNumberField: UITextField {
+final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+    lazy var intArray: [Int] = Array(1...99)
+    lazy var strArray = intArray.map{ String($0) }
+    var isNecessaryField = false
+    
+    private lazy var picker = UIPickerView()
+    
+    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
         super.init(frame: .zero)
         
-        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.ppsGray3)
-        isEnabled = enable ? true : false
-        font = .boldSystemFont(ofSize: 20)
-        textColor = UIColor.appColor(.ppsGray1)
-        textAlignment = centerAlign ? .center : .right
-        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        rightViewMode = .always
+        delegate = self
+        
+        configure(enable: enable, centerAlign: centerAlign)
+        isNecessaryField = isNecessary
         
         if let placeholder = numPlaceholder {
             text = Formatter.formatIntoDecimal(number: placeholder)
         } else {
             text = "--"
         }
+        
+        if isPicker {
+            setPicker()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func setNeedsLayout() {
@@ -622,8 +646,100 @@ final class RoundedNumberField: UITextField {
         setHeight(42)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func configure(enable: Bool, centerAlign: Bool) {
+        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.ppsGray3)
+        isEnabled = enable ? true : false
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.ppsGray1)
+        textAlignment = centerAlign ? .center : .right
+        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        rightViewMode = .always
     }
     
+    private func setPicker() {
+        picker.delegate = self
+        picker.dataSource = self
+        self.inputView = picker
+        picker.backgroundColor = .systemBackground
+        configureToolbar()
+    }
+    
+    private func configureToolbar() {
+        // toolbar를 만들어준다.
+        let toolBar = UIToolbar()
+        
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.barTintColor = UIColor.appColor(.keyColor1)
+        toolBar.isTranslucent = false
+        toolBar.tintColor = .white
+        toolBar.sizeToFit()
+        
+        // 만들어줄 버튼
+        // flexibleSpace는 취소~완료 간의 거리를 만들어준다.
+        let doneBT = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(self.donePicker))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelBT = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(self.cancelPicker))
+        
+        // 만든 아이템들을 세팅해주고
+        toolBar.setItems([cancelBT,flexibleSpace,doneBT], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        // 악세사리로 추가한다.
+        self.inputAccessoryView = toolBar
+    }
+
+    // "완료" 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
+    @objc private func donePicker() {
+        let row = self.picker.selectedRow(inComponent: 0)
+        self.picker.selectRow(row, inComponent: 0, animated: false)
+        self.text = self.strArray[row]
+        self.resignFirstResponder()
+    }
+
+    // "취소" 클릭 시 textfield의 텍스트 값을 nil로 처리 후 입력창 내리기
+    @objc private func cancelPicker() {
+        self.text = nil
+        self.resignFirstResponder()
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        //    🚨 숫자 이외 다른 값 못 넣게
+        true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.text == "--" {
+            text = ""
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text, let intText = Int(text) {
+            self.text = Formatter.formatIntoDecimal(number: intText)
+            
+            if isNecessaryField {
+                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldFilled, object: nil)
+            }
+        } else {
+            self.text = "--"
+        }
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    // pickerview의 선택지는 데이터의 개수만큼
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        99
+    }
+    
+    // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        strArray[row]
+    }
+    
+    // textfield의 텍스트에 pickerview에서 선택한 값을 넣어준다.
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.text = self.strArray[row]
+    }
 }
