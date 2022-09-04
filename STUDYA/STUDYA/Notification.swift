@@ -10,4 +10,5 @@ import Foundation
 extension Notification.Name {
     static let categoryDidChange = Notification.Name(rawValue: "categoryDidChange")
     static let NecessaryNumFieldFilled = Notification.Name(rawValue: "NecessaryNumFieldFilled")
+    static let NecessaryNumFieldEmpty = Notification.Name(rawValue: "NecessaryNumFieldEmpty")
 }

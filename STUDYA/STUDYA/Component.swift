@@ -610,8 +610,16 @@ final class RoundableView: UIView {
 
 final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    lazy var intArray: [Int] = Array(1...99)
-    lazy var strArray = intArray.map{ String($0) }
+    
+    let strArray: [String] = {
+       
+        let intArray: [Int] = Array(1...99)
+        var array = intArray.map{ String($0) }
+        array.insert("--", at: 0)
+        
+        return array
+    }()
+    
     var isNecessaryField = false
     
     private lazy var picker = UIPickerView()
@@ -698,13 +706,22 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
 
     // "취소" 클릭 시 textfield의 텍스트 값을 nil로 처리 후 입력창 내리기
     @objc private func cancelPicker() {
-        self.text = nil
         self.resignFirstResponder()
     }
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        //    🚨 숫자 이외 다른 값 못 넣게
-        true
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentText = NSString(string: textField.text ?? "")
+        let finalText = currentText.replacingCharacters(in: range, with: string)
+        
+        guard finalText.count <= 2 else { return false }
+        
+        let utf8Char = string.cString(using: .utf8)
+        let isBackSpace = strcmp(utf8Char, "\\b")
+        
+        if string.checkOnlyNumbers() || isBackSpace == -92 { return true }
+        
+        return false
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -715,13 +732,17 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, let intText = Int(text) {
-            self.text = Formatter.formatIntoDecimal(number: intText)
             
+            self.text = Formatter.formatIntoDecimal(number: intText)
             if isNecessaryField {
-                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldFilled, object: nil)
+                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldFilled, object: textField)
             }
         } else {
+            
             self.text = "--"
+            if isNecessaryField {
+                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldEmpty, object: textField)
+            }
         }
     }
     
@@ -737,9 +758,19 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         strArray[row]
     }
-    
-    // textfield의 텍스트에 pickerview에서 선택한 값을 넣어준다.
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        self.text = self.strArray[row]
+}
+
+extension String {
+    func checkOnlyNumbers() -> Bool{
+        do {
+            let regex = try NSRegularExpression(pattern: "^[0-9]$", options: .caseInsensitive)
+            
+            if let _ = regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, self.count)) { return true }
+        } catch {
+            print(error.localizedDescription)
+            
+            return false
+        }
+        return false
     }
 }
