@@ -9,16 +9,10 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-<<<<<<< HEAD
-    private var validationCheck1 = false
-    private var validationCheck2 = false
-    private var validationCheck3 = false
-=======
     private var emailValidationOkay = false
     private var passwordValidationOkay = false
     private var passwordCheckOkay = false
     private var isExistingEmail = false
->>>>>>> main
     
     private let scrollView = UIScrollView()
     private let containerView = UIView()
@@ -50,11 +44,7 @@ class SignUpViewController: UIViewController {
     }()
     
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> main
     var bottomConstraint: NSLayoutConstraint!
     
     private func addSubviews() {
@@ -68,14 +58,6 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-<<<<<<< HEAD
-        view.backgroundColor = .systemBackground
-        
-        emailInputView.getInputField().delegate = self
-        passwordInputView.getInputField().delegate = self
-        passwordCheckInputView.getInputField().delegate = self
-=======
-        
         view.backgroundColor = .systemBackground
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -84,7 +66,6 @@ class SignUpViewController: UIViewController {
         emailInputField.delegate = self
         passwordInputField.delegate = self
         checkInputField.delegate = self
->>>>>>> main
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -111,12 +92,9 @@ class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-<<<<<<< HEAD
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
-=======
->>>>>>> main
         setConstraints()
     }
     

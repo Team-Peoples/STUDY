@@ -33,11 +33,11 @@ final class AccountManagementViewController: UIViewController {
     private let separator: UIView = {
        
         let view = UIView(frame: .zero)
-        view.backgroundColor = UIColor.appColor(.brandDark)
+        view.backgroundColor = UIColor.appColor(.keyColor1)
         
         return view
     }()
-    private let emailLabel = CustomLabel(title: "", tintColor: .subTitleGeneral, size: 12)
+    private let emailLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 12)
 //    private let oldPWLabel = CustomLabel(title: "기존 비밀번호", tintColor: .subTitleGeneral, size: 12)
 //    private let oldPWTextView = GrayBorderTextView(placeholder: "", maxCharactersNumber: nil, height: 36)
 //    private let newPWLabel = CustomLabel(title: "새 비밀번호", tintColor: .subTitleGeneral, size: 12)
@@ -60,9 +60,9 @@ final class AccountManagementViewController: UIViewController {
 //
 //        return stackView
 //    }()
-    private let logoutLabel = CustomLabel(title: "로그아웃", tintColor: .descriptionGeneral, size: 16)
-    private let separator2 = CustomLabel(title: "|", tintColor: .descriptionGeneral, size: 16)
-    private let leftLabel = CustomLabel(title: "회원탈퇴", tintColor: .descriptionGeneral, size: 16)
+    private let logoutLabel = CustomLabel(title: "로그아웃", tintColor: .ppsGray2, size: 16)
+    private let separator2 = CustomLabel(title: "|", tintColor: .ppsGray2, size: 16)
+    private let leftLabel = CustomLabel(title: "회원탈퇴", tintColor: .ppsGray2, size: 16)
     private lazy var beneathStackView: UIStackView = {
         
         let stackView = UIStackView(frame: .zero)

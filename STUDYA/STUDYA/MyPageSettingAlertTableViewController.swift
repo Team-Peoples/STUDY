@@ -11,7 +11,7 @@ final class MyPageSettingAlertTableViewController: UIViewController {
     
     private let data = ["10분 전", "3시간 전", "1일 전"]
     
-    private let titleLabel = CustomLabel(title: "스터디 시간 알림", tintColor: .titleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "스터디 시간 알림", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private let tableView: UITableView = {
        
         let tableView = UITableView(frame: .zero)

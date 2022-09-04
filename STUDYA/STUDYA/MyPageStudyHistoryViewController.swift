@@ -16,7 +16,7 @@ final class MyPageStudyHistoryViewController: UIViewController {
         let tableView = UITableView(frame: .zero)
         
         tableView.register(StudyHistoryTableViewCell.self, forCellReuseIdentifier: StudyHistoryTableViewCell.identifier)
-        tableView.separatorColor = UIColor.appColor(.grayBackground)
+        tableView.separatorColor = UIColor.appColor(.ppsGray3)
         tableView.rowHeight = 75
         
         return tableView

@@ -12,7 +12,6 @@ final class MyPageMainViewController: UIViewController {
     internal var nickName: String?
     internal var myMail: String?
     private let titles = ["참여한 스터디", "푸시알림 설정", "앱 정보"]
-    private var delegate: NavigationControllerDelegate?
     
     private let headerView: UIView = {
        
@@ -24,13 +23,13 @@ final class MyPageMainViewController: UIViewController {
         return view
     }()
     private let profileImageSelectorView = ProfileImageSelectorView(size: 80)
-    private lazy var nickNameLabel = CustomLabel(title: nickName ?? "닉네임", tintColor: .titleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
-    private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .subTitleGeneral, size: 12)
+    private lazy var nickNameLabel = CustomLabel(title: nickName ?? "닉네임", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
+    private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
     private let separatorView: RoundableView = {
        
         let view = RoundableView()
-        view.backgroundColor = UIColor.appColor(.grayBackground)
+        view.backgroundColor = UIColor.appColor(.ppsGray3)
         
         return view
     }()

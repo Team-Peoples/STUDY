@@ -25,13 +25,13 @@ final class InformationViewController: UIViewController {
     }()
     private let teamLabel: CustomLabel = {
         
-        let label = CustomLabel(title: "만든이들 | Room#8", tintColor: .subTitleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
+        let label = CustomLabel(title: "만든이들 | Room#8", tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
         
         let title = label.text! as NSString
         let range = (title).range(of: "Room#8")
         let attribute = NSMutableAttributedString(string: title as String)
         
-        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.appColor(.brandDark) , range: range)
+        attribute.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.appColor(.keyColor1) , range: range)
         label.attributedText = attribute
         
         return label
@@ -125,8 +125,8 @@ final class InformationVersionTableViewCell: UITableViewCell {
     
     static let identifier = "InformationVersionTableViewCell"
     
-    private let titleLabel = CustomLabel(title: "버전 정보", tintColor: .titleGeneral, size: 16)
-    private let versionValueLabel = CustomLabel(title: "1.1.0(최신)", tintColor: .titleGeneral, size: 16)
+    private let titleLabel = CustomLabel(title: "버전 정보", tintColor: .ppsBlack, size: 16)
+    private let versionValueLabel = CustomLabel(title: "1.1.0(최신)", tintColor: .ppsBlack, size: 16)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -159,12 +159,12 @@ final class InformationTableViewCell: UITableViewCell {
         }
     }
     
-    private let titleLabel = CustomLabel(title: "", tintColor: .titleGeneral, size: 16)
+    private let titleLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16)
     private let disclosureIndicator: UIImageView = {
        
         let imageView = UIImageView(image: UIImage(named: "disclosureIndicator")?.withRenderingMode(.alwaysTemplate))
         
-        imageView.tintColor = UIColor.appColor(.subTitleGeneral)
+        imageView.tintColor = UIColor.appColor(.ppsGray1)
         
         return imageView
     }()

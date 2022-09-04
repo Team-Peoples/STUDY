@@ -18,8 +18,8 @@ final class StudyHistoryTableViewCell: UITableViewCell {
         }
     }
     
-    private let titleLabel = CustomLabel(title: "스터디", tintColor: .titleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
-    private let durationLabel = CustomLabel(title: "", tintColor: .descriptionGeneral, size: 12)
+    private let titleLabel = CustomLabel(title: "스터디", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
+    private let durationLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 12)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

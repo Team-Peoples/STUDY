@@ -17,7 +17,7 @@ final class MyPageTableViewCell: UITableViewCell {
     }
     
     private let circleView = UIView(frame: .zero)
-    private let titleLabel = CustomLabel(title: "제목", tintColor: .subTitleGeneral, size: 16, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "제목", tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
     private let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator")?.withRenderingMode(.alwaysTemplate))
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -41,7 +41,7 @@ final class MyPageTableViewCell: UITableViewCell {
     private func configure() {
         circleView.layer.cornerRadius = 12.5
         circleView.backgroundColor = UIColor(red: 217/255, green: 217/255, blue: 217/255, alpha: 1)
-        disclosureIndicator.tintColor = UIColor.appColor(.subTitleGeneral)
+        disclosureIndicator.tintColor = UIColor.appColor(.ppsGray1)
     }
     
     private func setConstraints() {

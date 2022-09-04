@@ -16,7 +16,7 @@ final class SettingAlertTableViewCell: UITableViewCell {
         }
     }
     
-    private lazy var titleLabel = CustomLabel(title: titleText ?? "알림 예정 시간", tintColor: .titleGeneral, size: 16)
+    private lazy var titleLabel = CustomLabel(title: titleText ?? "알림 예정 시간", tintColor: .ppsBlack, size: 16)
     private let brandSwitch = BrandSwitch(frame: .zero)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
