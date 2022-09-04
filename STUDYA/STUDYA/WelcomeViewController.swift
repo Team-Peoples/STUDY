@@ -11,11 +11,11 @@ import KakaoSDKAuth
 
 final class WelcomViewController: UIViewController {
     
-    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
     private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
     private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
     private let emailLoginButton = CustomButton(title: "이메일로 시작하기")
-    private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .brandDark, size: 16, isBold: true)
+    private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .keyColor1, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
     
@@ -47,7 +47,7 @@ final class WelcomViewController: UIViewController {
         configureStackView()
         addConstraints()
         
-        underBar.backgroundColor = UIColor.appColor(.brandLight)
+        underBar.backgroundColor = UIColor.appColor(.keyColor3)
     }
     
     @objc private func kakaoLoginButtonTapped() {

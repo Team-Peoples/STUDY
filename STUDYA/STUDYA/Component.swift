@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CustomButton: UIButton {
+final class CustomButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
@@ -23,18 +23,18 @@ class CustomButton: UIButton {
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
-        layer.borderColor = UIColor.appColor(.brandDark).cgColor
+        layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = height / 2
       
         titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         
         if isFill {
-            backgroundColor = UIColor.appColor(.brandDark)
+            backgroundColor = UIColor.appColor(.keyColor1)
             setTitleColor(.white, for: .normal)
         } else {
             backgroundColor = .systemBackground
-            setTitleColor(UIColor.appColor(.brandDark), for: .normal)
+            setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         }
 
         setHeight(height)
@@ -44,13 +44,13 @@ class CustomButton: UIButton {
         
         setTitle(title, for: .normal)
         backgroundColor = .systemBackground
-        setTitleColor(UIColor.appColor(.brandDark), for: .normal)
+        setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
     
     internal func fillIn(title: String) {
         
         setTitle(title, for: .normal)
-        backgroundColor = UIColor.appColor(.brandDark)
+        backgroundColor = UIColor.appColor(.keyColor1)
         setTitleColor(.white, for: .normal)
     }
 
@@ -64,32 +64,36 @@ class BaseTextView: UITextView {
     
     private let placeHolderLabel = UILabel()
     
-    init(placeholder: String, fontSize: CGFloat, height: CGFloat) {
+    init(placeholder: String, fontSize: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
         super.init(frame: .zero, textContainer: nil)
         
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, size: fontSize, height: height)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset)
         
-        setConstraints(height: height)
+        setPlaceHolderLabelConstraints(topConstant: topInset, leadingConstant: leadingInset)
+    }
+    
+    convenience init(placeholder: String, fontSize: CGFloat, isBold: Bool = false) {
+        self.init(placeholder: placeholder, fontSize: fontSize, isBold: isBold, topInset: 11, leadingInset: 15)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, size: CGFloat, height: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
         
         placeHolderLabel.text = placeholder
-        placeHolderLabel.font = UIFont.systemFont(ofSize: size)
-        placeHolderLabel.textColor = .appColor(.descriptionGeneral)
+        placeHolderLabel.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        placeHolderLabel.textColor = .appColor(.ppsGray2)
         
-        font = UIFont.systemFont(ofSize: size)
-        textColor = UIColor.appColor(.titleGeneral)
-        textContainerInset = UIEdgeInsets(top: 11, left: 15, bottom: 11, right: 15)
+        font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        textColor = UIColor.appColor(.ppsBlack)
+        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: 15)
         
         isScrollEnabled = false
     }
@@ -99,36 +103,43 @@ class BaseTextView: UITextView {
         placeHolderLabel.isHidden = isHided ? true : false
     }
     
-    private func setConstraints(height: CGFloat) {
-        
-        setHeight(height)
-        placeHolderLabel.anchor(top: self.topAnchor, topConstant: 11, leading: self.leadingAnchor, leadingConstant: 15)
+    private func setPlaceHolderLabelConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
+
+        placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
 
-class GrayBorderTextView: BaseTextView {
+final class CharactersNumberLimitedTextView: BaseTextView {
+    // MARK: - Properties
     
-    let charactersNumberLabel = UILabel(frame: .zero)
+    private let charactersNumberLabel = UILabel(frame: .zero)
     
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
-        super.init(placeholder: placeholder, fontSize: 16, height: height)
+    // MARK: - Initialize
+    
+    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat, radius: CGFloat) {
+        super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
         
         addSubview(charactersNumberLabel)
         
-        configureTextView()
+        configureTextView(radius)
         configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
         
         setConstraints()
+    }
+    
+    convenience init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
+        self.init(placeholder: placeholder, maxCharactersNumber: maxCharactersNumber, height: height, radius: height / 2)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView() {
-        layer.borderWidth = 1
+    // MARK: - Configure
+    
+    private func configureTextView(_ radius: CGFloat) {
         backgroundColor = UIColor.appColor(.background)
-        layer.cornerRadius = 10
+        layer.cornerRadius = radius
     }
     
     private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
@@ -137,6 +148,14 @@ class GrayBorderTextView: BaseTextView {
         charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
         charactersNumberLabel.textColor = .systemGray3
     }
+    
+    // MARK: - Actions
+    
+    func getCharactersNumerLabel() -> UILabel {
+        charactersNumberLabel
+    }
+    
+    // MARK: - Setting Constraints
     
     private func setConstraints() {
         
@@ -168,6 +187,7 @@ class ValidationInputView: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     // MARK: - Actions
 
     func setUnderlineColor(as color: AssetColor) {
@@ -185,6 +205,7 @@ class ValidationInputView: UIStackView {
     internal func toggleSecureText() {
         basicInputView.getInputField().isSecureTextEntry.toggle()
     }
+    
     func getValidationLabel() -> UILabel {
         validationLabel
     }
@@ -199,7 +220,7 @@ class ValidationInputView: UIStackView {
 
     private func configureValidationLabel(text: String) {
         validationLabel.text = text
-        validationLabel.textColor = UIColor.appColor(.subTitleGeneral)
+        validationLabel.textColor = UIColor.appColor(.ppsGray1)
         validationLabel.font = UIFont.systemFont(ofSize: 14)
     }
 }
@@ -208,7 +229,7 @@ class BasicInputView: UIView {
     // MARK: - Properties
     
     fileprivate let nameLabel = UILabel()
-    fileprivate var underline = UIView()
+    fileprivate let underline = UIView()
     fileprivate var inputField: CustomTextField!
     
     // MARK: - Initialize
@@ -250,7 +271,7 @@ class BasicInputView: UIView {
         
         let rightButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 36, height: 36)))
         
-        rightButton.tintColor = UIColor.appColor(.brandLight)
+        rightButton.tintColor = UIColor.appColor(.keyColor3)
         rightButton.addTarget(target, action: action, for: .touchUpInside)
         
         if cancel {
@@ -270,7 +291,7 @@ class BasicInputView: UIView {
         nameLabel.font = UIFont.boldSystemFont(ofSize: size)
         nameLabel.text = text
         
-        setUnderlineColor(as: .brandLight)
+        setUnderlineColor(as: .keyColor3)
     }
     
     // MARK: - Setting Constraints
@@ -309,13 +330,12 @@ class CustomTextField: UITextField {
         borderStyle = .none
         returnKeyType = returnType
         isSecureTextEntry = isFieldSecure ?? false
-        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.descriptionGeneral), .font: UIFont.systemFont(ofSize: 18)])
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.systemFont(ofSize: 18)])
     }
     
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
 }
 
 class CustomLabel: UILabel {
@@ -377,7 +397,7 @@ class ProfileImageSelectorView: UIImageView {
         
         image = UIImage(named: "defaultProfile")
         layer.borderWidth = 2
-        layer.borderColor = UIColor.appColor(.brandLight).cgColor
+        layer.borderColor = UIColor.appColor(.keyColor3).cgColor
         layer.cornerRadius = size / 2
         
         clipsToBounds = true
@@ -435,7 +455,7 @@ class CheckBoxButton: UIButton {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         
         setTitle(title, for: .normal)
-        [.normal, .selected].forEach { setTitleColor(.appColor(.titleGeneral), for: $0) }
+        [.normal, .selected].forEach { setTitleColor(.appColor(.ppsBlack), for: $0) }
         setImage(UIImage(named: unselected), for: .normal)
         setImage(UIImage(named: selected), for: .selected)
     }
@@ -444,6 +464,7 @@ class CheckBoxButton: UIButton {
     func toggleState() {
         isSelected.toggle()
     }
+    
     // MARK: - Setting Constraints
 }
 
@@ -456,7 +477,7 @@ final class BrandSwitch: UIControl {
     private let outerView: RoundableView = {
         let view = RoundableView()
         
-        view.backgroundColor = UIColor.appColor(.brandDark)
+        view.backgroundColor = UIColor.appColor(.keyColor1)
         view.translatesAutoresizingMaskIntoConstraints = false
         
         
@@ -492,7 +513,7 @@ final class BrandSwitch: UIControl {
                 options: .curveEaseInOut,
                 animations: {
                     self.barView.backgroundColor = self.isOn ? self.barTintColor : self.barColor
-                    self.outerView.backgroundColor = self.isOn ? UIColor.appColor(.grayBackground) : UIColor.appColor(.brandMedium)
+                    self.outerView.backgroundColor = self.isOn ? UIColor.appColor(.ppsGray3) : UIColor.appColor(.keyColor2)
                     
                     self.circleViewConstraints.forEach { $0.isActive = false }
                     self.circleViewConstraints.removeAll()
@@ -525,7 +546,7 @@ final class BrandSwitch: UIControl {
     var barColor = UIColor.appColor(.background) {
         didSet { self.barView.backgroundColor = self.barColor }
     }
-    var barTintColor = UIColor.appColor(.brandDark)
+    var barTintColor = UIColor.appColor(.keyColor1)
     var circleColor = UIColor.white {
         didSet { self.circleView.backgroundColor = self.circleColor }
     }
@@ -571,5 +592,41 @@ final class RoundableView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layer.cornerRadius = self.frame.height / 2
+    }
+}
+
+final class RoundedNumberField: UITextField {
+
+    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+        super.init(frame: .zero)
+        
+        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.ppsGray3)
+        isEnabled = enable ? true : false
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.ppsGray1)
+        textAlignment = centerAlign ? .center : .right
+        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        rightViewMode = .always
+        
+        if let placeholder = numPlaceholder {
+            text = Formatter.formatIntoDecimal(number: placeholder)
+        } else {
+            text = "--"
+        }
+    }
+    
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+        setHeight(42)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    convenience init() {
+        backgroundColor = .systemBackground
     }
 }

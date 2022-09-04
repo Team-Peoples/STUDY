@@ -1,5 +1,5 @@
 //
-//  MemberJoiningViewController.swift
+//  SignUpViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/08/05.
@@ -9,18 +9,30 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
+<<<<<<< HEAD
     private var validationCheck1 = false
     private var validationCheck2 = false
     private var validationCheck3 = false
+=======
+    private var emailValidationOkay = false
+    private var passwordValidationOkay = false
+    private var passwordCheckOkay = false
+    private var isExistingEmail = false
+>>>>>>> main
     
     private let scrollView = UIScrollView()
     private let containerView = UIView()
-    private let titleLabel = CustomLabel(title: "회원가입", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let titleLabel = CustomLabel(title: "회원가입", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = ValidationInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default, isFieldSecure: false, validationText: "이메일 형식을 올바르게 입력해주세요.", cancelButton: true, target: self, textFieldAction: #selector(clear))
     private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
-    private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "",target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
+    private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "비밀번호가 맞지 않아요.",target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
     
-    weak var delegate: NavigationControllerDelegate?
+    private lazy var emailInputField = emailInputView.getInputField()
+    private lazy var emailValidationLabel = emailInputView.getValidationLabel()
+    private lazy var passwordInputField = passwordInputView.getInputField()
+    private lazy var passwordValidationLabel = passwordInputView.getValidationLabel()
+    private lazy var checkInputField = passwordCheckInputView.getInputField()
+    private lazy var checkValidationLabel = passwordCheckInputView.getValidationLabel()
     
     private lazy var stackView: UIStackView = {
         
@@ -38,17 +50,41 @@ class SignUpViewController: UIViewController {
     }()
     
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> main
     var bottomConstraint: NSLayoutConstraint!
+    
+    private func addSubviews() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(stackView)
+        containerView.addSubview(doneButton)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+<<<<<<< HEAD
         view.backgroundColor = .systemBackground
         
         emailInputView.getInputField().delegate = self
         passwordInputView.getInputField().delegate = self
         passwordCheckInputView.getInputField().delegate = self
+=======
+        
+        view.backgroundColor = .systemBackground
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        emailInputField.delegate = self
+        passwordInputField.delegate = self
+        checkInputField.delegate = self
+>>>>>>> main
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -56,17 +92,16 @@ class SignUpViewController: UIViewController {
         doneButton.isEnabled = false
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
         
-        passwordInputView.getInputField().rightView?.tag = 1
-        passwordCheckInputView.getInputField().rightView?.tag = 2
+        passwordInputField.rightView?.tag = 1
+        checkInputField.rightView?.tag = 2
+        
+        addSubviews()
         
         setScrollView()
-        
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(stackView)
-        containerView.addSubview(doneButton)
+        checkValidationLabel.textColor = .systemBackground
         
         enableScroll()
-        emailInputView.getInputField().becomeFirstResponder()
+        emailInputField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -76,14 +111,17 @@ class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+<<<<<<< HEAD
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         
+=======
+>>>>>>> main
         setConstraints()
     }
     
     @objc private func clear() {
-        emailInputView.getInputField().text = ""
+        emailInputField.text = ""
     }
     
     @objc private func toggleIsSecure(sender: UIButton) {
@@ -91,31 +129,26 @@ class SignUpViewController: UIViewController {
         if sender.tag == 1 {
             
             sender.isSelected.toggle()
-            passwordInputView.getInputField().isSecureTextEntry = passwordInputView.getInputField().isSecureTextEntry == true ? false : true
+            passwordInputField.isSecureTextEntry = passwordInputField.isSecureTextEntry ? false : true
         } else {
             
             sender.isSelected.toggle()
-            passwordCheckInputView.getInputField().isSecureTextEntry = passwordCheckInputView.getInputField().isSecureTextEntry == true ? false : true
+            checkInputField.isSecureTextEntry = checkInputField.isSecureTextEntry ? false : true
         }
     }
     
     @objc func doneButtonDidTapped() {
-        let profileSettingVC = ProfileSettingViewController()
-        delegate?.push(profileSettingVC)
+        navigationController?.pushViewController(ProfileSettingViewController(), animated: true)
     }
     
     private func setScrollView() {
         
         let safeArea = view.safeAreaLayoutGuide
-        
-        view.addSubview(scrollView)
-        
+    
         scrollView.showsVerticalScrollIndicator = false
         
         scrollView.anchor(top: safeArea.topAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
         scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
-        
-        scrollView.addSubview(containerView)
         
         containerView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
@@ -152,35 +185,101 @@ class SignUpViewController: UIViewController {
         scrollView.contentInset = insets
         scrollView.scrollIndicatorInsets = insets
         
-        var viewFrame = self.view.frame
-        
-        viewFrame.size.height -= keyboardSize.height
-        
-        let activeField: UITextField? = [emailInputView.getInputField(), passwordInputView.getInputField(), passwordCheckInputView.getInputField()].first { $0.isFirstResponder }
-        
-        if let activeField = activeField {
-            
-            if !viewFrame.contains(activeField.frame.origin) {
-                
-                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
-                
-                scrollView.setContentOffset(scrollPoint, animated: true)
-            }
-        }
+//        var viewFrame = self.view.frame
+//
+//        viewFrame.size.height -= keyboardSize.height
+//
+//        let activeField: UITextField? = [emailInputField, passwordInputField, checkInputField].first { $0.isFirstResponder }
+//
+//        if let activeField = activeField {
+//
+//            if !viewFrame.contains(activeField.frame.origin) {
+//
+//                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
+//
+//                scrollView.setContentOffset(scrollPoint, animated: true)
+//            }
+//        }
     }
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
     
-    private func checkNextStepPossible() {
-        if validationCheck1 == true &&
-            validationCheck2 == true &&
-            validationCheck3 == true &&
-            doneButton.isEnabled == false {
+    private func checkDoneButtonPossible() {
+        if emailValidationOkay &&
+            passwordValidationOkay &&
+            passwordCheckOkay {
 
-            doneButton.isEnabled.toggle()
+            doneButton.isEnabled = true
             doneButton.fillIn(title: "완료")
+        } else {
+            if doneButton.isEnabled {
+                doneButton.isEnabled = false
+                doneButton.fillOut(title: "완료")
+            }
+        }
+    }
+    
+    private func validateCheck(_ textField: UITextField) {
+        
+        switch textField {
+        case emailInputField:
+            
+            if let email = textField.text {
+                let range = email.range(of: "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$", options: .regularExpression)
+                emailValidationOkay = range != nil ? true : false
+                
+                if emailValidationOkay {
+    //                이메일 중복체크하기
+    //                completion handler에서 dispatch main queue async 로 isOverlappedEmail 값 전달 후
+                    emailValidationOkay = isExistingEmail ? false : true
+                    checkValidation1Label()
+                }
+            }
+        case passwordInputField:
+
+            if let password = textField.text {
+                let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{5,}", options: .regularExpression)
+                passwordValidationOkay = range != nil ? true : false
+            }
+        case checkInputField:
+            
+            if let check = textField.text {
+                passwordCheckOkay = check == passwordInputField.text ? true : false
+            }
+        default: break
+        }
+    }
+    
+    private func checkValidation1Label() {
+        if emailValidationOkay {
+            emailValidationLabel.textColor = .systemBackground
+        } else {
+            let text = emailInputField.text
+            
+            emailValidationLabel.textColor = text == nil ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
+            emailValidationLabel.text = isExistingEmail ? "이미 가입된 이메일이에요.😮" : "이메일 형식을 올바르게 입력해주세요."
+        }
+    }
+    
+    private func checkValidation2Label() {
+        if passwordValidationOkay {
+            passwordValidationLabel.textColor = .systemBackground
+        } else {
+            let text = passwordInputField.text
+            
+            passwordValidationLabel.textColor = text == "" ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
+        }
+    }
+    
+    private func checkValidation3Label() {
+        if passwordCheckOkay {
+            checkValidationLabel.textColor = .systemBackground
+        } else {
+            let text = checkInputField.text
+            
+            checkValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.subColor1)
         }
     }
 }
@@ -191,142 +290,59 @@ extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
         switch textField {
-        case emailInputView.getInputField():
-            emailInputView.setUnderlineColor(as: .brandDark)
-        case passwordInputView.getInputField():
-            passwordInputView.setUnderlineColor(as: .brandDark)
-        case passwordCheckInputView.getInputField():
-            passwordCheckInputView.setUnderlineColor(as: .brandDark)
-        default:
-            break
+        case emailInputField:
+            emailInputView.setUnderlineColor(as: .keyColor1)
+        case passwordInputField:
+            passwordInputView.setUnderlineColor(as: .keyColor1)
+        case checkInputField:
+            passwordCheckInputView.setUnderlineColor(as: .keyColor1)
+        default: break
         }
         return true
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         switch textField {
-        case emailInputView.getInputField():
+        case emailInputField:
             
-            if let email = textField.text, let _ = email.range(of: "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$", options: .regularExpression) {
-                
-                validationCheck1 = true
-                emailInputView.getValidationLabel().textColor = .systemBackground
-                checkNextStepPossible()
-                
-            } else {
-                validationCheck1 = false
-                
-                emailInputView.getValidationLabel().text = "이메일 형식을 올바르게 입력해주세요."
-                emailInputView.getValidationLabel().textColor =  UIColor.appColor(.highlightDeep)
-                
-                if doneButton.isEnabled == true {
-                    doneButton.isEnabled.toggle()
-                    doneButton.fillOut(title: "완료")
-                }
-            }
-            emailInputView.setUnderlineColor(as: .brandLight)
+            validateCheck(textField)
+            checkValidation1Label()
+            checkDoneButtonPossible()
             
-        case passwordInputView.getInputField():
+            emailInputView.setUnderlineColor(as: .keyColor3)
             
-            if let password = textField.text, let _ = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{5,}", options: .regularExpression) {
-                
-                validationCheck2 = true
-                passwordInputView.getValidationLabel().textColor = UIColor.appColor(.highlightDeep)
-                
-                if passwordCheckInputView.getInputField().text != "" {
-                    if passwordCheckInputView.getInputField().text == password {
-                        checkNextStepPossible()
-                    } else {
-                        validationCheck3 = false
-                        
-                        passwordInputView.getValidationLabel().textColor = .systemBackground
-                        passwordCheckInputView.getValidationLabel().text = "비밀번호가 맞지 않아요"
-                        passwordCheckInputView.getValidationLabel().textColor =  UIColor.appColor(.highlightDeep)
-                        
-                        if doneButton.isEnabled == true {
-                            doneButton.isEnabled.toggle()
-                            doneButton.fillOut(title: "완료")
-                        }
-                    }
-                } else {
-                    passwordInputView.getValidationLabel().textColor = .systemBackground
-                }
-                
-            } else {
-                validationCheck2 = false
-                
-                passwordInputView.getValidationLabel().text = "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요."
-                passwordInputView.getValidationLabel().textColor =  UIColor.appColor(.highlightDeep)
-                
-                if doneButton.isEnabled == true {
-                    doneButton.isEnabled.toggle()
-                    doneButton.fillOut(title: "완료")
-                }
-            }
-            passwordInputView.setUnderlineColor(as: .brandLight)
+        case passwordInputField:
             
-        case passwordCheckInputView.getInputField():
+            validateCheck(textField)
+            validateCheck(checkInputField)
+            checkValidation2Label()
+            checkValidation3Label()
+            checkDoneButtonPossible()
             
-            if let check = textField.text, check == passwordInputView.getInputField().text {
-                
-                validationCheck3 = true
-                passwordCheckInputView.getValidationLabel().textColor = .systemBackground
-                if let password = passwordInputView.getInputField().text, let _ = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{5,}", options: .regularExpression) {
-                    passwordCheckInputView.getValidationLabel().textColor = .systemBackground
-                    checkNextStepPossible()
-                } else {
-                    validationCheck3 = false
-                    
-                    passwordInputView.getValidationLabel().text = "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요."
-                    passwordInputView.getValidationLabel().textColor =  UIColor.appColor(.highlightDeep)
-                    
-                    
-                    if doneButton.isEnabled == true {
-                        doneButton.isEnabled.toggle()
-                        doneButton.fillOut(title: "완료")
-                    }
-                }
-                
-            } else {
-                validationCheck3 = false
-                
-                passwordCheckInputView.getValidationLabel().text = "비밀번호가 맞지 않아요"
-                passwordCheckInputView.getValidationLabel().textColor =  UIColor.appColor(.highlightDeep)
-                
-                if doneButton.isEnabled == true {
-                    doneButton.isEnabled.toggle()
-                    doneButton.fillOut(title: "완료")
-                }
-            }
-            passwordCheckInputView.setUnderlineColor(as: .brandLight)
+            passwordInputView.setUnderlineColor(as: .keyColor3)
             
-        default:
-            break
+        case checkInputField:
+            
+            validateCheck(textField)
+            checkValidation3Label()
+            checkDoneButtonPossible()
+            
+            passwordCheckInputView.setUnderlineColor(as: .keyColor3)
+        default: break
         }
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
-        case emailInputView.getInputField():
-            passwordInputView.getInputField().becomeFirstResponder()
-        case passwordInputView.getInputField():
-            passwordCheckInputView.getInputField().becomeFirstResponder()
-        case passwordCheckInputView.getInputField():
-            passwordCheckInputView.getInputField().resignFirstResponder()
-        default:
-            break
+        case emailInputField:
+            passwordInputField.becomeFirstResponder()
+        case passwordInputField:
+            checkInputField.becomeFirstResponder()
+        case checkInputField:
+            checkInputField.resignFirstResponder()
+        default: break
         }
         return true
     }
-}
-
-extension SignUpViewController: NavigationControllerDelegate {
-    func push(_ vc: UIViewController) {
-        navigationController?.pushViewController(vc, animated: true)
-    }
-}
-
-protocol NavigationControllerDelegate: NSObject {
-    func push(_ vc: UIViewController)
 }

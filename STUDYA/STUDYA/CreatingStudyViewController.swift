@@ -17,19 +17,21 @@ enum StudyCategory: String, CaseIterable {
     case pastime = "자기계발/취미"
     case etc = "그 외"
 }
-// to be fixed: 키보드의 자동완성 기능이 next button을 가림.
-// to be fixed: 텍스트 뷰에서 엔터를 누르면 텍스트 뷰의 바깥으로 나가버림.
+
 
 final class CreatingStudyViewController: UIViewController {
     // MARK: - Properties
     
     var categoryChoice: (String, IndexPath)? {
         willSet(value) {
-            if categoryChoice != nil {
-                let cell = studyCategoryCollectionView.cellForItem(at: categoryChoice!.1) as? CategoryCell
-                cell?.buttonDidTapped()
+            if categoryChoice == nil {
+                print(value, "init")
+            } else {
+                guard let indexPath = categoryChoice?.1 else { fatalError() }
+                let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                cell.toogleButton()
+                print(value,"cheanged")
             }
-            print(value!.0)
         }
     }
     
@@ -38,27 +40,28 @@ final class CreatingStudyViewController: UIViewController {
     private let containerView = UIView()
     
     /// Scene Title
-    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .titleGeneral, size: 24, isBold: true)
+    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .ppsBlack, size: 24, isBold: true)
     
     /// Study category
-    private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
+    private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private lazy var studyCategoryCollectionView: UICollectionView = getCollectionView()
     
     /// Study Name
-    private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
-    private let studyNameTextView = GrayBorderTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, height: 42)
+    private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, height: 42)
     
     /// Study Type
-    private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
-    private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .subTitleGeneral, size: 12, isBold: false)
+    private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
     private lazy var studyTypeStackView: UIStackView = getCheckBoxStackView()
     
     /// Study Introduction
-    private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .titleGeneral, size: 16, isNecessaryTitle: true)
-    private let studyIntroductionTextView = GrayBorderTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 30, height: 105)
+    private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 100, height: 105, radius: 24)
     
     /// Bottom Button
     private let nextButton = CustomButton(title: "다음", isBold: true, isFill: false)
+    private var token: NSObjectProtocol?
 
     
     // MARK: - Life Cycle
@@ -69,9 +72,21 @@ final class CreatingStudyViewController: UIViewController {
         configureViews()
         setDelegate()
         enableTapGesture()
-        addNotification()
-
+        studyNameTextView.textContainer.maximumNumberOfLines = 1
         setConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+        if let token = token {
+            NotificationCenter.default.removeObserver(token)
+        }
     }
     
     // MARK: - Configure
@@ -112,17 +127,17 @@ final class CreatingStudyViewController: UIViewController {
         scrollView.contentInset = insets
 
         var viewFrame = self.view.frame
-        
+
         viewFrame.size.height -= keyboardSize.height
 
         let activeTextView: UITextView? = [studyNameTextView, studyIntroductionTextView].first { $0.isFirstResponder }
-        
+
         if let activeTextView = activeTextView {
-            
+
             if !viewFrame.contains(activeTextView.frame.origin) {
-                
+
                 let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height)
-                
+
                 scrollView.setContentOffset(scrollPoint, animated: true)
             }
         }
@@ -175,6 +190,7 @@ final class CreatingStudyViewController: UIViewController {
         studyNameTextView.snp.makeConstraints { make in
             make.top.equalTo(studyNameLabel.snp.bottom).offset(17)
             make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.height.equalTo(42).priority(.low)
         }
         studyTypeLabel.snp.makeConstraints { make in
             make.top.equalTo(studyNameTextView.snp.bottom).offset(40)
@@ -187,12 +203,14 @@ final class CreatingStudyViewController: UIViewController {
         studyTypeStackView.snp.makeConstraints { make in
             make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
             make.leading.equalTo(studyCategoryCollectionView)
+            make.height.equalTo(46)
         }
         studyIntroductionLabel.snp.makeConstraints { make in
             make.top.equalTo(studyTypeStackView.snp.bottom).offset(40)
             make.leading.trailing.equalTo(titleLabel)
         }
         studyIntroductionTextView.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(105)
             make.top.equalTo(studyIntroductionLabel.snp.bottom).offset(17)
             make.leading.trailing.equalTo(studyCategoryCollectionView)
         }
@@ -200,6 +218,7 @@ final class CreatingStudyViewController: UIViewController {
             make.height.equalTo(50)
             make.width.equalTo(320)
             make.centerX.equalTo(containerView)
+            make.top.greaterThanOrEqualTo(studyIntroductionTextView.snp.bottom).offset(20)
             make.bottom.equalTo(containerView.snp.bottom).inset(40)
         }
     }
@@ -207,11 +226,11 @@ final class CreatingStudyViewController: UIViewController {
     
     private func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(forName: Notification.Name.categoryDidChange, object: nil, queue: .main) { [self] noti in
+        token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String
             let indexPath = cellInfo["indexPath"] as! IndexPath
-            
+
             categoryChoice = (title, indexPath)
         }
     }
@@ -287,17 +306,26 @@ extension CreatingStudyViewController: UITextViewDelegate {
         
         switch textView {
             case studyNameTextView:
+                
                 guard let inputedText = textView.text else { return true }
                 let newLength = inputedText.count + text.count - range.length
-                studyNameTextView.charactersNumberLabel.text = newLength > 10 ? "10/10" : "\(newLength)/10"
+                studyNameTextView.getCharactersNumerLabel().text = newLength > 10 ? "10/10" : "\(newLength)/10"
                 return newLength <= 10
             case studyIntroductionTextView:
+                
                 guard let inputedText = textView.text else { return true }
                 let newLength = inputedText.count + text.count - range.length
-                studyIntroductionTextView.charactersNumberLabel.text = newLength > 100 ? "100/100" : "\(newLength)/100"
+                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 100 ? "100/100" : "\(newLength)/100"
                 return newLength <= 100
+                
             default:
                 return false
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if textView == studyNameTextView {
+            textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
         }
     }
 }
@@ -325,9 +353,9 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)
-
         var leftMargin = sectionInset.left
         var maxY: CGFloat = -1.0
+        
         attributes?.forEach { layoutAttribute in
             if layoutAttribute.frame.origin.y >= maxY {
                 leftMargin = sectionInset.left

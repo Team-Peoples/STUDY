@@ -8,43 +8,45 @@
 import UIKit
 
 enum AssetColor: String {
-    case brandLight, brandMilky, brandMedium, brandDark, descriptionGeneral, subTitleGeneral, titleGeneral, background, highlightDeep, highlightMedium, highlightLight, grayBackground, kakao, kakaoBrown, naver
+    case keyColor3, brandMilky, keyColor2, keyColor1, ppsGray2, ppsGray1, ppsBlack, background, subColor1, subColor2, subColor3, ppsGray3, kakao, kakaoBrown, naver, whiteLabel
 }
 
 extension UIColor {
     
     static func appColor(_ name: AssetColor) -> UIColor {
         switch name {
-            case .brandLight:
-                return UIColor(named: AssetColor.brandLight.rawValue)!
-            case .brandMilky:
-                return UIColor(named: AssetColor.brandMilky.rawValue)!
-            case .brandMedium:
-                return UIColor(named: AssetColor.brandMedium.rawValue)!
-            case .brandDark:
-                return UIColor(named: AssetColor.brandDark.rawValue)!
-            case .descriptionGeneral:
-                return UIColor(named: AssetColor.descriptionGeneral.rawValue)!
-            case .subTitleGeneral:
-                return UIColor(named: AssetColor.subTitleGeneral.rawValue)!
-            case .titleGeneral:
-                return UIColor(named: AssetColor.titleGeneral.rawValue)!
-            case .background:
-                return UIColor(named: AssetColor.background.rawValue)!
-            case .highlightDeep:
-                return UIColor(named: AssetColor.highlightDeep.rawValue)!
-            case .highlightMedium:
-                return UIColor(named: AssetColor.highlightMedium.rawValue)!
-            case .highlightLight:
-                return UIColor(named: AssetColor.highlightLight.rawValue)!
-            case .grayBackground:
-                return UIColor(named: AssetColor.grayBackground.rawValue)!
-            case .kakao:
-                return UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1)
-            case .kakaoBrown:
-                return UIColor(red: 60/255, green: 30/255, blue: 30/255, alpha: 1)
-            case .naver:
-                return UIColor(red: 3/255, green: 199/255, blue: 90/255, alpha: 1)
+        case .keyColor3:
+            return UIColor(named: AssetColor.keyColor3.rawValue)!
+        case .brandMilky:
+            return UIColor(named: AssetColor.brandMilky.rawValue)!
+        case .keyColor2:
+            return UIColor(named: AssetColor.keyColor2.rawValue)!
+        case .keyColor1:
+            return UIColor(named: AssetColor.keyColor1.rawValue)!
+        case .ppsGray2:
+            return UIColor(named: AssetColor.ppsGray2.rawValue)!
+        case .ppsGray1:
+            return UIColor(named: AssetColor.ppsGray1.rawValue)!
+        case .ppsBlack:
+            return UIColor(named: AssetColor.ppsBlack.rawValue)!
+        case .background:
+            return UIColor(named: AssetColor.background.rawValue)!
+        case .subColor1:
+            return UIColor(named: AssetColor.subColor1.rawValue)!
+        case .subColor2:
+            return UIColor(named: AssetColor.subColor2.rawValue)!
+        case .subColor3:
+            return UIColor(named: AssetColor.subColor3.rawValue)!
+        case .ppsGray3:
+            return UIColor(named: AssetColor.ppsGray3.rawValue)!
+        case .kakao:
+            return UIColor(red: 254/255, green: 229/255, blue: 0, alpha: 1)
+        case .kakaoBrown:
+            return UIColor(red: 60/255, green: 30/255, blue: 30/255, alpha: 1)
+        case .naver:
+            return UIColor(red: 3/255, green: 199/255, blue: 90/255, alpha: 1)
+        case .whiteLabel:
+            return white
         }
     }
 }

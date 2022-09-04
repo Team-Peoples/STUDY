@@ -23,27 +23,3 @@ struct LoginViewModel: AuthenticationViewModel {
         return email?.isEmpty == false && password?.isEmpty == false
     }
 }
-
-//struct RegistrationViewModel: AuthenticationViewModel {
-//    var formIsValid: Bool {
-//        return email?.isEmpty == false &&
-//                password?.isEmpty == false &&
-//                fullname?.isEmpty == false &&
-//                username?.isEmpty == false
-//
-//    }
-//
-//    var backgroundColor: UIColor {
-//        return formIsValid ? #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1) : #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1).withAlphaComponent(0.5)
-//    }
-//
-//    var titleColor: UIColor {
-//        return formIsValid ? .white : .white.withAlphaComponent(0.6)
-//    }
-//
-//    var email: String?
-//    var password: String?
-//    var fullname: String?
-//    var username: String?
-//}
-

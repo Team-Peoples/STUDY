@@ -14,6 +14,7 @@ extension Notification.Name {
 
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
+    
     let button = CustomButton(title: "", isBold: false, size: 16, height: 28)
     var indexPath: IndexPath?
     var title: String? {
@@ -23,13 +24,15 @@ class RoundedPurpleCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Life Cycle
+    // MARK: - Initailize
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         addSubview(button)
+        
         button.backgroundColor = UIColor.appColor(.background)
-        button.resetColorFor(normal: .subTitleGeneral, forSelected: .brandDark)
+        button.resetColorFor(normal: .ppsGray1, forSelected: .keyColor1)
         button.layer.borderWidth = 0
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         setConstraints(button)
@@ -51,6 +54,8 @@ class RoundedPurpleCell: UICollectionViewCell {
 }
 
 final class CategoryCell: RoundedPurpleCell {
+    // MARK: - Initailize
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,11 +68,15 @@ final class CategoryCell: RoundedPurpleCell {
         
     }
     
+    // MARK: - Actions
+    
     @objc func buttonDidTapped() {
+        toogleButton()
+        NotificationCenter.default.post(name: Notification.Name.categoryDidChange, object:  ["title": button.titleLabel?.text ?? "", "indexPath": indexPath ?? IndexPath(row: 0, section: 0)])
+    }
+    
+    func toogleButton() {
         button.isSelected.toggle()
         button.layer.borderWidth = button.isSelected ? 1 : 0
-        if button.isSelected {
-            NotificationCenter.default.post(name: Notification.Name.categoryDidChange, object:  ["title": button.titleLabel?.text ?? "", "indexPath": indexPath ?? IndexPath(row: 0, section: 0)])
-        }
     }
 }

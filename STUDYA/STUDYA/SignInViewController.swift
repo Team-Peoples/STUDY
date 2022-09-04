@@ -8,10 +8,10 @@
 import UIKit
 import SnapKit
 
-class SignInViewController: UIViewController {
+final class SignInViewController: UIViewController {
     // MARK: - Properties
     
-    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .titleGeneral, size: 30, isBold: true)
+    private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
@@ -32,7 +32,7 @@ class SignInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configureTextFieldDelegateAndNotification()
+        configureTextFieldDelegate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -52,7 +52,7 @@ class SignInViewController: UIViewController {
         view.addSubview(completeButton)
     }
     
-    private func configureTextFieldDelegateAndNotification() {
+    private func configureTextFieldDelegate() {
         
         emailInputView.getInputField().delegate = self
         emailInputView.getInputField().becomeFirstResponder()
@@ -64,7 +64,7 @@ class SignInViewController: UIViewController {
     
     private func configureFindPasswordButton() {
         
-        findPasswordButton.setTitleColor(UIColor.appColor(.descriptionGeneral), for: .normal)
+        findPasswordButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
         findPasswordButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         findPasswordButton.setTitle("비밀번호를 잊으셨나요", for: .normal)
         findPasswordButton.addTarget(self, action: #selector(findPasswordButtonDidTapped), for: .touchUpInside)
@@ -90,13 +90,14 @@ class SignInViewController: UIViewController {
     }
     
     @objc private func didReceiveKeyboardNotification(_ sender: Notification) {
-        
+            
         switch sender.name {
             case UIResponder.keyboardWillShowNotification:
                 guard let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-                let keyboardRectangle = keyboardFrame.cgRectValue
+                let keyboardFrameRect = keyboardFrame.cgRectValue
+                
                 UIView.animate(withDuration: 0.3) {
-                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardRectangle.height + 30)
+                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardFrameRect.height + 16)
                 }
                 
             case UIResponder.keyboardWillHideNotification :
@@ -107,7 +108,6 @@ class SignInViewController: UIViewController {
     }
     
     @objc private func textDidChanged(_ sender: UITextField) {
-        // 구조체를 하나만 생성하는게 맞는지...모르겠네..
         
         switch sender.superview {
             case emailInputView:
@@ -124,43 +124,42 @@ class SignInViewController: UIViewController {
     @objc private func findPasswordButtonDidTapped() {
         
         let findPwVC = FindPasswordViewController()
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(findPwVC, animated: true)
     }
     
     @objc private func completeButtonDidTapped() {
-        
-        let okAlert = SimpleAlert(message: "이메일 또는 비밀번호를\n확인해주세요 😮")
-        present(okAlert, animated: true)
+        self.dismiss(animated: true)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
+      }
     
     // MARK: - Setting Constraints
     
     private func setConstraints() {
         
         loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(view).offset(130)
-            make.leading.equalTo(view).offset(20)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
         }
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(loginLabel).offset(70)
-            make.leading.trailing.equalTo(view).inset(20)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
         passwordInputView.snp.makeConstraints { make in
             make.top.equalTo(emailInputView.snp.bottom).offset(40)
-            make.leading.trailing.equalTo(view).inset(20)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
-        //        pwSecureToggleButton.snp.makeConstraints { make in
-        //            make.trailing.equalTo(passwordInputView)
-        //            make.bottom.equalTo(passwordInputView).offset(-15)
-        //        }
-        
         completeButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(50)
-            make.leading.trailing.equalTo(view).inset(20)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
@@ -171,6 +170,7 @@ class SignInViewController: UIViewController {
     }
 }
 // MARK: - UITextFieldDelegate
+
 extension SignInViewController: UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -178,10 +178,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .brandDark)
+                emailInputView.setUnderlineColor(as: .keyColor1)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .brandDark)
+                passwordInputView.setUnderlineColor(as: .keyColor1)
                 
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -195,10 +195,10 @@ extension SignInViewController: UITextFieldDelegate {
         switch textField.superview {
             case emailInputView:
                 
-                emailInputView.setUnderlineColor(as: .brandLight)
+                emailInputView.setUnderlineColor(as: .keyColor3)
             case passwordInputView:
                 
-                passwordInputView.setUnderlineColor(as: .brandLight)
+                passwordInputView.setUnderlineColor(as: .keyColor3)
             default:
                 return true
         }
@@ -208,18 +208,18 @@ extension SignInViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField.superview {
             case emailInputView:
-                
                 passwordInputView.getInputField().becomeFirstResponder()
             case passwordInputView:
                 
-                completeButtonDidTapped()
+                if completeButton.isUserInteractionEnabled {
+                    completeButtonDidTapped()
+                } else {
+                    let alert = SimpleAlert(message: "이메일 또는 비밀번호를 확인해주세요 😮")
+                    present(alert, animated: true)
+                }
             default:
                 return true
         }
-        return true
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return true
     }
 }
@@ -228,6 +228,5 @@ extension SignInViewController: formViewModel {
     func formUpdate() {
         completeButton.isUserInteractionEnabled = loginViewModel.formIsValid
         completeButton.isUserInteractionEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
-        
     }
 }
