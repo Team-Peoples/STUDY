@@ -70,9 +70,11 @@ final class MyPageMainViewController: UIViewController {
         
         let nextVC = AccountManagementViewController()
         nextVC.email = "sem789456@gmail.com"
-        nextVC.nickName = "사람개발자살려~"
+        nextVC.nickName = "사람개발자살려"
+        nextVC.sns = .naver
+        nextVC.modalPresentationStyle = .fullScreen
         
-        navigationController?.pushViewController(nextVC, animated: true)
+        present(nextVC, animated: true)
     }
     
     private func giveShadow() {

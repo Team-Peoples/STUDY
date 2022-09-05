@@ -218,7 +218,7 @@ class SignUpViewController: UIViewController {
         case passwordInputField:
 
             if let password = textField.text {
-                let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{5,}", options: .regularExpression)
+                let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!.?@#$%^&*()_+=-]).{5,}", options: .regularExpression)
                 passwordValidationOkay = range != nil ? true : false
             }
         case checkInputField:

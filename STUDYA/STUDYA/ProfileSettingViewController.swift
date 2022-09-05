@@ -31,8 +31,8 @@ class ProfileSettingViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
         
-        profileImageSelectorView.addGestureRecognizer(tapGesture)
-        profileImageSelectorView.isUserInteractionEnabled = true
+        plusCircleView.addGestureRecognizer(tapGesture)
+        plusCircleView.isUserInteractionEnabled = true
         
         doneButton.isEnabled = false
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
