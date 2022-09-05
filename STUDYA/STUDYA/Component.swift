@@ -626,3 +626,42 @@ final class RoundedNumberField: UITextField {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+final class PurpleRoundedInputField: UITextField {
+    
+    init(target: AnyObject?, action: Selector) {
+        super.init(frame: .zero)
+        
+        backgroundColor = UIColor.appColor(.background)
+        textColor = UIColor.appColor(.ppsGray1)
+        leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        leftViewMode = .always
+        isSecureTextEntry = true
+        addRightViewOnField(target: target, action: action)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+        setHeight(40)
+    }
+    
+    private func addRightViewOnField(target: AnyObject?, action: Selector) {
+        
+        let rightButton = UIButton(frame: .zero)
+        
+        rightButton.tintColor = UIColor.appColor(.keyColor3)
+        rightButton.addTarget(target, action: action, for: .touchUpInside)
+    
+        rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
+        rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
+        
+        rightView = rightButton
+        rightViewMode = .always
+    }
+}
