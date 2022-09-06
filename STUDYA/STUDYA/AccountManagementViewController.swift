@@ -137,7 +137,7 @@ final class AccountManagementViewController: UIViewController {
     }()
     private let newPasswordCheckLabel = CustomLabel(title: "비밀번호 확인", tintColor: .ppsBlack, size: 16)
     private lazy var newPasswordCheckField = PurpleRoundedInputField(target: self, action: #selector(toggleIsSecure))
-    private let newPasswordCheckValidationLabel = CustomLabel(title: "", tintColor: .subColor1, size: 12)
+    private let newPasswordCheckValidationLabel = CustomLabel(title: "비밀번호가 맞지 않아요.", tintColor: .ppsBlack, size: 12)
     private lazy var newPasswordCheckStackView: UIStackView = {
         
          let view = UIStackView(arrangedSubviews: [newPasswordCheckLabel, newPasswordCheckField, newPasswordCheckValidationLabel])
@@ -200,12 +200,14 @@ final class AccountManagementViewController: UIViewController {
         setScrollView()
         setNaviBar()
         addSubviews()
+        enableScroll()
         
         oldPasswordInputField.rightView?.tag = 0
         newPasswordField.rightView?.tag = 1
         newPasswordCheckField.rightView?.tag = 2
         
-        enableScroll()
+        disableNewPasswordFields()
+        newPasswordCheckValidationLabel.textColor = .systemBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -297,6 +299,46 @@ final class AccountManagementViewController: UIViewController {
         navigationController?.pushViewController(ByeViewController(), animated: true)
     }
     
+    @objc func onKeyboardAppear(_ notification: NSNotification) {
+        
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardFrame.cgRectValue
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        
+        scrollView.contentInset = insets
+        scrollView.scrollIndicatorInsets = insets
+        
+        var viewFrame = self.view.frame
+
+        viewFrame.size.height -= keyboardSize.height
+
+        let activeField: UITextField? = [nickNameField, oldPasswordInputField, newPasswordField, newPasswordCheckField].first { $0.isFirstResponder }
+
+        if let activeField = activeField {
+
+            if !viewFrame.contains(activeField.frame.origin) {
+
+                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
+
+                scrollView.setContentOffset(scrollPoint, animated: true)
+            }
+        }
+    }
+    
+    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+    
     private func setupImagePicker() {
         
         var configuration = PHPickerConfiguration()
@@ -366,42 +408,6 @@ final class AccountManagementViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
-        
-        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        
-        let keyboardSize = keyboardFrame.cgRectValue
-        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-        
-        scrollView.contentInset = insets
-        scrollView.scrollIndicatorInsets = insets
-        
-        var viewFrame = self.view.frame
-
-        viewFrame.size.height -= keyboardSize.height
-
-        let activeField: UITextField? = [nickNameField, oldPasswordInputField, newPasswordField, newPasswordCheckField].first { $0.isFirstResponder }
-
-        if let activeField = activeField {
-
-            if !viewFrame.contains(activeField.frame.origin) {
-
-                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
-
-                scrollView.setContentOffset(scrollPoint, animated: true)
-            }
-        }
-    }
-    
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
-    }
-    
-    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
-    }
-    
     private func validateCheck(_ textField: UITextField) {
         
         switch textField {
@@ -440,6 +446,49 @@ final class AccountManagementViewController: UIViewController {
         } else {
             saveButtonOkay = profileImageChangeOkay || nickName != nickNameField.text ? true : false
         }
+    }
+    
+    private func checkNewPasswordValidationLabel() {
+        if newPasswordValidationOkay {
+            newPasswordValidationLabel.textColor = .systemBackground
+        } else {
+            let text = newPasswordField.text
+            
+            newPasswordValidationLabel.textColor = text == "" ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
+        }
+    }
+    
+    private func checkNewPasswordCheckValidationLabel() {
+        if newPasswordCheckValidationOkay {
+            newPasswordCheckValidationLabel.textColor = .systemBackground
+        } else {
+            let text = newPasswordCheckField.text
+            
+            newPasswordCheckValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.subColor1)
+        }
+    }
+    
+    private func enableNewPasswordFields() {
+        newPasswordField.isEnabled = true
+        newPasswordField.backgroundColor = UIColor.appColor(.background)
+        
+        newPasswordCheckField.isEnabled = true
+        newPasswordCheckField.backgroundColor = UIColor.appColor(.background)
+    }
+    
+    private func disableNewPasswordFields() {
+        newPasswordField.isEnabled = false
+        newPasswordField.backgroundColor = UIColor.appColor(.ppsGray3)
+        newPasswordField.text = ""
+        
+        newPasswordCheckField.isEnabled = false
+        newPasswordCheckField.backgroundColor = UIColor.appColor(.ppsGray3)
+        newPasswordCheckField.text = ""
+        
+        passwordChangeStarted = false
+        oldPasswordValidationOkay = false
+        newPasswordValidationOkay = false
+        newPasswordCheckValidationOkay = false
     }
     
     private func enableScroll() {
@@ -501,9 +550,6 @@ final class AccountManagementViewController: UIViewController {
         containerView.addSubview(beneathStackView)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
 }
 
 extension AccountManagementViewController: PHPickerViewControllerDelegate {
@@ -566,25 +612,40 @@ extension AccountManagementViewController: UITextFieldDelegate {
         
         return true
     }
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        switch textField {
-//        case nickNameField:
-//            checkSaveButtonPossible()
-//        case oldPasswordInputField:
-//
-//            validateCheck(textField)
-//            checkSaveButtonPossible()
-//
-//        case newPasswordField:
-//
-//            validateCheck(textField)
-//            checkSaveButtonPossible()
-//
-//        case newPasswordCheckField:
-//
-//            validateCheck(textField)
-//            checkSaveButtonPossible()
-//        default: break
-//        }
-//    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case nickNameField:
+            checkSaveButtonPossible()
+        case oldPasswordInputField:
+            if textField.text != "" {
+                
+                passwordChangeStarted = true
+                enableNewPasswordFields()
+                validateCheck(textField)
+                checkSaveButtonPossible()
+            } else {
+                
+                passwordChangeStarted = false
+                disableNewPasswordFields()
+                checkSaveButtonPossible()
+            }
+            
+        case newPasswordField:
+
+            validateCheck(textField)
+            validateCheck(newPasswordCheckField)
+            checkNewPasswordValidationLabel()
+            checkNewPasswordCheckValidationLabel()
+            checkSaveButtonPossible()
+
+        case newPasswordCheckField:
+
+            validateCheck(textField)
+            checkNewPasswordCheckValidationLabel()
+            
+            checkSaveButtonPossible()
+        default: break
+        }
+    }
 }
