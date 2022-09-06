@@ -179,7 +179,7 @@ class AttendanceRuleTableViewController: UITableViewController {
 extension AttendanceRuleTableViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let lateMinuteText = lateMinuteTextField.text, let absentMinuteText = absentMinuteTextField.text else { return }
-        if lateMinuteText != "--" && absentMinuteText != "--" {
+        if lateMinuteText != "--" || absentMinuteText != "--" {
             depositDimmingView.isHidden = true
             penaltyDimmingView.isHidden = true
         } else {
