@@ -18,6 +18,8 @@ class MakingDetailStudyRuleViewController: UIViewController {
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
     
+    private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttendanceRuleTableViewController")
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,10 +82,15 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.row {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
-            
-            return cell
-            
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
+                
+                cell.addSubview(vc.view)
+                vc.view.snp.makeConstraints { make in
+                    make.edges.equalTo(cell)
+                }
+                
+                return cell
+                
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as! ExcommunicationRuleCollectionViewCell
             return cell

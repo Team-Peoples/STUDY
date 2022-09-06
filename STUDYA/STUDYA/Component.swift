@@ -17,7 +17,13 @@ final class CustomButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        
+        layer.borderColor = UIColor.appColor(.keyColor1).cgColor
+        layer.borderWidth = 1
+        layer.cornerRadius = 50 / 2
+      
+        backgroundColor = .systemBackground
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
@@ -613,8 +619,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     let strArray: [String] = {
        
-        let intArray: [Int] = Array(1...99)
-        var array = intArray.map{ String($0) }
+        var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
         
         return array
@@ -644,7 +649,18 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+        
+        delegate = self
+
+        backgroundColor = UIColor.appColor(.background)
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.ppsGray1)
+        textAlignment = .center
+        text = "--"
+
+        setPicker()
+        
     }
     
     override func setNeedsLayout() {
@@ -751,7 +767,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     // pickerview의 선택지는 데이터의 개수만큼
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        99
+        100
     }
     
     // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.
