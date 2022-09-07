@@ -41,6 +41,7 @@ class AttendanceRuleTableViewController: UITableViewController {
         setLatePenaltyTextField()
         setAbsentPenaltyTextField()
         setDepositTextField()
+        disableMoneyRelatedFields()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -101,6 +102,7 @@ class AttendanceRuleTableViewController: UITableViewController {
         latePenaltyTextField.textAlignment = .right
         latePenaltyTextField.clipsToBounds = true
         latePenaltyTextField.layer.cornerRadius = 42 / 2
+        latePenaltyTextField.keyboardType = .numberPad
     }
     
     private func setAbsentPenaltyTextField() {
@@ -115,6 +117,7 @@ class AttendanceRuleTableViewController: UITableViewController {
         absentPenaltyTextField.textAlignment = .right
         absentPenaltyTextField.clipsToBounds = true
         absentPenaltyTextField.layer.cornerRadius = 42 / 2
+        absentPenaltyTextField.keyboardType = .numberPad
     }
     
     private func setDepositTextField() {
@@ -129,7 +132,23 @@ class AttendanceRuleTableViewController: UITableViewController {
         depositTextField.textAlignment = .right
         depositTextField.clipsToBounds = true
         depositTextField.layer.cornerRadius = 42 / 2
+        depositTextField.keyboardType = .numberPad
     }
+    
+    private func enableMoneyRelatedFields() {
+        perLateMinuteTextField.isEnabled = true
+        latePenaltyTextField.isEnabled = true
+        absentPenaltyTextField.isEnabled = true
+        depositTextField.isEnabled = true
+    }
+    
+    private func disableMoneyRelatedFields() {
+        perLateMinuteTextField.isEnabled = false
+        latePenaltyTextField.isEnabled = false
+        absentPenaltyTextField.isEnabled = false
+        depositTextField.isEnabled = false
+    }
+    
     @IBAction func doneButtonDidTapped(_ sender: Any) {
         print(#function)
     }
@@ -178,15 +197,17 @@ extension AttendanceRuleTableViewController: UITextFieldDelegate {
         if lateMinuteText != "--" || absentMinuteText != "--" {
             depositDimmingView.isHidden = true
             penaltyDimmingView.isHidden = true
+            enableMoneyRelatedFields()
+            
         } else {
             depositDimmingView.isHidden = false
             penaltyDimmingView.isHidden = false
+            disableMoneyRelatedFields()
             
             perLateMinuteTextField.text = "--"
             depositTextField.text = "0"
             latePenaltyTextField.text = "0"
             absentPenaltyTextField.text = "0"
-            
         }
         
         if textField == latePenaltyTextField || textField == absentPenaltyTextField || textField == depositTextField {

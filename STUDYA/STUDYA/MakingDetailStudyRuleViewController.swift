@@ -27,7 +27,7 @@ class MakingDetailStudyRuleViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.isScrollEnabled = true
+        collectionView.isScrollEnabled = false
         
         collectionView.register(AttendanceRuleCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceRuleCollectionViewCell.identifier)
         collectionView.register(ExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier)
