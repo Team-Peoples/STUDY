@@ -25,40 +25,16 @@ class AttendanceRuleTableViewController: UITableViewController {
     @IBOutlet weak var depositDimmingView: UIView!
     
     private var keyboardFrameHeight: CGFloat = 0
+    var bottomConst: ConstraintItem?
     
-    lazy var toastMessage: UIView = {
-        let v = UIView(frame: CGRect(x: (self.view.frame.width - 340) / 2, y: self.view.frame.height - keyboardFrameHeight - 42 - 7, width: 340, height: 42))
-        let imageView = UIImageView(image: UIImage(named: "emailCheck"))
-        let label = UILabel()
-        
-        v.backgroundColor = .appColor(.ppsBlack)
-        v.layer.cornerRadius = 5
-        
-        label.text = "먼저 지각 규칙을 입력해주세요."
-        label.font = UIFont.boldSystemFont(ofSize: 12)
-        label.textColor = .white
-        
-        v.addSubview(imageView)
-        v.addSubview(label)
-        
-        imageView.snp.makeConstraints { make in
-            make.leading.equalTo(v).inset(7)
-            make.centerY.equalTo(v)
-        }
-        
-        label.snp.makeConstraints { make in
-            make.leading.equalTo(imageView.snp.trailing).offset(10)
-            make.centerY.equalTo(v)
-        }
-    
-        return v
-    }()
+    lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "emailCheck")
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addTapGestureRecognizers()
+        
         lateMinuteTextField.delegate = self
         absentMinuteTextField.delegate = self
         
@@ -68,6 +44,18 @@ class AttendanceRuleTableViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        view.addSubview(toastMessage)
+        toastMessage.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.width.equalTo(view.frame.width - 14)
+            make.height.equalTo(42)
+            make.bottom.equalTo(bottomConst!).offset(-keyboardFrameHeight + 100)
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -149,18 +137,26 @@ class AttendanceRuleTableViewController: UITableViewController {
     @objc func dimmingViewDidTapped() {
         penaltyDimmingView.isUserInteractionEnabled = false
         depositDimmingView.isUserInteractionEnabled = false
-        
-        UIView.animate(withDuration: 5.0, delay: 0, options: .curveEaseInOut, animations: { [self] in
-           
-            view.addSubview(self.toastMessage)
-            toastMessage.alpha = 0
-        }, completion: { [self] _ in
-            toastMessage.removeFromSuperview()
-            
-            toastMessage.alpha = 1
-            penaltyDimmingView.isUserInteractionEnabled = true
-            depositDimmingView.isUserInteractionEnabled = true
-        })
+ 
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
+            toastMessage.snp.updateConstraints { make in
+                make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-50)
+            }
+            view.layoutIfNeeded()
+
+        } completion: { _ in
+            UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
+                self.toastMessage.alpha = 0
+            } completion: {[self] _ in
+                toastMessage.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.bottomConst!).offset(100)
+                }
+                toastMessage.alpha = 0.9
+                penaltyDimmingView.isUserInteractionEnabled = true
+                depositDimmingView.isUserInteractionEnabled = true
+            }
+        }
+
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {

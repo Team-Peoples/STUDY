@@ -184,8 +184,8 @@
         <scene sceneID="OlK-3U-R84">
             <objects>
                 <tableViewController storyboardIdentifier="AttendanceRuleTableViewController" id="dhe-LV-ocZ" customClass="AttendanceRuleTableViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="ISI-9j-asv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="1056"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="ISI-9j-asv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="975"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -501,7 +501,7 @@
                             <outlet property="delegate" destination="dhe-LV-ocZ" id="CUL-6v-pkH"/>
                         </connections>
                     </tableView>
-                    <size key="freeformSize" width="414" height="1056"/>
+                    <size key="freeformSize" width="414" height="975"/>
                     <connections>
                         <outlet property="absentMinuteTextField" destination="L07-KW-jej" id="hDZ-T6-C70"/>
                         <outlet property="absentPenaltyTextField" destination="x7E-3e-ASz" id="IRR-Bv-wYw"/>
@@ -515,7 +515,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Crc-IM-fQz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1640.5797101449277" y="165.40178571428569"/>
+            <point key="canvasLocation" x="1640.5797101449277" y="138.28125"/>
         </scene>
         <!--Writing How To Proceed Study View Controller-->
         <scene sceneID="RWJ-5d-CSQ">

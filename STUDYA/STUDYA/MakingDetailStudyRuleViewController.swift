@@ -18,7 +18,7 @@ class MakingDetailStudyRuleViewController: UIViewController {
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
     
-    private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttendanceRuleTableViewController")
+    private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttendanceRuleTableViewController") as! AttendanceRuleTableViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +88,7 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
                 vc.view.snp.makeConstraints { make in
                     make.edges.equalTo(cell)
                 }
-                
+                vc.bottomConst = cell.snp.bottom
                 return cell
                 
         case 1:
@@ -106,7 +106,6 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
 
 extension MakingDetailStudyRuleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print(collectionView.frame.size)
         return collectionView.frame.size
     }
 }

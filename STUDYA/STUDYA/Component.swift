@@ -634,7 +634,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         delegate = self
         
-        configure(enable: enable, centerAlign: centerAlign)
+        configure(centerAlign: centerAlign)
         isNecessaryField = isNecessary
         
         if let placeholder = numPlaceholder {
@@ -670,14 +670,13 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         setHeight(42)
     }
     
-    private func configure(enable: Bool, centerAlign: Bool) {
-        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.ppsGray3)
-        isEnabled = enable ? true : false
+    private func configure(centerAlign: Bool) {
+        backgroundColor = UIColor.appColor(.background)
         font = .boldSystemFont(ofSize: 20)
         textColor = UIColor.appColor(.ppsGray1)
         textAlignment = centerAlign ? .center : .right
         rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        rightViewMode = .always
+        rightViewMode =  centerAlign ? .never : .always
     }
     
     private func setPicker() {
@@ -773,6 +772,43 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         strArray[row]
+    }
+}
+
+class ToastMessage: UIView {
+    
+    private var messageLabel = UILabel()
+    private var messageImageView = UIImageView()
+    
+    init(message: String, messageColor: AssetColor, messageSize: CGFloat, image: String) {
+        super.init(frame: .zero)
+        
+        messageLabel = CustomLabel(title: message, tintColor: messageColor, size: messageSize, isBold: true, isNecessaryTitle: false)
+        messageImageView = UIImageView(image: UIImage(named: image))
+        
+        self.addSubview(messageImageView)
+        self.addSubview(messageLabel)
+        
+        self.layer.cornerRadius = 5
+        self.backgroundColor = .appColor(.ppsBlack)
+        
+        messageImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.leading.equalTo(self).offset(10)
+        }
+        
+        messageLabel.snp.makeConstraints { make in
+            make.leading.equalTo(messageImageView.snp.trailing).offset(10)
+            make.centerY.equalTo(self)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func update(alpha: CGFloat, of view: UIView) {
+        view.alpha = alpha
     }
 }
 

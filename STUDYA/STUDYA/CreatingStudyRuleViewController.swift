@@ -24,7 +24,8 @@ class CreatingStudyRuleViewController: UIViewController {
         
         titleLabel.anchor(top: v.topAnchor, topConstant: 22, leading: v.leadingAnchor, leadingConstant: 27)
         subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 1, leading: titleLabel.leadingAnchor)
-        disclosureIndicator.anchor(top: v.topAnchor, topConstant: 29, bottom: v.bottomAnchor, bottomConstant: 29, trailing: v.trailingAnchor, trailingConstant: 15)
+        disclosureIndicator.anchor(trailing: v.trailingAnchor, trailingConstant: 15)
+        disclosureIndicator.centerY(inView: v)
         
         v.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         v.layer.borderWidth = 1
@@ -49,7 +50,8 @@ class CreatingStudyRuleViewController: UIViewController {
         
         titleLabel.anchor(top: v.topAnchor, topConstant: 22, leading: v.leadingAnchor, leadingConstant: 27)
         subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 1, leading: titleLabel.leadingAnchor)
-        disclosureIndicator.anchor(top: v.topAnchor, topConstant: 29, bottom: v.bottomAnchor, bottomConstant: 29, trailing: v.trailingAnchor, trailingConstant: 15)
+        disclosureIndicator.anchor(trailing: v.trailingAnchor, trailingConstant: 15)
+        disclosureIndicator.centerY(inView: v)
         
         v.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         v.layer.borderWidth = 1
