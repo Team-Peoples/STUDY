@@ -118,7 +118,7 @@ final class SignInViewController: UIViewController {
                 break
         }
         
-        formUpdate()
+        buttonStateUpdate()
     }
     
     @objc private func findPasswordButtonDidTapped() {
@@ -224,9 +224,9 @@ extension SignInViewController: UITextFieldDelegate {
     }
 }
 
-extension SignInViewController: formViewModel {
-    func formUpdate() {
-        completeButton.isUserInteractionEnabled = loginViewModel.formIsValid
-        completeButton.isUserInteractionEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
+extension SignInViewController: DoneButtonStateModel {
+    func buttonStateUpdate() {
+        completeButton.isEnabled = loginViewModel.formIsValid
+        completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
     }
 }

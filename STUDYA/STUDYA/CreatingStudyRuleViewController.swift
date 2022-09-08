@@ -10,7 +10,7 @@ import UIKit
 class CreatingStudyRuleViewController: UIViewController {
 
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
-    private lazy var settingGeneralStudyRuleView: UIView = {
+    private lazy var settingStudyGeneralRuleView: UIView = {
         
         let v = UIView()
         
@@ -36,7 +36,8 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return v
     }()
-    private lazy var settingStudyRuleDetailView: UIView = {
+    
+    private lazy var settingStudyFreeRuleView: UIView = {
         
         let v = UIView()
         
@@ -58,10 +59,11 @@ class CreatingStudyRuleViewController: UIViewController {
         v.layer.cornerRadius = 24
         
         v.isUserInteractionEnabled = true
-        v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(detailRuleViewTapped)))
-        // general을 바꾸던지 detail을 바꾸던지.
+        v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(freeRuleViewTapped)))
+        
         return v
     }()
+    
     private let descriptionLabel: CustomLabel = {
         
         let label = CustomLabel(title: "", tintColor: .keyColor2, size: 14)
@@ -73,6 +75,7 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return label
     }()
+    
     private lazy var doneButton: CustomButton = {
        
         let button = CustomButton(title: "다음", isBold: true, isFill: false)
@@ -81,6 +84,21 @@ class CreatingStudyRuleViewController: UIViewController {
         return button
     }()
     
+    var ruleViewModel: RuleViewModel? {
+        didSet {
+            if (ruleViewModel?.generalStudyRule) != nil {
+                changeBorder(color: .keyColor1, of: settingStudyGeneralRuleView)
+            } else {
+                changeBorder(color: .ppsGray2, of: settingStudyGeneralRuleView)
+            }
+            
+            if ruleViewModel?.freeStudyRule != nil {
+                changeBorder(color: .keyColor1, of: settingStudyFreeRuleView)
+            } else {
+                changeBorder(color: .ppsGray2, of: settingStudyFreeRuleView)
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,9 +107,7 @@ class CreatingStudyRuleViewController: UIViewController {
         title = "스터디 만들기"
         
         addsubViews()
-//        settingGeneralStudyRuleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(generalRuleViewTapped)))
-//        settingStudyRuleDetailView.add
-        colorBorder(of: settingStudyRuleDetailView)
+        settingStudyGeneralRuleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(generalRuleViewTapped)))
     }
     
     override func viewDidLayoutSubviews() {
@@ -103,14 +119,19 @@ class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "MakingDetailStudyRuleViewController")
+        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
+        vc.generalStudyRule = ruleViewModel?.generalStudyRule
         vc.modalPresentationStyle = .automatic
         present(vc, animated: true)
-//        show(MakingDetailStudyRuleViewController(), sender: nil)
     }
     
-    @objc private func detailRuleViewTapped() {
-     let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "WritingHowToProceedStudyViewController")
+    @objc private func freeRuleViewTapped() {
+     let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
+        vc.freeStudyRule = ruleViewModel?.freeStudyRule
+        
+        vc.completion = { rule in
+            self.ruleViewModel?.freeStudyRule = rule
+        }
         present(vc, animated: true)
     }
     
@@ -118,22 +139,22 @@ class CreatingStudyRuleViewController: UIViewController {
         print(#function)
     }
     
-    private func colorBorder(of settingView: UIView) {
-        settingView.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
+    private func changeBorder(color: AssetColor, of settingView: UIView) {
+        settingView.layer.borderColor = UIColor.appColor(color).cgColor
     }
     
     private func addsubViews() {
         view.addSubview(titleLabel)
-        view.addSubview(settingGeneralStudyRuleView)
-        view.addSubview(settingStudyRuleDetailView)
+        view.addSubview(settingStudyGeneralRuleView)
+        view.addSubview(settingStudyFreeRuleView)
         view.addSubview(descriptionLabel)
         view.addSubview(doneButton)
     }
     
     private func setConstraints() {
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 50, leading: view.leadingAnchor, leadingConstant: 17)
-        settingGeneralStudyRuleView.anchor(top: titleLabel.bottomAnchor, topConstant: 40, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
-        settingStudyRuleDetailView.anchor(top: settingGeneralStudyRuleView.bottomAnchor, topConstant: 20, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
+        settingStudyGeneralRuleView.anchor(top: titleLabel.bottomAnchor, topConstant: 40, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
+        settingStudyFreeRuleView.anchor(top: settingStudyGeneralRuleView.bottomAnchor, topConstant: 20, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
         descriptionLabel.anchor(bottom: doneButton.topAnchor, bottomConstant: 21)
         descriptionLabel.centerX(inView: view)
         doneButton.anchor(bottom: view.bottomAnchor, bottomConstant: 40, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)

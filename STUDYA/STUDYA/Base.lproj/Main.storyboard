@@ -24,12 +24,12 @@
             </objects>
             <point key="canvasLocation" x="139" y="125"/>
         </scene>
-        <!--Making Detail Study Rule View Controller-->
+        <!--Study General Rule View Controller-->
         <scene sceneID="Cja-RO-R89">
             <objects>
-                <viewController storyboardIdentifier="MakingDetailStudyRuleViewController" id="LRo-Cd-Chu" customClass="MakingDetailStudyRuleViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StudyGeneralRuleViewController" id="LRo-Cd-Chu" customClass="StudyGeneralRuleViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MvQ-e3-8Ut">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPP-1h-mKl">
@@ -165,7 +165,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pEL-Ec-jRB"/>
-                    <size key="freeformSize" width="414" height="896"/>
+                    <size key="freeformSize" width="414" height="872"/>
                     <connections>
                         <outlet property="cancelButton" destination="e0J-rk-PiU" id="e0g-Mu-OFQ"/>
                         <outlet property="collectionView" destination="Xj4-dt-g0B" id="GLQ-Or-HkE"/>
@@ -178,14 +178,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P4C-Jo-5Kj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="971.01449275362324" y="124.55357142857142"/>
+            <point key="canvasLocation" x="971.01449275362324" y="116.51785714285714"/>
         </scene>
-        <!--Attendance Rule Table View Controller-->
+        <!--Study General Rule Attendance Table View Controller-->
         <scene sceneID="OlK-3U-R84">
             <objects>
-                <tableViewController storyboardIdentifier="AttendanceRuleTableViewController" id="dhe-LV-ocZ" customClass="AttendanceRuleTableViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="StudyGeneralRuleAttendanceTableViewController" id="dhe-LV-ocZ" customClass="StudyGeneralRuleAttendanceTableViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" sectionFooterHeight="-1" id="ISI-9j-asv">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="975"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="892"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -459,68 +459,32 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="Tdv-u8-VnW">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="70" id="AET-fi-6SI">
-                                        <rect key="frame" x="0.0" y="781.5" width="414" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="AET-fi-6SI" id="DOa-So-grm">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s1V-1z-cln" customClass="CustomButton" customModule="STUDYA" customModuleProvider="target">
-                                                    <rect key="frame" x="47" y="0.0" width="320" height="50"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="UMj-9i-ZZm"/>
-                                                        <constraint firstAttribute="width" constant="320" id="fPl-UG-CXM"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="완료">
-                                                        <fontDescription key="titleFontDescription" type="boldSystem" pointSize="20"/>
-                                                        <color key="baseForegroundColor" name="keyColor1"/>
-                                                    </buttonConfiguration>
-                                                    <connections>
-                                                        <action selector="doneButtonDidTapped:" destination="dhe-LV-ocZ" eventType="touchUpInside" id="pm8-VV-BT4"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="s1V-1z-cln" firstAttribute="centerX" secondItem="DOa-So-grm" secondAttribute="centerX" id="bS4-NW-1xZ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <constraints>
-                                            <constraint firstItem="s1V-1z-cln" firstAttribute="top" secondItem="AET-fi-6SI" secondAttribute="top" id="an9-JH-G0g"/>
-                                        </constraints>
-                                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="dhe-LV-ocZ" id="bgl-e2-364"/>
                             <outlet property="delegate" destination="dhe-LV-ocZ" id="CUL-6v-pkH"/>
                         </connections>
                     </tableView>
-                    <size key="freeformSize" width="414" height="975"/>
+                    <size key="freeformSize" width="414" height="892"/>
                     <connections>
-                        <outlet property="absentMinuteTextField" destination="L07-KW-jej" id="hDZ-T6-C70"/>
+                        <outlet property="absenceRuleTimeField" destination="L07-KW-jej" id="hDZ-T6-C70"/>
                         <outlet property="absentPenaltyTextField" destination="x7E-3e-ASz" id="IRR-Bv-wYw"/>
                         <outlet property="depositDimmingView" destination="PLu-Hi-clw" id="y5r-wF-xWo"/>
                         <outlet property="depositTextField" destination="SaT-PR-QyN" id="6ZJ-Wq-l9B"/>
-                        <outlet property="lateMinuteTextField" destination="MlF-JN-FxP" id="L5B-tU-3RR"/>
                         <outlet property="latePenaltyTextField" destination="b8g-Nu-XAz" id="y9C-1N-DkG"/>
+                        <outlet property="lateRuleTimeField" destination="MlF-JN-FxP" id="L5B-tU-3RR"/>
                         <outlet property="penaltyDimmingView" destination="T6s-nZ-Rqf" id="tDi-Om-qYp"/>
-                        <outlet property="perLateMinuteTextField" destination="bdD-I3-EGL" id="zjl-Ot-kcU"/>
+                        <outlet property="perLateMinuteField" destination="bdD-I3-EGL" id="zjl-Ot-kcU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Crc-IM-fQz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1640.5797101449277" y="138.28125"/>
+            <point key="canvasLocation" x="1640.5797101449277" y="110.49107142857143"/>
         </scene>
-        <!--Writing How To Proceed Study View Controller-->
+        <!--Study Free Rule View Controller-->
         <scene sceneID="RWJ-5d-CSQ">
             <objects>
-                <viewController storyboardIdentifier="WritingHowToProceedStudyViewController" id="cSp-IO-dlv" customClass="WritingHowToProceedStudyViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StudyFreeRuleViewController" id="cSp-IO-dlv" customClass="StudyFreeRuleViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pV6-cG-2S7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

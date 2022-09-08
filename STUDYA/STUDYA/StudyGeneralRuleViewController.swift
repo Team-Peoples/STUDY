@@ -1,5 +1,5 @@
 //
-//  MakingDetailStudyRuleViewController.swift
+//  StudyGeneralRuleViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/09/01.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MakingDetailStudyRuleViewController: UIViewController {
+class StudyGeneralRuleViewController: UIViewController {
     
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var leftLabel: UILabel!
@@ -18,7 +18,9 @@ class MakingDetailStudyRuleViewController: UIViewController {
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
     
-    private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "AttendanceRuleTableViewController") as! AttendanceRuleTableViewController
+    private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyGeneralRuleAttendanceTableViewController") as! StudyGeneralRuleAttendanceTableViewController
+    
+    var generalStudyRule: GeneralStudyRule?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,7 @@ class MakingDetailStudyRuleViewController: UIViewController {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         dismiss(animated: true)
     }
+    
     @IBAction func leftButtonTapped(_ sender: Any) {
         leftCenterXConstraint.priority = .required
         rightCenterXConstraint.priority = .defaultHigh
@@ -70,17 +73,16 @@ class MakingDetailStudyRuleViewController: UIViewController {
             self.leftLabel.textColor = UIColor.appColor(.ppsGray2)
             self.rightLabel.textColor = UIColor.appColor(.ppsBlack)
         }
-        
     }
 }
 
-extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
+extension StudyGeneralRuleViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.row {
+        switch indexPath.item {
         case 0:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
                 
@@ -88,7 +90,9 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
                 vc.view.snp.makeConstraints { make in
                     make.edges.equalTo(cell)
                 }
-                vc.bottomConst = cell.snp.bottom
+                vc.bottomConst = cell.safeAreaLayoutGuide.snp.bottom
+                vc.studyGeneralRuleViewDelegate  = self
+                vc.attendanceRuleViewModel.attendanceRule = generalStudyRule?.attendanceRule
                 return cell
                 
         case 1:
@@ -100,12 +104,20 @@ extension MakingDetailStudyRuleViewController: UICollectionViewDataSource {
         
         return UICollectionViewCell()
     }
-    
-    
 }
 
-extension MakingDetailStudyRuleViewController: UICollectionViewDelegateFlowLayout {
+extension StudyGeneralRuleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size
+    }
+}
+
+protocol StudyGeneralRuleViewDelegate: AnyObject {
+    func updateData(rule: GeneralStudyRule)
+}
+
+extension StudyGeneralRuleViewController: StudyGeneralRuleViewDelegate {
+    func updateData(rule: GeneralStudyRule) {
+        self.dismiss(animated: true)
     }
 }

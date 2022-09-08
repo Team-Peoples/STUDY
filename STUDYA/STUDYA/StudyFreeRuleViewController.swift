@@ -1,5 +1,5 @@
 //
-//  WritingHowToProceedStudyViewController.swift
+//  StudyFreeRuleViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/09/02.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class WritingHowToProceedStudyViewController: UIViewController {
+class StudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
@@ -20,6 +20,8 @@ class WritingHowToProceedStudyViewController: UIViewController {
     private let completeButton = CustomButton(title: "완료", isBold: true, size: 20, height: 50)
     private var isRepeat: Bool = false
     
+    var freeStudyRule: FreeStudyRule?
+    var completion: ((FreeStudyRule) -> ())?
     
     // MARK: - Life Cycle
   
@@ -78,7 +80,7 @@ class WritingHowToProceedStudyViewController: UIViewController {
 
 // MARK: - UITextViewDelegate
 
-extension WritingHowToProceedStudyViewController: UITextViewDelegate {
+extension StudyFreeRuleViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = true
     }

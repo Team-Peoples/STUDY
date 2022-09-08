@@ -174,37 +174,5 @@ extension Data {
     }
 }
 
-// MARK: - Model
-///네트워크에서 쓰이는 모델
-///
-protocol Object: Encodable {
-    
-}
-
-struct Study: Object  {
-    
-}
-
-struct Schedule: Object {
-    
-}
-
-struct UserProfile: Codable {
-    let nickname: String
-    let img: Data
-}
-
-struct User: Codable {
-    let userId: String?
-    let password: String?
-    let password_check: String?
-    let nickname: String?
-}
-
-struct Credential: Encodable {
-    let userId: String
-    let password: String?
-}
-
 typealias Id = String? //스터디 아이디 또는 사용자의 아이디
 

@@ -17,13 +17,7 @@ final class CustomButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        
-        layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-        layer.borderWidth = 1
-        layer.cornerRadius = 50 / 2
-      
-        backgroundColor = .systemBackground
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
@@ -791,9 +785,11 @@ class ToastMessage: UIView {
         
         self.layer.cornerRadius = 5
         self.backgroundColor = .appColor(.ppsBlack)
+        self.alpha = 0.9
         
         messageImageView.snp.makeConstraints { make in
             make.centerY.equalTo(self)
+            make.width.height.equalTo(26)
             make.leading.equalTo(self).offset(10)
         }
         

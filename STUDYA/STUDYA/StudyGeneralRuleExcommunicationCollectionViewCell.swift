@@ -26,6 +26,8 @@ class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
         
         backgroundColor = .systemBackground
         
+        doneButton.isEnabled = false
+        
         NotificationCenter.default.addObserver(forName: Notification.Name.NecessaryNumFieldFilled, object: nil, queue: .main) { [self] noti in
             guard let textField = noti.object as? RoundedNumberField else { return }
             if textField == lateNumberField { validationCheck1 = true } else { validationCheck2 = true}
