@@ -14,23 +14,53 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
+let accessToken = "accessToken"
+let refreshToken = "refreshToken"
+let tokenHeaders: HTTPHeaders = [
+    "AccessToken": "Bearer \(accessToken)",
+    "RefreshToken": "Bearer \(refreshToken)"
+]
+
+enum HeaderContentType: String {
+    case json = "application/json"
+    case multipart = "multipart/form-data"
+}
+
 enum RequestPurpose: Requestable {
-    case signIn(Credential)
-    case signUp
-    case emailCheck(Id)
-    case create(Object)
-    case issued
+
+    //    HTTPMethod: POST
+//    case signUp(User)   ////1
+    case emailCheck(ID) ////2
+    case signIn(Credential) ////4
+    case issued ////9
+    case create(Object) ////11
+//    case postNotice(Notice)   //15
+//    case postNewSchedule(Schedule)  //21
     
-    case nicknameChange(String) // nickname
-    case profileImageChange(Id)
-    case scheduleStatusChange(String) // study Id
+    //    HTTPMethod: PUT
+//    case updateUser(User)   //6
+//    case updateStudyNotice(Notice) //16
+    case updatePinned(Notice)   //17
+    case update(Object)
+    case updateScheduleStatus(Int)  //22
+    case updateSchedule(Int)    //23
     
-    case delete(Id)
     
-    case getStudy(Id)
-    case getAllSchedule
-    case getUserSchedule
-    case getStudyLog
+    //    HTTPMethod: DELETE
+    case deleteUser(ID) ////10
+    case deleteStudyNotice(Notice)  //18
+    
+    //    HTTPMethod: GET
+    case getNewPassord(ID)  //3
+    case getUserInfo    //5
+    case getSNSToken(SNSInfo)   //7
+    case resendEmail(ID)    //8
+    case getAllStudy    //12
+    case getStudy(StudyID)  //13
+    case getAllStudyNotices(StudyID)   //14
+    case getAllSchedule ////19
+    case getUserSchedule    ////20
+    case getStudyLog    //24
 }
 
 extension RequestPurpose {
@@ -40,103 +70,125 @@ extension RequestPurpose {
     
     var path: String {
         switch self {
-            case .signUp:
-                return "/signup"
-            case .emailCheck:
-                return "/signup/verification"
-            case .signIn:
-                return "/signin"
-            case .create(let object):
-                if type(of: object) == Study.self {
-                    return "/study"
-                } else {
-                    return  "/user/schedule"
-                }
-            case .issued:
-                return "/issued"
-                
-            case .nicknameChange:
-                return "/nickname"
-            case .profileImageChange:
-                return "/user/profile/img"
-            case .scheduleStatusChange(let studyId):
-                return "/user/schedule/\(studyId)"
             
-            case .delete(let id):
-                guard let id = id else { return "/user/"}
-                return "/user/\(id)"
-                
-            case .getStudy(let id):
-                guard let id = id else { return "/study"}
-                return "/study/\(id)"
-            case .getStudyLog:
-                return "/user/history"
-            case .getAllSchedule:
-                return "/study/schedule"
-            case .getUserSchedule:
-                return "/user/schedule"
+        //    HTTPMethod: POST
+        case .emailCheck:
+            return "/signup/verification"
+        case .signIn:
+            return "/signin"
+        case .issued:
+            return "/issued"
+        case .create(let object):
+            if type(of: object) == Study.self {
+                return "/study"
+            } else if type(of: object) == Schedule.self {
+                return  "/user/schedule"
+            } else if type(of: object) == Notice.self {
+                return "/noti"
+            } else {
+                return "/signup"
+            }
+             
+        //    HTTPMethod: PUT
+        case .update(let object):
+            if type(of: object) == User.self {
+                return "/user"
+            } else {
+                return "/noti"
+            }
+        case .updatePinned(_):
+            return "/noti/pin"
+        case .updateScheduleStatus(let id):
+            return "/user/schedule/\(id)"
+        case .updateSchedule(_):
+            return "/user/schedule"
+
+        case .deleteUser(let id):
+            guard let id = id else { return "/user/"}
+            return "/user/\(id)"
+            
+        case .getStudy(let id):
+            guard let id = id else { return "/study"}
+            return "/study/\(id)"
+        case .getStudyLog:
+            return "/user/history"
+        case .getAllSchedule:
+            return "/study/schedule"
+        case .getUserSchedule:
+            return "/user/schedule"
+        case .getNewPassord:
+            return "/user/password"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-            case .signIn, .signUp, .emailCheck,.create, .issued: return .post
-                
-            case .nicknameChange, .profileImageChange, .scheduleStatusChange: return .put
-                
-            case .delete(_): return .delete
-                
-            case .getStudy(_), .getStudyLog, .getAllSchedule, .getUserSchedule: return .get
+        case .signIn, .emailCheck,.create, .issued: return .post
+            
+        case .nicknameChange, .profileImageChange, .scheduleStatusChange: return .put
+            
+        case .deleteUser(_): return .delete
+            
+        case .getStudy(_), .getStudyLog, .getAllSchedule, .getUserSchedule, .getNewPassord: return .get
         }
     }
     
     var parameters: RequestParameters {
         switch self {
-            case .signIn(let credential):
-                return .body(credential)
-            case .signUp:
-                return .none
-            case .emailCheck(let email):
-                return .body(["userId": email])
-            case .create(let object):
-                return .body(object)
-            case .issued:
-                return .none
-                
-            case .nicknameChange(let nickName):
-                return .body(["nickname": nickName])
-            case .profileImageChange(let email):
-                return .body(["userId": email])
-            case .scheduleStatusChange:
-                 return .none
-                
-            case .delete:
-                return .none
-            default:
-                return .none
+        case .signIn(let credential):
+            return .body(credential)
+        case .emailCheck(let id):
+            return .body(["userId": id])
+        case .create(let object):
+            return .body(object)
+        case .issued:
+            return .none
+            
+        case .nicknameChange(let nickName):
+            return .body(["nickname": nickName])
+        case .profileImageChange(let email):
+            return .body(["userId": email])
+        case .scheduleStatusChange:
+            return .none
+            
+        case .deleteUser:
+            return .none
+        default:
+            return .none
         }
     }
     
+
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path), method: method)
         
         switch self {
-            case .profileImageChange(_):
-                urlRequest.headers.add(HTTPHeader.contentType("multipartFormData"))
-            case .signUp:
-                return urlRequest
-            default:
-                urlRequest.headers.add(HTTPHeader.contentType("application/json"))
+//        case .profileImageChange(_):
+//            urlRequest.headers.add(HTTPHeader.contentType("multipartFormData"))
+        case .issued:
+//            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
+            urlRequest.headers = tokenHeaders
+        case .create(let object):
+            if type(of: object) == User.self {
+                
+                urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
+            } else {
+                
+                urlRequest.headers = tokenHeaders
+                urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
+            }
+        default:
+            urlRequest.headers.add(HTTPHeader.contentType("application/json"))
         }
         
         switch parameters {
-            case .body(let parameter):
-                let jsonParameter = parameter.toJSONData()
-                urlRequest.httpBody = jsonParameter
-                return urlRequest
-            case .none:
-                return urlRequest
+        case .body(let parameter):
+            let jsonParameter = parameter.toJSONData()
+            urlRequest.httpBody = jsonParameter
+            return urlRequest
+        case .none:
+            return urlRequest
         }
     }
 }
@@ -148,13 +200,13 @@ enum RequestParameters {
 
 struct TokenRequestInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-            completion(.success(urlRequest))
+        completion(.success(urlRequest))
         let accessToken = ""
         let refreshToken = ""
         var request = urlRequest
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "AccessToken")
         request.addValue("Bearer \(refreshToken)", forHTTPHeaderField: "RefreshToken")
-
+        
         completion(.success(request))
     }
 }
@@ -177,16 +229,22 @@ extension Data {
 // MARK: - Model
 ///네트워크에서 쓰이는 모델
 ///
-protocol Object: Encodable {
+protocol Object: Codable {
     
 }
 
-struct Study: Object  {
+struct Schedule: Object  {
+    let id: Int?
+    let name: String?
+    let date: Date?
+    let status: String? //상태가 머머 있는거지?
     
-}
-
-struct Schedule: Object {
-    
+    enum CodingKeys: String, CodingKey {
+        case status
+        case id = "scheduleId"
+        case name = "scheduleName"
+        case date = "scheduleDate"
+    }
 }
 
 struct UserProfile: Codable {
@@ -194,11 +252,19 @@ struct UserProfile: Codable {
     let img: Data
 }
 
-struct User: Codable {
+struct User: Object {
     let userId: String?
+    let oldPassword: String?    //
     let password: String?
-    let password_check: String?
-    let nickname: String?
+    let passwordCheck: String?
+    let nickName: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case userId, password
+        case oldPassword = "old_password"
+        case nickName = "nickname"
+        case passwordCheck = "password_check"
+    }
 }
 
 struct Credential: Encodable {
@@ -206,5 +272,67 @@ struct Credential: Encodable {
     let password: String?
 }
 
-typealias Id = String? //스터디 아이디 또는 사용자의 아이디
+struct SNSInfo {
+    let token: String
+    let provider: String
+}
 
+struct Notice: Object {
+    let title: String?
+    let content: String?
+    let studyID: Int?
+    let noticeID: Int?
+    let date: Date?
+    var isPinned: Bool?
+    
+    enum CodingKeys: String, CodingKey {
+        case title = "notificationSubject"
+        case content = "notificationContents"
+        case studyID = "studyId"
+        case noticeID = "notificationId"
+        case date = "createdAt"
+        case isPinned = "pin"
+    }
+}
+
+struct Study: Object {
+    let studyName, onoff, studyCategory, studyDescription: String?
+    let studyID: Int?
+    let studyBlock, studyPause: Bool?
+    let studyRule: StudyRule?
+    let studyFlow: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyDescription = "studyInfo"
+        case studyName, onoff, studyCategory, studyBlock, studyPause, studyRule, studyFlow
+    }
+}
+
+struct StudyRule: Codable {
+    let lateness: Lateness?
+    let absence: Absence?
+    let deposit: Int?
+    let excommunication: Excommunication?
+    
+    enum CodingKeys: String, CodingKey {
+        case lateness, deposit
+        case absence = "absent"
+        case excommunication = "out"
+    }
+}
+
+struct Absence: Codable {
+    let time, fine: Int
+}
+
+struct Lateness: Codable {
+    let time, count, fine: Int
+}
+
+struct Excommunication: Codable {
+    let lateness, absent: Int
+}
+
+typealias ID = String? //스터디 아이디 또는 사용자의 아이디
+typealias StudyID = Int?
