@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import UIKit
 
 protocol Requestable: URLRequestConvertible {
     var baseUrl: String { get }
@@ -14,7 +15,7 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
-let accessToken = "accessToken"
+let accessToken = "accessToken"     
 let refreshToken = "refreshToken"
 let tokenHeaders: HTTPHeaders = [
     "AccessToken": "Bearer \(accessToken)",
@@ -29,35 +30,34 @@ enum HeaderContentType: String {
 enum RequestPurpose: Requestable {
 
     //    HTTPMethod: POST
-//    case signUp(User)   ////1
-    case emailCheck(ID) ////2
-    case signIn(Credential) ////4
-    case issued ////9
-    case create(Object) ////11
-//    case postNotice(Notice)   //15
-//    case postNewSchedule(Schedule)  //21
+    case signUp   ////1
+    case emailCheck(UserID) ////2
+    case signIn(UserID, Password) ////4
+    case refreshToken ////9
+    case createStudy(Study) //11
+    case createNotice(Title, Content, ID) //15
+    case createSchedule(Schedule) //21
     
     //    HTTPMethod: PUT
-//    case updateUser(User)   //6
-//    case updateStudyNotice(Notice) //16
-    case updatePinned(Notice)   //17
-    case update(Object)
-    case updateScheduleStatus(Int)  //22
-    case updateSchedule(Int)    //23
+    case updateUser   //6
+    case updateNotice(Title, Content, ID) //16
+    case updatePinnedNotice(ID, Bool)   //17
+    case updateScheduleStatus(ID)  //22
+    case updateSchedule(ID)    //23
     
     
     //    HTTPMethod: DELETE
-    case deleteUser(ID) ////10
-    case deleteStudyNotice(Notice)  //18
+    case deleteUser(UserID) ////10
+    case deleteStudyNotice(Title, Content, ID)  //18
     
     //    HTTPMethod: GET
-    case getNewPassord(ID)  //3
-    case getUserInfo    //5
-    case getSNSToken(SNSInfo)   //7
-    case resendEmail(ID)    //8
+    case getNewPassord(UserID)  //3
+    case getMyInfo    //5
+    case getJWTToken(SNSToken, SNS)   //7
+    case resendEmail    //8
     case getAllStudy    //12
-    case getStudy(StudyID)  //13
-    case getAllStudyNotices(StudyID)   //14
+    case getStudy(ID)  //13
+    case getAllStudyNotices(ID)   //14
     case getAllSchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
@@ -72,44 +72,54 @@ extension RequestPurpose {
         switch self {
             
         //    HTTPMethod: POST
+        case .signUp:
+            return "/signup"
         case .emailCheck:
             return "/signup/verification"
         case .signIn:
             return "/signin"
-        case .issued:
+        case .refreshToken:
             return "/issued"
-        case .create(let object):
-            if type(of: object) == Study.self {
-                return "/study"
-            } else if type(of: object) == Schedule.self {
-                return  "/user/schedule"
-            } else if type(of: object) == Notice.self {
-                return "/noti"
-            } else {
-                return "/signup"
-            }
+        case .createStudy:
+            return "/study"
+        case .createNotice:
+            return "/noti"
+        case .createSchedule:
+            return  "/user/schedule"
              
         //    HTTPMethod: PUT
-        case .update(let object):
-            if type(of: object) == User.self {
-                return "/user"
-            } else {
-                return "/noti"
-            }
-        case .updatePinned(_):
+        case .updateUser:
+            return "/user"
+        case .updateNotice:
+            return "/noti"
+        case .updatePinnedNotice:
             return "/noti/pin"
         case .updateScheduleStatus(let id):
             return "/user/schedule/\(id)"
-        case .updateSchedule(_):
+        case .updateSchedule:
             return "/user/schedule"
 
+        //    HTTPMethod: DEL
         case .deleteUser(let id):
-            guard let id = id else { return "/user/"}
             return "/user/\(id)"
+        case .deleteStudyNotice(_,_,let id):
+            return "/noti/\(id)"
             
+        //    HTTPMethod: GET
+        case .getNewPassord:
+            return "/user/password"
+        case .getMyInfo:
+            return "/user"
+        case .getJWTToken(_, let sns):
+            return "/login/oauth2/\(sns)"
+        case .resendEmail:
+            return "/user/email/auth"
+        case .getAllStudy:
+            return "/study"
         case .getStudy(let id):
-            guard let id = id else { return "/study"}
             return "/study/\(id)"
+        case .getAllStudyNotices(let id):
+            return "/noti/\(id)"
         case .getStudyLog:
             return "/user/history"
         case .getAllSchedule:
@@ -123,69 +133,109 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signIn, .emailCheck,.create, .issued: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createNotice, . createSchedule: return .post
             
-        case .nicknameChange, .profileImageChange, .scheduleStatusChange: return .put
+        case .updateUser, .updateNotice, .updatePinnedNotice, .updateScheduleStatus, .updateSchedule: return .put
             
-        case .deleteUser(_): return .delete
+        case .deleteUser, .deleteStudyNotice: return .delete
             
-        case .getStudy(_), .getStudyLog, .getAllSchedule, .getUserSchedule, .getNewPassord: return .get
+        case .getNewPassord, .getStudy(_), .getStudyLog, .getAllSchedule, .getUserSchedule : return .get
         }
     }
     
     var parameters: RequestParameters {
         switch self {
-        case .signIn(let credential):
-            return .body(credential)
+            
+//    HTTPMethod: POST
         case .emailCheck(let id):
             return .body(["userId": id])
-        case .create(let object):
-            return .body(object)
-        case .issued:
-            return .none
+        case .signIn(let id, let pw):
+            return .body(["userId" : id,
+                          "password" : pw])
+        case .createStudy(let study):
+            return .encodableBody(study)
+        case .createNotice(let title, let content, let id):
+            return .body(["notificationSubject" : title,
+                          "notificationContents" : content,
+                          "studyId" : id])
             
-        case .nicknameChange(let nickName):
-            return .body(["nickname": nickName])
-        case .profileImageChange(let email):
-            return .body(["userId": email])
-        case .scheduleStatusChange:
-            return .none
+//    HTTPMethod: PUT
+        case .updateNotice(let title, let content, let id):
+            return .body(["notificationSubject": title,
+                          "notificationContents": content,
+                          "notificationId": id])
+        case .updatePinnedNotice(let id, let isPinned):
+            return .body(["notificationId": id,
+                          "pin": isPinned])
+        case .updateSchedule(let id):
+            return .body(["scheduleId" : id])
             
-        case .deleteUser:
-            return .none
+//    HTTPMethod: DEL
+        case .deleteStudyNotice(let title, let content, let id):
+            return .body(["notificationSubject" : title,
+                          "notificationContents" : content,
+                          "notificationId" : id])
+            
+//            HTTPMethod: GET
+        case .getNewPassord(let id):
+            return .queryString(["userId" : id])
         default:
             return .none
         }
     }
     
-
+//            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path), method: method)
-        
+        urlRequest.timeoutInterval
         switch self {
-//        case .profileImageChange(_):
-//            urlRequest.headers.add(HTTPHeader.contentType("multipartFormData"))
-        case .issued:
-//            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
+        case .signUp:
+            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
+            
+        case .refreshToken, .updateScheduleStatus, .deleteUser :
             urlRequest.headers = tokenHeaders
-        case .create(let object):
-            if type(of: object) == User.self {
-                
-                urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
-            } else {
-                
-                urlRequest.headers = tokenHeaders
-                urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
-            }
+            
+        case .emailCheck, .signIn:
+            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
+            
+        case .updateUser:
+            urlRequest.headers = tokenHeaders
+            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
+            
         default:
-            urlRequest.headers.add(HTTPHeader.contentType("application/json"))
+            urlRequest = URLEncoding.default.encode(<#T##urlRequest: URLRequestConvertible##URLRequestConvertible#>, with: <#T##Parameters?#>)
+            urlRequest = URLEncoding.
+            urlRequest.headers = tokenHeaders
+            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
         }
         
         switch parameters {
-        case .body(let parameter):
+        case .queryString(let query):
+            
+            let data = try! JSONSerialization.data(withJSONObject: query, options: .prettyPrinted)
+            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+            
+            guard let json = json else { return urlRequest }
+            
+            
+        case .body(let params):
+            
+            let data = try! JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
+            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+            
+            guard let json = json else { return urlRequest }
+            
+            urlRequest.httpBody = json.data(using: String.Encoding.utf8.rawValue)
+            
+            return urlRequest
+            
+        case .encodableBody(let parameter):
+            
             let jsonParameter = parameter.toJSONData()
+            
             urlRequest.httpBody = jsonParameter
+            
             return urlRequest
         case .none:
             return urlRequest
@@ -194,7 +244,9 @@ extension RequestPurpose {
 }
 
 enum RequestParameters {
-    case body(_ parameter: Encodable)
+    case queryString([String : String])
+    case body([String : Codable])
+    case encodableBody(_ parameter: Encodable)
     case none
 }
 
@@ -229,11 +281,8 @@ extension Data {
 // MARK: - Model
 ///네트워크에서 쓰이는 모델
 ///
-protocol Object: Codable {
+struct Schedule: Codable {
     
-}
-
-struct Schedule: Object  {
     let id: Int?
     let name: String?
     let date: Date?
@@ -247,23 +296,21 @@ struct Schedule: Object  {
     }
 }
 
-struct UserProfile: Codable {
-    let nickname: String
-    let img: Data
-}
 
-struct User: Object {
-    let userId: String?
-    let oldPassword: String?    //
+struct User: Codable {
+    var id: String
+    let oldPassword: String?
     let password: String?
     let passwordCheck: String?
     let nickName: String?
     
     enum CodingKeys: String, CodingKey {
-        case userId, password
+        
+        case id = "userId"
         case oldPassword = "old_password"
-        case nickName = "nickname"
+        case password
         case passwordCheck = "password_check"
+        case nickName = "nickname"
     }
 }
 
@@ -277,33 +324,33 @@ struct SNSInfo {
     let provider: String
 }
 
-struct Notice: Object {
+struct Notice: Codable {
+    let id: Int?
+    let studyID: Int?
     let title: String?
     let content: String?
-    let studyID: Int?
-    let noticeID: Int?
     let date: Date?
     var isPinned: Bool?
     
     enum CodingKeys: String, CodingKey {
+        case id = "notificationId"
+        case studyID = "studyId"
         case title = "notificationSubject"
         case content = "notificationContents"
-        case studyID = "studyId"
-        case noticeID = "notificationId"
         case date = "createdAt"
         case isPinned = "pin"
     }
 }
 
-struct Study: Object {
+struct Study: Codable {
+    let id: Int?
     let studyName, onoff, studyCategory, studyDescription: String?
-    let studyID: Int?
     let studyBlock, studyPause: Bool?
     let studyRule: StudyRule?
     let studyFlow: String?
     
     enum CodingKeys: String, CodingKey {
-        case studyID = "studyId"
+        case id = "studyId"
         case studyDescription = "studyInfo"
         case studyName, onoff, studyCategory, studyBlock, studyPause, studyRule, studyFlow
     }
@@ -334,5 +381,10 @@ struct Excommunication: Codable {
     let lateness, absent: Int
 }
 
-typealias ID = String? //스터디 아이디 또는 사용자의 아이디
-typealias StudyID = Int?
+typealias UserID = String //사용자의 아이디
+typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
+typealias Title = String
+typealias Content = String
+typealias Password = String
+typealias SNSToken = String
+typealias SNS = String
