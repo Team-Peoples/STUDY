@@ -15,7 +15,7 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
-let accessToken = "accessToken"     
+let accessToken = "accessToken"
 let refreshToken = "refreshToken"
 let tokenHeaders: HTTPHeaders = [
     "AccessToken": "Bearer \(accessToken)",
@@ -120,14 +120,12 @@ extension RequestPurpose {
             return "/study/\(id)"
         case .getAllStudyNotices(let id):
             return "/noti/\(id)"
-        case .getStudyLog:
-            return "/user/history"
         case .getAllSchedule:
             return "/study/schedule"
         case .getUserSchedule:
             return "/user/schedule"
-        case .getNewPassord:
-            return "/user/password"
+        case .getStudyLog:
+            return "/user/history"
         }
     }
     
@@ -139,7 +137,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteStudyNotice: return .delete
             
-        case .getNewPassord, .getStudy(_), .getStudyLog, .getAllSchedule, .getUserSchedule : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllStudyNotices, .getAllSchedule, .getUserSchedule, .getStudyLog : return .get
         }
     }
     
@@ -187,8 +185,8 @@ extension RequestPurpose {
 //            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
-        var urlRequest = try URLRequest(url: url.appendingPathComponent(path), method: method)
-        urlRequest.timeoutInterval
+        var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
+    
         switch self {
         case .signUp:
             urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
@@ -196,28 +194,20 @@ extension RequestPurpose {
         case .refreshToken, .updateScheduleStatus, .deleteUser :
             urlRequest.headers = tokenHeaders
             
-        case .emailCheck, .signIn:
-            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
+        case .emailCheck, .signIn: break
             
         case .updateUser:
             urlRequest.headers = tokenHeaders
             urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
             
         default:
-            urlRequest = URLEncoding.default.encode(<#T##urlRequest: URLRequestConvertible##URLRequestConvertible#>, with: <#T##Parameters?#>)
-            urlRequest = URLEncoding.
             urlRequest.headers = tokenHeaders
-            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.json.rawValue))
         }
         
         switch parameters {
         case .queryString(let query):
             
-            let data = try! JSONSerialization.data(withJSONObject: query, options: .prettyPrinted)
-            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            
-            guard let json = json else { return urlRequest }
-            
+            return try URLEncoding.default.encode(urlRequest, with: query)
             
         case .body(let params):
             
@@ -237,6 +227,7 @@ extension RequestPurpose {
             urlRequest.httpBody = jsonParameter
             
             return urlRequest
+            
         case .none:
             return urlRequest
         }
