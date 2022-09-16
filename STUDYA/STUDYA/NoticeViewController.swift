@@ -33,7 +33,7 @@ class NoticeViewController: UIViewController {
         }
     }
     
-    var notice: Notice? {
+    var notice: Announcement? {
         didSet {
             
             titleTextView.text = notice?.title
