@@ -319,7 +319,7 @@ struct SNSInfo {
 
 struct Study: Codable {
     let id: Int?
-    let title, onoff, category, studyDescription, flow, po: String?
+    let title, onoff, category, studyDescription, freeRule, po: String?
     let isBlocked, isPaused: Bool?
     let rule: StudyRule?
     let startDate: Date?
@@ -331,7 +331,7 @@ struct Study: Codable {
         case title = "studyName"
         case category = "studyCategory"
         case studyDescription = "studyInfo"
-        case flow = "studyFlow"
+        case freeRule = "studyFlow"
         case isBlocked = "studyBlock"
         case isPaused = "studyPause"
         case rule = "studyRule"
