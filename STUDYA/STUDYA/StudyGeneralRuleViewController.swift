@@ -9,6 +9,9 @@ import UIKit
 
 class StudyGeneralRuleViewController: UIViewController {
     
+    internal var study: Study?
+    private var delegate: CreatingStudyViewController?
+    
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -20,7 +23,7 @@ class StudyGeneralRuleViewController: UIViewController {
     
     private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyGeneralRuleAttendanceTableViewController") as! StudyGeneralRuleAttendanceTableViewController
     
-    var generalStudyRule: GeneralStudyRule?
+//    var generalStudyRule: GeneralStudyRule?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,6 +9,10 @@ import UIKit
 
 class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
 
+    private var validationCheck1 = false
+    private var validationCheck2 = false
+    internal var delegate: StudyGeneralRuleViewController?
+    
     static let identifier = "ExcommunicationRuleCollectionViewCell"
     
     private let titleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
@@ -17,33 +21,31 @@ class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     private let lateLabel = CustomLabel(title: "번 지각 시", boldPart: "지각")
     private let absenceNumberField = RoundedNumberField(numPlaceholder: nil, centerAlign: false, enable: true, isPicker: true, isNecessary: true)
     private let absenceLabel = CustomLabel(title: "번 결석 시", boldPart: "결석")
-    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false, size: 20, height: 50)
-    private var validationCheck1 = false
-    private var validationCheck2 = false
+//    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false, size: 20, height: 50)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .systemBackground
         
-        doneButton.isEnabled = false
+//        doneButton.isEnabled = false
         
         NotificationCenter.default.addObserver(forName: Notification.Name.NecessaryNumFieldFilled, object: nil, queue: .main) { [self] noti in
             guard let textField = noti.object as? RoundedNumberField else { return }
             if textField == lateNumberField { validationCheck1 = true } else { validationCheck2 = true}
             
-            doneButton.isEnabled = true
-            doneButton.fillIn(title: "완료")
+//            doneButton.isEnabled = true
+//            doneButton.fillIn(title: "완료")
             
         }
         NotificationCenter.default.addObserver(forName: Notification.Name.NecessaryNumFieldEmpty, object: nil, queue: .main) { [self] noti in
             guard let textField = noti.object as? RoundedNumberField else { return }
             if textField == lateNumberField { validationCheck1 = false } else { validationCheck2 = false }
             
-            if validationCheck1 == false && validationCheck2 == false {
-                doneButton.isEnabled = false
-                doneButton.fillOut(title: "완료")
-            }
+//            if validationCheck1 == false && validationCheck2 == false {
+//                doneButton.isEnabled = false
+//                doneButton.fillOut(title: "완료")
+//            }
         }
         
         addSubview(titleLabel)
@@ -52,9 +54,9 @@ class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
         addSubview(lateLabel)
         addSubview(absenceNumberField)
         addSubview(absenceLabel)
-        addSubview(doneButton)
+//        addSubview(doneButton)
 
-        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+//        doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         titleLabel.anchor(top: topAnchor, topConstant: 17, leading: leadingAnchor, leadingConstant: 30)
         descriptionLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 5, leading: titleLabel.leadingAnchor)
@@ -66,7 +68,7 @@ class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
         absenceNumberField.widthAnchor.constraint(greaterThanOrEqualToConstant: frame.width - 123).isActive = true
         absenceLabel.centerY(inView: absenceNumberField)
         absenceLabel.anchor(trailing: lateLabel.trailingAnchor)
-        doneButton.anchor(bottom: bottomAnchor, bottomConstant: 30, leading: titleLabel.leadingAnchor, trailing: lateLabel.trailingAnchor)
+//        doneButton.anchor(bottom: bottomAnchor, bottomConstant: 30, leading: titleLabel.leadingAnchor, trailing: lateLabel.trailingAnchor)
     }
     
     required init?(coder: NSCoder) {
@@ -77,7 +79,7 @@ class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc private func doneButtonTapped() {
-        print(#function)
-    }
+//    @objc private func doneButtonTapped() {
+//        print(#function)
+//    }
 }

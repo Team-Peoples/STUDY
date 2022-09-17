@@ -12,14 +12,18 @@ struct Network {
     
     static let shared = Network()
     
-    func signUp(user: User, image: UIImage?) {
-        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+    func signUp(userID: String, image: UIImage?) {
+        var value: String?
+        lazy var user1 = User(userId: value, oldPassword: nil, password: nil, passwordCheck: nil, nickName: nil)
+        
+        value = userID
+        guard let jsonData = try? JSONEncoder().encode(user1) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-        }, with: RequestPurpose.signUp).responseData { response in
+        }, with: RequestPurpose.signUp(user)).responseData { response in
             switch response.result {
                 case .success(let data):
                     let response = data.toDictionary()

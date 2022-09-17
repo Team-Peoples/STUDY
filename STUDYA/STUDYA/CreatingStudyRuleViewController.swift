@@ -9,6 +9,8 @@ import UIKit
 
 class CreatingStudyRuleViewController: UIViewController {
 
+    internal var study: Study?
+    
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
     private lazy var settingStudyGeneralRuleView: UIView = {
         
@@ -160,3 +162,9 @@ class CreatingStudyRuleViewController: UIViewController {
         doneButton.anchor(bottom: view.bottomAnchor, bottomConstant: 40, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
     }
 }
+
+extension CreatingStudyViewController {
+    
+}
+
+//protocol

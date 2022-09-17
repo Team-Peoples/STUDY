@@ -25,7 +25,7 @@ final class NoticeBoardTableViewCell: UITableViewCell {
             titleLabel.text = notice?.title
             contentLabel.text = notice?.content
             timeLabel.text = notice?.date
-            isPinned = notice?.isPined
+            isPinned = notice?.isPinned
         }
     }
     
