@@ -19,7 +19,7 @@ final class NoticeBoardTableViewCell: UITableViewCell {
             }
         }
     }
-    var notice: Notice? {
+    var notice: Announcement? {
         didSet {
             
             titleLabel.text = notice?.title
