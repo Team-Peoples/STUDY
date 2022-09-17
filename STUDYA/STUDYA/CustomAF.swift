@@ -111,7 +111,7 @@ extension RequestPurpose {
         case .getMyInfo:
             return "/user"
         case .getJWTToken(_, let sns):
-            return "/login/oauth2/\(sns)"
+            return "/login/oauth2/\(sns.rawValue)"
         case .resendEmail:
             return "/user/email/auth"
         case .getAllStudy:
@@ -272,20 +272,6 @@ extension Data {
 // MARK: - Model
 ///네트워크에서 쓰이는 모델
 ///
-struct Schedule: Codable {
-    
-    let id: Int?
-    let name: String?
-    let date: Date?
-    let status: String? //상태가 머머 있는거지?
-    
-    enum CodingKeys: String, CodingKey {
-        case status
-        case id = "scheduleId"
-        case name = "scheduleName"
-        case date = "scheduleDate"
-    }
-}
 
 
 struct User: Codable {
@@ -294,20 +280,36 @@ struct User: Codable {
     let password: String?
     let passwordCheck: String?
     let nickName: String?
-    
+    let image: String?
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool
+//    let userStats:
+
     enum CodingKeys: String, CodingKey {
-        
+
+        case password
         case id = "userId"
         case oldPassword = "old_password"
-        case password
         case passwordCheck = "password_check"
         case nickName = "nickname"
+        case image = "img"
+//        case userStats = "userStats"
+        case isFirstLogin = "firstLogin"
+        case isEmailAuthorized = "emailAuthentication"
+        case isBlocked = "userBlock"
+        case isPaused = "userPause"
     }
 }
+
+
 
 struct Credential: Encodable {
     let userId: String
     let password: String?
+}
+
+enum SNS: String {
+    case kakao = "kakao"
+    case naver = "naver"
 }
 
 struct SNSInfo {
@@ -315,35 +317,27 @@ struct SNSInfo {
     let provider: String
 }
 
-struct Notice: Codable {
-    let id: Int?
-    let studyID: Int?
-    let title: String?
-    let content: String?
-    let date: Date?
-    var isPinned: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "notificationId"
-        case studyID = "studyId"
-        case title = "notificationSubject"
-        case content = "notificationContents"
-        case date = "createdAt"
-        case isPinned = "pin"
-    }
-}
-
 struct Study: Codable {
     let id: Int?
-    let studyName, onoff, studyCategory, studyDescription: String?
-    let studyBlock, studyPause: Bool?
-    let studyRule: StudyRule?
-    let studyFlow: String?
+    let title, onoff, category, studyDescription, freeRule, po: String?
+    let isBlocked, isPaused: Bool?
+    let rule: StudyRule?
+    let startDate: Date?
+    let endDate: Date?
     
     enum CodingKeys: String, CodingKey {
+        
         case id = "studyId"
+        case title = "studyName"
+        case category = "studyCategory"
         case studyDescription = "studyInfo"
-        case studyName, onoff, studyCategory, studyBlock, studyPause, studyRule, studyFlow
+        case freeRule = "studyFlow"
+        case isBlocked = "studyBlock"
+        case isPaused = "studyPause"
+        case rule = "studyRule"
+        case startDate = "start"
+        case endDate = "end"
+        case onoff, po
     }
 }
 
@@ -360,16 +354,49 @@ struct StudyRule: Codable {
     }
 }
 
+struct Announcement: Codable {
+    let id: Int?
+    let studyID: Int?
+    let title: String?
+    let content: String?
+    let createdDate: Date?
+    var isPinned: Bool?
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "notificationId"
+        case studyID = "studyId"
+        case title = "notificationSubject"
+        case content = "notificationContents"
+        case createdDate = "createdAt"
+        case isPinned = "pin"
+    }
+}
+
+struct Schedule: Codable {
+    
+    let id: Int?
+    let name: String?
+    let date: Date?
+    let status: String? //상태가 머머 있는거지?
+    
+    enum CodingKeys: String, CodingKey {
+        case status
+        case id = "scheduleId"
+        case name = "scheduleName"
+        case date = "scheduleDate"
+    }
+}
+
 struct Absence: Codable {
-    let time, fine: Int
+    let time, fine: Int?
 }
 
 struct Lateness: Codable {
-    let time, count, fine: Int
+    let time, count, fine: Int?
 }
 
 struct Excommunication: Codable {
-    let lateness, absent: Int
+    let lateness, absent: Int?
 }
 
 typealias UserID = String //사용자의 아이디
@@ -378,4 +405,3 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
-typealias SNS = String
