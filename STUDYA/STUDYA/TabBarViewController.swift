@@ -9,7 +9,7 @@ import UIKit
 
 final class TabBarViewController: UITabBarController {
     // MARK: - Properties
-    var user: User? {
+    var user: UserInfo? {
         didSet {
             configureTabbarController()
         }
