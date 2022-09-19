@@ -28,7 +28,6 @@ struct GeneralStudyRuleViewModel {
     
     func configure(vc: StudyGeneralRuleAttendanceTableViewController) {
         vc.lateRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
-        print(absence.time)
         vc.absenceRuleTimeField.text = absence.time == nil ? "--" : String(absence.time!)
         vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count!)
         vc.latePenaltyTextField.text = lateness.fine == nil ? "0" : String(lateness.fine!)
@@ -166,8 +165,3 @@ extension StudyGeneralRuleViewController: UICollectionViewDelegateFlowLayout {
         return collectionView.frame.size
     }
 }
-//
-//protocol StudyGeneralRuleViewDelegate: AnyObject {
-//    func updateData(rule: GeneralStudyRule)
-//}
-//

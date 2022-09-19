@@ -11,7 +11,7 @@ struct CreatingStudyRuleViewModel {
     var study: Study {
         didSet {
             isGeneralFormFilled = study.generalRule?.absence?.time != nil || study.generalRule?.lateness?.time != nil ? true : false
-            isFreeFormFilled = study.freeRule != "" ? true : false
+            isFreeFormFilled = study.freeRule != "" && study.freeRule != nil ? true : false
             print("isGeneralFormFilled = \(isGeneralFormFilled)")
             print("isFreeFormFilled = \(isFreeFormFilled)")
         }

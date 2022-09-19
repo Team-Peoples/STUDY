@@ -26,20 +26,6 @@ final class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
         
         backgroundColor = .systemBackground
         
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NecessaryNumFieldFilled, object: nil, queue: .main) { [self] noti in
-//            guard let textField = noti.object as? RoundedNumberField else { return }
-//            if textField == lateNumberField { validationCheck1 = true } else { validationCheck2 = true}
-//        }
-//        NotificationCenter.default.addObserver(forName: Notification.Name.NecessaryNumFieldEmpty, object: nil, queue: .main) { [self] noti in
-//            guard let textField = noti.object as? RoundedNumberField else { return }
-//            if textField == lateNumberField { validationCheck1 = false } else { validationCheck2 = false }
-//
-////            if validationCheck1 == false && validationCheck2 == false {
-////                doneButton.isEnabled = false
-////                doneButton.fillOut(title: "완료")
-////            }
-//        }
-        
         addSubview(titleLabel)
         addSubview(descriptionLabel)
         addSubview(lateNumberField)
@@ -62,8 +48,4 @@ final class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-//    deinit {
-//        NotificationCenter.default.removeObserver(self)
-//    }
 }

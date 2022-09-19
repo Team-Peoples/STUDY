@@ -743,17 +743,9 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, let intText = Int(text) {
-            
             self.text = Formatter.formatIntoDecimal(number: intText)
-            if isNecessaryField {
-                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldFilled, object: textField)
-            }
         } else {
-            
             self.text = "--"
-            if isNecessaryField {
-                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldEmpty, object: textField)
-            }
         }
     }
     
