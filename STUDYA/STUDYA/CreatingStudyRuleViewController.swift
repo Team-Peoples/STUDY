@@ -10,10 +10,9 @@ import UIKit
 struct CreatingStudyRuleViewModel {
     var study: Study {
         didSet {
-            isGeneralFormFilled = study.generalRule?.absence?.time != nil || study.generalRule?.lateness?.time != nil ? true : false
+            let condition = study.generalRule?.absence?.time != nil || study.generalRule?.lateness?.time != nil || study.generalRule?.excommunication?.lateness != nil || study.generalRule?.excommunication?.absence != nil
+            isGeneralFormFilled = condition ? true : false
             isFreeFormFilled = study.freeRule != "" && study.freeRule != nil ? true : false
-            print("isGeneralFormFilled = \(isGeneralFormFilled)")
-            print("isFreeFormFilled = \(isFreeFormFilled)")
         }
     }
 
