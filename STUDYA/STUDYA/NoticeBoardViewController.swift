@@ -11,10 +11,11 @@ import SnapKit
 
 final class NoticeBoardViewController: UIViewController {
     // MARK: - Properties
-    var notice: [Announcement] = [
-        Announcement(title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", date: Date().formatToString()),
-                            Announcement(title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", date: Date().formatToString()),
-                            Announcement(title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", date: Date().formatToString(), isPinned: true)]
+//    var notice: [Announcement] = [
+//        Announcement(title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", date: Date().formatToString()),
+//                            Announcement(title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", date: Date().formatToString()),
+//                            Announcement(title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", date: Date().formatToString(), isPinned: true)]
+    var notice: [Announcement] = []
     
     private lazy var noticeEmptyView: UIView = {
         let v = UIView()

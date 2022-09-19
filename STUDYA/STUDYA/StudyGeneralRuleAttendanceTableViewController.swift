@@ -10,9 +10,12 @@ import SnapKit
 
 // 따로 테이블 뷰로 만들어서 사용하려했지만 그렇게 할경우 MakingDetailStudyRuleViewController가 collectionView와 tableView를 모두 관리해야하므로 vc를 분리하는게 더 나아 보여서 이렇게 만들었음.
 
+struct AttendacneRuleViewModel {
+    
+}
+
 class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     // MARK: - Properties
-    
     @IBOutlet weak var lateRuleTimeField: RoundedNumberField!
     @IBOutlet weak var absenceRuleTimeField: RoundedNumberField!
     @IBOutlet weak var perLateMinuteField: RoundedNumberField!
@@ -21,18 +24,12 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     @IBOutlet weak var depositTextField: UITextField!
     @IBOutlet weak var penaltyDimmingView: UIView!
     @IBOutlet weak var depositDimmingView: UIView!
-    
-    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false, size: 20, height: 50)
+    lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     private var keyboardFrameHeight: CGFloat = 0
     var bottomConst: ConstraintItem?
-    var attendanceRuleViewModel = AttendanceRuleViewModel()
-    weak var studyGeneralRuleViewDelegate : StudyGeneralRuleViewDelegate?
-    
-    lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,8 +57,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
             make.height.equalTo(42)
             make.bottom.equalTo(bottomConst!).offset(-keyboardFrameHeight + 100)
         }
-        
-        setConstraints()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,9 +68,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     // MARK: - Configure
     
     func configureViews() {
-        view.addSubview(doneButton)
-        doneButton.isEnabled = false
-        doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
     }
     
     // MARK: - Actions
@@ -109,14 +101,18 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         textField.keyboardType = .numberPad
     }
     
-    private func enableMoneyRelatedFields() {
+    internal func enableMoneyRelatedFields() {
+        depositDimmingView.isHidden = true
+        penaltyDimmingView.isHidden = true
         perLateMinuteField.isEnabled = true
         latePenaltyTextField.isEnabled = true
         absentPenaltyTextField.isEnabled = true
         depositTextField.isEnabled = true
     }
     
-    private func disableMoneyRelatedFields() {
+    internal func disableMoneyRelatedFields() {
+        depositDimmingView.isHidden = false
+        penaltyDimmingView.isHidden = false
         perLateMinuteField.isEnabled = false
         latePenaltyTextField.isEnabled = false
         absentPenaltyTextField.isEnabled = false
@@ -128,9 +124,15 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         depositDimmingView.isUserInteractionEnabled = false
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
-            toastMessage.snp.updateConstraints { make in
-                make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-50)
+            if keyboardFrameHeight == 0 {
+                toastMessage.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.bottomConst!).offset(-100) }
+            } else {
+                toastMessage.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-10)
+                }
             }
+            
             view.layoutIfNeeded()
             
         } completion: { _ in
@@ -147,10 +149,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         }
     }
     
-    @objc func doneButtonDidTapped() {
-        studyGeneralRuleViewDelegate?.updateData(rule: GeneralStudyRule(attendanceRule: attendanceRuleViewModel.attendanceRule, excommunicationRule: nil))
-    }
-    
     @objc func onKeyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
@@ -161,16 +159,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         keyboardFrameHeight = 0
-    }
-    
-    // MARK: - Setting Constraints
-    
-    func setConstraints() {
-        doneButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.width.equalTo(320)
-            make.bottom.equalTo(bottomConst!).offset(-30)
-        }
     }
 }
 
@@ -207,13 +195,10 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
         
         if lateRuleTimeField?.text != "--" || absenceRuleTimeField.text != "--" {
             
-            depositDimmingView.isHidden = true
-            penaltyDimmingView.isHidden = true
             enableMoneyRelatedFields()
             
         } else {
-            depositDimmingView.isHidden = false
-            penaltyDimmingView.isHidden = false
+            
             disableMoneyRelatedFields()
             
             perLateMinuteField.text = "--"
@@ -227,17 +212,5 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
                 textField.text = Formatter.formatIntoDecimal(number: intText)
             }
         }
-        
-        attendanceRuleViewModel.attendanceRule = AttendanceRule(lateRuleTime: lateRuleTimeField?.text, absenceRuleTime: absenceRuleTimeField.text, perLateMinute: perLateMinuteField.text, latePenalty: latePenaltyTextField.text, absentPenalty: absentPenaltyTextField.text, deposit: depositTextField.text)
-        
-        buttonStateUpdate()
     }
 }
-
-extension StudyGeneralRuleAttendanceTableViewController: DoneButtonStateModel {
-    func buttonStateUpdate() {
-        doneButton.isEnabled = attendanceRuleViewModel.textFieldsIsValid
-        doneButton.isEnabled ? doneButton.fillIn(title: "완료") : doneButton.fillOut(title: "완료")
-    }
-}
-

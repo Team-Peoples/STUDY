@@ -38,7 +38,7 @@ class NoticeViewController: UIViewController {
             
             titleTextView.text = notice?.title
             contentTextView.text = notice?.content
-            timeLabel.text = notice?.date
+//            timeLabel.text = notice?.date
         }
     }
     
