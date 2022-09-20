@@ -73,6 +73,7 @@ final class CreatingStudyViewController: UIViewController {
         setDelegate()
         enableTapGesture()
         studyNameTextView.textContainer.maximumNumberOfLines = 1
+        nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
         setConstraints()
     }
     
@@ -115,6 +116,11 @@ final class CreatingStudyViewController: UIViewController {
     
     @objc func buttonDidTapped(sender: CheckBoxButton) {
         sender.toggleState()
+    }
+    
+    @objc func nextButtonDidTapped() {
+        let vc = CreatingStudyRuleViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {
