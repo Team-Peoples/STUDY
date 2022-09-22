@@ -8,6 +8,14 @@
 import UIKit
 import SnapKit
 
+extension UIView {
+    func configureBorder(color: AssetColor, width: CGFloat, radius: CGFloat) {
+        layer.borderColor = UIColor.appColor(color).cgColor
+        layer.borderWidth = width
+        layer.cornerRadius = radius
+    }
+}
+
 final class CustomButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
@@ -23,9 +31,7 @@ final class CustomButton: UIButton {
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
-        layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-        layer.borderWidth = 1
-        layer.cornerRadius = height / 2
+        configureBorder(color: .keyColor1, width: 1, radius: height / 2)
       
         titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         
@@ -69,7 +75,7 @@ class BaseTextView: UITextView {
         
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset, trailingInset: leadingInset)
         
         setPlaceHolderLabelConstraints(topConstant: topInset, leadingConstant: leadingInset)
     }
@@ -82,7 +88,7 @@ class BaseTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat, trailingInset: CGFloat) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
@@ -92,8 +98,8 @@ class BaseTextView: UITextView {
         placeHolderLabel.textColor = .appColor(.ppsGray2)
         
         font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
-        textColor = UIColor.appColor(.ppsBlack)
-        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: 15)
+        textColor = UIColor.appColor(.ppsGray1)
+        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: trailingInset)
         
         isScrollEnabled = false
     }
@@ -112,23 +118,24 @@ class BaseTextView: UITextView {
 final class CharactersNumberLimitedTextView: BaseTextView {
     // MARK: - Properties
     
+    enum Position {
+        case center
+        case bottom
+    }
+    
     private let charactersNumberLabel = UILabel(frame: .zero)
     
     // MARK: - Initialize
     
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat, radius: CGFloat) {
-        super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
+    init(placeholder: String, maxCharactersNumber: Int, radius: CGFloat, position: Position, fontSize: CGFloat, topInset: CGFloat = 11, leadingInset: CGFloat = 15) {
+        super.init(placeholder: placeholder, fontSize: 16, topInset: topInset, leadingInset: leadingInset)
         
         addSubview(charactersNumberLabel)
         
         configureTextView(radius)
-        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber, fontSize: fontSize)
         
-        setConstraints()
-    }
-    
-    convenience init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
-        self.init(placeholder: placeholder, maxCharactersNumber: maxCharactersNumber, height: height, radius: height / 2)
+        setConstraints(position: position)
     }
     
     required init?(coder: NSCoder) {
@@ -142,11 +149,11 @@ final class CharactersNumberLimitedTextView: BaseTextView {
         layer.cornerRadius = radius
     }
     
-    private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
+    private func configureCharactersNumberLabel(maxCharactersNumber: Int, fontSize: CGFloat) {
         
         charactersNumberLabel.text = "0/\(maxCharactersNumber)"
-        charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
-        charactersNumberLabel.textColor = .systemGray3
+        charactersNumberLabel.font = UIFont.systemFont(ofSize: fontSize)
+        charactersNumberLabel.textColor = .appColor(.ppsGray1)
     }
     
     // MARK: - Actions
@@ -157,9 +164,16 @@ final class CharactersNumberLimitedTextView: BaseTextView {
     
     // MARK: - Setting Constraints
     
-    private func setConstraints() {
-        
-        charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
+    private func setConstraints(position: Position) {
+        switch position {
+            case .center:
+                charactersNumberLabel.centerY(inView: self)
+                charactersNumberLabel.anchor(trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 15)
+                
+            case .bottom:
+                charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 10, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 15)
+                
+        }
     }
 }
 
@@ -409,9 +423,8 @@ class ProfileImageSelectorView: UIImageView {
         super.init(frame: .zero)
         
         image = UIImage(named: "defaultProfile")
-        layer.borderWidth = 2
-        layer.borderColor = UIColor.appColor(.keyColor3).cgColor
-        layer.cornerRadius = size / 2
+        configureBorder(color: .keyColor3, width: 2, radius: size / 2)
+
         
         clipsToBounds = true
         isUserInteractionEnabled = true
@@ -806,6 +819,42 @@ class ToastMessage: UIView {
     func update(alpha: CGFloat, of view: UIView) {
         view.alpha = alpha
     }
+}
+
+class DashLine: UIView {
+    
+    var lineColor: UIColor = .red
+    var lineWidth: CGFloat = 2
+    var strokeLength: CGFloat = 3
+    
+    init(lineColor: UIColor, lineWidth: CGFloat, strokeLength: CGFloat, rect: CGRect) {
+        
+        super.init(frame: rect)
+        
+        let path = UIBezierPath()
+        path.lineWidth = self.lineWidth
+        path.lineCapStyle = .square
+        
+        path.move(to: CGPoint(x: 0, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.width, y: rect.midY))
+        
+        let dashes = [strokeLength, strokeLength]
+        
+        //.setLineDash(patern,count,phase)
+        // patern[x,y,z...] 패턴을 반복할 길이이며 여기선 linewidth의 기본값이 2이므로 2,2,2,2,2 길이로 반복
+        // count의 경우 앞에서 정한 [x,y,z..]에서 패턴개수 고르기라 2이면 x,y만 반복한다.
+        // phase는
+        
+        path.setLineDash(dashes, count: dashes.count, phase: 1)
+        // 컬러설정을 해주려면 .setStoke를 호출
+        lineColor.setStroke()
+        // 실제로 그려주려면 .setStoke를 해줘야함
+        path.stroke()
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
 
 extension String {

@@ -19,6 +19,7 @@
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
 		7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */; };
 		7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */; };
+		72B5BE4D28D0A08C000137CD /* CreatingStudyRuleCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5BE4C28D0A08C000137CD /* CreatingStudyRuleCompleteViewController.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -67,6 +68,7 @@
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTableViewController.swift; sourceTree = "<group>"; };
+		72B5BE4C28D0A08C000137CD /* CreatingStudyRuleCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleCompleteViewController.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,19 +152,20 @@
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
+				721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */,
 				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
 				D3BF054128C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift */,
 				D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */,
 				D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */,
 				7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */,
 				7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */,
+				72B5BE4C28D0A08C000137CD /* CreatingStudyRuleCompleteViewController.swift */,
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
 				7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
-				721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */,
 				7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */,
@@ -340,6 +343,7 @@
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
+				72B5BE4D28D0A08C000137CD /* CreatingStudyRuleCompleteViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				7299968228AF5C480008A1C1 /* NoticeBoardTableViewCell.swift in Sources */,

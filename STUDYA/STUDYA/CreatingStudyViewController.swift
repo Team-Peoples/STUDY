@@ -25,12 +25,11 @@ final class CreatingStudyViewController: UIViewController {
     var categoryChoice: (String, IndexPath)? {
         willSet(value) {
             if categoryChoice == nil {
-                print(value, "init")
             } else {
                 guard let indexPath = categoryChoice?.1 else { fatalError() }
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
-                print(value,"cheanged")
+                print(value!.0)
             }
         }
     }
@@ -48,7 +47,7 @@ final class CreatingStudyViewController: UIViewController {
     
     /// Study Name
     private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, height: 42)
+    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, radius: 21, position: .center, fontSize: 8)
     
     /// Study Type
     private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
@@ -57,7 +56,7 @@ final class CreatingStudyViewController: UIViewController {
     
     /// Study Introduction
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 100, height: 105, radius: 24)
+    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
     
     /// Bottom Button
     private let nextButton = CustomButton(title: "다음", isBold: true, isFill: false)
@@ -73,6 +72,7 @@ final class CreatingStudyViewController: UIViewController {
         setDelegate()
         enableTapGesture()
         studyNameTextView.textContainer.maximumNumberOfLines = 1
+       
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
         setConstraints()
     }
@@ -321,8 +321,8 @@ extension CreatingStudyViewController: UITextViewDelegate {
                 
                 guard let inputedText = textView.text else { return true }
                 let newLength = inputedText.count + text.count - range.length
-                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 100 ? "100/100" : "\(newLength)/100"
-                return newLength <= 100
+                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 50 ? "50/50" : "\(newLength)/50"
+                return newLength <= 50
                 
             default:
                 return false
@@ -330,10 +330,9 @@ extension CreatingStudyViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        if textView == studyNameTextView {
-            textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
-        }
+        textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
     }
+
 }
 
 // MARK: - UICollectionViewDataSource
