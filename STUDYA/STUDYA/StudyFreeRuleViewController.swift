@@ -13,15 +13,14 @@ class StudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
+    var completeButtonTapped: (String) -> () = { freeRule in }
+    var viewDidUpdated: (UITextView) -> () = { view in }
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    private let completeButton = CustomButton(title: "완료", isBold: true, size: 20, height: 50)
-    private var isRepeat: Bool = false
-    
-    var freeStudyRule: FreeStudyRule?
-    var completion: ((FreeStudyRule) -> ())?
+    private let completeButton = CustomButton(title: "완료", isBold: true, isFill: true, size: 18, height: 50)
     
     // MARK: - Life Cycle
   
@@ -31,11 +30,12 @@ class StudyFreeRuleViewController: UIViewController {
         view.addSubview(completeButton)
         textView.delegate = self
         cancelButton.action = #selector(cancelButtonDidTapped)
-        completeButton.isUserInteractionEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         setConstraints()
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        viewDidUpdated(textView)
+        placeholderLabel.isHidden = textView.text != "" ? true : false
     }
     // MARK: - Configure
     
@@ -46,6 +46,7 @@ class StudyFreeRuleViewController: UIViewController {
     }
     
     @objc func completeButtonDidTapped() {
+        completeButtonTapped(textView.text)
         self.dismiss(animated: true)
     }
     
@@ -89,21 +90,5 @@ extension StudyFreeRuleViewController: UITextViewDelegate {
         if textView.text == "" {
             placeholderLabel.isHidden = false
         }
-    }
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        if range == NSRange(location: 0, length: 1) {
-            completeButton.isUserInteractionEnabled = false
-            completeButton.fillOut(title: "완료")
-            isRepeat = false
-        } else if text != "" {
-            if !isRepeat {
-                print(#function)
-                completeButton.fillIn(title: "완료")
-                completeButton.isUserInteractionEnabled = true
-                isRepeat = true
-            }
-        }
-        return true
     }
 }

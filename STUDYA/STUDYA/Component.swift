@@ -25,7 +25,8 @@ final class CustomButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(frame: .zero)
+        configure(title: "다음", isBold: true, isFill: true, size: 18, height: 50)
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
@@ -33,16 +34,17 @@ final class CustomButton: UIButton {
         setTitle(title, for: .normal)
         configureBorder(color: .keyColor1, width: 1, radius: height / 2)
       
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        
         
         if isFill {
             backgroundColor = UIColor.appColor(.keyColor1)
             setTitleColor(.white, for: .normal)
+
         } else {
             backgroundColor = .systemBackground
             setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         }
-
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         setHeight(height)
     }
     
@@ -754,17 +756,9 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, let intText = Int(text) {
-            
             self.text = Formatter.formatIntoDecimal(number: intText)
-            if isNecessaryField {
-                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldFilled, object: textField)
-            }
         } else {
-            
             self.text = "--"
-            if isNecessaryField {
-                NotificationCenter.default.post(name: Notification.Name.NecessaryNumFieldEmpty, object: textField)
-            }
         }
     }
     

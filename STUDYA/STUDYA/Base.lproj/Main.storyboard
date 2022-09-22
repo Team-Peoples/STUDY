@@ -144,6 +144,14 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="CustomButton" customModule="STUDYA" customModuleProvider="target">
+                                <rect key="frame" x="20" y="801" width="374" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="doneButtonTapped:" destination="LRo-Cd-Chu" eventType="touchUpInside" id="ocw-2w-ntf"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Vi-Lh-q0Z"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -153,6 +161,8 @@
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="top" secondItem="NPP-1h-mKl" secondAttribute="bottom" constant="34" id="ADg-cS-HQx"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="Xj4-dt-g0B" secondAttribute="trailing" id="AIQ-oo-Xsw"/>
                             <constraint firstItem="Xj4-dt-g0B" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="bottom" constant="3" id="CHr-hm-knm"/>
+                            <constraint firstItem="PhD-E0-hZ1" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" constant="20" id="DeC-mW-yiW"/>
+                            <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="bottom" secondItem="PhD-E0-hZ1" secondAttribute="bottom" constant="30" id="E9q-I0-TcN"/>
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="bottom" secondItem="4Fj-bf-mS8" secondAttribute="bottom" constant="3" id="PlR-J6-bGm"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="4Fj-bf-mS8" secondAttribute="trailing" id="PxN-Ph-drR"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="rnv-uf-Vqg" secondAttribute="trailing" id="Wf2-oD-LyL"/>
@@ -163,6 +173,7 @@
                             <constraint firstItem="Xj4-dt-g0B" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="kwy-9J-uaR"/>
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="centerX" secondItem="q0o-X2-gQi" secondAttribute="centerX" priority="999" id="lTP-b1-jO3"/>
                             <constraint firstItem="NPP-1h-mKl" firstAttribute="top" secondItem="MvQ-e3-8Ut" secondAttribute="top" id="oTS-CQ-uMP"/>
+                            <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="PhD-E0-hZ1" secondAttribute="trailing" constant="20" id="vVH-Xj-LXO"/>
                             <constraint firstItem="NPP-1h-mKl" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="wE5-LP-sia"/>
                         </constraints>
                     </view>
@@ -171,6 +182,7 @@
                     <connections>
                         <outlet property="cancelButton" destination="e0J-rk-PiU" id="e0g-Mu-OFQ"/>
                         <outlet property="collectionView" destination="Xj4-dt-g0B" id="GLQ-Or-HkE"/>
+                        <outlet property="doneButton" destination="PhD-E0-hZ1" id="ovE-rF-85a"/>
                         <outlet property="leftCenterXConstraint" destination="eNe-xb-cwn" id="48O-Xs-5IP"/>
                         <outlet property="leftLabel" destination="MfH-Gd-84W" id="eHc-Ci-t6G"/>
                         <outlet property="rightCenterXConstraint" destination="lTP-b1-jO3" id="ygS-XG-QPy"/>

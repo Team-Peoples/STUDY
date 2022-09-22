@@ -33,15 +33,16 @@ struct LoginViewModel: AuthenticationViewModel {
 protocol InputFieldsModel {
     var textFieldsIsValid: Bool { get }
 }
-
-struct RuleViewModel {
-    var generalStudyRule: GeneralStudyRule?
-    var freeStudyRule: FreeStudyRule?
-}
-
-struct AttendanceRuleViewModel: InputFieldsModel {
-    var attendanceRule: AttendanceRule?
-    var textFieldsIsValid: Bool {
-        return attendanceRule?.lateRuleTime != "--" || attendanceRule?.absenceRuleTime != "--"
-    }
-}
+//
+//struct RuleViewModel {
+//    var generalStudyRule: GeneralStudyRule?
+//    var freeStudyRule: FreeStudyRule?
+//    var isFormFilled = false
+//}
+//
+//struct AttendanceRuleViewModel: InputFieldsModel {
+//    var attendanceRule: AttendanceRule?
+//    var textFieldsIsValid: Bool {
+//        return attendanceRule?.lateRuleTime != "--" || attendanceRule?.absenceRuleTime != "--"
+//    }
+//}

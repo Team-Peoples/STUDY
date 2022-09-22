@@ -19,13 +19,13 @@ final class NoticeBoardTableViewCell: UITableViewCell {
             }
         }
     }
-    var notice: Notice? {
+    var notice: Announcement? {
         didSet {
             
             titleLabel.text = notice?.title
             contentLabel.text = notice?.content
-            timeLabel.text = notice?.date
-            isPinned = notice?.isPined
+//            timeLabel.text = notice?.date
+            isPinned = notice?.isPinned
         }
     }
     

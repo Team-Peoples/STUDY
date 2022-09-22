@@ -7,9 +7,39 @@
 
 import UIKit
 
-class CreatingStudyRuleViewController: UIViewController {
+struct CreatingStudyRuleViewModel {
+    var study: Study {
+        didSet {
+            let condition = study.generalRule?.absence?.time != nil || study.generalRule?.lateness?.time != nil || study.generalRule?.excommunication?.lateness != nil || study.generalRule?.excommunication?.absence != nil
+            isGeneralFormFilled = condition ? true : false
+            isFreeFormFilled = study.freeRule != "" && study.freeRule != nil ? true : false
+        }
+    }
 
+    var isGeneralFormFilled = false
+    var isFreeFormFilled = false
+    
+    init() {
+        study = Study(id: nil, title: nil, onoff: nil, category: nil, studyDescription: nil, freeRule: nil, po: nil, isBlocked: nil, isPaused: nil, generalRule: nil, startDate: nil, endDate: nil)
+    }
+    
+    func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: CustomButton) {
+        if isUpperView {
+            view.layer.borderColor = isGeneralFormFilled ? UIColor.appColor(.keyColor1).cgColor : UIColor.appColor(.ppsGray2).cgColor
+        } else {
+            view.layer.borderColor = isFreeFormFilled ? UIColor.appColor(.keyColor1).cgColor : UIColor.appColor(.ppsGray2).cgColor
+        }
+        label.textColor = isGeneralFormFilled || isFreeFormFilled ? .systemBackground : UIColor.appColor(.keyColor2)
+        if isGeneralFormFilled || isFreeFormFilled { button.fillIn(title: "다음") } else { button.fillOut(title: "다음") }
+    }
+}
+
+class CreatingStudyRuleViewController: UIViewController {
+    
+    internal var studyRuleViewModel = CreatingStudyRuleViewModel()
+    
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
+    private let subTitleLabel = CustomLabel(title: "스터디 정보에서 언제든지 수정할 수 있어요!", tintColor: .ppsBlack, size: 18)
     private lazy var settingStudyGeneralRuleView: UIView = {
         
         let v = UIView()
@@ -34,7 +64,6 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return v
     }()
-    
     private lazy var settingStudyFreeRuleView: UIView = {
         
         let v = UIView()
@@ -61,7 +90,6 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return v
     }()
-    
     private let descriptionLabel: CustomLabel = {
         
         let label = CustomLabel(title: "", tintColor: .keyColor2, size: 14)
@@ -73,7 +101,6 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return label
     }()
-    
     private lazy var doneButton: CustomButton = {
        
         let button = CustomButton(title: "다음", isBold: true, isFill: false)
@@ -81,22 +108,6 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return button
     }()
-    
-    var ruleViewModel: RuleViewModel? {
-        didSet {
-            if (ruleViewModel?.generalStudyRule) != nil {
-                changeBorder(color: .keyColor1, of: settingStudyGeneralRuleView)
-            } else {
-                changeBorder(color: .ppsGray2, of: settingStudyGeneralRuleView)
-            }
-            
-            if ruleViewModel?.freeStudyRule != nil {
-                changeBorder(color: .keyColor1, of: settingStudyFreeRuleView)
-            } else {
-                changeBorder(color: .ppsGray2, of: settingStudyFreeRuleView)
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,17 +129,27 @@ class CreatingStudyRuleViewController: UIViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-        vc.generalStudyRule = ruleViewModel?.generalStudyRule
+        
+        vc.generalRuleViewModel.generalRule = studyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
+        vc.doneButtonDidTapped = { rule in
+            self.studyRuleViewModel.study.generalRule = rule
+            self.studyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
+        }
+        
         vc.modalPresentationStyle = .automatic
         present(vc, animated: true)
     }
     
     @objc private func freeRuleViewTapped() {
-     let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
-        vc.freeStudyRule = ruleViewModel?.freeStudyRule
         
-        vc.completion = { rule in
-            self.ruleViewModel?.freeStudyRule = rule
+     let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
+        
+        vc.viewDidUpdated = { textView in
+            textView.text = self.studyRuleViewModel.study.freeRule
+        }
+        vc.completeButtonTapped = { freeRule in
+            self.studyRuleViewModel.study.freeRule = freeRule
+            self.studyRuleViewModel.configure(self.settingStudyFreeRuleView, isUpperView: false, label: self.descriptionLabel, button: self.doneButton)
         }
         present(vc, animated: true)
     }
@@ -145,6 +166,7 @@ class CreatingStudyRuleViewController: UIViewController {
     
     private func addsubViews() {
         view.addSubview(titleLabel)
+        view.addSubview(subTitleLabel)
         view.addSubview(settingStudyGeneralRuleView)
         view.addSubview(settingStudyFreeRuleView)
         view.addSubview(descriptionLabel)
@@ -152,11 +174,12 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     private func setConstraints() {
-        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 50, leading: view.leadingAnchor, leadingConstant: 17)
-        settingStudyGeneralRuleView.anchor(top: titleLabel.bottomAnchor, topConstant: 40, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
-        settingStudyFreeRuleView.anchor(top: settingStudyGeneralRuleView.bottomAnchor, topConstant: 20, leading: view.leadingAnchor, leadingConstant: 17, trailing: view.trailingAnchor, trailingConstant: 17, height: 88)
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 50, leading: view.leadingAnchor, leadingConstant: 20)
+        subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 30, leading: titleLabel.leadingAnchor)
+        settingStudyGeneralRuleView.anchor(top: subTitleLabel.bottomAnchor, topConstant: 25, leading: titleLabel.leadingAnchor, trailing: view.trailingAnchor, trailingConstant: 20, height: 88)
+        settingStudyFreeRuleView.anchor(top: settingStudyGeneralRuleView.bottomAnchor, topConstant: 20, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor, height: 88)
         descriptionLabel.anchor(bottom: doneButton.topAnchor, bottomConstant: 21)
         descriptionLabel.centerX(inView: view)
-        doneButton.anchor(bottom: view.bottomAnchor, bottomConstant: 40, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+        doneButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 40, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor)
     }
 }
