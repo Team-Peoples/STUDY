@@ -96,6 +96,9 @@ final class CreatingStudyViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         
+        navigationController?.navigationBar.shadowImage = UIImage()
+        tabBarController?.tabBar.isHidden = true
+        
         scrollView.showsVerticalScrollIndicator = false
         scrollView.addSubview(containerView)
         

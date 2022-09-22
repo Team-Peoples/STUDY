@@ -9,6 +9,8 @@ import UIKit
 
 class CreatingStudyRuleCompleteViewController: UIViewController {
 
+    // MARK: - Properties
+    
     @IBOutlet weak var studyCategoryBackgroundView: UIView!
     @IBOutlet weak var studyCategoryLabel: UILabel!
     
@@ -28,45 +30,19 @@ class CreatingStudyRuleCompleteViewController: UIViewController {
     @IBOutlet weak var attendanceRuleContentsHeight: NSLayoutConstraint!
     @IBOutlet weak var excommunocationRuleContentsHeight: NSLayoutConstraint!
     
-    class Rule: UIView {
-        
-        let squre = UIView()
-        let label = UILabel()
-        
-        init(text: String) {
-            super.init(frame: .zero)
-            
-            addSubview(label)
-            addSubview(squre)
-            
-            squre.backgroundColor = .appColor(.ppsBlack)
-            squre.layer.cornerRadius = 1
-            
-            label.text = text
-            label.textColor = .appColor(.ppsGray1)
-            label.font = UIFont.boldSystemFont(ofSize: 12)
-            
-            label.snp.makeConstraints { make in
-                make.centerY.equalTo(self)
-                make.trailing.equalTo(self)
-            }
-            squre.snp.makeConstraints { make in
-                make.width.height.equalTo(6)
-                make.leading.equalTo(self)
-                make.centerY.equalTo(self)
-                make.trailing.equalTo(label.snp.leading).offset(-4)
-            }
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-    }
+    private let completeButton = CustomButton(title: "완료", isFill: true)
     
     var isFilled: Bool = false
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.addSubview(completeButton)
+        
+        completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
+        
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
         
@@ -102,7 +78,18 @@ class CreatingStudyRuleCompleteViewController: UIViewController {
             freeRuleTextView.textColor = .appColor(.ppsGray1)
            
         }
+        
+        setConstraints()
     }
+    
+    // MARK: - Actions
+    
+    @objc private func completeButtonDidTapped() {
+        
+        print(#function)
+    }
+    
+    // MARK: - Configure UI
     
     private func configure(_ view: Rule, constrainsWith standard: UIView, offset: CGFloat) {
         
@@ -113,5 +100,48 @@ class CreatingStudyRuleCompleteViewController: UIViewController {
             make.leading.equalTo(standard)
             make.height.equalTo(16)
         }
+    }
+    
+    func setConstraints() {
+        completeButton.snp.makeConstraints { make in
+            make.width.equalTo(320)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
+            make.centerX.equalTo(view)
+        }
+    }
+}
+
+class Rule: UIView {
+    
+    let squre = UIView()
+    let label = UILabel()
+    
+    init(text: String) {
+        super.init(frame: .zero)
+        
+        addSubview(label)
+        addSubview(squre)
+        
+        squre.backgroundColor = .appColor(.ppsBlack)
+        squre.layer.cornerRadius = 1
+        
+        label.text = text
+        label.textColor = .appColor(.ppsGray1)
+        label.font = UIFont.boldSystemFont(ofSize: 12)
+        
+        label.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.trailing.equalTo(self)
+        }
+        squre.snp.makeConstraints { make in
+            make.width.height.equalTo(6)
+            make.leading.equalTo(self)
+            make.centerY.equalTo(self)
+            make.trailing.equalTo(label.snp.leading).offset(-4)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
