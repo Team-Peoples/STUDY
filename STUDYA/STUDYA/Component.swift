@@ -17,7 +17,8 @@ final class CustomButton: UIButton {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(frame: .zero)
+        configure(title: "다음", isBold: true, isFill: true, size: 18, height: 50)
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
@@ -26,17 +27,16 @@ final class CustomButton: UIButton {
         layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         layer.borderWidth = 1
         layer.cornerRadius = height / 2
-      
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         
         if isFill {
             backgroundColor = UIColor.appColor(.keyColor1)
             setTitleColor(.white, for: .normal)
+
         } else {
             backgroundColor = .systemBackground
             setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         }
-
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
         setHeight(height)
     }
     
@@ -351,13 +351,26 @@ class CustomLabel: UILabel {
         configure(title: title, isNecessaryTitle: isNecessaryTitle)
     }
     
+    convenience init(title: String, boldPart: String) {
+        self.init(title: title, tintColor: .ppsBlack, size: 16)
+        
+        let fontSize = self.font.pointSize
+        let font = UIFont.boldSystemFont(ofSize: fontSize)
+        let fullText = self.text ?? ""
+        let range = (fullText as NSString).range(of: boldPart)
+        let attributedString = NSMutableAttributedString(string: fullText)
+        
+        attributedString.addAttribute(.font, value: font, range: range)
+        self.attributedText = attributedString
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Actions
     
-    func setTitleAndRedStar(upperLabelTitle: String, label: UILabel) {
+    func setTitleAndRedStar(upperLabelTitle: String) {
         
         let title = (upperLabelTitle + "*") as NSString
         let range = (title).range(of: "*")
@@ -372,7 +385,7 @@ class CustomLabel: UILabel {
     private func configure(title: String, isNecessaryTitle: Bool) {
 
         if isNecessaryTitle {
-            setTitleAndRedStar(upperLabelTitle: title, label: self)
+            setTitleAndRedStar(upperLabelTitle: title)
         } else {
             text = title
         }
@@ -594,25 +607,60 @@ final class RoundableView: UIView {
         self.layer.cornerRadius = self.frame.height / 2
     }
 }
-
-final class RoundedNumberField: UITextField {
-
-    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+//
+//<<<<<<< HEAD
+//final class RoundedNumberField: UITextField {
+//
+//    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
+//=======
+final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    
+    let strArray: [String] = {
+        
+        var array = (1...99).map{ String($0) }
+        array.insert("--", at: 0)
+        
+        return array
+    }()
+    
+    var isNecessaryField = false
+    
+    private lazy var picker = UIPickerView()
+    
+    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
+        
         super.init(frame: .zero)
         
-        backgroundColor = enable ? UIColor.appColor(.background) : UIColor.appColor(.ppsGray3)
-        isEnabled = enable ? true : false
-        font = .boldSystemFont(ofSize: 20)
-        textColor = UIColor.appColor(.ppsGray1)
-        textAlignment = centerAlign ? .center : .right
-        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        rightViewMode = .always
+        delegate = self
+        
+        configure(centerAlign: centerAlign)
+        isNecessaryField = isNecessary
         
         if let placeholder = numPlaceholder {
             text = Formatter.formatIntoDecimal(number: placeholder)
         } else {
             text = "--"
         }
+        
+        if isPicker {
+            setPicker()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        
+        delegate = self
+        
+        backgroundColor = UIColor.appColor(.background)
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.ppsGray1)
+        textAlignment = .center
+        text = "--"
+        
+        setPicker()
+        
     }
     
     override func setNeedsLayout() {
@@ -620,6 +668,133 @@ final class RoundedNumberField: UITextField {
         
         self.layer.cornerRadius = self.frame.height / 2
         setHeight(42)
+    }
+    
+    private func configure(centerAlign: Bool) {
+        backgroundColor = UIColor.appColor(.background)
+        font = .boldSystemFont(ofSize: 20)
+        textColor = UIColor.appColor(.ppsGray1)
+        textAlignment = centerAlign ? .center : .right
+        rightView = centerAlign ? nil : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        rightViewMode =  centerAlign ? .never : .always
+    }
+    
+    private func setPicker() {
+        picker.delegate = self
+        picker.dataSource = self
+        self.inputView = picker
+        picker.backgroundColor = .systemBackground
+        configureToolbar()
+    }
+    
+    private func configureToolbar() {
+        // toolbar를 만들어준다.
+        let toolBar = UIToolbar()
+        
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.barTintColor = UIColor.appColor(.keyColor1)
+        toolBar.isTranslucent = false
+        toolBar.tintColor = .white
+        toolBar.sizeToFit()
+        
+        // 만들어줄 버튼
+        // flexibleSpace는 취소~완료 간의 거리를 만들어준다.
+        let doneBT = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(self.donePicker))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let cancelBT = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(self.cancelPicker))
+        
+        // 만든 아이템들을 세팅해주고
+        toolBar.setItems([cancelBT,flexibleSpace,doneBT], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        
+        // 악세사리로 추가한다.
+        self.inputAccessoryView = toolBar
+    }
+    
+    // "완료" 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
+    @objc private func donePicker() {
+        let row = self.picker.selectedRow(inComponent: 0)
+        self.picker.selectRow(row, inComponent: 0, animated: false)
+        self.text = self.strArray[row]
+        self.resignFirstResponder()
+    }
+    
+    // "취소" 클릭 시 textfield의 텍스트 값을 nil로 처리 후 입력창 내리기
+    @objc private func cancelPicker() {
+        self.resignFirstResponder()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        let currentText = NSString(string: textField.text ?? "")
+        let finalText = currentText.replacingCharacters(in: range, with: string)
+        
+        guard finalText.count <= 2 else { return false }
+        
+        let utf8Char = string.cString(using: .utf8)
+        let isBackSpace = strcmp(utf8Char, "\\b")
+        
+        if string.checkOnlyNumbers() || isBackSpace == -92 { return true }
+        
+        return false
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.text == "--" {
+            text = ""
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if let text = textField.text, let intText = Int(text) {
+            self.text = Formatter.formatIntoDecimal(number: intText)
+        } else {
+            self.text = "--"
+        }
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
+    // pickerview의 선택지는 데이터의 개수만큼
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        100
+    }
+    
+    // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        strArray[row]
+    }
+}
+
+class ToastMessage: UIView {
+    
+    private var messageLabel = UILabel()
+    private var messageImageView = UIImageView()
+    
+    init(message: String, messageColor: AssetColor, messageSize: CGFloat, image: String) {
+        super.init(frame: .zero)
+        
+        messageLabel = CustomLabel(title: message, tintColor: messageColor, size: messageSize, isBold: true, isNecessaryTitle: false)
+        messageImageView = UIImageView(image: UIImage(named: image))
+        
+        self.addSubview(messageImageView)
+        self.addSubview(messageLabel)
+        
+        self.layer.cornerRadius = 5
+        self.backgroundColor = .appColor(.ppsBlack)
+        self.alpha = 0.9
+        
+        messageImageView.snp.makeConstraints { make in
+            make.centerY.equalTo(self)
+            make.width.height.equalTo(26)
+            make.leading.equalTo(self).offset(10)
+        }
+        
+        messageLabel.snp.makeConstraints { make in
+            make.leading.equalTo(messageImageView.snp.trailing).offset(10)
+            make.centerY.equalTo(self)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -663,5 +838,25 @@ final class PurpleRoundedInputField: UITextField {
         
         rightView = rightButton
         rightViewMode = .always
+    }
+    
+    func update(alpha: CGFloat, of view: UIView) {
+        view.alpha = alpha
+    }
+}
+
+extension String {
+    func checkOnlyNumbers() -> Bool{
+        do {
+            let regex = try NSRegularExpression(pattern: "^[0-9]$", options: .caseInsensitive)
+            
+            if let _ = regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, self.count)) { return true }
+        } catch {
+            print(error.localizedDescription)
+            
+            return false
+        }
+        return false
+
     }
 }

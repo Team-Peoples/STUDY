@@ -69,9 +69,10 @@ final class MyPageMainViewController: UIViewController {
     @objc private func settingViewTapped() {
         
         let nextVC = AccountManagementViewController()
+        nextVC.profileImage = UIImage(named: "mailCheck")
         nextVC.email = "sem789456@gmail.com"
         nextVC.nickName = "사람개발자살려"
-        nextVC.sns = .naver
+        nextVC.sns = nil
         nextVC.modalPresentationStyle = .fullScreen
         
         present(nextVC, animated: true)
