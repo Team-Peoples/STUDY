@@ -22,15 +22,19 @@ enum StudyCategory: String, CaseIterable {
 final class CreatingStudyViewController: UIViewController {
     // MARK: - Properties
     
+    var studyViewModel = StudyViewModel()
+    
     var categoryChoice: (String, IndexPath)? {
         willSet(value) {
             if categoryChoice == nil {
+                
             } else {
                 guard let indexPath = categoryChoice?.1 else { fatalError() }
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
-                print(value!.0)
             }
+            studyViewModel.study.category = value?.0
+            buttonStateUpdate()
         }
     }
     
@@ -72,8 +76,9 @@ final class CreatingStudyViewController: UIViewController {
         setDelegate()
         enableTapGesture()
         studyNameTextView.textContainer.maximumNumberOfLines = 1
-       
+        
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
+        nextButton.isEnabled = false
         setConstraints()
     }
     
@@ -96,9 +101,6 @@ final class CreatingStudyViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         
-        navigationController?.navigationBar.shadowImage = UIImage()
-        tabBarController?.tabBar.isHidden = true
-        
         scrollView.showsVerticalScrollIndicator = false
         scrollView.addSubview(containerView)
         
@@ -118,11 +120,28 @@ final class CreatingStudyViewController: UIViewController {
     // MARK: - Actions
     
     @objc func buttonDidTapped(sender: CheckBoxButton) {
+        
+        if studyViewModel.study.onoff == nil {
+            studyViewModel.study.onoff = sender.titleLabel?.text == "온라인" ? "on": "off"
+        } else if studyViewModel.study.onoff == "on", sender.titleLabel?.text == "오프라인" {
+            studyViewModel.study.onoff = "onoff"
+        } else if studyViewModel.study.onoff == "on", sender.titleLabel?.text == "온라인" {
+            studyViewModel.study.onoff = nil
+        } else if studyViewModel.study.onoff == "on", sender.titleLabel?.text == "오프라인" {
+        studyViewModel.study.onoff = "onoff"
+        } else if studyViewModel.study.onoff == "off", sender.titleLabel?.text == "오프라인" {
+            studyViewModel.study.onoff = nil
+        } else if studyViewModel.study.onoff == "onoff" {
+            studyViewModel.study.onoff = sender.titleLabel?.text == "온라인" ? "off" : "on"
+        }
         sender.toggleState()
+        buttonStateUpdate()
+        
     }
     
     @objc func nextButtonDidTapped() {
         let vc = CreatingStudyRuleViewController()
+        vc.studyRuleViewModel.study = studyViewModel.study
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -278,6 +297,11 @@ final class CreatingStudyViewController: UIViewController {
         studyIntroductionTextView.delegate = self
         studyCategoryCollectionView.dataSource = self
     }
+    
+    private func buttonStateUpdate() {
+        nextButton.isEnabled = studyViewModel.formIsValid
+        nextButton.isEnabled ? nextButton.fillIn(title: "완료") : nextButton.fillOut(title: "완료")
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -289,6 +313,7 @@ extension CreatingStudyViewController: UITextViewDelegate {
         switch textView {
             case studyNameTextView:
                 studyNameTextView.hidePlaceholder(true)
+                
             case studyIntroductionTextView:
                 studyIntroductionTextView.hidePlaceholder(true)
             default:
@@ -324,8 +349,8 @@ extension CreatingStudyViewController: UITextViewDelegate {
                 
                 guard let inputedText = textView.text else { return true }
                 let newLength = inputedText.count + text.count - range.length
-                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 50 ? "50/50" : "\(newLength)/50"
-                return newLength <= 50
+                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 100 ? "100/100" : "\(newLength)/100"
+                return newLength <= 100
                 
             default:
                 return false
@@ -333,9 +358,21 @@ extension CreatingStudyViewController: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+        if textView == studyNameTextView {
+            textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+        }
+        
+        switch textView {
+            case studyNameTextView:
+                studyViewModel.study.title = studyNameTextView.text
+            case studyIntroductionTextView:
+                studyViewModel.study.studyDescription = studyIntroductionTextView.text
+            default:
+                break
+        }
+        
+        buttonStateUpdate()
     }
-
 }
 
 // MARK: - UICollectionViewDataSource
