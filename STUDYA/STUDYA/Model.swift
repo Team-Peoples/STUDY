@@ -100,6 +100,27 @@ struct Study: Codable {
     }
 }
 
+enum OnOff: String {
+    case on
+    case off
+    case onoff
+    
+    var eng: String {
+        return self.rawValue
+    }
+    
+    var kor: String {
+        switch self {
+            case .on:
+                return "온라인"
+            case .off:
+                return "오프라인"
+            case .onoff:
+                return "온라인/오프라인"
+        }
+    }
+}
+
 struct GeneralStudyRule: Codable {
     var lateness: Lateness?
     var absence: Absence?

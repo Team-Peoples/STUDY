@@ -10,26 +10,33 @@ import SnapKit
 
 // 따로 테이블 뷰로 만들어서 사용하려했지만 그렇게 할경우 MakingDetailStudyRuleViewController가 collectionView와 tableView를 모두 관리해야하므로 vc를 분리하는게 더 나아 보여서 이렇게 만들었음.
 
-struct AttendacneRuleViewModel {
-    
-}
-
 class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     // MARK: - Properties
+    
+    /// 출결 규칙
     @IBOutlet weak var lateRuleTimeField: RoundedNumberField!
     @IBOutlet weak var absenceRuleTimeField: RoundedNumberField!
+    
+    /// 벌금규칙
     @IBOutlet weak var perLateMinuteField: RoundedNumberField!
     @IBOutlet weak var latePenaltyTextField: UITextField!
     @IBOutlet weak var absentPenaltyTextField: UITextField!
+    
+    /// 보증금
     @IBOutlet weak var depositTextField: UITextField!
+    
+    ///디밍처리
     @IBOutlet weak var penaltyDimmingView: UIView!
     @IBOutlet weak var depositDimmingView: UIView!
+    
+    
     lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     private var keyboardFrameHeight: CGFloat = 0
     var bottomConst: ConstraintItem?
     
     // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,8 +44,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         
         setDelegate()
         setNotification()
-        
-        configureViews()
+    
         configure(latePenaltyTextField)
         configure(absentPenaltyTextField)
         configure(depositTextField)
@@ -64,12 +70,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         
         NotificationCenter.default.removeObserver(self)
     }
-    
-    // MARK: - Configure
-    
-    func configureViews() {
-    }
-    
+
     // MARK: - Actions
     
     private func setDelegate() {
@@ -202,15 +203,25 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
             disableMoneyRelatedFields()
             
             perLateMinuteField.text = "--"
-            depositTextField.text = "0"
-            latePenaltyTextField.text = "0"
-            absentPenaltyTextField.text = "0"
+            depositTextField.text = nil
+            latePenaltyTextField.text = nil
+            absentPenaltyTextField.text = nil
         }
-        
-        if textField == latePenaltyTextField || textField == absentPenaltyTextField || textField == depositTextField {
-            if let text = textField.text, let intText = Int(text) {
-                textField.text = Formatter.formatIntoDecimal(number: intText)
-            }
+        switch textField {
+            case latePenaltyTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            case absentPenaltyTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            case depositTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            default:
+                return
         }
     }
 }
