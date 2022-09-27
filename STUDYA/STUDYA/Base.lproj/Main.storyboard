@@ -145,7 +145,7 @@
                                 <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="CustomButton" customModule="STUDYA" customModuleProvider="target">
-                                <rect key="frame" x="20" y="801" width="374" height="31"/>
+                                <rect key="frame" x="20" y="797.5" width="374" height="34.5"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                                 <connections>
@@ -597,10 +597,10 @@
             </objects>
             <point key="canvasLocation" x="2295.6521739130435" y="116.51785714285714"/>
         </scene>
-        <!--Creating Study Rule Complete View Controller-->
+        <!--Creating Study Complete View Controller-->
         <scene sceneID="WuY-Dw-m0m">
             <objects>
-                <viewController storyboardIdentifier="CreatingStudyRuleCompleteViewController" id="iaI-ia-EjF" customClass="CreatingStudyRuleCompleteViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreatingStudyCompleteViewController" id="iaI-ia-EjF" customClass="CreatingStudyCompleteViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PpV-4Q-kb9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
