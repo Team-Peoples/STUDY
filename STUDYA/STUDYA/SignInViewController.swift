@@ -16,7 +16,7 @@ final class SignInViewController: UIViewController {
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
     private let completeButton = CustomButton(title: "완료")
-    private var loginViewModel = LoginViewModel()
+    private var loginViewModel = SignInViewModel()
     
     // MARK: - Life Cycle
     
@@ -135,7 +135,12 @@ final class SignInViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
-      }
+    }
+    
+    func buttonStateUpdate() {
+        completeButton.isEnabled = loginViewModel.formIsValid
+        completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
+    }
     
     // MARK: - Setting Constraints
     
@@ -221,12 +226,5 @@ extension SignInViewController: UITextFieldDelegate {
                 return true
         }
         return true
-    }
-}
-
-extension SignInViewController: DoneButtonStateModel {
-    func buttonStateUpdate() {
-        completeButton.isEnabled = loginViewModel.formIsValid
-        completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
     }
 }

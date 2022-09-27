@@ -57,9 +57,7 @@ class CreatingStudyRuleViewController: UIViewController {
         disclosureIndicator.anchor(trailing: v.trailingAnchor, trailingConstant: 15)
         disclosureIndicator.centerY(inView: v)
         
-        v.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
-        v.layer.borderWidth = 1
-        v.layer.cornerRadius = 24
+        v.configureBorder(color: .ppsGray2, width: 1, radius: 24)
         
         v.isUserInteractionEnabled = true
         v.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(generalRuleViewTapped)))
@@ -157,7 +155,10 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        print(#function)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyRuleCompleteViewController") as! CreatingStudyRuleCompleteViewController
+        vc.study = self.studyRuleViewModel.study
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func changeBorder(color: AssetColor, of settingView: UIView) {

@@ -15,8 +15,8 @@ struct GeneralStudyRuleViewModel {
     var absence: Absence {
         return generalRule.absence ?? Absence(time: nil, fine: nil)
     }
-    var deposit: Int {
-        return generalRule.deposit ?? 0
+    var deposit: Int? {
+        return generalRule.deposit
     }
     var excommunication: Excommunication {
         return generalRule.excommunication ?? Excommunication(lateness: nil, absence: nil)
@@ -30,9 +30,9 @@ struct GeneralStudyRuleViewModel {
         vc.lateRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
         vc.absenceRuleTimeField.text = absence.time == nil ? "--" : String(absence.time!)
         vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count!)
-        vc.latePenaltyTextField.text = lateness.fine == nil ? "0" : String(lateness.fine!)
-        vc.absentPenaltyTextField.text = absence.fine == nil ? "0" : String(absence.fine!)
-        vc.depositTextField.text = String(deposit)
+        vc.latePenaltyTextField.text = lateness.fine == nil ? nil: String(lateness.fine!)
+        vc.absentPenaltyTextField.text = absence.fine == nil ? nil : String(absence.fine!)
+        vc.depositTextField.text = deposit == nil ? nil : String(deposit!)
         
         let isFieldsEnabled: Bool = lateness.time != nil || absence.time != nil ? true : false
         
