@@ -120,11 +120,6 @@ class BaseTextView: UITextView {
 final class CharactersNumberLimitedTextView: BaseTextView {
     // MARK: - Properties
     
-    enum Position {
-        case center
-        case bottom
-    }
-    
     private let charactersNumberLabel = UILabel(frame: .zero)
     
     // MARK: - Initialize
@@ -217,10 +212,6 @@ class ValidationInputView: UIStackView {
     internal func getInputField() -> UITextField {
         basicInputView.getInputField()
     }
-
-    internal func toggleSecureText() {
-        basicInputView.getInputField().isSecureTextEntry.toggle()
-    }
     
     func getValidationLabel() -> UILabel {
         validationLabel
@@ -277,10 +268,6 @@ class BasicInputView: UIView {
     
     internal func setUnderlineColor(as color: AssetColor) {
         underline.backgroundColor = UIColor.appColor(color)
-    }
-    
-    internal func toggleSecureText() {
-        inputField.isSecureTextEntry.toggle()
     }
     
     private func addRightViewOnField(cancel: Bool, target: AnyObject?, action: Selector) {
@@ -426,7 +413,6 @@ class ProfileImageSelectorView: UIImageView {
         
         image = UIImage(named: "defaultProfile")
         configureBorder(color: .keyColor3, width: 2, radius: size / 2)
-
         
         clipsToBounds = true
         isUserInteractionEnabled = true
@@ -813,42 +799,6 @@ class ToastMessage: UIView {
     func update(alpha: CGFloat, of view: UIView) {
         view.alpha = alpha
     }
-}
-
-class DashLine: UIView {
-    
-    var lineColor: UIColor = .red
-    var lineWidth: CGFloat = 2
-    var strokeLength: CGFloat = 3
-    
-    init(lineColor: UIColor, lineWidth: CGFloat, strokeLength: CGFloat, rect: CGRect) {
-        
-        super.init(frame: rect)
-        
-        let path = UIBezierPath()
-        path.lineWidth = self.lineWidth
-        path.lineCapStyle = .square
-        
-        path.move(to: CGPoint(x: 0, y: rect.midY))
-        path.addLine(to: CGPoint(x: rect.width, y: rect.midY))
-        
-        let dashes = [strokeLength, strokeLength]
-        
-        //.setLineDash(patern,count,phase)
-        // patern[x,y,z...] 패턴을 반복할 길이이며 여기선 linewidth의 기본값이 2이므로 2,2,2,2,2 길이로 반복
-        // count의 경우 앞에서 정한 [x,y,z..]에서 패턴개수 고르기라 2이면 x,y만 반복한다.
-        // phase는
-        
-        path.setLineDash(dashes, count: dashes.count, phase: 1)
-        // 컬러설정을 해주려면 .setStoke를 호출
-        lineColor.setStroke()
-        // 실제로 그려주려면 .setStoke를 해줘야함
-        path.stroke()
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
 
 extension String {

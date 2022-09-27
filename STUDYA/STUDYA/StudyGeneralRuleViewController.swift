@@ -27,16 +27,17 @@ struct GeneralStudyRuleViewModel {
     }
     
     func configure(vc: StudyGeneralRuleAttendanceTableViewController) {
-        vc.lateRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
+        vc.latenessRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
         vc.absenceRuleTimeField.text = absence.time == nil ? "--" : String(absence.time!)
         vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count!)
-        vc.latePenaltyTextField.text = lateness.fine == nil ? nil: String(lateness.fine!)
-        vc.absentPenaltyTextField.text = absence.fine == nil ? nil : String(absence.fine!)
+        vc.latenessFineTextField.text = lateness.fine == nil ? nil : String(lateness.fine!)
+        vc.absenceFineTextField.text = absence.fine == nil ? nil : String(absence.fine!)
         vc.depositTextField.text = deposit == nil ? nil : String(deposit!)
         
         let isFieldsEnabled: Bool = lateness.time != nil || absence.time != nil ? true : false
         
-        if isFieldsEnabled { vc.enableMoneyRelatedFields() } else { vc.disableMoneyRelatedFields() }
+        vc.fineAndDepositFieldsAreEnabled(isFieldsEnabled)
+        
 //        isfieldsenabled에 따라 혹시모를 moneyrelatedfields의 필드의 값을 다 삭제시켜주는 작업 해줘야하나?
     }
     
@@ -119,8 +120,8 @@ final class StudyGeneralRuleViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        generalRuleViewModel.generalRule.lateness = Lateness(time: Int(vc.lateRuleTimeField.text!), count: Int(vc.perLateMinuteField.text!), fine: Int(vc.latePenaltyTextField.text!))
-        generalRuleViewModel.generalRule.absence = Absence(time: Int(vc.absenceRuleTimeField.text!), fine: Int(vc.absentPenaltyTextField.text!))
+        generalRuleViewModel.generalRule.lateness = Lateness(time: Int(vc.latenessRuleTimeField.text!), count: Int(vc.perLateMinuteField.text!), fine: Int(vc.latenessFineTextField.text!))
+        generalRuleViewModel.generalRule.absence = Absence(time: Int(vc.absenceRuleTimeField.text!), fine: Int(vc.absenceFineTextField.text!))
         generalRuleViewModel.generalRule.deposit = Int(vc.depositTextField.text!)
         generalRuleViewModel.generalRule.excommunication = Excommunication(lateness: Int(excommunicationCell.lateNumberField.text!), absence: Int(excommunicationCell.absenceNumberField.text!))
         print(generalRuleViewModel.generalRule)

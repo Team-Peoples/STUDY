@@ -11,12 +11,13 @@ import SnapKit
 final class SignInViewController: UIViewController {
     // MARK: - Properties
     
+    private var signInViewModel = SignInViewModel()
+    
     private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
     private let completeButton = CustomButton(title: "완료")
-    private var loginViewModel = SignInViewModel()
     
     // MARK: - Life Cycle
     
@@ -32,17 +33,20 @@ final class SignInViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         configureTextFieldDelegate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Configure Views
     
     private func configureViews() {
+        
         view.backgroundColor = .systemBackground
         
         view.addSubview(loginLabel)
@@ -72,7 +76,7 @@ final class SignInViewController: UIViewController {
     
     private func configureCompleteButton() {
         
-        completeButton.isUserInteractionEnabled = false
+        completeButton.isEnabled = false
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
     }
     
@@ -82,10 +86,11 @@ final class SignInViewController: UIViewController {
         
         let button = passwordInputView.getInputField().rightView as? UIButton
         button?.isSelected.toggle()
-        passwordInputView.toggleSecureText()
+        passwordInputView.getInputField().isSecureTextEntry.toggle()
     }
     
     @objc private func cancelButtonDidTapped() {
+        
         emailInputView.getInputField().text = nil
     }
     
@@ -111,9 +116,9 @@ final class SignInViewController: UIViewController {
         
         switch sender.superview {
             case emailInputView:
-                loginViewModel.email = emailInputView.getInputField().text
+                signInViewModel.email = emailInputView.getInputField().text
             case passwordInputView:
-                loginViewModel.password = passwordInputView.getInputField().text
+                signInViewModel.password = passwordInputView.getInputField().text
             default:
                 break
         }
@@ -137,8 +142,8 @@ final class SignInViewController: UIViewController {
         view.endEditing(true)
     }
     
-    func buttonStateUpdate() {
-        completeButton.isEnabled = loginViewModel.formIsValid
+    private func buttonStateUpdate() {
+        completeButton.isEnabled = signInViewModel.formIsValid
         completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
     }
     
@@ -216,7 +221,7 @@ extension SignInViewController: UITextFieldDelegate {
                 passwordInputView.getInputField().becomeFirstResponder()
             case passwordInputView:
                 
-                if completeButton.isUserInteractionEnabled {
+                if completeButton.isEnabled {
                     completeButtonDidTapped()
                 } else {
                     let alert = SimpleAlert(message: "이메일 또는 비밀번호를 확인해주세요 😮")

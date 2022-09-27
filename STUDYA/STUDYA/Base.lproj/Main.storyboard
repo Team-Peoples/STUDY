@@ -481,13 +481,13 @@
                     </tableView>
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
+                        <outlet property="absenceFineTextField" destination="x7E-3e-ASz" id="SF6-GX-9I7"/>
                         <outlet property="absenceRuleTimeField" destination="L07-KW-jej" id="hDZ-T6-C70"/>
-                        <outlet property="absentPenaltyTextField" destination="x7E-3e-ASz" id="IRR-Bv-wYw"/>
                         <outlet property="depositDimmingView" destination="PLu-Hi-clw" id="y5r-wF-xWo"/>
                         <outlet property="depositTextField" destination="SaT-PR-QyN" id="6ZJ-Wq-l9B"/>
-                        <outlet property="latePenaltyTextField" destination="b8g-Nu-XAz" id="y9C-1N-DkG"/>
-                        <outlet property="lateRuleTimeField" destination="MlF-JN-FxP" id="L5B-tU-3RR"/>
-                        <outlet property="penaltyDimmingView" destination="T6s-nZ-Rqf" id="tDi-Om-qYp"/>
+                        <outlet property="fineDimmingView" destination="T6s-nZ-Rqf" id="yRd-c5-Qse"/>
+                        <outlet property="latenessFineTextField" destination="b8g-Nu-XAz" id="NAQ-oy-7dE"/>
+                        <outlet property="latenessRuleTimeField" destination="MlF-JN-FxP" id="LNo-us-dcf"/>
                         <outlet property="perLateMinuteField" destination="bdD-I3-EGL" id="zjl-Ot-kcU"/>
                     </connections>
                 </tableViewController>
@@ -589,8 +589,8 @@
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
                         <outlet property="cancelButton" destination="5gg-Yk-fy1" id="gG3-wk-27U"/>
+                        <outlet property="freeRuletextView" destination="CWt-oX-zF1" id="O2j-mY-vqT"/>
                         <outlet property="placeholderLabel" destination="Y4l-rO-xiw" id="c7i-nw-96z"/>
-                        <outlet property="textView" destination="CWt-oX-zF1" id="4fN-Jy-SuO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1MD-5A-7sA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

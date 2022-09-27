@@ -16,7 +16,7 @@ class StudyFreeRuleViewController: UIViewController {
     var completeButtonTapped: (String) -> () = { freeRule in }
     var viewDidUpdated: (UITextView) -> () = { view in }
     
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
@@ -28,14 +28,14 @@ class StudyFreeRuleViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(completeButton)
-        textView.delegate = self
+        freeRuletextView.delegate = self
         cancelButton.action = #selector(cancelButtonDidTapped)
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         setConstraints()
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        viewDidUpdated(textView)
-        placeholderLabel.isHidden = textView.text != "" ? true : false
+        viewDidUpdated(freeRuletextView)
+        placeholderLabel.isHidden = freeRuletextView.text != "" ? true : false
     }
     // MARK: - Configure
     
@@ -46,7 +46,7 @@ class StudyFreeRuleViewController: UIViewController {
     }
     
     @objc func completeButtonDidTapped() {
-        completeButtonTapped(textView.text)
+        completeButtonTapped(freeRuletextView.text)
         self.dismiss(animated: true)
     }
     

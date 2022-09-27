@@ -11,9 +11,15 @@ import UIKit
 class FindPasswordCompleteViewController: UIViewController {
     // MARK: - Properties
     
+    var nickname: String? {
+        didSet {
+            nickNameLabel.text = "\(nickname ?? "사용자")님,"
+        }
+    }
+    
     private let titleLabel = CustomLabel(title: "이메일울\n확인해주세요", tintColor: .ppsBlack, size: 30, isBold: true)
-    private let nickNameLabel = CustomLabel(title: "{닉네임}님,", tintColor: .ppsBlack, size: 20, isBold: true)
-    private let descriptionLabel = CustomLabel(title: "가입하신 이메일로 비밀번호를\n보내드렸어요!😊", tintColor: .ppsBlack, size: 20)
+    private var nickNameLabel = CustomLabel(title: "{닉네임}님,", tintColor: .ppsBlack, size: 20, isBold: true)
+    private let descriptionLabel = CustomLabel(title: "가입하신 이메일로 임시 비밀번호를\n보내드렸어요!😊", tintColor: .ppsBlack, size: 20)
     private let completeButton = CustomButton(title: "확인", isFill: true)
     
     // MARK: - Actions

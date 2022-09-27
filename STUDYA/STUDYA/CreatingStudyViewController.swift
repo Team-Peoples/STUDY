@@ -25,7 +25,6 @@ final class CreatingStudyViewController: UIViewController {
     var studyViewModel = StudyViewModel()
     private var token: NSObjectProtocol?
     
-    /// 카테고리 선택하면 받아오는 변수
     var categoryChoice: (String, IndexPath)? {
         willSet(value) {
             if categoryChoice == nil {

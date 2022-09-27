@@ -32,16 +32,16 @@ final class MainViewController: UIViewController {
     }
     
     private func configureNavigationItem() {
-        let noticeBtn = UIButton(type: .custom)
+        let notificationBtn = UIButton(type: .custom)
         
-        noticeBtn.setImage(UIImage(named: "noti"), for: .normal)
-        noticeBtn.setTitleColor(.black, for: .normal)
-        noticeBtn.addTarget(self, action: #selector(noticeButtonDidTapped), for: .touchUpInside)
+        notificationBtn.setImage(UIImage(named: "noti"), for: .normal)
+        notificationBtn.setTitleColor(.black, for: .normal)
+        notificationBtn.addTarget(self, action: #selector(notificationButtonDidTapped), for: .touchUpInside)
         
         masterSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
        
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: noticeBtn)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: notificationBtn)
     }
     
     // MARK: - Actions
@@ -51,7 +51,7 @@ final class MainViewController: UIViewController {
         navigationController?.pushViewController(createStudyVC, animated: true)
     }
     
-    @objc func noticeButtonDidTapped() {
+    @objc func notificationButtonDidTapped() {
         print(#function)
     }
     

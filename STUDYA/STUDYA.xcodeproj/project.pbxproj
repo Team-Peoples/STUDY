@@ -12,9 +12,9 @@
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
 		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
-		7299968028AF54190008A1C1 /* NoticeBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */; };
-		7299968228AF5C480008A1C1 /* NoticeBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */; };
-		7299968428B09B110008A1C1 /* NoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* NoticeViewController.swift */; };
+		7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */; };
+		7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */; };
+		7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* AnnouncementViewController.swift */; };
 		7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */; };
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
 		7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */; };
@@ -61,9 +61,9 @@
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
 		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
-		7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBoardViewController.swift; sourceTree = "<group>"; };
-		7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBoardTableViewCell.swift; sourceTree = "<group>"; };
-		7299968328B09B110008A1C1 /* NoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeViewController.swift; sourceTree = "<group>"; };
+		7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardViewController.swift; sourceTree = "<group>"; };
+		7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardTableViewCell.swift; sourceTree = "<group>"; };
+		7299968328B09B110008A1C1 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
 		7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFreeRuleViewController.swift; sourceTree = "<group>"; };
@@ -167,9 +167,9 @@
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
-				7299967F28AF54190008A1C1 /* NoticeBoardViewController.swift */,
-				7299968128AF5C480008A1C1 /* NoticeBoardTableViewCell.swift */,
-				7299968328B09B110008A1C1 /* NoticeViewController.swift */,
+				7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */,
+				7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */,
+				7299968328B09B110008A1C1 /* AnnouncementViewController.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				D3BF054B28C3C36700AF7D3B /* Notification.swift */,
@@ -346,15 +346,15 @@
 				72B5BE4D28D0A08C000137CD /* CreatingStudyCompleteViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
-				7299968228AF5C480008A1C1 /* NoticeBoardTableViewCell.swift in Sources */,
+				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
-				7299968028AF54190008A1C1 /* NoticeBoardViewController.swift in Sources */,
+				7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */,
 				D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
-				7299968428B09B110008A1C1 /* NoticeViewController.swift in Sources */,
+				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
