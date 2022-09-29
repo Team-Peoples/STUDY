@@ -120,6 +120,11 @@ class BaseTextView: UITextView {
 final class CharactersNumberLimitedTextView: BaseTextView {
     // MARK: - Properties
     
+    enum Position {
+        case center
+        case bottom
+    }
+    
     private let charactersNumberLabel = UILabel(frame: .zero)
     
     // MARK: - Initialize

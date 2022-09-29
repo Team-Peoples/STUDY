@@ -205,11 +205,11 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
         }
         
         switch textField {
-            case latePenaltyTextField:
+            case latenessFineTextField:
                 if let text = textField.text, let intText = Int(text) {
                     textField.text = Formatter.formatIntoDecimal(number: intText)
                 }
-            case absentPenaltyTextField:
+            case absenceFineTextField:
                 if let text = textField.text, let intText = Int(text) {
                     textField.text = Formatter.formatIntoDecimal(number: intText)
                 }
