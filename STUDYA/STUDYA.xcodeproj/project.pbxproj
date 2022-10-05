@@ -33,6 +33,7 @@
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3B19AED289CFDA600C842B1 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */; };
 		D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053528BF901700AF7D3B /* Formatter.swift */; };
+		D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5D28EDE685009B53B4 /* KeyChain.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
@@ -73,6 +74,7 @@
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		D3C23A5D28EDE685009B53B4 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3BF053528BF901700AF7D3B /* Formatter.swift */,
 				D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */,
+				D3C23A5D28EDE685009B53B4 /* KeyChain.swift */,
 				D3B19AEC289CFDA600C842B1 /* SignUpViewController.swift */,
 				D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */,
 				72ED25C228978EBE00031AD1 /* SignInViewController.swift */,
@@ -304,6 +307,7 @@
 				7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */,
 				7299968828BE44090008A1C1 /* MainViewController.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
+				D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
