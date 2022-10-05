@@ -1,5 +1,5 @@
 //
-//  NoticeViewController.swift
+//  AnnouncementViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/20.
@@ -10,7 +10,7 @@ import SnapKit
 
 // to be fixed:  textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
 
-class NoticeViewController: UIViewController {
+class AnnouncementViewController: UIViewController {
     // MARK: - Properties
     
     ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
@@ -33,14 +33,16 @@ class NoticeViewController: UIViewController {
         }
     }
     
-    var notice: Announcement? {
+    var announcement: Announcement? {
         didSet {
             
-            titleTextView.text = notice?.title
-            contentTextView.text = notice?.content
-            timeLabel.text = notice?.date
+            titleTextView.text = announcement?.title
+            contentTextView.text = announcement?.content
+            timeLabel.text = announcement?.createdDate?.formatToString()
         }
     }
+    
+    var announcementTitleHeaderView: UIView?
     
     private let titleTextView: BaseTextView = {
         let tv = BaseTextView(placeholder: "제목을 입력해주세요.", fontSize: 18, isBold: true, topInset: 0, leadingInset: 0)
@@ -64,7 +66,7 @@ class NoticeViewController: UIViewController {
         tv.dataDetectorTypes = .link
         tv.enablesReturnKeyAutomatically = true
         tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-       
+        
         return tv
     }()
     
@@ -80,7 +82,7 @@ class NoticeViewController: UIViewController {
     
     let scrollView = UIScrollView()
     let contentView = UIView()
-
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -100,25 +102,27 @@ class NoticeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        self.tabBarController?.tabBar.isHidden = true
         if !contentTextView.text.isEmpty || !titleTextView.text.isEmpty {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)
         }
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
-
+    
     // MARK: - Configure
     
     private func configureViews() {
         view.backgroundColor = .systemBackground
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
+        if announcementTitleHeaderView != nil {
+            contentView.addSubview(announcementTitleHeaderView!)
+        }
         contentView.addSubview(titleTextView)
         contentView.addSubview(timeLabel)
         contentView.addSubview(contentTextView)
@@ -141,7 +145,7 @@ class NoticeViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func createNotice() {
+    @objc func doneButtonDidTapped() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -172,7 +176,7 @@ class NoticeViewController: UIViewController {
             navigationItem.title = "공지사항 수정"
         }
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(createNotice))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(doneButtonDidTapped))
         navigationItem.rightBarButtonItem?.tintColor = .orange
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .orange
@@ -199,27 +203,51 @@ class NoticeViewController: UIViewController {
             make.centerX.width.top.bottom.equalTo(scrollView)
         }
         
-        timeLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(contentView.snp.trailing).inset(30)
-            make.bottom.equalTo(titleTextView.snp.top).offset(-8)
-        }
-        
-        titleTextView.snp.makeConstraints { make in
-            make.top.equalTo(contentView.snp.top).offset(50)
-            make.leading.trailing.equalTo(contentView).inset(30)
-        }
-        
-        contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(titleTextView.snp.bottom).offset(25)
-            make.bottom.equalTo(contentView.snp.bottom).inset(110)
-            make.leading.trailing.equalTo(titleTextView)
+        if announcementTitleHeaderView != nil {
+            announcementTitleHeaderView?.snp.makeConstraints({ make in
+                make.leading.top.trailing.equalTo(contentView)
+                make.height.equalTo(48)
+            })
+            
+            titleTextView.snp.makeConstraints { make in
+                make.top.equalTo(announcementTitleHeaderView!.snp.bottom).offset(30)
+                make.leading.trailing.equalTo(contentView).inset(30)
+            }
+            
+            contentTextView.snp.makeConstraints { make in
+                make.top.equalTo(titleTextView.snp.bottom).offset(25)
+                make.bottom.equalTo(contentView.snp.bottom).inset(110)
+                make.leading.trailing.equalTo(titleTextView)
+            }
+            
+            timeLabel.snp.makeConstraints { make in
+                make.trailing.equalTo(contentView.snp.trailing).inset(30)
+                make.bottom.equalTo(titleTextView.snp.top).offset(-8)
+            }
+        } else {
+            
+            titleTextView.snp.makeConstraints { make in
+                make.top.equalTo(contentView.snp.top).offset(50)
+                make.leading.trailing.equalTo(contentView).inset(30)
+            }
+            
+            contentTextView.snp.makeConstraints { make in
+                make.top.equalTo(titleTextView.snp.bottom).offset(25)
+                make.bottom.equalTo(contentView.snp.bottom).inset(110)
+                make.leading.trailing.equalTo(titleTextView)
+            }
+            
+            timeLabel.snp.makeConstraints { make in
+                make.trailing.equalTo(contentView.snp.trailing).inset(30)
+                make.bottom.equalTo(titleTextView.snp.top).offset(-8)
+            }
         }
     }
 }
 
 // MARK: - UITextViewDelegate
 
-extension NoticeViewController: UITextViewDelegate {
+extension AnnouncementViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         switch textView {

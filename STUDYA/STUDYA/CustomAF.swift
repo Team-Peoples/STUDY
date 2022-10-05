@@ -35,20 +35,20 @@ enum RequestPurpose: Requestable {
     case signIn(UserID, Password) ////4
     case refreshToken ////9
     case createStudy(Study) //11
-    case createNotice(Title, Content, ID) //15
+    case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
     
     //    HTTPMethod: PUT
     case updateUser   //6
-    case updateNotice(Title, Content, ID) //16
-    case updatePinnedNotice(ID, Bool)   //17
+    case updateAnnouncement(Title, Content, ID) //16
+    case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
-    case deleteStudyNotice(Title, Content, ID)  //18
+    case deleteAnnouncement(Title, Content, ID)  //18
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -57,7 +57,7 @@ enum RequestPurpose: Requestable {
     case resendEmail    //8
     case getAllStudy    //12
     case getStudy(ID)  //13
-    case getAllStudyNotices(ID)   //14
+    case getAllAnnouncements(ID)   //14
     case getAllSchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
@@ -82,7 +82,7 @@ extension RequestPurpose {
             return "/issued"
         case .createStudy:
             return "/study"
-        case .createNotice:
+        case .createAnnouncement:
             return "/noti"
         case .createSchedule:
             return  "/user/schedule"
@@ -90,9 +90,9 @@ extension RequestPurpose {
         //    HTTPMethod: PUT
         case .updateUser:
             return "/user"
-        case .updateNotice:
+        case .updateAnnouncement:
             return "/noti"
-        case .updatePinnedNotice:
+        case .updatePinnedAnnouncement:
             return "/noti/pin"
         case .updateScheduleStatus(let id):
             return "/user/schedule/\(id)"
@@ -102,7 +102,7 @@ extension RequestPurpose {
         //    HTTPMethod: DEL
         case .deleteUser(let id):
             return "/user/\(id)"
-        case .deleteStudyNotice(_,_,let id):
+        case .deleteAnnouncement(_,_,let id):
             return "/noti/\(id)"
             
         //    HTTPMethod: GET
@@ -118,7 +118,7 @@ extension RequestPurpose {
             return "/study"
         case .getStudy(let id):
             return "/study/\(id)"
-        case .getAllStudyNotices(let id):
+        case .getAllAnnouncements(let id):
             return "/noti/\(id)"
         case .getAllSchedule:
             return "/study/schedule"
@@ -131,13 +131,13 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createNotice, . createSchedule: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, . createSchedule: return .post
             
-        case .updateUser, .updateNotice, .updatePinnedNotice, .updateScheduleStatus, .updateSchedule: return .put
+        case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule: return .put
             
-        case .deleteUser, .deleteStudyNotice: return .delete
+        case .deleteUser, .deleteAnnouncement: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllStudyNotices, .getAllSchedule, .getUserSchedule, .getStudyLog : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllSchedule, .getUserSchedule, .getStudyLog : return .get
         }
     }
     
@@ -152,24 +152,24 @@ extension RequestPurpose {
                           "password" : pw])
         case .createStudy(let study):
             return .encodableBody(study)
-        case .createNotice(let title, let content, let id):
+        case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
             
 //    HTTPMethod: PUT
-        case .updateNotice(let title, let content, let id):
+        case .updateAnnouncement(let title, let content, let id):
             return .body(["notificationSubject": title,
                           "notificationContents": content,
                           "notificationId": id])
-        case .updatePinnedNotice(let id, let isPinned):
+        case .updatePinnedAnnouncement(let id, let isPinned):
             return .body(["notificationId": id,
                           "pin": isPinned])
         case .updateSchedule(let id):
             return .body(["scheduleId" : id])
             
 //    HTTPMethod: DEL
-        case .deleteStudyNotice(let title, let content, let id):
+        case .deleteAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "notificationId" : id])
@@ -299,109 +299,3 @@ struct User: Codable {
         case isPaused = "userPause"
     }
 }
-
-
-
-struct Credential: Encodable {
-    let userId: String
-    let password: String?
-}
-
-enum SNS: String {
-    case kakao = "kakao"
-    case naver = "naver"
-}
-
-struct SNSInfo {
-    let token: String
-    let provider: String
-}
-
-struct Study: Codable {
-    let id: Int?
-    let title, onoff, category, studyDescription, freeRule, po: String?
-    let isBlocked, isPaused: Bool?
-    let rule: StudyRule?
-    let startDate: Date?
-    let endDate: Date?
-    
-    enum CodingKeys: String, CodingKey {
-        
-        case id = "studyId"
-        case title = "studyName"
-        case category = "studyCategory"
-        case studyDescription = "studyInfo"
-        case freeRule = "studyFlow"
-        case isBlocked = "studyBlock"
-        case isPaused = "studyPause"
-        case rule = "studyRule"
-        case startDate = "start"
-        case endDate = "end"
-        case onoff, po
-    }
-}
-
-struct StudyRule: Codable {
-    let lateness: Lateness?
-    let absence: Absence?
-    let deposit: Int?
-    let excommunication: Excommunication?
-    
-    enum CodingKeys: String, CodingKey {
-        case lateness, deposit
-        case absence = "absent"
-        case excommunication = "out"
-    }
-}
-
-struct Announcement: Codable {
-    let id: Int?
-    let studyID: Int?
-    let title: String?
-    let content: String?
-    let createdDate: Date?
-    var isPinned: Bool?
-    
-    enum CodingKeys: String, CodingKey {
-        case id = "notificationId"
-        case studyID = "studyId"
-        case title = "notificationSubject"
-        case content = "notificationContents"
-        case createdDate = "createdAt"
-        case isPinned = "pin"
-    }
-}
-
-struct Schedule: Codable {
-    
-    let id: Int?
-    let name: String?
-    let date: Date?
-    let status: String? //상태가 머머 있는거지?
-    
-    enum CodingKeys: String, CodingKey {
-        case status
-        case id = "scheduleId"
-        case name = "scheduleName"
-        case date = "scheduleDate"
-    }
-}
-
-struct Absence: Codable {
-    let time, fine: Int?
-}
-
-struct Lateness: Codable {
-    let time, count, fine: Int?
-}
-
-struct Excommunication: Codable {
-    let lateness, absent: Int?
-}
-
-typealias UserID = String //사용자의 아이디
-typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
-typealias Title = String
-typealias Content = String
-typealias Password = String
-typealias SNSToken = String

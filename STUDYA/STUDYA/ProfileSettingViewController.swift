@@ -78,7 +78,7 @@ class ProfileSettingViewController: UIViewController {
         let vc = MailCheckViewController()
         
         vc.modalPresentationStyle = .fullScreen
-        show(vc, sender: nil)
+        present(vc, animated: true)
     }
     
     private func setupImagePicker() {

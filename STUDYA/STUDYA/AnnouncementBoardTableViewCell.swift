@@ -1,5 +1,5 @@
 //
-//  NoticeBoardTableViewCell.swift
+//  AnnouncementBoardTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/19.
@@ -7,8 +7,37 @@
 
 import UIKit
 
-final class NoticeBoardTableViewCell: UITableViewCell {
+final class AnnouncementBoardTableViewCell: UITableViewCell {
     // MARK: - Properties
+    
+    var announcement: Announcement? {
+        didSet {
+            
+            titleLabel.text = announcement?.title
+            contentLabel.text = announcement?.content
+            timeLabel.text = announcement?.createdDate?.formatToString()
+            isPinned = announcement?.isPinned
+        }
+    }
+    
+    var cellAction: (() -> Void) = {}
+    var etcAction: (() -> Void) = {}
+//    var hideEtcButton: (() -> Void) = {}
+    
+    private let cell: UIView = {
+        let v = UIView()
+        
+        v.layer.cornerRadius = 24
+        v.clipsToBounds = false
+        v.backgroundColor = .appColor(.background)
+
+        v.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
+        v.layer.shadowOpacity = 1
+        v.layer.shadowRadius = 5
+        v.layer.shadowOffset = CGSize(width: 0, height: 0)
+        
+        return v
+    }()
     
     var isPinned: Bool? {
         willSet(value) {
@@ -17,15 +46,6 @@ final class NoticeBoardTableViewCell: UITableViewCell {
                 cell.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
                 cell.layer.borderWidth = 1
             }
-        }
-    }
-    var notice: Announcement? {
-        didSet {
-            
-            titleLabel.text = notice?.title
-            contentLabel.text = notice?.content
-            timeLabel.text = notice?.date
-            isPinned = notice?.isPinned
         }
     }
     
@@ -57,23 +77,22 @@ final class NoticeBoardTableViewCell: UITableViewCell {
         return lbl
     }()
     
-    private let cell: UIView = {
-        let v = UIView()
-        
-        v.layer.cornerRadius = 24
-        v.clipsToBounds = true
-        v.backgroundColor = .appColor(.background)
-        
-        return v
+    private lazy var etcButton: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "etc"), for: .normal)
+        btn.tintColor = .appColor(.ppsGray2)
+        btn.isHidden = true
+        return btn
     }()
     
     // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         configureViews()
         
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cellDidTapped)))
+        etcButton.addTarget(self, action: #selector(etcButtonDidTapped), for: .touchUpInside)
         setConstraints()
     }
     
@@ -81,19 +100,30 @@ final class NoticeBoardTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
     // MARK: - Configure
     
     private func configureViews() {
-        backgroundColor = .systemBackground
-        addSubview(cell)
-        
+        backgroundColor = .clear
+        self.contentView.addSubview(cell)
+
         cell.addSubview(titleLabel)
         cell.addSubview(timeLabel)
         cell.addSubview(contentLabel)
+        cell.addSubview(etcButton)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func etcButtonDidTapped() {
+        etcAction()
+    }
+    
+    @objc private func cellDidTapped() {
+        cellAction()
+    }
+    
+    func etcButtonIsHiddenToggle() {
+        etcButton.isHidden.toggle()
     }
     
     // MARK: - Setting Constraints
@@ -122,6 +152,10 @@ final class NoticeBoardTableViewCell: UITableViewCell {
             make.bottom.greaterThanOrEqualTo(cell).inset(18)
             make.leading.trailing.equalTo(cell).inset(24)
         }
+        
+        etcButton.snp.makeConstraints { make in
+            make.trailing.equalTo(timeLabel.snp.trailing)
+            make.bottom.equalTo(timeLabel.snp.top)
+        }
     }
 }
-

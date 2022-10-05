@@ -22,46 +22,49 @@ enum StudyCategory: String, CaseIterable {
 final class CreatingStudyViewController: UIViewController {
     // MARK: - Properties
     
+    var studyViewModel = StudyViewModel()
+    private var token: NSObjectProtocol?
+    
     var categoryChoice: (String, IndexPath)? {
         willSet(value) {
             if categoryChoice == nil {
-                print(value, "init")
+                
             } else {
                 guard let indexPath = categoryChoice?.1 else { fatalError() }
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
-                print(value,"cheanged")
             }
+            studyViewModel.study.category = value?.0
+            buttonStateUpdate()
         }
     }
     
-    /// Scrollalbe Container View
+    /// 스크롤 구현
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     
-    /// Scene Title
+    /// 화면 타이틀
     private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .ppsBlack, size: 24, isBold: true)
     
-    /// Study category
+    /// 스터디 카테고리
     private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private lazy var studyCategoryCollectionView: UICollectionView = getCollectionView()
     
-    /// Study Name
+    /// 스터디명
     private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, height: 42)
+    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, radius: 21, position: .center, fontSize: 8)
     
-    /// Study Type
+    /// 스터디 형태 on/off
     private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
     private lazy var studyTypeStackView: UIStackView = getCheckBoxStackView()
     
-    /// Study Introduction
+    /// 스터디 한줄 소개
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 100, height: 105, radius: 24)
+    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
     
-    /// Bottom Button
+    /// 다음 버튼
     private let nextButton = CustomButton(title: "다음", isBold: true, isFill: false)
-    private var token: NSObjectProtocol?
 
     
     // MARK: - Life Cycle
@@ -73,6 +76,9 @@ final class CreatingStudyViewController: UIViewController {
         setDelegate()
         enableTapGesture()
         studyNameTextView.textContainer.maximumNumberOfLines = 1
+        
+        nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
+        nextButton.isEnabled = false
         setConstraints()
     }
     
@@ -114,7 +120,32 @@ final class CreatingStudyViewController: UIViewController {
     // MARK: - Actions
     
     @objc func buttonDidTapped(sender: CheckBoxButton) {
+        
+        if studyViewModel.study.onoff == nil {
+            studyViewModel.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.on.eng : OnOff.off.eng
+        } else if studyViewModel.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.off.kor {
+            studyViewModel.study.onoff = OnOff.onoff.eng
+        } else if studyViewModel.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.on.kor {
+            studyViewModel.study.onoff = nil
+        } else if studyViewModel.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.on.kor {
+        studyViewModel.study.onoff = OnOff.onoff.eng
+        } else if studyViewModel.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.off.kor {
+            studyViewModel.study.onoff = nil
+        } else if studyViewModel.study.onoff == OnOff.onoff.eng {
+            studyViewModel.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.off.eng : OnOff.on.eng
+        }
+        
         sender.toggleState()
+        buttonStateUpdate()
+        
+    }
+    
+    @objc func nextButtonDidTapped() {
+        
+        let vc = CreatingStudyRuleViewController()
+        
+        vc.studyRuleViewModel.study = studyViewModel.study
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {
@@ -137,22 +168,26 @@ final class CreatingStudyViewController: UIViewController {
             if !viewFrame.contains(activeTextView.frame.origin) {
 
                 let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height)
-
+                
                 scrollView.setContentOffset(scrollPoint, animated: true)
             }
         }
     }
     
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
+        
         scrollView.contentInset = UIEdgeInsets.zero
         self.view.endEditing(true)
     }
     
     private func enableTapGesture() {
+        
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
+        
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
@@ -269,6 +304,11 @@ final class CreatingStudyViewController: UIViewController {
         studyIntroductionTextView.delegate = self
         studyCategoryCollectionView.dataSource = self
     }
+    
+    private func buttonStateUpdate() {
+        nextButton.isEnabled = studyViewModel.formIsValid
+        nextButton.isEnabled ? nextButton.fillIn(title: "완료") : nextButton.fillOut(title: "완료")
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -280,6 +320,7 @@ extension CreatingStudyViewController: UITextViewDelegate {
         switch textView {
             case studyNameTextView:
                 studyNameTextView.hidePlaceholder(true)
+                
             case studyIntroductionTextView:
                 studyIntroductionTextView.hidePlaceholder(true)
             default:
@@ -327,6 +368,17 @@ extension CreatingStudyViewController: UITextViewDelegate {
         if textView == studyNameTextView {
             textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
         }
+        
+        switch textView {
+            case studyNameTextView:
+                studyViewModel.study.title = studyNameTextView.text
+            case studyIntroductionTextView:
+                studyViewModel.study.studyDescription = studyIntroductionTextView.text
+            default:
+                break
+        }
+        
+        buttonStateUpdate()
     }
 }
 

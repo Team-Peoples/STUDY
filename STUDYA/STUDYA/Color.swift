@@ -8,7 +8,7 @@
 import UIKit
 
 enum AssetColor: String {
-    case keyColor3, brandMilky, keyColor2, keyColor1, ppsGray2, ppsGray1, ppsBlack, background, subColor1, subColor2, subColor3, ppsGray3, kakao, kakaoBrown, naver, whiteLabel
+    case keyColor3, brandMilky, keyColor2, keyColor1, ppsGray2, ppsGray1, ppsBlack, background, subColor1, subColor2, subColor3, ppsGray3, kakao, kakaoBrown, naver, whiteLabel, cancel
 }
 
 extension UIColor {
@@ -47,6 +47,8 @@ extension UIColor {
             return UIColor(red: 3/255, green: 199/255, blue: 90/255, alpha: 1)
         case .whiteLabel:
             return white
+        case .cancel:
+            return UIColor(named: AssetColor.cancel.rawValue)!
         }
     }
 }
