@@ -42,9 +42,9 @@ struct Network {
             case .success(let data):
                 
                 let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
-                guard let result = decodedData?.result else { return }
+                guard let user = decodedData?.result else { return }
                 
-                completion(result)
+                completion(user)
             case .failure(let error):
                 print(error)
             }
@@ -88,21 +88,30 @@ struct Network {
         }
     }
 //    
-//    func signIn(credential: Credential) {
-//        AF.request(RequestPurpose.signIn(credential)).validate().responseData { response in
-//            switch response.result {
-//                case .success(let data):
-//                    let dic = data.toDictionary()
-//                    guard let result = dic["result"] as? [String: Any] else { return }
-//                    guard let img = result["img"] else { return }
-//                    AF.download("http:/\(img)").responseData { response in
-//                        print(response.result)
-//                    }
-//                case .failure(let error):
-//                    print(error)
-//            }
-//        }
-//    }
+    func signIn(id: String, pw: String, completion: @escaping (User?) -> Void) {
+        AF.request(RequestPurpose.signIn(id, pw)).validate().responseData { response in
+            switch response.result {
+                case .success(let data):
+                    
+                    let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
+                    guard let user = decodedData?.result else { return }
+                    guard let message = decodedData?.message else { return }
+                    let arry = message.components(separatedBy: ",")
+                    let loginSuccess = arry[0]
+                    let accessToken = arry[1]
+                    let refreshToken = arry[2]
+                    print(loginSuccess, accessToken, refreshToken)
+                    
+                    AF.download(user.image!).responseData { response in
+                        print(response.result)
+                    }
+                    
+                    completion(user)
+                case .failure(let error):
+                    print(error)
+            }
+        }
+    }
 //    
 //    func check(email: String) {
 //        AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in

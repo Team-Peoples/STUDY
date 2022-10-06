@@ -134,7 +134,12 @@ final class SignInViewController: UIViewController {
     }
     
     @objc private func completeButtonDidTapped() {
-        self.dismiss(animated: true)
+        
+        guard let id = emailInputView.getInputField().text else { return }
+        guard let pw = passwordInputView.getInputField().text else { return }
+        Network.shared.signIn(id: id, pw: pw) { user in
+            NotificationCenter.default.post(name: .loginSuccess, object: user)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
