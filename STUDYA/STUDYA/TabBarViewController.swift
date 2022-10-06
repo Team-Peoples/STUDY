@@ -57,7 +57,17 @@ final class TabBarViewController: UITabBarController {
 
     // MARK: - Actions
     
+    @objc func login(_ sender: Notification) {
+        guard let userInfo = sender.userInfo as? [String: User], let user = userInfo["user"] else { return }
+        
+        self.user = user
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func presentWelcomeVC() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(login), name: .loginSuccess, object: User.self)
+        
         DispatchQueue.main.async { [weak self] in
 
             let welcomeVC = WelcomViewController()
