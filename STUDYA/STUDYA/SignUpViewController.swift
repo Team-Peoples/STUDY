@@ -46,7 +46,7 @@ class SignUpViewController: UIViewController {
     
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
     
-    var bottomConstraint: NSLayoutConstraint!
+    private var bottomConstraint: NSLayoutConstraint!
     
     private func addSubviews() {
         view.addSubview(scrollView)
@@ -114,20 +114,14 @@ class SignUpViewController: UIViewController {
         }
     }
     
-    @objc func doneButtonDidTapped() {
+    @objc private func doneButtonDidTapped() {
+        let nextVC = ProfileSettingViewController()
+        guard let emailText = emailInputField.text, let passwordText = passwordInputField.text, let checkText = checkInputField.text else { return }
+        nextVC.email = emailText
+        nextVC.password = passwordText
+        nextVC.passwordCheck = checkText
         
-        ///임시 구현
-        let email = emailInputField.text
-        let pw = passwordInputField.text
-        let pwCheck = checkInputField.text
-        
-        let profileSettingVC = ProfileSettingViewController()
-        
-        profileSettingVC.email = email
-        profileSettingVC.pw = pw
-        profileSettingVC.pwCheck = pwCheck
-        ///
-        navigationController?.pushViewController(profileSettingVC, animated: true)
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     private func setScrollView() {
@@ -160,11 +154,11 @@ class SignUpViewController: UIViewController {
         doneButton.anchor(bottom: containerView.bottomAnchor, bottomConstant: 30, leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
     }
     
-    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
+    @objc private func pullKeyboard(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func onKeyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -190,7 +184,7 @@ class SignUpViewController: UIViewController {
 //            }
 //        }
     }
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
