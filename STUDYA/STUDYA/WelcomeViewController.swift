@@ -11,6 +11,8 @@ import KakaoSDKAuth
 
 final class WelcomViewController: UIViewController {
     
+    var loginAction: (User) -> Void = { _ in }
+    
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
     private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
     private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
@@ -58,9 +60,11 @@ final class WelcomViewController: UIViewController {
                 }
                 else {
                     print("loginWithKakaoTalk() success.")
-//                    인가 코드 넘기기
                     
-                    _ = oauthToken
+                    guard let accessToken = oauthToken?.accessToken else { return }
+                    Network.shared.SNSSignIn(token: accessToken, sns: .kakao) { user in
+                        NotificationCenter.default.post(name: .loginSuccess, object: user)
+                    }
                 }
             }
         }
