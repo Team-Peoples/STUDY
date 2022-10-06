@@ -8,9 +8,12 @@
 import UIKit
 import Alamofire
 
-enum _Error: Error {
+enum PeoplesError: Error {
+    case alreadyExistingEmail
+    case alreadySNSSignUp
+    
     case unknownError(Int?)
-    case internalServerError
+    case serverError
     case notServerError(String)
     case badRequest(ResponseResult<Bool>)
 }
@@ -18,6 +21,20 @@ enum _Error: Error {
 struct Network {
     
     static let shared = Network()
+    
+    func checkEmail(email: String, completion: @escaping (PeoplesError?) -> ()) {
+        AF.request(RequestPurpose.emailCheck(email)).response { response in
+            
+            if let _ = response.error { completion(.serverError) }
+            guard let httpResponse = response.response,let data = response.data else { completion(.serverError); return }
+            
+            switch httpResponse.statusCode {
+            case (200...299):
+                completion(nil)
+            default: completion(.serverError)
+            }
+        }
+    }
     
     func SNSSignIn(token: String, sns: SNS, completion: @escaping (User) -> () ) {
         AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
@@ -34,7 +51,7 @@ struct Network {
         }
     }
     
-    func signUp(userId: String, pw: String, pwCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<ResponseResult<Bool>, _Error>) -> Void) {
+    func signUp(userId: String, pw: String, pwCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<ResponseResult<Bool>, PeoplesError>) -> Void) {
         
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
         
@@ -64,7 +81,7 @@ struct Network {
                     }
                     completion(.failure(.badRequest(body)))
                 case 500:
-                    completion(.failure(.internalServerError))
+                    completion(.failure(.serverError))
                 default:
                     completion(.failure(.unknownError(response.response?.statusCode)))
             }

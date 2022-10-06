@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class SignUpViewController: UIViewController {
     
@@ -217,13 +218,6 @@ class SignUpViewController: UIViewController {
             if let email = textField.text {
                 let range = email.range(of: "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$", options: .regularExpression)
                 emailValidationOkay = range != nil ? true : false
-                
-                if emailValidationOkay {
-    //                이메일 중복체크하기
-    //                completion handler에서 dispatch main queue async 로 isOverlappedEmail 값 전달 후
-                    emailValidationOkay = isExistingEmail ? false : true
-                    checkValidation1Label()
-                }
             }
         case passwordInputField:
 
@@ -289,11 +283,26 @@ extension SignUpViewController: UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         switch textField {
         case emailInputField:
             
             validateCheck(textField)
+            if emailValidationOkay {
+//                이메일 중복체크하기
+//                completion handler에서 dispatch main queue async 로 isOverlappedEmail 값 전달 후
+                guard let email = textField.text else { return }
+                Network.shared.checkEmail(email: email) { error in
+                    switch error {
+                    case nil:
+                        self.isExistingEmail = false
+                    default:
+                        self.isExistingEmail = true
+                    }
+                }
+                emailValidationOkay = isExistingEmail ? false : true
+                checkValidation1Label()
+            }
             checkValidation1Label()
             checkDoneButtonPossible()
             
@@ -318,7 +327,6 @@ extension SignUpViewController: UITextFieldDelegate {
             passwordCheckInputView.setUnderlineColor(as: .keyColor3)
         default: break
         }
-        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
