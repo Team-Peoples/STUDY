@@ -114,7 +114,19 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
-        navigationController?.pushViewController(ProfileSettingViewController(), animated: true)
+        
+        ///임시 구현
+        let email = emailInputField.text
+        let pw = passwordInputField.text
+        let pwCheck = checkInputField.text
+        
+        let profileSettingVC = ProfileSettingViewController()
+        
+        profileSettingVC.email = email
+        profileSettingVC.pw = pw
+        profileSettingVC.pwCheck = pwCheck
+        ///
+        navigationController?.pushViewController(profileSettingVC, animated: true)
     }
     
     private func setScrollView() {

@@ -21,6 +21,11 @@ class ProfileSettingViewController: UIViewController {
     private let isButtonFilled = false
     private var isAuthForAlbum: Bool?
     
+    ///임시 구현
+    var email: String?
+    var pw: String?
+    var pwCheck: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -75,7 +80,16 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        Network.shared.signUp(userId: "", pw: "", pwCheck: "", nickname: "", image: profileImageSelectorView.image) { result in
+        
+        ///임시 구현
+        
+        guard let email = email else { return }
+        guard let pw = pw else { return }
+        guard let pwCheck = pwCheck else { return }
+        
+        let nickname = nickNameInputView.getInputField().text
+        
+        Network.shared.signUp(userId: email, pw: pw, pwCheck: pwCheck, nickname: nickname, image: profileImageSelectorView.image) { result in
             switch result {
                 case .success(let responseResult):
                     print(responseResult.result!, responseResult.message)
