@@ -75,10 +75,18 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        let vc = MailCheckViewController()
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        Network.shared.signUp(userId: "", pw: "", pwCheck: "", nickname: "", image: profileImageSelectorView.image) { result in
+            switch result {
+                case .success(let responseResult):
+                    print(responseResult.result!, responseResult.message)
+                    let vc = MailCheckViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                case .failure(let error):
+                    let alert = SimpleAlert(message: "에러: \(error)")
+                    self.present(alert, animated: true)
+            }
+        }
     }
     
     private func setupImagePicker() {

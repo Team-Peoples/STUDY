@@ -97,7 +97,7 @@ class SignUpViewController: UIViewController {
     }
     
     @objc private func clear() {
-        emailInputField.text = ""
+        emailInputField.text = nil
     }
     
     @objc private func toggleIsSecure(sender: UIButton) {

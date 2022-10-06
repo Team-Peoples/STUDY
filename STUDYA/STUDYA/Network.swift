@@ -8,6 +8,12 @@
 import UIKit
 import Alamofire
 
+enum _Error: Error {
+    case unknownError(Int?)
+    case internalServerError
+    case notServerError(String)
+    case badRequest(ResponseResult<Bool>)
+}
 
 struct Network {
     
@@ -28,27 +34,42 @@ struct Network {
         }
     }
     
-//    func signUp(userID: String, image: UIImage?) {
-//        var value: String?
-//        lazy var user1 = User(userId: value, oldPassword: nil, password: nil, passwordCheck: nil, nickName: nil)
-//        
-//        value = userID
-//        guard let jsonData = try? JSONEncoder().encode(user1) else { return }
-//        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-//        
-//        AF.upload(multipartFormData: { data in
-//            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
-//            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-//        }, with: RequestPurpose.signUp(user)).responseData { response in
-//            switch response.result {
-//                case .success(let data):
-//                    let response = data.toDictionary()
-//                    print(response)
-//                case .failure(let error):
-//                    print(error)
-//            }
-//        }
-//    }
+    func signUp(userId: String, pw: String, pwCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<ResponseResult<Bool>, _Error>) -> Void) {
+        
+        let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
+        
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+        
+        AF.upload(multipartFormData: { data in
+            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
+            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
+        }, with: RequestPurpose.signUp).response { response in
+            
+            guard let httpResponse = response.response else { return }
+            
+            switch httpResponse.statusCode {
+                case 200:
+                    guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
+                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                        completion(.failure(.notServerError(message)))
+                        return
+                    }
+                    completion(.success(body))
+                case 400:
+                    guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
+                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                        completion(.failure(.notServerError(message)))
+                        return
+                    }
+                    completion(.failure(.badRequest(body)))
+                case 500:
+                    completion(.failure(.internalServerError))
+                default:
+                    completion(.failure(.unknownError(response.response?.statusCode)))
+            }
+        }
+    }
 //    
 //    func signIn(credential: Credential) {
 //        AF.request(RequestPurpose.signIn(credential)).validate().responseData { response in
@@ -115,10 +136,11 @@ struct ResponseResult<T: Codable>: Codable {
     let result: T?
     let message: String
     let timestamp: String
+    let code: String
     
     enum CodingKeys: String, CodingKey {
-        case result, message, timestamp
-    }
+        case result, message, timestamp, code
+  }
 }
 
 struct ResponseResults<T: Codable>: Codable {
