@@ -315,7 +315,7 @@ extension Data {
 
 
 struct User: Codable {
-    var id: String
+    var id: String?
     let oldPassword: String?
     let password: String?
     let passwordCheck: String?
