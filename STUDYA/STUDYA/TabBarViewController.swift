@@ -16,12 +16,17 @@ final class TabBarViewController: UITabBarController {
     }
     
     // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabbarController()
         checkIfUserIsLoggedIn()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
     }
     
     // MARK: - Configure
@@ -81,11 +86,18 @@ final class TabBarViewController: UITabBarController {
     
     private func checkIfUserIsLoggedIn() {
         
-        if user == nil {
-            presentWelcomeVC()
-        } else {
-            
-        }
+//        if userdefaults의 id에 아무 값이 없다면 {
+//            presentWelcomeVC()
+//        } else if at,rt,id를 가지고 홈화면 데이터 통신 성공했다면 {
+//            1) 완전성공
+//            completion으로 받아올 데이터로 화면 구성
+//            2) completion으로 받아온 User의 이메일 인증이 false라면
+//            mailcheckVC 보여주기
+//            3) 토큰이나 id 등 상태코드 오류가 난다면
+//            presentWelcomeVC()
+//        } else (response에서부터 error가 뜬다던지) {
+//            presentWelcomeVC()
+//        }
     }
     
     // MARK: - Setting Constraints

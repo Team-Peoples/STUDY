@@ -11,6 +11,7 @@ import Alamofire
 enum PeoplesError: Error {
     case alreadyExistingEmail
     case alreadySNSSignUp
+    case notAuthEmail
     
     case unknownError(Int?)
     case serverError
@@ -26,7 +27,7 @@ struct Network {
         AF.request(RequestPurpose.emailCheck(email)).response { response in
             
             if let _ = response.error { completion(.serverError) }
-            guard let httpResponse = response.response,let data = response.data else { completion(.serverError); return }
+            guard let httpResponse = response.response, let _ = response.data else { completion(.serverError); return }
             
             switch httpResponse.statusCode {
             case (200...299):
@@ -109,15 +110,29 @@ struct Network {
 //                    let accessToken = arry[1]
 //                    let refreshToken = arry[2]
 //                    print(loginSuccess, accessToken, refreshToken)
-
 //                    AF.download(user.image!).responseData { response in
 //                        print(response.result)
 //                    }
-            case .failure(let error):
+            case .failure:
                 completion(.failure(.serverError))
             }
         }
     }
+    
+    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
+        AF.request(RequestPurpose.resendEmail).response { response in
+            
+            if let _ = response.error { completion(.serverError) }
+            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
+            
+            switch httpResponse.statusCode {
+            case (200...299):
+                completion(nil)
+            default: completion(.serverError)
+            }
+        }
+    }
+    
     func jsonDecode<T: Codable>(type: T.Type, data: Data) -> T? {
         
         let jsonDecoder = JSONDecoder()
