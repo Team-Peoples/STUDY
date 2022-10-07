@@ -191,6 +191,8 @@ extension RequestPurpose {
 //            HTTPMethod: GET
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
+        case .getJWTToken(let token, _):
+            return .queryString(["token" : token])
         default:
             return .none
         }

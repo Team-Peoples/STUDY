@@ -41,9 +41,9 @@ struct Network {
         AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
             switch response.result {
             case .success(let data):
-                
                 let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
                 guard let user = decodedData?.result else { return }
+                print(user)
                 
                 completion(user)
             case .failure(let error):
@@ -170,10 +170,9 @@ struct ResponseResult<T: Codable>: Codable {
     let result: T?
     let message: String
     let timestamp: String
-    let code: String
     
     enum CodingKeys: String, CodingKey {
-        case result, message, timestamp, code
+        case result, message, timestamp
     }
 }
 

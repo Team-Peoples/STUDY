@@ -8,9 +8,11 @@
 import UIKit
 import KakaoSDKUser
 import KakaoSDKAuth
+import NaverThirdPartyLogin
 
 final class WelcomViewController: UIViewController {
     
+    let naverLogin = NaverThirdPartyLoginConnection.getSharedInstance()
     var loginAction: (User) -> Void = { _ in }
     
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
@@ -23,7 +25,7 @@ final class WelcomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
         view.backgroundColor = .systemBackground
         
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
@@ -71,7 +73,8 @@ final class WelcomViewController: UIViewController {
     }
     
     @objc private func naverLoginButtonTapped() {
-        
+        naverLogin?.delegate = self
+        naverLogin?.requestThirdPartyLogin()
     }
     
     @objc private func emailLoginButtonDidTapped() {
@@ -133,4 +136,32 @@ final class WelcomViewController: UIViewController {
         
         underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
     }
+}
+
+extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        guard let accessToken = naverLogin?.accessToken else { return }
+        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+            NotificationCenter.default.post(name: .loginSuccess, object: user)
+        }
+    }
+    
+    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+        guard let accessToken = naverLogin?.accessToken else { return }
+        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+            NotificationCenter.default.post(name: .loginSuccess, object: user)
+        }
+    }
+    
+    func oauth20ConnectionDidFinishDeleteToken() {
+//        로그아웃시 사용하는 토큰 삭제시 호출되는 함수
+        print(#function)
+    }
+    
+    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+//        네아로의 모든 에러에서 호출
+        print(#function)
+    }
+    
+    
 }

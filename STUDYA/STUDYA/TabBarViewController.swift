@@ -86,6 +86,10 @@ final class TabBarViewController: UITabBarController {
     
     private func checkIfUserIsLoggedIn() {
         
+        if user == nil {
+            presentWelcomeVC()
+        }
+        
 //        if userdefaults의 id에 아무 값이 없다면 {
 //            presentWelcomeVC()
 //        } else if at,rt,id를 가지고 홈화면 데이터 통신 성공했다면 {
