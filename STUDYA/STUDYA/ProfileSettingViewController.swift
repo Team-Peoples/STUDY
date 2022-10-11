@@ -26,9 +26,6 @@ class ProfileSettingViewController: UIViewController {
     private var isAuthForAlbum: Bool?
     
     ///임시 구현
-    var email: String?
-    var pw: String?
-    var pwCheck: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
