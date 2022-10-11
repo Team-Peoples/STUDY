@@ -338,6 +338,7 @@ class CustomTextField: UITextField {
         borderStyle = .none
         returnKeyType = returnType
         isSecureTextEntry = isFieldSecure ?? false
+        textContentType = .oneTimeCode
         attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.systemFont(ofSize: 18)])
     }
     

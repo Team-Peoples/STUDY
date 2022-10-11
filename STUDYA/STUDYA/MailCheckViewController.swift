@@ -35,9 +35,23 @@ class MailCheckViewController: UIViewController {
         setAlertView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        비밀번호 없이 사용자의 이메일이 인증되었는지 확인할 수 있는 api
+    }
+    
     @objc private func buttonTapped() {
-        
-        animate()
+        Network.shared.resendEmail { error in
+            switch error {
+            case nil:
+                self.animate()
+            default:
+                DispatchQueue.main.async {
+                    let alert = SimpleAlert(message: "알 수 없는 에러. 나중에 다시 시도해주세요.")
+                    self.present(alert, animated: true)
+                }
+            }
+        }
     }
     
     private func addSubviews() {

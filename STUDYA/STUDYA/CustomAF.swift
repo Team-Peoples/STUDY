@@ -191,6 +191,8 @@ extension RequestPurpose {
 //            HTTPMethod: GET
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
+        case .getJWTToken(let token, _):
+            return .queryString(["token" : token])
         default:
             return .none
         }
@@ -315,14 +317,27 @@ extension Data {
 
 
 struct User: Codable {
-    var id: String
+    var id: String?
     let oldPassword: String?
     let password: String?
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool?
 //    let userStats:
+    
+    init(id: String, password: String?, passwordCheck: String?, nickName: String?) {
+        self.id = id
+        self.oldPassword = nil
+        self.password = password
+        self.passwordCheck = passwordCheck
+        self.nickName = nickName
+        self.image = nil
+        self.isEmailAuthorized = nil
+        self.isBlocked = nil
+        self.isPaused = nil
+        self.isFirstLogin = nil
+    }
 
     enum CodingKeys: String, CodingKey {
 

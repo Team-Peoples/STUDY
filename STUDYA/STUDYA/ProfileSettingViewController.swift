@@ -11,6 +11,10 @@ import Photos
 
 class ProfileSettingViewController: UIViewController {
     
+    internal var email: String = ""
+    internal var password: String = ""
+    internal var passwordCheck: String = ""
+    
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .ppsBlack, size: 24)
@@ -20,6 +24,11 @@ class ProfileSettingViewController: UIViewController {
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
     private let isButtonFilled = false
     private var isAuthForAlbum: Bool?
+    
+    ///임시 구현
+    var email: String?
+    var pw: String?
+    var pwCheck: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,10 +84,18 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        let vc = MailCheckViewController()
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImageSelectorView.image) { result in
+            switch result {
+                case .success(let responseResult):
+                    print(responseResult.result!, responseResult.message)
+                    let vc = MailCheckViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                case .failure(let error):
+                    let alert = SimpleAlert(message: "에러: \(error)")
+                    self.present(alert, animated: true)
+            }
+        }
     }
     
     private func setupImagePicker() {
