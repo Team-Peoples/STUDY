@@ -87,6 +87,24 @@ struct Network {
 //        }
 //    }
     
+    func createStudy(_ study: Study, completion: @escaping (Result<Study?, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createStudy(study)).response { response in
+            guard let httpResponse = response.response else { return }
+            
+            switch httpResponse.statusCode {
+                case 200:
+                    guard let data = response.data, let body = jsonDecode(type: ResponseResult<Study>.self, data: data) else {
+                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+//                        completion(.failure(.notServerError(message)))
+                        return
+                    }
+                    completion(.success(body.result))
+                default:
+                    completion(.failure(.unknownError(response.response?.statusCode)))
+            }
+        }
+    }
+    
     func jsonDecode<T: Codable>(type: T.Type, data: Data) -> T? {
         
         let jsonDecoder = JSONDecoder()

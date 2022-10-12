@@ -37,6 +37,7 @@ struct CreatingStudyRuleViewModel {
 class CreatingStudyRuleViewController: UIViewController {
     
     internal var studyRuleViewModel = CreatingStudyRuleViewModel()
+    var studyUploadComplete = false
     
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
     private let subTitleLabel = CustomLabel(title: "스터디 정보에서 언제든지 수정할 수 있어요!", tintColor: .ppsBlack, size: 18)
@@ -155,10 +156,21 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyCompleteViewController") as! CreatingStudyCompleteViewController
-        vc.study = self.studyRuleViewModel.study
-        navigationController?.pushViewController(vc, animated: true)
+        if !studyUploadComplete {
+            let study = studyRuleViewModel.study
+            Network.shared.createStudy(study) { result in
+                switch result {
+                    case .success(let study):
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyCompleteViewController") as! CreatingStudyCompleteViewController
+                        vc.study = study
+                        studyUploadComplete = true ///여기만 해당되는게 아닐 수 있는데 만약 다음페이지로 이동되었다가 다시 되돌아와 done버튼을 눌렀을때 네트워킹을 한번 더 하는게 맞는건지, 혹시나 그렇게 되었을때 서버에서 어떤응답을 보내주는지 정하지않아서 임시로 이 vc가 살아있다면 네트워킹을 하지않도록 만들기 위해 플래그 만들어주었음.
+                        navigationController?.pushViewController(vc, animated: true)
+                    case .failure(let error):
+                        print(error)
+                }
+            }
+        }
     }
     
     private func changeBorder(color: AssetColor, of settingView: UIView) {
