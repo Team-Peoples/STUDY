@@ -16,6 +16,7 @@
 			dependencies = (
 			);
 			name = "naveridlogin-sdk-ios";
+			productName = "naveridlogin-sdk-ios";
 		};
 /* End PBXAggregateTarget section */
 
