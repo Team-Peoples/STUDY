@@ -21,6 +21,7 @@
 
 /* Begin PBXBuildFile section */
 		6959EBDBBE36EC255679400BFBF46A74 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
+		72F7CFAB28F8334C00E0D0C0 /* UBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */; };
 		86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
 		EF627F1A8DE448B556B8BDA4498EA4FE /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -37,7 +38,7 @@
 
 /* Begin PBXFileReference section */
 		0A24E44CCB08B3D361BE75ABA72C90ED /* Pods-STUDYA-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-STUDYA-acknowledgements.markdown"; sourceTree = "<group>"; };
-		192A5FAA9E90D9C72A3A1C09FF40F0CD /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
+		192A5FAA9E90D9C72A3A1C09FF40F0CD /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
 		2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
 		50053C06AB3CA4D88963DE199337A24D /* Pods-STUDYA.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-STUDYA.modulemap"; sourceTree = "<group>"; };
 		61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-STUDYA"; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,7 +47,7 @@
 		7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-STUDYA-dummy.m"; sourceTree = "<group>"; };
 		8B1573CF7A772B684E6CEA55B17B3436 /* Pods-STUDYA-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-Info.plist"; sourceTree = "<group>"; };
 		9D354B8C2B4C2CA6F74543B5B69411EB /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A7A35C960C7DAE4071D245A5D0E9F7E8 /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		B34D701D4A17584F7D105D586A10D9D2 /* Pods-STUDYA-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-STUDYA-frameworks.sh"; sourceTree = "<group>"; };
 		E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-STUDYA-umbrella.h"; sourceTree = "<group>"; };
@@ -60,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */,
+				72F7CFAB28F8334C00E0D0C0 /* UBottomSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +134,6 @@
 				0C5446A0B659730A42FA2B9211EA65C1 /* Frameworks */,
 				5798114C70A4B6A3264AF034CFF8DFDF /* Support Files */,
 			);
-			name = "naveridlogin-sdk-ios";
 			path = "naveridlogin-sdk-ios";
 			sourceTree = "<group>";
 		};
@@ -192,6 +193,9 @@
 				BBFD5660B37E473928F29AED31C7D9D8 /* PBXTargetDependency */,
 			);
 			name = "Pods-STUDYA";
+			packageProductDependencies = (
+				72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */,
+			);
 			productName = Pods_STUDYA;
 			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */;
 			productType = "com.apple.product-type.framework";
@@ -214,6 +218,9 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			packageReferences = (
+				72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */,
+			);
 			productRefGroup = 98E868FAAC3DBA7208F870F0A556C147 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -542,6 +549,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OfTheWolf/UBottomSheet";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */;
+			productName = UBottomSheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }
