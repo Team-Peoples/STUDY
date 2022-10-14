@@ -10,7 +10,7 @@ import UIKit
 final class MainViewController: UIViewController {
     // MARK: - Properties
     
-    var study: [Study] = [Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)]
+    var study: [Study] = []
     private let masterSwitch = BrandSwitch()
     
     private lazy var tableView = UITableView(frame: .zero)
@@ -96,9 +96,10 @@ final class MainViewController: UIViewController {
     
     private func configureWhenNoStudy() {
         let studyEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
-        studyEmptyImageView.backgroundColor = .lightGray
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = CustomButton(title: "스터디 만들기", isBold: true, isFill: true, size: 20, height: 50)
+        
+        studyEmptyImageView.backgroundColor = .lightGray
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
         
         view.addSubview(studyEmptyImageView)
