@@ -14,7 +14,6 @@ class CalendarViewController: UIViewController {
     
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
-    var backView: PassThroughView?
     
     let calendarView: UICalendarView = {
         let c = UICalendarView()
@@ -81,27 +80,5 @@ extension CalendarViewController: UBottomSheetCoordinatorDelegate {
     
     func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
         self.sheetCoordinator.addDropShadowIfNotExist()
-        self.handleState(state)
-    }
-    
-    func bottomSheet(_ container: UIView?, didChange state: SheetTranslationState) {
-        handleState(state)
-    }
-    
-    func bottomSheet(_ container: UIView?, finishTranslateWith extraAnimation: @escaping ((CGFloat) -> Void) -> Void) {
-        extraAnimation({ percent in
-            self.backView?.backgroundColor = UIColor.black.withAlphaComponent(percent/100 * 0.8)
-        })
-    }
-    
-    func handleState(_ state: SheetTranslationState){
-        switch state {
-            case .progressing(_, let percent):
-                self.backView?.backgroundColor = UIColor.black.withAlphaComponent(percent/100 * 0.8)
-            case .finished(_, let percent):
-                self.backView?.backgroundColor = UIColor.black.withAlphaComponent(percent/100 * 0.8)
-            default:
-                break
-        }
     }
 }
