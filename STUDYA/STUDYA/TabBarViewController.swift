@@ -80,7 +80,7 @@ final class TabBarViewController: UITabBarController {
     }
     
     private func checkIfUserIsLoggedIn() {
-        
+        user = User(id: "d", oldPassword: nil, password: nil, passwordCheck: nil, nickName: nil, image: nil, isEmailAuthorized: true, isBlocked: false, isPaused: false, isFirstLogin: false)
         if user == nil {
             presentWelcomeVC()
         } else {
