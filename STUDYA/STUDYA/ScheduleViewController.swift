@@ -24,16 +24,9 @@ class ScheduleViewController: UIViewController, Draggable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
         
-        view.addSubview(bar)
-        
-        bar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(8)
-            make.centerX.equalTo(view)
-            make.height.equalTo(5)
-            make.width.equalTo(40)
-        }
+        configureViews()
+        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,5 +36,20 @@ class ScheduleViewController: UIViewController, Draggable {
     
     // MARK: - Actions
     // MARK: - Configure
+    
+    private func configureViews() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(bar)
+    }
+    
     // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        bar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).inset(8)
+            make.centerX.equalTo(view)
+            make.height.equalTo(5)
+            make.width.equalTo(40)
+        }
+    }
 }

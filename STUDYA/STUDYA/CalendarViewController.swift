@@ -16,25 +16,24 @@ class CalendarViewController: UIViewController {
     var dataSource: UBottomSheetCoordinatorDataSource?
     var backView: PassThroughView?
     
-    let calendarView = UICalendarView()
+    let calendarView: UICalendarView = {
+        let c = UICalendarView()
+        
+        c.calendar = Calendar(identifier: .gregorian)
+        c.tintColor = .appColor(.keyColor1)
+        
+        return c
+    }()
     
-    // MARK: - Properties
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.dataSource = MyBottomSheetDataSource()
         
-        calendarView.calendar = Calendar(identifier: .gregorian)
-        calendarView.tintColor = .appColor(.keyColor1)
-        
-        view.addSubview(calendarView)
-        view.backgroundColor = .systemBackground
-        
-        calendarView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(view.frame.height / 2)
-        }
+        configureViews()
+        setConstraints()
     }
     
     override func viewWillLayoutSubviews() {
@@ -63,7 +62,19 @@ class CalendarViewController: UIViewController {
     // MARK: - Actions
     // MARK: - Configure
     
+    private func configureViews() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(calendarView)
+    }
+    
     // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        calendarView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(view.frame.height / 2)
+        }
+    }
 }
 
 extension CalendarViewController: UBottomSheetCoordinatorDelegate {
