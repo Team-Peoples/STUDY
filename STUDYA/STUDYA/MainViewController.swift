@@ -10,159 +10,108 @@ import UIKit
 final class MainViewController: UIViewController {
     // MARK: - Properties
     
-    var study: [Study] = []
+    var study: [Study] = [Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)]
     private let masterSwitch = BrandSwitch()
     
-    private lazy var tableView = UITableView(frame: .zero)
-    
-    private lazy var announcementBackView = UIView(frame: .zero)
-    private lazy var scheduleBackView = UIView(frame: .zero)
-//    let attend
-    
     // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureViews()
         configureNavigationItem()
         configureView()
-        
-        setConstraints()
-    }
-    
-    // MARK: - Configure
-    
-    private func configureViews() {
-        view.backgroundColor = .systemBackground
-    }
-    
-    private func configureNavigationItem() {
-        let notificationBtn = UIButton(type: .custom)
-        
-        notificationBtn.setImage(UIImage(named: "noti"), for: .normal)
-        notificationBtn.setTitleColor(.black, for: .normal)
-        notificationBtn.addTarget(self, action: #selector(notificationButtonDidTapped), for: .touchUpInside)
-        
-        masterSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
-       
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: notificationBtn)
-    }
-    
-    // MARK: - Actions
-
-    @objc func addButtonDidTapped() {
-        let createStudyVC = CreatingStudyViewController()
-        navigationController?.pushViewController(createStudyVC, animated: true)
-    }
-    
-    @objc func notificationButtonDidTapped() {
-        print(#function)
-    }
-    
-    @objc func switchValueChanged(sender: BrandSwitch) {
-        
-        if sender.isOn {
-            
-            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-            navigationItem.title = "관리자 모드"
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        } else {
-            
-            navigationController?.navigationBar.backgroundColor = .systemBackground
-            navigationItem.title = nil
-            navigationController?.navigationBar.tintColor = .black
-        }
-    }
-    
-    @objc func createStudyButtonDidTapped() {
-        let creatingStudyVC = CreatingStudyViewController()
-        navigationController?.pushViewController(creatingStudyVC, animated: true)
-    }
-    
-    @objc private func scheduleTapped() {
         
     }
     
     private func configureView(){
         
         if study.isEmpty {
+            view.backgroundColor = .systemBackground
             configureWhenNoStudy()
         } else {
             configureWhenStudyExist()
         }
     }
     
+    // MARK: - Configure
+
+    private func configureNavigationItem() {
+        let notificationBtn = UIButton(type: .custom)
+
+        notificationBtn.setImage(UIImage(named: "noti"), for: .normal)
+        notificationBtn.setTitleColor(.black, for: .normal)
+        notificationBtn.addTarget(self, action: #selector(notificationButtonDidTapped), for: .touchUpInside)
+
+        masterSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: notificationBtn)
+    }
+
+    // MARK: - Actions
+    @objc func notificationButtonDidTapped() {
+        print(#function)
+    }
+
+    @objc func switchValueChanged(sender: BrandSwitch) {
+
+        if sender.isOn {
+
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+            navigationItem.title = "관리자 모드"
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        } else {
+
+            navigationController?.navigationBar.backgroundColor = .systemBackground
+            navigationItem.title = nil
+            navigationController?.navigationBar.tintColor = .black
+        }
+    }
+
+    @objc func createStudyButtonDidTapped() {
+        let creatingStudyVC = CreatingStudyViewController()
+        navigationController?.pushViewController(creatingStudyVC, animated: true)
+    }
+
     private func configureWhenNoStudy() {
         let studyEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = CustomButton(title: "스터디 만들기", isBold: true, isFill: true, size: 20, height: 50)
-        
+
         studyEmptyImageView.backgroundColor = .lightGray
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
-        
+
         view.addSubview(studyEmptyImageView)
         view.addSubview(studyEmptyLabel)
         view.addSubview(createStudyButton)
-        
+
         setConstraints(studyEmptyImageView, studyEmptyLabel, createStudyButton)
     }
-    
+
     private func configureWhenStudyExist() {
+        let tableView = UITableView(frame: .zero)
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         view.backgroundColor = UIColor.appColor(.background)
         
-        view.addSubview(announcementBackView)
+        tableView.register(MainFirstAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFirstAnnouncementTableViewCell.identifier)
+        tableView.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
+        tableView.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
+        tableView.register(MainFourthManagementTableViewCell.self, forCellReuseIdentifier: MainFourthManagementTableViewCell.identifier)
         
-        announcementBackView.backgroundColor = UIColor.appColor(.ppsGray2)
-        announcementBackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 24)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor.appColor(.background)
+        tableView.isScrollEnabled = false
         
-        configureAnnouncement()
-        
-        
-        scheduleBackView.layer.cornerRadius = 20
-        scheduleBackView.backgroundColor = .systemBackground
-        
-        view.addSubview(scheduleBackView)
-        
-        scheduleBackView.anchor(top: announcementBackView.bottomAnchor, topConstant: 20, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20, height: 180)
-        
-        let title = CustomLabel(title: "일정", tintColor: .ppsBlack, size: 20, isBold: true, isNecessaryTitle: false)
-        let disclosureButton = UIButton(frame: .zero)
-        disclosureButton.setImage(UIImage(named: "circleDisclosureIndicator"), for: .normal)
-        disclosureButton.addTarget(self, action: #selector(scheduleTapped), for: .touchUpInside)
-        let subtitle = CustomLabel(title: "다가오는 일정", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
-        let date = CustomLabel(title: "00월00일 (월) | am 00:00", tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
-        let place = CustomLabel(title: "강남역 공간이즈", tintColor: .ppsGray1, size: 12)
-        let today = CustomLabel(title: "동사와 형용사", tintColor: .ppsGray1, size: 12)
-        
-        scheduleBackView.addSubview(title)
-        scheduleBackView.addSubview(disclosureButton)
-        scheduleBackView.addSubview(subtitle)
-        scheduleBackView.addSubview(date)
-        scheduleBackView.addSubview(place)
-        scheduleBackView.addSubview(today)
-        
-        title.anchor(top: scheduleBackView.topAnchor, topConstant: 20, leading: scheduleBackView.leadingAnchor, leadingConstant: 32)
-        disclosureButton.snp.makeConstraints { make in
-            make.centerY.equalTo(title)
-            make.trailing.equalTo(scheduleBackView.snp.trailing).offset(-12)
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        subtitle.anchor(top: title.bottomAnchor, topConstant: 24, leading: scheduleBackView.leadingAnchor, leadingConstant: 32)
-        date.anchor(top: subtitle.bottomAnchor, topConstant: 12, leading: subtitle.leadingAnchor)
-        place.anchor(top: date.bottomAnchor, topConstant: 2, leading: date.leadingAnchor, trailing: scheduleBackView.trailingAnchor, trailingConstant: 20)
-        today.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)
-    }
-    
-    private func configureAnnouncement() {
-        
     }
     
     // MARK: - Setting Constraints
     
-    private func setConstraints() {
-        
-    }
     
     private func setConstraints(_ imageView: UIImageView, _ label: UILabel, _ button: UIButton) {
         
@@ -182,6 +131,54 @@ final class MainViewController: UIViewController {
             make.centerX.equalTo(imageView)
             make.width.equalTo(200)
             make.top.equalTo(label.snp.bottom).offset(10)
+        }
+    }
+}
+
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        4
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        switch indexPath.row {
+            
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstAnnouncementTableViewCell.identifier) as! MainFirstAnnouncementTableViewCell
+            
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
+            
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
+            
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
+            
+            return cell
+        default:
+            return UITableViewCell()
+        }
+    }
+}
+
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.row {
+        case 0:
+            return 20
+        case 1:
+            return 200
+        case 2:
+            return 70
+        case 3:
+            return 270
+        default:
+            return 100
         }
     }
 }

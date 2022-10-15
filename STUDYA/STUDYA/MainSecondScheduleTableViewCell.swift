@@ -9,14 +9,7 @@ import UIKit
 
 class MainSecondScheduleTableViewCell: UITableViewCell {
     
-    let scheduleBackView: UIView = {
-        let v = UIView()
-        
-        v.layer.cornerRadius = 24
-        v.backgroundColor = .systemBackground
-        
-        return v
-    }()
+    static let identifier = "MainSecondScheduleTableViewCell"
     
     let title = CustomLabel(title: "일정", tintColor: .ppsBlack, size: 20, isBold: true, isNecessaryTitle: false)
     let disclosureButton = UIButton(frame: .zero)
@@ -26,9 +19,22 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     let place = CustomLabel(title: "강남역 공간이즈", tintColor: .ppsGray1, size: 12)
     let today = CustomLabel(title: "동사와 형용사", tintColor: .ppsGray1, size: 12)
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-                
+    let scheduleBackView: UIView = {
+        let v = UIView()
+        
+        v.layer.cornerRadius = 24
+        v.backgroundColor = .systemBackground
+        
+        return v
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        contentView.isUserInteractionEnabled = false
+        selectionStyle = .none
+        backgroundColor = UIColor.appColor(.background)
+        
         addSubview(scheduleBackView)
         
         scheduleBackView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
@@ -54,7 +60,11 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         today.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc private func scheduleTapped() {
-        print(#function)
+        
     }
 }

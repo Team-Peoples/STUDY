@@ -9,19 +9,26 @@ import UIKit
 
 class MainThirdButtonTableViewCell: UITableViewCell {
 
-    internal var attendable = false
+    static let identifier = "MainThirdButtonTableViewCell"
+    
+    internal var attendable = true
     internal var didAttend = false
     
-    private lazy var button = CustomButton(title: " 출석하기", isBold: true, isFill: attendable, size: 20, height: 50)
+    private lazy var button = CustomButton(title: "  출석하기", isBold: true, isFill: attendable, size: 20, height: 50)
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        contentView.isUserInteractionEnabled = false
+        selectionStyle = .none
+        backgroundColor = UIColor.appColor(.background)
+        
         if didAttend {
             
         } else {
             if attendable {
-                button.fillIn(title: " 출석하기")
-                let check = UIImage(named: "boldCheck")?.withTintColor(.white, renderingMode: .alwaysTemplate)
+                button.fillIn(title: "  출석하기")
+                let check = UIImage(named: "boldCheck")?.withTintColor(.white, renderingMode: .alwaysOriginal)
                 button.setImage(check, for: .normal)
             } else {
                 button.setImage(UIImage(named: "boldCheck"), for: .normal)
@@ -33,5 +40,9 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             addSubview(button)
             button.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
         }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

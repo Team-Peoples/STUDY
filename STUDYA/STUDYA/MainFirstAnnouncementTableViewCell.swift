@@ -10,13 +10,17 @@ import MarqueeLabel
 
 class MainFirstAnnouncementTableViewCell: UITableViewCell {
     
+    static let identifier = "MainFirstAnnouncementTableViewCell"
     internal var title = "🔥나는 천재다 나는 천재다 나는 천재다 나는 천재다 나는 천재다 나는 천재다 나는 천재다 나는 천재다 나는 천재다⚡️"
     
     private lazy var announceLabel = MarqueeLabel()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
         backgroundColor = UIColor.appColor(.ppsGray2)
+        contentView.isUserInteractionEnabled = false
+        selectionStyle = .none
         
         announceLabel.text = title
         announceLabel.type = .continuous
@@ -31,5 +35,9 @@ class MainFirstAnnouncementTableViewCell: UITableViewCell {
         announceLabel.snp.makeConstraints { make in
             make.edges.equalTo(self)
         }
+    }
+        
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

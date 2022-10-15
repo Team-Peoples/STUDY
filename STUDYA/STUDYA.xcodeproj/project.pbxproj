@@ -46,6 +46,7 @@
 		D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */; };
 		D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */; };
 		D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */; };
+		D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
@@ -100,6 +101,7 @@
 		D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSecondScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFirstAnnouncementTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThirdButtonTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFourthManagementTableViewCell.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */,
 				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
 				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
+				D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */,
@@ -362,6 +365,7 @@
 				72B5BE4D28D0A08C000137CD /* CreatingStudyCompleteViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
+				D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */,
 				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
