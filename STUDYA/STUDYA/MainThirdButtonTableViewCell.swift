@@ -11,26 +11,26 @@ import SnapKit
 class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
-    
-    internal var attendable = true
+
+    internal var attendable = false
     internal var didAttend = true
-    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
-    
-    
-    private lazy var beforeStudyButton = CustomButton(title: "  출석하기", isBold: true, isFill: attendable, size: 20, height: 50)
+    internal var isManagerMode = false
+    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.absent
+
+    private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
     private lazy var afterStudyView: RoundableView = {
-       
+
         let v = RoundableView()
-        
+
         let symbolView = UIImageView()
         var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
         let innerView = RoundableView()
         innerView.backgroundColor = UIColor.appColor(.dimming)
-        
+
         v.addSubview(symbolView)
         v.addSubview(titleLabel)
         v.addSubview(innerView)
-        
+
         symbolView.snp.makeConstraints { make in
             make.centerY.equalTo(v)
             make.leading.equalTo(v).offset(25)
@@ -43,7 +43,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             make.top.bottom.trailing.equalTo(v).inset(3)
             make.leading.equalTo(titleLabel.snp.trailing).offset(50)
         }
-        
+
         if attendanceStatus == .attended {
 
             v.backgroundColor = UIColor.appColor(.attendedMain)
@@ -94,38 +94,59 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             default: break
             }
         }
-        
+
         return v
     }()
-        
-    
+
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
         backgroundColor = UIColor.appColor(.background)
-        
-        if didAttend {
-            addSubview(afterStudyView)
-            afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-        } else {
+
+        if isManagerMode {
+            
             if attendable {
-                beforeStudyButton.fillIn(title: "  출석하기")
-                let check = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-                beforeStudyButton.setImage(check, for: .normal)
+                mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
+                mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+                mainButton.fillIn(title: "  인증번호 확인")
             } else {
-                beforeStudyButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
-                beforeStudyButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-                beforeStudyButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-                beforeStudyButton.isEnabled = false
+                mainButton = CustomButton(title: "", isBold: true, isFill: false, size: 20)
+                mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+                mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+                mainButton.fillOut(title: "  인증번호 확인")
+                mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
             }
             
-            addSubview(beforeStudyButton)
-            beforeStudyButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            addSubview(mainButton)
+            mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            
+        } else {
+            
+            if didAttend {
+                addSubview(afterStudyView)
+                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            } else {
+                
+                if attendable {
+                    mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+                    mainButton.fillIn(title: "  출석하기")
+                } else {
+                    mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+                    mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+                    mainButton.fillOut(title: "  출석하기")
+                    mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+                    mainButton.isEnabled = false
+                }
+                
+                addSubview(mainButton)
+                mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            }
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
