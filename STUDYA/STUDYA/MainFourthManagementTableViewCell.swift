@@ -170,7 +170,6 @@ class MainFourthManagementTableViewCell: UITableViewCell {
             make.width.equalTo(memberBackView)
         }
         
-        
         attendanceImageView.snp.makeConstraints { make in
             make.centerX.equalTo(attendanceBackView)
             make.centerY.equalTo(attendanceBackView).offset(-15)

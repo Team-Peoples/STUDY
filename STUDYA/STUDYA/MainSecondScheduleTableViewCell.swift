@@ -11,11 +11,11 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
     
-    let title = CustomLabel(title: "일정", tintColor: .ppsBlack, size: 20, isBold: true, isNecessaryTitle: false)
+    let title = CustomLabel(title: "일정", tintColor: .ppsBlack, size: 20, isBold: true)
     let disclosureButton = UIButton(frame: .zero)
     
-    let subtitle = CustomLabel(title: "다가오는 일정", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
-    let date = CustomLabel(title: "00월00일 (월) | am 00:00", tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
+    let subtitle = CustomLabel(title: "다가오는 일정", tintColor: .ppsBlack, size: 16, isBold: true)
+    let date = CustomLabel(title: "00월00일 (월) | am 00:00", tintColor: .ppsGray1, size: 16, isBold: true)
     let place = CustomLabel(title: "강남역 공간이즈", tintColor: .ppsGray1, size: 12)
     let today = CustomLabel(title: "동사와 형용사", tintColor: .ppsGray1, size: 12)
     

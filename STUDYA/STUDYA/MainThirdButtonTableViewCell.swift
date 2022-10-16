@@ -6,15 +6,98 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
     
     internal var attendable = true
-    internal var didAttend = false
+    internal var didAttend = true
+    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
     
-    private lazy var button = CustomButton(title: "  출석하기", isBold: true, isFill: attendable, size: 20, height: 50)
+    
+    private lazy var beforeStudyButton = CustomButton(title: "  출석하기", isBold: true, isFill: attendable, size: 20, height: 50)
+    private lazy var afterStudyView: RoundableView = {
+       
+        let v = RoundableView()
+        
+        let symbolView = UIImageView()
+        var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
+        let innerView = RoundableView()
+        innerView.backgroundColor = UIColor.appColor(.dimming)
+        
+        v.addSubview(symbolView)
+        v.addSubview(titleLabel)
+        v.addSubview(innerView)
+        
+        symbolView.snp.makeConstraints { make in
+            make.centerY.equalTo(v)
+            make.leading.equalTo(v).offset(25)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(v)
+            make.leading.equalTo(symbolView.snp.trailing).offset(15)
+        }
+        innerView.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalTo(v).inset(3)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(50)
+        }
+        
+        if attendanceStatus == .attended {
+
+            v.backgroundColor = UIColor.appColor(.attendedMain)
+            symbolView.image = UIImage(named: "attendedSymbol")
+            titleLabel.text = "출석"
+
+            let subTitleLabel = CustomLabel(title: "오늘도 출석하셨군요!", tintColor: .whiteLabel, size: 14, isBold: true)
+
+            v.addSubview(subTitleLabel)
+            subTitleLabel.centerXY(inView: innerView)
+        } else {
+
+            let penaltyLabel = CustomLabel(title: "벌금", tintColor: .whiteLabel, size: 14, isBold: true)
+            let fineLabel = CustomLabel(title: "00,000", tintColor: .whiteLabel, size: 20, isBold: true)
+            let wonLabel = CustomLabel(title: "원", tintColor: .whiteLabel, size: 14, isBold: true)
+
+            v.addSubview(penaltyLabel)
+            v.addSubview(fineLabel)
+            v.addSubview(wonLabel)
+
+            penaltyLabel.snp.makeConstraints { make in
+                make.leading.equalTo(innerView).offset(20)
+                make.centerY.equalTo(innerView).offset(3)
+                make.trailing.greaterThanOrEqualTo(fineLabel).offset(10)
+            }
+            fineLabel.snp.makeConstraints { make in
+                make.centerY.equalTo(innerView)
+                make.trailing.equalTo(innerView).inset(34)
+            }
+            wonLabel.snp.makeConstraints { make in
+                make.leading.equalTo(fineLabel.snp.trailing).offset(3)
+                make.centerY.equalTo(penaltyLabel)
+            }
+
+            switch attendanceStatus {
+            case .late:
+                v.backgroundColor = UIColor.appColor(.lateMain)
+                symbolView.image = UIImage(named: "attendedSymbol")
+                titleLabel.text = "출석"
+            case .absent:
+                v.backgroundColor = UIColor.appColor(.absentMain)
+                symbolView.image = UIImage(named: "absentSymbol")
+                titleLabel.text = "지각"
+            case .allowed:
+                v.backgroundColor = UIColor.appColor(.allowedMain)
+                symbolView.image = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                titleLabel.text = "사유"
+            default: break
+            }
+        }
+        
+        return v
+    }()
+        
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,21 +107,22 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         backgroundColor = UIColor.appColor(.background)
         
         if didAttend {
-            
+            addSubview(afterStudyView)
+            afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
         } else {
             if attendable {
-                button.fillIn(title: "  출석하기")
-                let check = UIImage(named: "boldCheck")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-                button.setImage(check, for: .normal)
+                beforeStudyButton.fillIn(title: "  출석하기")
+                let check = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                beforeStudyButton.setImage(check, for: .normal)
             } else {
-                button.setImage(UIImage(named: "boldCheck"), for: .normal)
-                button.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-                button.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-                button.isEnabled = false
+                beforeStudyButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+                beforeStudyButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+                beforeStudyButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+                beforeStudyButton.isEnabled = false
             }
             
-            addSubview(button)
-            button.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            addSubview(beforeStudyButton)
+            beforeStudyButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
         }
     }
     
