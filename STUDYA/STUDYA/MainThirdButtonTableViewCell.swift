@@ -12,9 +12,9 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
 
-    internal var attendable = false
-    internal var didAttend = true
-    internal var isManagerMode = false
+    internal var attendable = true
+    internal var didAttend = false
+    internal var isManagerMode = true
     internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.absent
 
     private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
@@ -112,12 +112,14 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                 mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                 mainButton.fillIn(title: "  인증번호 확인")
+                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
             } else {
                 mainButton = CustomButton(title: "", isBold: true, isFill: false, size: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
                 mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
                 mainButton.fillOut(title: "  인증번호 확인")
                 mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+                mainButton.isEnabled = false
             }
             
             addSubview(mainButton)
@@ -133,6 +135,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                 if attendable {
                     mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                     mainButton.fillIn(title: "  출석하기")
+                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
                 } else {
                     mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
                     mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
@@ -149,5 +152,13 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func mainButtonTappedWhenManager() {
+        print("manager")
+    }
+    
+    @objc private func mainButtonTappedWhenNotManager() {
+        print("no manager")
     }
 }
