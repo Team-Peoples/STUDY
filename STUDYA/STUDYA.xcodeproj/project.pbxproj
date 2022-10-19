@@ -11,6 +11,8 @@
 		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
+		7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */; };
+		7282F18428FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18328FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift */; };
 		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
 		7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */; };
 		7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */; };
@@ -34,7 +36,7 @@
 		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
 		72EECECB28C9A56500A23C27 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72EECECA28C9A56500A23C27 /* Model.swift */; };
 		72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */; };
-		72F7CFAD28F834A800E0D0C0 /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAC28F834A800E0D0C0 /* ScheduleViewController.swift */; };
+		72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */; };
 		72F7CFAF28F83D0500E0D0C0 /* MyBottomSheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
@@ -64,6 +66,8 @@
 		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
+		7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCollectionViewCell.swift; sourceTree = "<group>"; };
+		7282F18328FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
 		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
 		7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardViewController.swift; sourceTree = "<group>"; };
 		7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardTableViewCell.swift; sourceTree = "<group>"; };
@@ -88,7 +92,7 @@
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		72EECECA28C9A56500A23C27 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		72F7CFAC28F834A800E0D0C0 /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBottomSheetDataSource.swift; sourceTree = "<group>"; };
 		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
@@ -183,7 +187,9 @@
 				D3BF054B28C3C36700AF7D3B /* Notification.swift */,
 				D3C23A5F28EDE7A1009B53B4 /* File.swift */,
 				72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */,
-				72F7CFAC28F834A800E0D0C0 /* ScheduleViewController.swift */,
+				72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */,
+				7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */,
+				7282F18328FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift */,
 				72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
@@ -350,8 +356,9 @@
 				D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
+				7282F18428FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
-				72F7CFAD28F834A800E0D0C0 /* ScheduleViewController.swift in Sources */,
+				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
@@ -368,6 +375,7 @@
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
+				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* File.swift in Sources */,
