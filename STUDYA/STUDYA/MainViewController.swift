@@ -216,10 +216,14 @@ final class MainViewController: UIViewController {
             createStudyButton.isHidden = false
             createStudyButton.setHeight(50)
             
-            UIView.animate(withDuration: 0.3, delay: 0) {
+            dropdownContainerView.layer.cornerRadius = 24
+            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+            dropdownContainerView.clipsToBounds = true
+            
+            UIView.animate(withDuration: 5, delay: 0) {
                 self.view.layoutIfNeeded()
             }
-            dropdownContainerView.roundCorners(corners: [.bottomRight, .bottomLeft], radius: 24)
+
         } else {
             
             dropdown.deleteRows(at: indexPaths, with: .top)
@@ -329,14 +333,5 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(#function)
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-}
-
-extension UIView {
-   func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-        let mask = CAShapeLayer()
-        mask.path = path.cgPath
-        layer.mask = mask
     }
 }
