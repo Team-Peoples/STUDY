@@ -20,13 +20,26 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		6959EBDBBE36EC255679400BFBF46A74 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
-		86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		EF627F1A8DE448B556B8BDA4498EA4FE /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		19EE53C9966D4142DD5B6BA2AD06D52B /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */; };
+		2DF1F2842BF627B387F208A99772044C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE46B11FEBCBB7C689EB07A5E57BD38 /* QuartzCore.framework */; };
+		2F9878203C57B16F8A2341363CE6ADE2 /* MarqueeLabel-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6CE0B8970AEE2F68ABC4434712981A8A /* MarqueeLabel-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */; };
+		81CD89BE2F34594AB8D9D8F94A102029 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
+		890D842A253CC9351D66015AB218F4DA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
+		A65F90B575519C64683267F49C7C615C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
+		A96C69453A655AFE061BEC1479F2E1B3 /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F70BE6EE52CFB5E92B68F8FBE2A7E1B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE2AD31F00D0EF9C522211BDDBF6C3C /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		59C7150B63BF747D06A764B5EE17B48F /* PBXContainerItemProxy */ = {
+		4DCF65EBB688C17D83E8CC3E0F9AC3E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C23DB88E45B0ED14F0C8827BE9C46C95;
+			remoteInfo = MarqueeLabel;
+		};
+		EDE73993BB105098010AC964D6620ABF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -37,60 +50,115 @@
 
 /* Begin PBXFileReference section */
 		0A24E44CCB08B3D361BE75ABA72C90ED /* Pods-STUDYA-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-STUDYA-acknowledgements.markdown"; sourceTree = "<group>"; };
-		192A5FAA9E90D9C72A3A1C09FF40F0CD /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
+		0CCD9D741C1DE5404CC81A40A5FC861F /* MarqueeLabel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-prefix.pch"; sourceTree = "<group>"; };
+		1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.debug.xcconfig; sourceTree = "<group>"; };
+		2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MarqueeLabel-dummy.m"; sourceTree = "<group>"; };
 		2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		50053C06AB3CA4D88963DE199337A24D /* Pods-STUDYA.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-STUDYA.modulemap"; sourceTree = "<group>"; };
 		61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-STUDYA"; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		7D8EBA2229426769A0473AE25ED11A13 /* naveridlogin-sdk-ios-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "naveridlogin-sdk-ios-xcframeworks.sh"; sourceTree = "<group>"; };
+		6B0945BD7D3AD508E83E0BAE75581E4A /* naveridlogin-sdk-ios-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "naveridlogin-sdk-ios-xcframeworks.sh"; sourceTree = "<group>"; };
 		7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-STUDYA-dummy.m"; sourceTree = "<group>"; };
 		8B1573CF7A772B684E6CEA55B17B3436 /* Pods-STUDYA-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-Info.plist"; sourceTree = "<group>"; };
-		9D354B8C2B4C2CA6F74543B5B69411EB /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
+		8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = Sources/MarqueeLabel.swift; sourceTree = "<group>"; };
+		8CE2AD31F00D0EF9C522211BDDBF6C3C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-umbrella.h"; sourceTree = "<group>"; };
+		9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A7A35C960C7DAE4071D245A5D0E9F7E8 /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		9FBC7859A1BDD9F3CC79FA45947AC233 /* MarqueeLabel-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MarqueeLabel-Info.plist"; sourceTree = "<group>"; };
+		9FE46B11FEBCBB7C689EB07A5E57BD38 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		B34D701D4A17584F7D105D586A10D9D2 /* Pods-STUDYA-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-STUDYA-frameworks.sh"; sourceTree = "<group>"; };
+		B3C046D31B9CFCB753B51E60C5D36827 /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
+		BA869AF97CD616A7E802F929160566BD /* MarqueeLabel.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MarqueeLabel.modulemap; sourceTree = "<group>"; };
+		CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MarqueeLabel; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-STUDYA-umbrella.h"; sourceTree = "<group>"; };
 		E50EE5D7832FE6DE2978AA40E357DB75 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
+		E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.release.xcconfig; sourceTree = "<group>"; };
 		F2F62728D79D5E0C8DF706DE39BEE8D4 /* Pods-STUDYA-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-acknowledgements.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		84CAADC73C6A8A6B82F760074561E326 /* Frameworks */ = {
+		9AD26C46FA567E794F3BF4A704DB509B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */,
+				A65F90B575519C64683267F49C7C615C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DE1746FCBBF82FC26CB045D88B1BCC1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				890D842A253CC9351D66015AB218F4DA /* Foundation.framework in Frameworks */,
+				2DF1F2842BF627B387F208A99772044C /* QuartzCore.framework in Frameworks */,
+				F70BE6EE52CFB5E92B68F8FBE2A7E1B8 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C5446A0B659730A42FA2B9211EA65C1 /* Frameworks */ = {
+		030B3C4C186FE61D0F04C2B900A36D01 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				192A5FAA9E90D9C72A3A1C09FF40F0CD /* NaverThirdPartyLogin.xcframework */,
+				6B0945BD7D3AD508E83E0BAE75581E4A /* naveridlogin-sdk-ios-xcframeworks.sh */,
+				CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */,
+				9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/naveridlogin-sdk-ios";
+			sourceTree = "<group>";
+		};
+		03C5C200A0787E300053CFA8F53CA094 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F0A778C0229E9BF1FD97896B93F3272B /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
+		1F39B0D04461D34F4497A22835C54477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+				B3C046D31B9CFCB753B51E60C5D36827 /* NaverThirdPartyLogin.xcframework */,
 			);
-			name = iOS;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5798114C70A4B6A3264AF034CFF8DFDF /* Support Files */ = {
+		58ACB4D83B258F3E35AD682153C370C4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				7D8EBA2229426769A0473AE25ED11A13 /* naveridlogin-sdk-ios-xcframeworks.sh */,
-				A7A35C960C7DAE4071D245A5D0E9F7E8 /* naveridlogin-sdk-ios.debug.xcconfig */,
-				9D354B8C2B4C2CA6F74543B5B69411EB /* naveridlogin-sdk-ios.release.xcconfig */,
+				5D12887BC7E8C6015074C6990D587C58 /* MarqueeLabel */,
+				CCBD2C733194D11C0D5744C7AB5573A4 /* naveridlogin-sdk-ios */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		5D12887BC7E8C6015074C6990D587C58 /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */,
+				66BBE76048072D1D82AD8ED8EA0E37B4 /* Support Files */,
+			);
+			name = MarqueeLabel;
+			path = MarqueeLabel;
+			sourceTree = "<group>";
+		};
+		66BBE76048072D1D82AD8ED8EA0E37B4 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BA869AF97CD616A7E802F929160566BD /* MarqueeLabel.modulemap */,
+				2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */,
+				9FBC7859A1BDD9F3CC79FA45947AC233 /* MarqueeLabel-Info.plist */,
+				0CCD9D741C1DE5404CC81A40A5FC861F /* MarqueeLabel-prefix.pch */,
+				93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */,
+				1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */,
+				E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/naveridlogin-sdk-ios";
+			path = "../Target Support Files/MarqueeLabel";
 			sourceTree = "<group>";
 		};
 		67A92FD841E0102559571F044DEC7DC8 /* Pods-STUDYA */ = {
@@ -110,9 +178,10 @@
 			path = "Target Support Files/Pods-STUDYA";
 			sourceTree = "<group>";
 		};
-		98E868FAAC3DBA7208F870F0A556C147 /* Products */ = {
+		6D92AC8C4C132A932A3DE297AFEF44CC /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */,
 				61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */,
 			);
 			name = Products;
@@ -126,11 +195,11 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		B68BE003A5520BD585CDED242497892A /* naveridlogin-sdk-ios */ = {
+		CCBD2C733194D11C0D5744C7AB5573A4 /* naveridlogin-sdk-ios */ = {
 			isa = PBXGroup;
 			children = (
-				0C5446A0B659730A42FA2B9211EA65C1 /* Frameworks */,
-				5798114C70A4B6A3264AF034CFF8DFDF /* Support Files */,
+				1F39B0D04461D34F4497A22835C54477 /* Frameworks */,
+				030B3C4C186FE61D0F04C2B900A36D01 /* Support Files */,
 			);
 			name = "naveridlogin-sdk-ios";
 			path = "naveridlogin-sdk-ios";
@@ -140,37 +209,39 @@
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				EDFD056A374120E7638719045D245FF6 /* Pods */,
-				98E868FAAC3DBA7208F870F0A556C147 /* Products */,
+				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
+				58ACB4D83B258F3E35AD682153C370C4 /* Pods */,
+				6D92AC8C4C132A932A3DE297AFEF44CC /* Products */,
 				9E37915182B8715BE9C810FF0904D8C2 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+		F0A778C0229E9BF1FD97896B93F3272B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				578452D2E740E91742655AC8F1636D1F /* iOS */,
+				4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */,
+				9FE46B11FEBCBB7C689EB07A5E57BD38 /* QuartzCore.framework */,
+				8CE2AD31F00D0EF9C522211BDDBF6C3C /* UIKit.framework */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		EDFD056A374120E7638719045D245FF6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				B68BE003A5520BD585CDED242497892A /* naveridlogin-sdk-ios */,
-			);
-			name = Pods;
+			name = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		2DC1D367794097C10DADB03A9DC34A22 /* Headers */ = {
+		9ECFABEB26CC22B6722DBB5CEE638ABC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF627F1A8DE448B556B8BDA4498EA4FE /* Pods-STUDYA-umbrella.h in Headers */,
+				A96C69453A655AFE061BEC1479F2E1B3 /* Pods-STUDYA-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AAAAA2AF2FEEBF748BED3AC45024887C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F9878203C57B16F8A2341363CE6ADE2 /* MarqueeLabel-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,21 +250,40 @@
 /* Begin PBXNativeTarget section */
 		3B0A10CE7A691A6E6D4F8DA403093F01 /* Pods-STUDYA */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 009EED3E5AF825379845F8EA29514F72 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */;
+			buildConfigurationList = 9E1C46D15E139660AA5C7283F468E7D6 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */;
 			buildPhases = (
-				2DC1D367794097C10DADB03A9DC34A22 /* Headers */,
-				35865EF9643604A8AD8A4E0B7285BE9F /* Sources */,
-				84CAADC73C6A8A6B82F760074561E326 /* Frameworks */,
-				62BBAFF4B8144DC5A8EEF96CBE3F0C4E /* Resources */,
+				9ECFABEB26CC22B6722DBB5CEE638ABC /* Headers */,
+				35C6333F99FCC54FF9428791D5F48B69 /* Sources */,
+				9AD26C46FA567E794F3BF4A704DB509B /* Frameworks */,
+				FECF319674FC23F49D0C1ACB87B72260 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				BBFD5660B37E473928F29AED31C7D9D8 /* PBXTargetDependency */,
+				C1955DA26C93309C37010AF97EAEA633 /* PBXTargetDependency */,
+				AFE54EB7BFA5DD19F1491B8FAE64D1A2 /* PBXTargetDependency */,
 			);
 			name = "Pods-STUDYA";
 			productName = Pods_STUDYA;
 			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */;
+			productType = "com.apple.product-type.framework";
+		};
+		C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 251180A9B6B807638C65029608571B8F /* Build configuration list for PBXNativeTarget "MarqueeLabel" */;
+			buildPhases = (
+				AAAAA2AF2FEEBF748BED3AC45024887C /* Headers */,
+				CE51103B19EB6AFC57B1C6125F7EB6C5 /* Sources */,
+				DE1746FCBBF82FC26CB045D88B1BCC1C /* Frameworks */,
+				1D85F9BE0FDD1AA06297EB5F21E58E97 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MarqueeLabel;
+			productName = MarqueeLabel;
+			productReference = CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -214,10 +304,11 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 98E868FAAC3DBA7208F870F0A556C147 /* Products */;
+			productRefGroup = 6D92AC8C4C132A932A3DE297AFEF44CC /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */,
 				3516E9D4735D155BC036A4DB393966FC /* naveridlogin-sdk-ios */,
 				3B0A10CE7A691A6E6D4F8DA403093F01 /* Pods-STUDYA */,
 			);
@@ -225,7 +316,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		62BBAFF4B8144DC5A8EEF96CBE3F0C4E /* Resources */ = {
+		1D85F9BE0FDD1AA06297EB5F21E58E97 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FECF319674FC23F49D0C1ACB87B72260 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,27 +353,42 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		35865EF9643604A8AD8A4E0B7285BE9F /* Sources */ = {
+		35C6333F99FCC54FF9428791D5F48B69 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6959EBDBBE36EC255679400BFBF46A74 /* Pods-STUDYA-dummy.m in Sources */,
+				81CD89BE2F34594AB8D9D8F94A102029 /* Pods-STUDYA-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CE51103B19EB6AFC57B1C6125F7EB6C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19EE53C9966D4142DD5B6BA2AD06D52B /* MarqueeLabel.swift in Sources */,
+				6CE0B8970AEE2F68ABC4434712981A8A /* MarqueeLabel-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		BBFD5660B37E473928F29AED31C7D9D8 /* PBXTargetDependency */ = {
+		AFE54EB7BFA5DD19F1491B8FAE64D1A2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "naveridlogin-sdk-ios";
 			target = 3516E9D4735D155BC036A4DB393966FC /* naveridlogin-sdk-ios */;
-			targetProxy = 59C7150B63BF747D06A764B5EE17B48F /* PBXContainerItemProxy */;
+			targetProxy = EDE73993BB105098010AC964D6620ABF /* PBXContainerItemProxy */;
+		};
+		C1955DA26C93309C37010AF97EAEA633 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MarqueeLabel;
+			target = C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */;
+			targetProxy = 4DCF65EBB688C17D83E8CC3E0F9AC3E5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		121CED34A10A483195152C56DA69C63F /* Debug */ = {
+		0B0207B130A0A3F05AA0E342B562966A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */;
 			buildSettings = {
@@ -312,9 +425,47 @@
 			};
 			name = Debug;
 		};
+		0D990C18D7F457964DA5AC9C5ABB7AB8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E50EE5D7832FE6DE2978AA40E357DB75 /* Pods-STUDYA.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		35613D0A5F350911AE6E907FDFC836E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A7A35C960C7DAE4071D245A5D0E9F7E8 /* naveridlogin-sdk-ios.debug.xcconfig */;
+			baseConfigurationReference = CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -396,7 +547,7 @@
 		};
 		768846D27ACEFD82711658787FCAC0B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D354B8C2B4C2CA6F74543B5B69411EB /* naveridlogin-sdk-ios.release.xcconfig */;
+			baseConfigurationReference = 9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -410,6 +561,75 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
+		};
+		8B71D140048E37EA295DDF2313D659CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
+				PRODUCT_MODULE_NAME = MarqueeLabel;
+				PRODUCT_NAME = MarqueeLabel;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A7500E7CF0B2C72ECABA50BE15BC536A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
+				PRODUCT_MODULE_NAME = MarqueeLabel;
+				PRODUCT_NAME = MarqueeLabel;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		CD85FD90473CFBE797E4264E7BBC70AF /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -473,52 +693,14 @@
 			};
 			name = Release;
 		};
-		F05F19D5F6034F05852FC6B9D2CA574A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E50EE5D7832FE6DE2978AA40E357DB75 /* Pods-STUDYA.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		009EED3E5AF825379845F8EA29514F72 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */ = {
+		251180A9B6B807638C65029608571B8F /* Build configuration list for PBXNativeTarget "MarqueeLabel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				121CED34A10A483195152C56DA69C63F /* Debug */,
-				F05F19D5F6034F05852FC6B9D2CA574A /* Release */,
+				A7500E7CF0B2C72ECABA50BE15BC536A /* Debug */,
+				8B71D140048E37EA295DDF2313D659CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -537,6 +719,15 @@
 			buildConfigurations = (
 				35613D0A5F350911AE6E907FDFC836E1 /* Debug */,
 				768846D27ACEFD82711658787FCAC0B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9E1C46D15E139660AA5C7283F468E7D6 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B0207B130A0A3F05AA0E342B562966A /* Debug */,
+				0D990C18D7F457964DA5AC9C5ABB7AB8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

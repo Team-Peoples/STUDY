@@ -6,5 +6,6 @@ target 'STUDYA' do
   use_frameworks!
 
   # Pods for STUDYA
-pod 'naveridlogin-sdk-ios'  
+pod 'naveridlogin-sdk-ios'
+pod 'MarqueeLabel'
 end

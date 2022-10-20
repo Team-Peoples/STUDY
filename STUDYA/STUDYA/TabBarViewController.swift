@@ -20,7 +20,7 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabbarController()
-        checkIfUserIsLoggedIn()
+//        checkIfUserIsLoggedIn()
         // Do any additional setup after loading the view.
     }
     
@@ -80,7 +80,6 @@ final class TabBarViewController: UITabBarController {
     }
     
     private func checkIfUserIsLoggedIn() {
-        
         if user == nil {
             presentWelcomeVC()
         } else {
