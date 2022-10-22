@@ -42,7 +42,6 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     }()
     
     // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,24 +59,24 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     @objc func tabButtonTapped(_ sender: UIButton) {
         
         switch sender {
-            case leftTabButton:
-                underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(style.heightOfUnderLine)
-                    make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
-                    make.centerX.equalTo(leftTabButton)
-                }
-                contentView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
-            case rightTabButton:
-                underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(style.heightOfUnderLine)
-                    make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
-                    make.centerX.equalTo(rightTabButton)
-                }
-                contentView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
-            default:
-                return
+        case leftTabButton:
+            underLine.snp.remakeConstraints { make in
+                make.height.equalTo(style.heightOfUnderLine)
+                make.width.equalTo(86)
+                make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
+                make.centerX.equalTo(leftTabButton)
+            }
+            contentView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
+        case rightTabButton:
+            underLine.snp.remakeConstraints { make in
+                make.height.equalTo(style.heightOfUnderLine)
+                make.width.equalTo(86)
+                make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
+                make.centerX.equalTo(rightTabButton)
+            }
+            contentView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
+        default:
+            return
         }
         
         UIView.animate(withDuration: 0.3) {
@@ -136,11 +135,11 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
             make.height.equalTo(style.heightOfTopScrollView)
         }
     }
-  
+    
     private func addContentView() {
         
         view.addSubview(contentView)
-    
+        
         contentView.isPagingEnabled = true
         
         contentView.delegate = self
@@ -222,14 +221,15 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
-            case 0:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
-                return cell
-                
-            case 1:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! MyScheduleCollectionViewCell
-                return cell
-            default: break
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
+            
+            return cell
+            
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! MyScheduleCollectionViewCell
+            return cell
+        default: break
         }
         
         return UICollectionViewCell()
@@ -243,7 +243,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout 
 }
 
 struct lineTabStyle {
-
+    
     var heightOfTopScrollView: CGFloat = 35
     var heightOfUnderLine: CGFloat = 6
     

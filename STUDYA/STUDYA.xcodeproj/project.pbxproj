@@ -38,6 +38,7 @@
 		72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */; };
 		72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */; };
 		72F7CFAF28F83D0500E0D0C0 /* MyBottomSheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */; };
+		D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
@@ -95,6 +96,7 @@
 		72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBottomSheetDataSource.swift; sourceTree = "<group>"; };
 		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
+		D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewCell.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */,
 				72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */,
 				7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */,
+				D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */,
 				7282F18328FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift */,
 				72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
@@ -358,6 +361,7 @@
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* MyScheduleCollectionViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
+				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
