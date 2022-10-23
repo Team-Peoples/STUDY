@@ -63,9 +63,6 @@ final class MainViewController: UIViewController {
         
         configureNavigationItem()
         configureView()
-        
-        
-        
     }
     
     private func configureView(){
@@ -83,11 +80,10 @@ final class MainViewController: UIViewController {
 
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-        
+        print(#function)
     }
 
     @objc private func dropdownButtonDidTapped() {
-        
         dropdownButton.isSelected.toggle()
         configureDropdown()
     }
@@ -97,17 +93,22 @@ final class MainViewController: UIViewController {
         if sender.isOn {
 
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-            navigationItem.title = "관리자 모드"
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-            navigationItem.leftBarButtonItems = nil
+            notificationBtn.isHidden = true
+            dropdownButton.isHidden = true
+            navigationItem.title = "관리자 모드"
+            floatingButton.isHidden = false
+            
         } else {
 
             navigationController?.navigationBar.backgroundColor = .systemBackground
-            navigationItem.title = nil
             navigationController?.navigationBar.tintColor = .black
             navigationController?.navigationBar.backgroundColor = .appColor(.background)
-            configureNavigationItem()
+            notificationBtn.isHidden = false
+            dropdownButton.isHidden = false
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background)]
+            floatingButton.isHidden = true
         }
     }
 
@@ -211,6 +212,7 @@ final class MainViewController: UIViewController {
         }
         
         view.addSubview(floatingButton)
+        floatingButton.isHidden = true
         
         floatingButton.frame.origin = CGPoint(x: view.frame.size.width - 50 - 10, y: view.frame.size.height - 60 - 90)
     }
