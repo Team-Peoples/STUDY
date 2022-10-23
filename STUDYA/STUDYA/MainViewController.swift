@@ -19,6 +19,7 @@ final class MainViewController: UIViewController {
         Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)]
     private var currentStudy: Study? = Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
     private var willDropDown = false
+    private let isAdmin = true
     
     private let notificationBtn = UIButton(type: .custom)
     private let dropdownButton = UIButton(type: .system)
@@ -38,9 +39,20 @@ final class MainViewController: UIViewController {
         
         return b
     }()
-    private lazy var mainTableView = UITableView()
-    
     private let masterSwitch = BrandSwitch()
+    private lazy var mainTableView = UITableView()
+    private lazy var floatingButton: UIButton = {
+        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
+        
+        btn.backgroundColor = .black
+        btn.setImage(image, for: .normal)
+        btn.tintColor = .white
+
+        btn.layer.cornerRadius = 50 / 2
+        btn.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 4, blur: 6, spread: 0)
+        return btn
+    }()
     
     private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
     private lazy var dropdownHeightMax = dropdownContainerView.heightAnchor.constraint(equalToConstant: 250)
@@ -51,6 +63,9 @@ final class MainViewController: UIViewController {
         
         configureNavigationItem()
         configureView()
+        
+        
+        
     }
     
     private func configureView(){
@@ -101,6 +116,10 @@ final class MainViewController: UIViewController {
         navigationController?.pushViewController(creatingStudyVC, animated: true)
     }
     
+    @objc private func addButtonDidTapped() {
+        print(#function)
+    }
+    
     private func configureNavigationItem() {
         notificationBtn.setImage(UIImage(named: "noti"), for: .normal)
         notificationBtn.setTitleColor(.black, for: .normal)
@@ -141,11 +160,11 @@ final class MainViewController: UIViewController {
     }
 
     private func configureWhenStudyExist() {
-               
-        mainTableView.delegate = self
-        mainTableView.dataSource = self
         
         view.backgroundColor = UIColor.appColor(.background)
+        
+        mainTableView.delegate = self
+        mainTableView.dataSource = self
         
         mainTableView.register(MainFirstAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFirstAnnouncementTableViewCell.identifier)
         mainTableView.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
@@ -189,8 +208,11 @@ final class MainViewController: UIViewController {
         
         createStudyButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(dropdownContainerView)
-//            make.height.equalTo(0)
         }
+        
+        view.addSubview(floatingButton)
+        
+        floatingButton.frame.origin = CGPoint(x: view.frame.size.width - 50 - 10, y: view.frame.size.height - 60 - 90)
     }
     
     private func configureDropdown() {
@@ -220,7 +242,7 @@ final class MainViewController: UIViewController {
             dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
             dropdownContainerView.clipsToBounds = true
             
-            UIView.animate(withDuration: 5, delay: 0) {
+            UIView.animate(withDuration: 0.3, delay: 0) {
                 self.view.layoutIfNeeded()
             }
 
