@@ -15,7 +15,7 @@ final class MainViewController: UIViewController {
         Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
         Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
         Study(id: nil, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+        Study(id: nil, title: "마", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
         Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)]
     private var currentStudy: Study? = Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
     private var willDropDown = false
@@ -43,14 +43,18 @@ final class MainViewController: UIViewController {
     private lazy var mainTableView = UITableView()
     private lazy var floatingButton: UIButton = {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
+        let normalImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy))
+        let selectedImage = UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .heavy))
         
         btn.backgroundColor = .black
-        btn.setImage(image, for: .normal)
+        btn.setImage(normalImage, for: .normal)
+        btn.setImage(selectedImage, for: .selected)
         btn.tintColor = .white
 
         btn.layer.cornerRadius = 50 / 2
         btn.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 4, blur: 6, spread: 0)
+        btn.addTarget(self, action: #selector(floatingButtonDidTapped), for: .touchUpInside)
+        
         return btn
     }()
     
@@ -86,6 +90,7 @@ final class MainViewController: UIViewController {
     @objc private func dropdownButtonDidTapped() {
         dropdownButton.isSelected.toggle()
         configureDropdown()
+        dimmingView.isHidden.toggle()
     }
     
     @objc private func switchValueChanged(sender: BrandSwitch) {
@@ -117,8 +122,8 @@ final class MainViewController: UIViewController {
         navigationController?.pushViewController(creatingStudyVC, animated: true)
     }
     
-    @objc private func addButtonDidTapped() {
-        print(#function)
+    @objc private func floatingButtonDidTapped() {
+        floatingButton.isSelected.toggle()
     }
     
     private func configureNavigationItem() {
@@ -180,6 +185,13 @@ final class MainViewController: UIViewController {
         mainTableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
+        
+        view.addSubview(dimmingView)
+        dimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        dimmingView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        dimmingView.isHidden = true
         
 //        dropdownContainer 제약 설정
         view.addSubview(dropdownContainerView)
