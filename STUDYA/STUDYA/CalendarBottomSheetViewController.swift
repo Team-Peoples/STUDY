@@ -21,25 +21,21 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     private let bar = UIView()
     private let topScrollView = UIScrollView()
     private let contentView: UICollectionView = {
+        
         let flowLayout = UICollectionViewFlowLayout()
         
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = 0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        
         collectionView.isScrollEnabled = false
         
         return collectionView
     }()
     private let underLine = UIView()
-    private lazy var leftTabButton: UIButton = {
-        let btn = UIButton()
-        return setupTab(button: btn, title: "할 일")
-    }()
-    private lazy var rightTabButton: UIButton = {
-        let btn = UIButton()
-        return setupTab(button: btn, title: "일정")
-    }()
+    private lazy var leftTabButton: UIButton = tabButton(title: "할 일")
+    private lazy var rightTabButton: UIButton = tabButton(title: "일정")
     
     // MARK: - Life Cycle
 
@@ -152,7 +148,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
         contentView.bounces = false
         
         contentView.register(ToDoCollectionViewCell.self, forCellWithReuseIdentifier: "ToDoCollectionViewCell")
-        contentView.register(MyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
+        contentView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
         
         contentView.snp.makeConstraints { make in
             make.top.equalTo(topScrollView.snp.bottom)
@@ -198,7 +194,10 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
         }
     }
     
-    private func setupTab(button: UIButton, title: String) -> UIButton {
+    private func tabButton(title: String) -> UIButton {
+        
+        let button = UIButton()
+        
         button.setTitle(title, for: .normal)
         button.setTitle(title, for: .selected)
         
@@ -227,7 +226,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
                 return cell
                 
             case 1:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! MyScheduleCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
                 return cell
             default: break
         }
