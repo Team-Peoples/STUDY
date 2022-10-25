@@ -19,15 +19,39 @@ final class MainViewController: UIViewController {
         Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)]
     private var currentStudy: Study? = Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
     private var willDropDown = false
-    private let isAdmin = true
+    private var isAdmin = true
+    private var willSpreadUp = false
     
     private let notificationBtn = UIButton(type: .custom)
     private let dropdownButton = UIButton(type: .system)
-    private lazy var dimmingView = UIView()
-    private lazy var dropdownContainerView = UIView()
-    private lazy var dropdown = UITableView()
-    private lazy var createStudyButton: UIButton = {
+    private lazy var dropdownDimmingView: UIView = {
        
+        let v = UIView()
+        
+        v.isUserInteractionEnabled = true
+        let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownDimmingViewDidTapped))
+        v.addGestureRecognizer(recog)
+        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        v.isHidden = true
+        
+        return v
+    }()
+    private lazy var dropdownContainerView = UIView()
+    private lazy var dropdownTableView: UITableView = {
+        
+        let t = UITableView()
+        
+        t.delegate = self
+        t.dataSource = self
+        t.separatorColor = UIColor.appColor(.ppsGray3)
+        t.bounces = false
+        t.showsVerticalScrollIndicator = false
+        t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
+        
+        return t
+    }()
+    private lazy var createStudyButton: UIButton = {
+        
         let b = UIButton()
         
         b.backgroundColor = UIColor.appColor(.brandMilky)
@@ -39,7 +63,7 @@ final class MainViewController: UIViewController {
         
         return b
     }()
-    private let masterSwitch = BrandSwitch()
+    private lazy var masterSwitch = BrandSwitch()
     private lazy var mainTableView = UITableView()
     private lazy var floatingButton: UIButton = {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
@@ -57,7 +81,21 @@ final class MainViewController: UIViewController {
         
         return btn
     }()
-    
+    private lazy var spreadUpTableView: UITableView = {
+        
+        let t = UITableView()
+        
+        t.delegate = self
+        t.dataSource = self
+        t.separatorStyle = .none
+        t.backgroundColor = .clear
+        t.bounces = false
+        t.showsVerticalScrollIndicator = false
+        t.register(MainSpreadUpTableViewCell.self, forCellReuseIdentifier: MainSpreadUpTableViewCell.identifier)
+        
+        return t
+    }()
+//    스터디 한두개일 때의 높이도 고려해야
     private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
     private lazy var dropdownHeightMax = dropdownContainerView.heightAnchor.constraint(equalToConstant: 250)
     
@@ -79,50 +117,67 @@ final class MainViewController: UIViewController {
         }
     }
     
-    // MARK: - Configure
-
-
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         print(#function)
     }
 
     @objc private func dropdownButtonDidTapped() {
+        notificationBtn.isHidden.toggle()
+        masterSwitch.isHidden.toggle()
         dropdownButton.isSelected.toggle()
-        configureDropdown()
-        dimmingView.isHidden.toggle()
+        toggleDropdown()
+        dropdownDimmingView.isHidden.toggle()
     }
     
-    @objc private func switchValueChanged(sender: BrandSwitch) {
-
+    @objc private func switchDidTapped(sender: BrandSwitch) {
+        
         if sender.isOn {
-
+            
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+            
             notificationBtn.isHidden = true
             dropdownButton.isHidden = true
-            navigationItem.title = "관리자 모드"
+            
+            dropdownDimmingView.isHidden = false
             floatingButton.isHidden = false
             
         } else {
-
+            
             navigationController?.navigationBar.backgroundColor = .systemBackground
             navigationController?.navigationBar.tintColor = .black
-            navigationController?.navigationBar.backgroundColor = .appColor(.background)
+            navigationController?.navigationBar.backgroundColor = .appColor(.background2)
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
             notificationBtn.isHidden = false
             dropdownButton.isHidden = false
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background)]
+            
+            dropdownDimmingView.isHidden = true
             floatingButton.isHidden = true
+            floatingButton.isSelected = false
         }
     }
-
+    
+    @objc private func dropdownDimmingViewDidTapped() {
+        notificationBtn.isHidden.toggle()
+        masterSwitch.isHidden.toggle()
+        dropdownButton.isSelected.toggle()
+        toggleDropdown()
+        dropdownDimmingView.isHidden.toggle()
+    }
+    
     @objc private func createStudyButtonDidTapped() {
         let creatingStudyVC = CreatingStudyViewController()
         navigationController?.pushViewController(creatingStudyVC, animated: true)
     }
     
     @objc private func floatingButtonDidTapped() {
+        floatingButton.isSelected.toggle()
+        
+    }
+    
+    @objc private func spreadUpDimmingViewDidTapped() {
         floatingButton.isSelected.toggle()
     }
     
@@ -137,17 +192,21 @@ final class MainViewController: UIViewController {
         dropdownButton.setTitle("\(dropdownTitle)  ", for: .normal)
         dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .normal)
         dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .selected)
-        dropdownButton.tintColor = UIColor.appColor(.background)
+        dropdownButton.tintColor = UIColor.appColor(.background2)
         dropdownButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
         dropdownButton.setImage(UIImage(named: "dropDown")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .normal)
         dropdownButton.setImage(UIImage(named: "dropUp")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .selected)
         dropdownButton.semanticContentAttribute = .forceRightToLeft
         dropdownButton.addTarget(self, action: #selector(dropdownButtonDidTapped), for: .touchUpInside)
         
-        masterSwitch.addTarget(self, action: #selector(switchValueChanged), for: .valueChanged)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        navigationItem.title = "관리자 모드"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn), UIBarButtonItem(customView: dropdownButton)]
+        
+        if isAdmin {
+            masterSwitch.addTarget(self, action: #selector(switchDidTapped), for: .valueChanged)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        }
     }
     
     private func configureWhenNoStudy() {
@@ -157,17 +216,17 @@ final class MainViewController: UIViewController {
         
         studyEmptyImageView.backgroundColor = .lightGray
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
-
+        
         view.addSubview(studyEmptyImageView)
         view.addSubview(studyEmptyLabel)
         view.addSubview(createStudyButton)
         
         setConstraintsWhenNoStudy(studyEmptyImageView, studyEmptyLabel, createStudyButton)
     }
-
+    
     private func configureWhenStudyExist() {
         
-        view.backgroundColor = UIColor.appColor(.background)
+        view.backgroundColor = UIColor.appColor(.background2)
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
@@ -186,14 +245,11 @@ final class MainViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        view.addSubview(dimmingView)
-        dimmingView.snp.makeConstraints { make in
+        view.addSubview(dropdownDimmingView)
+        dropdownDimmingView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        dimmingView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        dimmingView.isHidden = true
-        
-//        dropdownContainer 제약 설정
+        //        dropdownContainer 제약 설정
         view.addSubview(dropdownContainerView)
         dropdownContainerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -202,19 +258,11 @@ final class MainViewController: UIViewController {
         dropdownHeightMax.isActive = false
         dropdownHeightZero.isActive = true
         
-//        dropdown 설정
-        dropdown.delegate = self
-        dropdown.dataSource = self
-        dropdown.separatorColor = UIColor.appColor(.ppsGray3)
-        dropdown.bounces = false
-        dropdown.showsVerticalScrollIndicator = false
-        dropdown.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
-        
-//        dropdown 제약 설정
-        dropdownContainerView.addSubview(dropdown)
+        //        dropdown 제약 설정
+        dropdownContainerView.addSubview(dropdownTableView)
         dropdownContainerView.addSubview(createStudyButton)
         
-        dropdown.snp.makeConstraints { make in
+        dropdownTableView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(dropdownContainerView)
             make.bottom.equalTo(createStudyButton.snp.top)
         }
@@ -225,12 +273,11 @@ final class MainViewController: UIViewController {
         
         view.addSubview(floatingButton)
         floatingButton.isHidden = true
-        
         floatingButton.frame.origin = CGPoint(x: view.frame.size.width - 50 - 10, y: view.frame.size.height - 60 - 90)
     }
     
-    private func configureDropdown() {
-
+    private func toggleDropdown() {
+        
         willDropDown.toggle()
         
         var indexPaths = [IndexPath]()
@@ -247,7 +294,7 @@ final class MainViewController: UIViewController {
             dropdownHeightZero.isActive = false
             dropdownHeightMax.isActive = true
             
-            dropdown.insertRows(at: indexPaths, with: .top)
+            dropdownTableView.insertRows(at: indexPaths, with: .top)
             
             createStudyButton.isHidden = false
             createStudyButton.setHeight(50)
@@ -259,23 +306,21 @@ final class MainViewController: UIViewController {
             UIView.animate(withDuration: 0.3, delay: 0) {
                 self.view.layoutIfNeeded()
             }
-
+            
         } else {
             
-            dropdown.deleteRows(at: indexPaths, with: .top)
-
+            dropdownTableView.deleteRows(at: indexPaths, with: .top)
+            
             dropdownHeightMax.isActive = false
             dropdownHeightZero.isActive = true
             
             createStudyButton.isHidden = true
-                        
+            
             UIView.animate(withDuration: 0.3, delay: 0) {
                 self.view.layoutIfNeeded()
             }
         }
     }
-    
-    
     
     // MARK: - Setting Constraints
     private func setConstraintsWhenNoStudy(_ imageView: UIImageView, _ label: UILabel, _ button: UIButton) {
@@ -302,14 +347,18 @@ final class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == mainTableView { return 4 } else {
-            
-            return willDropDown ? myStudies.count : 0
+        
+        switch tableView {
+        case mainTableView: return 4
+        case dropdownTableView: return willDropDown ? myStudies.count : 0
+        case spreadUpTableView: return willSpreadUp ? 3 : 0
+        default: return 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == mainTableView {
+        switch tableView {
+        case mainTableView:
             switch indexPath.row {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstAnnouncementTableViewCell.identifier) as! MainFirstAnnouncementTableViewCell
@@ -330,7 +379,7 @@ extension MainViewController: UITableViewDataSource {
             default:
                 return UITableViewCell()
             }
-        } else {
+        case dropdownTableView:
             guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
             
             let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
@@ -342,13 +391,20 @@ extension MainViewController: UITableViewDataSource {
             cell.title = myStudies[indexPath.row].title!
             
             return cell
+            
+        case spreadUpTableView:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainSpreadUpTableViewCell.identifier) as! MainSpreadUpTableViewCell
+            cell.cellNumber = indexPath.row + 1
+            return cell
+        default: return UITableViewCell()
         }
     }
 }
 
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView == mainTableView {
+        switch tableView {
+        case mainTableView:
             switch indexPath.row {
             case 0:
                 return 20
@@ -361,9 +417,13 @@ extension MainViewController: UITableViewDelegate {
             default:
                 return 100
             }
-        } else {
+        case dropdownTableView:
             return 50
+        case spreadUpTableView:
+            return 62
+        default: return 0
         }
+    
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
