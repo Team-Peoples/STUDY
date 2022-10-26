@@ -41,19 +41,20 @@ class MainSpreadUpTableViewCell: UITableViewCell {
         backgroundColor = .clear
         
         dummyView.backgroundColor = .black
-        
+        selectionStyle = .none
         contentView.addSubview(containerView)
         containerView.addSubview(titleLabel)
         containerView.addSubview(dummyView)
         
         containerView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView)
+            make.leading.trailing.top.equalTo(contentView)
+            make.bottom.equalTo(contentView).inset(12)
         }
         titleLabel.snp.makeConstraints { make in
             make.top.leading.bottom.equalTo(containerView).inset(15)
         }
         dummyView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel).offset(15)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(15)
             make.top.trailing.bottom.equalTo(containerView).inset(15)
         }
     }
