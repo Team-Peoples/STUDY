@@ -10,9 +10,11 @@ import UIKit
 class ToDoItemTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
+    weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     internal var todo: String? {
         didSet {
-            todoField.text = todo
+            todoTextView.text = todo == nil ? placeholder : todo
+            todoTextView.textColor = todo == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
         }
     }
     internal var isDone = false {
@@ -20,8 +22,9 @@ class ToDoItemTableViewCell: UITableViewCell {
             checkButton.isSelected = isDone ? true : false
         }
     }
-    internal var fieldDidEndEditingWithNoLetter: (ToDoItemTableViewCell) -> () = { sender in }
-    internal var fieldDidEndEditingWithLetter: (ToDoItemTableViewCell) -> () = { sender in }
+    internal var textViewDidEndEditingWithNoLetter: (ToDoItemTableViewCell) -> () = { sender in }
+    internal var textViewDidEndEditingWithLetter: (ToDoItemTableViewCell) -> () = { sender in }
+    private let placeholder = "이곳을 눌러 할 일을 추가해보세요."
     
     lazy var checkButton: UIButton = {
         
@@ -34,25 +37,42 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         return b
     }()
-    lazy var todoField: UITextField = {
+    lazy var todoTextView: UITextView = {
        
-        let f = UITextField()
-        f.attributedPlaceholder = NSAttributedString(string: "이곳을 눌러 할 일을 추가해보세요.", attributes: [.foregroundColor: UIColor.appColor(.ppsGray1), .font: UIFont.systemFont(ofSize: 14)])
-        return f
+        let v = UITextView()
+        
+        v.font = .systemFont(ofSize: 14)
+        v.text = placeholder
+        v.textColor = .appColor(.ppsGray1)
+        v.isScrollEnabled = false
+        v.textContainer.maximumNumberOfLines = 3
+        v.textContainer.lineBreakMode = .byTruncatingTail
+        v.backgroundColor = .appColor(.background)
+        v.showsHorizontalScrollIndicator = false
+        v.showsVerticalScrollIndicator = false
+        v.isScrollEnabled = false
+        v.bounces = false
+        
+        return v
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = .appColor(.background)
-        todoField.font = .systemFont(ofSize: 14)
-        todoField.delegate = self
+        todoTextView.font = .systemFont(ofSize: 14) //만약 더 큰 크기로 바꾸게 되면 글자수 제한이나 줄 수 등도 바꿔야.
+        todoTextView.delegate = self
         
         contentView.addSubview(checkButton)
-        contentView.addSubview(todoField)
+        contentView.addSubview(todoTextView)
         
-        checkButton.anchor(top: contentView.topAnchor, leading: contentView.leadingAnchor)
-        todoField.anchor(top: contentView.topAnchor, leading: checkButton.trailingAnchor, leadingConstant: 10)
+
+        checkButton.snp.makeConstraints { make in
+            make.top.leading.equalTo(contentView)
+            make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
+        }
+//        checkButton.anchor(top: contentView.topAnchor, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: contentView.leadingAnchor)
+        todoTextView.anchor(top: contentView.topAnchor, topConstant: -6, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
     }
     
     required init?(coder: NSCoder) {
@@ -64,17 +84,46 @@ class ToDoItemTableViewCell: UITableViewCell {
     }
 }
 
-extension ToDoItemTableViewCell: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if todoField.text == "" {
-            fieldDidEndEditingWithNoLetter(self)
+extension ToDoItemTableViewCell: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+            return false
         } else {
-            fieldDidEndEditingWithLetter(self)
+            guard let inputedText = textView.text else { return true }
+            let newLength = inputedText.count + text.count - range.length
+            return newLength <= 70
         }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        endEditing(true)
-        return true
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if textView.text == placeholder {
+            textView.text = nil
+            textView.textColor = .appColor(.ppsBlack)
+        }
     }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.text = placeholder
+            textView.textColor = .appColor(.ppsGray1)
+            textViewDidEndEditingWithNoLetter(self)
+        } else {
+            textViewDidEndEditingWithLetter(self)
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        if let delegate = cellDelegate {
+            print(#function)
+            delegate.updateHeightOfRow(self, textView)
+        }
+    }
+}
+
+protocol GrowingCellProtocol: AnyObject {
+    func updateHeightOfRow(_ cell: ToDoItemTableViewCell, _ textView: UITextView)
 }
