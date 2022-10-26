@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import UBottomSheet
 
+
+//🛑to be fixed: 이미 풀모달로 올라와있을 때는 올라오지 않게 할 수 있다면 setPosition 과 관련해서 기능추가해보기. 시스템 자원 절약 위해.
 class ToDoItemTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
+    
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
+    weak var heightDelegate: CalendarBottomSheetViewController?
+    
     internal var todo: String? {
         didSet {
             todoTextView.text = todo == nil ? placeholder : todo
@@ -65,13 +71,11 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         contentView.addSubview(checkButton)
         contentView.addSubview(todoTextView)
-        
 
         checkButton.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView)
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
-//        checkButton.anchor(top: contentView.topAnchor, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: contentView.leadingAnchor)
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -6, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
     }
     
@@ -98,6 +102,7 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        heightDelegate?.sheetCoordinator?.setPosition(844 * 0.12, animated: true)
         
         if textView.text == placeholder {
             textView.text = nil
@@ -106,7 +111,6 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)

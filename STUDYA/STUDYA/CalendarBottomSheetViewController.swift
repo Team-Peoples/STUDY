@@ -13,8 +13,8 @@ import SnapKit
 class CalendarBottomSheetViewController: UIViewController, Draggable {
     // MARK: - Properties
     
-    weak var sheetCoordinator: UBottomSheetCoordinator?
-    weak var dataSource: UBottomSheetCoordinatorDataSource?
+    internal weak var sheetCoordinator: UBottomSheetCoordinator?
+    internal weak var dataSource: UBottomSheetCoordinatorDataSource?
     
     private let style = lineTabStyle()
     
@@ -223,6 +223,8 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
         switch indexPath.item {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
+            
+            cell.heightDelegate = self
             
             return cell
             

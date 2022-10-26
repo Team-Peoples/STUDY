@@ -30,6 +30,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         
         self.dataSource = MyBottomSheetDataSource()
+        title = "나의 캘린더"
         
         configureViews()
         setConstraints()
