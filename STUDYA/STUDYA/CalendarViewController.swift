@@ -34,6 +34,10 @@ class CalendarViewController: UIViewController {
         
         configureViews()
         setConstraints()
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(navibarTapped))
+        navigationController?.navigationBar.isUserInteractionEnabled = true
+        navigationController?.navigationBar.addGestureRecognizer(recognizer)
     }
     
     override func viewWillLayoutSubviews() {
@@ -60,8 +64,17 @@ class CalendarViewController: UIViewController {
         sheetCoordinator.setCornerRadius(10)
     }
     
-    // MARK: - Actions
+    @objc private func navibarTapped() {
+        view.endEditing(true)
+        sheetCoordinator.setPosition(844 * 0.6, animated: true)
+    }
     
+    // MARK: - Actions
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        view.endEditing(true)
+    }
     // MARK: - Configure
     
     private func configureViews() {
