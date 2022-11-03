@@ -12,10 +12,11 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
 
-    internal var attendable = true
-    internal var didAttend = false
-    internal var isManagerMode = true
-    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.absent
+    internal var attendable = false
+    internal var didAttend = true
+    internal var isManagerMode = false
+    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
+    
 
     private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
     private lazy var afterStudyView: RoundableView = {
@@ -25,7 +26,6 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         let symbolView = UIImageView()
         var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
         let innerView = RoundableView()
-        innerView.backgroundColor = UIColor.appColor(.dimming)
 
         v.addSubview(symbolView)
         v.addSubview(titleLabel)
@@ -54,6 +54,8 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
             v.addSubview(subTitleLabel)
             subTitleLabel.centerXY(inView: innerView)
+            
+            blink(innerView, subTitleLabel)
         } else {
 
             let penaltyLabel = CustomLabel(title: "벌금", tintColor: .whiteLabel, size: 14, isBold: true)
@@ -77,7 +79,9 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                 make.leading.equalTo(fineLabel.snp.trailing).offset(3)
                 make.centerY.equalTo(penaltyLabel)
             }
-
+            
+            blink(innerView, penaltyLabel, fineLabel, wonLabel)
+            
             switch attendanceStatus {
             case .late:
                 v.backgroundColor = UIColor.appColor(.lateMain)
@@ -160,5 +164,30 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     
     @objc private func mainButtonTappedWhenNotManager() {
         print("no manager")
+    }
+    
+    func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
+        UIView.transition(with: self, duration: 0, options: .transitionCrossDissolve) {
+            
+            label1.textColor = .clear
+            label1.textColor = .clear
+            
+            guard let l2 = label2, let l3 = label3 else { return }
+            
+            l2.textColor = .clear
+            l3.textColor = .clear
+            
+        } completion: { f in
+            UIView.transition(with: self, duration: 0.8, options: .transitionCrossDissolve) {
+                
+                innerView.backgroundColor = UIColor.appColor(.dimming)
+                label1.textColor = .appColor(.whiteLabel)
+                
+                guard let l2 = label2, let l3 = label3 else { return }
+                
+                l2.textColor = .appColor(.whiteLabel)
+                l3.textColor = .appColor(.whiteLabel)
+            }
+        }
     }
 }
