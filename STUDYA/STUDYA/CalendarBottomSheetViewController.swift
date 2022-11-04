@@ -7,7 +7,6 @@
 
 import UIKit
 
-import UBottomSheet
 import SnapKit
 
 class CalendarBottomSheetViewController: UIViewController, Draggable {
@@ -89,12 +88,6 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                 button.isSelected = false
             }
         }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        
-        view.endEditing(true)
     }
     
     // MARK: - Configure
