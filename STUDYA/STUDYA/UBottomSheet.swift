@@ -102,10 +102,10 @@ extension Array where Element == CGFloat {
 
 
 public class PassThroughView: UIView {
-//    override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//         let view = super.hitTest(point, with: event)
-//         return view == self ? nil : view
-//     }
+    override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+         let view = super.hitTest(point, with: event)
+         return view == self ? nil : view
+     }
 }
 
 

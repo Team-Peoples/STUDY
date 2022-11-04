@@ -45,7 +45,7 @@ class ToDoItemTableViewCell: UITableViewCell {
        
         let v = UITextView()
         
-        v.font = .systemFont(ofSize: 14)
+        v.font = .systemFont(ofSize: 15)
         v.text = placeholder
         v.textColor = .appColor(.ppsGray1)
         v.isScrollEnabled = false
@@ -74,7 +74,7 @@ class ToDoItemTableViewCell: UITableViewCell {
             make.top.leading.equalTo(contentView)
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
-        todoTextView.anchor(top: contentView.topAnchor, topConstant: -6, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
+        todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
     }
     
     required init?(coder: NSCoder) {
@@ -83,6 +83,7 @@ class ToDoItemTableViewCell: UITableViewCell {
     
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
+        endEditing(true)
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class ToDoCollectionViewCell: UICollectionViewCell {
-//    70자 제한, 테이블뷰 셀 높이 동적할당, 텍스트뷰 입력위해 터치 시 모달 올리면서 키보드 올리기, 키보드 올라올 때 바텀 제약, 수정코자하는 셀이 중간보다 아래에 있을 때 클릭시 자동으로 키보드 바로 위로 오게, 텍스트뷰 약간 올려야할듯
+//    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
     var todo = ["할일","할일2","할일3","할일4","할일5","할일6","할일7","할일8"]
     var isdone = [false,true,false,true,false,true,false,true]
     
