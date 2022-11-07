@@ -1043,18 +1043,9 @@ class SwitchableViewController: UIViewController {
 
             dropdownHeight.isActive = false
             dropdownHeightZero.isActive = true
-            
             createStudyButton.isHidden = true
-                        
-            if let tabBarView = tabBarController?.view {
-                UIView.animate(withDuration: 0.3, delay: 0) {
-                    tabBarView.layoutIfNeeded()
-                }
-            } else {
-                UIView.animate(withDuration: 0.3, delay: 0) {
-                    self.view.layoutIfNeeded()
-                }
-            }
+            
+            animateDropdown()
         }
     }
     
