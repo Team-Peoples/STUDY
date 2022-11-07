@@ -93,7 +93,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
     }
     
     @objc func tapped() {
-        
+        print(#function)
     }
     
     private func configureButtons() {
