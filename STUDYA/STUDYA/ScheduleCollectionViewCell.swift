@@ -18,7 +18,12 @@ struct Studyschedule {
 
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    let studySchedules: [Studyschedule] = [Studyschedule(),Studyschedule(),Studyschedule()]
+    let studySchedules: [Studyschedule] = []
+    lazy var studyScheduleEmptyLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "일정이 없어요 😴"
+        return lbl
+    }()
     
     private let scheduleTableView = ScheduleTableView()
     
@@ -38,6 +43,24 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    func reloadTableView() {
+        print(#function)
+        scheduleTableView.reloadData()
+    }
+    
+    func checkScheduleIsEmpty() {
+        print(#function)
+        if studySchedules.count == 0 {
+            scheduleTableView.addSubview(studyScheduleEmptyLabel)
+            studyScheduleEmptyLabel.snp.makeConstraints { make in
+                make.centerX.equalTo(scheduleTableView)
+                make.top.equalTo(scheduleTableView).inset(100)
+            }
+        } else {
+            studyScheduleEmptyLabel.removeFromSuperview()
+        }
     }
 }
 

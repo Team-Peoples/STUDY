@@ -72,6 +72,15 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                     make.centerX.equalTo(rightTabButton)
                 }
                 contentView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
+                
+                /// 탭을 눌렀을떄 스터디일정이 몇개 있는지 확인하고 화면구성
+                /// 근데 맨처음에는 실행되지않음.
+                /// cellForRowAt에서 코드 추가해주어서 해결.
+                let cell = contentView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+                
+                cell?.reloadTableView()
+                cell?.checkScheduleIsEmpty()
+                
             default:
                 return
         }
@@ -227,6 +236,8 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
                 
             case 1:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
+                cell.reloadTableView()
+                cell.checkScheduleIsEmpty()
                 return cell
             default: break
         }
@@ -236,6 +247,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
 }
 
 extension CalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size
     }
