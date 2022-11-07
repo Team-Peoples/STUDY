@@ -6,65 +6,41 @@
 //
 
 import UIKit
-
-final class MainViewController: UIViewController {
+//🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isAdmin 값 didset에서 수정하도록
+final class MainViewController: SwitchableViewController {
     // MARK: - Properties
 
-    private var myStudies: [Study] = [
-        Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "마", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-        Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)]
-    private var currentStudy: Study? = Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
-    private var willDropDown = false
-    private var isAdmin = true
     private var willSpreadUp = false
 
-    private let notificationBtn = UIButton(type: .custom)
-    private let dropdownButton = UIButton(type: .system)
-    private lazy var dropdownDimmingView: UIView = {
-
-        let v = UIView()
-
-        v.isUserInteractionEnabled = true
-        let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownDimmingViewDidTapped))
-        v.addGestureRecognizer(recog)
-        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        v.isHidden = true
-
-        return v
+    private lazy var notificationBtn: UIButton = {
+        
+        let n = UIButton(frame: .zero)
+        
+        n.setImage(UIImage(named: "noti"), for: .normal)
+        n.setTitleColor(.black, for: .normal)
+        n.addTarget(self, action: #selector(notificationButtonDidTapped), for: .touchUpInside)
+        n.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
+        
+        return n
     }()
-    private lazy var dropdownContainerView = UIView()
-    private lazy var dropdownTableView: UITableView = {
-
+    private lazy var mainTableView: UITableView = {
+        
         let t = UITableView()
-
+        
         t.delegate = self
         t.dataSource = self
-        t.separatorColor = UIColor.appColor(.ppsGray3)
-        t.bounces = false
-        t.showsVerticalScrollIndicator = false
-        t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
-
+        
+        t.register(MainFirstAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFirstAnnouncementTableViewCell.identifier)
+        t.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
+        t.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
+        t.register(MainFourthManagementTableViewCell.self, forCellReuseIdentifier: MainFourthManagementTableViewCell.identifier)
+        
+        t.separatorStyle = .none
+        t.backgroundColor = UIColor.appColor(.background)
+        t.isScrollEnabled = false
+        
         return t
     }()
-    private lazy var createStudyButton: UIButton = {
-
-        let b = UIButton()
-
-        b.backgroundColor = UIColor.appColor(.brandMilky)
-        b.setImage(UIImage(named: "plusCircleFill"), for: .normal)
-        b.setTitle("   스터디 만들기", for: .normal)
-        b.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
-        b.isHidden = true
-
-        return b
-    }()
-    private lazy var masterSwitch = BrandSwitch()
-    private lazy var mainTableView = UITableView()
     private lazy var spreadUpContainerView = UIView()
     private lazy var spreadUpTableView: UITableView = {
 
@@ -115,73 +91,28 @@ final class MainViewController: UIViewController {
 
         return v
     }()
-    
-//    스터디 한두개일 때의 높이도 고려해야
-    private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
-    private lazy var dropdownHeightMax = dropdownContainerView.heightAnchor.constraint(equalToConstant: 250)
 
     // MARK: - Life Cycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureNavigationItem()
-        configureView()
-    }
     
-    private func configureView(){
+    override func viewDidLoad() {
         
-        if myStudies.isEmpty {
-            view.backgroundColor = .systemBackground
-            configureViewWhenNoStudy()
-        } else {
-            configureViewWhenStudyExist()
-        }
+//        📣네트워킹으로 myStudyList 넣어주기
+        
+        myStudyList = [
+            Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
+        ]
+        
+        view.backgroundColor = myStudyList.isEmpty ? .systemBackground : .appColor(.background2)
+        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
+        
+        super.viewDidLoad()
     }
     
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         print(#function)
-    }
-
-    @objc private func dropdownButtonDidTapped() {
-        notificationBtn.isHidden.toggle()
-        masterSwitch.isHidden.toggle()
-        dropdownButton.isSelected.toggle()
-        dropdownDimmingView.isHidden.toggle()
-        toggleDropdown()
-    }
-    
-    @objc private func switchDidTapped(sender: BrandSwitch) {
-        notificationBtn.isHidden.toggle()
-        dropdownButton.isHidden.toggle()
-        floatingButtonContainerView.isHidden.toggle()
-        
-        if sender.isOn {
-            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        } else {
-            navigationController?.navigationBar.backgroundColor = .systemBackground
-            navigationController?.navigationBar.tintColor = .black
-            navigationController?.navigationBar.backgroundColor = .appColor(.background2)
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
-            
-            dropdownDimmingView.isHidden = true
-            floatingButton.isSelected = false
-        }
-    }
-    
-    @objc private func dropdownDimmingViewDidTapped() {
-        notificationBtn.isHidden.toggle()
-        masterSwitch.isHidden.toggle()
-        dropdownButton.isSelected.toggle()
-        toggleDropdown()
-        dropdownDimmingView.isHidden.toggle()
-    }
-    
-    @objc private func createStudyButtonDidTapped() {
-        let creatingStudyVC = CreatingStudyViewController()
-        navigationController?.pushViewController(creatingStudyVC, animated: true)
     }
     
     @objc private func floatingButtonDidTapped() {
@@ -191,96 +122,36 @@ final class MainViewController: UIViewController {
         toggleSpreadUp()
     }
     
-    private func toggleDropdown() {
-        
-        willDropDown.toggle()
-        
-        var indexPaths = [IndexPath]()
-        var row = 0
-        
-        while row < myStudies.count {
-            let indexPath = IndexPath(row: row, section: 0)
-            indexPaths.append(indexPath)
-            row += 1
-        }
-        
-        if willDropDown {
-            
-            dropdownHeightZero.isActive = false
-            dropdownHeightMax.isActive = true
-            
-            dropdownTableView.insertRows(at: indexPaths, with: .top)
-            
-            createStudyButton.isHidden = false
-            createStudyButton.setHeight(50)
-            
-            dropdownContainerView.layer.cornerRadius = 24
-            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
-            dropdownContainerView.clipsToBounds = true
-            
-            UIView.animate(withDuration: 0.3, delay: 0) {
-                self.view.layoutIfNeeded()
-            }
-            
-        } else {
-            
-            dropdownTableView.deleteRows(at: indexPaths, with: .top)
-            
-            dropdownHeightMax.isActive = false
-            dropdownHeightZero.isActive = true
-            
-            createStudyButton.isHidden = true
-            
-            UIView.animate(withDuration: 0.3, delay: 0) {
-                self.view.layoutIfNeeded()
-            }
-        }
+    override func dropdownButtonDidTapped() {
+        super.dropdownButtonDidTapped()
+        notificationBtn.isHidden.toggle()
     }
+    
+    override func toggleNavigationBarBy(sender: BrandSwitch) {
+        super.toggleNavigationBarBy(sender: sender)
+        
+        notificationBtn.isHidden.toggle()
+        floatingButtonContainerView.isHidden.toggle()
+        
+        guard !sender.isOn else { return }
+        floatingButton.isSelected = false
+    }
+    
     
     private func toggleSpreadUp() {
         
-        willSpreadUp.toggle()
-
         let indexPaths = [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0), IndexPath(row: 2, section: 0)]
-
-        if willSpreadUp {
-            spreadUpTableView.insertRows(at: indexPaths, with: .top)
-        } else {
-            spreadUpTableView.deleteRows(at: indexPaths, with: .top)
-        }
+        
+        willSpreadUp.toggle()
+        willSpreadUp ? spreadUpTableView.insertRows(at: indexPaths, with: .top) : spreadUpTableView.deleteRows(at: indexPaths, with: .top)
     }
     
-    
-    private func configureNavigationItem() {
-        notificationBtn.setImage(UIImage(named: "noti"), for: .normal)
-        notificationBtn.setTitleColor(.black, for: .normal)
-        notificationBtn.addTarget(self, action: #selector(notificationButtonDidTapped), for: .touchUpInside)
-        notificationBtn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
+    override func configureNavigationItem() {
         
-        guard let dropdownTitle = myStudies.first?.title else { return }
+        guard !myStudyList.isEmpty else { navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]; return }
         
-        dropdownButton.setTitle("\(dropdownTitle)  ", for: .normal)
-        dropdownButton.setTitleColor(.appColor(.ppsGray1), for: .normal)
-        dropdownButton.setTitleColor(.appColor(.ppsGray1), for: .selected)
-        dropdownButton.tintColor = .appColor(.background2)
-        dropdownButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
-        dropdownButton.setImage(UIImage(named: "dropDown")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .normal)
-        dropdownButton.setImage(UIImage(named: "dropUp")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .selected)
-        dropdownButton.semanticContentAttribute = .forceRightToLeft
-        dropdownButton.addTarget(self, action: #selector(dropdownButtonDidTapped), for: .touchUpInside)
-        
+        super.configureNavigationItem()
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn), UIBarButtonItem(customView: dropdownButton)]
-        
-        configureNavWhenIsAdmin()
-    }
-    
-    private func configureNavWhenIsAdmin() {
-        if isAdmin {
-            navigationItem.title = "관리자 모드"
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
-            masterSwitch.addTarget(self, action: #selector(switchDidTapped), for: .valueChanged)
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        }
     }
     
     private func configureViewWhenNoStudy() {
@@ -314,102 +185,63 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func configureViewWhenStudyExist() {
-        
-        view.backgroundColor = UIColor.appColor(.background2)
-//        mainTableView setting
-        mainTableView.delegate = self
-        mainTableView.dataSource = self
-        
-        mainTableView.register(MainFirstAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFirstAnnouncementTableViewCell.identifier)
-        mainTableView.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
-        mainTableView.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
-        mainTableView.register(MainFourthManagementTableViewCell.self, forCellReuseIdentifier: MainFourthManagementTableViewCell.identifier)
-        
-        mainTableView.separatorStyle = .none
-        mainTableView.backgroundColor = UIColor.appColor(.background)
-        mainTableView.isScrollEnabled = false
-        
-//        mainTableView configure
+    private func configureViewWhenYesStudy() {
         view.addSubview(mainTableView)
         mainTableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        view.addSubview(dropdownDimmingView)
-        dropdownDimmingView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+        guard isAdmin else { return }
         
-//        dropdownContainer configure
-        view.addSubview(dropdownContainerView)
-        dropdownContainerView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.trailing.equalTo(view).inset(9)
-        }
-        dropdownHeightMax.isActive = false
-        dropdownHeightZero.isActive = true
-        
-        dropdownContainerView.addSubview(dropdownTableView)
-        dropdownContainerView.addSubview(createStudyButton)
-        
-        dropdownTableView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(dropdownContainerView)
-            make.bottom.equalTo(createStudyButton.snp.top)
-        }
-        
-        createStudyButton.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(dropdownContainerView)
-        }
-        
-        configureViewWhenIsAdmin()
+        configureFloatingButton()
+        configureSpreadUp()
     }
     
-    private func configureViewWhenIsAdmin() {
-        if isAdmin {
-            
-            floatingButtonContainerView.isHidden = true
-            
-            spreadUpContainerView.backgroundColor = .clear
-            spreadUpContainerView.isHidden = true
-            
-            tabBarController!.view.addSubview(spreadUpDimmingView)
-            tabBarController!.view.addSubview(floatingButtonContainerView)
-            tabBarController!.view.addSubview(spreadUpContainerView)
-            floatingButtonContainerView.addSubview(floatingButton)
-            spreadUpContainerView.addSubview(spreadUpTableView)
-            
-            spreadUpDimmingView.snp.makeConstraints { make in
-                make.edges.equalTo(tabBarController!.view)
-            }
-            floatingButtonContainerView.snp.makeConstraints { make in
-                make.trailing.equalTo(tabBarController!.view).inset(10)
-                make.bottom.equalTo(tabBarController!.tabBar.snp.top).offset(-20)
-                make.width.height.equalTo(50)
-            }
-            floatingButton.frame.origin = CGPoint(x: 0, y: 0)
-            floatingButton.frame.origin = floatingButton.bounds.origin
-            
-            spreadUpContainerView.anchor(bottom: floatingButtonContainerView.topAnchor, trailing: floatingButtonContainerView.trailingAnchor, width: 142, height: 186)
-            spreadUpTableView.snp.makeConstraints { make in
-                make.edges.equalTo(spreadUpContainerView)
-            }
+    private func configureFloatingButton() {
+        floatingButtonContainerView.isHidden = true
+        tabBarController!.view.addSubview(floatingButtonContainerView)
+        floatingButtonContainerView.addSubview(floatingButton)
+        floatingButtonContainerView.snp.makeConstraints { make in
+            make.trailing.equalTo(tabBarController!.view).inset(10)
+            make.bottom.equalTo(tabBarController!.tabBar.snp.top).offset(-20)
+            make.width.height.equalTo(50)
+        }
+        floatingButton.frame.origin = CGPoint(x: 0, y: 0)
+        floatingButton.frame.origin = floatingButton.bounds.origin
+    }
+    
+    private func configureSpreadUp() {
+        spreadUpContainerView.backgroundColor = .clear
+        spreadUpContainerView.isHidden = true
+        
+        tabBarController!.view.addSubview(spreadUpDimmingView)
+        tabBarController!.view.addSubview(spreadUpContainerView)
+        
+        spreadUpContainerView.addSubview(spreadUpTableView)
+        
+        spreadUpDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(tabBarController!.view)
+        }
+        
+        spreadUpContainerView.anchor(bottom: floatingButtonContainerView.topAnchor, trailing: floatingButtonContainerView.trailingAnchor, width: 142, height: 186)
+        spreadUpTableView.snp.makeConstraints { make in
+            make.edges.equalTo(spreadUpContainerView)
         }
     }
 }
 
-extension MainViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension MainViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
         case mainTableView: return 4
-        case dropdownTableView: return willDropDown ? myStudies.count : 0
+        case dropdownTableView: return willDropDown ? myStudyList.count : 0
         case spreadUpTableView: return willSpreadUp ? 3 : 0
         default: return 0
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case mainTableView:
             switch indexPath.row {
@@ -437,25 +269,26 @@ extension MainViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
             
-            if currentStudyID == myStudies[indexPath.row].id {
+            if currentStudyID == myStudyList[indexPath.row].id {
                 cell.backgroundColor = UIColor(red: 247/255, green: 246/255, blue: 249/255, alpha: 1)
             }
             
-            cell.title = myStudies[indexPath.row].title!
+            cell.title = myStudyList[indexPath.row].title!
             
             return cell
             
         case spreadUpTableView:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSpreadUpTableViewCell.identifier) as! MainSpreadUpTableViewCell
             cell.cellNumber = indexPath.row + 1
+            
             return cell
         default: return UITableViewCell()
         }
     }
 }
 
-extension MainViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+extension MainViewController {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case mainTableView:
             switch indexPath.row {
@@ -476,10 +309,5 @@ extension MainViewController: UITableViewDelegate {
             return 62
         default: return 0
         }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(#function)
-        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
