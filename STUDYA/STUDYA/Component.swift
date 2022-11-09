@@ -411,19 +411,38 @@ class SimpleAlert: UIAlertController {
     }
 }
 
-class ProfileImageSelectorView: UIImageView {
+class ProfileImageSelectorView: UIView {
+    let imageView = UIImageView(frame: .zero)
+    private lazy var adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     
-    init(size: CGFloat) {
+    init(size: CGFloat, image: UIImage? = nil, isAdmin: Bool = true) {
         super.init(frame: .zero)
         
-        image = UIImage(named: "defaultProfile")
-        configureBorder(color: .keyColor3, width: 2, radius: size / 2)
+        let radius = size / 2
         
-        clipsToBounds = true
+        imageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
+        imageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
+        
+        addSubview(imageView)
+        imageView.centerXY(inView: self)
+        imageView.setDimensions(height: size, width: size)
+        
+        
+        clipsToBounds = false
         isUserInteractionEnabled = true
         contentMode = .scaleAspectFill
+        configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
         
-        setDimensions(height: size, width: size)
+        setDimensions(height: size + 4, width: size + 4)
+        
+        guard isAdmin else { return }
+        
+        addSubview(adminMark)
+        adminMark.snp.makeConstraints { make in
+            make.top.leading.equalTo(self).inset(2)
+        }
     }
     
     required init?(coder: NSCoder) {
