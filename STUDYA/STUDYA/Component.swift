@@ -411,16 +411,44 @@ class SimpleAlert: UIAlertController {
     }
 }
 
+
 class ProfileImageSelectorView: UIView {
-    let imageView = UIImageView(frame: .zero)
-    private lazy var adminMark = UIImageView(image: UIImage(named: "adminMark")!)
+
+    private let backgroundView = UIView(frame: .zero)
+    private let imageView = UIImageView(frame: .zero)
     
-    init(size: CGFloat, image: UIImage? = nil, isAdmin: Bool = true) {
+    init(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         super.init(frame: .zero)
         
         let radius = size / 2
         
-        imageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+        backgroundView.clipsToBounds = true
+        addSubview(backgroundView)
+        backgroundView.centerXY(inView: self)
+        
+        configureInternalImageView(image, radius, size)
+        
+        if isManager {
+            backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
+            backgroundView.setDimensions(height: size + 4, width: size + 4)
+            configureAdminMark()
+            
+        } else {
+            backgroundView.backgroundColor = .systemBackground
+            backgroundView.setDimensions(height: size + 2, width: size + 2)
+        }
+        
+        guard let role = role else { return }
+        
+        configureRoleView(role)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
+        configure(image: image)
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
@@ -428,27 +456,39 @@ class ProfileImageSelectorView: UIView {
         addSubview(imageView)
         imageView.centerXY(inView: self)
         imageView.setDimensions(height: size, width: size)
-        
-        
-        clipsToBounds = false
-        isUserInteractionEnabled = true
-        contentMode = .scaleAspectFill
-        configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
-        
-        setDimensions(height: size + 4, width: size + 4)
-        
-        guard isAdmin else { return }
+    }
+    
+    internal func configure(image: UIImage?) {
+        imageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+    }
+    
+    private func configureAdminMark() {
+        let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
         
         addSubview(adminMark)
         adminMark.snp.makeConstraints { make in
-            make.top.leading.equalTo(self).inset(2)
+            make.top.leading.equalTo(backgroundView)
         }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func configureRoleView(_ role: String) {
+        let roleMark = UIButton(frame: .zero)
+        
+        roleMark.isUserInteractionEnabled = false
+        roleMark.backgroundColor = .systemBackground
+        roleMark.setTitle(role, for: .normal)
+        roleMark.setTitleColor(.black, for: .normal)
+        roleMark.titleLabel?.font = .boldSystemFont(ofSize: 10)
+        roleMark.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 0, blur: 4, spread: 0)
+        roleMark.layer.cornerRadius = 10
+        roleMark.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        
+        addSubview(roleMark)
+        
+        roleMark.anchor(bottom: backgroundView.bottomAnchor, bottomConstant: -6, trailing: backgroundView.trailingAnchor, height: 20)
     }
 }
+
 
 class PlusCircleFillView: UIImageView {
     
