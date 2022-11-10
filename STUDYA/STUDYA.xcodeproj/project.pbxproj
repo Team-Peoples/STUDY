@@ -35,6 +35,8 @@
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
+		D34E4F5C291D3F6E00958557 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E4F5B291D3F6E00958557 /* Protocol.swift */; };
+		D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E4F5D291D3F9A00958557 /* MemberViewController.swift */; };
 		D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D8A4729081974004AF8E9 /* TabBarViewController.swift */; };
 		D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
@@ -94,6 +96,8 @@
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
+		D34E4F5B291D3F6E00958557 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
+		D34E4F5D291D3F9A00958557 /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
 		D37D8A4729081974004AF8E9 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDropDownTableViewCell.swift; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
@@ -159,6 +163,7 @@
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72EECECA28C9A56500A23C27 /* Model.swift */,
+				D34E4F5B291D3F6E00958557 /* Protocol.swift */,
 				72ED25C42897FCFC00031AD1 /* FormViewModel.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3BF053528BF901700AF7D3B /* Formatter.swift */,
@@ -188,6 +193,7 @@
 				D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
+				D34E4F5D291D3F9A00958557 /* MemberViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */,
 				7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */,
@@ -375,7 +381,9 @@
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
+				D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */,
 				D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */,
+				D34E4F5C291D3F6E00958557 /* Protocol.swift in Sources */,
 				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,

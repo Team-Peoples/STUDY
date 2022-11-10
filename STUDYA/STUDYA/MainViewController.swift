@@ -259,6 +259,7 @@ extension MainViewController {
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
+                cell.delegate = self
                 
                 return cell
             default:
@@ -309,5 +310,11 @@ extension MainViewController {
             return 62
         default: return 0
         }
+    }
+}
+
+extension MainViewController: Navigatable {
+    func push(vc: UIViewController) {
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
