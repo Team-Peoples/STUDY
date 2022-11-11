@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
-		721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */; };
+		721D8A4728A39F4C00829A2B /* CreatingStudyBasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyBasicInfoViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
@@ -68,7 +68,7 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
-		721D8A4628A39F4C00829A2B /* CreatingStudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyViewController.swift; sourceTree = "<group>"; };
+		721D8A4628A39F4C00829A2B /* CreatingStudyBasicInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyBasicInfoViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
@@ -400,7 +400,7 @@
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
-				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
+				721D8A4728A39F4C00829A2B /* CreatingStudyBasicInfoViewController.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
