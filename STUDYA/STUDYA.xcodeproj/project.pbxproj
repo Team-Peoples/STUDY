@@ -382,6 +382,7 @@
 				D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				72B5BE4D28D0A08C000137CD /* CreatingStudyCompleteViewController.swift in Sources */,
+				72E2BED5291CD50C009BCCB7 /* StudyBasicInfoEditViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,

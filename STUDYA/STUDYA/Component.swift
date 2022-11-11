@@ -26,7 +26,7 @@ final class CustomButton: UIButton {
     
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
-        configure(title: "다음", isBold: true, isFill: true, size: 18, height: 50)
+        configure(title: "완료", isBold: true, isFill: true, size: 18, height: 50)
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
@@ -831,7 +831,8 @@ class SwitchableViewController: UIViewController {
                 dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
             }
             print(dropdownHeight)
-            currentStudy = myStudyList[0]
+            /// 스터디가 없을때는 안되지않나
+//            currentStudy = myStudyList[0]
         }
     }
     var currentStudy: Study?
@@ -884,6 +885,7 @@ class SwitchableViewController: UIViewController {
         b.titleLabel?.font = .boldSystemFont(ofSize: 16)
         b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         b.isHidden = true
+        b.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
         
         return b
     }()
@@ -923,8 +925,9 @@ class SwitchableViewController: UIViewController {
     }
     
     @objc func createStudyButtonDidTapped() {
-        let creatingStudyVC = CreatingStudyViewController()
-        navigationController?.pushViewController(creatingStudyVC, animated: true)
+        dropdownButtonDidTapped()
+        let creatingStudyBasicInfoVC = CreatingStudyBasicInfoViewController()
+        navigationController?.pushViewController(creatingStudyBasicInfoVC, animated: true)
     }
     
     func configureNavigationItem() {
