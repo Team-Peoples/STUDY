@@ -260,6 +260,17 @@ extension MainViewController {
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
                 
+                    cell.informationButtonAction = {
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                    
+//                    cell.announcementButtonAction = {
+//                        let vc = AnnouncementBoardViewController()
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    }
+                    
                 return cell
             default:
                 return UITableViewCell()
