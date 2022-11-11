@@ -415,28 +415,36 @@ class SimpleAlert: UIAlertController {
 class ProfileImageSelectorView: UIView {
 
     private let backgroundView = UIView(frame: .zero)
-    private let imageView = UIImageView(frame: .zero)
+    private let internalImageView = UIImageView(frame: .zero)
+    private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
+    private let roleMark = UIButton(frame: .zero)
+    
+    
     
     init(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         super.init(frame: .zero)
+        addSubviews()
+        
+        backgroundView.clipsToBounds = true
+        backgroundView.centerXY(inView: self)
+        configure(size: size, image: image, isManager: isManager, role: role)
+        
+        hideMarks()
+    }
+    
+    private func addSubviews() {
+        addSubview(backgroundView)
+        addSubview(internalImageView)
+        addSubview(adminMark)
+        addSubview(roleMark)
+    }
+    
+    internal func configure(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         
         let radius = size / 2
         
-        backgroundView.clipsToBounds = true
-        addSubview(backgroundView)
-        backgroundView.centerXY(inView: self)
-        
         configureInternalImageView(image, radius, size)
-        
-        if isManager {
-            backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
-            backgroundView.setDimensions(height: size + 4, width: size + 4)
-            configureAdminMark()
-            
-        } else {
-            backgroundView.backgroundColor = .systemBackground
-            backgroundView.setDimensions(height: size + 2, width: size + 2)
-        }
+        configureLargerCirlcle(isManager, radius, size)
         
         guard let role = role else { return }
         
@@ -446,34 +454,44 @@ class ProfileImageSelectorView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
-        configure(image: image)
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
-        imageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
         
-        addSubview(imageView)
-        imageView.centerXY(inView: self)
-        imageView.setDimensions(height: size, width: size)
+    private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
+        configure(image)
+        internalImageView.clipsToBounds = true
+        internalImageView.contentMode = .scaleAspectFill
+        internalImageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
+        
+        internalImageView.centerXY(inView: self)
+        internalImageView.setDimensions(height: size, width: size)
     }
     
-    internal func configure(image: UIImage?) {
-        imageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+    
+    internal func configure(_ image: UIImage?) {
+        internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+    }
+
+    
+    private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
+        if isManager {
+            
+            backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
+            backgroundView.setDimensions(height: size + 4, width: size + 4)
+            configureAdminMark()
+
+        } else {
+            backgroundView.setDimensions(height: size + 2, width: size + 2)
+        }
     }
     
     private func configureAdminMark() {
-        let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
-        
-        addSubview(adminMark)
+        adminMark.isHidden = false
         adminMark.snp.makeConstraints { make in
             make.top.leading.equalTo(backgroundView)
         }
     }
     
     private func configureRoleView(_ role: String) {
-        let roleMark = UIButton(frame: .zero)
-        
+        roleMark.isHidden = false
         roleMark.isUserInteractionEnabled = false
         roleMark.backgroundColor = .systemBackground
         roleMark.setTitle(role, for: .normal)
@@ -483,9 +501,12 @@ class ProfileImageSelectorView: UIView {
         roleMark.layer.cornerRadius = 10
         roleMark.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         
-        addSubview(roleMark)
-        
         roleMark.anchor(bottom: backgroundView.bottomAnchor, bottomConstant: -6, trailing: backgroundView.trailingAnchor, height: 20)
+    }
+    
+    internal func hideMarks() {
+        adminMark.isHidden = true
+        roleMark.isHidden = true
     }
 }
 
