@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import UBottomSheet
 
 @available(iOS 16.0, *)
 class CalendarViewController: UIViewController {
@@ -30,6 +29,7 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         
         self.dataSource = MyBottomSheetDataSource()
+        title = "나의 캘린더"
         
         configureViews()
         setConstraints()
@@ -60,7 +60,7 @@ class CalendarViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
+
     // MARK: - Configure
     
     private func configureViews() {

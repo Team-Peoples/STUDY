@@ -7,14 +7,13 @@
 
 import UIKit
 
-import UBottomSheet
 import SnapKit
 
 class CalendarBottomSheetViewController: UIViewController, Draggable {
     // MARK: - Properties
     
-    weak var sheetCoordinator: UBottomSheetCoordinator?
-    weak var dataSource: UBottomSheetCoordinatorDataSource?
+    internal weak var sheetCoordinator: UBottomSheetCoordinator?
+    internal weak var dataSource: UBottomSheetCoordinatorDataSource?
     
     private let style = lineTabStyle()
     
@@ -38,7 +37,6 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     private lazy var rightTabButton: UIButton = tabButton(title: "일정")
     
     // MARK: - Life Cycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -141,11 +139,11 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
             make.height.equalTo(style.heightOfTopScrollView)
         }
     }
-  
+    
     private func addContentView() {
         
         view.addSubview(contentView)
-    
+        
         contentView.isPagingEnabled = true
         
         contentView.delegate = self
@@ -232,6 +230,9 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
         switch indexPath.item {
             case 0:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
+                
+                cell.heightDelegate = self
+                
                 return cell
                 
             case 1:
@@ -254,7 +255,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout 
 }
 
 struct lineTabStyle {
-
+    
     var heightOfTopScrollView: CGFloat = 35
     var heightOfUnderLine: CGFloat = 6
     

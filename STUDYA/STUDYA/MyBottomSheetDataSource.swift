@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UBottomSheet
 
 class MyBottomSheetDataSource: UBottomSheetCoordinatorDataSource {
     func sheetPositions(_ availableHeight: CGFloat) -> [CGFloat] {
