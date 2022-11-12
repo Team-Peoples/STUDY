@@ -13,7 +13,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     var todo = ["할일","할일2","할일3","할일4","할일5","할일6","할일7","할일8"]
     var isdone = [false,true,false,true,false,true,false,true]
     
-    weak var heightDelegate: CalendarBottomSheetViewController?
+    weak var heightDelegate: UBottomSheetCoordinator?
     
     let tableView: UITableView = {
        

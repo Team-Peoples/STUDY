@@ -11,7 +11,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "MemberCollectionViewCell"
 
-    var member: Member? {
+    internal var member: Member? {
         didSet {
             
             profileView.configure(size: 72, image: member?.profileImage, isManager: member?.isManager ?? false, role: member?.role)
@@ -19,14 +19,28 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private lazy var profileView = ProfileImageSelectorView(size: 72)
+    internal weak var heightDelegate: UBottomSheetCoordinator?
+    
+    private lazy var profileView: ProfileImageSelectorView = {
+       
+        let p = ProfileImageSelectorView(size: 72)
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileViewTapped))
+        p.addGestureRecognizer(recognizer)
+        
+        return p
+    }()
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 12, isBold: true)
+    private let button = UIButton(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        button.addTarget(self, action: #selector(profileViewTapped), for: .touchUpInside)
+        
         contentView.addSubview(profileView)
         contentView.addSubview(nickNameLabel)
+        contentView.addSubview(button)
         
         profileView.snp.makeConstraints { make in
             make.top.equalTo(contentView).inset(40)
@@ -35,6 +49,10 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         nickNameLabel.snp.makeConstraints { make in
             make.bottom.equalTo(contentView.snp.bottom).inset(10)
             make.centerX.equalTo(contentView)
+        }
+        button.snp.makeConstraints { make in
+            make.leading.top.trailing.equalTo(contentView)
+            make.bottom.equalTo(contentView.snp.bottom).inset(30)
         }
     }
     
@@ -46,5 +64,10 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         profileView.hideMarks()
+    }
+    
+    @objc private func profileViewTapped() {
+        print(#function)
+        heightDelegate?.setPosition(UIScreen.main.bounds.height * 0.6, animated: true)
     }
 }

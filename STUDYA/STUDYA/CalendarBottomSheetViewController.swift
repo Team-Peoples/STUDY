@@ -231,7 +231,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
             case 0:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
                 
-                cell.heightDelegate = self
+                cell.heightDelegate = sheetCoordinator
                 
                 return cell
                 
@@ -267,4 +267,3 @@ struct lineTabStyle {
     
     var topScrollViewBackgroundColor: UIColor = .white
 }
-

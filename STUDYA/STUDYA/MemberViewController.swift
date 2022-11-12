@@ -41,11 +41,15 @@ final class MemberViewController: UIViewController {
     let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     
+    var sheetCoordinator: UBottomSheetCoordinator!
+    var dataSource: UBottomSheetCoordinatorDataSource?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         configureCollectionView()
+        dataSource = MemberBottomSheetDataSource()
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -60,6 +64,30 @@ final class MemberViewController: UIViewController {
         }
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        guard sheetCoordinator == nil else { return }
+        
+        sheetCoordinator = UBottomSheetCoordinator(parent: self, delegate: self)
+        
+        if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
+        
+        let vc = MemberBottomSheetViewController()
+        
+        vc.sheetCoordinator = sheetCoordinator
+        
+        sheetCoordinator.addSheet(vc, to: self, didContainerCreate: { container in
+            let frame = self.view.frame
+            let rect = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
+            
+            container.roundCorners(corners: [.topLeft, .topRight], radius: 10, rect: rect)
+            container.layer.shadowColor = UIColor.appColor(.background).cgColor
+        })
+        
+        sheetCoordinator.setCornerRadius(10)
+    }
+    
     private func configureCollectionView() {
         
         flowLayout.itemSize = CGSize(width: 96, height: 114)
@@ -70,6 +98,7 @@ final class MemberViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.allowsSelection = false
         
         collectionView.register(InviteMemberCollectionViewCell.self, forCellWithReuseIdentifier: InviteMemberCollectionViewCell.identifier)
         collectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.identifier)
@@ -89,7 +118,9 @@ extension MemberViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
+            
             cell.member = members[indexPath.item - 1]
+            cell.heightDelegate = sheetCoordinator
             
             return cell
         }
@@ -102,6 +133,14 @@ extension MemberViewController: UICollectionViewDelegate {
     }
     
 }
+
+extension MemberViewController: UBottomSheetCoordinatorDelegate {
+    
+    func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
+        self.sheetCoordinator.addDropShadowIfNotExist()
+    }
+}
+
 
 struct Member {
     var nickName: String
