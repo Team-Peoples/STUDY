@@ -1,16 +1,20 @@
 PODS:
+  - MarqueeLabel (4.3.0)
   - naveridlogin-sdk-ios (4.1.5)
 
 DEPENDENCIES:
+  - MarqueeLabel
   - naveridlogin-sdk-ios
 
 SPEC REPOS:
   trunk:
+    - MarqueeLabel
     - naveridlogin-sdk-ios
 
 SPEC CHECKSUMS:
+  MarqueeLabel: 02f5ac8fd6877c94564556cb93fa86c70c08baeb
   naveridlogin-sdk-ios: 4351fe7162cd6b8b6dbb37bd7cc205304fa1d889
 
-PODFILE CHECKSUM: a388e3dec6247afc6f3a8aa1c5ede266d9cc7320
+PODFILE CHECKSUM: 66c9ed8ef177d8845fb67b11be2905f3a3d86b63
 
 COCOAPODS: 1.11.3

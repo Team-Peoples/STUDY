@@ -80,7 +80,6 @@ final class TabBarViewController: UITabBarController {
     }
     
     private func checkIfUserIsLoggedIn() {
-        
         if user == nil {
             presentWelcomeVC()
         } else {

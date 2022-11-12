@@ -145,9 +145,9 @@
                                 <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="CustomButton" customModule="STUDYA" customModuleProvider="target">
-                                <rect key="frame" x="20" y="797.5" width="374" height="34.5"/>
+                                <rect key="frame" x="20" y="690" width="374" height="142"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="plus" title="Button"/>
                                 <connections>
                                     <action selector="doneButtonTapped:" destination="LRo-Cd-Chu" eventType="touchUpInside" id="ocw-2w-ntf"/>
                                 </connections>
@@ -914,6 +914,7 @@
     </scenes>
     <resources>
         <image name="check" width="10" height="12"/>
+        <image name="plus" width="128" height="128"/>
         <namedColor name="background">
             <color red="0.97600001096725464" green="0.97600001096725464" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

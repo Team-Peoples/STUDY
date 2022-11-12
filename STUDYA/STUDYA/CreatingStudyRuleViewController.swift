@@ -38,14 +38,14 @@ class CreatingStudyRuleViewController: UIViewController {
     
     internal var studyRuleViewModel = CreatingStudyRuleViewModel()
     
-    private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true)
     private let subTitleLabel = CustomLabel(title: "스터디 정보에서 언제든지 수정할 수 있어요!", tintColor: .ppsBlack, size: 18)
     private lazy var settingStudyGeneralRuleView: UIView = {
         
         let v = UIView()
         
-        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .ppsBlack, size: 18, isBold: true, isNecessaryTitle: false)
-        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .ppsGray1, size: 16, isBold: false, isNecessaryTitle: false)
+        let titleLabel = CustomLabel(title: "스터디 규칙", tintColor: .ppsBlack, size: 18, isBold: true)
+        let subTitleLabel = CustomLabel(title: "출결&벌금 / 강퇴 조건", tintColor: .ppsGray1, size: 16, isBold: false)
         let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator"))
         
         v.addSubview(titleLabel)
@@ -68,8 +68,8 @@ class CreatingStudyRuleViewController: UIViewController {
         
         let v = UIView()
         
-        let titleLabel = CustomLabel(title: "스터디 진행방식", tintColor: .ppsBlack, size: 18, isBold: true, isNecessaryTitle: false)
-        let subTitleLabel = CustomLabel(title: "자유 형식", tintColor: .ppsGray1, size: 16, isBold: false, isNecessaryTitle: false)
+        let titleLabel = CustomLabel(title: "스터디 진행방식", tintColor: .ppsBlack, size: 18, isBold: true)
+        let subTitleLabel = CustomLabel(title: "자유 형식", tintColor: .ppsGray1, size: 16, isBold: false)
         let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator"))
         
         v.addSubview(titleLabel)

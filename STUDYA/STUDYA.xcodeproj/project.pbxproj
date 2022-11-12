@@ -19,7 +19,6 @@
 		7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */; };
 		7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */; };
 		7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* AnnouncementViewController.swift */; };
-		7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */; };
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
 		7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */; };
 		7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */; };
@@ -40,7 +39,11 @@
 		72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */; };
 		72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */; };
 		72F7CFAF28F83D0500E0D0C0 /* MyBottomSheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */; };
+		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
+		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
+		D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D8A4729081974004AF8E9 /* TabBarViewController.swift */; };
+		D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053528BF901700AF7D3B /* Formatter.swift */; };
@@ -50,6 +53,11 @@
 		D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054B28C3C36700AF7D3B /* Notification.swift */; };
 		D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5D28EDE685009B53B4 /* KeyChain.swift */; };
 		D3C23A6028EDE7A1009B53B4 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5F28EDE7A1009B53B4 /* File.swift */; };
+		D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5F28EDE7A1009B53B4 /* Enum.swift */; };
+		D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */; };
+		D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */; };
+		D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */; };
+		D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */; };
 		D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */; };
 		D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F3F2899211200D4DA18 /* Constraint.swift */; };
 		D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */; };
@@ -76,7 +84,6 @@
 		7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardViewController.swift; sourceTree = "<group>"; };
 		7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardTableViewCell.swift; sourceTree = "<group>"; };
 		7299968328B09B110008A1C1 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
-		7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTableViewController.swift; sourceTree = "<group>"; };
@@ -99,7 +106,11 @@
 		72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBottomSheetDataSource.swift; sourceTree = "<group>"; };
 		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
+		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
+		D37D8A4729081974004AF8E9 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDropDownTableViewCell.swift; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		D3BF054128C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +119,11 @@
 		D3BF054B28C3C36700AF7D3B /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3C23A5D28EDE685009B53B4 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D3C23A5F28EDE7A1009B53B4 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		D3C23A5F28EDE7A1009B53B4 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSecondScheduleTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFirstAnnouncementTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThirdButtonTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFourthManagementTableViewCell.swift; sourceTree = "<group>"; };
 		D3EC2F3D289918B200D4DA18 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		D3EC2F3F2899211200D4DA18 /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSettingViewController.swift; sourceTree = "<group>"; };
@@ -179,8 +195,14 @@
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
-				7299968528BCBEEE0008A1C1 /* TabBarViewController.swift */,
+				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
+				D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */,
+				D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */,
+				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
+				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
+				D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */,
+				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				7299967F28AF54190008A1C1 /* AnnouncementBoardViewController.swift */,
@@ -188,6 +210,7 @@
 				7299968328B09B110008A1C1 /* AnnouncementViewController.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
+				D314A1DA2905190100093C0E /* Extension.swift */,
 				D3BF054B28C3C36700AF7D3B /* Notification.swift */,
 				D3C23A5F28EDE7A1009B53B4 /* File.swift */,
 				72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */,
@@ -197,6 +220,7 @@
 				726FA4622901A352004E49A9 /* ScheduleTableView.swift */,
 				726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */,
 				72F7CFAE28F83D0400E0D0C0 /* MyBottomSheetDataSource.swift */,
+				D3C23A5F28EDE7A1009B53B4 /* Enum.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -355,8 +379,10 @@
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */,
+				D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */,
 				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
-				7299968628BCBEEE0008A1C1 /* TabBarViewController.swift in Sources */,
+				D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */,
+				D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */,
 				7299968828BE44090008A1C1 /* MainViewController.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */,
@@ -364,6 +390,7 @@
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */,
+				D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
@@ -374,19 +401,23 @@
 				72B5BE4D28D0A08C000137CD /* CreatingStudyCompleteViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
+				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
+				D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */,
 				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
+				D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */,
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
+				D314A1DB2905190100093C0E /* Extension.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
-				D3C23A6028EDE7A1009B53B4 /* File.swift in Sources */,
+				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyViewController.swift in Sources */,
 				72F7CFAF28F83D0500E0D0C0 /* MyBottomSheetDataSource.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,

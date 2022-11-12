@@ -10,3 +10,10 @@ import Foundation
 enum Const {
     static let userId = "userId"
 }
+
+enum AttendanceStatus {
+    case attended
+    case late
+    case absent
+    case allowed
+}
