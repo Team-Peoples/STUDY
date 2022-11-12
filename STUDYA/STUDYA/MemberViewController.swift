@@ -59,11 +59,12 @@ final class MemberViewController: UIViewController {
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
     }
-    
+    let vc = MemberBottomSheetViewController()
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -73,7 +74,7 @@ final class MemberViewController: UIViewController {
         
         if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
         
-        let vc = MemberBottomSheetViewController()
+        
         
         vc.sheetCoordinator = sheetCoordinator
         
@@ -120,7 +121,7 @@ extension MemberViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
             
             cell.member = members[indexPath.item - 1]
-            cell.heightDelegate = sheetCoordinator
+            cell.heightDelegate = self
             
             return cell
         }

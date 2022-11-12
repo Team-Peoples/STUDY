@@ -19,7 +19,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal weak var heightDelegate: UBottomSheetCoordinator?
+    internal weak var heightDelegate: MemberViewController?
     
     private lazy var profileView: ProfileImageSelectorView = {
        
@@ -66,8 +66,21 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         profileView.hideMarks()
     }
     
+    var isGoingDown = false
+    
     @objc private func profileViewTapped() {
         print(#function)
-        heightDelegate?.setPosition(UIScreen.main.bounds.height * 0.6, animated: true)
+        if isGoingDown {
+            heightDelegate?.sheetCoordinator.appearTwice(UIScreen.main.bounds.height * 0.99, animated: true, completion: {
+                
+                self.heightDelegate?.sheetCoordinator.setPosition(UIScreen.main.bounds.height * 0.4, animated: true)
+            })
+        } else {
+            
+            heightDelegate?.sheetCoordinator.setPosition(UIScreen.main.bounds.height * 0.6, animated: true)
+        }
+        isGoingDown.toggle()
+ 
+        
     }
 }
