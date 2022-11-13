@@ -11,7 +11,7 @@ import Photos
 
 class ProfileSettingViewController: UIViewController {
     
-    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .ppsBlack, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)

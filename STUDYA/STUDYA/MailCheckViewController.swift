@@ -13,14 +13,14 @@ final class MailCheckViewController: UIViewController {
     var nickName: String?
     var email: String?
     
-    private lazy var helloLabel = CustomLabel(title: "반가워요\n\(nickName ?? "회원")님!😀", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
+    private lazy var helloLabel = CustomLabel(title: "반가워요\n\(nickName ?? "회원")님!😀", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var announceLabel1 = CustomLabel(title: "\(email ?? "메일")로\n인증 안내를 보내드렸어요.", tintColor: .ppsBlack, size: 18)
     private let mailImageView = UIImageView(image: UIImage(named: "mailCheck"))
     private let announceLabel2 = CustomLabel(title: "인증 버튼을 누르면\n가입이 완료돼요.", tintColor: .ppsBlack, size: 18)
     private let retryButton = CustomButton(title: "이메일이 안 왔어요!", isBold: true, isFill: true, size: 20, height: 50)
     private let announceLabel3 = CustomLabel(title: "메일이 오지 않을 경우, 스팸메일함을 확인해주세요.", tintColor: .ppsGray1, size: 12)
     private lazy var alertView = UIView(frame: .zero)
-    private lazy var alertLabel = CustomLabel(title: "인증 메일을 다시 보내드렸어요.", tintColor: .whiteLabel, size: 12, isBold: true, isNecessaryTitle: false)
+    private lazy var alertLabel = CustomLabel(title: "인증 메일을 다시 보내드렸어요.", tintColor: .whiteLabel, size: 12, isBold: true)
     private lazy var alertImage = UIImageView(image: UIImage(named: "emailCheck"))
     private var bottomConst: Constraint?
     

@@ -11,16 +11,13 @@ import UIKit
 
 protocol Requestable: URLRequestConvertible {
     var baseUrl: String { get }
+    var header: RequestHeaders { get }
     var path: String { get }
     var parameters: RequestParameters { get }
 }
 
 let accessToken = "accessToken"
 let refreshToken = "refreshToken"
-let tokenHeaders: HTTPHeaders = [
-    "AccessToken": "Bearer \(accessToken)",
-    "RefreshToken": "Bearer \(refreshToken)"
-]
 
 enum HeaderContentType: String {
     case json = "application/json"
@@ -35,20 +32,19 @@ enum RequestPurpose: Requestable {
     case signIn(UserID, Password) ////4
     case refreshToken ////9
     case createStudy(Study) //11
-    case createNotice(Title, Content, ID) //15
+    case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
     
     //    HTTPMethod: PUT
     case updateUser   //6
-    case updateNotice(Title, Content, ID) //16
-    case updatePinnedNotice(ID, Bool)   //17
+    case updateAnnouncement(Title, Content, ID) //16
+    case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     
-    
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
-    case deleteStudyNotice(Title, Content, ID)  //18
+    case deleteAnnouncement(Title, Content, ID)  //18
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -57,8 +53,8 @@ enum RequestPurpose: Requestable {
     case resendEmail    //8
     case getAllStudy    //12
     case getStudy(ID)  //13
-    case getAllStudyNotices(ID)   //14
-    case getAllSchedule ////19
+    case getAllAnnouncements(ID)   //14
+    case getUserAllStudySchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
 }
@@ -66,6 +62,24 @@ enum RequestPurpose: Requestable {
 extension RequestPurpose {
     var baseUrl: String {
         return "http://13.209.99.229:8082/api/v1"
+    }
+    
+    var header: RequestHeaders {
+        
+        switch self {
+        case .getNewPassord, .getJWTToken:
+            return .none
+        case .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog:
+            return .token
+        case .signUp:
+            return .multipart
+        case .updateUser:
+            return .multipartWithToken
+        case .emailCheck, .signIn, .resendEmail:
+            return .json
+        default:
+            return .jsonWithToken
+        }
     }
     
     var path: String {
@@ -82,7 +96,7 @@ extension RequestPurpose {
             return "/issued"
         case .createStudy:
             return "/study"
-        case .createNotice:
+        case .createAnnouncement:
             return "/noti"
         case .createSchedule:
             return  "/user/schedule"
@@ -90,9 +104,9 @@ extension RequestPurpose {
         //    HTTPMethod: PUT
         case .updateUser:
             return "/user"
-        case .updateNotice:
+        case .updateAnnouncement:
             return "/noti"
-        case .updatePinnedNotice:
+        case .updatePinnedAnnouncement:
             return "/noti/pin"
         case .updateScheduleStatus(let id):
             return "/user/schedule/\(id)"
@@ -102,7 +116,7 @@ extension RequestPurpose {
         //    HTTPMethod: DEL
         case .deleteUser(let id):
             return "/user/\(id)"
-        case .deleteStudyNotice(_,_,let id):
+        case .deleteAnnouncement(_,_,let id):
             return "/noti/\(id)"
             
         //    HTTPMethod: GET
@@ -118,9 +132,9 @@ extension RequestPurpose {
             return "/study"
         case .getStudy(let id):
             return "/study/\(id)"
-        case .getAllStudyNotices(let id):
+        case .getAllAnnouncements(let id):
             return "/noti/\(id)"
-        case .getAllSchedule:
+        case .getUserAllStudySchedule:
             return "/study/schedule"
         case .getUserSchedule:
             return "/user/schedule"
@@ -131,13 +145,13 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createNotice, . createSchedule: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, . createSchedule: return .post
             
-        case .updateUser, .updateNotice, .updatePinnedNotice, .updateScheduleStatus, .updateSchedule: return .put
+        case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule: return .put
             
-        case .deleteUser, .deleteStudyNotice: return .delete
+        case .deleteUser, .deleteAnnouncement: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllStudyNotices, .getAllSchedule, .getUserSchedule, .getStudyLog : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog : return .get
         }
     }
     
@@ -152,24 +166,24 @@ extension RequestPurpose {
                           "password" : pw])
         case .createStudy(let study):
             return .encodableBody(study)
-        case .createNotice(let title, let content, let id):
+        case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
             
 //    HTTPMethod: PUT
-        case .updateNotice(let title, let content, let id):
+        case .updateAnnouncement(let title, let content, let id):
             return .body(["notificationSubject": title,
                           "notificationContents": content,
                           "notificationId": id])
-        case .updatePinnedNotice(let id, let isPinned):
+        case .updatePinnedAnnouncement(let id, let isPinned):
             return .body(["notificationId": id,
                           "pin": isPinned])
         case .updateSchedule(let id):
             return .body(["scheduleId" : id])
             
 //    HTTPMethod: DEL
-        case .deleteStudyNotice(let title, let content, let id):
+        case .deleteAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "notificationId" : id])
@@ -186,23 +200,26 @@ extension RequestPurpose {
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
+        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String ?? ""
+        let accessToken = KeyChain.read(key: userID) ?? ""
+        let refreshToken = KeyChain.read(key: accessToken) ?? ""
+        var headers = HTTPHeaders()
     
-        switch self {
-        case .signUp:
-            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
-            
-        case .refreshToken, .updateScheduleStatus, .deleteUser :
-            urlRequest.headers = tokenHeaders
-            
-        case .emailCheck, .signIn: break
-            
-        case .updateUser:
-            urlRequest.headers = tokenHeaders
-            urlRequest.headers.add(HTTPHeader.contentType(HeaderContentType.multipart.rawValue))
-            
-        default:
-            urlRequest.headers = tokenHeaders
+        switch header {
+        case .json:
+            headers = [Header.contentType.type : Header.json.type]
+        case .jsonWithToken:
+            headers = [Header.contentType.type : Header.json.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]  //Bearer 넣어야 할지도
+        case .multipart:
+            headers = [Header.contentType.type : Header.multipart.type]
+        case .multipartWithToken:
+            headers = [Header.contentType.type : Header.multipart.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
+        case .token:
+            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
+        default: break
         }
+        
+        urlRequest.headers = headers
         
         switch parameters {
         case .queryString(let query):
@@ -231,6 +248,29 @@ extension RequestPurpose {
         case .none:
             return urlRequest
         }
+    }
+}
+
+enum RequestHeaders {
+    case token
+    case json
+    case jsonWithToken
+    case multipart
+    case multipartWithToken
+    case none
+}
+
+enum Header: String {
+    case contentType = "Content-Type"
+    case authorization = "Authorization"
+    case accessToken = "AccessToken"
+    case refreshToken = "RefreshToken"
+    
+    case json = "application/json"
+    case multipart = "multipart/form-data"
+    
+    var type: String {
+        return self.rawValue
     }
 }
 

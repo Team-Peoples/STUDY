@@ -8,6 +8,14 @@
 import UIKit
 import SnapKit
 
+extension UIView {
+    func configureBorder(color: AssetColor, width: CGFloat, radius: CGFloat) {
+        layer.borderColor = UIColor.appColor(color).cgColor
+        layer.borderWidth = width
+        layer.cornerRadius = radius
+    }
+}
+
 final class CustomButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
@@ -24,9 +32,7 @@ final class CustomButton: UIButton {
     private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
-        layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-        layer.borderWidth = 1
-        layer.cornerRadius = height / 2
+        configureBorder(color: .keyColor1, width: 1, radius: height / 2)
         
         if isFill {
             backgroundColor = UIColor.appColor(.keyColor1)
@@ -69,7 +75,7 @@ class BaseTextView: UITextView {
         
         addSubview(placeHolderLabel)
         
-        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset)
+        configureTextView(placeholder: placeholder, size: fontSize, isBold: isBold, topInset: topInset, leadingInset: leadingInset, trailingInset: leadingInset)
         
         setPlaceHolderLabelConstraints(topConstant: topInset, leadingConstant: leadingInset)
     }
@@ -82,7 +88,7 @@ class BaseTextView: UITextView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat) {
+    private func configureTextView(placeholder: String, size: CGFloat, isBold: Bool = false, topInset: CGFloat, leadingInset: CGFloat, trailingInset: CGFloat) {
         
         autocorrectionType = .no
         autocapitalizationType = .none
@@ -92,8 +98,8 @@ class BaseTextView: UITextView {
         placeHolderLabel.textColor = .appColor(.ppsGray2)
         
         font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
-        textColor = UIColor.appColor(.ppsBlack)
-        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: 15)
+        textColor = UIColor.appColor(.ppsGray1)
+        textContainerInset = UIEdgeInsets(top: topInset, left: leadingInset, bottom: 11, right: trailingInset)
         
         isScrollEnabled = false
     }
@@ -112,23 +118,24 @@ class BaseTextView: UITextView {
 final class CharactersNumberLimitedTextView: BaseTextView {
     // MARK: - Properties
     
+    enum Position {
+        case center
+        case bottom
+    }
+    
     private let charactersNumberLabel = UILabel(frame: .zero)
     
     // MARK: - Initialize
     
-    init(placeholder: String, maxCharactersNumber: Int, height: CGFloat, radius: CGFloat) {
-        super.init(placeholder: placeholder, fontSize: 16, topInset: 11, leadingInset: 15)
+    init(placeholder: String, maxCharactersNumber: Int, radius: CGFloat, position: Position, fontSize: CGFloat, topInset: CGFloat = 11, leadingInset: CGFloat = 15) {
+        super.init(placeholder: placeholder, fontSize: 16, topInset: topInset, leadingInset: leadingInset)
         
         addSubview(charactersNumberLabel)
         
         configureTextView(radius)
-        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber)
+        configureCharactersNumberLabel(maxCharactersNumber: maxCharactersNumber, fontSize: fontSize)
         
-        setConstraints()
-    }
-    
-    convenience init(placeholder: String, maxCharactersNumber: Int, height: CGFloat) {
-        self.init(placeholder: placeholder, maxCharactersNumber: maxCharactersNumber, height: height, radius: height / 2)
+        setConstraints(position: position)
     }
     
     required init?(coder: NSCoder) {
@@ -142,11 +149,11 @@ final class CharactersNumberLimitedTextView: BaseTextView {
         layer.cornerRadius = radius
     }
     
-    private func configureCharactersNumberLabel(maxCharactersNumber: Int) {
+    private func configureCharactersNumberLabel(maxCharactersNumber: Int, fontSize: CGFloat) {
         
         charactersNumberLabel.text = "0/\(maxCharactersNumber)"
-        charactersNumberLabel.font = UIFont.systemFont(ofSize: 12)
-        charactersNumberLabel.textColor = .systemGray3
+        charactersNumberLabel.font = UIFont.systemFont(ofSize: fontSize)
+        charactersNumberLabel.textColor = .appColor(.ppsGray1)
     }
     
     // MARK: - Actions
@@ -157,9 +164,16 @@ final class CharactersNumberLimitedTextView: BaseTextView {
     
     // MARK: - Setting Constraints
     
-    private func setConstraints() {
-        
-        charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 8, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 8)
+    private func setConstraints(position: Position) {
+        switch position {
+            case .center:
+                charactersNumberLabel.centerY(inView: self)
+                charactersNumberLabel.anchor(trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 15)
+                
+            case .bottom:
+                charactersNumberLabel.anchor(bottom: safeAreaLayoutGuide.bottomAnchor, bottomConstant: 10, trailing: safeAreaLayoutGuide.trailingAnchor, trailingConstant: 15)
+                
+        }
     }
 }
 
@@ -200,10 +214,6 @@ class ValidationInputView: UIStackView {
 
     internal func getInputField() -> UITextField {
         basicInputView.getInputField()
-    }
-
-    internal func toggleSecureText() {
-        basicInputView.getInputField().isSecureTextEntry.toggle()
     }
     
     func getValidationLabel() -> UILabel {
@@ -261,10 +271,6 @@ class BasicInputView: UIView {
     
     internal func setUnderlineColor(as color: AssetColor) {
         underline.backgroundColor = UIColor.appColor(color)
-    }
-    
-    internal func toggleSecureText() {
-        inputField.isSecureTextEntry.toggle()
     }
     
     private func addRightViewOnField(cancel: Bool, target: AnyObject?, action: Selector) {
@@ -409,9 +415,7 @@ class ProfileImageSelectorView: UIImageView {
         super.init(frame: .zero)
         
         image = UIImage(named: "defaultProfile")
-        layer.borderWidth = 2
-        layer.borderColor = UIColor.appColor(.keyColor3).cgColor
-        layer.cornerRadius = size / 2
+        configureBorder(color: .keyColor3, width: 2, radius: size / 2)
         
         clipsToBounds = true
         isUserInteractionEnabled = true
@@ -607,17 +611,12 @@ final class RoundableView: UIView {
         self.layer.cornerRadius = self.frame.height / 2
     }
 }
-//
-//<<<<<<< HEAD
-//final class RoundedNumberField: UITextField {
-//
-//    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true) {
-//=======
+
 final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
     let strArray: [String] = {
-        
+       
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
         
@@ -629,7 +628,6 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     private lazy var picker = UIPickerView()
     
     init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
-        
         super.init(frame: .zero)
         
         delegate = self
@@ -652,13 +650,11 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         super.init(coder: coder)
         
         delegate = self
-        
         backgroundColor = UIColor.appColor(.background)
         font = .boldSystemFont(ofSize: 20)
         textColor = UIColor.appColor(.ppsGray1)
         textAlignment = .center
         text = "--"
-        
         setPicker()
         
     }
@@ -857,6 +853,267 @@ extension String {
             return false
         }
         return false
+    }
+}
 
+class SwitchableViewController: UIViewController {
+
+    var myStudyList = [Study]() {
+        didSet {
+            if myStudyList.count < 5 {
+                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight)
+            } else {
+                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
+            }
+            print(dropdownHeight)
+            currentStudy = myStudyList[0]
+        }
+    }
+    var currentStudy: Study?
+    var willDropDown = false
+    var isAdmin = true
+    var dropDownCellNumber: CGFloat {
+        if myStudyList.count == 0 {
+            return 0
+        } else if myStudyList.count > 0, myStudyList.count < 5 {
+            return CGFloat(myStudyList.count)
+        } else {
+            return 4
+        }
+    }
+    
+    lazy var dropdownButton = UIButton()
+    lazy var dropdownContainerView = UIView()
+    lazy var dropdownTableView: UITableView = {
+
+        let t = UITableView()
+        
+        t.delegate = self
+        t.dataSource = self
+        t.separatorColor = UIColor.appColor(.ppsGray3)
+        t.bounces = false
+        t.showsVerticalScrollIndicator = false
+        t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
+
+        return t
+    }()
+    lazy var dropdownDimmingView: UIView = {
+
+        let v = UIView()
+
+        v.isUserInteractionEnabled = true
+        let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownButtonDidTapped))
+        v.addGestureRecognizer(recog)
+        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        v.isHidden = true
+
+        return v
+    }()
+    lazy var createStudyButton: UIButton = {
+       
+        let b = UIButton()
+        
+        b.backgroundColor = UIColor.appColor(.brandMilky)
+        b.setImage(UIImage(named: "plusCircleFill"), for: .normal)
+        b.setTitle("   스터디 만들기", for: .normal)
+        b.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
+        b.isHidden = true
+        
+        return b
+    }()
+    private lazy var masterSwitch = BrandSwitch()
+    private let createStudyButtonHeight: CGFloat = 50
+    private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: createStudyButtonHeight)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationItem()
+    }
+    
+    @objc func dropdownButtonDidTapped() {
+        toggleDropdown()
+        masterSwitch.isHidden.toggle()
+        dropdownButton.isSelected.toggle()
+        dropdownDimmingView.isHidden.toggle()
+    }
+    
+    @objc func toggleNavigationBarBy(sender: BrandSwitch) {
+        dropdownButton.isHidden.toggle()
+        
+        if sender.isOn {
+
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        } else {
+
+            navigationController?.navigationBar.backgroundColor = .systemBackground
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
+            navigationController?.navigationBar.tintColor = .black
+            navigationController?.navigationBar.backgroundColor = .appColor(.background2)
+        }
+    }
+    
+    @objc func createStudyButtonDidTapped() {
+        let creatingStudyVC = CreatingStudyViewController()
+        navigationController?.pushViewController(creatingStudyVC, animated: true)
+    }
+    
+    func configureNavigationItem() {
+        configureDropdownButton()
+        configureDropdown()
+        
+        if isAdmin {
+            navigationItem.title = "관리자 모드"
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
+            masterSwitch.addTarget(self, action: #selector(toggleNavigationBarBy), for: .valueChanged)
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        }
+        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: dropdownButton)]
+    }
+    
+    func configureDropdownButton() {
+        guard let dropdownTitle = myStudyList.first?.title else { return }
+
+        dropdownButton.setTitle("\(dropdownTitle)  ", for: .normal)
+        dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .normal)
+        dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .selected)
+        dropdownButton.tintColor = UIColor.appColor(.background)
+        dropdownButton.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        dropdownButton.setImage(UIImage(named: "dropDown")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .normal)
+        dropdownButton.setImage(UIImage(named: "dropUp")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .selected)
+        dropdownButton.semanticContentAttribute = .forceRightToLeft
+        dropdownButton.addTarget(self, action: #selector(dropdownButtonDidTapped), for: .touchUpInside)
+    }
+    
+    func configureDropdown() {
+        guard !myStudyList.isEmpty else { return }
+        
+        if let tabBarView = tabBarController?.view {
+            tabBarView.addSubview(dropdownDimmingView)
+            tabBarView.addSubview(dropdownContainerView)
+            
+            dropdownDimmingView.snp.makeConstraints { make in
+                make.top.equalTo(navigationController!.navigationBar.snp.bottom)
+                make.leading.trailing.bottom.equalTo(tabBarView)
+            }
+            
+            dropdownContainerView.snp.makeConstraints { make in
+                make.top.equalTo(dropdownDimmingView.snp.top)
+                make.leading.trailing.equalTo(dropdownDimmingView).inset(9)
+            }
+        } else {
+            view.addSubview(dropdownDimmingView)
+            view.addSubview(dropdownContainerView)
+            
+            dropdownDimmingView.snp.makeConstraints { make in
+                make.edges.equalTo(view.safeAreaLayoutGuide)
+            }
+            
+            dropdownContainerView.snp.makeConstraints { make in
+                make.top.equalTo(view.safeAreaLayoutGuide)
+                make.leading.trailing.equalTo(view).inset(9)
+            }
+        }
+        
+        dropdownContainerView.addSubview(dropdownTableView)
+        dropdownContainerView.addSubview(createStudyButton)
+        
+        dropdownTableView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(dropdownContainerView)
+            make.bottom.equalTo(createStudyButton.snp.top)
+        }
+        
+        createStudyButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(dropdownContainerView)
+        }
+        
+        dropdownHeight.isActive = false
+        dropdownHeightZero.isActive = true
+    }
+    
+    private func animateDropdown() {
+        let tabBarView = self.tabBarController?.view
+        
+        UIView.animate(withDuration: 0.3, delay: 0) {
+            tabBarView == nil ? self.view.layoutIfNeeded() : tabBarView?.layoutIfNeeded()
+        }
+    }
+    
+    private func toggleDropdown() {
+
+        willDropDown.toggle()
+        
+        var indexPaths = [IndexPath]()
+        var row = 0
+        
+        while row < myStudyList.count {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+            row += 1
+        }
+        
+        if willDropDown {
+            
+            dropdownHeightZero.isActive = false
+            dropdownHeight.isActive = true
+            
+            dropdownTableView.insertRows(at: indexPaths, with: .top)
+            
+            createStudyButton.isHidden = false
+            createStudyButton.setHeight(50)
+            
+            dropdownContainerView.layer.cornerRadius = 24
+            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+            dropdownContainerView.clipsToBounds = true
+            
+            animateDropdown()
+        } else {
+            
+            dropdownTableView.deleteRows(at: indexPaths, with: .top)
+
+            dropdownHeight.isActive = false
+            dropdownHeightZero.isActive = true
+            createStudyButton.isHidden = true
+            
+            animateDropdown()
+        }
+    }
+    
+}
+
+extension SwitchableViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return willDropDown ? myStudyList.count : 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+        guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
+        
+        if currentStudyID == myStudyList[indexPath.row].id {
+            cell.backgroundColor = UIColor(red: 247/255, green: 246/255, blue: 249/255, alpha: 1)
+        }
+        
+        cell.title = myStudyList[indexPath.row].title!
+        
+        return cell
+    }
+}
+
+extension SwitchableViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

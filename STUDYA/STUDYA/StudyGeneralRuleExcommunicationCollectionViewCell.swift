@@ -13,8 +13,7 @@ final class ExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     private var validationCheck2 = false
     
     static let identifier = "ExcommunicationRuleCollectionViewCell"
-    
-    private let titleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true)
     private let descriptionLabel = CustomLabel(title: "* 멤버가 강퇴 조건에 도달하면 관리자에게 알림이 전송돼요.\n* 지각과 결석 조건을 모두 입력하면, 둘 중 하나만 만족해도\n강퇴 조건에 도달해요.", tintColor: .ppsGray1, size: 12)
     internal let lateNumberField = RoundedNumberField(numPlaceholder: nil, centerAlign: false, enable: true, isPicker: true, isNecessary: true)
     private let lateLabel = CustomLabel(title: "번 지각 시", boldPart: "지각")

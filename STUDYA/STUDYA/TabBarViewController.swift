@@ -20,7 +20,7 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabbarController()
-        checkIfUserIsLoggedIn()
+//        checkIfUserIsLoggedIn()
         // Do any additional setup after loading the view.
     }
     
@@ -33,9 +33,9 @@ final class TabBarViewController: UITabBarController {
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         
-        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: NoticeBoardViewController(), title: "캘린더")
+        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: CalendarViewController(), title: "캘린더")
         
-        let profileViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "myPage-selected"), unselectedImage: #imageLiteral(resourceName: "myPage-unselected"), rootViewController: ViewController(), title: "마이페이지")
+        let profileViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "myPage-selected"), unselectedImage: #imageLiteral(resourceName: "myPage-unselected"), rootViewController: MyPageMainViewController(), title: "마이페이지")
         
         viewControllers = [homeViewController, calenderViewController, profileViewController]
     }
@@ -57,7 +57,17 @@ final class TabBarViewController: UITabBarController {
 
     // MARK: - Actions
     
+    @objc func login(_ sender: Notification) {
+        guard let userInfo = sender.userInfo as? [String: User], let user = userInfo["user"] else { return }
+        
+        self.user = user
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func presentWelcomeVC() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(login), name: .loginSuccess, object: User.self)
+        
         DispatchQueue.main.async { [weak self] in
 
             let welcomeVC = WelcomViewController()
@@ -70,7 +80,6 @@ final class TabBarViewController: UITabBarController {
     }
     
     private func checkIfUserIsLoggedIn() {
-        
         if user == nil {
             presentWelcomeVC()
         } else {

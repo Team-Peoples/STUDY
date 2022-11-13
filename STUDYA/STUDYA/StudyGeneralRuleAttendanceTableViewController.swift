@@ -10,20 +10,26 @@ import SnapKit
 
 // 따로 테이블 뷰로 만들어서 사용하려했지만 그렇게 할경우 MakingDetailStudyRuleViewController가 collectionView와 tableView를 모두 관리해야하므로 vc를 분리하는게 더 나아 보여서 이렇게 만들었음.
 
-struct AttendacneRuleViewModel {
-    
-}
-
 class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     // MARK: - Properties
-    @IBOutlet weak var lateRuleTimeField: RoundedNumberField!
+    
+    /// 출결 규칙
+    @IBOutlet weak var latenessRuleTimeField: RoundedNumberField!
     @IBOutlet weak var absenceRuleTimeField: RoundedNumberField!
+    
+    /// 벌금규칙
     @IBOutlet weak var perLateMinuteField: RoundedNumberField!
-    @IBOutlet weak var latePenaltyTextField: UITextField!
-    @IBOutlet weak var absentPenaltyTextField: UITextField!
+    @IBOutlet weak var latenessFineTextField: UITextField!
+    @IBOutlet weak var absenceFineTextField: UITextField!
+    
+    
+    /// 보증금
     @IBOutlet weak var depositTextField: UITextField!
-    @IBOutlet weak var penaltyDimmingView: UIView!
+    
+    /// 디밍처리
+    @IBOutlet weak var fineDimmingView: UIView!
     @IBOutlet weak var depositDimmingView: UIView!
+    
     lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     private var keyboardFrameHeight: CGFloat = 0
@@ -37,13 +43,12 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         
         setDelegate()
         setNotification()
-        
-        configureViews()
-        configure(latePenaltyTextField)
-        configure(absentPenaltyTextField)
+    
+        configure(latenessFineTextField)
+        configure(absenceFineTextField)
         configure(depositTextField)
         
-        disableMoneyRelatedFields()
+        fineAndDepositFieldsAreEnabled(false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,16 +69,10 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         
         NotificationCenter.default.removeObserver(self)
     }
-    
-    // MARK: - Configure
-    
-    func configureViews() {
-    }
-    
+
     // MARK: - Actions
-    
     private func setDelegate() {
-        lateRuleTimeField.delegate = self
+        latenessRuleTimeField.delegate = self
         absenceRuleTimeField.delegate = self
     }
     
@@ -83,7 +82,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
     
     private func addTapGestureRecognizers() {
-        penaltyDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
+        fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
         depositDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
     }
     
@@ -101,26 +100,20 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         textField.keyboardType = .numberPad
     }
     
-    internal func enableMoneyRelatedFields() {
-        depositDimmingView.isHidden = true
-        penaltyDimmingView.isHidden = true
-        perLateMinuteField.isEnabled = true
-        latePenaltyTextField.isEnabled = true
-        absentPenaltyTextField.isEnabled = true
-        depositTextField.isEnabled = true
-    }
-    
-    internal func disableMoneyRelatedFields() {
-        depositDimmingView.isHidden = false
-        penaltyDimmingView.isHidden = false
-        perLateMinuteField.isEnabled = false
-        latePenaltyTextField.isEnabled = false
-        absentPenaltyTextField.isEnabled = false
-        depositTextField.isEnabled = false
+    func fineAndDepositFieldsAreEnabled(_ bool: Bool) {
+        depositDimmingView.isHidden = bool
+        fineDimmingView.isHidden = bool
+        
+        perLateMinuteField.isEnabled = bool
+        latenessFineTextField.isEnabled = bool
+        absenceFineTextField.isEnabled = bool
+        
+        depositTextField.isEnabled = bool
     }
     
     @objc func dimmingViewDidTapped() {
-        penaltyDimmingView.isUserInteractionEnabled = false
+        
+        fineDimmingView.isUserInteractionEnabled = false
         depositDimmingView.isUserInteractionEnabled = false
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
@@ -143,7 +136,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
                     make.bottom.equalTo(self.bottomConst!).offset(100)
                 }
                 toastMessage.alpha = 0.9
-                penaltyDimmingView.isUserInteractionEnabled = true
+                fineDimmingView.isUserInteractionEnabled = true
                 depositDimmingView.isUserInteractionEnabled = true
             }
         }
@@ -192,25 +185,34 @@ extension StudyGeneralRuleAttendanceTableViewController {
 
 extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        if lateRuleTimeField?.text != "--" || absenceRuleTimeField.text != "--" {
+        if latenessRuleTimeField?.text != "--" || absenceRuleTimeField.text != "--" {
             
-            enableMoneyRelatedFields()
-            
+            fineAndDepositFieldsAreEnabled(true)
         } else {
             
-            disableMoneyRelatedFields()
+            fineAndDepositFieldsAreEnabled(false)
             
             perLateMinuteField.text = "--"
-            depositTextField.text = "0"
-            latePenaltyTextField.text = "0"
-            absentPenaltyTextField.text = "0"
+            depositTextField.text = nil
+            latenessFineTextField.text = nil
+            absenceFineTextField.text = nil
         }
         
-        if textField == latePenaltyTextField || textField == absentPenaltyTextField || textField == depositTextField {
-            if let text = textField.text, let intText = Int(text) {
-                textField.text = Formatter.formatIntoDecimal(number: intText)
-            }
+        switch textField {
+            case latenessFineTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            case absenceFineTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            case depositTextField:
+                if let text = textField.text, let intText = Int(text) {
+                    textField.text = Formatter.formatIntoDecimal(number: intText)
+                }
+            default:
+                return
         }
     }
 }
