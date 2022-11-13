@@ -19,9 +19,11 @@ struct Network {
             case .success(let data):
                 
                 let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
+                
                 guard let user = decodedData?.result else { return }
                 
                 completion(user)
+                
             case .failure(let error):
                 print(error)
             }
@@ -49,7 +51,7 @@ struct Network {
 //            }
 //        }
 //    }
-//    
+    
     func signIn(id: String, pw: String, completion: @escaping (User?) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).validate().responseData { response in
             switch response.result {
@@ -74,6 +76,7 @@ struct Network {
             }
         }
     }
+    
 //    
 //    func check(email: String) {
 //        AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in

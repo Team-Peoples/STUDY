@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MailCheckViewController: UIViewController {
+final class MailCheckViewController: UIViewController {
  
     var nickName: String?
     var email: String?
@@ -104,6 +104,5 @@ class MailCheckViewController: UIViewController {
                 self.retryButton.isUserInteractionEnabled = true
             }
         }
-
     }
 }

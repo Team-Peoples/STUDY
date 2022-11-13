@@ -36,7 +36,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     var bottomConst: ConstraintItem?
     
     // MARK: - Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,7 +71,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
 
     // MARK: - Actions
-    
     private func setDelegate() {
         latenessRuleTimeField.delegate = self
         absenceRuleTimeField.delegate = self
@@ -84,13 +82,11 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
     
     private func addTapGestureRecognizers() {
-        
         fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
         depositDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
     }
     
     private func configure(_ textField: UITextField) {
-        
         textField.delegate = self
         textField.backgroundColor = .appColor(.background)
         textField.font = .boldSystemFont(ofSize: 20)
@@ -103,7 +99,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         textField.layer.cornerRadius = 42 / 2
         textField.keyboardType = .numberPad
     }
-    
     
     func fineAndDepositFieldsAreEnabled(_ bool: Bool) {
         depositDimmingView.isHidden = bool
@@ -190,7 +185,6 @@ extension StudyGeneralRuleAttendanceTableViewController {
 
 extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         if latenessRuleTimeField?.text != "--" || absenceRuleTimeField.text != "--" {
             
             fineAndDepositFieldsAreEnabled(true)
