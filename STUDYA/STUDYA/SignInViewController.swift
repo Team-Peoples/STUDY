@@ -238,10 +238,3 @@ extension SignInViewController: UITextFieldDelegate {
         return true
     }
 }
-//
-//extension SignInViewController: DoneButtonStateModel {
-//    func buttonStateUpdate() {
-//        completeButton.isEnabled = loginViewModel.formIsValid
-//        completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
-//    }
-//}
