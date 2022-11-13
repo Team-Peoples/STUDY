@@ -926,7 +926,7 @@ class SwitchableViewController: UIViewController {
     
     @objc func createStudyButtonDidTapped() {
         dropdownButtonDidTapped()
-        let creatingStudyBasicInfoVC = CreatingStudyBasicInfoViewController()
+        let creatingStudyBasicInfoVC = CreatingStudyFormViewController()
         navigationController?.pushViewController(creatingStudyBasicInfoVC, animated: true)
     }
     

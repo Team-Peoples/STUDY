@@ -156,7 +156,7 @@ class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyCompleteViewController") as! CreatingStudyCompleteViewController
+        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoPreViewController") as! StudyInfoPreViewController
         vc.study = self.studyRuleViewModel.study
         navigationController?.pushViewController(vc, animated: true)
     }

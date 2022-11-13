@@ -1,5 +1,5 @@
 //
-//  StudyBasicInfoViewController.swift
+//  StudyFormViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 11/11/22.
@@ -17,7 +17,7 @@ enum StudyCategory: String, CaseIterable {
     case etc = "그 외"
 }
 
-class StudyBasicInfoViewController: UIViewController {
+class StudyFormViewController: UIViewController {
     // MARK: - Properties
     
     var studyViewModel: StudyViewModel?
@@ -46,7 +46,7 @@ class StudyBasicInfoViewController: UIViewController {
     
     /// 스터디명
     private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, radius: 21, position: .center, fontSize: 12)
+    let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, radius: 21, position: .center, fontSize: 12)
     
     /// 스터디 형태 on/off
     private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
@@ -55,7 +55,7 @@ class StudyBasicInfoViewController: UIViewController {
     
     /// 스터디 한줄 소개
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
+    let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
     
     
     // MARK: - Life Cycle
@@ -66,7 +66,6 @@ class StudyBasicInfoViewController: UIViewController {
         configureViews()
         setDelegate()
         enableTapGesture()
-        studyNameTextView.textContainer.maximumNumberOfLines = 1
         
         setConstraints()
     }
@@ -211,7 +210,7 @@ class StudyBasicInfoViewController: UIViewController {
         }
         studyTypeStackView.snp.makeConstraints { make in
             make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
-            make.leading.equalTo(studyCategoryCollectionView)
+            make.leading.equalTo(studyTypeLabel)
             make.height.equalTo(46)
         }
         studyIntroductionLabel.snp.makeConstraints { make in
@@ -221,7 +220,7 @@ class StudyBasicInfoViewController: UIViewController {
         studyIntroductionTextView.snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(105)
             make.top.equalTo(studyIntroductionLabel.snp.bottom).offset(17)
-            make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.leading.trailing.equalTo(containerView).inset(30)
         }
     }
     
@@ -276,7 +275,7 @@ class StudyBasicInfoViewController: UIViewController {
 
 // MARK: - UITextViewDelegate
 
-extension StudyBasicInfoViewController: UITextViewDelegate {
+extension StudyFormViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
@@ -329,12 +328,17 @@ extension StudyBasicInfoViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         
-        textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
-        
+        ///엔터 입력할때 안되도록...막아야함
         switch textView {
             case studyNameTextView:
+                if textView.text.contains(where: { $0 == "\n" }) {
+                    textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+                }
                 studyViewModel?.study.title = studyNameTextView.text
             case studyIntroductionTextView:
+                if textView.text.contains(where: { $0 == "\n" }) {
+                    textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+                }
                 studyViewModel?.study.studyDescription = studyIntroductionTextView.text
             default:
                 break
@@ -344,7 +348,7 @@ extension StudyBasicInfoViewController: UITextViewDelegate {
 
 // MARK: - UICollectionViewDataSource
 
-extension StudyBasicInfoViewController: UICollectionViewDataSource {
+extension StudyFormViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return StudyCategory.allCases.count

@@ -1,5 +1,5 @@
 //
-//  CreatingStudyBasicInfoViewController.swift
+//  CreatingStudyFormViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/10.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class CreatingStudyBasicInfoViewController: StudyBasicInfoViewController {
+final class CreatingStudyFormViewController: StudyFormViewController {
     // MARK: - Properties
     
     override var studyViewModel: StudyViewModel? {

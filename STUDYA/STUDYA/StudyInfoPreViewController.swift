@@ -1,15 +1,14 @@
 //
-//  StudyInfoViewController.swift
+//  StudyInfoPreViewController.swift
 //  STUDYA
 //
-//  Created by 서동운 on 11/9/22.
+//  Created by 서동운 on 2022/09/13.
 //
 
 import UIKit
-import SnapKit
 
-class StudyInfoViewController: UIViewController {
-    
+class StudyInfoPreViewController: UIViewController {
+
     // MARK: - Properties
     
     var study: Study?
@@ -23,7 +22,6 @@ class StudyInfoViewController: UIViewController {
     @IBOutlet weak var nicknameLabel: UILabel!
     @IBOutlet weak var studyTypeLabel: UILabel!
     @IBOutlet weak var studyIntroductionLabel: UILabel!
-    @IBOutlet weak var studyformEditButton: UIButton!
     
     /// 스터디 규칙정보
     ///
@@ -50,126 +48,30 @@ class StudyInfoViewController: UIViewController {
     @IBOutlet weak var absenceCountView: UIView!
     @IBOutlet weak var absenceCountLabel: UILabel!
     
-    @IBOutlet weak var generalRuleEditButton: UIButton!
-    
     /// 스터디 진행방식
     ///
     @IBOutlet weak var freeRuleTextView: UITextView!
-    @IBOutlet weak var freeRuleEditButton: UIButton!
     
-    lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
-    private let masterSwitch = BrandSwitch()
+    private let completeButton = CustomButton(title: "완료", isFill: true)
     
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        /// 스터디 정보 가져오기
+        view.addSubview(completeButton)
+        completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         
-        configureMasterSwitch()
+        setCompleteButtonConstraints()
         
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
-        
-        view.addSubview(toastMessage)
-        
-        toastMessage.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.width.equalTo(view.frame.width - 14)
-            make.height.equalTo(42)
-            make.bottom.equalTo(view.snp.bottom).offset(40)
-        }
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         configureViews()
-    }
-    
-    // MARK: - Actions
-    
-    @IBAction func linkTouched(_ sender: UIButton) {
-        
-        UIPasteboard.general.string = sender.titleLabel?.text
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
-//            if keyboardFrameHeight == 0 {
-                toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(view.snp.bottom).offset(-100)
-                }
-//            } else {
-//                toastMessage.snp.updateConstraints { make in
-//                    make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-10)
-//                }
-//            }
-            sender.isUserInteractionEnabled = false
-            view.layoutIfNeeded()
-            
-        } completion: { _ in
-            UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
-                self.toastMessage.alpha = 0
-            } completion: {[self] _ in
-                toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(view.snp.bottom).offset(40)
-                }
-                toastMessage.alpha = 0.9
-                sender.isUserInteractionEnabled = true
-            }
-        }
-    }
-    
-    @objc private func toggleMaster(_ sender: BrandSwitch) {
-        
-        studyformEditButton.isHidden = !sender.isOn
-        generalRuleEditButton.isHidden = !sender.isOn
-        freeRuleEditButton.isHidden = !sender.isOn
-    }
-    
-    @objc func doneButtonDidTapped() {
-        self.dismiss(animated: true)
-    }
-    
-    @IBAction func studyInfoEditButtonDidTapped(_ sender: Any) {
-        let editingStudyFormVC = EditingStudyFormViewController()
-        let vc = UINavigationController(rootViewController: editingStudyFormVC)
-        editingStudyFormVC.studyViewModel?.study = study!
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-    
-    @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-    
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-    
-    @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-    
-    private func check(_ value: Int?, AndSetupHeightOf view: UIView) {
-    
-        if value != nil {
-            view.isHidden = false
-            view.snp.remakeConstraints { make in
-                make.height.equalTo(16)
-            }
-        } else {
-            view.isHidden = true
-            view.snp.remakeConstraints { make in
-                make.height.equalTo(0)
-            }
-        }
     }
     
     // MARK: - Configure Views
@@ -181,7 +83,7 @@ class StudyInfoViewController: UIViewController {
         studyCategoryLabel.text = study?.category
         studyNameLabel.text = study?.title
         studyIntroductionLabel.text = study?.studyDescription
-        studyTypeLabel.text = OnOff(rawValue: (study?.onoff) ?? "on")?.kor
+        studyTypeLabel.text = OnOff(rawValue: (study?.onoff)!)?.kor
         
         // freeRule부터 확인한 이유: 따로 ui작업이 필요없기때문에 먼저 확인
         if let freeRule = study?.freeRule {
@@ -222,9 +124,36 @@ class StudyInfoViewController: UIViewController {
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"
     }
     
-    private func configureMasterSwitch() {
+    // MARK: - Actions
+    
+    @objc private func completeButtonDidTapped() {
         
-        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .valueChanged)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
+        print(#function)
+    }
+    
+    
+    private func check(_ value: Int?, AndSetupHeightOf view: UIView) {
+    
+        if value != nil {
+            view.isHidden = false
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(16)
+            }
+        } else {
+            view.isHidden = true
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(0)
+            }
+        }
+    }
+    
+    // MARK: - Setting Constraints
+    
+    func setCompleteButtonConstraints() {
+        completeButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
+            make.centerX.equalTo(view)
+        }
     }
 }
