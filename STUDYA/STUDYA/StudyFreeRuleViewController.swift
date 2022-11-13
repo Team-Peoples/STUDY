@@ -28,13 +28,18 @@ class StudyFreeRuleViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(completeButton)
+        
         freeRuletextView.delegate = self
+        
         cancelButton.action = #selector(cancelButtonDidTapped)
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         setConstraints()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         viewDidUpdated(freeRuletextView)
+        
         placeholderLabel.isHidden = freeRuletextView.text != "" ? true : false
     }
     // MARK: - Configure

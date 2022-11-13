@@ -37,7 +37,6 @@ struct GeneralStudyRuleViewModel {
         let isFieldsEnabled: Bool = lateness.time != nil || absence.time != nil ? true : false
         
         vc.fineAndDepositFieldsAreEnabled(isFieldsEnabled)
-        
 //        isfieldsenabled에 따라 혹시모를 moneyrelatedfields의 필드의 값을 다 삭제시켜주는 작업 해줘야하나?
     }
     

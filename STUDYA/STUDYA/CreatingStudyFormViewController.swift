@@ -46,6 +46,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
     // MARK: - Configure
 
     private func configureTitleLabel() {
+        
         containerView.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
@@ -59,6 +60,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
     }
     
     func configureDoneButton() {
+        
         view.addSubview(bottomStickyView)
         bottomStickyView.addSubview(doneButton)
         

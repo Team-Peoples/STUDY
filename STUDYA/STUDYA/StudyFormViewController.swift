@@ -227,6 +227,7 @@ class StudyFormViewController: UIViewController {
     // MARK: - Helpers
     
     private func addNotification() {
+        
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
             guard let cellInfo = noti.object as? [String: Any] else { return }
@@ -256,6 +257,7 @@ class StudyFormViewController: UIViewController {
     }
     
     private func getCollectionView() -> UICollectionView {
+        
         let flowLayout = LeftAlignedCollectionViewFlowLayout()
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
@@ -267,6 +269,7 @@ class StudyFormViewController: UIViewController {
     }
     
     private func setDelegate() {
+        
         studyNameTextView.delegate = self
         studyIntroductionTextView.delegate = self
         studyCategoryCollectionView.dataSource = self

@@ -57,6 +57,8 @@ class StudyInfoViewController: UIViewController {
     @IBOutlet weak var freeRuleTextView: UITextView!
     @IBOutlet weak var freeRuleEditButton: UIButton!
     
+    @IBOutlet weak var studyExitButton: UIButton!
+    
     lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
     private let masterSwitch = BrandSwitch()
     
@@ -95,22 +97,19 @@ class StudyInfoViewController: UIViewController {
         UIPasteboard.general.string = sender.titleLabel?.text
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
-//            if keyboardFrameHeight == 0 {
-                toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(view.snp.bottom).offset(-100)
-                }
-//            } else {
-//                toastMessage.snp.updateConstraints { make in
-//                    make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-10)
-//                }
-//            }
+            
+            toastMessage.snp.updateConstraints { make in
+                make.bottom.equalTo(view.snp.bottom).offset(-100)
+            }
+            
             sender.isUserInteractionEnabled = false
             view.layoutIfNeeded()
-            
         } completion: { _ in
+            
             UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
                 self.toastMessage.alpha = 0
             } completion: {[self] _ in
+                
                 toastMessage.snp.updateConstraints { make in
                     make.bottom.equalTo(view.snp.bottom).offset(40)
                 }
@@ -120,20 +119,11 @@ class StudyInfoViewController: UIViewController {
         }
     }
     
-    @objc private func toggleMaster(_ sender: BrandSwitch) {
-        
-        studyformEditButton.isHidden = !sender.isOn
-        generalRuleEditButton.isHidden = !sender.isOn
-        freeRuleEditButton.isHidden = !sender.isOn
-    }
-    
-    @objc func doneButtonDidTapped() {
-        self.dismiss(animated: true)
-    }
-    
     @IBAction func studyInfoEditButtonDidTapped(_ sender: Any) {
+        
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
+        
         editingStudyFormVC.studyViewModel?.study = study!
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
@@ -155,6 +145,30 @@ class StudyInfoViewController: UIViewController {
         
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
+    }
+    
+    @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
+        switch sender.title(for: .normal) {
+            case "스터디 탈퇴":
+                print("ㅇㄴㅇㄴ")
+            case "스터디 종료":
+                print("ㅇㄴㅇㄴ")
+            default:
+                return
+        }
+    }
+    
+    @objc private func toggleMaster(_ sender: BrandSwitch) {
+        
+        studyformEditButton.isHidden = !sender.isOn
+        generalRuleEditButton.isHidden = !sender.isOn
+        freeRuleEditButton.isHidden = !sender.isOn
+        
+        if sender.isOn {
+            studyExitButton.setTitle("스터디 종료", for: .normal)
+        } else {
+            studyExitButton.setTitle("스터디 탈퇴", for: .normal)
+        }
     }
     
     private func check(_ value: Int?, AndSetupHeightOf view: UIView) {

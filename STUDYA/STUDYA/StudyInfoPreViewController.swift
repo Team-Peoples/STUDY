@@ -135,11 +135,13 @@ class StudyInfoPreViewController: UIViewController {
     private func check(_ value: Int?, AndSetupHeightOf view: UIView) {
     
         if value != nil {
+            
             view.isHidden = false
             view.snp.remakeConstraints { make in
                 make.height.equalTo(16)
             }
         } else {
+            
             view.isHidden = true
             view.snp.remakeConstraints { make in
                 make.height.equalTo(0)
@@ -150,6 +152,7 @@ class StudyInfoPreViewController: UIViewController {
     // MARK: - Setting Constraints
     
     func setCompleteButtonConstraints() {
+        
         completeButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)

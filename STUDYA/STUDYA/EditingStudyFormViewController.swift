@@ -43,6 +43,7 @@ final class EditingStudyFormViewController: StudyFormViewController {
     // MARK: - Actions
     
     @objc func barButtonDidTapped(sender: UIBarButtonItem) {
+        
         switch sender {
             case doneButton:
                 print("수정 완료")
@@ -56,6 +57,7 @@ final class EditingStudyFormViewController: StudyFormViewController {
     }
     
     private func setNavigation() {
+        
         self.navigationItem.title = "스터디 정보관리"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         self.navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
