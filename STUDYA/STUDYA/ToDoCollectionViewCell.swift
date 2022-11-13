@@ -13,7 +13,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     var todo = ["할일","할일2","할일3","할일4","할일5","할일6","할일7","할일8"]
     var isdone = [false,true,false,true,false,true,false,true]
     
-    weak var heightDelegate: UBottomSheetCoordinator?
+    weak var heightCoordinator: UBottomSheetCoordinator?
     
     let tableView: UITableView = {
        
@@ -79,7 +79,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ToDoItemTableViewCell.identifier) as! ToDoItemTableViewCell
         
-        cell.heightDelegate = heightDelegate
+        cell.heightCoordinator = heightCoordinator
         
         cell.cellDelegate = self
 //        구셀/신셀의 최초 설정 분기처리

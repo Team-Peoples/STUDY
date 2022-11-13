@@ -20,7 +20,7 @@ class StudyFreeRuleViewController: UIViewController {
     @IBOutlet weak var placeholderLabel: UILabel!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    private let completeButton = CustomButton(title: "완료", isBold: true, isFill: true, size: 18, height: 50)
+    private let completeButton = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
     
     // MARK: - Life Cycle
   

@@ -12,7 +12,7 @@ import SnapKit
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
     
-    let button = CustomButton(title: "", isBold: false, size: 16, height: 28)
+    let button = CustomButton(title: "", isBold: false, fontSize: 16, height: 28)
     var indexPath: IndexPath?
     var title: String? {
         didSet {

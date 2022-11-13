@@ -19,7 +19,7 @@ class CalendarBottomSheetDatasource: UBottomSheetCoordinatorDataSource {
 
 class MemberBottomSheetDataSource: UBottomSheetCoordinatorDataSource {
     func sheetPositions(_ availableHeight: CGFloat) -> [CGFloat] {
-        return [0.94, 0.6].map{ $0 * availableHeight }
+        return [0.94, 0.5].map{ $0 * availableHeight }
     }
     
     func initialPosition(_ availableHeight: CGFloat) -> CGFloat {

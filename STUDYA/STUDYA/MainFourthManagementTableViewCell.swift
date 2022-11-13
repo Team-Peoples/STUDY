@@ -12,6 +12,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
 
     static let identifier = "MainFourthManagementTableViewCell"
     internal var delegate: Navigatable!
+//    internal var hideTabBar: (() -> ())?
     
     private let attendanceBackView: UIView = {
         
@@ -98,7 +99,9 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         case 1: break
         case 2: break
         case 3: break
-        case 4: delegate.push(vc: MemberViewController())
+        case 4:
+            delegate.push(vc: MemberViewController())
+//            hideTabBar!()
         case 5: break
         default: break
         }

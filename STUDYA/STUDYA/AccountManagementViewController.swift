@@ -16,7 +16,7 @@ final class AccountManagementViewController: UIViewController {
     
     internal var profileImage: UIImage? {
         willSet {
-            profileImageView.image = newValue == nil ? UIImage(named: "defaultProfile") : newValue
+            newValue == nil ? profileImageView.configure(UIImage(named: "defaultProfile")) : profileImageView.configure(newValue)
         }
     }
     internal var nickName: String? {
@@ -635,7 +635,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
                     self.profileImage = image as! UIImage
                     
                     if let image = image as? UIImage {
-                        self.profileImageView.image = image
+                        self.profileImageView.configure(image)
                         self.profileImageChangeOkay = true
                         
                         if self.passwordChangeStarted {

@@ -19,7 +19,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal weak var heightDelegate: MemberViewController?
+    internal weak var heightCoordinator: UBottomSheetCoordinator?
     
     private lazy var profileView: ProfileImageSelectorView = {
        
@@ -43,7 +43,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(button)
         
         profileView.snp.makeConstraints { make in
-            make.top.equalTo(contentView).inset(40)
+            make.top.equalTo(contentView).inset(2)
             make.centerX.equalTo(contentView)
         }
         nickNameLabel.snp.makeConstraints { make in
@@ -69,18 +69,6 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     var isGoingDown = false
     
     @objc private func profileViewTapped() {
-        print(#function)
-        if isGoingDown {
-            heightDelegate?.sheetCoordinator.appearTwice(UIScreen.main.bounds.height * 0.99, animated: true, completion: {
-                
-                self.heightDelegate?.sheetCoordinator.setPosition(UIScreen.main.bounds.height * 0.4, animated: true)
-            })
-        } else {
-            
-            heightDelegate?.sheetCoordinator.setPosition(UIScreen.main.bounds.height * 0.6, animated: true)
-        }
-        isGoingDown.toggle()
- 
-        
+        heightCoordinator?.setPosition(UIScreen.main.bounds.height * 0.5, animated: true)
     }
 }

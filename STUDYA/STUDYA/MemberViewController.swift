@@ -40,6 +40,7 @@ final class MemberViewController: UIViewController {
     let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
     let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    let BottomVC = MemberBottomSheetViewController()
     
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
@@ -64,7 +65,7 @@ final class MemberViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
     }
-    let vc = MemberBottomSheetViewController()
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
@@ -74,11 +75,9 @@ final class MemberViewController: UIViewController {
         
         if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
         
+        BottomVC.sheetCoordinator = sheetCoordinator
         
-        
-        vc.sheetCoordinator = sheetCoordinator
-        
-        sheetCoordinator.addSheet(vc, to: self, didContainerCreate: { container in
+        sheetCoordinator.addSheet(BottomVC, to: self, didContainerCreate: { container in
             let frame = self.view.frame
             let rect = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
             
@@ -121,7 +120,7 @@ extension MemberViewController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
             
             cell.member = members[indexPath.item - 1]
-            cell.heightDelegate = self
+            cell.heightCoordinator = sheetCoordinator
             
             return cell
         }

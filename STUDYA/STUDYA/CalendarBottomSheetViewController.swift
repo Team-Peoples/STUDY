@@ -231,7 +231,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
             case 0:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
                 
-                cell.heightDelegate = sheetCoordinator
+                cell.heightCoordinator = sheetCoordinator
                 
                 return cell
                 

@@ -17,7 +17,7 @@ final class MailCheckViewController: UIViewController {
     private lazy var announceLabel1 = CustomLabel(title: "\(email ?? "메일")로\n인증 안내를 보내드렸어요.", tintColor: .ppsBlack, size: 18)
     private let mailImageView = UIImageView(image: UIImage(named: "mailCheck"))
     private let announceLabel2 = CustomLabel(title: "인증 버튼을 누르면\n가입이 완료돼요.", tintColor: .ppsBlack, size: 18)
-    private let retryButton = CustomButton(title: "이메일이 안 왔어요!", isBold: true, isFill: true, size: 20, height: 50)
+    private let retryButton = CustomButton(title: "이메일이 안 왔어요!", isBold: true, isFill: true, fontSize: 20, height: 50)
     private let announceLabel3 = CustomLabel(title: "메일이 오지 않을 경우, 스팸메일함을 확인해주세요.", tintColor: .ppsGray1, size: 12)
     private lazy var alertView = UIView(frame: .zero)
     private lazy var alertLabel = CustomLabel(title: "인증 메일을 다시 보내드렸어요.", tintColor: .whiteLabel, size: 12, isBold: true)

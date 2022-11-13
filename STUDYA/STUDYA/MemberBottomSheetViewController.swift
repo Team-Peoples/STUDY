@@ -12,12 +12,110 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
     internal weak var dataSource: UBottomSheetCoordinatorDataSource?
     
-    private let bar = UIView()
+    private let defaultView = UIView(frame: .zero)
+    private lazy var importantView = UIView(frame: .zero)
+    
+    private let bar: UIView = {
+       
+        let b = UIView(frame: .zero)
+        
+        b.backgroundColor = .appColor(.ppsGray2)
+        b.clipsToBounds = true
+        b.layer.cornerRadius = 2
+        
+        return b
+    }()
+    private let profileView = ProfileImageSelectorView(size: 40)
+    private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
+    private lazy var excommunicatingButton: UIButton = {
+       
+        let b = UIButton(frame: .zero)
+        
+        b.backgroundColor = .appColor(.subColor3)
+        b.setTitle("강퇴", for: .normal)
+        b.titleLabel?.font = .boldSystemFont(ofSize: 14)
+        b.setTitleColor(.appColor(.subColor1), for: .normal)
+        b.layer.cornerRadius = 14
+        b.addTarget(self, action: #selector(askExcommunication), for: .touchUpInside)
+        
+        return b
+    }()
+    private let separator: UIView = {
+        let s = UIView(frame: .zero)
+        
+        s.backgroundColor = .appColor(.ppsGray3)
+        
+        return s
+    }()
+    private lazy var ownerButton: CustomButton = {
+       
+        let b = CustomButton(title: "", isBold: true, isFill: false, fontSize: 12, height: 25)
+        
+        b.easyConfigure(title: "스터디장", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+        b.addTarget(self, action: #selector(ownerButtonTapped), for: .touchUpInside)
+        
+        return b
+    }()
+    private lazy var managerButton: CustomButton = {
+       
+        let b = CustomButton(title: "", isBold: true, isFill: false, fontSize: 12, height: 25)
+        
+        b.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+        b.addTarget(self, action: #selector(toggleManagerButton), for: .touchUpInside)
+        
+        return b
+    }()
+    private lazy var roleInputField: PurpleRoundedInputField = {
+       
+        let f = PurpleRoundedInputField(target: nil, action: nil)
+        
+        f.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
+        f.attributedPlaceholder = NSAttributedString(string: "역할 이름을 자유롭게 정해주세요.", attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.boldSystemFont(ofSize: 16)])
+        f.isSecureTextEntry = false
+        
+        let l = CustomLabel(title: "역할", tintColor: .ppsBlack, size: 16)
+        
+        f.addSubview(l)
+        l.snp.makeConstraints { make in
+            make.leading.equalTo(f).inset(22)
+            make.centerY.equalTo(f)
+        }
+        
+        return f
+    }()
+    private lazy var doneButton: UIButton = {
+       
+        let b = UIButton(frame: .zero)
+        
+        b.backgroundColor = UIColor.appColor(.keyColor1)
+        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        
+        let c = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+        c.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        
+        b.addSubview(c)
+        c.snp.makeConstraints { make in
+            make.centerX.equalTo(b)
+            make.top.equalTo(b.snp.top).inset(20)
+        }
+        
+        return b
+    }()
+    private lazy var doneButtonTitleLabel: CustomButton = {
+       
+        let b = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+        
+        return b
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        addBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        configureDefaultView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -26,19 +124,101 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         sheetCoordinator?.startTracking(item: self)
     }
     
-    private func addBar() {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         
-        view.addSubview(bar)
+        view.endEditing(true)
+    }
+    
+    @objc private func askExcommunication() {
+        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, completion: {
+            print(#function)
+        })
+        self.defaultView.isHidden = true
+    }
+    
+    @objc private func keyboardUp() {
+        sheetCoordinator?.setPosition(Const.screenHeight * 0.25, animated: true)
+    }
+    
+    @objc private func keyboardDown() {
+        sheetCoordinator?.setPosition(Const.screenHeight * 0.5, animated: true)
+    }
+    
+    @objc private func ownerButtonTapped() {
+        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, completion: {
+            print(#function)
+        })
+        self.defaultView.isHidden = true
+    }
+    
+    @objc private func toggleManagerButton() {
+        managerButton.isSelected.toggle()
+        managerButton.isSelected ? managerButton.easyConfigure(title: "관리자", backgroundColor: .appColor(.keyColor1), textColor: .systemBackground, borderColor: .keyColor1, radius: 12.5) : managerButton.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+    }
+    
+    @objc private func doneButtonTapped() {
+        print(#function)
+    }
+    
+    private func configureDefaultView() {
         
-        bar.backgroundColor = .appColor(.ppsGray2)
-        bar.clipsToBounds = true
-        bar.layer.cornerRadius = 2
+        view.addSubview(defaultView)
+        defaultView.snp.makeConstraints { make in
+            make.edges.equalTo(view)
+        }
+        
+        defaultView.addSubview(bar)
+        defaultView.addSubview(profileView)
+        defaultView.addSubview(nicknameLabel)
+        defaultView.addSubview(excommunicatingButton)
+        defaultView.addSubview(separator)
+        defaultView.addSubview(ownerButton)
+        defaultView.addSubview(managerButton)
+        defaultView.addSubview(roleInputField)
+        defaultView.addSubview(doneButton)
+        
         
         bar.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(6)
+            make.top.equalTo(defaultView.snp.top).inset(6)
             make.centerX.equalTo(view)
             make.height.equalTo(4)
             make.width.equalTo(46)
+        }
+        
+        profileView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp.top).inset(30)
+            make.leading.equalTo(view.snp.leading).inset(20)
+        }
+        
+        nicknameLabel.centerY(inView: profileView)
+        nicknameLabel.anchor(leading: profileView.trailingAnchor, leadingConstant: 10)
+        
+        excommunicatingButton.centerY(inView: profileView)
+        excommunicatingButton.anchor(trailing: view.trailingAnchor, trailingConstant: 33, width: 48)
+        
+        separator.anchor(top: profileView.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 1)
+        
+        ownerButton.snp.makeConstraints { make in
+            make.leading.equalTo(view.snp.leading).inset(40)
+            make.top.equalTo(separator.snp.bottom).offset(20)
+            make.width.equalTo(67)
+        }
+        
+        managerButton.snp.makeConstraints { make in
+            make.leading.equalTo(ownerButton.snp.trailing).offset(10)
+            make.top.equalTo(ownerButton.snp.top)
+            make.width.equalTo(57)
+        }
+        
+        roleInputField.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(defaultView).inset(31)
+            make.top.equalTo(managerButton.snp.bottom).offset(18)
+        }
+        
+        doneButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(defaultView)
+            make.top.equalTo(roleInputField.snp.bottom).offset(63)
         }
     }
 }

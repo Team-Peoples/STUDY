@@ -18,18 +18,18 @@ extension UIView {
 
 final class CustomButton: UIButton {
     
-    init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
+    init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
 
-        configure(title: title, isBold: isBold, isFill: isFill, size: size, height: height)
+        configure(title: title, isBold: isBold, isFill: isFill, fontSize: fontSize, height: height)
     }
     
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
-        configure(title: "다음", isBold: true, isFill: true, size: 18, height: 50)
+        configure(title: "다음", isBold: true, isFill: true, fontSize: 18, height: 50)
     }
     
-    private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
+    private func configure(title: String, isBold: Bool, isFill: Bool, fontSize: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
         configureBorder(color: .keyColor1, width: 1, radius: height / 2)
@@ -42,8 +42,15 @@ final class CustomButton: UIButton {
             backgroundColor = .systemBackground
             setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         }
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
         setHeight(height)
+    }
+    
+    internal func fillIn(title: String) {
+        
+        setTitle(title, for: .normal)
+        backgroundColor = UIColor.appColor(.keyColor1)
+        setTitleColor(.white, for: .normal)
     }
     
     internal func fillOut(title: String) {
@@ -53,13 +60,13 @@ final class CustomButton: UIButton {
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
     
-    internal func fillIn(title: String) {
-        
+    internal func easyConfigure(title: String, backgroundColor: UIColor, textColor: UIColor, borderColor: AssetColor, radius: CGFloat) {
         setTitle(title, for: .normal)
-        backgroundColor = UIColor.appColor(.keyColor1)
-        setTitleColor(.white, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+        configureBorder(color: borderColor, width: 1, radius: radius)
     }
-
+    
     func resetColorFor(normal: AssetColor, forSelected: AssetColor) {
         setTitleColor(UIColor.appColor(forSelected), for: .selected)
         setTitleColor(UIColor.appColor(normal), for: .normal)
@@ -417,8 +424,6 @@ class ProfileImageSelectorView: UIView {
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     private let roleMark = UIButton(frame: .zero)
     
-    
-    
     init(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         super.init(frame: .zero)
         addSubviews()
@@ -452,7 +457,7 @@ class ProfileImageSelectorView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-        
+    
     private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
         configure(image)
         internalImageView.clipsToBounds = true
@@ -473,11 +478,16 @@ class ProfileImageSelectorView: UIView {
         if isManager {
             
             backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
-            backgroundView.setDimensions(height: size + 4, width: size + 4)
+            setDimensions(height: size + 4, width: size + 4)
+            
             configureAdminMark()
 
         } else {
-            backgroundView.setDimensions(height: size + 2, width: size + 2)
+            
+            setDimensions(height: size + 2, width: size + 2)
+        }
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalTo(self)
         }
     }
     
@@ -687,6 +697,7 @@ final class BrandSwitch: UIControl {
 
 final class RoundableView: UIView {
     override func layoutSubviews() {
+        print(#function)
         super.layoutSubviews()
         self.layer.cornerRadius = self.frame.height / 2
     }
@@ -880,7 +891,7 @@ class ToastMessage: UIView {
 
 final class PurpleRoundedInputField: UITextField {
     
-    init(target: AnyObject?, action: Selector) {
+    init(target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
         
         backgroundColor = UIColor.appColor(.background)
@@ -888,6 +899,9 @@ final class PurpleRoundedInputField: UITextField {
         leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
         leftViewMode = .always
         isSecureTextEntry = true
+        
+        guard let action = action, let target = target else { return }
+        
         addRightViewOnField(target: target, action: action)
     }
     
