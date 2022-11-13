@@ -740,7 +740,7 @@ public class UBottomSheetCoordinator: NSObject {
     }
     
 //    🛑EHD: library overriding
-    public func appearTwice(_ position: CGFloat, animated: Bool, completion: @escaping () -> ()) {
+    public func appearTwice(_ position: CGFloat, animated: Bool, twiceHeight: CGFloat, completion: @escaping () -> ()) {
         
         guard position != 0 else {
             return
@@ -761,7 +761,8 @@ public class UBottomSheetCoordinator: NSObject {
                 self.container!.frame = frame
                 self.parent.view.layoutIfNeeded()
             }, completion: { finished in
-                self.setPosition(self.availableHeight * 0.6, animated: true)
+                self.setPosition(twiceHeight, animated: true)
+                completion()
             })
         } else {
             self.container!.frame = frame
