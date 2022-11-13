@@ -80,6 +80,7 @@ final class CreatingStudyViewController: UIViewController {
         
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
         nextButton.isEnabled = false
+        
         setConstraints()
     }
     

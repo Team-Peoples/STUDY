@@ -44,7 +44,7 @@ class SignUpViewController: UIViewController {
     }()
     
     private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
-    
+
     var bottomConstraint: NSLayoutConstraint!
     
     private func addSubviews() {
@@ -57,7 +57,6 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         view.backgroundColor = .systemBackground
         
@@ -93,6 +92,9 @@ class SignUpViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
         setConstraints()
     }
     
@@ -123,7 +125,7 @@ class SignUpViewController: UIViewController {
     
         scrollView.showsVerticalScrollIndicator = false
         
-        scrollView.anchor(top: safeArea.bottomAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
+        scrollView.anchor(top: safeArea.topAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
         scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
         
         containerView.snp.makeConstraints { make in
@@ -216,7 +218,7 @@ class SignUpViewController: UIViewController {
         case passwordInputField:
 
             if let password = textField.text {
-                let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{5,}", options: .regularExpression)
+                let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!.?@#$%^&*()_+=-]).{5,}", options: .regularExpression)
                 passwordValidationOkay = range != nil ? true : false
             }
         case checkInputField:

@@ -32,7 +32,6 @@ class AnnouncementViewController: UIViewController {
             }
         }
     }
-    
     var announcement: Announcement? {
         didSet {
             

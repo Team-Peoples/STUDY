@@ -33,8 +33,6 @@ final class CustomButton: UIButton {
         
         setTitle(title, for: .normal)
         configureBorder(color: .keyColor1, width: 1, radius: height / 2)
-      
-        
         
         if isFill {
             backgroundColor = UIColor.appColor(.keyColor1)
@@ -732,13 +730,11 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         super.init(coder: coder)
         
         delegate = self
-
         backgroundColor = UIColor.appColor(.background)
         font = .boldSystemFont(ofSize: 20)
         textColor = UIColor.appColor(.ppsGray1)
         textAlignment = .center
         text = "--"
-
         setPicker()
         
     }
@@ -790,7 +786,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         // 악세사리로 추가한다.
         self.inputAccessoryView = toolBar
     }
-
+    
     // "완료" 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
     @objc private func donePicker() {
         let row = self.picker.selectedRow(inComponent: 0)
@@ -798,7 +794,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         self.text = self.strArray[row]
         self.resignFirstResponder()
     }
-
+    
     // "취소" 클릭 시 textfield의 텍스트 값을 nil로 처리 후 입력창 내리기
     @objc private func cancelPicker() {
         self.resignFirstResponder()
@@ -879,6 +875,45 @@ class ToastMessage: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+final class PurpleRoundedInputField: UITextField {
+    
+    init(target: AnyObject?, action: Selector) {
+        super.init(frame: .zero)
+        
+        backgroundColor = UIColor.appColor(.background)
+        textColor = UIColor.appColor(.ppsGray1)
+        leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        leftViewMode = .always
+        isSecureTextEntry = true
+        addRightViewOnField(target: target, action: action)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setNeedsLayout() {
+        super.setNeedsLayout()
+        
+        self.layer.cornerRadius = self.frame.height / 2
+        setHeight(40)
+    }
+    
+    private func addRightViewOnField(target: AnyObject?, action: Selector) {
+        
+        let rightButton = UIButton(frame: .zero)
+        
+        rightButton.tintColor = UIColor.appColor(.keyColor3)
+        rightButton.addTarget(target, action: action, for: .touchUpInside)
+    
+        rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
+        rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
+        
+        rightView = rightButton
+        rightViewMode = .always
     }
     
     func update(alpha: CGFloat, of view: UIView) {
