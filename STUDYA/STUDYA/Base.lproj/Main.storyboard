@@ -615,7 +615,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="918"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vya-8t-cHI">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="836.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="840.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디를 만들었어요!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdQ-mn-JiZ">
                                                 <rect key="frame" x="20" y="40" width="200" height="29"/>
@@ -752,7 +752,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7EC-RS-6Fp">
-                                                <rect key="frame" x="20" y="266" width="374" height="460.5"/>
+                                                <rect key="frame" x="20" y="266" width="374" height="464.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 규칙" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wp9-Ww-ewh">
                                                         <rect key="frame" x="20" y="20" width="82.5" height="21.5"/>
@@ -768,36 +768,36 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="강퇴 조건" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uoq-yd-wec">
-                                                        <rect key="frame" x="35" y="225" width="49" height="16"/>
+                                                        <rect key="frame" x="35" y="229" width="49" height="16"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                                         <color key="textColor" name="ppsGray1"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bHD-OD-VHp">
-                                                        <rect key="frame" x="20" y="57" width="10" height="12"/>
+                                                        <rect key="frame" x="20" y="61" width="10" height="12"/>
                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="check" symbolScale="large"/>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nIE-S3-HbW">
-                                                        <rect key="frame" x="20" y="227" width="10" height="12"/>
+                                                        <rect key="frame" x="20" y="231" width="10" height="12"/>
                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="check" symbolScale="large"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 진행 방식" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VAb-iH-UG4">
-                                                        <rect key="frame" x="20" y="317" width="118" height="22"/>
+                                                        <rect key="frame" x="20" y="321" width="118" height="22"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                         <color key="textColor" name="ppsBlack"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="acD-BM-Vi5">
-                                                        <rect key="frame" x="17" y="343" width="340" height="2"/>
+                                                        <rect key="frame" x="17" y="347" width="340" height="2"/>
                                                         <color key="backgroundColor" name="ppsBlack"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="2" id="1pZ-Jl-pM2"/>
                                                         </constraints>
                                                     </view>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="h1D-yb-Xwz">
-                                                        <rect key="frame" x="20" y="357" width="334" height="73.5"/>
+                                                        <rect key="frame" x="20" y="361" width="334" height="73.5"/>
                                                         <color key="backgroundColor" name="background"/>
                                                         <string key="text">자유 형식입니다
 상자와 좌우 20px의 여백을 유지하고 자동 줄바꿈
@@ -813,13 +813,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </textView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출결 &amp; 벌금" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xma-Bu-zdM">
-                                                        <rect key="frame" x="35" y="55.5" width="57" height="14.5"/>
+                                                        <rect key="frame" x="35" y="59.5" width="57" height="14.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                         <color key="textColor" name="ppsGray1"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Jh-Si-Hwq">
-                                                        <rect key="frame" x="34" y="82" width="153" height="15"/>
+                                                        <rect key="frame" x="34" y="86" width="153" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 시작 후 00분부터 지각" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nE-Sz-LCl">
                                                                 <rect key="frame" x="10" y="0.0" width="143" height="15"/>
@@ -848,7 +848,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1r4-8N-mfY">
-                                                        <rect key="frame" x="34" y="101" width="153" height="15"/>
+                                                        <rect key="frame" x="34" y="105" width="153" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 시작 후 00분부터 결석" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mKm-wE-tao">
                                                                 <rect key="frame" x="10" y="0.0" width="143" height="15"/>
@@ -876,7 +876,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwn-YP-5rD">
-                                                        <rect key="frame" x="34" y="136" width="93" height="15"/>
+                                                        <rect key="frame" x="34" y="140" width="93" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="지각 00분당 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPY-Yo-Nux">
                                                                 <rect key="frame" x="10" y="0.0" width="83" height="15"/>
@@ -904,7 +904,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uMJ-CE-fgZ">
-                                                        <rect key="frame" x="34" y="155" width="85" height="15"/>
+                                                        <rect key="frame" x="34" y="159" width="85" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="결석 0회당 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6kS-dl-xey">
                                                                 <rect key="frame" x="10" y="0.0" width="75" height="15"/>
@@ -932,7 +932,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p4S-Xp-oYj">
-                                                        <rect key="frame" x="34" y="190" width="63" height="15"/>
+                                                        <rect key="frame" x="34" y="194" width="63" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="보증금 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfW-zo-x4B">
                                                                 <rect key="frame" x="10" y="0.0" width="53" height="15"/>
@@ -960,7 +960,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j9R-Cd-qck">
-                                                        <rect key="frame" x="34" y="253" width="87" height="15"/>
+                                                        <rect key="frame" x="34" y="257" width="87" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0번 지각시 강퇴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wnu-r8-pUY">
                                                                 <rect key="frame" x="10" y="0.0" width="77" height="15"/>
@@ -988,7 +988,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7M1-hJ-1Ey">
-                                                        <rect key="frame" x="34" y="272" width="87" height="15"/>
+                                                        <rect key="frame" x="34" y="276" width="87" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0번 결석시 강퇴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kg1-v5-8Ub">
                                                                 <rect key="frame" x="10" y="0.0" width="77" height="15"/>
@@ -1057,7 +1057,7 @@
                                                     <constraint firstAttribute="bottom" secondItem="h1D-yb-Xwz" secondAttribute="bottom" constant="30" id="scz-IR-qtk"/>
                                                     <constraint firstItem="1r4-8N-mfY" firstAttribute="leading" secondItem="7EC-RS-6Fp" secondAttribute="leading" constant="34" id="v3w-Ws-Gvt"/>
                                                     <constraint firstItem="j9R-Cd-qck" firstAttribute="leading" secondItem="7EC-RS-6Fp" secondAttribute="leading" constant="34" id="vek-bJ-PUE"/>
-                                                    <constraint firstItem="xma-Bu-zdM" firstAttribute="top" secondItem="aQn-Im-pKE" secondAttribute="bottom" constant="8" id="yRp-AW-IFh"/>
+                                                    <constraint firstItem="xma-Bu-zdM" firstAttribute="top" secondItem="aQn-Im-pKE" secondAttribute="bottom" constant="12" id="yRp-AW-IFh"/>
                                                     <constraint firstItem="Uoq-yd-wec" firstAttribute="leading" secondItem="nIE-S3-HbW" secondAttribute="trailing" constant="5" id="yuT-sg-JRi"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
@@ -1146,7 +1146,7 @@
                                 <rect key="frame" x="0.0" y="48" width="414" height="918"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bm-VV-YqH">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="926.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="930.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 정보" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhW-8h-fNh">
                                                 <rect key="frame" x="30" y="40" width="190" height="19.5"/>
@@ -1317,7 +1317,7 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qF8-Jp-ZZN">
-                                                <rect key="frame" x="20" y="266" width="374" height="460.5"/>
+                                                <rect key="frame" x="20" y="266" width="374" height="464.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 규칙" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E0e-Ku-Fx4">
                                                         <rect key="frame" x="20" y="20" width="82.5" height="21.5"/>
@@ -1333,36 +1333,36 @@
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="강퇴 조건" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nK7-XU-dEc">
-                                                        <rect key="frame" x="35" y="225" width="49" height="16"/>
+                                                        <rect key="frame" x="35" y="229" width="49" height="16"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                                         <color key="textColor" name="ppsGray1"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7qv-Ea-X3X">
-                                                        <rect key="frame" x="20" y="57" width="10" height="12"/>
+                                                        <rect key="frame" x="20" y="61" width="10" height="12"/>
                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="check" symbolScale="large"/>
                                                     </imageView>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Th0-jJ-QmL">
-                                                        <rect key="frame" x="20" y="227" width="10" height="12"/>
+                                                        <rect key="frame" x="20" y="231" width="10" height="12"/>
                                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <imageReference key="image" image="check" symbolScale="large"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 진행 방식" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W30-DA-XF0">
-                                                        <rect key="frame" x="20" y="317" width="118" height="22"/>
+                                                        <rect key="frame" x="20" y="321" width="118" height="22"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                         <color key="textColor" name="ppsBlack"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hdj-fI-NOz">
-                                                        <rect key="frame" x="17" y="343" width="340" height="2"/>
+                                                        <rect key="frame" x="17" y="347" width="340" height="2"/>
                                                         <color key="backgroundColor" name="ppsBlack"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="2" id="FmZ-o7-Sg2"/>
                                                         </constraints>
                                                     </view>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="rNR-sw-GTL">
-                                                        <rect key="frame" x="20" y="357" width="334" height="73.5"/>
+                                                        <rect key="frame" x="20" y="361" width="334" height="73.5"/>
                                                         <color key="backgroundColor" name="background"/>
                                                         <string key="text">자유 형식입니다
 상자와 좌우 20px의 여백을 유지하고 자동 줄바꿈
@@ -1378,13 +1378,13 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </textView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출결 &amp; 벌금" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ILx-9J-3f0">
-                                                        <rect key="frame" x="35" y="55.5" width="57" height="14.5"/>
+                                                        <rect key="frame" x="35" y="59.5" width="57" height="14.5"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                                         <color key="textColor" name="ppsGray1"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lEX-zX-z9s">
-                                                        <rect key="frame" x="34" y="82" width="153" height="15"/>
+                                                        <rect key="frame" x="34" y="86" width="153" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 시작 후 00분부터 지각" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fTZ-il-Svm">
                                                                 <rect key="frame" x="10" y="0.0" width="143" height="15"/>
@@ -1413,7 +1413,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-4l-kEm">
-                                                        <rect key="frame" x="34" y="101" width="153" height="15"/>
+                                                        <rect key="frame" x="34" y="105" width="153" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스터디 시작 후 00분부터 결석" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cjf-rJ-Axa">
                                                                 <rect key="frame" x="10" y="0.0" width="143" height="15"/>
@@ -1441,7 +1441,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eVI-os-hjs">
-                                                        <rect key="frame" x="34" y="136" width="93" height="15"/>
+                                                        <rect key="frame" x="34" y="140" width="93" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="지각 00분당 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xYx-wi-Vyw">
                                                                 <rect key="frame" x="10" y="0.0" width="83" height="15"/>
@@ -1469,7 +1469,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eiB-4t-btd">
-                                                        <rect key="frame" x="34" y="155" width="85" height="15"/>
+                                                        <rect key="frame" x="34" y="159" width="85" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="결석 0회당 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCJ-N1-2za">
                                                                 <rect key="frame" x="10" y="0.0" width="75" height="15"/>
@@ -1497,7 +1497,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gcf-CL-Dlc">
-                                                        <rect key="frame" x="34" y="190" width="63" height="15"/>
+                                                        <rect key="frame" x="34" y="194" width="63" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="보증금 0원" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICY-62-UC0">
                                                                 <rect key="frame" x="10" y="0.0" width="53" height="15"/>
@@ -1525,7 +1525,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2LR-rw-633">
-                                                        <rect key="frame" x="34" y="253" width="87" height="15"/>
+                                                        <rect key="frame" x="34" y="257" width="87" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0번 지각시 강퇴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="25k-n2-R2J">
                                                                 <rect key="frame" x="10" y="0.0" width="77" height="15"/>
@@ -1553,7 +1553,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cu3-WN-LbH">
-                                                        <rect key="frame" x="34" y="272" width="87" height="15"/>
+                                                        <rect key="frame" x="34" y="276" width="87" height="15"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0번 결석시 강퇴" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfw-Uu-iHr">
                                                                 <rect key="frame" x="10" y="0.0" width="77" height="15"/>
@@ -1593,7 +1593,7 @@
                                                         </connections>
                                                     </button>
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOl-MG-yKe">
-                                                        <rect key="frame" x="311" y="318" width="46" height="20"/>
+                                                        <rect key="frame" x="311" y="322" width="46" height="20"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="etc" title="">
                                                             <color key="baseForegroundColor" name="ppsGray1"/>
@@ -1616,7 +1616,7 @@
                                                     <constraint firstItem="E0e-Ku-Fx4" firstAttribute="leading" secondItem="qF8-Jp-ZZN" secondAttribute="leading" constant="20" id="GL0-en-L5U"/>
                                                     <constraint firstItem="W30-DA-XF0" firstAttribute="leading" secondItem="qF8-Jp-ZZN" secondAttribute="leading" constant="20" id="GSp-OI-eGC"/>
                                                     <constraint firstAttribute="trailing" secondItem="rNR-sw-GTL" secondAttribute="trailing" constant="20" id="Gor-Mo-Rce"/>
-                                                    <constraint firstItem="ILx-9J-3f0" firstAttribute="top" secondItem="gKo-7F-gkq" secondAttribute="bottom" constant="8" id="K3H-Z1-KXY"/>
+                                                    <constraint firstItem="ILx-9J-3f0" firstAttribute="top" secondItem="gKo-7F-gkq" secondAttribute="bottom" constant="12" id="K3H-Z1-KXY"/>
                                                     <constraint firstItem="gKo-7F-gkq" firstAttribute="top" secondItem="hZK-O1-yW9" secondAttribute="bottom" constant="5" id="Kgw-sx-AkU"/>
                                                     <constraint firstItem="2Ga-4l-kEm" firstAttribute="leading" secondItem="qF8-Jp-ZZN" secondAttribute="leading" constant="34" id="LJT-RQ-RIl"/>
                                                     <constraint firstItem="E0e-Ku-Fx4" firstAttribute="top" secondItem="qF8-Jp-ZZN" secondAttribute="top" constant="20" id="NUw-2L-83Z"/>
@@ -1658,7 +1658,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZI6-tY-Jf4">
-                                                <rect key="frame" x="157" y="756.5" width="100" height="40"/>
+                                                <rect key="frame" x="157" y="760.5" width="100" height="40"/>
                                                 <color key="backgroundColor" name="ppsGray2"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="l02-iZ-ucQ"/>

@@ -144,15 +144,34 @@ class StudyInfoViewController: UIViewController {
         let vc = storyboard.instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
         
         vc.modalPresentationStyle = .fullScreen
+        
         present(vc, animated: true)
     }
     
     @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
         switch sender.title(for: .normal) {
             case "스터디 탈퇴":
-                print("ㅇㄴㅇㄴ")
+                let vcToPresent = StudyExitViewController()
+                vcToPresent.type = "스터디 탈퇴"
+                
+                if let sheet = vcToPresent.sheetPresentationController {
+                    
+                    sheet.detents = [ .custom { _ in return 300 } ]
+                    
+                    sheet.preferredCornerRadius = 24
+                }
+                present(vcToPresent, animated: true, completion: nil)
             case "스터디 종료":
-                print("ㅇㄴㅇㄴ")
+                let vcToPresent = StudyExitViewController()
+                vcToPresent.type = "스터디 종료"
+                
+                if let sheet = vcToPresent.sheetPresentationController {
+                    
+                    sheet.detents = [ .custom { _ in return 300 } ]
+                    
+                    sheet.preferredCornerRadius = 24
+                }
+                present(vcToPresent, animated: true, completion: nil)
             default:
                 return
         }
