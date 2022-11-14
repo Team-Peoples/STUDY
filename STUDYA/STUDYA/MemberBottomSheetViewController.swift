@@ -202,12 +202,18 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         return v
     }()
     
+    internal var tabBarHeight: CGFloat?
+    private let bottomViewHeight: CGFloat = 320
+    private lazy var bottomViewDefaultPosition = sheetCoordinator!.availableHeight - bottomViewHeight - tabBarHeight!
+    private let askViewHeight: CGFloat = 300
+    private lazy var askViewDefaultPosition = sheetCoordinator!.availableHeight - askViewHeight - tabBarHeight!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardUp), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         configureDefaultView()
         view.addSubview(askChangingOwnerView)
@@ -234,7 +240,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
     }
     
     @objc private func askExcommunication() {
-        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, twiceHeight: Const.screenHeight * 0.6, completion: {
+        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: askViewDefaultPosition, completion: {
             UIView.animate(withDuration: 0.1, delay: 0) {
                 self.defaultView.backgroundColor = .systemBackground
             } completion: { _ in
@@ -244,16 +250,21 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         })
     }
     
-    @objc private func keyboardUp() {
-        sheetCoordinator?.setPosition(Const.screenHeight * 0.25, animated: true)
+    @objc private func onKeyboardAppear(_ notification: NSNotification) {
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardFrame.cgRectValue
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        
+        sheetCoordinator?.setPosition( sheetCoordinator!.availableHeight - keyboardSize.height - 320, animated: true)
     }
     
-    @objc private func keyboardDown() {
-        sheetCoordinator?.setPosition(Const.screenHeight * 0.5, animated: true)
+    @objc private func onKeyboardDisappear() {
+        sheetCoordinator?.setPosition(bottomViewDefaultPosition, animated: true)
     }
     
     @objc private func ownerButtonTapped() {
-        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, twiceHeight: Const.screenHeight * 0.6, completion: {
+        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: askViewDefaultPosition, completion: {
             UIView.animate(withDuration: 0.1, delay: 0) {
                 self.defaultView.backgroundColor = .systemBackground
             } completion: { _ in
@@ -273,7 +284,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
     }
     
     @objc private func ownerViewBackButtonTapped() {
-        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, twiceHeight: Const.screenHeight * 0.5, completion: {
+        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: bottomViewDefaultPosition, completion: {
             UIView.animate(withDuration: 0.1, delay: 0) {
                 self.askChangingOwnerView.backgroundColor = .systemBackground
             } completion: { _ in
@@ -288,7 +299,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
     }
     
     @objc private func excommuViewBackButtonTapped() {
-        sheetCoordinator?.appearTwice(Const.screenHeight * 0.94, animated: true, twiceHeight: Const.screenHeight * 0.5, completion: {
+        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: bottomViewDefaultPosition, completion: {
             UIView.animate(withDuration: 0.1, delay: 0) {
                 self.askExCommunicationView.backgroundColor = .systemBackground
             } completion: { _ in

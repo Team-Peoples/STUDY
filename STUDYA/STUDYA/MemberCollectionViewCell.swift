@@ -33,6 +33,8 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 12, isBold: true)
     private let button = UIButton(frame: .zero)
     
+    internal var tabBarHeight: CGFloat?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -69,6 +71,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     var isGoingDown = false
     
     @objc private func profileViewTapped() {
-        heightCoordinator?.setPosition(UIScreen.main.bounds.height * 0.5, animated: true)
+        let bottomViewHeight = 320
+        heightCoordinator?.setPosition(heightCoordinator!.availableHeight - 320 - tabBarHeight!, animated: true)
     }
 }

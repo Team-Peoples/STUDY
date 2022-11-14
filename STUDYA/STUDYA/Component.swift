@@ -595,6 +595,21 @@ final class BrandSwitch: UIControl {
         let view = RoundableView()
         view.backgroundColor = UIColor.appColor(.background)
         view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let l = CustomLabel(title: "일반", tintColor: .keyColor1, size: 10, isBold: true)
+        let l1 = CustomLabel(title: "관리", tintColor: .whiteLabel, size: 10, isBold: true)
+        
+        view.addSubview(l)
+        view.addSubview(l1)
+        
+        l.snp.makeConstraints { make in
+            make.trailing.top.bottom.equalTo(view).inset(7)
+        }
+        
+        l1.snp.makeConstraints { make in
+            make.leading.top.bottom.equalTo(view).inset(7)
+        }
+        
         return view
     }()
     
@@ -671,7 +686,7 @@ final class BrandSwitch: UIControl {
         self.addSubview(outerView)
         self.addSubview(self.barView)
         self.barView.addSubview(self.circleView)
-        setDimensions(height: 28, width: 50)
+        setDimensions(height: 28, width: 55)
         outerView.anchor(top: topAnchor, topConstant: -1, bottom: bottomAnchor, bottomConstant: -1, leading: leadingAnchor, leadingConstant: -1, trailing: trailingAnchor, trailingConstant: -1)
         NSLayoutConstraint.activate([
             self.barView.leftAnchor.constraint(equalTo: self.leftAnchor),

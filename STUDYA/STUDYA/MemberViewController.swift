@@ -76,6 +76,7 @@ final class MemberViewController: UIViewController {
         if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
         
         BottomVC.sheetCoordinator = sheetCoordinator
+        BottomVC.tabBarHeight = tabBarController?.tabBar.frame.height
         
         sheetCoordinator.addSheet(BottomVC, to: self, didContainerCreate: { container in
             let frame = self.view.frame
@@ -121,6 +122,7 @@ extension MemberViewController: UICollectionViewDataSource {
             
             cell.member = members[indexPath.item - 1]
             cell.heightCoordinator = sheetCoordinator
+            cell.tabBarHeight = tabBarController?.tabBar.frame.height
             
             return cell
         }
