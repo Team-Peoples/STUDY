@@ -19,13 +19,13 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal weak var heightCoordinator: UBottomSheetCoordinator?
+    internal var profileViewTapped: (() -> ())?
     
     private lazy var profileView: ProfileImageSelectorView = {
        
         let p = ProfileImageSelectorView(size: 72)
         
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileViewTapped))
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         p.addGestureRecognizer(recognizer)
         
         return p
@@ -33,12 +33,10 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 12, isBold: true)
     private let button = UIButton(frame: .zero)
     
-    internal var tabBarHeight: CGFloat?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        button.addTarget(self, action: #selector(profileViewTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
         
         contentView.addSubview(profileView)
         contentView.addSubview(nickNameLabel)
@@ -70,8 +68,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     
     var isGoingDown = false
     
-    @objc private func profileViewTapped() {
-        let bottomViewHeight = 320
-        heightCoordinator?.setPosition(heightCoordinator!.availableHeight - 320 - tabBarHeight!, animated: true)
+    @objc private func profileImageTapped() {
+        profileViewTapped!()
     }
 }

@@ -37,10 +37,23 @@ final class MemberViewController: UIViewController {
         Member(nickName: "ehd4", isManager: false, role: "판사")
     ]
     
-    let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
-    let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+    private let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    let BottomVC = MemberBottomSheetViewController()
+    private let BottomVC = MemberBottomSheetViewController()
+    private lazy var dimmingView: UIView = {
+       
+        let v = UIView(frame: .zero)
+        
+        v.backgroundColor = .init(white: 0, alpha: 0.6)
+        v.isHidden = true
+        v.isUserInteractionEnabled = true
+        
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
+        v.addGestureRecognizer(recognizer)
+        
+        return v
+    }()
     
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
@@ -51,6 +64,8 @@ final class MemberViewController: UIViewController {
         
         configureCollectionView()
         dataSource = MemberBottomSheetDataSource()
+        
+        
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -63,6 +78,11 @@ final class MemberViewController: UIViewController {
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
+        }
+        
+        view.addSubview(dimmingView)
+        dimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(view)
         }
     }
     
@@ -89,11 +109,17 @@ final class MemberViewController: UIViewController {
         sheetCoordinator.setCornerRadius(10)
     }
     
+    @objc private func dimmingViewTapped() {
+        
+        sheetCoordinator.setPosition(sheetCoordinator.availableHeight * 0.94, animated: true)
+        dimmingView.isHidden = true
+    }
+    
     private func configureCollectionView() {
         
         flowLayout.itemSize = CGSize(width: 96, height: 114)
-        flowLayout.minimumLineSpacing = 20
-        flowLayout.minimumInteritemSpacing = 25
+        flowLayout.minimumLineSpacing = 24
+        flowLayout.minimumInteritemSpacing = 10
         
         collectionView.collectionViewLayout = flowLayout
         collectionView.dataSource = self
@@ -120,9 +146,13 @@ extension MemberViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
             
+            let bottomViewHeight: CGFloat = 320
+            
             cell.member = members[indexPath.item - 1]
-            cell.heightCoordinator = sheetCoordinator
-            cell.tabBarHeight = tabBarController?.tabBar.frame.height
+            cell.profileViewTapped = { [self] in
+                sheetCoordinator.setPosition(sheetCoordinator.availableHeight - bottomViewHeight - (tabBarController?.tabBar.frame.height ?? 83) , animated: true)
+                dimmingView.isHidden = false
+            }
             
             return cell
         }
