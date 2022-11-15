@@ -19,7 +19,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal var profileViewTapped: (() -> ())?
+    internal var profileViewTapped: ((Member) -> ()) = { _ in}
     
     private lazy var profileView: ProfileImageSelectorView = {
        
@@ -69,6 +69,6 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     var isGoingDown = false
     
     @objc private func profileImageTapped() {
-        profileViewTapped!()
+        profileViewTapped(member!)
     }
 }

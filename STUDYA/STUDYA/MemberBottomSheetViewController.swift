@@ -7,22 +7,18 @@
 
 import UIKit
 
-final class MemberBottomSheetViewController: UIViewController, Draggable {
+final class MemberBottomSheetViewController: UIViewController {
     
-    internal weak var sheetCoordinator: UBottomSheetCoordinator?
-    internal weak var dataSource: UBottomSheetCoordinatorDataSource?
+    internal var isMaster = true
+    internal lazy var member = Member(nickName: "", isManager: false) {
+        didSet {
+            profileView.configure(member.profileImage)
+            nicknameLabel.text = member.nickName
+            roleInputField.text = member.role
+            member.isManager ? managerButton.easyConfigure(title: "관리자", backgroundColor: .appColor(.keyColor1), textColor: .systemBackground, borderColor: .keyColor1, radius: 12.5) : managerButton.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+        }
+    }
     
-    private let defaultView = UIView(frame: .zero)
-    private let bar: UIView = {
-       
-        let b = UIView(frame: .zero)
-        
-        b.backgroundColor = .appColor(.ppsGray2)
-        b.clipsToBounds = true
-        b.layer.cornerRadius = 2
-        
-        return b
-    }()
     private let profileView = ProfileImageSelectorView(size: 40)
     private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton: UIButton = {
@@ -35,6 +31,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         b.setTitleColor(.appColor(.subColor1), for: .normal)
         b.layer.cornerRadius = 14
         b.addTarget(self, action: #selector(askExcommunication), for: .touchUpInside)
+        b.isHidden = true
         
         return b
     }()
@@ -51,6 +48,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         
         b.easyConfigure(title: "스터디장", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
         b.addTarget(self, action: #selector(ownerButtonTapped), for: .touchUpInside)
+        b.isHidden = true
         
         return b
     }()
@@ -60,6 +58,7 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         
         b.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
         b.addTarget(self, action: #selector(toggleManagerButton), for: .touchUpInside)
+        b.isHidden = true
         
         return b
     }()
@@ -106,131 +105,21 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         return b
     }()
     
-    private lazy var askChangingOwnerView: UIView = {
-       
-        let v = UIView(frame: .zero)
-        
-        let askLabel = CustomLabel(title: "닉네임님을 스터디장으로 지정할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
-        let descLabel = CustomLabel(title: "스터디장 권한이 양도돼요.", tintColor: .ppsGray1, size: 14)
-        let backButton = UIButton(frame: .zero)
-        let confirmButton = UIButton(frame: .zero)
-        
-        configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: "확인")
-        
-        backButton.addTarget(self, action: #selector(ownerViewBackButtonTapped), for: .touchUpInside)
-        confirmButton.addTarget(self, action: #selector(ownerViewConfirmButtonTapped), for: .touchUpInside)
-        
-        v.addSubview(askLabel)
-        v.addSubview(descLabel)
-        v.addSubview(backButton)
-        v.addSubview(confirmButton)
-        
-        askLabel.snp.makeConstraints { make in
-            make.leading.equalTo(v).inset(20)
-            make.top.equalTo(v).inset(30)
-        }
-        
-        descLabel.snp.makeConstraints { make in
-            make.leading.equalTo(askLabel)
-            make.top.equalTo(askLabel.snp.bottom).offset(20)
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(v).inset(20)
-            make.top.equalTo(descLabel.snp.bottom).offset(69)
-            make.width.equalTo(Const.screenWidth * 8/9)
-            make.height.equalTo(40)
-        }
-        
-        confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(backButton)
-            make.top.equalTo(backButton.snp.bottom).offset(14)
-            make.width.equalTo(Const.screenWidth * 8/9)
-            make.height.equalTo(40)
-        }
-        
-        v.isHidden = true
-        return v
-    }()
-    
-    private lazy var askExCommunicationView: UIView = {
-       
-        let v = UIView(frame: .zero)
-        
-        let askLabel = CustomLabel(title: "닉네임님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
-        let descLabel = CustomLabel(title: "강퇴한 멤버는 이 스터디에 다시 참여할 수 없어요.", tintColor: .ppsGray1, size: 14)
-        let backButton = UIButton(frame: .zero)
-        let confirmButton = UIButton(frame: .zero)
-        
-        configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: "확인")
-        
-        backButton.addTarget(self, action: #selector(excommuViewBackButtonTapped), for: .touchUpInside)
-        confirmButton.addTarget(self, action: #selector(excommuViewConfirmButtonTapped), for: .touchUpInside)
-        
-        v.addSubview(askLabel)
-        v.addSubview(descLabel)
-        v.addSubview(backButton)
-        v.addSubview(confirmButton)
-        
-        askLabel.snp.makeConstraints { make in
-            make.leading.equalTo(v).inset(20)
-            make.top.equalTo(v).inset(30)
-        }
-        
-        descLabel.snp.makeConstraints { make in
-            make.leading.equalTo(askLabel)
-            make.top.equalTo(askLabel.snp.bottom).offset(20)
-        }
-        
-        backButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(v).inset(20)
-            make.top.equalTo(descLabel.snp.bottom).offset(69)
-            make.width.equalTo(Const.screenWidth * 8/9)
-            make.height.equalTo(40)
-        }
-        
-        confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(backButton)
-            make.top.equalTo(backButton.snp.bottom).offset(14)
-            make.width.equalTo(Const.screenWidth * 8/9)
-            make.height.equalTo(40)
-        }
-        
-        v.isHidden = true
-        return v
-    }()
-    
-    internal var tabBarHeight: CGFloat?
     private let bottomViewHeight: CGFloat = 320
-    private lazy var bottomViewDefaultPosition = sheetCoordinator!.availableHeight - bottomViewHeight - tabBarHeight!
     private let askViewHeight: CGFloat = 300
-    private lazy var askViewDefaultPosition = sheetCoordinator!.availableHeight - askViewHeight - tabBarHeight!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isMaster {
+            excommunicatingButton.isHidden = false
+            ownerButton.isHidden = false
+            managerButton.isHidden = false
+        }
+        
         view.backgroundColor = .systemBackground
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         configureDefaultView()
-        view.addSubview(askChangingOwnerView)
-        askChangingOwnerView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
-        }
-        
-        view.addSubview(askExCommunicationView)
-        askExCommunicationView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
-        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        sheetCoordinator?.startTracking(item: self)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -240,38 +129,37 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
     }
     
     @objc private func askExcommunication() {
-        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: askViewDefaultPosition, completion: {
-            UIView.animate(withDuration: 0.1, delay: 0) {
-                self.defaultView.backgroundColor = .systemBackground
-            } completion: { _ in
-                self.defaultView.isHidden = true
-                self.askExCommunicationView.isHidden = false
-            }
-        })
-    }
-    
-    @objc private func onKeyboardAppear(_ notification: NSNotification) {
-        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        guard let presentingViewController = self.presentingViewController else { return }
         
-        let keyboardSize = keyboardFrame.cgRectValue
-        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-        
-        sheetCoordinator?.setPosition( sheetCoordinator!.availableHeight - keyboardSize.height - 320, animated: true)
+        self.dismiss(animated: true) {
+            
+            let presentingVC = AskExcommunicationViewController()
+            presentingVC.willPresentingAgainVC = self
+            
+            guard let sheet = presentingVC.sheetPresentationController else { return }
+  
+            sheet.detents = [ .custom { _ in return 300 }]
+            sheet.preferredCornerRadius = 24
+
+            presentingViewController.present(presentingVC, animated: true)
+        }
     }
-    
-    @objc private func onKeyboardDisappear() {
-        sheetCoordinator?.setPosition(bottomViewDefaultPosition, animated: true)
-    }
-    
+
     @objc private func ownerButtonTapped() {
-        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: askViewDefaultPosition, completion: {
-            UIView.animate(withDuration: 0.1, delay: 0) {
-                self.defaultView.backgroundColor = .systemBackground
-            } completion: { _ in
-                self.defaultView.isHidden = true
-                self.askChangingOwnerView.isHidden = false
-            }
-        })
+        guard let presentingViewController = self.presentingViewController else { return }
+        
+        self.dismiss(animated: true) {
+            
+            let presentingVC = AskChangingOwnerViewController()
+            presentingVC.willPresentingAgainVC = self
+            
+            guard let sheet = presentingVC.sheetPresentationController else { return }
+  
+            sheet.detents = [ .custom { _ in return 300 }]
+            sheet.preferredCornerRadius = 24
+
+            presentingViewController.present(presentingVC, animated: true)
+        }
     }
 
     @objc private func toggleManagerButton() {
@@ -283,60 +171,20 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         print(#function)
     }
     
-    @objc private func ownerViewBackButtonTapped() {
-        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: bottomViewDefaultPosition, completion: {
-            UIView.animate(withDuration: 0.1, delay: 0) {
-                self.askChangingOwnerView.backgroundColor = .systemBackground
-            } completion: { _ in
-                self.askChangingOwnerView.isHidden = true
-                self.defaultView.isHidden = false
-            }
-        })
-    }
-    
-    @objc private func ownerViewConfirmButtonTapped() {
-        print(#function)
-    }
-    
-    @objc private func excommuViewBackButtonTapped() {
-        sheetCoordinator?.appearTwice(sheetCoordinator!.availableHeight * 0.94, animated: true, twicePosition: bottomViewDefaultPosition, completion: {
-            UIView.animate(withDuration: 0.1, delay: 0) {
-                self.askExCommunicationView.backgroundColor = .systemBackground
-            } completion: { _ in
-                self.askExCommunicationView.isHidden = true
-                self.defaultView.isHidden = false
-            }
-        })
-    }
-    
-    @objc private func excommuViewConfirmButtonTapped() {
-        print(#function)
-    }
-    
     private func configureDefaultView() {
         
-        view.addSubview(defaultView)
-        defaultView.snp.makeConstraints { make in
+        view.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
         
-        defaultView.addSubview(bar)
-        defaultView.addSubview(profileView)
-        defaultView.addSubview(nicknameLabel)
-        defaultView.addSubview(excommunicatingButton)
-        defaultView.addSubview(separator)
-        defaultView.addSubview(ownerButton)
-        defaultView.addSubview(managerButton)
-        defaultView.addSubview(roleInputField)
-        defaultView.addSubview(doneButton)
-        
-        
-        bar.snp.makeConstraints { make in
-            make.top.equalTo(defaultView.snp.top).inset(6)
-            make.centerX.equalTo(view)
-            make.height.equalTo(4)
-            make.width.equalTo(46)
-        }
+        view.addSubview(profileView)
+        view.addSubview(nicknameLabel)
+        view.addSubview(excommunicatingButton)
+        view.addSubview(separator)
+        view.addSubview(ownerButton)
+        view.addSubview(managerButton)
+        view.addSubview(roleInputField)
+        view.addSubview(doneButton)
         
         profileView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).inset(30)
@@ -364,14 +212,164 @@ final class MemberBottomSheetViewController: UIViewController, Draggable {
         }
         
         roleInputField.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(defaultView).inset(31)
+            make.leading.trailing.equalTo(view).inset(31)
             make.top.equalTo(managerButton.snp.bottom).offset(18)
         }
         
         doneButton.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(defaultView)
+            make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(roleInputField.snp.bottom).offset(63)
         }
+    }
+}
+
+final class AskChangingOwnerViewController: UIViewController {
+        
+    private let askLabel = CustomLabel(title: "닉네임님을 스터디장으로 지정할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
+    private let descLabel = CustomLabel(title: "스터디장 권한이 양도돼요.", tintColor: .ppsGray1, size: 14)
+    private let backButton = UIButton(frame: .zero)
+    private let confirmButton = UIButton(frame: .zero)
+        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
+        
+        configureButton(button: backButton, title: "돌아가기")
+        configureButton(button: confirmButton, title: "확인")
+        
+        backButton.addTarget(self, action: #selector(ownerViewBackButtonTapped), for: .touchUpInside)
+        confirmButton.addTarget(self, action: #selector(ownerViewConfirmButtonTapped), for: .touchUpInside)
+        
+        view.addSubview(askLabel)
+        view.addSubview(descLabel)
+        view.addSubview(backButton)
+        view.addSubview(confirmButton)
+        
+        askLabel.snp.makeConstraints { make in
+            make.leading.equalTo(view).inset(20)
+            make.top.equalTo(view).inset(30)
+        }
+        
+        descLabel.snp.makeConstraints { make in
+            make.leading.equalTo(askLabel)
+            make.top.equalTo(askLabel.snp.bottom).offset(20)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view).inset(20)
+            make.top.equalTo(descLabel.snp.bottom).offset(69)
+            make.width.equalTo(Const.screenWidth * 8/9)
+            make.height.equalTo(40)
+        }
+        
+        confirmButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(backButton)
+            make.top.equalTo(backButton.snp.bottom).offset(14)
+            make.width.equalTo(Const.screenWidth * 8/9)
+            make.height.equalTo(40)
+        }
+    }
+    
+    internal var willPresentingAgainVC: UIViewController?
+    
+    @objc private func ownerViewBackButtonTapped() {
+        guard let presentingViewController = self.presentingViewController else { return }
+        
+        self.dismiss(animated: true) {
+            
+            let presentingVC = self.willPresentingAgainVC!
+            
+            guard let sheet = presentingVC.sheetPresentationController else { return }
+  
+            sheet.detents = [ .custom { _ in return 300 }]
+            sheet.preferredCornerRadius = 24
+
+            presentingViewController.present(presentingVC, animated: true)
+        }
+    }
+    
+    @objc private func ownerViewConfirmButtonTapped() {
+        print(#function)
+    }
+    
+    
+    private func configureButton(button: UIButton, title: String) {
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .appColor(.keyColor1)
+        button.layer.cornerRadius = 12
+    }
+}
+
+final class AskExcommunicationViewController: UIViewController {
+        
+    private let askLabel = CustomLabel(title: "닉네임님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
+    private let descLabel = CustomLabel(title: "강퇴한 멤버는 이 스터디에 다시 참여할 수 없어요.", tintColor: .ppsGray1, size: 14)
+    private let backButton = UIButton(frame: .zero)
+    private let confirmButton = UIButton(frame: .zero)
+        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .systemBackground
+        
+        configureButton(button: backButton, title: "돌아가기")
+        configureButton(button: confirmButton, title: "확인")
+        
+        backButton.addTarget(self, action: #selector(excommuViewBackButtonTapped), for: .touchUpInside)
+        confirmButton.addTarget(self, action: #selector(excommuViewConfirmButtonTapped), for: .touchUpInside)
+        
+        view.addSubview(askLabel)
+        view.addSubview(descLabel)
+        view.addSubview(backButton)
+        view.addSubview(confirmButton)
+        
+        askLabel.snp.makeConstraints { make in
+            make.leading.equalTo(view).inset(20)
+            make.top.equalTo(view).inset(30)
+        }
+        
+        descLabel.snp.makeConstraints { make in
+            make.leading.equalTo(askLabel)
+            make.top.equalTo(askLabel.snp.bottom).offset(20)
+        }
+        
+        backButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view).inset(20)
+            make.top.equalTo(descLabel.snp.bottom).offset(69)
+            make.width.equalTo(Const.screenWidth * 8/9)
+            make.height.equalTo(40)
+        }
+        
+        confirmButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(backButton)
+            make.top.equalTo(backButton.snp.bottom).offset(14)
+            make.width.equalTo(Const.screenWidth * 8/9)
+            make.height.equalTo(40)
+        }
+    }
+    
+    internal var willPresentingAgainVC: UIViewController?
+    
+    @objc private func excommuViewBackButtonTapped() {
+        guard let presentingViewController = self.presentingViewController else { return }
+        
+        self.dismiss(animated: true) {
+            
+            let presentingVC = self.willPresentingAgainVC!
+            
+            guard let sheet = presentingVC.sheetPresentationController else { return }
+  
+            sheet.detents = [ .custom { _ in return 300 }]
+            sheet.preferredCornerRadius = 24
+
+            presentingViewController.present(presentingVC, animated: true)
+        }
+    }
+    
+    @objc private func excommuViewConfirmButtonTapped() {
+        print(#function)
     }
     
     private func configureButton(button: UIButton, title: String) {

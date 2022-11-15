@@ -40,32 +40,13 @@ final class MemberViewController: UIViewController {
     private let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    private let BottomVC = MemberBottomSheetViewController()
-    private lazy var dimmingView: UIView = {
-       
-        let v = UIView(frame: .zero)
-        
-        v.backgroundColor = .init(white: 0, alpha: 0.6)
-        v.isHidden = true
-        v.isUserInteractionEnabled = true
-        
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(dimmingViewTapped))
-        v.addGestureRecognizer(recognizer)
-        
-        return v
-    }()
-    
-    var sheetCoordinator: UBottomSheetCoordinator!
-    var dataSource: UBottomSheetCoordinatorDataSource?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         configureCollectionView()
-        dataSource = MemberBottomSheetDataSource()
-        
-        
+        configureBottomVC()
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -79,40 +60,10 @@ final class MemberViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
-        
-        view.addSubview(dimmingView)
-        dimmingView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
-        }
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        guard sheetCoordinator == nil else { return }
-        
-        sheetCoordinator = UBottomSheetCoordinator(parent: self, delegate: self)
-        
-        if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
-        
-        BottomVC.sheetCoordinator = sheetCoordinator
-        BottomVC.tabBarHeight = tabBarController?.tabBar.frame.height
-        
-        sheetCoordinator.addSheet(BottomVC, to: self, didContainerCreate: { container in
-            let frame = self.view.frame
-            let rect = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
-            
-            container.roundCorners(corners: [.topLeft, .topRight], radius: 10, rect: rect)
-            container.layer.shadowColor = UIColor.appColor(.background).cgColor
-        })
-        
-        sheetCoordinator.setCornerRadius(10)
     }
     
     @objc private func dimmingViewTapped() {
-        
-        sheetCoordinator.setPosition(sheetCoordinator.availableHeight * 0.94, animated: true)
-        dimmingView.isHidden = true
+        print(#function)
     }
     
     private func configureCollectionView() {
@@ -130,6 +81,10 @@ final class MemberViewController: UIViewController {
         collectionView.register(InviteMemberCollectionViewCell.self, forCellWithReuseIdentifier: InviteMemberCollectionViewCell.identifier)
         collectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.identifier)
     }
+    
+    private func configureBottomVC() {
+        
+    }
 }
 
 extension MemberViewController: UICollectionViewDataSource {
@@ -146,12 +101,18 @@ extension MemberViewController: UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
             
-            let bottomViewHeight: CGFloat = 320
-            
             cell.member = members[indexPath.item - 1]
-            cell.profileViewTapped = { [self] in
-                sheetCoordinator.setPosition(sheetCoordinator.availableHeight - bottomViewHeight - (tabBarController?.tabBar.frame.height ?? 83) , animated: true)
-                dimmingView.isHidden = false
+            
+            let bottomVC = MemberBottomSheetViewController()
+            cell.profileViewTapped = { member in
+                guard let sheet = bottomVC.sheetPresentationController else { return }
+                
+                sheet.detents = [ .custom { _ in return 300 }]
+                sheet.preferredCornerRadius = 24
+                sheet.prefersGrabberVisible = true
+                
+                bottomVC.member = member
+                self.present(bottomVC, animated: true)
             }
             
             return cell
@@ -165,14 +126,6 @@ extension MemberViewController: UICollectionViewDelegate {
     }
     
 }
-
-extension MemberViewController: UBottomSheetCoordinatorDelegate {
-    
-    func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
-        self.sheetCoordinator.addDropShadowIfNotExist()
-    }
-}
-
 
 struct Member {
     var nickName: String
