@@ -98,6 +98,21 @@ struct Study: Codable {
         case endDate = "end"
         case onoff, po
     }
+    
+    init(id: Int?, title: String? = nil, onoff: OnOff? = nil, category: StudyCategory? = nil, studyDescription: String? = nil, freeRule: String? = nil, po: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = nil, startDate: Date?, endDate: Date?) {
+        self.id = id
+        self.title = title
+        self.onoff = onoff?.eng
+        self.category = category?.rawValue
+        self.studyDescription = studyDescription
+        self.freeRule = freeRule
+        self.po = po
+        self.isBlocked = isBlocked
+        self.isPaused = isPaused
+        self.generalRule = generalRule
+        self.startDate = startDate
+        self.endDate = endDate
+    }
 }
 
 enum OnOff: String {

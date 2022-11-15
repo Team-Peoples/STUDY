@@ -99,7 +99,7 @@ final class MainViewController: SwitchableViewController {
 //        📣네트워킹으로 myStudyList 넣어주기
         
         myStudyList = [
-            Study(id: 1, title: "팀피플즈", onoff: nil, category: nil, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: 1, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
             Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
             Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
         ]
@@ -270,6 +270,18 @@ extension MainViewController {
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
                 
+                    cell.informationButtonAction = {
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
+                        vc.study = self.myStudyList.first!
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
+                    
+//                    cell.announcementButtonAction = {
+//                        let vc = AnnouncementBoardViewController()
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    }
+                    
                 return cell
             default:
                 return UITableViewCell()

@@ -18,7 +18,6 @@ class StudyFreeRuleViewController: UIViewController {
     
     @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     private let completeButton = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
     
@@ -30,8 +29,7 @@ class StudyFreeRuleViewController: UIViewController {
         view.addSubview(completeButton)
         
         freeRuletextView.delegate = self
-        
-        cancelButton.action = #selector(cancelButtonDidTapped)
+
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         setConstraints()
         
@@ -45,10 +43,6 @@ class StudyFreeRuleViewController: UIViewController {
     // MARK: - Configure
     
     // MARK: - Actions
-    
-    @objc func cancelButtonDidTapped() {
-        self.dismiss(animated: true)
-    }
     
     @objc func completeButtonDidTapped() {
         completeButtonTapped(freeRuletextView.text)

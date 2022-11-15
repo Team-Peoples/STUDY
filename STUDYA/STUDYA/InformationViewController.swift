@@ -114,7 +114,6 @@ extension InformationViewController: UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! RoundedPurpleCell
         cell.title = contributors[indexPath.row]
-        cell.indexPath = indexPath
         return cell
     }
 }

@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class MainFourthManagementTableViewCell: UITableViewCell {
+    
+//    var announcementButtonAction: () -> () = { }
+    var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
     internal var delegate: Navigatable!
@@ -102,7 +105,10 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         case 4:
             delegate.push(vc: MemberViewController())
 //            hideTabBar!()
-        case 5: break
+        case 5:
+            if sender == informationButton {
+            informationButtonAction()
+        }
         default: break
         }
     }
