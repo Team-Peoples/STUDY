@@ -52,7 +52,6 @@ final class StudyGeneralRuleViewController: UIViewController {
     var viewDidUpdated: (UICollectionView) -> () = { collectionView in }
     var generalRuleViewModel = GeneralStudyRuleViewModel()
     
-    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
     @IBOutlet weak var underBar: UIView!
@@ -85,10 +84,6 @@ final class StudyGeneralRuleViewController: UIViewController {
         super.viewWillLayoutSubviews()
         
         underBar.layer.cornerRadius = 3
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        dismiss(animated: true)
     }
     
     @IBAction func leftButtonTapped(_ sender: Any) {

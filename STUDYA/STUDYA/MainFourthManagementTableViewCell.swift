@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class MainFourthManagementTableViewCell: UITableViewCell {
+    
+//    var announcementButtonAction: () -> () = { }
+    var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
     
@@ -92,8 +95,13 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func tapped() {
-        print(#function)
+    @objc func tapped(_ sender: UIButton) {
+        if sender == informationButton {
+            informationButtonAction()
+        }
+//        else if sender == announcementButton {
+//            announcementButtonAction()
+//        }
     }
     
     private func configureButtons() {

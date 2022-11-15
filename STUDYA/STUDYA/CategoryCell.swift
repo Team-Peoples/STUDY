@@ -13,7 +13,6 @@ class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
     
     let button = CustomButton(title: "", isBold: false, size: 16, height: 28)
-    var indexPath: IndexPath?
     var title: String? {
         didSet {
             guard let title = title else { return }
@@ -69,7 +68,7 @@ final class CategoryCell: RoundedPurpleCell {
     
     @objc func buttonDidTapped() {
         toogleButton()
-        NotificationCenter.default.post(name: Notification.Name.categoryDidChange, object:  ["title": button.titleLabel?.text ?? "", "indexPath": indexPath ?? IndexPath(row: 0, section: 0)])
+        NotificationCenter.default.post(name: Notification.Name.categoryDidChange, object:  ["title": button.titleLabel?.text ?? ""])
     }
     
     func toogleButton() {
