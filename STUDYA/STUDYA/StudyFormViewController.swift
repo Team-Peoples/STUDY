@@ -15,6 +15,25 @@ enum StudyCategory: String, CaseIterable {
     case certificate = "자격시험/자격증"
     case pastime = "자기계발/취미"
     case etc = "그 외"
+    
+    var indexPath: IndexPath {
+        switch self {
+            case .language:
+                return IndexPath(item: 0, section: 0)
+            case .dev_prod_design:
+                return IndexPath(item: 1, section: 0)
+            case .project:
+                return IndexPath(item: 2, section: 0)
+            case .getJob:
+                return IndexPath(item: 3, section: 0)
+            case .certificate:
+                return IndexPath(item: 4, section: 0)
+            case .pastime:
+                return IndexPath(item: 5, section: 0)
+            case .etc:
+                return IndexPath(item: 6, section: 0)
+        }
+    }
 }
 
 class StudyFormViewController: UIViewController {
@@ -23,16 +42,16 @@ class StudyFormViewController: UIViewController {
     var studyViewModel: StudyViewModel?
     private var token: NSObjectProtocol?
     
-    private var categoryChoice: (String, IndexPath)? {
+    var categoryChoice: StudyCategory? {
         willSet(value) {
             if categoryChoice == nil {
                 
             } else {
-                guard let indexPath = categoryChoice?.1 else { fatalError() }
+                guard let indexPath = categoryChoice?.indexPath else { fatalError() }
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
             }
-            studyViewModel?.study.category = value?.0
+            studyViewModel?.study.category = value?.rawValue
         }
     }
     
@@ -42,7 +61,17 @@ class StudyFormViewController: UIViewController {
     
     /// 스터디 카테고리
     let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    private lazy var studyCategoryCollectionView: UICollectionView = getCollectionView()
+    let studyCategoryCollectionView: UICollectionView = {
+        
+        let flowLayout = LeftAlignedCollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        cv.showsHorizontalScrollIndicator = false
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        
+        return cv
+    }()
     
     /// 스터디명
     private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
@@ -51,7 +80,8 @@ class StudyFormViewController: UIViewController {
     /// 스터디 형태 on/off
     private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
-    private lazy var studyTypeStackView: UIStackView = getCheckBoxStackView()
+    let onlineButton = CheckBoxButton(title: "온라인", selected: "on", unselected: "off")
+    let offlineButton = CheckBoxButton(title: "오프라인", selected: "on", unselected: "off")
     
     /// 스터디 한줄 소개
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
@@ -66,7 +96,8 @@ class StudyFormViewController: UIViewController {
         configureViews()
         setDelegate()
         enableTapGesture()
-        
+        onlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
+        offlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
         setConstraints()
     }
     
@@ -100,14 +131,15 @@ class StudyFormViewController: UIViewController {
         containerView.addSubview(studyNameTextView)
         containerView.addSubview(studyTypeLabel)
         containerView.addSubview(studyTypeGuideLabel)
-        containerView.addSubview(studyTypeStackView)
+        containerView.addSubview(onlineButton)
+        containerView.addSubview(offlineButton)
         containerView.addSubview(studyIntroductionLabel)
         containerView.addSubview(studyIntroductionTextView)
     }
     
     // MARK: - Actions
     
-    @objc func buttonDidTapped(sender: CheckBoxButton) {
+    @objc func typeButtonDidTapped(_ sender: CheckBoxButton) {
         
         if studyViewModel?.study.onoff == nil {
             studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.on.eng : OnOff.off.eng
@@ -208,13 +240,16 @@ class StudyFormViewController: UIViewController {
             make.leading.equalTo(studyTypeLabel.snp.trailing).offset(7)
             make.bottom.equalTo(studyTypeLabel.snp.bottom)
         }
-        studyTypeStackView.snp.makeConstraints { make in
+        onlineButton.snp.makeConstraints { make in
             make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
             make.leading.equalTo(studyTypeLabel)
-            make.height.equalTo(46)
+        }
+        offlineButton.snp.makeConstraints { make in
+            make.top.equalTo(onlineButton.snp.bottom).offset(4)
+            make.leading.equalTo(studyTypeLabel)
         }
         studyIntroductionLabel.snp.makeConstraints { make in
-            make.top.equalTo(studyTypeStackView.snp.bottom).offset(40)
+            make.top.equalTo(offlineButton.snp.bottom).offset(40)
             make.leading.trailing.equalTo(studyCategoryLabel)
         }
         studyIntroductionTextView.snp.makeConstraints { make in
@@ -232,40 +267,9 @@ class StudyFormViewController: UIViewController {
         token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String
-            let indexPath = cellInfo["indexPath"] as! IndexPath
             
-            categoryChoice = (title, indexPath)
+            categoryChoice = StudyCategory(rawValue: title)
         }
-    }
-    
-    private func getCheckBoxStackView() -> UIStackView {
-        
-        let onlineButton = CheckBoxButton(title: "온라인", selected: "on", unselected: "off")
-        let offlineButton = CheckBoxButton(title: "오프라인", selected: "on", unselected: "off")
-        
-        onlineButton.addTarget(nil, action: #selector(buttonDidTapped(sender:)), for: .touchUpInside)
-        offlineButton.addTarget(nil, action: #selector(buttonDidTapped(sender:)), for: .touchUpInside)
-        
-        let sv = UIStackView(arrangedSubviews: [onlineButton, offlineButton])
-        
-        sv.axis = .vertical
-        sv.alignment = .leading
-        sv.spacing = 6
-        sv.distribution = .fillEqually
-        
-        return sv
-    }
-    
-    private func getCollectionView() -> UICollectionView {
-        
-        let flowLayout = LeftAlignedCollectionViewFlowLayout()
-        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-        
-        return cv
     }
     
     private func setDelegate() {
@@ -361,7 +365,6 @@ extension StudyFormViewController: UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CategoryCell
         cell.title = StudyCategory.allCases[indexPath.row].rawValue
-        cell.indexPath = indexPath
         return cell
     }
 }

@@ -104,6 +104,7 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return button
     }()
+    private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close"), style: .done, target: self, action: #selector(closeButtonDidTapped))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +113,7 @@ class CreatingStudyRuleViewController: UIViewController {
         title = "스터디 만들기"
         
         addsubViews()
+        setNavigation()
         settingStudyGeneralRuleView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(generalRuleViewTapped)))
     }
     
@@ -124,29 +126,44 @@ class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
+        let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
         
-        vc.generalRuleViewModel.generalRule = studyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
-        vc.doneButtonDidTapped = { rule in
+        studyGeneralRuleVC.generalRuleViewModel.generalRule = studyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
+        studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.studyRuleViewModel.study.generalRule = rule
             self.studyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
         }
         
-        vc.modalPresentationStyle = .automatic
+        studyGeneralRuleVC.navigationItem.title = "규칙"
+        studyGeneralRuleVC.navigationItem.titleView?.tintColor = .black
+        studyGeneralRuleVC.navigationItem.rightBarButtonItem = closeButton
+        
+        let vc = UINavigationController(rootViewController: studyGeneralRuleVC)
+
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     @objc private func freeRuleViewTapped() {
         
-     let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
         
-        vc.viewDidUpdated = { textView in
+        studyFreeRuleVC.viewDidUpdated = { textView in
             textView.text = self.studyRuleViewModel.study.freeRule
         }
-        vc.completeButtonTapped = { freeRule in
+        studyFreeRuleVC.completeButtonTapped = { freeRule in
             self.studyRuleViewModel.study.freeRule = freeRule
             self.studyRuleViewModel.configure(self.settingStudyFreeRuleView, isUpperView: false, label: self.descriptionLabel, button: self.doneButton)
         }
+        
+        studyFreeRuleVC.navigationItem.title = "진행방식"
+        studyFreeRuleVC.navigationItem.titleView?.tintColor = .black
+        studyFreeRuleVC.navigationItem.rightBarButtonItem = closeButton
+        
+        let vc = UINavigationController(rootViewController: studyFreeRuleVC)
+        
+        vc.modalPresentationStyle = .fullScreen
+        
         present(vc, animated: true)
     }
     
@@ -154,9 +171,24 @@ class CreatingStudyRuleViewController: UIViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoPreViewController") as! StudyInfoPreViewController
-
+        
         vc.study = self.studyRuleViewModel.study
+        vc.navigationItem.title = "스터디 만들기"
+        vc.navigationItem.rightBarButtonItem = closeButton
+        
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func closeButtonDidTapped() {
+
+        self.dismiss(animated: true)
+    }
+    
+    private func setNavigation() {
+        
+        self.navigationItem.title = "스터디 만들기"
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        self.navigationItem.rightBarButtonItem = closeButton
     }
     
     private func changeBorder(color: AssetColor, of settingView: UIView) {

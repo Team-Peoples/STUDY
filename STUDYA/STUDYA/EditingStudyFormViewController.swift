@@ -10,13 +10,6 @@ import UIKit
 final class EditingStudyFormViewController: StudyFormViewController {
     // MARK: - Properties
     
-    override var studyViewModel: StudyViewModel? {
-        didSet {
-            guard let studyViewModel = studyViewModel else { return }
-            /// 스터디 뷰모델이 변경되면 씬의 구성을 변경
-        }
-    }
-    
     private lazy var doneButton = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(barButtonDidTapped))
     private lazy var cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(barButtonDidTapped))
     
@@ -26,8 +19,7 @@ final class EditingStudyFormViewController: StudyFormViewController {
         super.viewDidLoad()
 
         /// 스터디 불러와서 스터디 뷰모델을 생성해줌.
-        ///
-        studyViewModel = StudyViewModel()
+        configure(study: studyViewModel!.study)
         
         setNavigation()
     }
@@ -36,10 +28,37 @@ final class EditingStudyFormViewController: StudyFormViewController {
     
     func configure(study: Study) {
         
-        studyNameTextView.text = studyViewModel?.study.title
-        studyIntroductionTextView.text = studyViewModel?.study.studyDescription
+        studyNameTextView.text = study.title
+        studyIntroductionTextView.text = study.studyDescription
+        
+        switch study.onoff {
+            case "on":
+                onlineButton.isSelected = true
+            case "off":
+                offlineButton.isSelected = true
+            case "onoff":
+                onlineButton.isSelected = true
+                offlineButton.isSelected = true
+            default:
+                return
+        }
+        
+        if studyNameTextView.text != "" {
+            studyNameTextView.hidePlaceholder(true)
+            studyNameTextView.getCharactersNumerLabel().text = "\(study.title!.count)/10"
+        }
+        
+        if studyIntroductionTextView.text != "" {
+            studyIntroductionTextView.hidePlaceholder(true)
+            studyIntroductionTextView.getCharactersNumerLabel().text = "\(study.studyDescription!.count)/10"
+        }
+    
+        let indexPath = StudyCategory(rawValue: study.category!)?.indexPath
+        // tobefixed: 셀을 가져오지 못함. 버튼을 눌러야 샐을 가져옴.
+        let cell = studyCategoryCollectionView.cellForItem(at: indexPath!) as? CategoryCell
+        cell?.toogleButton()
     }
-
+    
     // MARK: - Actions
     
     @objc func barButtonDidTapped(sender: UIBarButtonItem) {

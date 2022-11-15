@@ -961,8 +961,17 @@ class SwitchableViewController: UIViewController {
     
     @objc func createStudyButtonDidTapped() {
         dropdownButtonDidTapped()
-        let creatingStudyBasicInfoVC = CreatingStudyFormViewController()
-        navigationController?.pushViewController(creatingStudyBasicInfoVC, animated: true)
+        let creatingStudyFormVC = CreatingStudyFormViewController()
+        
+        creatingStudyFormVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        
+        let presentVC = UINavigationController(rootViewController: creatingStudyFormVC)
+        
+        presentVC.navigationBar.backIndicatorImage = UIImage(named: "back")
+        presentVC.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
+        presentVC.modalPresentationStyle = .fullScreen
+        
+        present(presentVC, animated: true)
     }
     
     func configureNavigationItem() {

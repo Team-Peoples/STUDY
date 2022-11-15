@@ -15,7 +15,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
         didSet {
             guard let studyViewModel = studyViewModel else { return }
             doneButton.isEnabled = studyViewModel.formIsValid
-            doneButton.isEnabled ? doneButton.fillIn(title: "완료") : doneButton.fillOut(title: "완료")
+            doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
     }
     
@@ -30,6 +30,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
     }()
     private let doneButton = CustomButton(title: "다음", isBold: true, isFill: false)
 
+    private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close"), style: .done, target: self, action: #selector(closeButtonDidTapped))
     
     // MARK: - Life Cycle
     
@@ -40,6 +41,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
         
         configureTitleLabel()
         configureDoneButton()
+        setNavigation()
     }
     
 
@@ -86,6 +88,20 @@ final class CreatingStudyFormViewController: StudyFormViewController {
         let vc = CreatingStudyRuleViewController()
 
         vc.studyRuleViewModel.study = studyViewModel!.study
+        vc.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc func closeButtonDidTapped() {
+
+        self.dismiss(animated: true)
+    }
+    
+    private func setNavigation() {
+        
+        self.navigationItem.title = "스터디 만들기"
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        self.navigationItem.rightBarButtonItem = closeButton
     }
 }

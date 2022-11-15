@@ -124,7 +124,7 @@ class StudyInfoViewController: UIViewController {
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
         
-        editingStudyFormVC.studyViewModel?.study = study!
+        editingStudyFormVC.studyViewModel = StudyViewModel(study: study!)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
@@ -132,17 +132,34 @@ class StudyInfoViewController: UIViewController {
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-    
+        let studygeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
+        
+        studygeneralRuleVC.navigationItem.title = "규칙 관리"
+        studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
+        studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
+        
+        let vc = UINavigationController(rootViewController: studygeneralRuleVC)
+        
+        vc.navigationBar.backgroundColor = .appColor(.keyColor1)
+        vc.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.whiteLabel)]
         vc.modalPresentationStyle = .fullScreen
+        
         present(vc, animated: true)
     }
     
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
         
+        studyFreeRuleVC.navigationItem.title = "진행방식"
+        studyFreeRuleVC.navigationItem.titleView?.tintColor = .appColor(.whiteLabel)
+        studyFreeRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
+        studyFreeRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
+        
+        let vc = UINavigationController(rootViewController: studyFreeRuleVC)
+        
+        vc.navigationBar.backgroundColor = .appColor(.keyColor1)
+        vc.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.whiteLabel)]
         vc.modalPresentationStyle = .fullScreen
         
         present(vc, animated: true)
@@ -175,6 +192,11 @@ class StudyInfoViewController: UIViewController {
             default:
                 return
         }
+    }
+    
+    @objc func closeButtonDidTapped() {
+
+        self.dismiss(animated: true)
     }
     
     @objc private func toggleMaster(_ sender: BrandSwitch) {

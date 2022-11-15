@@ -33,39 +33,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NPP-1h-mKl">
-                                <rect key="frame" x="0.0" y="48" width="414" height="48"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e0J-rk-PiU">
-                                        <rect key="frame" x="17" y="7" width="52" height="34"/>
-                                        <color key="tintColor" name="cancel"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="취소">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="16"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="LRo-Cd-Chu" eventType="touchUpInside" id="Uxq-T3-jqV"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="규칙" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MfL-jL-iGG">
-                                        <rect key="frame" x="193" y="14.5" width="28" height="19"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" name="keyColor1"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="MfL-jL-iGG" firstAttribute="centerY" secondItem="NPP-1h-mKl" secondAttribute="centerY" id="CLF-jb-xnu"/>
-                                    <constraint firstItem="e0J-rk-PiU" firstAttribute="centerY" secondItem="NPP-1h-mKl" secondAttribute="centerY" id="Gr2-8y-PL1"/>
-                                    <constraint firstAttribute="height" constant="48" id="JUA-V5-Ovk"/>
-                                    <constraint firstItem="MfL-jL-iGG" firstAttribute="centerX" secondItem="NPP-1h-mKl" secondAttribute="centerX" id="TbF-j6-cP4"/>
-                                    <constraint firstItem="e0J-rk-PiU" firstAttribute="leading" secondItem="NPP-1h-mKl" secondAttribute="leading" constant="17" id="pQg-MV-6fK"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Fj-bf-mS8" userLabel="menuContainterView">
-                                <rect key="frame" x="0.0" y="96" width="414" height="37"/>
+                                <rect key="frame" x="0.0" y="48" width="414" height="37"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oif-Xd-cUr" userLabel="leftButton">
                                         <rect key="frame" x="0.0" y="0.0" width="207" height="37"/>
@@ -118,7 +87,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ElS-fA-9xT" userLabel="unerBar">
-                                <rect key="frame" x="60.5" y="130" width="86" height="6"/>
+                                <rect key="frame" x="60.5" y="82" width="86" height="6"/>
                                 <color key="backgroundColor" name="keyColor3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="86" id="ABP-hy-SeK"/>
@@ -126,14 +95,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnv-uf-Vqg">
-                                <rect key="frame" x="0.0" y="133" width="414" height="1"/>
+                                <rect key="frame" x="0.0" y="85" width="414" height="1"/>
                                 <color key="backgroundColor" name="keyColor3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="6xt-BJ-ehr"/>
                                 </constraints>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Xj4-dt-g0B">
-                                <rect key="frame" x="0.0" y="136" width="414" height="726"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="g20-I4-cXA">
                                     <size key="itemSize" width="128" height="128"/>
@@ -157,7 +126,6 @@
                         <constraints>
                             <constraint firstItem="4Fj-bf-mS8" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="5ut-eo-2FX"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="bottom" secondItem="Xj4-dt-g0B" secondAttribute="bottom" id="87b-df-osv"/>
-                            <constraint firstItem="ElS-fA-9xT" firstAttribute="top" secondItem="NPP-1h-mKl" secondAttribute="bottom" constant="34" id="ADg-cS-HQx"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="Xj4-dt-g0B" secondAttribute="trailing" id="AIQ-oo-Xsw"/>
                             <constraint firstItem="Xj4-dt-g0B" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="bottom" constant="3" id="CHr-hm-knm"/>
                             <constraint firstItem="PhD-E0-hZ1" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" constant="20" id="DeC-mW-yiW"/>
@@ -167,19 +135,16 @@
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="rnv-uf-Vqg" secondAttribute="trailing" id="Wf2-oD-LyL"/>
                             <constraint firstItem="rnv-uf-Vqg" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="cbQ-Dk-y9v"/>
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="centerX" secondItem="MfH-Gd-84W" secondAttribute="centerX" id="eNe-xb-cwn"/>
-                            <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="NPP-1h-mKl" secondAttribute="trailing" id="hbe-Dh-Uik"/>
+                            <constraint firstItem="4Fj-bf-mS8" firstAttribute="top" secondItem="6Vi-Lh-q0Z" secondAttribute="top" id="g5e-hc-8RA"/>
                             <constraint firstItem="rnv-uf-Vqg" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="bottom" id="jgB-ir-TVW"/>
                             <constraint firstItem="Xj4-dt-g0B" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="kwy-9J-uaR"/>
                             <constraint firstItem="ElS-fA-9xT" firstAttribute="centerX" secondItem="q0o-X2-gQi" secondAttribute="centerX" priority="999" id="lTP-b1-jO3"/>
-                            <constraint firstItem="NPP-1h-mKl" firstAttribute="top" secondItem="6Vi-Lh-q0Z" secondAttribute="top" id="oTS-CQ-uMP"/>
                             <constraint firstItem="6Vi-Lh-q0Z" firstAttribute="trailing" secondItem="PhD-E0-hZ1" secondAttribute="trailing" constant="20" id="vVH-Xj-LXO"/>
-                            <constraint firstItem="NPP-1h-mKl" firstAttribute="leading" secondItem="6Vi-Lh-q0Z" secondAttribute="leading" id="wE5-LP-sia"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pEL-Ec-jRB"/>
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
-                        <outlet property="cancelButton" destination="e0J-rk-PiU" id="e0g-Mu-OFQ"/>
                         <outlet property="collectionView" destination="Xj4-dt-g0B" id="GLQ-Or-HkE"/>
                         <outlet property="doneButton" destination="PhD-E0-hZ1" id="ovE-rF-85a"/>
                         <outlet property="leftCenterXConstraint" destination="eNe-xb-cwn" id="48O-Xs-5IP"/>
@@ -509,22 +474,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OLS-au-ccC">
-                                <rect key="frame" x="0.0" y="48" width="414" height="44"/>
-                                <color key="barTintColor" name="keyColor1"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <color key="textColor" name="background"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem title="진행방식" id="Edw-mM-NEp">
-                                        <barButtonItem key="leftBarButtonItem" title="취소" id="5gg-Yk-fy1">
-                                            <color key="tintColor" name="cancel"/>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ra4-dK-QwV">
-                                <rect key="frame" x="17" y="112" width="380" height="160"/>
+                                <rect key="frame" x="17" y="78" width="380" height="160"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWt-oX-zF1">
                                         <rect key="frame" x="20" y="20" width="340" height="120"/>
@@ -563,7 +514,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Re0-F6-Sj2">
-                                <rect key="frame" x="17" y="282" width="380" height="129"/>
+                                <rect key="frame" x="17" y="248" width="380" height="129"/>
                                 <string key="text">* 예상 진행 기간은 어느 정도인가요?
 * 스터디 커리큘럼은 무엇인가요?
 * 어떤 방식으로 진행하나요? 
@@ -581,20 +532,16 @@
                         <viewLayoutGuide key="safeArea" id="OgV-q2-fFd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Ra4-dK-QwV" firstAttribute="top" secondItem="OLS-au-ccC" secondAttribute="bottom" constant="20" id="Dq9-ua-xr8"/>
-                            <constraint firstItem="OLS-au-ccC" firstAttribute="top" secondItem="OgV-q2-fFd" secondAttribute="top" id="HZ4-hT-aea"/>
-                            <constraint firstItem="OLS-au-ccC" firstAttribute="leading" secondItem="pV6-cG-2S7" secondAttribute="leading" id="J9b-8d-Wqc"/>
                             <constraint firstItem="Re0-F6-Sj2" firstAttribute="leading" secondItem="OgV-q2-fFd" secondAttribute="leading" constant="17" id="PHZ-O1-DBj"/>
                             <constraint firstItem="Ra4-dK-QwV" firstAttribute="leading" secondItem="OgV-q2-fFd" secondAttribute="leading" constant="17" id="Pfb-iz-TkD"/>
                             <constraint firstItem="OgV-q2-fFd" firstAttribute="trailing" secondItem="Ra4-dK-QwV" secondAttribute="trailing" constant="17" id="SUc-XA-dYw"/>
-                            <constraint firstAttribute="trailing" secondItem="OLS-au-ccC" secondAttribute="trailing" id="X9e-jl-wGI"/>
+                            <constraint firstItem="Ra4-dK-QwV" firstAttribute="top" secondItem="OgV-q2-fFd" secondAttribute="top" constant="30" id="TCS-e6-1Pw"/>
                             <constraint firstItem="OgV-q2-fFd" firstAttribute="trailing" secondItem="Re0-F6-Sj2" secondAttribute="trailing" constant="17" id="djh-h3-sIZ"/>
                             <constraint firstItem="Re0-F6-Sj2" firstAttribute="top" secondItem="Ra4-dK-QwV" secondAttribute="bottom" constant="10" id="tlE-3a-arp"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="414" height="896"/>
                     <connections>
-                        <outlet property="cancelButton" destination="5gg-Yk-fy1" id="gG3-wk-27U"/>
                         <outlet property="freeRuletextView" destination="CWt-oX-zF1" id="O2j-mY-vqT"/>
                         <outlet property="placeholderLabel" destination="Y4l-rO-xiw" id="c7i-nw-96z"/>
                     </connections>
@@ -1762,9 +1709,6 @@
         <image name="etc" width="22" height="6"/>
         <namedColor name="background">
             <color red="0.97600001096725464" green="0.97600001096725464" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="cancel">
-            <color red="0.99199998378753662" green="1" blue="0.58799999952316284" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="keyColor1">
             <color red="0.42399999499320984" green="0.27500000596046448" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
