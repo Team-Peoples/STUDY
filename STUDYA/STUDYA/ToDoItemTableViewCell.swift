@@ -13,7 +13,7 @@ class ToDoItemTableViewCell: UITableViewCell {
     static let identifier = "ToDoItemTableViewCell"
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
-    weak var heightDelegate: CalendarBottomSheetViewController?
+    weak var heightCoordinator: UBottomSheetCoordinator?
     
     internal var todo: String? {
         didSet {
@@ -101,7 +101,7 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        heightDelegate?.sheetCoordinator?.setPosition(844 * 0.12, animated: true)
+        heightCoordinator?.setPosition(UIScreen.main.bounds.height * 0.12, animated: true)
         
         if textView.text == placeholder {
             textView.text = nil

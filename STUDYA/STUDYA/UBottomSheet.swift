@@ -508,7 +508,7 @@ public class UBottomSheetCoordinator: NSObject {
         let dy = recognizer.translation(in: recognizer.view).y
         let vel = recognizer.velocity(in: recognizer.view)
         
-//        🚨EHD: override library for this
+//        🚨EHD: library overriding
         recognizer.view?.endEditing(true)
         
         switch recognizer.state {
@@ -731,6 +731,38 @@ public class UBottomSheetCoordinator: NSObject {
                 if position >= self.availableHeight {
                     self.removeSheet()
                 }
+            })
+        } else {
+            self.container!.frame = frame
+            self.delegate?.bottomSheet(self.container,
+                                       didChange: .finished(position, self.calculatePercent(at: position)))
+        }
+    }
+    
+//    🛑EHD: library overriding
+    public func appearTwice(_ position: CGFloat, animated: Bool, twicePosition: CGFloat, completion: @escaping () -> ()) {
+        
+        guard position != 0 else {
+            return
+        }
+        let oldFrame = container!.frame
+        let height = max(availableHeight - minSheetPosition!, availableHeight - position)
+        let frame = CGRect(x: 0, y: position, width: oldFrame.width, height: height)
+
+        self.delegate?.bottomSheet(self.container,
+                                   didChange: .willFinish(position, self.calculatePercent(at: position)))
+
+        if animated {
+            self.lastAnimatedValue = position
+            dataSource.animator?.animate(animations: {
+                self.delegate?.bottomSheet(self.container, finishTranslateWith: { (anim) in
+                    anim(self.calculatePercent(at: position))
+                })
+                self.container!.frame = frame
+                self.parent.view.layoutIfNeeded()
+            }, completion: { finished in
+                self.setPosition(twicePosition, animated: true)
+                completion()
             })
         } else {
             self.container!.frame = frame

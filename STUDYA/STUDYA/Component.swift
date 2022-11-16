@@ -18,18 +18,19 @@ extension UIView {
 
 final class CustomButton: UIButton {
     
-    init(title: String, isBold: Bool = true, isFill: Bool = false, size: CGFloat = 18, height: CGFloat = 50) {
+    init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
 
-        configure(title: title, isBold: isBold, isFill: isFill, size: size, height: height)
+        configure(title: title, isBold: isBold, isFill: isFill, fontSize: fontSize, height: height)
     }
     
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
-        configure(title: "완료", isBold: true, isFill: true, size: 18, height: 50)
+        
+        configure(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
     }
     
-    private func configure(title: String, isBold: Bool, isFill: Bool, size: CGFloat, height: CGFloat) {
+    private func configure(title: String, isBold: Bool, isFill: Bool, fontSize: CGFloat, height: CGFloat) {
         
         setTitle(title, for: .normal)
         configureBorder(color: .keyColor1, width: 1, radius: height / 2)
@@ -42,8 +43,15 @@ final class CustomButton: UIButton {
             backgroundColor = .systemBackground
             setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
         }
-        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: size) : UIFont.systemFont(ofSize: size)
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
         setHeight(height)
+    }
+    
+    internal func fillIn(title: String) {
+        
+        setTitle(title, for: .normal)
+        backgroundColor = UIColor.appColor(.keyColor1)
+        setTitleColor(.white, for: .normal)
     }
     
     internal func fillOut(title: String) {
@@ -53,13 +61,13 @@ final class CustomButton: UIButton {
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
     
-    internal func fillIn(title: String) {
-        
+    internal func easyConfigure(title: String, backgroundColor: UIColor, textColor: UIColor, borderColor: AssetColor, radius: CGFloat) {
         setTitle(title, for: .normal)
-        backgroundColor = UIColor.appColor(.keyColor1)
-        setTitleColor(.white, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+        configureBorder(color: borderColor, width: 1, radius: radius)
     }
-
+    
     func resetColorFor(normal: AssetColor, forSelected: AssetColor) {
         setTitleColor(UIColor.appColor(forSelected), for: .selected)
         setTitleColor(UIColor.appColor(normal), for: .normal)
@@ -409,25 +417,108 @@ class SimpleAlert: UIAlertController {
     }
 }
 
-class ProfileImageSelectorView: UIImageView {
+
+class ProfileImageSelectorView: UIView {
+
+    private let backgroundView = UIView(frame: .zero)
+    private let internalImageView = UIImageView(frame: .zero)
+    private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
+    private let roleMark = UIButton(frame: .zero)
     
-    init(size: CGFloat) {
+    init(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         super.init(frame: .zero)
+        addSubviews()
         
-        image = UIImage(named: "defaultProfile")
-        configureBorder(color: .keyColor3, width: 2, radius: size / 2)
+        backgroundView.clipsToBounds = true
+        backgroundView.centerXY(inView: self)
+        configure(size: size, image: image, isManager: isManager, role: role)
         
-        clipsToBounds = true
-        isUserInteractionEnabled = true
-        contentMode = .scaleAspectFill
+        hideMarks()
+    }
+    
+    private func addSubviews() {
+        addSubview(backgroundView)
+        addSubview(internalImageView)
+        addSubview(adminMark)
+        addSubview(roleMark)
+    }
+    
+    internal func configure(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         
-        setDimensions(height: size, width: size)
+        let radius = size / 2
+        
+        configureInternalImageView(image, radius, size)
+        configureLargerCirlcle(isManager, radius, size)
+        
+        guard let role = role else { return }
+        
+        configureRoleView(role)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
+        configure(image)
+        internalImageView.clipsToBounds = true
+        internalImageView.contentMode = .scaleAspectFill
+        internalImageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
+        
+        internalImageView.centerXY(inView: self)
+        internalImageView.setDimensions(height: size, width: size)
+    }
+    
+    
+    internal func configure(_ image: UIImage?) {
+        internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+    }
+
+    
+    private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
+        if isManager {
+            
+            backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
+            setDimensions(height: size + 4, width: size + 4)
+            
+            configureAdminMark()
+
+        } else {
+            
+            setDimensions(height: size + 2, width: size + 2)
+        }
+        backgroundView.snp.makeConstraints { make in
+            make.edges.equalTo(self)
+        }
+    }
+    
+    private func configureAdminMark() {
+        adminMark.isHidden = false
+        adminMark.snp.makeConstraints { make in
+            make.top.leading.equalTo(backgroundView)
+        }
+    }
+    
+    private func configureRoleView(_ role: String) {
+        roleMark.isHidden = false
+        roleMark.isUserInteractionEnabled = false
+        roleMark.backgroundColor = .systemBackground
+        roleMark.setTitle(role, for: .normal)
+        roleMark.setTitleColor(.black, for: .normal)
+        roleMark.titleLabel?.font = .boldSystemFont(ofSize: 10)
+        roleMark.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 0, blur: 4, spread: 0)
+        roleMark.layer.cornerRadius = 10
+        roleMark.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        
+        roleMark.anchor(bottom: backgroundView.bottomAnchor, bottomConstant: -6, trailing: backgroundView.trailingAnchor, height: 20)
+    }
+    
+    internal func hideMarks() {
+        adminMark.isHidden = true
+        roleMark.isHidden = true
+    }
 }
+
 
 class PlusCircleFillView: UIImageView {
     
@@ -505,6 +596,21 @@ final class BrandSwitch: UIControl {
         let view = RoundableView()
         view.backgroundColor = UIColor.appColor(.background)
         view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let l = CustomLabel(title: "일반", tintColor: .keyColor1, size: 10, isBold: true)
+        let l1 = CustomLabel(title: "관리", tintColor: .whiteLabel, size: 10, isBold: true)
+        
+        view.addSubview(l)
+        view.addSubview(l1)
+        
+        l.snp.makeConstraints { make in
+            make.trailing.top.bottom.equalTo(view).inset(7)
+        }
+        
+        l1.snp.makeConstraints { make in
+            make.leading.top.bottom.equalTo(view).inset(7)
+        }
+        
         return view
     }()
     
@@ -581,7 +687,7 @@ final class BrandSwitch: UIControl {
         self.addSubview(outerView)
         self.addSubview(self.barView)
         self.barView.addSubview(self.circleView)
-        setDimensions(height: 28, width: 50)
+        setDimensions(height: 28, width: 55)
         outerView.anchor(top: topAnchor, topConstant: -1, bottom: bottomAnchor, bottomConstant: -1, leading: leadingAnchor, leadingConstant: -1, trailing: trailingAnchor, trailingConstant: -1)
         NSLayoutConstraint.activate([
             self.barView.leftAnchor.constraint(equalTo: self.leftAnchor),
@@ -607,6 +713,7 @@ final class BrandSwitch: UIControl {
 
 final class RoundableView: UIView {
     override func layoutSubviews() {
+        print(#function)
         super.layoutSubviews()
         self.layer.cornerRadius = self.frame.height / 2
     }
@@ -800,7 +907,7 @@ class ToastMessage: UIView {
 
 final class PurpleRoundedInputField: UITextField {
     
-    init(target: AnyObject?, action: Selector) {
+    init(target: AnyObject?, action: Selector?) {
         super.init(frame: .zero)
         
         backgroundColor = UIColor.appColor(.background)
@@ -808,6 +915,9 @@ final class PurpleRoundedInputField: UITextField {
         leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
         leftViewMode = .always
         isSecureTextEntry = true
+        
+        guard let action = action, let target = target else { return }
+        
         addRightViewOnField(target: target, action: action)
     }
     

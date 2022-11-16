@@ -208,7 +208,7 @@ extension ProfileSettingViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     
                     if let image = image as? UIImage {
-                        self.profileImageSelectorView.image = image
+                        self.profileImageSelectorView.configure(image)
                     }
                 }
             }

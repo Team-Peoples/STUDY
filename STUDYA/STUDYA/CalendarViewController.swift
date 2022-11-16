@@ -28,7 +28,7 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.dataSource = MyBottomSheetDataSource()
+        dataSource = CalendarBottomSheetDatasource()
         title = "나의 캘린더"
         
         configureViews()

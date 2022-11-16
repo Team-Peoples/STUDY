@@ -14,6 +14,8 @@ class MainFourthManagementTableViewCell: UITableViewCell {
     var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
+    internal var delegate: Navigatable!
+//    internal var hideTabBar: (() -> ())?
     
     private let attendanceBackView: UIView = {
         
@@ -95,16 +97,29 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func tapped(_ sender: UIButton) {
-        if sender == informationButton {
+    @objc private func tapped(sender: UIButton) {
+        switch sender.tag {
+        case 1: break
+        case 2: break
+        case 3: break
+        case 4:
+            delegate.push(vc: MemberViewController())
+//            hideTabBar!()
+        case 5:
+            if sender == informationButton {
             informationButtonAction()
         }
-//        else if sender == announcementButton {
-//            announcementButtonAction()
-//        }
+        default: break
+        }
     }
     
     private func configureButtons() {
+        attendanceButton.tag = 1
+        voteButton.tag = 2
+        announcementButton.tag = 3
+        memberButton.tag = 4
+        informationButton.tag = 5
+        
         attendanceButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         voteButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)
         announcementButton.addTarget(self, action: #selector(tapped), for: .touchUpInside)

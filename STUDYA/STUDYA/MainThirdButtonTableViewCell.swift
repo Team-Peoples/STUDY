@@ -18,7 +18,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
     
 
-    private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
+    private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private lazy var afterStudyView: RoundableView = {
 
         let v = RoundableView()
@@ -113,12 +113,12 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         if isManagerMode {
             
             if attendable {
-                mainButton = CustomButton(title: "", isBold: true, isFill: true, size: 20)
+                mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                 mainButton.fillIn(title: "  인증번호 확인")
                 mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
             } else {
-                mainButton = CustomButton(title: "", isBold: true, isFill: false, size: 20)
+                mainButton = CustomButton(title: "", isBold: true, isFill: false, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
                 mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
                 mainButton.fillOut(title: "  인증번호 확인")
