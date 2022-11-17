@@ -166,7 +166,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     @objc private func mainButtonTappedWhenNotManager() {
         print("no manager")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "MainAttendPopOverViewController") as! EnteringValidationNumberPopViewController
+        let vc  = storyboard.instantiateViewController(withIdentifier: "MainAttendPopOverViewController") as! FillingInValidationNumberPopViewController
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
