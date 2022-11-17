@@ -1256,3 +1256,18 @@ final class RoundedCornersField: UITextField {
         keyboardType = .numberPad
     }
 }
+
+final class RoundedCornersView: UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get { return layer.cornerRadius }
+        set { layer.cornerRadius = newValue }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+}

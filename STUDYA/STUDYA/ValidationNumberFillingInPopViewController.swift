@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ValidationNumberFillingInPopViewController: UIViewController {
+final class ValidationNumberFillingInPopViewController: UIViewController {
     
     private var customTransitioningDelegate = TransitioningDelegate()
     
@@ -25,9 +25,9 @@ class ValidationNumberFillingInPopViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        print(#function)
         configure()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

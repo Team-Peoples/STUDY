@@ -15,7 +15,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     
     internal var attendable = true
     internal var didAttend = false
-    internal var isManagerMode = false
+    internal var isManagerMode = true
     internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
     
     private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
@@ -113,7 +113,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         if isManagerMode {
             
             if attendable {
-                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
+                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
                 mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                 mainButton.fillIn(title: "  인증번호 확인")
@@ -138,6 +138,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             } else {
                 
                 if attendable {
+                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
                     mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                     mainButton.fillIn(title: "  출석하기")
                     mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
@@ -160,7 +161,12 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func mainButtonTappedWhenManager() {
-        print(#function)
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberCheckingPopViewController") as! ValidationNumberCheckingPopViewController
+        
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+        navigatable.present(vc: vc)
     }
     
     @objc private func mainButtonTappedWhenNotManager() {
