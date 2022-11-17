@@ -19,3 +19,9 @@ enum AttendanceStatus {
     case absent
     case allowed
 }
+
+enum SceneType {
+    case exit
+    case close
+    case resignMaster
+}
