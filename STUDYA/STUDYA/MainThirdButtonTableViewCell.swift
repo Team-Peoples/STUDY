@@ -164,20 +164,10 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func mainButtonTappedWhenNotManager() {
-        print("no manager")
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "MainAttendPopOverViewController") as! FillingInValidationNumberPopViewController
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberFillingInPopViewController") as! ValidationNumberFillingInPopViewController
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
-        
-//        var presentationController =
-//            //UIPopoverPresenatationControllerDelegate 적용
-//            presentationController.sourceView = sourceView
-//            presentationController.sourceRect = sourceView.bounds
-//            //위치를 참조할 sourceView 지정
-//            presentationController.permittedArrowDirections = [ .up]
-//            //나타날 방향
-//            self.present(con
         
         navigatable.present(vc: vc)
     }
@@ -207,26 +197,3 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
 }
-        
-        
-
-        
-//
-//class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
-//
-//     // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
-//     private static let sharedInstance = AlwaysPresentAsPopover()
-//
-//     private override init() {
-//         super.init()
-//     }
-//
-//     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-//         return .none
-//     }
-//
-//     static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
-//         let presentationController = controller.presentationController as! UIPopoverPresentationController
-//         presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
-//         return presentationController
-// }

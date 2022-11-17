@@ -1,5 +1,5 @@
 //
-//  FillingInValidationNumberPopViewController.swift
+//  ValidationNumberFillingInPopViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/11/16.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FillingInValidationNumberPopViewController: UIViewController {
+class ValidationNumberFillingInPopViewController: UIViewController {
     
     private var customTransitioningDelegate = TransitioningDelegate()
     
@@ -62,7 +62,7 @@ class FillingInValidationNumberPopViewController: UIViewController {
     }
 }
 
-extension FillingInValidationNumberPopViewController: UITextFieldDelegate {
+extension ValidationNumberFillingInPopViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
