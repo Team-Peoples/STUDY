@@ -169,8 +169,8 @@ class StudyInfoViewController: UIViewController {
         switch sender.title(for: .normal) {
             case "스터디 탈퇴":
                 let vcToPresent = StudyExitViewController()
-                vcToPresent.type = "스터디 탈퇴"
-                
+                vcToPresent.type = .exit
+                vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
                     
                     sheet.detents = [ .custom { _ in return 300 } ]
@@ -180,8 +180,8 @@ class StudyInfoViewController: UIViewController {
                 present(vcToPresent, animated: true, completion: nil)
             case "스터디 종료":
                 let vcToPresent = StudyExitViewController()
-                vcToPresent.type = "스터디 종료"
-                
+                vcToPresent.type = .close
+                vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
                     
                     sheet.detents = [ .custom { _ in return 300 } ]
