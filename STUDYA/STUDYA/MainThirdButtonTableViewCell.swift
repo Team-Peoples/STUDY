@@ -11,13 +11,13 @@ import SnapKit
 class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
-
-    internal var attendable = false
-    internal var didAttend = true
+    internal var navigatable: Navigatable!
+    
+    internal var attendable = true
+    internal var didAttend = false
     internal var isManagerMode = false
     internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
     
-
     private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private lazy var afterStudyView: RoundableView = {
 
@@ -113,6 +113,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         if isManagerMode {
             
             if attendable {
+                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
                 mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                 mainButton.fillIn(title: "  인증번호 확인")
@@ -159,11 +160,26 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func mainButtonTappedWhenManager() {
-        print("manager")
+        print(#function)
     }
     
     @objc private func mainButtonTappedWhenNotManager() {
         print("no manager")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: "MainAttendPopOverViewController") as! EnteringValidationNumberPopViewController
+        
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+//        var presentationController =
+//            //UIPopoverPresenatationControllerDelegate 적용
+//            presentationController.sourceView = sourceView
+//            presentationController.sourceRect = sourceView.bounds
+//            //위치를 참조할 sourceView 지정
+//            presentationController.permittedArrowDirections = [ .up]
+//            //나타날 방향
+//            self.present(con
+        
+        navigatable.present(vc: vc)
     }
     
     func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
@@ -191,3 +207,26 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
 }
+        
+        
+
+        
+//
+//class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
+//
+//     // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
+//     private static let sharedInstance = AlwaysPresentAsPopover()
+//
+//     private override init() {
+//         super.init()
+//     }
+//
+//     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+//         return .none
+//     }
+//
+//     static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
+//         let presentationController = controller.presentationController as! UIPopoverPresentationController
+//         presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
+//         return presentationController
+// }

@@ -14,7 +14,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
     var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
-    internal var delegate: Navigatable!
+    internal var navigatable: Navigatable!
 //    internal var hideTabBar: (() -> ())?
     
     private let attendanceBackView: UIView = {
@@ -103,7 +103,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         case 2: break
         case 3: break
         case 4:
-            delegate.push(vc: MemberViewController())
+            navigatable.push(vc: MemberViewController())
 //            hideTabBar!()
         case 5:
             if sender == informationButton {

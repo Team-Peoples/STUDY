@@ -97,7 +97,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         textField.textAlignment = .right
         textField.clipsToBounds = true
         textField.layer.cornerRadius = 42 / 2
-        textField.keyboardType = .numberPad
+//        textField.keyboardType = .numberPad
     }
     
     func fineAndDepositFieldsAreEnabled(_ bool: Bool) {
