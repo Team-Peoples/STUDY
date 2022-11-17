@@ -27,6 +27,7 @@
 		72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */; };
 		72E2BED9291E01AF009BCCB7 /* StudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */; };
 		72E2BEDB2921AE66009BCCB7 /* StudyExitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */; };
+		72E2BEDD29264B9D009BCCB7 /* AttendanceStatusReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDC29264B9D009BCCB7 /* AttendanceStatusReusableView.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AC2897788900031AD1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25AB2897788900031AD1 /* ViewController.swift */; };
@@ -112,6 +113,7 @@
 		72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFormViewController.swift; sourceTree = "<group>"; };
 		72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFormViewController.swift; sourceTree = "<group>"; };
 		72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExitViewController.swift; sourceTree = "<group>"; };
+		72E2BEDC29264B9D009BCCB7 /* AttendanceStatusReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceStatusReusableView.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				D34E4F5D291D3F9A00958557 /* MemberViewController.swift */,
+				72E2BEDC29264B9D009BCCB7 /* AttendanceStatusReusableView.swift */,
 				D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */,
 				D381A96C291EA744008A2102 /* MemberCollectionViewCell.swift */,
 				D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */,
@@ -511,6 +514,7 @@
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
 				D314A1DB2905190100093C0E /* Extension.swift in Sources */,
 				D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */,
+				72E2BEDD29264B9D009BCCB7 /* AttendanceStatusReusableView.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
