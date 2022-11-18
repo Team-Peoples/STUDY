@@ -418,7 +418,7 @@ class SimpleAlert: UIAlertController {
 }
 
 
-class ProfileImageSelectorView: UIView {
+class ProfileImageView: UIView {
 
     private let backgroundView = UIView(frame: .zero)
     private let internalImageView = UIImageView(frame: .zero)

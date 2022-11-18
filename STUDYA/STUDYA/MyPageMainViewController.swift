@@ -22,7 +22,7 @@ final class MyPageMainViewController: UIViewController {
         
         return view
     }()
-    private let profileImageSelectorView = ProfileImageSelectorView(size: 80)
+    private let profileImageSelectorView = ProfileImageView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: nickName ?? "닉네임", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
