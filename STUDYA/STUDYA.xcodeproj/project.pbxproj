@@ -61,6 +61,8 @@
 		D398B47228B7617F00598B03 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47128B7617F00598B03 /* InformationViewController.swift */; };
 		D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */; };
 		D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */; };
+		D39F6D8C2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D8A2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.swift */; };
+		D39F6D8D2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D39F6D8B2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.xib */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3BF053028BDF2B400AF7D3B /* AccountManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */; };
@@ -154,6 +156,8 @@
 		D398B47128B7617F00598B03 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
 		D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatingPersonalDataViewController.swift; sourceTree = "<group>"; };
 		D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceManagerModeView.swift; sourceTree = "<group>"; };
+		D39F6D8A2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceModificationSortingTableViewCell.swift; sourceTree = "<group>"; };
+		D39F6D8B2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttendanceModificationSortingTableViewCell.xib; sourceTree = "<group>"; };
 		D3AFCE1628A7F3F4004FBAB9 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementViewController.swift; sourceTree = "<group>"; };
 		D3BF053328BE39CA00AF7D3B /* ByeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByeViewController.swift; sourceTree = "<group>"; };
@@ -297,6 +301,8 @@
 				72F7CFAE28F83D0400E0D0C0 /* BottomSheetDataSource.swift */,
 				D3C23A5F28EDE7A1009B53B4 /* Enum.swift */,
 				D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */,
+				D39F6D8A2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.swift */,
+				D39F6D8B2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.xib */,
 				D3DD808C29278854001250CF /* AttendanceManagerModeView.xib */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
@@ -410,6 +416,7 @@
 				D3DD808D29278854001250CF /* AttendanceManagerModeView.xib in Resources */,
 				D3DD8089292687F2001250CF /* MainPopOverViewControllers.storyboard in Resources */,
 				72ED25AF2897788900031AD1 /* Main.storyboard in Resources */,
+				D39F6D8D2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +496,7 @@
 				7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */,
 				D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
+				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationSortingTableViewCell.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,

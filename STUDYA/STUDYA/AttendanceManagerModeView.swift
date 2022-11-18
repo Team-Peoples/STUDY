@@ -69,7 +69,3 @@ extension AttendanceManagerModeView: UICollectionViewDelegateFlowLayout {
         return collectionView.frame.size
     }
 }
-
-final class AttendanceModificationSortingTableViewCell: UITableViewCell {
-    
-}
