@@ -156,7 +156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P4C-Jo-5Kj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="971.01449275362324" y="116.51785714285714"/>
+            <point key="canvasLocation" x="969.60000000000002" y="116.00985221674877"/>
         </scene>
         <!--Study General Rule Attendance Table View Controller-->
         <scene sceneID="OlK-3U-R84">

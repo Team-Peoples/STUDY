@@ -21,11 +21,11 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private lazy var afterStudyView: RoundableView = {
 
-        let v = RoundableView()
+        let v = RoundableView(cornerRadius: 25)
 
         let symbolView = UIImageView()
         var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
-        let innerView = RoundableView()
+        let innerView = RoundableView(cornerRadius: 22)
 
         v.addSubview(symbolView)
         v.addSubview(titleLabel)

@@ -28,7 +28,7 @@ final class MyPageMainViewController: UIViewController {
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
     private let separatorView: RoundableView = {
        
-        let view = RoundableView()
+        let view = RoundableView(cornerRadius: 2)
         view.backgroundColor = UIColor.appColor(.ppsGray3)
         
         return view
@@ -53,7 +53,8 @@ final class MyPageMainViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        giveShadow()
+        headerView.layer.applySketchShadow(color: .black, alpha: 0.1, x: 0, y: 0, blur: 10, spread: 0)
+        
         settingImageView.isUserInteractionEnabled = true
         settingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(settingViewTapped)))
         
@@ -76,15 +77,6 @@ final class MyPageMainViewController: UIViewController {
         nextVC.modalPresentationStyle = .fullScreen
         
         present(nextVC, animated: true)
-    }
-    
-    private func giveShadow() {
-        headerView.layer.borderWidth = 0
-        headerView.layer.masksToBounds = false
-        headerView.layer.shadowColor = UIColor.black.cgColor
-        headerView.layer.shadowOffset = CGSize(width: 0, height: 0)
-        headerView.layer.shadowOpacity = 0.08
-        headerView.layer.shadowRadius = 24
     }
     
     private func addSubviews() {
