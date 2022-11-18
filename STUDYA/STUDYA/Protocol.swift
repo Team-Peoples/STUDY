@@ -9,4 +9,5 @@ import UIKit
 
 protocol Navigatable {
     func push(vc: UIViewController)
+    func present(vc: UIViewController)
 }
