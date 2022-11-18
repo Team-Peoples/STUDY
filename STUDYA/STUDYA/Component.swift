@@ -724,7 +724,12 @@ final class RoundableView: UIView {
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+    }
+    
+    @IBInspectable var cornerRadius: CGFloat {
+        get { return layer.cornerRadius }
+        set { layer.cornerRadius = newValue }
     }
 }
 
@@ -1263,20 +1268,5 @@ final class RoundedCornersField: UITextField {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         keyboardType = .numberPad
-    }
-}
-
-final class RoundedCornersView: UIView {
-    @IBInspectable var cornerRadius: CGFloat {
-        get { return layer.cornerRadius }
-        set { layer.cornerRadius = newValue }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
     }
 }
