@@ -155,7 +155,7 @@
                                 <color key="textColor" name="ppsGray1"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTR-w3-hrv">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTR-w3-hrv" customClass="RoundedCornersView" customModule="STUDYA" customModuleProvider="target">
                                 <rect key="frame" x="34" y="77.666666666666671" width="218" height="59.000000000000014"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4C-Tl-2h7">
@@ -171,6 +171,11 @@
                                     <constraint firstItem="r4C-Tl-2h7" firstAttribute="centerX" secondItem="sTR-w3-hrv" secondAttribute="centerX" id="iyc-Hb-vvT"/>
                                     <constraint firstAttribute="height" constant="59" id="wbC-yl-E69"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Ls5-Ri-KBh">
                                 <rect key="frame" x="30" y="178.66666666666666" width="226" height="40.333333333333343"/>

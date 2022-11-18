@@ -36,7 +36,7 @@ final class ValidationNumberCheckingPopViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        validationNumberLabel.text = "아니아니"
+        validationNumberLabel.text = "7395"
     }
     
     @IBAction func closeButtonTapped(_ sender: Any) {
