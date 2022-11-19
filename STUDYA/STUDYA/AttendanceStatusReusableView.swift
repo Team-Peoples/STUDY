@@ -83,8 +83,9 @@ class AttendanceStatusReusableView: UIView {
         self.addSubview(progressView)
         progressView.snp.makeConstraints { make in
             make.top.equalTo(attendanceProportionLabel.snp.bottom).offset(6)
-            make.leading.trailing.equalTo(self).inset(36)
+            make.centerX.equalTo(self)
             make.height.equalTo(progressViewHeight)
+            make.width.equalTo(300)
         }
         
         progressView.dataSource = self
