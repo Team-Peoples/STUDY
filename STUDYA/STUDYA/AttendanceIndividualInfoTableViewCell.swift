@@ -1,5 +1,5 @@
 //
-//  AttendanceInfoTableViewCell.swift
+//  AttendanceIndividualInfoTableViewCell.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/11/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AttendanceInfoTableViewCell: UITableViewCell {
+final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     
     static let identifier = "AttendanceInfoTableViewCell"
     
@@ -20,18 +20,26 @@ final class AttendanceInfoTableViewCell: UITableViewCell {
         return v
     }()
     private let profileView = ProfileImageView(size: 40)
-    private let nickNameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let attendanceStatusView: RoundableView = {
+       
+        let r = RoundableView(cornerRadius: 8)
+        
+        r.backgroundColor = .appColor(.attendedMain)
+        
+        return r
+    }()
     private let attendanceStatusLabel: UILabel = {
         
         let l = UILabel(frame: .zero)
         
         l.text = "출석"
-        l.backgroundColor = .appColor(.attendedMain)
-        l.layer.cornerRadius = 8
+        l.font = .boldSystemFont(ofSize: 10)
+        l.textColor = .systemBackground
         
         return l
     }()
-    private let penaltyLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 18, isBold: true)
+    private let penaltyLabel = CustomLabel(title: "10000", tintColor: .ppsBlack, size: 18, isBold: true)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,7 +50,8 @@ final class AttendanceInfoTableViewCell: UITableViewCell {
         
         view.addSubview(profileView)
         view.addSubview(nickNameLabel)
-        view.addSubview(attendanceStatusLabel)
+        view.addSubview(attendanceStatusView)
+        attendanceStatusView.addSubview(attendanceStatusLabel)
         view.addSubview(penaltyLabel)
         
         view.snp.makeConstraints { make in
@@ -54,10 +63,12 @@ final class AttendanceInfoTableViewCell: UITableViewCell {
             make.leading.equalTo(view.snp.leading).inset(20)
             make.centerY.equalTo(view)
         }
-        attendanceStatusLabel.snp.makeConstraints { make in
+        nickNameLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileView.snp.trailing).offset(10)
             make.top.equalTo(profileView.snp.top)
         }
+        attendanceStatusView.anchor(top: nickNameLabel.bottomAnchor, topConstant: 8, leading: nickNameLabel.leadingAnchor, width: 32, height: 16)
+        attendanceStatusLabel.centerXY(inView: attendanceStatusView)
         penaltyLabel.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).inset(20)
             make.bottom.equalTo(view.snp.bottom).inset(24)

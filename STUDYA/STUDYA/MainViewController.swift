@@ -266,7 +266,7 @@ extension MainViewController {
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
-                cell.navigatable = self
+                cell.navigateDelegate = self
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }

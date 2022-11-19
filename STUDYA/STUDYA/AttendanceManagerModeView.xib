@@ -24,7 +24,7 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain"/>
                             <connections>
-                                <action selector="attendanceModiciationButtonTapped:" destination="0gq-4W-dwu" eventType="touchUpInside" id="W7P-qb-wxH"/>
+                                <action selector="leftButtonTapped:" destination="0gq-4W-dwu" eventType="touchUpInside" id="6gA-6B-6b3"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Akm-Jk-dcB" userLabel="rightButton">
@@ -33,7 +33,7 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain"/>
                             <connections>
-                                <action selector="attendanceCheckButtonTapped:" destination="0gq-4W-dwu" eventType="touchUpInside" id="UzK-hK-aCd"/>
+                                <action selector="rightButtonTapped:" destination="0gq-4W-dwu" eventType="touchUpInside" id="Iat-YK-2Om"/>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출결 수정" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LPO-7v-Zx2">
@@ -88,7 +88,7 @@
                     </constraints>
                 </view>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="yTl-Mf-0mS">
-                    <rect key="frame" x="0.0" y="134.33333333333331" width="375" height="643.66666666666674"/>
+                    <rect key="frame" x="0.0" y="131.33333333333331" width="375" height="646.66666666666674"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AUP-tE-Gn7">
                         <size key="itemSize" width="128" height="128"/>
@@ -120,7 +120,7 @@
                 <constraint firstItem="mzb-Di-Z4O" firstAttribute="leading" secondItem="3wj-Oc-QMz" secondAttribute="leading" id="Suf-yg-SSQ"/>
                 <constraint firstItem="nyo-Hz-l7k" firstAttribute="centerX" secondItem="LPO-7v-Zx2" secondAttribute="centerX" id="UoH-sC-tzQ"/>
                 <constraint firstItem="IZb-AY-8Ql" firstAttribute="top" secondItem="3wj-Oc-QMz" secondAttribute="top" constant="14" id="Yrk-Ey-CEp"/>
-                <constraint firstItem="yTl-Mf-0mS" firstAttribute="top" secondItem="lwy-wL-EsY" secondAttribute="bottom" constant="3" id="d78-6p-fiP"/>
+                <constraint firstItem="yTl-Mf-0mS" firstAttribute="top" secondItem="lwy-wL-EsY" secondAttribute="bottom" id="d78-6p-fiP"/>
                 <constraint firstItem="3wj-Oc-QMz" firstAttribute="trailing" secondItem="mzb-Di-Z4O" secondAttribute="trailing" id="hVM-4Y-l0R"/>
                 <constraint firstItem="3wj-Oc-QMz" firstAttribute="bottom" secondItem="yTl-Mf-0mS" secondAttribute="bottom" id="hml-Tc-trH"/>
             </constraints>

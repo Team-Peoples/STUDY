@@ -17,6 +17,20 @@ final class AttendanceManagerModeView: UIView {
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.isScrollEnabled = false
+        
+        collectionView.register(AttendanceModificationCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceModificationCollectionViewCell.identifier)
+        collectionView.register(ExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier)
+        
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.scrollDirection = .horizontal
+    }
+    
     @IBAction private func leftButtonTapped(_ sender: UIButton) {
         leftCenterXConstraint.priority = .required
         rightCenterXConstraint.priority = .defaultHigh
@@ -45,7 +59,7 @@ final class AttendanceManagerModeView: UIView {
     }
 }
 
-extension AttendanceManagerModeView: UICollectionViewDataSource {
+extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         2
     }
@@ -53,7 +67,9 @@ extension AttendanceManagerModeView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as! AttendanceModificationCollectionViewCell
+            
+            return cell
             
         case 1: break
             
