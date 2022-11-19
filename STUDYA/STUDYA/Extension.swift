@@ -43,3 +43,51 @@ extension UIButton {
         self.setBackgroundImage(backgroundImage, for: state)
     }   
 }
+
+extension AttributedString {
+    static func custom(frontLabel: String, labelFontSize: CGFloat, labelColor: AssetColor = .ppsBlack, value: Int, valueFontSize: CGFloat, valueTextColor: AssetColor = .keyColor1, withCurrency: Bool = false) -> NSAttributedString {
+        
+        let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(string: frontLabel, attributes: [.font: UIFont.systemFont(ofSize: labelFontSize), .foregroundColor: UIColor.appColor(labelColor)])
+        
+        let fineAttrString = NSAttributedString(string: Formatter.formatIntoDecimal(number: value), attributes: [.font: UIFont.boldSystemFont(ofSize: valueFontSize), .foregroundColor: UIColor.appColor(valueTextColor)])
+        
+        mutableAttributedText.append(fineAttrString)
+        
+        if withCurrency {
+            let wonAttrString = NSAttributedString(string: " 원", attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.appColor(.ppsGray1)])
+            mutableAttributedText.append(wonAttrString)
+        }
+        
+        return mutableAttributedText
+    }
+    
+    static func custom(image: UIImage, text: String) -> NSAttributedString {
+        let resizedImage = image.resize(newWidth: 20)
+        let attachment = NSTextAttachment(image: resizedImage)
+        let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(attachment: attachment)
+        
+        let fineAttrString = NSAttributedString(string: text, attributes: [.font: UIFont.boldSystemFont(ofSize: 19), .foregroundColor: UIColor.appColor(.ppsBlack)])
+        
+        mutableAttributedText.append(fineAttrString)
+        
+        return mutableAttributedText
+    }
+}
+
+extension UIImage {
+    func resize(newWidth: CGFloat) -> UIImage {
+        let scale = newWidth / self.size.width
+        let newHeight = self.size.height * scale
+
+        let size = CGSize(width: newWidth, height: newHeight)
+        let render = UIGraphicsImageRenderer(size: size)
+        let renderImage = render.image { context in
+            self.draw(in: CGRect(origin: .zero, size: size))
+        }
+        
+        print("화면 배율: \(UIScreen.main.scale)")// 배수
+        print("origin: \(self), resize: \(renderImage)")
+        return renderImage
+    }
+}
+

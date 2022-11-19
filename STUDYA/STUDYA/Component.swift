@@ -22,6 +22,14 @@ final class CustomButton: UIButton {
         super.init(frame: .zero)
 
         configure(title: title, isBold: isBold, isFill: isFill, fontSize: fontSize, height: height)
+        configureBorder(color: .keyColor1, width: 1, radius: height / 2)
+    }
+    
+    init(title: String, isBold: Bool = false, textColor: AssetColor, borderColor: AssetColor, backgroundColor: UIColor, fontSize: CGFloat, height: CGFloat) {
+        super.init(frame: .zero)
+        
+        titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
+        easyConfigure(title: title, backgroundColor: backgroundColor, textColor: .appColor(textColor), borderColor: borderColor, radius: height / 2)
     }
     
     required init?(coder: NSCoder) {
@@ -32,17 +40,8 @@ final class CustomButton: UIButton {
     
     private func configure(title: String, isBold: Bool, isFill: Bool, fontSize: CGFloat, height: CGFloat) {
         
-        setTitle(title, for: .normal)
-        configureBorder(color: .keyColor1, width: 1, radius: height / 2)
+        isFill ? fillIn(title: title) : fillOut(title: title)
         
-        if isFill {
-            backgroundColor = UIColor.appColor(.keyColor1)
-            setTitleColor(.white, for: .normal)
-
-        } else {
-            backgroundColor = .systemBackground
-            setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
-        }
         titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
         setHeight(height)
     }
@@ -60,7 +59,6 @@ final class CustomButton: UIButton {
         backgroundColor = .systemBackground
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
-    
     internal func easyConfigure(title: String, backgroundColor: UIColor, textColor: UIColor, borderColor: AssetColor, radius: CGFloat) {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
@@ -133,7 +131,7 @@ final class CharactersNumberLimitedTextView: BaseTextView {
     
     private let charactersNumberLabel = UILabel(frame: .zero)
     
-    // MARK: - Initialize
+    // MARK: - Initialization
     
     init(placeholder: String, maxCharactersNumber: Int, radius: CGFloat, position: Position, fontSize: CGFloat, topInset: CGFloat = 11, leadingInset: CGFloat = 15) {
         super.init(placeholder: placeholder, fontSize: 16, topInset: topInset, leadingInset: leadingInset)
@@ -250,7 +248,7 @@ class BasicInputView: UIView {
     fileprivate let underline = UIView()
     fileprivate var inputField: CustomTextField!
     
-    // MARK: - Initialize
+    // MARK: - Initialization
     
     init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, isCancel: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
         super.init(frame: .zero)
@@ -331,7 +329,7 @@ class BasicInputView: UIView {
 }
 
 class CustomTextField: UITextField {
-    // MARK: - Initialize
+    // MARK: - Initialization
     
     init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool? = nil) {
         super.init(frame: .zero)
@@ -407,7 +405,7 @@ class CustomLabel: UILabel {
 }
 
 class SimpleAlert: UIAlertController {
-    // MARK: - Initialize
+    // MARK: - Initialization
     convenience init(message: String?) {
         self.init(title: nil, message: message, preferredStyle: .alert)
         
@@ -543,7 +541,7 @@ class PlusCircleFillView: UIImageView {
 class CheckBoxButton: UIButton {
     // MARK: - Properties
     
-    // MARK: - Initialize
+    // MARK: - Initialization
     init(title: String, selected: String, unselected: String) {
         super.init(frame: .zero)
 
@@ -708,6 +706,19 @@ final class BrandSwitch: UIControl {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         self.isOn = !self.isOn
+    }
+}
+
+final class RoundedView: UIView {
+    
+    init(cornerRadius: CGFloat) {
+        super.init(frame: .zero)
+        
+        self.layer.cornerRadius = cornerRadius
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
