@@ -17,18 +17,34 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         
         t.dataSource = self
         t.delegate = self
-        t.register(AttendanceModificationHeaderView.nib(), forHeaderFooterViewReuseIdentifier: AttendanceModificationHeaderView.identifier)
+
         t.register(AttendanceIndividualInfoTableViewCell.self, forCellReuseIdentifier: AttendanceIndividualInfoTableViewCell.identifier)
         t.separatorStyle = .none
         
         return t
     }()
+    private lazy var headerView: UIView = {
+        
+        let nib = UINib(nibName: "AttendanceModificationHeaderView", bundle: nil)
+        let v = nib.instantiate(withOwner: self).first as! UIView
+        
+        return v
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .red
+        
+        contentView.addSubview(headerView)
         contentView.addSubview(tableView)
-        tableView.frame = bounds
+        
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(contentView)
+            make.height.equalTo(53)
+        }
+        tableView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(contentView)
+            make.top.equalTo(headerView.snp.bottom)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -53,18 +69,6 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         100
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceModificationHeaderView.identifier)
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        56
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        56
     }
 }
 

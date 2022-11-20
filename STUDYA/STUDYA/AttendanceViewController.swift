@@ -24,4 +24,8 @@ final class AttendanceViewController: UIViewController {
         
         view = managerView
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }
