@@ -18,11 +18,6 @@ final class AttendanceModificationHeaderView: UITableViewHeaderFooterView {
         return UINib(nibName: "AttendanceModificationHeaderView", bundle: nil)
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-    }
-    
     @IBAction func leftButtonTapped(_ sender: UIButton) {
         print(#function)
     }

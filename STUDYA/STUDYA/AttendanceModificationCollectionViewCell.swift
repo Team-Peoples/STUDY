@@ -25,7 +25,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }()
     private lazy var headerView: UIView = {
         
-        let nib = UINib(nibName: "AttendanceModificationHeaderView", bundle: nil)
+        let nib = UINib(nibName: AttendanceModificationHeaderView.identifier, bundle: nil)
         let v = nib.instantiate(withOwner: self).first as! UIView
         
         return v
