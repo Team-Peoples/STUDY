@@ -12,7 +12,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     static let identifier = "AttendanceInfoTableViewCell"
     
     internal let view: RoundableView = {
-       
+        
         let v = RoundableView(cornerRadius: 24)
         
         v.backgroundColor = .appColor(.background2)
@@ -21,24 +21,15 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     }()
     private let profileView = ProfileImageView(size: 40)
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
-    private let attendanceStatusView: RoundableView = {
+    private let attendanceStatusView: AttendanceStatusCapsuleView = {
        
-        let r = RoundableView(cornerRadius: 8)
+        let v = AttendanceStatusCapsuleView(color: .attendedMain)
         
-        r.backgroundColor = .appColor(.attendedMain)
+        v.setTitle("출석")
         
-        return r
+        return v
     }()
-    private let attendanceStatusLabel: UILabel = {
-        
-        let l = UILabel(frame: .zero)
-        
-        l.text = "출석"
-        l.font = .boldSystemFont(ofSize: 10)
-        l.textColor = .systemBackground
-        
-        return l
-    }()
+    
     private let penaltyLabel = CustomLabel(title: "10000", tintColor: .ppsBlack, size: 18, isBold: true)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -51,7 +42,6 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         view.addSubview(profileView)
         view.addSubview(nickNameLabel)
         view.addSubview(attendanceStatusView)
-        attendanceStatusView.addSubview(attendanceStatusLabel)
         view.addSubview(penaltyLabel)
         
         view.snp.makeConstraints { make in
@@ -68,7 +58,6 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
             make.top.equalTo(profileView.snp.top)
         }
         attendanceStatusView.anchor(top: nickNameLabel.bottomAnchor, topConstant: 8, leading: nickNameLabel.leadingAnchor, width: 32, height: 16)
-        attendanceStatusLabel.centerXY(inView: attendanceStatusView)
         penaltyLabel.snp.makeConstraints { make in
             make.trailing.equalTo(view.snp.trailing).inset(20)
             make.bottom.equalTo(view.snp.bottom).inset(24)

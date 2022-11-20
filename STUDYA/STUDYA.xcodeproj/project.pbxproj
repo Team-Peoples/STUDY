@@ -43,6 +43,8 @@
 		72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFA728F832D100E0D0C0 /* CalendarViewController.swift */; };
 		72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */; };
 		72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72F7CFAE28F83D0400E0D0C0 /* BottomSheetDataSource.swift */; };
+		D306E6C9292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D306E6C8292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift */; };
+		D306E6CB292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D306E6CA292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift */; };
 		D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */; };
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
@@ -140,6 +142,8 @@
 		72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72F7CFAE28F83D0400E0D0C0 /* BottomSheetDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetDataSource.swift; sourceTree = "<group>"; };
 		81E2B0CD3836144B365B9C77 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.release.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
+		D306E6C8292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceOverallCheckCollectionViewCell.swift; sourceTree = "<group>"; };
+		D306E6CA292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceIndividualOverallInfoTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
@@ -308,11 +312,13 @@
 				D3C23A5F28EDE7A1009B53B4 /* Enum.swift */,
 				D3D8D1B7292910E200B9D6B6 /* AttendanceViewController.swift */,
 				D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */,
+				D3DD808C29278854001250CF /* AttendanceManagerModeView.xib */,
 				D3D8D1B929291E0B00B9D6B6 /* AttendanceModificationCollectionViewCell.swift */,
 				D39F6D8A2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift */,
-				D3D8D1B52927E8C400B9D6B6 /* AttendanceIndividualInfoTableViewCell.swift */,
 				D3D8D1BB29291FC400B9D6B6 /* AttendanceModificationHeaderView.xib */,
-				D3DD808C29278854001250CF /* AttendanceManagerModeView.xib */,
+				D3D8D1B52927E8C400B9D6B6 /* AttendanceIndividualInfoTableViewCell.swift */,
+				D306E6C8292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift */,
+				D306E6CA292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -507,6 +513,7 @@
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
+				D306E6C9292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
 				D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */,
 				D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */,
@@ -526,6 +533,7 @@
 				D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
 				7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */,
+				D306E6CB292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift in Sources */,
 				72E2BED9291E01AF009BCCB7 /* StudyFormViewController.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,

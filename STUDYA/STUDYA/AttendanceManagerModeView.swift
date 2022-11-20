@@ -25,7 +25,7 @@ final class AttendanceManagerModeView: UIView {
         collectionView.isScrollEnabled = false
         
         collectionView.register(AttendanceModificationCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceModificationCollectionViewCell.identifier)
-        collectionView.register(ExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier)
+        collectionView.register(AttendanceOverallCheckCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier)
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
@@ -71,7 +71,10 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
             
             return cell
             
-        case 1: break
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as! AttendanceOverallCheckCollectionViewCell
+            
+            return cell
             
         default: break
         }

@@ -716,7 +716,7 @@ final class BrandSwitch: UIControl {
     }
 }
 
-final class RoundableView: UIView {
+class RoundableView: UIView {
     init(cornerRadius: CGFloat) {
         super.init(frame: .zero)
         self.layer.cornerRadius = cornerRadius
@@ -1267,5 +1267,33 @@ final class RoundedCornersField: UITextField {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         keyboardType = .numberPad
+    }
+}
+
+final class AttendanceStatusCapsuleView: RoundableView {
+    let label = UILabel(frame: .zero)
+    
+    init(color: AssetColor) {
+        super.init(cornerRadius: 8)
+        
+        backgroundColor = .appColor(color)
+        label.font = .boldSystemFont(ofSize: 10)
+        label.textColor = .systemBackground
+        
+        addSubview(label)
+        label.centerXY(inView: self)
+    }
+    
+    internal func setTitle(_ title: String) {
+        label.text = title
+    }
+    
+    internal func configure(title: String, color: AssetColor) {
+        setTitle(title)
+        backgroundColor = .appColor(color)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
