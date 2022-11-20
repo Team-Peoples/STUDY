@@ -26,8 +26,8 @@ final class AttendanceOverallCheckHeaderView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
-        
+        let borderColor = UIColor(red: 124/255, green: 179/255, blue: 244/255, alpha: 1)
+        button.addDashedBorder(color: borderColor, cornerRadius: 14)
     }
 
 }
