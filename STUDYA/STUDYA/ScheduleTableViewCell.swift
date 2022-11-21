@@ -11,8 +11,8 @@ class ScheduleTableViewCell: UITableViewCell {
     
     private let roundedBackgroundView = UIView()
     private let bookmarkColorView = UIView()
-    private let scheduleTitleBackgroundView = RoundableView()
-    private let scheduleTimeBackgorundView = RoundableView()
+//    private let scheduleTitleBackgroundView = RoundableView()
+//    private let scheduleTimeBackgorundView = RoundableView()
     private  lazy var scheduleTimeLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 14)
     private lazy var scheduleNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 14)
     
@@ -31,23 +31,23 @@ class ScheduleTableViewCell: UITableViewCell {
         roundedBackgroundView.layer.cornerRadius = 13
         roundedBackgroundView.backgroundColor = .white
         
-        scheduleTitleBackgroundView.clipsToBounds = true
-        scheduleTitleBackgroundView.layer.cornerRadius = 24
-        scheduleTitleBackgroundView.layer.borderWidth = 2
+//        scheduleTitleBackgroundView.clipsToBounds = true
+//        scheduleTitleBackgroundView.layer.cornerRadius = 24
+//        scheduleTitleBackgroundView.layer.borderWidth = 2
         
         scheduleTimeLabel.font = UIFont.systemFont(ofSize: 14)
         scheduleNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
         
         
-        roundedBackgroundView.addSubview(bookmarkColorView)
-        roundedBackgroundView.addSubview(scheduleTitleBackgroundView)
-        roundedBackgroundView.addSubview(schedulePlaceView)
-        roundedBackgroundView.addSubview(scheduleSubjectView)
-        
-        scheduleTitleBackgroundView.addSubview(scheduleTimeBackgorundView)
-        scheduleTitleBackgroundView.addSubview(scheduleNameLabel)
-        
-        scheduleTimeBackgorundView.addSubview(scheduleTimeLabel)
+//        roundedBackgroundView.addSubview(bookmarkColorView)
+//        roundedBackgroundView.addSubview(scheduleTitleBackgroundView)
+//        roundedBackgroundView.addSubview(schedulePlaceView)
+//        roundedBackgroundView.addSubview(scheduleSubjectView)
+//
+//        scheduleTitleBackgroundView.addSubview(scheduleTimeBackgorundView)
+//        scheduleTitleBackgroundView.addSubview(scheduleNameLabel)
+//
+//        scheduleTimeBackgorundView.addSubview(scheduleTimeLabel)
 
         setConstraints()
     }
@@ -61,8 +61,8 @@ class ScheduleTableViewCell: UITableViewCell {
     func configure(color: UIColor, name: String, place: String, subtitle: String, time: String) {
         
         bookmarkColorView.backgroundColor = color
-        scheduleTimeBackgorundView.backgroundColor = color
-        scheduleTitleBackgroundView.layer.borderColor = color.cgColor
+//        scheduleTimeBackgorundView.backgroundColor = color
+//        scheduleTitleBackgroundView.layer.borderColor = color.cgColor
         scheduleTimeLabel.text = time
         scheduleNameLabel.text = name
         schedulePlaceView.contenttLabel.text = place
@@ -83,39 +83,39 @@ class ScheduleTableViewCell: UITableViewCell {
             make.width.equalTo(10)
         }
         
-        scheduleTitleBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(roundedBackgroundView.snp.top).inset(10)
-            make.trailing.equalTo(roundedBackgroundView.snp.trailing).inset(10)
-            make.leading.equalTo(bookmarkColorView.snp.trailing).offset(10)
-            make.height.equalTo(30)
-        }
-        
-        scheduleTimeBackgorundView.snp.makeConstraints { make in
-            make.top.equalTo(scheduleTitleBackgroundView.snp.top)
-            make.leading.equalTo(scheduleTitleBackgroundView.snp.leading)
-            make.bottom.equalTo(scheduleTitleBackgroundView.snp.bottom)
-        }
-        
-        scheduleTimeLabel.snp.makeConstraints { make in
-            make.top.equalTo(scheduleTimeBackgorundView.snp.top).inset(6)
-            make.bottom.equalTo(scheduleTimeBackgorundView.snp.bottom).inset(6)
-            make.leading.equalTo(scheduleTimeBackgorundView.snp.leading).inset(10)
-            make.trailing.equalTo(scheduleTimeBackgorundView.snp.trailing).inset(10)
-        }
-        
-        scheduleNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(scheduleTitleBackgroundView.snp.top).inset(8)
-            make.leading.equalTo(scheduleTimeBackgorundView.snp.trailing).offset(10)
-            make.bottom.equalTo(scheduleTitleBackgroundView.snp.bottom).inset(8)
-            make.trailing.equalTo(scheduleTitleBackgroundView.snp.trailing).inset(10)
-        }
-        
-        schedulePlaceView.snp.makeConstraints { make in
-            make.top.equalTo(scheduleTitleBackgroundView.snp.bottom).offset(5)
-            make.leading.equalTo(bookmarkColorView.snp.trailing)
-            make.trailing.equalTo(roundedBackgroundView.snp.trailing)
-        }
-        
+//        scheduleTitleBackgroundView.snp.makeConstraints { make in
+//            make.top.equalTo(roundedBackgroundView.snp.top).inset(10)
+//            make.trailing.equalTo(roundedBackgroundView.snp.trailing).inset(10)
+//            make.leading.equalTo(bookmarkColorView.snp.trailing).offset(10)
+//            make.height.equalTo(30)
+//        }
+//
+//        scheduleTimeBackgorundView.snp.makeConstraints { make in
+//            make.top.equalTo(scheduleTitleBackgroundView.snp.top)
+//            make.leading.equalTo(scheduleTitleBackgroundView.snp.leading)
+//            make.bottom.equalTo(scheduleTitleBackgroundView.snp.bottom)
+//        }
+//
+//        scheduleTimeLabel.snp.makeConstraints { make in
+//            make.top.equalTo(scheduleTimeBackgorundView.snp.top).inset(6)
+//            make.bottom.equalTo(scheduleTimeBackgorundView.snp.bottom).inset(6)
+//            make.leading.equalTo(scheduleTimeBackgorundView.snp.leading).inset(10)
+//            make.trailing.equalTo(scheduleTimeBackgorundView.snp.trailing).inset(10)
+//        }
+//
+//        scheduleNameLabel.snp.makeConstraints { make in
+//            make.top.equalTo(scheduleTitleBackgroundView.snp.top).inset(8)
+//            make.leading.equalTo(scheduleTimeBackgorundView.snp.trailing).offset(10)
+//            make.bottom.equalTo(scheduleTitleBackgroundView.snp.bottom).inset(8)
+//            make.trailing.equalTo(scheduleTitleBackgroundView.snp.trailing).inset(10)
+//        }
+//
+//        schedulePlaceView.snp.makeConstraints { make in
+//            make.top.equalTo(scheduleTitleBackgroundView.snp.bottom).offset(5)
+//            make.leading.equalTo(bookmarkColorView.snp.trailing)
+//            make.trailing.equalTo(roundedBackgroundView.snp.trailing)
+//        }
+//
         scheduleSubjectView.snp.makeConstraints { make in
             make.top.equalTo(schedulePlaceView.snp.bottom).offset(5)
             make.leading.equalTo(bookmarkColorView.snp.trailing)

@@ -21,9 +21,9 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     
     internal var profileViewTapped: ((Member) -> ()) = { _ in}
     
-    private lazy var profileView: ProfileImageSelectorView = {
+    private lazy var profileView: ProfileImageView = {
        
-        let p = ProfileImageSelectorView(size: 72)
+        let p = ProfileImageView(size: 72)
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         p.addGestureRecognizer(recognizer)

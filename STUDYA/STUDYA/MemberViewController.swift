@@ -40,6 +40,7 @@ final class MemberViewController: UIViewController {
     private let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+    private let bottomVC = MemberBottomSheetViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,8 +104,7 @@ extension MemberViewController: UICollectionViewDataSource {
             
             cell.member = members[indexPath.item - 1]
             
-            let bottomVC = MemberBottomSheetViewController()
-            cell.profileViewTapped = { member in
+            cell.profileViewTapped = { [self] member in
                 guard let sheet = bottomVC.sheetPresentationController else { return }
                 
                 sheet.detents = [ .custom { _ in return 300 }]
