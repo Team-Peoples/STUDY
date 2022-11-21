@@ -279,7 +279,7 @@ extension MainViewController {
                     }
                     
                     cell.announcementButtonAction = {
-                        let vc = AttendanceViewController()
+                        let vc = AnnouncementBoardViewController()
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                     

@@ -16,8 +16,13 @@ class AttendanceStatusReusableView: UIView {
     var studyAttendance: [String: Int] = ["출석": 60,
                                           "지각": 15,
                                           "결석": 3,
-                                          "사유": 5]
+                                          "사유": 5] {
+        didSet {
+        }
+    }
     var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.ppsGray2)]
+    
+    private let attendanceStatusTitleLabel = CustomLabel(title: "출결현황", tintColor: .ppsBlack, size: 16, isBold: true)
     
     private let fineLabel: UILabel = {
         let lbl = UILabel()
@@ -31,7 +36,6 @@ class AttendanceStatusReusableView: UIView {
         lbl.textColor = .appColor(.ppsBlack)
         return lbl
     }()
-    
     private lazy var progressView: MultiProgressView = {
         let MPV = MultiProgressView()
         MPV.trackBackgroundColor = .appColor(.ppsGray2)
@@ -39,7 +43,6 @@ class AttendanceStatusReusableView: UIView {
         MPV.cornerRadius = 5
         return MPV
     }()
-    
     private let attendanceLabel = CustomLabel(title: "출석", tintColor: .ppsGray1, size: 14)
     private let latenessLabel = CustomLabel(title: "지각", tintColor: .ppsGray1, size: 14)
     private let absenceLabel = CustomLabel(title: "결석", tintColor: .ppsGray1, size: 14)
@@ -50,7 +53,7 @@ class AttendanceStatusReusableView: UIView {
     private let absenceCountLabel = CustomLabel(title: "0", tintColor: .absentMain, size: 16)
     private let allowedCountLabel = CustomLabel(title: "0", tintColor: .allowedMain, size: 16)
     
-    private let progressViewHeight: CGFloat = 10
+    private let separater = UIView()
     
     // MARK: - Initialization
    
@@ -59,12 +62,15 @@ class AttendanceStatusReusableView: UIView {
         
         backgroundColor = .systemBackground
         
+        setupTitleLabel()
         setupFineLabel()
         setupProgressBar()
         setupProgress()
+        setupSeparater()
         
         setupAttendanceProportionLabel()
         setupLabelStackViewUnderProgressBar()
+        configure(studyAttendance)
     }
     
     required init?(coder: NSCoder) {
@@ -73,24 +79,45 @@ class AttendanceStatusReusableView: UIView {
     
     // MARK: - Actions
     
+    func configure(_ studyAttendance: [String: Int]) {
+        
+        attendanceCountLabel.text = "\(studyAttendance["출석"]!)"
+        latenessCountLabel.text = "\(studyAttendance["지각"]!)"
+        absenceCountLabel.text = "\(studyAttendance["결석"]!)"
+        allowedCountLabel.text = "\(studyAttendance["사유"]!)"
+    }
+    
     
     // MARK: - Configure
     
+    private func setupTitleLabel() {
+        
+        addSubview(attendanceStatusTitleLabel)
+        
+        attendanceStatusTitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.snp.top).offset(14)
+            make.leading.equalTo(self.snp.leading).inset(30)
+        }
+    }
+    
     private func setupFineLabel() {
+        
         addSubview(fineLabel)
         
         fineLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top).offset(30)
+            make.top.equalTo(attendanceStatusTitleLabel).offset(30)
             make.leading.equalTo(self.snp.leading).inset(36)
         }
     }
 
     private func setupProgressBar() {
-        self.addSubview(progressView)
+        
+        addSubview(progressView)
+        
         progressView.snp.makeConstraints { make in
             make.top.equalTo(fineLabel.snp.bottom).offset(40)
             make.centerX.equalTo(self)
-            make.height.equalTo(progressViewHeight)
+            make.height.equalTo(10)
             make.width.equalTo(300)
         }
         
@@ -137,7 +164,6 @@ class AttendanceStatusReusableView: UIView {
         horizontalStackView.alignment = .center
         horizontalStackView.distribution = .equalSpacing
         horizontalStackView.axis = .horizontal
-//        horizontalStackView.spacing = 15
     
         addSubview(horizontalStackView)
         
@@ -149,9 +175,8 @@ class AttendanceStatusReusableView: UIView {
     }
     
     private func setupProgress() {
-        let total = studyAttendance.map { (_, value) in
-            return value
-        }.reduce(0, +)
+        
+        let total = studyAttendance.map { (_, value) in return value }.reduce(0, +)
         let attendanceRatio = Float(studyAttendance["출석"]! * 100 / total) / 100
         let latendssRatio = Float(studyAttendance["지각"]! * 100 / total) / 100
         let absenceRatio = Float(studyAttendance["결석"]! * 100 / total) / 100
@@ -163,6 +188,18 @@ class AttendanceStatusReusableView: UIView {
         self.progressView.setProgress(section: 3, to: allowedRatio)
         
         attendanceProportionLabel.text = "출석률 \(Double(attendanceRatio * 100).formatted(.number))%"
+    }
+    
+    private func setupSeparater() {
+        
+        addSubview(separater)
+        
+        separater.backgroundColor = .appColor(.ppsGray2)
+        
+        separater.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.bottom.equalTo(self)
+        }
     }
 }
 
