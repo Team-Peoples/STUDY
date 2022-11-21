@@ -1297,3 +1297,41 @@ final class AttendanceStatusCapsuleView: RoundableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+class FullDoneButtonButtomView: UIView {
+    
+    private lazy var doneButton: UIButton = {
+       
+        let b = UIButton(frame: .zero)
+        b.backgroundColor = .appColor(.keyColor1)
+        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        return b
+    }()
+    private lazy var titleButton: CustomButton = {
+       
+        let b = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+        
+        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        
+        return b
+    }()
+    
+    @objc func doneButtonTapped() {
+//        need override
+    }
+    
+    func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int) {
+
+        view.addSubview(doneButton)
+        doneButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(view)
+            make.top.equalTo(upperView.snp.bottom).offset(constant)
+        }
+
+        doneButton.addSubview(titleButton)
+        titleButton.snp.makeConstraints { make in
+            make.centerX.equalTo(doneButton)
+            make.top.equalTo(doneButton.snp.top).inset(20)
+        }
+    }
+}
