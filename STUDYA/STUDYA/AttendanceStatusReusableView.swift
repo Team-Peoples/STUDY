@@ -40,6 +40,16 @@ class AttendanceStatusReusableView: UIView {
         return MPV
     }()
     
+    private let attendanceLabel = CustomLabel(title: "출석", tintColor: .ppsGray1, size: 14)
+    private let latenessLabel = CustomLabel(title: "지각", tintColor: .ppsGray1, size: 14)
+    private let absenceLabel = CustomLabel(title: "결석", tintColor: .ppsGray1, size: 14)
+    private let allowedLabel = CustomLabel(title: "사유", tintColor: .ppsGray1, size: 14)
+    
+    private let attendanceCountLabel = CustomLabel(title: "0", tintColor: .attendedMain, size: 16)
+    private let latenessCountLabel = CustomLabel(title: "0", tintColor: .lateMain, size: 16)
+    private let absenceCountLabel = CustomLabel(title: "0", tintColor: .absentMain, size: 16)
+    private let allowedCountLabel = CustomLabel(title: "0", tintColor: .allowedMain, size: 16)
+    
     private let progressViewHeight: CGFloat = 10
     
     // MARK: - Initialization
@@ -49,9 +59,12 @@ class AttendanceStatusReusableView: UIView {
         
         backgroundColor = .systemBackground
         
-        setupLabels()
+        setupFineLabel()
         setupProgressBar()
         setupProgress()
+        
+        setupAttendanceProportionLabel()
+        setupLabelStackViewUnderProgressBar()
     }
     
     required init?(coder: NSCoder) {
@@ -63,26 +76,19 @@ class AttendanceStatusReusableView: UIView {
     
     // MARK: - Configure
     
-    private func setupLabels() {
-        self.addSubview(fineLabel)
+    private func setupFineLabel() {
+        addSubview(fineLabel)
         
         fineLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.top).inset(30)
+            make.top.equalTo(self.snp.top).offset(30)
             make.leading.equalTo(self.snp.leading).inset(36)
         }
-        
-        self.addSubview(attendanceProportionLabel)
-        
-        attendanceProportionLabel.snp.makeConstraints { make in
-            make.top.equalTo(fineLabel.snp.bottom).offset(30)
-            make.trailing.equalTo(self.snp.trailing).inset(36)
-        }
     }
-    
+
     private func setupProgressBar() {
         self.addSubview(progressView)
         progressView.snp.makeConstraints { make in
-            make.top.equalTo(attendanceProportionLabel.snp.bottom).offset(6)
+            make.top.equalTo(fineLabel.snp.bottom).offset(40)
             make.centerX.equalTo(self)
             make.height.equalTo(progressViewHeight)
             make.width.equalTo(300)
@@ -90,6 +96,56 @@ class AttendanceStatusReusableView: UIView {
         
         progressView.dataSource = self
         progressView.delegate = self
+    }
+    
+    private func setupAttendanceProportionLabel() {
+        setupFineLabel()
+        
+        addSubview(attendanceProportionLabel)
+        
+        attendanceProportionLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(progressView.snp.top).offset(-5)
+            make.trailing.equalTo(self.snp.trailing).inset(36)
+        }
+    }
+    
+    private func setupLabelStackViewUnderProgressBar() {
+        
+        let separater1 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 42))
+        let separater2 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 42))
+        let separater3 = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 42))
+        
+        [separater1,separater2, separater3].forEach {
+            $0.backgroundColor = .appColor(.ppsGray2)
+            $0.snp.makeConstraints { make in
+                make.width.equalTo(1)
+                make.height.equalTo(42)
+            }
+        }
+        
+       let verticalStackedlabels = [[attendanceLabel, attendanceCountLabel], [latenessLabel, latenessCountLabel], [absenceLabel, absenceCountLabel], [allowedLabel, allowedCountLabel]].map { labels in
+            let verticalStackView = UIStackView(arrangedSubviews: labels)
+            verticalStackView.alignment = .center
+            verticalStackView.distribution = .equalSpacing
+            verticalStackView.axis = .vertical
+            verticalStackView.spacing = 5
+            return verticalStackView
+        }
+        
+        let horizontalStackView = UIStackView(arrangedSubviews: [verticalStackedlabels[0], separater1, verticalStackedlabels[1], separater2, verticalStackedlabels[2], separater3, verticalStackedlabels[3]])
+        
+        horizontalStackView.alignment = .center
+        horizontalStackView.distribution = .equalSpacing
+        horizontalStackView.axis = .horizontal
+//        horizontalStackView.spacing = 15
+    
+        addSubview(horizontalStackView)
+        
+        horizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(progressView.snp.bottom).offset(15)
+            make.leading.trailing.equalTo(self).inset(45)
+            make.bottom.greaterThanOrEqualTo(self.snp.bottom).inset(10)
+        }
     }
     
     private func setupProgress() {

@@ -19,7 +19,7 @@ class ScheduleTableViewCell: UITableViewCell {
     private lazy var schedulePlaceView = ScheduleContentView(title: "장소", content: "")
     private lazy var scheduleSubjectView = ScheduleContentView(title: "주제", content: "")
     
-    // MARK: - Initialize
+    // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -35,12 +35,7 @@ class AttendancePeriodSelectableView: UIView {
         return v
     }()
     
-    /// header에 들어갈것
-//    private let attendanceLabel = CustomLabel(title: "출석", tintColor: .ppsGray1, size: 14)
-//    private let latenessLabel = CustomLabel(title: "지각", tintColor: .ppsGray1, size: 14)
-//    private let absenceLabel = CustomLabel(title: "결석", tintColor: .ppsGray1, size: 14)
-//    private let allowedLabel = CustomLabel(title: "사유", tintColor: .ppsGray1, size: 14)
-//
+
     private let attendanceCountLabel = CustomLabel(title: "0", tintColor: .attendedMain, size: 14)
     private let latenessCountLabel = CustomLabel(title: "0", tintColor: .lateMain, size: 14)
     private let absenceCountLabel = CustomLabel(title: "0", tintColor: .absentMain, size: 14)

@@ -20,7 +20,7 @@ class RoundedPurpleCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Initailize
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -50,7 +50,7 @@ class RoundedPurpleCell: UICollectionViewCell {
 }
 
 final class CategoryCell: RoundedPurpleCell {
-    // MARK: - Initailize
+    // MARK: - Initialization
     
     
     override init(frame: CGRect) {
