@@ -16,85 +16,112 @@
 			dependencies = (
 			);
 			name = "naveridlogin-sdk-ios";
-			productName = "naveridlogin-sdk-ios";
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		6959EBDBBE36EC255679400BFBF46A74 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
-		72F7CFAB28F8334C00E0D0C0 /* UBottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */; };
-		86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		EF627F1A8DE448B556B8BDA4498EA4FE /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		19EE53C9966D4142DD5B6BA2AD06D52B /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */; };
+		01A151182051A4E4BBF9FC104D59B305 /* MultiProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B842642A9860449D71F07A6804E87961 /* MultiProgressView.swift */; };
+		19EE53C9966D4142DD5B6BA2AD06D52B /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF2F99B17A5A15339C44070A67597DA /* MarqueeLabel.swift */; };
+		1D742F7EB91A317C3960D4D4D9716143 /* MultiProgressView-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC609F0592C8FD215EBA14F36FA3365 /* MultiProgressView-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		26D34DA42BFF69A3F712631E94636C43 /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DF1F2842BF627B387F208A99772044C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FE46B11FEBCBB7C689EB07A5E57BD38 /* QuartzCore.framework */; };
-		2F9878203C57B16F8A2341363CE6ADE2 /* MarqueeLabel-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6CE0B8970AEE2F68ABC4434712981A8A /* MarqueeLabel-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */; };
-		81CD89BE2F34594AB8D9D8F94A102029 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
+		2F9878203C57B16F8A2341363CE6ADE2 /* MarqueeLabel-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FA5BCFA740BB5B7B329E2E1EECFB6D33 /* MarqueeLabel-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4C4BEE2B34E44CA709561403EDCE4D66 /* LayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F75DC2ACF1C7B5FFE28B332876F1C23 /* LayoutProvider.swift */; };
+		65CDB59B0F6E18C50AB791E99AD3AF66 /* Pods-STUDYA-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */; };
+		6CE0B8970AEE2F68ABC4434712981A8A /* MarqueeLabel-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CFA2BDEF500E306145535B2C5462CF7 /* MarqueeLabel-dummy.m */; };
+		746A2B90FF0B635AD27C93E2D5FBB91C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
+		81D2CAA9FAEFE0E36A0794A51FF25F1B /* AlignmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA8EC83E68C5786916B8B0F6B401DB /* AlignmentType.swift */; };
 		890D842A253CC9351D66015AB218F4DA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
-		A65F90B575519C64683267F49C7C615C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
-		A96C69453A655AFE061BEC1479F2E1B3 /* Pods-STUDYA-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A26EBC7A38809684251676BCFB4B9FD7 /* MultiProgressView.h in Headers */ = {isa = PBXBuildFile; fileRef = 39CCE73693A991CE13C79015067F5857 /* MultiProgressView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BEDBA9DDFD886DD6E23DDFFF2460BE4B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */; };
+		F131E12D3BDA4E6211D69B9D0DD39E5A /* MultiProgressView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D796982733DF63922762E5D68789B635 /* MultiProgressView-dummy.m */; };
 		F70BE6EE52CFB5E92B68F8FBE2A7E1B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE2AD31F00D0EF9C522211BDDBF6C3C /* UIKit.framework */; };
+		FA7F3E308F27BEA44994256CC0A0BCA4 /* ProgressViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB72E833003F1BE877F82ABE99F770F /* ProgressViewSection.swift */; };
+		FBD14B1025FAE7798C03D6E7AC55F0A8 /* LineCapType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1B80328338B4549998C25A22FBA87B /* LineCapType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4DCF65EBB688C17D83E8CC3E0F9AC3E5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C23DB88E45B0ED14F0C8827BE9C46C95;
-			remoteInfo = MarqueeLabel;
-		};
-		EDE73993BB105098010AC964D6620ABF /* PBXContainerItemProxy */ = {
+		08540E69E6B67D9CD3F3C4AD3D138FE2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 3516E9D4735D155BC036A4DB393966FC;
 			remoteInfo = "naveridlogin-sdk-ios";
 		};
+		DACD4602BEC513AC67AEBAC559F49DF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C23DB88E45B0ED14F0C8827BE9C46C95;
+			remoteInfo = MarqueeLabel;
+		};
+		E5B631650F70DB5609E152C382E34EE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B873A6476768FC5172942E3D926EABF2;
+			remoteInfo = MultiProgressView;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0091CE4367BD13D4252D090172DF2240 /* MultiProgressView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MultiProgressView.debug.xcconfig; sourceTree = "<group>"; };
 		0A24E44CCB08B3D361BE75ABA72C90ED /* Pods-STUDYA-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-STUDYA-acknowledgements.markdown"; sourceTree = "<group>"; };
-		192A5FAA9E90D9C72A3A1C09FF40F0CD /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
-		0CCD9D741C1DE5404CC81A40A5FC861F /* MarqueeLabel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-prefix.pch"; sourceTree = "<group>"; };
-		1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.debug.xcconfig; sourceTree = "<group>"; };
-		2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MarqueeLabel-dummy.m"; sourceTree = "<group>"; };
+		277E004A452625347C4C78C5585D1EB7 /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
+		28BA8EC83E68C5786916B8B0F6B401DB /* AlignmentType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlignmentType.swift; path = Sources/MultiProgressView/AlignmentType.swift; sourceTree = "<group>"; };
 		2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		2DBC19E0436A3E8D2D3670C588B2B9BD /* MultiProgressView */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MultiProgressView; path = MultiProgressView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F75DC2ACF1C7B5FFE28B332876F1C23 /* LayoutProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutProvider.swift; path = Sources/MultiProgressView/LayoutProvider.swift; sourceTree = "<group>"; };
+		39CCE73693A991CE13C79015067F5857 /* MultiProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MultiProgressView.h; path = Sources/MultiProgressView.h; sourceTree = "<group>"; };
+		3EE89892B882F19100D36995B1F6BDEF /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
+		3F8D2E92BF22F5DE13D5490975FE9907 /* naveridlogin-sdk-ios-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "naveridlogin-sdk-ios-xcframeworks.sh"; sourceTree = "<group>"; };
 		4B1530FBFAA1690D27A135E4CC85AA07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		4B1B80328338B4549998C25A22FBA87B /* LineCapType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LineCapType.swift; path = Sources/MultiProgressView/LineCapType.swift; sourceTree = "<group>"; };
 		50053C06AB3CA4D88963DE199337A24D /* Pods-STUDYA.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-STUDYA.modulemap"; sourceTree = "<group>"; };
+		577B354A28EC0DD413F0ACCAC50241DC /* MarqueeLabel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.release.xcconfig; sourceTree = "<group>"; };
 		61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-STUDYA"; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B0945BD7D3AD508E83E0BAE75581E4A /* naveridlogin-sdk-ios-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "naveridlogin-sdk-ios-xcframeworks.sh"; sourceTree = "<group>"; };
+		6BF2F99B17A5A15339C44070A67597DA /* MarqueeLabel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = Sources/MarqueeLabel.swift; sourceTree = "<group>"; };
+		74C884AC481C019E06AC3FA0DB0DD973 /* MarqueeLabel-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MarqueeLabel-Info.plist"; sourceTree = "<group>"; };
 		7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-STUDYA-dummy.m"; sourceTree = "<group>"; };
+		7F9193C865650963DCBAADCF5A6E5247 /* MultiProgressView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MultiProgressView-prefix.pch"; sourceTree = "<group>"; };
 		8B1573CF7A772B684E6CEA55B17B3436 /* Pods-STUDYA-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-Info.plist"; sourceTree = "<group>"; };
-		9D354B8C2B4C2CA6F74543B5B69411EB /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A7A35C960C7DAE4071D245A5D0E9F7E8 /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MarqueeLabel.swift; path = Sources/MarqueeLabel.swift; sourceTree = "<group>"; };
 		8CE2AD31F00D0EF9C522211BDDBF6C3C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-umbrella.h"; sourceTree = "<group>"; };
-		9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.release.xcconfig"; sourceTree = "<group>"; };
+		9CFA2BDEF500E306145535B2C5462CF7 /* MarqueeLabel-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MarqueeLabel-dummy.m"; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9FBC7859A1BDD9F3CC79FA45947AC233 /* MarqueeLabel-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MarqueeLabel-Info.plist"; sourceTree = "<group>"; };
 		9FE46B11FEBCBB7C689EB07A5E57BD38 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		AB45D5D0DBC176CA0DA7EEC8AD687E47 /* MultiProgressView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MultiProgressView.modulemap; sourceTree = "<group>"; };
 		B34D701D4A17584F7D105D586A10D9D2 /* Pods-STUDYA-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-STUDYA-frameworks.sh"; sourceTree = "<group>"; };
-		B3C046D31B9CFCB753B51E60C5D36827 /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
-		BA869AF97CD616A7E802F929160566BD /* MarqueeLabel.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MarqueeLabel.modulemap; sourceTree = "<group>"; };
-		CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		B842642A9860449D71F07A6804E87961 /* MultiProgressView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MultiProgressView.swift; path = Sources/MultiProgressView/MultiProgressView.swift; sourceTree = "<group>"; };
+		BBC609F0592C8FD215EBA14F36FA3365 /* MultiProgressView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MultiProgressView-umbrella.h"; sourceTree = "<group>"; };
+		C288F234ED8BC2A05590ED29412C90F9 /* MarqueeLabel.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = MarqueeLabel.modulemap; sourceTree = "<group>"; };
+		C4BB488D07CA5757FCD1CAC09B695AD7 /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		C754C9E32F19C20999B35C151E26DC2F /* MultiProgressView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MultiProgressView-Info.plist"; sourceTree = "<group>"; };
+		C8D5E11C80534B4D854520EC61E2BD24 /* MarqueeLabel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-prefix.pch"; sourceTree = "<group>"; };
 		CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = MarqueeLabel; path = MarqueeLabel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CFB72E833003F1BE877F82ABE99F770F /* ProgressViewSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProgressViewSection.swift; path = Sources/MultiProgressView/ProgressViewSection.swift; sourceTree = "<group>"; };
+		D796982733DF63922762E5D68789B635 /* MultiProgressView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MultiProgressView-dummy.m"; sourceTree = "<group>"; };
+		E331990CCDCE2AA1E9AA1FEBB2F02930 /* MarqueeLabel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.debug.xcconfig; sourceTree = "<group>"; };
 		E371A11293CA0F868BB3F07108A69482 /* Pods-STUDYA-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-STUDYA-umbrella.h"; sourceTree = "<group>"; };
 		E50EE5D7832FE6DE2978AA40E357DB75 /* Pods-STUDYA.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-STUDYA.release.xcconfig"; sourceTree = "<group>"; };
-		E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MarqueeLabel.release.xcconfig; sourceTree = "<group>"; };
 		F2F62728D79D5E0C8DF706DE39BEE8D4 /* Pods-STUDYA-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-acknowledgements.plist"; sourceTree = "<group>"; };
+		F42BB499BC85C854823A578BDFDB47DE /* MultiProgressView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MultiProgressView.release.xcconfig; sourceTree = "<group>"; };
+		FA5BCFA740BB5B7B329E2E1EECFB6D33 /* MarqueeLabel-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MarqueeLabel-umbrella.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9AD26C46FA567E794F3BF4A704DB509B /* Frameworks */ = {
+		19BB4C2E9EB49093E66BC51F90BBD5F9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86A8AABBAF7A75F0C40582050CE0CBAB /* Foundation.framework in Frameworks */,
-				72F7CFAB28F8334C00E0D0C0 /* UBottomSheet in Frameworks */,
-				A65F90B575519C64683267F49C7C615C /* Foundation.framework in Frameworks */,
+				BEDBA9DDFD886DD6E23DDFFF2460BE4B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D5B2C53F7B1E9681DC44FA391A768BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				746A2B90FF0B635AD27C93E2D5FBB91C /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,15 +138,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		030B3C4C186FE61D0F04C2B900A36D01 /* Support Files */ = {
+		00CA49BA9934F47AB4FE83FADA59DD2A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				6B0945BD7D3AD508E83E0BAE75581E4A /* naveridlogin-sdk-ios-xcframeworks.sh */,
-				CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */,
-				9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */,
+				AB45D5D0DBC176CA0DA7EEC8AD687E47 /* MultiProgressView.modulemap */,
+				D796982733DF63922762E5D68789B635 /* MultiProgressView-dummy.m */,
+				C754C9E32F19C20999B35C151E26DC2F /* MultiProgressView-Info.plist */,
+				7F9193C865650963DCBAADCF5A6E5247 /* MultiProgressView-prefix.pch */,
+				BBC609F0592C8FD215EBA14F36FA3365 /* MultiProgressView-umbrella.h */,
+				0091CE4367BD13D4252D090172DF2240 /* MultiProgressView.debug.xcconfig */,
+				F42BB499BC85C854823A578BDFDB47DE /* MultiProgressView.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/naveridlogin-sdk-ios";
+			path = "../Target Support Files/MultiProgressView";
 			sourceTree = "<group>";
 		};
 		03C5C200A0787E300053CFA8F53CA094 /* Frameworks */ = {
@@ -130,46 +161,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1F39B0D04461D34F4497A22835C54477 /* Frameworks */ = {
+		291AF5F83607B6FF1EE7EE15E59DA81C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B3C046D31B9CFCB753B51E60C5D36827 /* NaverThirdPartyLogin.xcframework */,
+				3F8D2E92BF22F5DE13D5490975FE9907 /* naveridlogin-sdk-ios-xcframeworks.sh */,
+				C4BB488D07CA5757FCD1CAC09B695AD7 /* naveridlogin-sdk-ios.debug.xcconfig */,
+				3EE89892B882F19100D36995B1F6BDEF /* naveridlogin-sdk-ios.release.xcconfig */,
 			);
-			name = Frameworks;
+			name = "Support Files";
+			path = "../Target Support Files/naveridlogin-sdk-ios";
 			sourceTree = "<group>";
 		};
-		58ACB4D83B258F3E35AD682153C370C4 /* Pods */ = {
+		2A17138C74185A77C9AC69A2ED3B137C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5D12887BC7E8C6015074C6990D587C58 /* MarqueeLabel */,
-				CCBD2C733194D11C0D5744C7AB5573A4 /* naveridlogin-sdk-ios */,
+				CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */,
+				2DBC19E0436A3E8D2D3670C588B2B9BD /* MultiProgressView */,
+				61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */,
 			);
-			name = Pods;
+			name = Products;
 			sourceTree = "<group>";
 		};
-		5D12887BC7E8C6015074C6990D587C58 /* MarqueeLabel */ = {
+		2E7B9B477DB6FCA16C937028172A4BE7 /* MarqueeLabel */ = {
 			isa = PBXGroup;
 			children = (
-				8C89B458074CA639D91CA6A27EE2F682 /* MarqueeLabel.swift */,
-				66BBE76048072D1D82AD8ED8EA0E37B4 /* Support Files */,
+				6BF2F99B17A5A15339C44070A67597DA /* MarqueeLabel.swift */,
+				B903EE6543DB1103DE0E5A5F4D73ED2D /* Support Files */,
 			);
 			name = MarqueeLabel;
 			path = MarqueeLabel;
 			sourceTree = "<group>";
 		};
-		66BBE76048072D1D82AD8ED8EA0E37B4 /* Support Files */ = {
+		3B60FF893B03E4C317CEF9C651342406 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BA869AF97CD616A7E802F929160566BD /* MarqueeLabel.modulemap */,
-				2445B4AECE2206407EDA7138E65DFB03 /* MarqueeLabel-dummy.m */,
-				9FBC7859A1BDD9F3CC79FA45947AC233 /* MarqueeLabel-Info.plist */,
-				0CCD9D741C1DE5404CC81A40A5FC861F /* MarqueeLabel-prefix.pch */,
-				93F630ABDE8287599FBE722F20FFC0A9 /* MarqueeLabel-umbrella.h */,
-				1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */,
-				E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */,
+				277E004A452625347C4C78C5585D1EB7 /* NaverThirdPartyLogin.xcframework */,
 			);
-			name = "Support Files";
-			path = "../Target Support Files/MarqueeLabel";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		67A92FD841E0102559571F044DEC7DC8 /* Pods-STUDYA */ = {
@@ -189,13 +217,39 @@
 			path = "Target Support Files/Pods-STUDYA";
 			sourceTree = "<group>";
 		};
-		6D92AC8C4C132A932A3DE297AFEF44CC /* Products */ = {
+		7692B6A8B81E54ACB9F0632CFF25C803 /* MultiProgressView */ = {
 			isa = PBXGroup;
 			children = (
-				CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */,
-				61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */,
+				28BA8EC83E68C5786916B8B0F6B401DB /* AlignmentType.swift */,
+				2F75DC2ACF1C7B5FFE28B332876F1C23 /* LayoutProvider.swift */,
+				4B1B80328338B4549998C25A22FBA87B /* LineCapType.swift */,
+				39CCE73693A991CE13C79015067F5857 /* MultiProgressView.h */,
+				B842642A9860449D71F07A6804E87961 /* MultiProgressView.swift */,
+				CFB72E833003F1BE877F82ABE99F770F /* ProgressViewSection.swift */,
+				00CA49BA9934F47AB4FE83FADA59DD2A /* Support Files */,
 			);
-			name = Products;
+			name = MultiProgressView;
+			path = MultiProgressView;
+			sourceTree = "<group>";
+		};
+		7A583D858EC02BA3254EE50F91B233DA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2E7B9B477DB6FCA16C937028172A4BE7 /* MarqueeLabel */,
+				7692B6A8B81E54ACB9F0632CFF25C803 /* MultiProgressView */,
+				86BE246431BE81A197D06AE7BDC35A10 /* naveridlogin-sdk-ios */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		86BE246431BE81A197D06AE7BDC35A10 /* naveridlogin-sdk-ios */ = {
+			isa = PBXGroup;
+			children = (
+				3B60FF893B03E4C317CEF9C651342406 /* Frameworks */,
+				291AF5F83607B6FF1EE7EE15E59DA81C /* Support Files */,
+			);
+			name = "naveridlogin-sdk-ios";
+			path = "naveridlogin-sdk-ios";
 			sourceTree = "<group>";
 		};
 		9E37915182B8715BE9C810FF0904D8C2 /* Targets Support Files */ = {
@@ -206,13 +260,19 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		CCBD2C733194D11C0D5744C7AB5573A4 /* naveridlogin-sdk-ios */ = {
+		B903EE6543DB1103DE0E5A5F4D73ED2D /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				1F39B0D04461D34F4497A22835C54477 /* Frameworks */,
-				030B3C4C186FE61D0F04C2B900A36D01 /* Support Files */,
+				C288F234ED8BC2A05590ED29412C90F9 /* MarqueeLabel.modulemap */,
+				9CFA2BDEF500E306145535B2C5462CF7 /* MarqueeLabel-dummy.m */,
+				74C884AC481C019E06AC3FA0DB0DD973 /* MarqueeLabel-Info.plist */,
+				C8D5E11C80534B4D854520EC61E2BD24 /* MarqueeLabel-prefix.pch */,
+				FA5BCFA740BB5B7B329E2E1EECFB6D33 /* MarqueeLabel-umbrella.h */,
+				E331990CCDCE2AA1E9AA1FEBB2F02930 /* MarqueeLabel.debug.xcconfig */,
+				577B354A28EC0DD413F0ACCAC50241DC /* MarqueeLabel.release.xcconfig */,
 			);
-			path = "naveridlogin-sdk-ios";
+			name = "Support Files";
+			path = "../Target Support Files/MarqueeLabel";
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
@@ -220,8 +280,8 @@
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
 				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
-				58ACB4D83B258F3E35AD682153C370C4 /* Pods */,
-				6D92AC8C4C132A932A3DE297AFEF44CC /* Products */,
+				7A583D858EC02BA3254EE50F91B233DA /* Pods */,
+				2A17138C74185A77C9AC69A2ED3B137C /* Products */,
 				9E37915182B8715BE9C810FF0904D8C2 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
@@ -239,11 +299,11 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		9ECFABEB26CC22B6722DBB5CEE638ABC /* Headers */ = {
+		407ABF35330E279C57D92025AA4DD958 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A96C69453A655AFE061BEC1479F2E1B3 /* Pods-STUDYA-umbrella.h in Headers */,
+				26D34DA42BFF69A3F712631E94636C43 /* Pods-STUDYA-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,30 +315,55 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8F1A8D53D405DC76207BCD4E6DBF1D8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A26EBC7A38809684251676BCFB4B9FD7 /* MultiProgressView.h in Headers */,
+				1D742F7EB91A317C3960D4D4D9716143 /* MultiProgressView-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		3B0A10CE7A691A6E6D4F8DA403093F01 /* Pods-STUDYA */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9E1C46D15E139660AA5C7283F468E7D6 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */;
+			buildConfigurationList = 1372ABC062AED1BBDBAC2CE6C3348963 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */;
 			buildPhases = (
-				9ECFABEB26CC22B6722DBB5CEE638ABC /* Headers */,
-				35C6333F99FCC54FF9428791D5F48B69 /* Sources */,
-				9AD26C46FA567E794F3BF4A704DB509B /* Frameworks */,
-				FECF319674FC23F49D0C1ACB87B72260 /* Resources */,
+				407ABF35330E279C57D92025AA4DD958 /* Headers */,
+				B48FC7C18E39F33E1648CDE2A99EFFB5 /* Sources */,
+				3D5B2C53F7B1E9681DC44FA391A768BA /* Frameworks */,
+				4C2E0B19F315328D77618C3F6A1D826E /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C1955DA26C93309C37010AF97EAEA633 /* PBXTargetDependency */,
-				AFE54EB7BFA5DD19F1491B8FAE64D1A2 /* PBXTargetDependency */,
+				52487C535562502ECC02F964052BDB76 /* PBXTargetDependency */,
+				C39C9CA89462EFDAAFBEE32569B4A1BC /* PBXTargetDependency */,
+				26A7565C0149FA60338B3DE33BC2AAC9 /* PBXTargetDependency */,
 			);
 			name = "Pods-STUDYA";
-			packageProductDependencies = (
-				72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */,
-			);
 			productName = Pods_STUDYA;
 			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */;
+			productType = "com.apple.product-type.framework";
+		};
+		B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BED82769B2B6D421054E3349B321064 /* Build configuration list for PBXNativeTarget "MultiProgressView" */;
+			buildPhases = (
+				D8F1A8D53D405DC76207BCD4E6DBF1D8 /* Headers */,
+				4D8ED8BB86F29B15944328B503309E8C /* Sources */,
+				19BB4C2E9EB49093E66BC51F90BBD5F9 /* Frameworks */,
+				DCDBB38421C919C9E3A20945DA46CBC6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MultiProgressView;
+			productName = MultiProgressView;
+			productReference = 2DBC19E0436A3E8D2D3670C588B2B9BD /* MultiProgressView */;
 			productType = "com.apple.product-type.framework";
 		};
 		C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */ = {
@@ -317,15 +402,12 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			packageReferences = (
-				72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */,
-			);
-			productRefGroup = 98E868FAAC3DBA7208F870F0A556C147 /* Products */;
-			productRefGroup = 6D92AC8C4C132A932A3DE297AFEF44CC /* Products */;
+			productRefGroup = 2A17138C74185A77C9AC69A2ED3B137C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */,
+				B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */,
 				3516E9D4735D155BC036A4DB393966FC /* naveridlogin-sdk-ios */,
 				3B0A10CE7A691A6E6D4F8DA403093F01 /* Pods-STUDYA */,
 			);
@@ -340,7 +422,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FECF319674FC23F49D0C1ACB87B72260 /* Resources */ = {
+		4C2E0B19F315328D77618C3F6A1D826E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCDBB38421C919C9E3A20945DA46CBC6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -370,11 +459,24 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		35C6333F99FCC54FF9428791D5F48B69 /* Sources */ = {
+		4D8ED8BB86F29B15944328B503309E8C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81CD89BE2F34594AB8D9D8F94A102029 /* Pods-STUDYA-dummy.m in Sources */,
+				81D2CAA9FAEFE0E36A0794A51FF25F1B /* AlignmentType.swift in Sources */,
+				4C4BEE2B34E44CA709561403EDCE4D66 /* LayoutProvider.swift in Sources */,
+				FBD14B1025FAE7798C03D6E7AC55F0A8 /* LineCapType.swift in Sources */,
+				01A151182051A4E4BBF9FC104D59B305 /* MultiProgressView.swift in Sources */,
+				F131E12D3BDA4E6211D69B9D0DD39E5A /* MultiProgressView-dummy.m in Sources */,
+				FA7F3E308F27BEA44994256CC0A0BCA4 /* ProgressViewSection.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B48FC7C18E39F33E1648CDE2A99EFFB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65CDB59B0F6E18C50AB791E99AD3AF66 /* Pods-STUDYA-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,59 +492,106 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AFE54EB7BFA5DD19F1491B8FAE64D1A2 /* PBXTargetDependency */ = {
+		26A7565C0149FA60338B3DE33BC2AAC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "naveridlogin-sdk-ios";
 			target = 3516E9D4735D155BC036A4DB393966FC /* naveridlogin-sdk-ios */;
-			targetProxy = EDE73993BB105098010AC964D6620ABF /* PBXContainerItemProxy */;
+			targetProxy = 08540E69E6B67D9CD3F3C4AD3D138FE2 /* PBXContainerItemProxy */;
 		};
-		C1955DA26C93309C37010AF97EAEA633 /* PBXTargetDependency */ = {
+		52487C535562502ECC02F964052BDB76 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MarqueeLabel;
 			target = C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */;
-			targetProxy = 4DCF65EBB688C17D83E8CC3E0F9AC3E5 /* PBXContainerItemProxy */;
+			targetProxy = DACD4602BEC513AC67AEBAC559F49DF6 /* PBXContainerItemProxy */;
+		};
+		C39C9CA89462EFDAAFBEE32569B4A1BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MultiProgressView;
+			target = B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */;
+			targetProxy = E5B631650F70DB5609E152C382E34EE5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0B0207B130A0A3F05AA0E342B562966A /* Debug */ = {
+		30E0B9EFD9A5C45D0D351231E81B30B3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		35613D0A5F350911AE6E907FDFC836E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4BB488D07CA5757FCD1CAC09B695AD7 /* naveridlogin-sdk-ios.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		0D990C18D7F457964DA5AC9C5ABB7AB8 /* Release */ = {
+		549FAB923D81002772531E039F42B1D9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E50EE5D7832FE6DE2978AA40E357DB75 /* Pods-STUDYA.release.xcconfig */;
 			buildSettings = {
@@ -458,7 +607,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,9 +629,9 @@
 			};
 			name = Release;
 		};
-		35613D0A5F350911AE6E907FDFC836E1 /* Debug */ = {
+		768846D27ACEFD82711658787FCAC0B6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB5C9E71EC4059627C4D9B230C07845C /* naveridlogin-sdk-ios.debug.xcconfig */;
+			baseConfigurationReference = 3EE89892B882F19100D36995B1F6BDEF /* naveridlogin-sdk-ios.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -493,10 +642,186 @@
 				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8B71D140048E37EA295DDF2313D659CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 577B354A28EC0DD413F0ACCAC50241DC /* MarqueeLabel.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
+				PRODUCT_MODULE_NAME = MarqueeLabel;
+				PRODUCT_NAME = MarqueeLabel;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A5DBB3F0749D6717FBC9DEEE34F21D27 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D48D74EB92CF249789B4CFD74757721 /* Pods-STUDYA.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-STUDYA/Pods-STUDYA.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
 		};
-		4214E6946993DF02ED98D89047C64016 /* Debug */ = {
+		A7500E7CF0B2C72ECABA50BE15BC536A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E331990CCDCE2AA1E9AA1FEBB2F02930 /* MarqueeLabel.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
+				PRODUCT_MODULE_NAME = MarqueeLabel;
+				PRODUCT_NAME = MarqueeLabel;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B0E4451FD862A291F486443EFA4A4496 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F42BB499BC85C854823A578BDFDB47DE /* MultiProgressView.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MultiProgressView/MultiProgressView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MultiProgressView/MultiProgressView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MultiProgressView/MultiProgressView.modulemap";
+				PRODUCT_MODULE_NAME = MultiProgressView;
+				PRODUCT_NAME = MultiProgressView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		DFCD3DFBF5D8EE0B525D45BD0B5867BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0091CE4367BD13D4252D090172DF2240 /* MultiProgressView.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/MultiProgressView/MultiProgressView-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/MultiProgressView/MultiProgressView-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/MultiProgressView/MultiProgressView.modulemap";
+				PRODUCT_MODULE_NAME = MultiProgressView;
+				PRODUCT_NAME = MultiProgressView;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		F4FF6A0D1970CA9705974E3CB2134802 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -549,7 +874,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -562,157 +887,18 @@
 			};
 			name = Debug;
 		};
-		768846D27ACEFD82711658787FCAC0B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B90D708A0075D3B026DDD91ECB9C8DE /* naveridlogin-sdk-ios.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		8B71D140048E37EA295DDF2313D659CE /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E701205A7BCA3896C418A880FE8C2809 /* MarqueeLabel.release.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
-				PRODUCT_MODULE_NAME = MarqueeLabel;
-				PRODUCT_NAME = MarqueeLabel;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		A7500E7CF0B2C72ECABA50BE15BC536A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1C718219AC6019E93A7EFE21B8576B6F /* MarqueeLabel.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/MarqueeLabel/MarqueeLabel-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/MarqueeLabel/MarqueeLabel.modulemap";
-				PRODUCT_MODULE_NAME = MarqueeLabel;
-				PRODUCT_NAME = MarqueeLabel;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		CD85FD90473CFBE797E4264E7BBC70AF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1372ABC062AED1BBDBAC2CE6C3348963 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A5DBB3F0749D6717FBC9DEEE34F21D27 /* Debug */,
+				549FAB923D81002772531E039F42B1D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		251180A9B6B807638C65029608571B8F /* Build configuration list for PBXNativeTarget "MarqueeLabel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -725,8 +911,8 @@
 		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4214E6946993DF02ED98D89047C64016 /* Debug */,
-				CD85FD90473CFBE797E4264E7BBC70AF /* Release */,
+				F4FF6A0D1970CA9705974E3CB2134802 /* Debug */,
+				30E0B9EFD9A5C45D0D351231E81B30B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -740,35 +926,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9E1C46D15E139660AA5C7283F468E7D6 /* Build configuration list for PBXNativeTarget "Pods-STUDYA" */ = {
+		8BED82769B2B6D421054E3349B321064 /* Build configuration list for PBXNativeTarget "MultiProgressView" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				0B0207B130A0A3F05AA0E342B562966A /* Debug */,
-				0D990C18D7F457964DA5AC9C5ABB7AB8 /* Release */,
+				DFCD3DFBF5D8EE0B525D45BD0B5867BF /* Debug */,
+				B0E4451FD862A291F486443EFA4A4496 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/OfTheWolf/UBottomSheet";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		72F7CFAA28F8334C00E0D0C0 /* UBottomSheet */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 72F7CFA928F8334C00E0D0C0 /* XCRemoteSwiftPackageReference "UBottomSheet" */;
-			productName = UBottomSheet;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }

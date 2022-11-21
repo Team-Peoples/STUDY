@@ -278,10 +278,10 @@ extension MainViewController {
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                     
-//                    cell.announcementButtonAction = {
-//                        let vc = AnnouncementBoardViewController()
-//                        self.navigationController?.pushViewController(vc, animated: true)
-//                    }
+                    cell.announcementButtonAction = {
+                        let vc = AttendanceViewController()
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                     
                 return cell
             default:
