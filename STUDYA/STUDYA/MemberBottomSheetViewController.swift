@@ -80,30 +80,24 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return f
     }()
-    private lazy var doneButton: UIButton = {
-       
-        let b = UIButton(frame: .zero)
-        
-        b.backgroundColor = UIColor.appColor(.keyColor1)
-        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        
-        let c = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
-        c.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        
-        b.addSubview(c)
-        c.snp.makeConstraints { make in
-            make.centerX.equalTo(b)
-            make.top.equalTo(b.snp.top).inset(20)
-        }
-        
-        return b
-    }()
-    private lazy var doneButtonTitleLabel: CustomButton = {
-       
-        let b = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
-        
-        return b
-    }()
+//    private lazy var doneButton: UIButton = {
+//
+//        let b = UIButton(frame: .zero)
+//
+//        b.backgroundColor = UIColor.appColor(.keyColor1)
+//        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+//
+//        let c = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+//        c.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+//
+//        b.addSubview(c)
+//        c.snp.makeConstraints { make in
+//            make.centerX.equalTo(b)
+//            make.top.equalTo(b.snp.top).inset(20)
+//        }
+//
+//        return b
+//    }()
     
     private let bottomViewHeight: CGFloat = 320
     private let askViewHeight: CGFloat = 300
@@ -167,9 +161,9 @@ final class MemberBottomSheetViewController: UIViewController {
         managerButton.isSelected ? managerButton.easyConfigure(title: "관리자", backgroundColor: .appColor(.keyColor1), textColor: .systemBackground, borderColor: .keyColor1, radius: 12.5) : managerButton.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
     }
     
-    @objc private func doneButtonTapped() {
-        print(#function)
-    }
+//    @objc private func doneButtonTapped() {
+//        print(#function)
+//    }
     
     private func configureDefaultView() {
         
@@ -184,7 +178,7 @@ final class MemberBottomSheetViewController: UIViewController {
         view.addSubview(ownerButton)
         view.addSubview(managerButton)
         view.addSubview(roleInputField)
-        view.addSubview(doneButton)
+//        view.addSubview(doneButton)
         
         profileView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).inset(30)
@@ -215,11 +209,11 @@ final class MemberBottomSheetViewController: UIViewController {
             make.leading.trailing.equalTo(view).inset(31)
             make.top.equalTo(managerButton.snp.bottom).offset(18)
         }
-        
-        doneButton.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(view)
-            make.top.equalTo(roleInputField.snp.bottom).offset(63)
-        }
+//
+//        doneButton.snp.makeConstraints { make in
+//            make.leading.trailing.bottom.equalTo(view)
+//            make.top.equalTo(roleInputField.snp.bottom).offset(63)
+//        }
     }
 }
 
