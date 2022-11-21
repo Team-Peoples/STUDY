@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Piv-7Q-yDD" customClass="AttendanceModificationHeaderView" customModule="STUDYA" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="· " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fB2-gu-MXy">
+                    <rect key="frame" x="61" y="17.666666666666668" width="9" height="21.000000000000004"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" name="ppsGray1"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이름순" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DmE-2e-4D1">
+                    <rect key="frame" x="20" y="19.666666666666668" width="37" height="17.000000000000004"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" name="ppsGray1"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jE4-lV-bbD">
+                    <rect key="frame" x="74" y="19.666666666666668" width="43" height="17.000000000000004"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                    <color key="textColor" name="ppsGray1"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="downDisclousureIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="oEu-0I-Bh4">
+                    <rect key="frame" x="125" y="24.333333333333332" width="12" height="7.3333333333333321"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XI5-7I-nDK" userLabel="rightButton">
+                    <rect key="frame" x="282" y="13" width="101" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="F0D-gr-Mlh"/>
+                        <constraint firstAttribute="width" constant="101" id="d3b-cV-SsQ"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="calendar" imagePlacement="trailing" title="22.11.19" imagePadding="5" cornerStyle="capsule">
+                        <backgroundConfiguration key="background">
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <color key="strokeColor" name="ppsGray2"/>
+                        </backgroundConfiguration>
+                        <fontDescription key="titleFontDescription" type="system" pointSize="14"/>
+                        <color key="baseForegroundColor" name="ppsGray1"/>
+                    </buttonConfiguration>
+                    <connections>
+                        <action selector="rightButtonTapped:" destination="Piv-7Q-yDD" eventType="touchUpInside" id="6wz-mE-n3b"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ney-4z-5EV" userLabel="leftButton">
+                    <rect key="frame" x="20" y="20.666666666666668" width="117" height="15.000000000000004"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="TFE-HB-EjE"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain"/>
+                    <connections>
+                        <action selector="leftButtonTapped:" destination="Piv-7Q-yDD" eventType="touchUpInside" id="Mxd-tz-Cs5"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="104-af-33y"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fB2-gu-MXy" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="5XH-Cr-obn"/>
+                <constraint firstItem="fB2-gu-MXy" firstAttribute="leading" secondItem="DmE-2e-4D1" secondAttribute="trailing" constant="4" id="6fK-Gm-SIz"/>
+                <constraint firstAttribute="trailing" secondItem="XI5-7I-nDK" secondAttribute="trailing" constant="10" id="6uP-jb-DdA"/>
+                <constraint firstItem="Ney-4z-5EV" firstAttribute="leading" secondItem="DmE-2e-4D1" secondAttribute="leading" id="Etp-uQ-NuR"/>
+                <constraint firstItem="DmE-2e-4D1" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="JJf-1h-nFr"/>
+                <constraint firstItem="DmE-2e-4D1" firstAttribute="leading" secondItem="Piv-7Q-yDD" secondAttribute="leading" constant="20" id="OqS-aX-2GJ"/>
+                <constraint firstItem="jE4-lV-bbD" firstAttribute="leading" secondItem="fB2-gu-MXy" secondAttribute="trailing" constant="4" id="Otl-BV-cuY"/>
+                <constraint firstItem="oEu-0I-Bh4" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="Pxt-QK-Nz7"/>
+                <constraint firstItem="oEu-0I-Bh4" firstAttribute="leading" secondItem="jE4-lV-bbD" secondAttribute="trailing" constant="8" id="V2K-13-Bww"/>
+                <constraint firstItem="jE4-lV-bbD" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="YqU-EE-ZEK"/>
+                <constraint firstItem="Ney-4z-5EV" firstAttribute="trailing" secondItem="oEu-0I-Bh4" secondAttribute="trailing" id="aMC-eE-C9q"/>
+                <constraint firstItem="XI5-7I-nDK" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="fcQ-dL-5jv"/>
+                <constraint firstItem="Ney-4z-5EV" firstAttribute="centerY" secondItem="Piv-7Q-yDD" secondAttribute="centerY" id="tb1-e0-0fi"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="sortingTypeLabel" destination="DmE-2e-4D1" id="CK1-ye-ppe"/>
+                <outlet property="studyTimeLabel" destination="jE4-lV-bbD" id="AtS-6I-wK2"/>
+            </connections>
+            <point key="canvasLocation" x="115.26717557251908" y="288.73239436619718"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="calendar" width="20" height="20"/>
+        <image name="downDisclousureIndicator" width="12" height="7.5"/>
+        <namedColor name="ppsGray1">
+            <color red="0.46700000762939453" green="0.43500000238418579" blue="0.53700000047683716" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ppsGray2">
+            <color red="0.82700002193450928" green="0.82400000095367432" blue="0.86299997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

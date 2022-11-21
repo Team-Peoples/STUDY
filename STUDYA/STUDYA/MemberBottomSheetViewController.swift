@@ -19,7 +19,7 @@ final class MemberBottomSheetViewController: UIViewController {
         }
     }
     
-    private let profileView = ProfileImageSelectorView(size: 40)
+    private let profileView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton: UIButton = {
        

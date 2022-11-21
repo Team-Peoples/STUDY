@@ -261,11 +261,12 @@ extension MainViewController {
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
+                cell.navigatable = self
                 
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
-                cell.delegate = self
+                cell.navigateDelegate = self
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
@@ -333,9 +334,34 @@ extension MainViewController {
         }
     }
 }
+//
+//extension MainViewController: UIPopoverControllerDelegate {
+//    class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
+//        
+//        // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
+//        private static let sharedInstance = AlwaysPresentAsPopover()
+//        
+//        private override init() {
+//            super.init()
+//        }
+//        
+//        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+//            return .none
+//        }
+//        
+//        static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
+//            let presentationController = controller.presentationController as! UIPopoverPresentationController
+//            presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
+//            return presentationController
+//        }
+//}
 
 extension MainViewController: Navigatable {
     func push(vc: UIViewController) {
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func present(vc: UIViewController) {
+        present(vc, animated: true)
     }
 }
