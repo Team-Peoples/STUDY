@@ -9,6 +9,8 @@ import MultiProgressView
 
 final class AttendanceViewController: UIViewController {
     
+    let bottomVC = AttendanceBottomViewController()
+    
     var dailyStudyAttendance: [String: Int] = ["출석": 60, "지각": 15, "결석": 3, "사유": 5] {
         didSet {
             
@@ -38,7 +40,20 @@ final class AttendanceViewController: UIViewController {
         
         userView.attendanceDetailsTableView.dataSource = self
         userView.attendanceDetailsTableView.delegate = self
+        
+        guard let sheet = bottomVC.sheetPresentationController else { return }
+        
+        sheet.detents = [ .custom { _ in return 300 }]
+        sheet.preferredCornerRadius = 24
+        sheet.prefersGrabberVisible = false
+        
+        self.present(bottomVC, animated: true)
     }
+    
+}
+
+extension AttendanceViewController: BottomSheetAddable {
+    
 }
 
 // MARK: UITableViewDataSource
@@ -127,3 +142,4 @@ extension AttendanceViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
+

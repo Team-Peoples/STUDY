@@ -16,7 +16,7 @@ extension UIView {
     }
 }
 
-final class CustomButton: UIButton {
+final class BrandButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
@@ -59,6 +59,7 @@ final class CustomButton: UIButton {
         backgroundColor = .systemBackground
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
+    
     internal func easyConfigure(title: String, backgroundColor: UIColor, textColor: UIColor, borderColor: AssetColor, radius: CGFloat) {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
@@ -1301,21 +1302,31 @@ final class AttendanceStatusCapsuleView: RoundableView {
 
 class FullDoneButtonButtomView: UIView {
     
-    private lazy var doneButton: UIButton = {
+    lazy var doneButton: UIButton = {
        
         let b = UIButton(frame: .zero)
         b.backgroundColor = .appColor(.keyColor1)
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return b
     }()
-    private lazy var titleButton: CustomButton = {
+    lazy var titleButton: BrandButton = {
        
-        let b = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+        let b = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20, height: 30)
         
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         return b
     }()
+    
+    init(doneButtonTitle: String) {
+        super.init(frame: .zero)
+        
+        titleButton.setTitle(doneButtonTitle, for: .normal)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     @objc func doneButtonTapped() {
 //        need override

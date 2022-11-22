@@ -198,7 +198,7 @@ class StudyInfoViewController: UIViewController {
 
         self.dismiss(animated: true)
     }
-    
+        
     @objc private func toggleMaster(_ sender: BrandSwitch) {
         
         studyformEditButton.isHidden = !sender.isOn

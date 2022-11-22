@@ -13,17 +13,15 @@ protocol Navigatable {
 }
 
 protocol BottomSheetAddable: UIViewController {
-    var height: Int? { get }
-    var bottomVC: UIViewController? { get }
-    func addSheet(height: CGFloat)
+    
 }
 
 extension BottomSheetAddable {
-    func addSheet(height: CGFloat) {
-        guard let sheet = bottomVC?.sheetPresentationController else { return }
+    func addSheet(vc: UIViewController, detent: CGFloat, prefersGrabberVisible: Bool) {
+        guard let sheet = vc.sheetPresentationController else { return }
         
-        sheet.detents = [ .custom { _ in return height }]
+        sheet.detents = [ .custom { _ in return detent }]
         sheet.preferredCornerRadius = 24
-        sheet.prefersGrabberVisible = true
+        sheet.prefersGrabberVisible = prefersGrabberVisible
     }
 }
