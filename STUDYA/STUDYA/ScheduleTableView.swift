@@ -23,15 +23,11 @@ class ScheduleTableView: UITableView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        
         fatalError()
     }
     
     func registerCell() {
         register(ScheduleTableViewCell.self, forCellReuseIdentifier: "ScheduleTableViewCell")
     }
-    
-//    public func scrollToBottom(animated: Bool) {
-//        guard contentSize.height > bounds.size.height else { return }
-//        setContentOffset(CGPoint(x: 0, y: (contentSize.height - bounds.size.height) + (contentInset.bottom)), animated: animated)
-//    }
 }
