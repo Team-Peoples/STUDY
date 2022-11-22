@@ -15,7 +15,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
             
             titleLabel.text = announcement?.title
             contentLabel.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString()
+            timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
             isPinned = announcement?.isPinned
         }
     }

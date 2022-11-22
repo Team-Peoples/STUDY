@@ -16,7 +16,18 @@ extension UIView {
     }
 }
 
-final class CustomButton: UIButton {
+class CustomButton: UIButton {
+    
+    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat) {
+        super.init(frame: .zero)
+        
+        setTitle(title, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+    
+        setHeight(42)
+        layer.cornerRadius = radius
+    }
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
@@ -544,10 +555,10 @@ class CheckBoxButton: UIButton {
     // MARK: - Properties
     
     // MARK: - Initialize
-    init(title: String, selected: String, unselected: String) {
+    init(title: String) {
         super.init(frame: .zero)
 
-        configure(title: title, selected: selected, unselected: unselected)
+        configure(title: title)
     }
     
     required init?(coder: NSCoder) {
@@ -556,7 +567,7 @@ class CheckBoxButton: UIButton {
     
     // MARK: - Configure
     
-    private func configure(title: String, selected: String, unselected: String) {
+    private func configure(title: String) {
         titleLabel?.font = .systemFont(ofSize: 16)
         
         titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
@@ -564,8 +575,8 @@ class CheckBoxButton: UIButton {
         
         setTitle(title, for: .normal)
         [.normal, .selected].forEach { setTitleColor(.appColor(.ppsBlack), for: $0) }
-        setImage(UIImage(named: unselected), for: .normal)
-        setImage(UIImage(named: selected), for: .selected)
+        setImage(UIImage(named: "off"), for: .normal)
+        setImage(UIImage(named: "on"), for: .selected)
     }
     // MARK: - Actions
     

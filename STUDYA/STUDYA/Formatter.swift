@@ -14,20 +14,29 @@ final class Formatter {
         
         return numberFormatter.string(from: NSNumber(value: number))!
     }
-    
-    static func formatDateToString(date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY.MM.dd"
-        return dateFormatter.string(from: date)
-    }
 }
 
 // MARK: - Date Format
 
 extension Date {
-    func formatToString() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY.MM.dd"
-        return dateFormatter.string(from: self)
+    enum Lang {
+        case kor
+        case eng
+    }
+    
+    func formatToString(language: Lang) -> String {
+        switch language {
+            case .kor:
+                
+                let dateformatter = DateFormatter()
+                dateformatter.locale = Locale(identifier: "ko_KR")
+                dateformatter.dateFormat = "MMM dd월 EEEE "
+                return dateformatter.string(from: self)
+            case .eng:
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "YYYY.MM.dd"
+                return dateFormatter.string(from: self)
+        }
     }
 }
