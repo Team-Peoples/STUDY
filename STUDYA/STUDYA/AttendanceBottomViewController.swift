@@ -123,7 +123,7 @@ extension AttendanceBottomViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        UICollectionViewCell()
     }
     
     

@@ -15,7 +15,7 @@ final class MemberBottomSheetViewController: UIViewController {
             profileView.configure(member.profileImage)
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
-            member.isManager ? managerButton.easyConfigure(title: "관리자", backgroundColor: .appColor(.keyColor1), textColor: .systemBackground, borderColor: .keyColor1, radius: 12.5) : managerButton.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+            managerButton.isSelected = member.isManager ? true : false
         }
     }
     
@@ -42,21 +42,19 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return s
     }()
-    private lazy var ownerButton: BrandButton = {
+    private lazy var ownerButton: CustomButton = {
        
-        let b = BrandButton(title: "", isBold: true, isFill: false, fontSize: 12, height: 25)
+        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, width: 67)
         
-        b.easyConfigure(title: "스터디장", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
         b.addTarget(self, action: #selector(ownerButtonTapped), for: .touchUpInside)
         b.isHidden = true
         
         return b
     }()
-    private lazy var managerButton: BrandButton = {
+    private lazy var managerButton: CustomButton = {
        
-        let b = BrandButton(title: "", isBold: true, isFill: false, fontSize: 12, height: 25)
+        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, width: 47)
         
-        b.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
         b.addTarget(self, action: #selector(toggleManagerButton), for: .touchUpInside)
         b.isHidden = true
         
@@ -157,8 +155,7 @@ final class MemberBottomSheetViewController: UIViewController {
     }
 
     @objc private func toggleManagerButton() {
-        managerButton.isSelected.toggle()
-        managerButton.isSelected ? managerButton.easyConfigure(title: "관리자", backgroundColor: .appColor(.keyColor1), textColor: .systemBackground, borderColor: .keyColor1, radius: 12.5) : managerButton.easyConfigure(title: "관리자", backgroundColor: .systemBackground, textColor: .appColor(.ppsGray2), borderColor: .ppsGray2, radius: 12.5)
+        managerButton.toggle()
     }
     
     @objc private func doneButtonTapped() {
@@ -196,13 +193,11 @@ final class MemberBottomSheetViewController: UIViewController {
         ownerButton.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).inset(40)
             make.top.equalTo(separator.snp.bottom).offset(20)
-            make.width.equalTo(67)
         }
         
         managerButton.snp.makeConstraints { make in
             make.leading.equalTo(ownerButton.snp.trailing).offset(10)
             make.top.equalTo(ownerButton.snp.top)
-            make.width.equalTo(57)
         }
         
         roleInputField.snp.makeConstraints { make in

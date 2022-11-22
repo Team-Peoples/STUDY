@@ -73,6 +73,100 @@ final class BrandButton: UIButton {
     }
 }
 
+final class CustomButton: UIButton {
+    
+    var selectedBorderColor: CGColor?
+    var normalBorderColor: CGColor?
+    var selectedBackgroundColor: UIColor?
+    var normalBackgroundColor: UIColor?
+    
+    override var isSelected: Bool {
+        didSet {
+            switch isSelected {
+            case true:
+                print(#function, 1)
+                if let color = selectedBorderColor {
+                    layer.borderColor = color
+                }
+                if let color = selectedBackgroundColor {
+                    backgroundColor = color
+                }
+                
+            case false:
+                print(#function, 2)
+                if let color = normalBorderColor {
+                    layer.borderColor = color
+                }
+                if let color = normalBackgroundColor {
+                    print(color)
+                    backgroundColor = color
+                }
+            }
+        }
+    }
+    
+    init(fontSize: CGFloat,
+         isBold: Bool,
+         normalBackgroundColor: AssetColor,
+         normalTitleColor: AssetColor,
+         height: CGFloat,
+         normalBorderColor: AssetColor? = nil,
+         normalTitle: String? = nil,
+         selectedBackgroundColor: AssetColor? = nil,
+         selectedTitleColor: AssetColor? = nil,
+         selectedBorderColor: AssetColor? = nil,
+         selectedTitle: String? = nil,
+         radiusIfNotCapsule: CGFloat? = nil,
+         width: CGFloat? = nil) {
+        super.init(frame: .zero)
+        
+        titleLabel?.font = isBold ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
+        backgroundColor = .appColor(normalBackgroundColor)
+        self.normalBackgroundColor = .appColor(normalBackgroundColor)
+        setTitleColor(.appColor(normalTitleColor), for: .normal)
+        
+        if let color = normalBorderColor {
+            layer.borderWidth = 1
+            self.normalBorderColor = UIColor.appColor(color).cgColor
+            layer.borderColor = self.normalBorderColor
+        }
+        if let title = normalTitle {
+            setTitle(title, for: .normal)
+        }
+        if let color = selectedBackgroundColor {
+            self.selectedBackgroundColor = .appColor(color)
+        }
+        if let color = selectedTitleColor {
+            setTitleColor(.appColor(color), for: .selected)
+        }
+        if let color = selectedBorderColor {
+            self.selectedBorderColor = UIColor.appColor(color).cgColor
+        }
+        if let title = selectedTitle {
+            setTitle(title, for: .selected)
+        }
+        
+        setHeight(height)
+        
+        if let width = width {
+            setWidth(width)
+        }
+        if let radius = radiusIfNotCapsule {
+            layer.cornerRadius = radius
+        } else {
+            layer.cornerRadius = height / 2
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal func toggle() {
+        isSelected.toggle()
+    }
+}
+
 class BaseTextView: UITextView {
     
     private let placeHolderLabel = UILabel()
