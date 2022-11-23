@@ -10,7 +10,7 @@ import SnapKit
 
 final class AttendanceBottomViewController: UIViewController {
 
-    let times = ["99:99", "15:00", "19:15"]
+    let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
     
 //    private let attendanceCheckConditionSettingView = AttendanceCheckConditionSettingView(doneButtonTitle: "조회")
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -23,13 +23,29 @@ final class AttendanceBottomViewController: UIViewController {
         return v
     }()
     private let sortTitleLabel = CustomLabel(title: "정렬기준", tintColor: .ppsBlack, size: 14, isBold: true)
-    private let nameInOrderButton = BrandButton(title: "이름순", isBold: false, textColor: .keyColor1, borderColor: .keyColor1, backgroundColor: .appColor(.background), fontSize: 14, height: 36)
-    private let attendanceInOrderButton = BrandButton(title: "출석순", isBold: false, textColor: .keyColor1, borderColor: .keyColor1, backgroundColor: .appColor(.background), fontSize: 14, height: 36)
+    private lazy var nameInOrderButton: CustomButton = {
+       
+        let b = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "이름순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1)
+        
+        b.addTarget(self, action: #selector(changeOrderType), for: .touchUpInside)
+        
+        return b
+    }()
+    private lazy var attendanceInOrderButton: CustomButton = {
+       
+        let b = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "출석순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1)
+        
+        b.addTarget(self, action: #selector(changeOrderType), for: .touchUpInside)
+        
+        return b
+    }()
     private let timeTitleLabel = CustomLabel(title: "회차 선택", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var flowLayout: UICollectionViewFlowLayout = {
        
         let f = UICollectionViewFlowLayout()
         f.minimumInteritemSpacing = 6
+        f.scrollDirection = .horizontal
+        
         return f
     }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -56,11 +72,11 @@ final class AttendanceBottomViewController: UIViewController {
 
         collectionView.dataSource = self
         collectionView.delegate = self
-        
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.allowsMultipleSelection = false
         collectionView.register(AttendanceTimeCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceTimeCollectionViewCell.identifier)
         
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.scrollDirection = .horizontal
+        nameInOrderButton.isSelected = true
         
         view.addSubview(titleLabel)
         view.addSubview(separator)
@@ -100,7 +116,7 @@ final class AttendanceBottomViewController: UIViewController {
         }
         collectionView.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)
-            make.trailing.equalTo(view).inset(20)
+            make.trailing.equalTo(view)
             make.top.equalTo(timeTitleLabel.snp.bottom).offset(12)
             make.height.equalTo(40)
         }
@@ -117,6 +133,11 @@ final class AttendanceBottomViewController: UIViewController {
             make.centerX.equalTo(doneButton)
             make.top.equalTo(doneButton.snp.top).inset(20)
         }
+    }
+    
+    @objc private func changeOrderType() {
+        nameInOrderButton.toggle()
+        attendanceInOrderButton.toggle()
     }
     
     private func configureCollectionView() {
@@ -147,6 +168,19 @@ extension AttendanceBottomViewController: UICollectionViewDataSource {
 }
 
 extension AttendanceBottomViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(#function)
+        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        cell.enableButton()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        print(#function)
+        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        cell.disableButton()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let label = UILabel(frame: CGRect.zero)

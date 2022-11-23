@@ -13,19 +13,19 @@ final class AttendanceTimeCollectionViewCell: UICollectionViewCell {
     
     internal var time: String? {
         didSet {
-            timeButton.setTitle(time, for: .normal)
+            button.setTitle(time, for: .normal)
         }
     }
     
-    private let timeButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsBlack, height: 36, normalBorderColor: .ppsGray2, normalTitle: "위위", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24))
+    private let button = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "위위", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24))
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        timeButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.isUserInteractionEnabled = false
         
-        contentView.addSubview(timeButton)
-        timeButton.snp.makeConstraints { make in
+        contentView.addSubview(button)
+        button.snp.makeConstraints { make in
             make.leading.equalTo(contentView)
             make.centerY.equalTo(contentView)
         }
@@ -35,7 +35,11 @@ final class AttendanceTimeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func buttonTapped() {
-        print(#function)
+    internal func enableButton() {
+        button.isSelected = true
+    }
+    
+    internal func disableButton() {
+        button.isSelected = false
     }
 }
