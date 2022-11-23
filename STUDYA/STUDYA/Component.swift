@@ -84,7 +84,6 @@ final class CustomButton: UIButton {
         didSet {
             switch isSelected {
             case true:
-                print(#function, 1)
                 if let color = selectedBorderColor {
                     layer.borderColor = color
                 }
@@ -93,7 +92,6 @@ final class CustomButton: UIButton {
                 }
                 
             case false:
-                print(#function, 2)
                 if let color = normalBorderColor {
                     layer.borderColor = color
                 }
@@ -117,7 +115,8 @@ final class CustomButton: UIButton {
          selectedBorderColor: AssetColor? = nil,
          selectedTitle: String? = nil,
          radiusIfNotCapsule: CGFloat? = nil,
-         width: CGFloat? = nil) {
+         width: CGFloat? = nil,
+         contentEdgeInsets: UIEdgeInsets? = nil) {
         super.init(frame: .zero)
         
         titleLabel?.font = isBold ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
@@ -155,6 +154,9 @@ final class CustomButton: UIButton {
             layer.cornerRadius = radius
         } else {
             layer.cornerRadius = height / 2
+        }
+        if let insets = contentEdgeInsets {
+            self.contentEdgeInsets = insets
         }
     }
     

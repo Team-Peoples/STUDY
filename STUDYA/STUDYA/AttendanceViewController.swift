@@ -49,7 +49,6 @@ final class AttendanceViewController: UIViewController {
         
         self.present(bottomVC, animated: true)
     }
-    
 }
 
 extension AttendanceViewController: BottomSheetAddable {

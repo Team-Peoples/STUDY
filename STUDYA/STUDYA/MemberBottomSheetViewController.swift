@@ -21,15 +21,10 @@ final class MemberBottomSheetViewController: UIViewController {
     
     private let profileView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
-    private lazy var excommunicatingButton: UIButton = {
+    private lazy var excommunicatingButton: CustomButton = {
        
-        let b = UIButton(frame: .zero)
+        let b = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
         
-        b.backgroundColor = .appColor(.subColor3)
-        b.setTitle("강퇴", for: .normal)
-        b.titleLabel?.font = .boldSystemFont(ofSize: 14)
-        b.setTitleColor(.appColor(.subColor1), for: .normal)
-        b.layer.cornerRadius = 14
         b.addTarget(self, action: #selector(askExcommunication), for: .touchUpInside)
         b.isHidden = true
         
@@ -44,7 +39,7 @@ final class MemberBottomSheetViewController: UIViewController {
     }()
     private lazy var ownerButton: CustomButton = {
        
-        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, width: 67)
+        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13))
         
         b.addTarget(self, action: #selector(ownerButtonTapped), for: .touchUpInside)
         b.isHidden = true
@@ -53,7 +48,7 @@ final class MemberBottomSheetViewController: UIViewController {
     }()
     private lazy var managerButton: CustomButton = {
        
-        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, width: 47)
+        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13))
         
         b.addTarget(self, action: #selector(toggleManagerButton), for: .touchUpInside)
         b.isHidden = true
@@ -163,11 +158,7 @@ final class MemberBottomSheetViewController: UIViewController {
     }
     
     private func configureDefaultView() {
-        
-//        view.snp.makeConstraints { make in
-//            make.edges.equalTo(view)
-//        }
-        
+                
         view.addSubview(profileView)
         view.addSubview(nicknameLabel)
         view.addSubview(excommunicatingButton)
@@ -186,7 +177,7 @@ final class MemberBottomSheetViewController: UIViewController {
         nicknameLabel.anchor(leading: profileView.trailingAnchor, leadingConstant: 10)
         
         excommunicatingButton.centerY(inView: profileView)
-        excommunicatingButton.anchor(trailing: view.trailingAnchor, trailingConstant: 33, width: 48)
+        excommunicatingButton.anchor(trailing: view.trailingAnchor, trailingConstant: 33)
         
         separator.anchor(top: profileView.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 1)
         

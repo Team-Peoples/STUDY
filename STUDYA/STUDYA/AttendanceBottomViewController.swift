@@ -10,6 +10,8 @@ import SnapKit
 
 final class AttendanceBottomViewController: UIViewController {
 
+    let times = ["99:99", "15:00", "19:15"]
+    
 //    private let attendanceCheckConditionSettingView = AttendanceCheckConditionSettingView(doneButtonTitle: "조회")
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -24,7 +26,12 @@ final class AttendanceBottomViewController: UIViewController {
     private let nameInOrderButton = BrandButton(title: "이름순", isBold: false, textColor: .keyColor1, borderColor: .keyColor1, backgroundColor: .appColor(.background), fontSize: 14, height: 36)
     private let attendanceInOrderButton = BrandButton(title: "출석순", isBold: false, textColor: .keyColor1, borderColor: .keyColor1, backgroundColor: .appColor(.background), fontSize: 14, height: 36)
     private let timeTitleLabel = CustomLabel(title: "회차 선택", tintColor: .ppsBlack, size: 14, isBold: true)
-    private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+    private lazy var flowLayout: UICollectionViewFlowLayout = {
+       
+        let f = UICollectionViewFlowLayout()
+        f.minimumInteritemSpacing = 6
+        return f
+    }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
 
     lazy var doneButton: UIButton = {
@@ -44,9 +51,17 @@ final class AttendanceBottomViewController: UIViewController {
     }()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
 
-
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        
+        collectionView.register(AttendanceTimeCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceTimeCollectionViewCell.identifier)
+        
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.scrollDirection = .horizontal
+        
         view.addSubview(titleLabel)
         view.addSubview(separator)
         view.addSubview(sortTitleLabel)
@@ -81,18 +96,20 @@ final class AttendanceBottomViewController: UIViewController {
         }
         timeTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)
-            make.top.equalTo(view.snp.top).offset(166)
+            make.top.equalTo(nameInOrderButton.snp.bottom).offset(26)
         }
         collectionView.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)
             make.trailing.equalTo(view).inset(20)
-            make.top.equalTo(view.snp.top).offset(192)
+            make.top.equalTo(timeTitleLabel.snp.bottom).offset(12)
+            make.height.equalTo(40)
         }
 
         view.addSubview(doneButton)
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(collectionView.snp.bottom).offset(16)
+            make.height.greaterThanOrEqualTo(70)
         }
 
         doneButton.addSubview(titleButton)
@@ -103,10 +120,7 @@ final class AttendanceBottomViewController: UIViewController {
     }
     
     private func configureCollectionView() {
-        
-        flowLayout.itemSize = CGSize(width: 83, height: 36)
-        flowLayout.minimumInteritemSpacing = 6
-        
+                
 //        collectionView.collectionViewLayout = flowLayout
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -119,18 +133,30 @@ final class AttendanceBottomViewController: UIViewController {
 
 extension AttendanceBottomViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        4
+        times.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        UICollectionViewCell()
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceTimeCollectionViewCell.identifier, for: indexPath) as! AttendanceTimeCollectionViewCell
+        
+        cell.time = times[indexPath.item]
+        
+        return cell
     }
-    
-    
 }
 
-extension AttendanceBottomViewController: UICollectionViewDelegate {
-    
+extension AttendanceBottomViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let label = UILabel(frame: CGRect.zero)
+        let leftRightInsets:CGFloat = 48
+        
+        label.text = times[indexPath.item]
+        label.sizeToFit()
+        
+        return CGSize(width: label.frame.width + leftRightInsets, height: 32)
+    }
 }
 
 final class AttendanceCheckConditionSettingView: FullDoneButtonButtomView {
