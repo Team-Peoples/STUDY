@@ -1398,16 +1398,16 @@ final class AttendanceStatusCapsuleView: RoundableView {
 
 class FullDoneButtonButtomView: UIView {
     
-    lazy var doneButton: UIButton = {
+    internal lazy var doneButton: UIButton = {
        
         let b = UIButton(frame: .zero)
         b.backgroundColor = .appColor(.keyColor1)
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return b
     }()
-    lazy var titleButton: BrandButton = {
+    internal lazy var titleButton: CustomButton = {
        
-        let b = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20, height: 30)
+        let b = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, height: 30, radiusIfNotCapsule: 1)
         
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
@@ -1434,6 +1434,7 @@ class FullDoneButtonButtomView: UIView {
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(upperView.snp.bottom).offset(constant)
+            make.height.greaterThanOrEqualTo(70)
         }
 
         doneButton.addSubview(titleButton)
