@@ -1413,6 +1413,8 @@ class FullDoneButtonButtomView: UIView {
         super.init(frame: .zero)
         
         doneButton.isSelected = true
+        titleButton.isSelected = true
+        
         titleButton.setTitle(doneButtonTitle, for: .normal)
     }
     

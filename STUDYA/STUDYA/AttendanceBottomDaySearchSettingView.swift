@@ -92,13 +92,11 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         nameInOrderButton.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)
             make.top.equalTo(sortTitleLabel.snp.bottom).offset(12)
-            make.height.equalTo(36)
         }
         attendanceInOrderButton.snp.makeConstraints { make in
             make.leading.equalTo(nameInOrderButton.snp.trailing).offset(14)
             make.trailing.equalTo(self).inset(18)
             make.top.width.equalTo(nameInOrderButton)
-            make.height.equalTo(36)
         }
         timeTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)

@@ -59,6 +59,7 @@
 		D346404C292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D346404B292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift */; };
 		D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34E4F5D291D3F9A00958557 /* MemberViewController.swift */; };
 		D35D6F7F292E581000514980 /* AttendanceBottomIndividualUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D6F7E292E581000514980 /* AttendanceBottomIndividualUpdateView.swift */; };
+		D35D6F812930E58D00514980 /* AttendanceBottomPeriodSearchSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D6F802930E58D00514980 /* AttendanceBottomPeriodSearchSettingView.swift */; };
 		D371D2172923D5A000E28231 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D371D2162923D5A000E28231 /* Protocol.swift */; };
 		D371D2192924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */; };
 		D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D8A4729081974004AF8E9 /* TabBarViewController.swift */; };
@@ -168,6 +169,7 @@
 		D34E4F5B291D3F6E00958557 /* Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		D34E4F5D291D3F9A00958557 /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
 		D35D6F7E292E581000514980 /* AttendanceBottomIndividualUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomIndividualUpdateView.swift; sourceTree = "<group>"; };
+		D35D6F802930E58D00514980 /* AttendanceBottomPeriodSearchSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomPeriodSearchSettingView.swift; sourceTree = "<group>"; };
 		D371D2162923D5A000E28231 /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationNumberFillingInPopViewController.swift; sourceTree = "<group>"; };
 		D37D8A4729081974004AF8E9 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 				D346404B292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift */,
 				D3A4C854292E55E80052F4E0 /* AttendanceBottomDaySearchSettingView.swift */,
 				D35D6F7E292E581000514980 /* AttendanceBottomIndividualUpdateView.swift */,
+				D35D6F802930E58D00514980 /* AttendanceBottomPeriodSearchSettingView.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -598,6 +601,7 @@
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
+				D35D6F812930E58D00514980 /* AttendanceBottomPeriodSearchSettingView.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
 				72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
