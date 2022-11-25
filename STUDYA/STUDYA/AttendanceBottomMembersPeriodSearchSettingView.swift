@@ -1,5 +1,5 @@
 //
-//  AttendanceBottomPeriodSearchSettingView.swift
+//  AttendanceBottomMembersPeriodSearchSettingView.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/11/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AttendanceBottomPeriodSearchSettingView: FullDoneButtonButtomView {
+final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtomView {
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
