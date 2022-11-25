@@ -25,3 +25,8 @@ enum SceneType {
     case close
     case resignMaster
 }
+
+enum CalendarKind {
+    case study
+    case personal
+}
