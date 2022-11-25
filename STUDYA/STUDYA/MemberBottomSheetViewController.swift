@@ -21,15 +21,8 @@ final class MemberBottomSheetViewController: UIViewController {
     
     private let profileView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
-    private lazy var excommunicatingButton: CustomButton = {
+    private lazy var excommunicatingButton = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12), target: self, action: #selector(askExcommunication))
        
-        let b = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
-        
-        b.addTarget(self, action: #selector(askExcommunication), for: .touchUpInside)
-        b.isHidden = true
-        
-        return b
-    }()
     private let separator: UIView = {
         let s = UIView(frame: .zero)
         
@@ -37,24 +30,8 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return s
     }()
-    private lazy var ownerButton: CustomButton = {
-       
-        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13))
-        
-        b.addTarget(self, action: #selector(ownerButtonTapped), for: .touchUpInside)
-        b.isHidden = true
-        
-        return b
-    }()
-    private lazy var managerButton: CustomButton = {
-       
-        let b = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13))
-        
-        b.addTarget(self, action: #selector(toggleManagerButton), for: .touchUpInside)
-        b.isHidden = true
-        
-        return b
-    }()
+    private lazy var ownerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(ownerButtonTapped))
+    private lazy var managerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(toggleManagerButton))
     private lazy var roleInputField: PurpleRoundedInputField = {
        
         let f = PurpleRoundedInputField(target: nil, action: nil)
@@ -102,6 +79,10 @@ final class MemberBottomSheetViewController: UIViewController {
             excommunicatingButton.isHidden = false
             ownerButton.isHidden = false
             managerButton.isHidden = false
+        } else {
+            excommunicatingButton.isHidden = true
+            ownerButton.isHidden = true
+            managerButton.isHidden = true
         }
         
         view.backgroundColor = .systemBackground

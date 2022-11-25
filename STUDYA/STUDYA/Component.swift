@@ -1406,22 +1406,7 @@ final class AttendanceStatusCapsuleView: RoundableView {
 
 class FullDoneButtonButtomView: UIView {
     
-//    internal lazy var doneButton: UIButton = {
-//
-//        let b = UIButton(frame: .zero)
-//        b.backgroundColor = .appColor(.keyColor1)
-//        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-//        return b
-//    }()
     internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-//    internal lazy var titleButton: CustomButton = {
-//
-//        let b = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, height: 30, radiusIfNotCapsule: 0)
-//
-//        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-//
-//        return b
-//    }()
     internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: "완료", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
     
     init(doneButtonTitle: String) {
