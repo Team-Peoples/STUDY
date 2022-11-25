@@ -13,7 +13,7 @@ class StudySchedulePriodFormViewController: UIViewController {
     let timeTitle = CustomLabel(title: "시간", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     let startTimeSelectButton = CustomButton(title: "--:--", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
     let startTimeSuffixLabel = CustomLabel(title: "부터", tintColor: .ppsBlack, size: 16)
-    let endTimeSelectButton = CustomButton(title: "--:-1", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
+    let endTimeSelectButton = CustomButton(title: "--:--", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
     let endTimeSuffixLabel = CustomLabel(title: "까지", tintColor: .ppsBlack, size: 16)
     
     let repeatOptionTitle = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
@@ -108,7 +108,7 @@ class StudySchedulePriodFormViewController: UIViewController {
         print(#function)
     }
     
-    @objc func dateSelectButtonDidTapped() {
+    @objc func dateSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
@@ -116,22 +116,44 @@ class StudySchedulePriodFormViewController: UIViewController {
         datePicker.datePickerMode = .time
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "en_gb")
+        datePicker.minuteInterval = 5
         
-        let okAction = UIAlertAction(title: "확인", style: .default)
+        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+            
+            let dateformatter = DateFormatter()
+            
+            dateformatter.dateStyle = .none
+            dateformatter.timeStyle = .short
+            dateformatter.locale = Locale(identifier: "en_gb")
+            
+            let date = dateformatter.string(from: datePicker.date)
+            
+            switch sender {
+                case self.startTimeSelectButton:
+                    self.startTimeSelectButton.setTitle(date, for: .normal)
+                case self.endTimeSelectButton:
+                    self.endTimeSelectButton.setTitle(date, for: .normal)
+                default:
+                    return
+            }
+        }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
         
         alert.view.snp.makeConstraints { make in
-            make.height.equalTo(300)
+            make.height.equalTo(350)
         }
-    
+        
+        datePicker.snp.makeConstraints { make in
+            make.height.equalTo(150)
+            make.centerX.equalTo(alert.view)
+            make.top.equalTo(alert.view).offset(50)
+        }
         
         alert.addAction(okAction)
         alert.addAction(cancelAction)
-        
-        
                 
         present(alert, animated: true)
     }
