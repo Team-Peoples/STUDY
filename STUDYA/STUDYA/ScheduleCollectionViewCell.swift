@@ -47,12 +47,12 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     }
     
     func reloadTableView() {
-        print(#function)
+       
         scheduleTableView.reloadData()
     }
     
     func checkScheduleIsEmpty() {
-        print(#function)
+
         if studySchedules.isEmpty {
             scheduleTableView.addSubview(studyScheduleEmptyLabel)
             studyScheduleEmptyLabel.snp.makeConstraints { make in

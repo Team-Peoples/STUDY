@@ -63,7 +63,6 @@ class ScheduleTableViewCell: UITableViewCell {
     }
     
     func configure(schedule: Studyschedule, kind: CalendarKind) {
-        print(#function)
         let time = schedule.time.components(separatedBy: "-")
         
         bookmarkColorView.backgroundColor = schedule.color
