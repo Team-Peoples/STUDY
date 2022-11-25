@@ -15,11 +15,12 @@ final class AttendanceBottomViewController: UIViewController {
     private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회", delegate: self)
     private lazy var attendanceBottomIndividualUpdateViwe = AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
     private lazy var attendanceBottomMembersPeriodSearchSettingView = AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
+    private lazy var attendanceBottomIndividualPeriodSearchSettingView = AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view = attendanceBottomMembersPeriodSearchSettingView
+        view = attendanceBottomIndividualPeriodSearchSettingView
     }
 }
 

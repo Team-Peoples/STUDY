@@ -129,7 +129,6 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
             make.height.equalTo(30)
         }
         stackView.snp.makeConstraints { make in
-//            make.leading.trailing.equalTo(backgroundContainerView).inset(25)
             make.centerX.centerY.equalTo(backgroundContainerView)
         }
         selectDayButton.snp.makeConstraints { make in

@@ -43,7 +43,7 @@ final class AttendanceViewController: UIViewController {
         
         guard let sheet = bottomVC.sheetPresentationController else { return }
         
-        sheet.detents = [ .custom { _ in return 380 }]
+        sheet.detents = [ .custom { _ in return 290 }]
         sheet.preferredCornerRadius = 24
         sheet.prefersGrabberVisible = false
         
