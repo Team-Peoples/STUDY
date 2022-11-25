@@ -257,7 +257,7 @@ extension MainViewController {
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
-                
+                    cell.navigatable = self
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
@@ -277,12 +277,6 @@ extension MainViewController {
                         vc.study = self.myStudyList.first!
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
-                    
-//                    cell.announcementButtonAction = {
-//                        let vc = AnnouncementBoardViewController()
-//                        self.navigationController?.pushViewController(vc, animated: true)
-//                    }
-                    
                 return cell
             default:
                 return UITableViewCell()

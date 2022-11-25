@@ -9,6 +9,7 @@ import UIKit
 
 class StudyScheduleViewController: UIViewController {
     
+    weak var presentingVC: UIViewController?
     
     let calendarView: UICalendarView = {
         let c = UICalendarView()
@@ -51,6 +52,10 @@ class StudyScheduleViewController: UIViewController {
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(view.frame.height / 2)
         }
+    }
+    
+    deinit {
+        presentingVC?.dismiss(animated: true)
     }
 }
 

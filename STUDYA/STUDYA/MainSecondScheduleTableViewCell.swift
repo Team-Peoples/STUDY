@@ -10,6 +10,7 @@ import UIKit
 class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
+    internal var navigatable: Navigatable!
     
     let title = CustomLabel(title: "일정", tintColor: .ppsBlack, size: 20, isBold: true)
     let disclosureButton = UIButton(frame: .zero)
@@ -65,6 +66,9 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     }
     
     @objc private func scheduleTapped() {
+        let ssvc = StudyScheduleViewController()
+        ssvc.presentingVC = navigatable as? UIViewController
         
+        navigatable.push(vc: ssvc)
     }
 }
