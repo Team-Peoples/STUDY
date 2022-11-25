@@ -7,8 +7,10 @@
 
 import UIKit
 
-/// dummy data
+// dummy data
 struct Studyschedule {
+    let studyName = "스터디이름최대10글자"
+    let repeatOption = "매일"
     let color = UIColor.orange
     let place = "강남구"
     let topic = "HIG 톺아보기"
@@ -17,7 +19,7 @@ struct Studyschedule {
 
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule()]
+    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule()]
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"
@@ -30,7 +32,7 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         scheduleTableView.dataSource = self
-        scheduleTableView.rowHeight = 100
+        scheduleTableView.delegate = self
         
         self.contentView.addSubview(scheduleTableView)
         scheduleTableView.backgroundColor = .appColor(.background)
@@ -73,8 +75,14 @@ extension ScheduleCollectionViewCell: UITableViewDataSource {
         
         let schedule = studySchedules[indexPath.row]
         
-        cell.configure(schedule: schedule)
+        cell.configure(schedule: schedule, kind: .personal)
         
         return cell
+    }
+}
+
+extension ScheduleCollectionViewCell: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
