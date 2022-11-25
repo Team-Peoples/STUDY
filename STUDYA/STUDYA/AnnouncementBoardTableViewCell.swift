@@ -79,7 +79,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     
     private lazy var etcButton: UIButton = {
         let btn = UIButton()
-        btn.setImage(UIImage(named: "etc"), for: .normal)
+        btn.setImage(UIImage(named: "etc-row"), for: .normal)
         btn.tintColor = .appColor(.ppsGray2)
         btn.isHidden = true
         return btn
@@ -134,25 +134,21 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
             make.top.bottom.equalTo(self).inset(7.5)
             make.leading.trailing.equalTo(self).inset(10)
         }
-        
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(24)
             make.top.equalTo(cell).offset(28)
             make.leading.equalTo(cell).offset(24)
         }
-        
         timeLabel.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(10)
             make.trailing.equalTo(cell).inset(24)
             make.bottom.equalTo(titleLabel.snp.bottom)
         }
-        
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(13)
             make.bottom.greaterThanOrEqualTo(cell).inset(18)
             make.leading.trailing.equalTo(cell).inset(24)
         }
-        
         etcButton.snp.makeConstraints { make in
             make.trailing.equalTo(timeLabel.snp.trailing)
             make.bottom.equalTo(timeLabel.snp.top)

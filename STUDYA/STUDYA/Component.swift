@@ -594,7 +594,7 @@ final class BrandSwitch: UIControl {
     
     // MARK: UI
     private let outerView: RoundableView = {
-        let view = RoundableView()
+        let view = RoundableView(cornerRadius: 15)
         
         view.backgroundColor = UIColor.appColor(.keyColor1)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -604,29 +604,15 @@ final class BrandSwitch: UIControl {
     }()
     
     private let barView: RoundableView = {
-        let view = RoundableView()
+        let view = RoundableView(cornerRadius: 14)
         view.backgroundColor = UIColor.appColor(.background)
         view.translatesAutoresizingMaskIntoConstraints = false
-        
-        let l = CustomLabel(title: "일반", tintColor: .keyColor1, size: 10, isBold: true)
-        let l1 = CustomLabel(title: "관리", tintColor: .whiteLabel, size: 10, isBold: true)
-        
-        view.addSubview(l)
-        view.addSubview(l1)
-        
-        l.snp.makeConstraints { make in
-            make.trailing.top.bottom.equalTo(view).inset(7)
-        }
-        
-        l1.snp.makeConstraints { make in
-            make.leading.top.bottom.equalTo(view).inset(7)
-        }
         
         return view
     }()
     
     private let circleView: RoundableView = {
-        let view = RoundableView()
+        let view = RoundableView(cornerRadius: 12)
         view.backgroundColor = .white
         view.layer.shadowOffset = CGSize(width: 0, height: 2)
         view.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
@@ -692,20 +678,40 @@ final class BrandSwitch: UIControl {
         fatalError("xib is not implemented")
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(isMasterSwitch: Bool = true) {
+        super.init(frame: .zero)
         
         self.addSubview(outerView)
         self.addSubview(self.barView)
-        self.barView.addSubview(self.circleView)
+        
         setDimensions(height: 28, width: 55)
         outerView.anchor(top: topAnchor, topConstant: -1, bottom: bottomAnchor, bottomConstant: -1, leading: leadingAnchor, leadingConstant: -1, trailing: trailingAnchor, trailingConstant: -1)
+        
         NSLayoutConstraint.activate([
             self.barView.leftAnchor.constraint(equalTo: self.leftAnchor),
             self.barView.rightAnchor.constraint(equalTo: self.rightAnchor),
             self.barView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             self.barView.topAnchor.constraint(equalTo: self.topAnchor),
         ])
+        
+        if isMasterSwitch {
+            let l = CustomLabel(title: "일반", tintColor: .keyColor1, size: 10, isBold: true)
+            let l1 = CustomLabel(title: "관리", tintColor: .whiteLabel, size: 10, isBold: true)
+            
+            barView.addSubview(l)
+            barView.addSubview(l1)
+            
+            l.snp.makeConstraints { make in
+                make.trailing.top.bottom.equalTo(barView).inset(7)
+            }
+            
+            l1.snp.makeConstraints { make in
+                make.leading.top.bottom.equalTo(barView).inset(7)
+            }
+        }
+        
+        self.barView.addSubview(self.circleView)
+        
         self.circleViewConstraints = [
             self.circleView.leftAnchor.constraint(equalTo: self.barView.leftAnchor, constant: 2),
             self.circleView.bottomAnchor.constraint(equalTo: self.barView.bottomAnchor, constant: -2),
@@ -722,11 +728,56 @@ final class BrandSwitch: UIControl {
     }
 }
 
-final class RoundableView: UIView {
-    override func layoutSubviews() {
-        print(#function)
-        super.layoutSubviews()
-        self.layer.cornerRadius = self.frame.height / 2
+class RoundedCustomLabel: UILabel {
+    
+    private var padding = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
+    
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: padding))
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        var contentSize = super.intrinsicContentSize
+        contentSize.height += padding.top + padding.bottom
+        contentSize.width += padding.left + padding.right
+        
+        return contentSize
+    }
+    
+    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil) {
+        self.init()
+        
+        self.text = text
+        self.textColor = textColor
+        self.font = UIFont.systemFont(ofSize: fontSize)
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.backgroundColor = backgroundColor
+        
+        guard let padding = padding else { return }
+        self.padding = padding
+    }
+    
+    func change(textColor: UIColor) {
+        self.textColor = textColor
+    }
+}
+
+class RoundableView: UIView {
+    init(cornerRadius: CGFloat) {
+        super.init(frame: .zero)
+
+        self.layer.cornerRadius = cornerRadius
+    }
+    
+    required init?(coder: NSCoder) {
+
+        super.init(coder: coder)
+    }
+    
+    @IBInspectable var cornerRadius: CGFloat {
+        get { layer.cornerRadius }
+        set { layer.cornerRadius = newValue }
     }
 }
 

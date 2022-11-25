@@ -28,7 +28,7 @@ final class MyPageMainViewController: UIViewController {
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
     private let separatorView: RoundableView = {
        
-        let view = RoundableView()
+        let view = RoundableView(cornerRadius: 24)
         view.backgroundColor = UIColor.appColor(.ppsGray3)
         
         return view
