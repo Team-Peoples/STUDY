@@ -107,7 +107,7 @@ final class CustomButton: UIButton {
          isBold: Bool,
          normalBackgroundColor: AssetColor,
          normalTitleColor: AssetColor,
-         height: CGFloat,
+         height: CGFloat? = nil,
          normalBorderColor: AssetColor? = nil,
          normalTitle: String? = nil,
          selectedBackgroundColor: AssetColor? = nil,
@@ -116,8 +116,14 @@ final class CustomButton: UIButton {
          selectedTitle: String? = nil,
          radiusIfNotCapsule: CGFloat? = nil,
          width: CGFloat? = nil,
-         contentEdgeInsets: UIEdgeInsets? = nil) {
+         contentEdgeInsets: UIEdgeInsets? = nil,
+         target: AnyObject? = nil,
+         action: Selector? = nil) {
         super.init(frame: .zero)
+        
+        if let target = target, let action = action {
+            addTarget(target, action: action, for: .touchUpInside)
+        }
         
         titleLabel?.font = isBold ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
         backgroundColor = .appColor(normalBackgroundColor)
@@ -144,16 +150,18 @@ final class CustomButton: UIButton {
         if let title = selectedTitle {
             setTitle(title, for: .selected)
         }
-        
-        setHeight(height)
-        
+        if let height = height {
+            setHeight(height)
+        }
         if let width = width {
             setWidth(width)
         }
         if let radius = radiusIfNotCapsule {
             layer.cornerRadius = radius
         } else {
-            layer.cornerRadius = height / 2
+            if let height = height {
+                layer.cornerRadius = height / 2
+            }
         }
         if let insets = contentEdgeInsets {
             self.contentEdgeInsets = insets
@@ -1398,25 +1406,28 @@ final class AttendanceStatusCapsuleView: RoundableView {
 
 class FullDoneButtonButtomView: UIView {
     
-    internal lazy var doneButton: UIButton = {
-       
-        let b = UIButton(frame: .zero)
-        b.backgroundColor = .appColor(.keyColor1)
-        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        return b
-    }()
-    internal lazy var titleButton: CustomButton = {
-       
-        let b = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, height: 30, radiusIfNotCapsule: 1)
-        
-        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-        
-        return b
-    }()
+//    internal lazy var doneButton: UIButton = {
+//
+//        let b = UIButton(frame: .zero)
+//        b.backgroundColor = .appColor(.keyColor1)
+//        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+//        return b
+//    }()
+    internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+//    internal lazy var titleButton: CustomButton = {
+//
+//        let b = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, height: 30, radiusIfNotCapsule: 0)
+//
+//        b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+//
+//        return b
+//    }()
+    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: "완료", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
     
     init(doneButtonTitle: String) {
         super.init(frame: .zero)
         
+        doneButton.isSelected = true
         titleButton.setTitle(doneButtonTitle, for: .normal)
     }
     
