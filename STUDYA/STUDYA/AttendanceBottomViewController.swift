@@ -10,9 +10,22 @@ import SnapKit
 
 final class AttendanceBottomViewController: UIViewController {
 
-    let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
+    internal let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
     
-    private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회", delegate: self)
+    internal  var viewType: AttendanceBottomViewType? {
+        didSet {
+            let bottomView = viewType!.view
+            
+            if viewType == .daySearchSetting {
+                print(#function)
+                (bottomView as! AttendanceBottomDaySearchSettingView).delegate = self
+            }
+            
+            view = bottomView
+        }
+    }
+    
+    private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
     private lazy var attendanceBottomIndividualUpdateViwe = AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
     private lazy var attendanceBottomMembersPeriodSearchSettingView = AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
     private lazy var attendanceBottomIndividualPeriodSearchSettingView = AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
@@ -20,7 +33,7 @@ final class AttendanceBottomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view = attendanceBottomIndividualPeriodSearchSettingView
+        print(#function)
     }
 }
 

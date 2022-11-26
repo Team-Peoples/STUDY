@@ -9,7 +9,11 @@ import UIKit
 
 final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
-    internal var delegate: AttendanceBottomViewController?
+    internal var delegate: AttendanceBottomViewController? {
+        didSet {
+            configureCollectionView()
+        }
+    }
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -34,15 +38,14 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     
-    init(doneButtonTitle: String, delegate: AttendanceBottomViewController) {
+    override init(doneButtonTitle: String) {
         super.init(doneButtonTitle: doneButtonTitle)
         
         backgroundColor = .systemBackground
         
-        self.delegate = delegate
         nameInOrderButton.isSelected = true
         
-        configureCollectionView()
+        
         addSubViews()
         setConstraints()
         configureDoneButton(on: self, under: collectionView, constant: 16)

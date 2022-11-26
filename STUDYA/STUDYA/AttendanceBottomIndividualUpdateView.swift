@@ -66,6 +66,7 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         penaltyFeeInputField.delegate = self
         
         doneButton.isSelected = false
+        titleButton.isSelected = false
         
         addSubviews()
         setConstraints()
@@ -82,6 +83,12 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         absentButton.isSelected = false
         allowedButton.isSelected = false
         (sender as! CustomButton).isSelected = true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        endEditing(true)
     }
     
     private func addSubviews() {
