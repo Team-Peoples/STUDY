@@ -9,6 +9,12 @@ import UIKit
 
 final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
+    internal var bottomSheetAddableDelegate: BottomSheetAddable! {
+        didSet {
+            headerView.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+        }
+    }
+    
     static let identifier = "AttendanceModificationCollectionViewCell"
     
     private lazy var tableView: UITableView = {
@@ -23,10 +29,10 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         
         return t
     }()
-    private lazy var headerView: UIView = {
+    private lazy var headerView: AttendanceModificationHeaderView = {
         
         let nib = UINib(nibName: AttendanceModificationHeaderView.identifier, bundle: nil)
-        let v = nib.instantiate(withOwner: self).first as! UIView
+        let v = nib.instantiate(withOwner: self).first as! AttendanceModificationHeaderView
         
         return v
     }()
@@ -73,5 +79,11 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
 }
 
 extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let bottomVC = AttendanceBottomViewController()
+        
+        bottomVC.viewType = .individualUpdate
+        
+        bottomSheetAddableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+    }
 }

@@ -17,11 +17,14 @@ protocol BottomSheetAddable: UIViewController {
 }
 
 extension BottomSheetAddable {
-    func addSheet(vc: UIViewController, detent: CGFloat, prefersGrabberVisible: Bool) {
+    func presentBottomSheet(vc: UIViewController, detent: CGFloat, prefersGrabberVisible: Bool) {
+        
         guard let sheet = vc.sheetPresentationController else { return }
         
         sheet.detents = [ .custom { _ in return detent }]
         sheet.preferredCornerRadius = 24
         sheet.prefersGrabberVisible = prefersGrabberVisible
+        
+        present(vc, animated: true)
     }
 }

@@ -63,7 +63,7 @@
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain"/>
                     <connections>
-                        <action selector="leftButtonTapped:" destination="Piv-7Q-yDD" eventType="touchUpInside" id="Mxd-tz-Cs5"/>
+                        <action selector="leftButtonTapped:" destination="Piv-7Q-yDD" eventType="touchUpInside" id="EID-Oa-jVU"/>
                     </connections>
                 </button>
             </subviews>

@@ -11,6 +11,8 @@ final class AttendanceOverallCheckHeaderView: UIView {
     
     static let identifier = "AttendanceOverallCheckHeaderView"
     
+    internal var bottomSheetAddableDelegate: BottomSheetAddable!
+    
     @IBOutlet private weak var sortyingTypeLabel: UILabel!
     @IBOutlet private weak var periodLabel: UILabel!
     @IBOutlet private weak var button: UIButton!
@@ -20,7 +22,10 @@ final class AttendanceOverallCheckHeaderView: UIView {
     }
     
     @IBAction private func tapped() {
-        print(#function)
+        let bottomVC = AttendanceBottomViewController()
+        bottomVC.viewType = .membersPeriodSearchSetting
+        
+        bottomSheetAddableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     
     override func awakeFromNib() {

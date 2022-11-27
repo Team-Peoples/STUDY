@@ -12,15 +12,13 @@ final class AttendanceBottomViewController: UIViewController {
 
     internal let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
     
-    internal  var viewType: AttendanceBottomViewType? {
+    internal  var viewType: AttendanceBottomViewType! {
         didSet {
             let bottomView = viewType!.view
             
             if viewType == .daySearchSetting {
-                print(#function)
                 (bottomView as! AttendanceBottomDaySearchSettingView).delegate = self
             }
-            
             view = bottomView
         }
     }
@@ -55,13 +53,13 @@ extension AttendanceBottomViewController: UICollectionViewDataSource {
 extension AttendanceBottomViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(#function)
+        
         let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
         cell.enableButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print(#function)
+        
         let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
         cell.disableButton()
     }
