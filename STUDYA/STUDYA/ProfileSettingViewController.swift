@@ -17,7 +17,7 @@ class ProfileSettingViewController: UIViewController {
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)
     private let profileImageSelectorView = ProfileImageView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
-    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: "완료", isBold: true, isFill: false)
     private let isButtonFilled = false
     private var isAuthForAlbum: Bool?
     

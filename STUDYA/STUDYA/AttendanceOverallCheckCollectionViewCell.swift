@@ -11,6 +11,12 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceOverallCheckCollectionViewCell"
     
+    internal var bottomSheetAddableDelegate: BottomSheetAddable! {
+        didSet {
+            headerView.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+        }
+    }
+    
     private lazy var tableView: UITableView = {
        
         let t = UITableView(frame: .zero)
@@ -23,10 +29,10 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
         
         return t
     }()
-    private lazy var headerView: UIView = {
+    private lazy var headerView: AttendanceOverallCheckHeaderView = {
         
         let nib = UINib(nibName: AttendanceOverallCheckHeaderView.identifier, bundle: nil)
-        let v = nib.instantiate(withOwner: self).first as! UIView
+        let v = nib.instantiate(withOwner: self).first as! AttendanceOverallCheckHeaderView
         
         return v
     }()
@@ -73,5 +79,6 @@ extension AttendanceOverallCheckCollectionViewCell: UITableViewDataSource {
 }
 
 extension AttendanceOverallCheckCollectionViewCell: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
 }

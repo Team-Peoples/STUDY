@@ -19,7 +19,7 @@ class StudyFreeRuleViewController: UIViewController {
     @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
     
-    private let completeButton = CustomButton(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
+    private let completeButton = BrandButton(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
     
     // MARK: - Life Cycle
   

@@ -28,7 +28,7 @@ final class CreatingStudyFormViewController: StudyFormViewController {
         v.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor
         return v
     }()
-    private let doneButton = CustomButton(title: "다음", isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: "다음", isBold: true, isFill: false)
 
     private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close"), style: .done, target: self, action: #selector(closeButtonDidTapped))
     

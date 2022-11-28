@@ -7,9 +7,14 @@
 
 import UIKit
 
-final class AttendanceModificationHeaderView: UITableViewHeaderFooterView {
+final class AttendanceModificationHeaderView: UIView {
     
     static let identifier = "AttendanceModificationHeaderView"
+    
+    internal var bottomSheetAddableDelegate: BottomSheetAddable!
+    
+    internal var leftButtonTapped: (() -> ()) = {}
+    internal var rightButtonTapped: (() -> ()) = {}
     
     @IBOutlet weak var sortingTypeLabel: UILabel!
     @IBOutlet weak var studyTimeLabel: UILabel!
@@ -19,9 +24,12 @@ final class AttendanceModificationHeaderView: UITableViewHeaderFooterView {
     }
     
     @IBAction func leftButtonTapped(_ sender: UIButton) {
-        print(#function)
+        let bottomVC = AttendanceBottomViewController()
+        
+        bottomVC.viewType = .daySearchSetting
+        bottomSheetAddableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
-        print(#function)
+        
     }
 }

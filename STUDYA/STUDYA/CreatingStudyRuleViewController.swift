@@ -23,7 +23,7 @@ struct CreatingStudyRuleViewModel {
         study = Study(id: nil, title: nil, onoff: nil, category: nil, studyDescription: nil, freeRule: nil, po: nil, isBlocked: nil, isPaused: nil, generalRule: nil, startDate: nil, endDate: nil)
     }
     
-    func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: CustomButton) {
+    func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: BrandButton) {
         if isUpperView {
             view.layer.borderColor = isGeneralFormFilled ? UIColor.appColor(.keyColor1).cgColor : UIColor.appColor(.ppsGray2).cgColor
         } else {
@@ -97,9 +97,9 @@ class CreatingStudyRuleViewController: UIViewController {
         
         return label
     }()
-    private lazy var doneButton: CustomButton = {
+    private lazy var doneButton: BrandButton = {
        
-        let button = CustomButton(title: "다음", isBold: true, isFill: false)
+        let button = BrandButton(title: "다음", isBold: true, isFill: false)
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         return button

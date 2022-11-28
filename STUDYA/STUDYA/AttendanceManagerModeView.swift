@@ -9,6 +9,8 @@ import UIKit
 
 final class AttendanceManagerModeView: UIView {
     
+    var BottomSheetAddableDelegate: BottomSheetAddable?
+    
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
     
@@ -34,7 +36,7 @@ final class AttendanceManagerModeView: UIView {
     @IBAction private func leftButtonTapped(_ sender: UIButton) {
         leftCenterXConstraint.priority = .required
         rightCenterXConstraint.priority = .defaultHigh
-
+        
         collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: [.centeredHorizontally], animated: true)
         
         UIView.animate(withDuration: 0.3) {
@@ -67,12 +69,16 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as! AttendanceModificationCollectionViewCell
             
-            return cell
+            cell.bottomSheetAddableDelegate = BottomSheetAddableDelegate
             
+            return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as! AttendanceOverallCheckCollectionViewCell
+            
+            cell.bottomSheetAddableDelegate = BottomSheetAddableDelegate
             
             return cell
             

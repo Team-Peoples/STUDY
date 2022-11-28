@@ -16,7 +16,7 @@ extension UIView {
     }
 }
 
-final class CustomButton: UIButton {
+final class BrandButton: UIButton {
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
@@ -59,6 +59,7 @@ final class CustomButton: UIButton {
         backgroundColor = .systemBackground
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
+    
     internal func easyConfigure(title: String, backgroundColor: UIColor, textColor: UIColor, borderColor: AssetColor, radius: CGFloat) {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
@@ -69,6 +70,110 @@ final class CustomButton: UIButton {
     func resetColorFor(normal: AssetColor, forSelected: AssetColor) {
         setTitleColor(UIColor.appColor(forSelected), for: .selected)
         setTitleColor(UIColor.appColor(normal), for: .normal)
+    }
+}
+
+final class CustomButton: UIButton {
+    
+    var selectedBorderColor: CGColor?
+    var normalBorderColor: CGColor?
+    var selectedBackgroundColor: UIColor?
+    var normalBackgroundColor: UIColor?
+    
+    override var isSelected: Bool {
+        didSet {
+            switch isSelected {
+            case true:
+                if let color = selectedBorderColor {
+                    layer.borderColor = color
+                }
+                if let color = selectedBackgroundColor {
+                    backgroundColor = color
+                }
+                
+            case false:
+                if let color = normalBorderColor {
+                    layer.borderColor = color
+                }
+                if let color = normalBackgroundColor {
+                    print(color)
+                    backgroundColor = color
+                }
+            }
+        }
+    }
+    
+    init(fontSize: CGFloat,
+         isBold: Bool,
+         normalBackgroundColor: AssetColor,
+         normalTitleColor: AssetColor,
+         height: CGFloat? = nil,
+         normalBorderColor: AssetColor? = nil,
+         normalTitle: String? = nil,
+         selectedBackgroundColor: AssetColor? = nil,
+         selectedTitleColor: AssetColor? = nil,
+         selectedBorderColor: AssetColor? = nil,
+         selectedTitle: String? = nil,
+         radiusIfNotCapsule: CGFloat? = nil,
+         width: CGFloat? = nil,
+         contentEdgeInsets: UIEdgeInsets? = nil,
+         target: AnyObject? = nil,
+         action: Selector? = nil) {
+        super.init(frame: .zero)
+        
+        if let target = target, let action = action {
+            addTarget(target, action: action, for: .touchUpInside)
+        }
+        
+        titleLabel?.font = isBold ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
+        backgroundColor = .appColor(normalBackgroundColor)
+        self.normalBackgroundColor = .appColor(normalBackgroundColor)
+        setTitleColor(.appColor(normalTitleColor), for: .normal)
+        
+        if let color = normalBorderColor {
+            layer.borderWidth = 1
+            self.normalBorderColor = UIColor.appColor(color).cgColor
+            layer.borderColor = self.normalBorderColor
+        }
+        if let title = normalTitle {
+            setTitle(title, for: .normal)
+        }
+        if let color = selectedBackgroundColor {
+            self.selectedBackgroundColor = .appColor(color)
+        }
+        if let color = selectedTitleColor {
+            setTitleColor(.appColor(color), for: .selected)
+        }
+        if let color = selectedBorderColor {
+            self.selectedBorderColor = UIColor.appColor(color).cgColor
+        }
+        if let title = selectedTitle {
+            setTitle(title, for: .selected)
+        }
+        if let height = height {
+            setHeight(height)
+        }
+        if let width = width {
+            setWidth(width)
+        }
+        if let radius = radiusIfNotCapsule {
+            layer.cornerRadius = radius
+        } else {
+            if let height = height {
+                layer.cornerRadius = height / 2
+            }
+        }
+        if let insets = contentEdgeInsets {
+            self.contentEdgeInsets = insets
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal func toggle() {
+        isSelected.toggle()
     }
 }
 
@@ -1296,5 +1401,44 @@ final class AttendanceStatusCapsuleView: RoundableView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class FullDoneButtonButtomView: UIView {
+    
+    internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: "완료", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    
+    init(doneButtonTitle: String) {
+        super.init(frame: .zero)
+        
+        doneButton.isSelected = true
+        titleButton.isSelected = true
+        
+        titleButton.setTitle(doneButtonTitle, for: .normal)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func doneButtonTapped() {
+//        need override
+    }
+    
+    func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int) {
+
+        view.addSubview(doneButton)
+        doneButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(view)
+            make.top.equalTo(upperView.snp.bottom).offset(constant)
+            make.height.greaterThanOrEqualTo(70)
+        }
+
+        doneButton.addSubview(titleButton)
+        titleButton.snp.makeConstraints { make in
+            make.centerX.equalTo(doneButton)
+            make.top.equalTo(doneButton.snp.top).inset(20)
+        }
     }
 }
