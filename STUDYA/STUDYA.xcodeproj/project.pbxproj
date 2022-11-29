@@ -74,7 +74,7 @@
 		D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */; };
 		D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */; };
 		D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */; };
-		D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */; };
+		D3C23A7728FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */; };
 		D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */; };
 		D3DD8089292687F2001250CF /* MainPopOverViewControllers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */; };
 		D3DD808B29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DD808A29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift */; };
@@ -164,7 +164,7 @@
 		D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSecondScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFirstStudyToggleTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThirdButtonTableViewCell.swift; sourceTree = "<group>"; };
-		D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFourthManagementTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFourthAnnouncementTableViewCell.swift; sourceTree = "<group>"; };
 		D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberBottomSheetViewController.swift; sourceTree = "<group>"; };
 		D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainPopOverViewControllers.storyboard; sourceTree = "<group>"; };
 		D3DD808A29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationNumberCheckingPopViewController.swift; sourceTree = "<group>"; };
@@ -255,7 +255,7 @@
 				D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */,
 				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
 				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
-				D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */,
+				D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */,
 				D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */,
@@ -495,7 +495,7 @@
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
 				D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */,
-				D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */,
+				D3C23A7728FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift in Sources */,
 				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */,

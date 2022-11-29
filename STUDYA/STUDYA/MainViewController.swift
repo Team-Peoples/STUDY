@@ -100,7 +100,7 @@ final class MainViewController: SwitchableViewController {
         t.register(MainFirstStudyToggleTableViewCell.self, forCellReuseIdentifier: MainFirstStudyToggleTableViewCell.identifier)
         t.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
         t.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
-        t.register(MainFourthManagementTableViewCell.self, forCellReuseIdentifier: MainFourthManagementTableViewCell.identifier)
+        t.register(MainFourthAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFourthAnnouncementTableViewCell.identifier)
         
         t.separatorStyle = .none
         t.backgroundColor = .systemBackground
@@ -454,8 +454,9 @@ extension MainViewController: UITableViewDataSource {
                 
                 return cell
             case 3:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
                 cell.navigatable = self
+                cell.announcement = Announcement(id: 1, studyID: 1, title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdDate: nil, isPinned: true)
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
@@ -511,7 +512,7 @@ extension MainViewController: UITableViewDelegate {
             case 2:
                 return 70
             case 3:
-                return 270
+                return 60
             default:
                 return 100
             }

@@ -48,10 +48,12 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     }
     
     private func constrainLine() {
-        title.numberOfLines = 1
-        date.numberOfLines = 1
-        place.numberOfLines = 1
-        todayContent.numberOfLines = 1
+        if isScheduleExist {
+            title.numberOfLines = 1
+            date.numberOfLines = 1
+            place.numberOfLines = 1
+            todayContent.numberOfLines = 1
+        }
     }
     
     private func addSubviews() {
@@ -59,7 +61,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         scheduleBackView.addSubview(title)
         scheduleBackView.addSubview(disclosureIndicatorView)
         
-        if isScheduleExist == true {
+        if isScheduleExist {
             scheduleBackView.addSubview(date)
             scheduleBackView.addSubview(place)
             scheduleBackView.addSubview(todayContent)
@@ -83,7 +85,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             make.width.height.equalTo(28)
         }
         
-        if isScheduleExist == true {
+        if isScheduleExist {
             date.anchor(top: title.bottomAnchor, topConstant: 30, leading: title.leadingAnchor)
             place.anchor(top: date.bottomAnchor, topConstant: 2, leading: date.leadingAnchor)
             todayContent.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)
