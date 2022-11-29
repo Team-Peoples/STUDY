@@ -7,18 +7,19 @@
 
 import UIKit
 
-/// dummy data
+// dummy data
 struct Studyschedule {
+    let studyName = "스터디이름최대10글자"
+    let repeatOption = "매일"
     let color = UIColor.orange
-    let studyName = "개발스터디"
-    let studyPlace = "강남구"
-    let studySubject = "HIG 톺아보기"
-    let studyScheduleTime = "00:00 am - 00:00 pm"
+    let place = "강남구"
+    let topic = "HIG 톺아보기"
+    let time = "00:00-00:00"
 }
 
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    let studySchedules: [Studyschedule] = []
+    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule()]
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"
@@ -31,7 +32,7 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         scheduleTableView.dataSource = self
-        scheduleTableView.rowHeight = 120
+        scheduleTableView.delegate = self
         
         self.contentView.addSubview(scheduleTableView)
         scheduleTableView.backgroundColor = .appColor(.background)
@@ -46,13 +47,13 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     }
     
     func reloadTableView() {
-        print(#function)
+       
         scheduleTableView.reloadData()
     }
     
     func checkScheduleIsEmpty() {
-        print(#function)
-        if studySchedules.count == 0 {
+
+        if studySchedules.isEmpty {
             scheduleTableView.addSubview(studyScheduleEmptyLabel)
             studyScheduleEmptyLabel.snp.makeConstraints { make in
                 make.centerX.equalTo(scheduleTableView)
@@ -72,10 +73,16 @@ extension ScheduleCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! ScheduleTableViewCell
         
-        let studySchedule = studySchedules[indexPath.row]
+        let schedule = studySchedules[indexPath.row]
         
-        cell.configure(color: studySchedule.color, name: studySchedule.studyName, place: studySchedule.studyPlace, subtitle: studySchedule.studySubject, time: studySchedule.studyScheduleTime)
+        cell.configure(schedule: schedule, kind: .personal)
         
         return cell
+    }
+}
+
+extension ScheduleCollectionViewCell: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }

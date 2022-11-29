@@ -819,6 +819,40 @@ final class BrandSwitch: UIControl {
     }
 }
 
+class RoundedCustomLabel: UILabel {
+    
+    private var padding = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
+    
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: padding))
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        var contentSize = super.intrinsicContentSize
+        contentSize.height += padding.top + padding.bottom
+        contentSize.width += padding.left + padding.right
+        
+        return contentSize
+    }
+    
+    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil) {
+        self.init()
+        
+        self.text = text
+        self.textColor = textColor
+        self.font = UIFont.systemFont(ofSize: fontSize)
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.backgroundColor = backgroundColor
+        
+        guard let padding = padding else { return }
+        self.padding = padding
+    }
+    
+    func change(textColor: UIColor) {
+        self.textColor = textColor
+    }
+}
 
 class RoundableView: UIView {
     init(cornerRadius: CGFloat) {
@@ -833,7 +867,7 @@ class RoundableView: UIView {
     }
     
     @IBInspectable var cornerRadius: CGFloat {
-        get { return layer.cornerRadius }
+        get { layer.cornerRadius }
         set { layer.cornerRadius = newValue }
     }
 }

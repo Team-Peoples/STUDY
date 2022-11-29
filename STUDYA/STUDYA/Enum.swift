@@ -54,4 +54,7 @@ enum AttendanceBottomViewType {
         case .individualPeriodSearchSetting: return 291
         }
     }
+enum CalendarKind {
+    case study
+    case personal
 }
