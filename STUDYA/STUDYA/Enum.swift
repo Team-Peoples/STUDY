@@ -26,6 +26,11 @@ enum SceneType {
     case resignMaster
 }
 
+enum AttendanceViewType {
+    case detail
+    case userMode
+}
+
 enum AttendanceBottomViewType {
     case daySearchSetting
     case individualUpdate

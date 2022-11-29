@@ -22,7 +22,7 @@ final class AttendanceViewController: UIViewController, BottomSheetAddable {
         
         return v
     }()
-    let userView = AttendanceUserView()
+    let userView = AttendanceUserView(type: .userMode)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ final class AttendanceViewController: UIViewController, BottomSheetAddable {
         managerView.BottomSheetAddableDelegate = self
         userView.bottomSheetAddableDelegate = self
     
-        view = managerView
-//        view = userView
+//        view = managerView
+        view = userView
     }
 }
