@@ -11,6 +11,7 @@ class AttendanceDetailsCell: UITableViewCell {
     
     // MARK: - Properties
     
+    var bottomSheetAddableDelegate: BottomSheetAddable?
     var studyAttendance: [String: Int] = ["출석": 60,
                                           "지각": 15,
                                           "결석": 3,
@@ -21,7 +22,7 @@ class AttendanceDetailsCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "vote")!, text: " 상세내역")
+        lbl.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세내역")
         return lbl
     }()
     private let periodSettingButton = BrandButton(title: "22.06.01~22.08.20", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
@@ -58,7 +59,16 @@ class AttendanceDetailsCell: UITableViewCell {
     
     // MARK: - Actions
     
+    @objc func periodSettingButtonDidTapped() {
+        
+        let bottomVC = AttendanceBottomViewController()
+        
+        bottomVC.viewType = .individualPeriodSearchSetting
+        bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+    }
+    
     func configure(_ studyAttendance: [String: Int]) {
+        
         attendanceCountLabel.text = "\(studyAttendance["출석"]!)"
         latenessCountLabel.text = "\(studyAttendance["지각"]!)"
         absenceCountLabel.text = "\(studyAttendance["결석"]!)"
@@ -69,35 +79,36 @@ class AttendanceDetailsCell: UITableViewCell {
     
     func setupTitleLabel() {
         
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(self).inset(30)
-            make.leading.equalTo(self.safeAreaLayoutGuide).inset(20)
+            make.top.equalTo(contentView).inset(30)
+            make.leading.equalTo(contentView).inset(20)
         }
     }
     
     func setupPeriodSettingButton() {
         
-        addSubview(periodSettingButton)
+        contentView.addSubview(periodSettingButton)
         
         periodSettingButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 15)
-        
+        periodSettingButton.addTarget(self, action: #selector(periodSettingButtonDidTapped), for: .touchUpInside)
+    
         periodSettingButton.snp.makeConstraints { make in
-            make.top.equalTo(self).inset(30)
-            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
+            make.top.equalTo(contentView).inset(30)
+            make.trailing.equalTo(contentView).inset(20)
         }
     }
     
     func setupRoundedBackgroundView() {
         
-        addSubview(roundedBackgroundView)
+        contentView.addSubview(roundedBackgroundView)
         
         roundedBackgroundView.backgroundColor = .appColor(.ppsGray3)
         
         roundedBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(30)
-            make.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.bottom.equalTo(contentView).inset(20)
             make.height.equalTo(56)
         }
     }
@@ -177,6 +188,7 @@ class AttendanceTableViewDayCell: UITableViewCell {
     }
     
     private let dayLabel = CustomLabel(title: "01일", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let timeLabel = CustomLabel(title: "18:00", tintColor: .ppsGray2, size: 12)
     private let attendanceLabelBackgroundView = RoundableView(cornerRadius: 16 / 2)
     private lazy var attendanceLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 10)
     private let fineLabel = CustomLabel(title: "0", tintColor: .ppsGray1, size: 18)
@@ -186,7 +198,7 @@ class AttendanceTableViewDayCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.selectionStyle = .none
+        selectionStyle = .none
         configureViews()
         setConstraints()
     }
@@ -205,6 +217,7 @@ class AttendanceTableViewDayCell: UITableViewCell {
         contentView.addSubview(dayLabel)
         contentView.addSubview(attendanceLabelBackgroundView)
         contentView.addSubview(fineLabel)
+        contentView.addSubview(timeLabel)
         
         attendanceLabelBackgroundView.addSubview(attendanceLabel)
     }
@@ -213,9 +226,14 @@ class AttendanceTableViewDayCell: UITableViewCell {
     private func setConstraints() {
         
         dayLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView)
+            make.top.bottom.equalTo(contentView).inset(15)
             make.leading.equalTo(contentView.layoutMarginsGuide.snp.leading).inset(35)
         }
+        timeLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(dayLabel).offset(2)
+            make.leading.equalTo(dayLabel.snp.trailing).offset(10)
+        }
+        /// 캡슐 레이블로 나중에 수정하기
         attendanceLabelBackgroundView.snp.makeConstraints { make in
             make.centerY.equalTo(contentView)
             make.leading.equalTo(dayLabel.snp.trailing).offset(130)
@@ -239,6 +257,7 @@ class MonthlyHeaderView: UITableViewHeaderFooterView {
     private let dayLabel = CustomLabel(title: "6월", tintColor: .ppsBlack, size: 12, isBold: true)
     
     // MARK: - Initialization
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         
@@ -249,7 +268,7 @@ class MonthlyHeaderView: UITableViewHeaderFooterView {
             make.leading.equalTo(self).inset(35)
         }
     }
-  
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -267,6 +286,7 @@ class MonthlyFooterView: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         
         addSubview(separatebar)
+        
         separatebar.backgroundColor = .appColor(.ppsGray2)
         
         separatebar.snp.makeConstraints { make in

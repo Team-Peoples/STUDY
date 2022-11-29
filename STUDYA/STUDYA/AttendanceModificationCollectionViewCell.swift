@@ -11,6 +11,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     internal var bottomSheetAddableDelegate: BottomSheetAddable! {
         didSet {
+            print("델리게이트")
             headerView.bottomSheetAddableDelegate = bottomSheetAddableDelegate
         }
     }

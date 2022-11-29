@@ -126,13 +126,14 @@ class AttendanceStatusReusableView: UIView {
     }
     
     private func setupAttendanceProportionLabel() {
+        
         setupFineLabel()
         
         addSubview(attendanceProportionLabel)
         
         attendanceProportionLabel.snp.makeConstraints { make in
             make.bottom.equalTo(progressView.snp.top).offset(-5)
-            make.trailing.equalTo(self.snp.trailing).inset(36)
+            make.trailing.equalTo(progressView)
         }
     }
     
@@ -170,7 +171,7 @@ class AttendanceStatusReusableView: UIView {
         horizontalStackView.snp.makeConstraints { make in
             make.top.equalTo(progressView.snp.bottom).offset(15)
             make.leading.trailing.equalTo(self).inset(45)
-            make.bottom.greaterThanOrEqualTo(self.snp.bottom).inset(10)
+            make.bottom.equalTo(self.snp.bottom).inset(20)
         }
     }
     
