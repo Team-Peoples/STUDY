@@ -166,7 +166,7 @@ final class MainViewController: SwitchableViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
-        
+        super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
         
         myStudyList = [
@@ -178,7 +178,20 @@ final class MainViewController: SwitchableViewController {
         view.backgroundColor = .systemBackground
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         
-        super.viewDidLoad()
+        if let tabBar = tabBarController?.tabBar {
+            
+            let separator = UIView(frame: .zero)
+            
+            separator.backgroundColor = .appColor(.ppsGray2)
+            
+            tabBar.addSubview(separator)
+            
+            separator.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(tabBar)
+                make.height.equalTo(1)
+                make.top.equalTo(tabBar.snp.top)
+            }
+        }
     }
     
     // MARK: - Actions
@@ -446,13 +459,13 @@ extension MainViewController: UITableViewDataSource {
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
-                
-                    cell.informationButtonAction = {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
-                        vc.study = self.myStudyList.first!
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
+//                
+//                    cell.informationButtonAction = {
+//                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
+//                        vc.study = self.myStudyList.first!
+//                        self.navigationController?.pushViewController(vc, animated: true)
+//                    }
                     
 //                    cell.announcementButtonAction = {
 //                        let vc = AnnouncementBoardViewController()
@@ -494,7 +507,7 @@ extension MainViewController: UITableViewDelegate {
             case 0:
                 return 50
             case 1:
-                return 200
+                return 165
             case 2:
                 return 70
             case 3:
