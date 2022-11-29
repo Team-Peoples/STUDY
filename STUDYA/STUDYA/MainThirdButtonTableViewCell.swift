@@ -108,7 +108,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = UIColor.appColor(.background)
+        backgroundColor = .systemBackground
 
         if isManagerMode {
             

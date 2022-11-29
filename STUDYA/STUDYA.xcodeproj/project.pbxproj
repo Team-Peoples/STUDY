@@ -72,7 +72,7 @@
 		D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5D28EDE685009B53B4 /* KeyChain.swift */; };
 		D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5F28EDE7A1009B53B4 /* Enum.swift */; };
 		D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */; };
-		D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */; };
+		D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */; };
 		D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */; };
 		D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */; };
 		D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */; };
@@ -162,7 +162,7 @@
 		D3C23A5D28EDE685009B53B4 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D3C23A5F28EDE7A1009B53B4 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
 		D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSecondScheduleTableViewCell.swift; sourceTree = "<group>"; };
-		D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFirstAnnouncementTableViewCell.swift; sourceTree = "<group>"; };
+		D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFirstStudyToggleTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainThirdButtonTableViewCell.swift; sourceTree = "<group>"; };
 		D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFourthManagementTableViewCell.swift; sourceTree = "<group>"; };
 		D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberBottomSheetViewController.swift; sourceTree = "<group>"; };
@@ -252,7 +252,7 @@
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
 				D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */,
-				D3C23A7228F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift */,
+				D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */,
 				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
 				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
 				D3C23A7628FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift */,
@@ -479,7 +479,7 @@
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */,
-				D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */,
+				D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,

@@ -33,7 +33,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = UIColor.appColor(.background)
+        backgroundColor = .systemBackground
         
         addSubview(scheduleBackView)
         

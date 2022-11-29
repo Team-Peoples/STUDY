@@ -10,6 +10,21 @@ import UIKit
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
 
+    var myStudyList = [Study]() {
+        didSet {
+            if myStudyList.count < 5 {
+                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight)
+            } else {
+                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
+            }
+            print(dropdownHeight)
+            /// 스터디가 없을때는 안되지않나
+//            currentStudy = myStudyList[0]
+        }
+    }
+    var currentStudy: Study?
+    
+    var willDropDown = false
     private var willSpreadUp = false
 
     private lazy var notificationBtn: UIButton = {
@@ -23,6 +38,58 @@ final class MainViewController: SwitchableViewController {
         
         return n
     }()
+    
+    var dropDownCellNumber: CGFloat {
+        if myStudyList.count == 0 {
+            return 0
+        } else if myStudyList.count > 0, myStudyList.count < 5 {
+            return CGFloat(myStudyList.count)
+        } else {
+            return 4
+        }
+    }
+    
+    lazy var dropdownContainerView = UIView()
+    lazy var dropdownTableView: UITableView = {
+
+        let t = UITableView()
+        
+        t.delegate = self
+        t.dataSource = self
+        t.separatorColor = UIColor.appColor(.ppsGray3)
+        t.bounces = false
+        t.showsVerticalScrollIndicator = false
+        t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
+
+        return t
+    }()
+    lazy var dropdownDimmingView: UIView = {
+
+        let v = UIView()
+
+        v.isUserInteractionEnabled = true
+        let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownButtonDidTapped))
+        v.addGestureRecognizer(recog)
+        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
+        v.isHidden = true
+
+        return v
+    }()
+    lazy var createStudyButton: UIButton = {
+       
+        let b = UIButton()
+        
+        b.backgroundColor = UIColor.appColor(.brandMilky)
+        b.setImage(UIImage(named: "plusCircleFill"), for: .normal)
+        b.setTitle("   스터디 만들기", for: .normal)
+        b.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
+        b.isHidden = true
+        b.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
+        
+        return b
+    }()
+    
     private lazy var mainTableView: UITableView = {
         
         let t = UITableView()
@@ -30,13 +97,13 @@ final class MainViewController: SwitchableViewController {
         t.delegate = self
         t.dataSource = self
         
-        t.register(MainFirstAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFirstAnnouncementTableViewCell.identifier)
+        t.register(MainFirstStudyToggleTableViewCell.self, forCellReuseIdentifier: MainFirstStudyToggleTableViewCell.identifier)
         t.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
         t.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
         t.register(MainFourthManagementTableViewCell.self, forCellReuseIdentifier: MainFourthManagementTableViewCell.identifier)
         
         t.separatorStyle = .none
-        t.backgroundColor = UIColor.appColor(.background)
+        t.backgroundColor = .systemBackground
         t.isScrollEnabled = false
         
         return t
@@ -92,6 +159,10 @@ final class MainViewController: SwitchableViewController {
         return v
     }()
 
+    private let createStudyButtonHeight: CGFloat = 50
+    private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
+    private lazy var dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: createStudyButtonHeight)
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -104,21 +175,35 @@ final class MainViewController: SwitchableViewController {
             Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
         ]
         
-        view.backgroundColor = myStudyList.isEmpty ? .systemBackground : .appColor(.background2)
+        view.backgroundColor = .systemBackground
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         
         super.viewDidLoad()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        tabBarController?.tabBar.isHidden = false
-//    }
-//
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         print(#function)
+    }
+    
+    @objc private func dropdownButtonDidTapped() {
+        toggleDropdown()
+        dropdownDimmingView.isHidden.toggle()
+    }
+    
+    @objc func createStudyButtonDidTapped() {
+        dropdownButtonDidTapped()
+        let creatingStudyFormVC = CreatingStudyFormViewController()
+        
+        creatingStudyFormVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
+        
+        let presentVC = UINavigationController(rootViewController: creatingStudyFormVC)
+        
+        presentVC.navigationBar.backIndicatorImage = UIImage(named: "back")
+        presentVC.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
+        presentVC.modalPresentationStyle = .fullScreen
+        
+        present(presentVC, animated: true)
     }
     
     @objc private func floatingButtonDidTapped() {
@@ -126,11 +211,6 @@ final class MainViewController: SwitchableViewController {
         spreadUpContainerView.isHidden.toggle()
         spreadUpDimmingView.isHidden.toggle()
         toggleSpreadUp()
-    }
-    
-    override func dropdownButtonDidTapped() {
-        super.dropdownButtonDidTapped()
-        notificationBtn.isHidden.toggle()
     }
     
     override func toggleNavigationBarBy(sender: BrandSwitch) {
@@ -142,7 +222,6 @@ final class MainViewController: SwitchableViewController {
         guard !sender.isOn else { return }
         floatingButton.isSelected = false
     }
-    
     
     private func toggleSpreadUp() {
         
@@ -157,7 +236,101 @@ final class MainViewController: SwitchableViewController {
         guard !myStudyList.isEmpty else { navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]; return }
         
         super.configureNavigationItem()
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn), UIBarButtonItem(customView: dropdownButton)]
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+    }
+    
+    func configureDropdown() {
+        guard !myStudyList.isEmpty else { return }
+        
+        if let tabBarView = tabBarController?.view {
+            tabBarView.addSubview(dropdownDimmingView)
+            tabBarView.addSubview(dropdownContainerView)
+            
+            dropdownDimmingView.snp.makeConstraints { make in
+                make.top.equalTo(navigationController!.navigationBar.snp.bottom)
+                make.leading.trailing.bottom.equalTo(tabBarView)
+            }
+            
+            dropdownContainerView.snp.makeConstraints { make in
+                make.top.equalTo(dropdownDimmingView.snp.top)
+                make.leading.trailing.equalTo(dropdownDimmingView).inset(9)
+            }
+        } else {
+            view.addSubview(dropdownDimmingView)
+            view.addSubview(dropdownContainerView)
+            
+            dropdownDimmingView.snp.makeConstraints { make in
+                make.edges.equalTo(view.safeAreaLayoutGuide)
+            }
+            
+            dropdownContainerView.snp.makeConstraints { make in
+                make.top.equalTo(view.safeAreaLayoutGuide)
+                make.leading.trailing.equalTo(view).inset(9)
+            }
+        }
+        
+        dropdownContainerView.addSubview(dropdownTableView)
+        dropdownContainerView.addSubview(createStudyButton)
+        
+        dropdownTableView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(dropdownContainerView)
+            make.bottom.equalTo(createStudyButton.snp.top)
+        }
+        
+        createStudyButton.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(dropdownContainerView)
+        }
+        
+        dropdownHeight.isActive = false
+        dropdownHeightZero.isActive = true
+    }
+    
+    private func toggleDropdown() {
+
+        willDropDown.toggle()
+        
+        var indexPaths = [IndexPath]()
+        var row = 0
+        
+        while row < myStudyList.count {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+            row += 1
+        }
+        
+        if willDropDown {
+            
+            dropdownHeightZero.isActive = false
+            dropdownHeight.isActive = true
+            
+            dropdownTableView.insertRows(at: indexPaths, with: .top)
+            
+            createStudyButton.isHidden = false
+            createStudyButton.setHeight(50)
+            
+            dropdownContainerView.layer.cornerRadius = 24
+            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+            dropdownContainerView.clipsToBounds = true
+            
+            animateDropdown()
+        } else {
+            
+            dropdownTableView.deleteRows(at: indexPaths, with: .top)
+
+            dropdownHeight.isActive = false
+            dropdownHeightZero.isActive = true
+            createStudyButton.isHidden = true
+            
+            animateDropdown()
+        }
+    }
+    
+    private func animateDropdown() {
+        let tabBarView = self.tabBarController?.view
+        
+        UIView.animate(withDuration: 0.3, delay: 0) {
+            tabBarView == nil ? self.view.layoutIfNeeded() : tabBarView?.layoutIfNeeded()
+        }
     }
     
     private func configureViewWhenNoStudy() {
@@ -236,8 +409,8 @@ final class MainViewController: SwitchableViewController {
     }
 }
 
-extension MainViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension MainViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
         case mainTableView: return 4
@@ -247,12 +420,15 @@ extension MainViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch tableView {
         case mainTableView:
             switch indexPath.row {
             case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstAnnouncementTableViewCell.identifier) as! MainFirstAnnouncementTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as! MainFirstStudyToggleTableViewCell
+                
+                cell.studyTitle = myStudyList.first?.title
+                cell.buttonTapped = { self.dropdownButtonDidTapped() }
                 
                 return cell
             case 1:
@@ -310,13 +486,13 @@ extension MainViewController {
     }
 }
 
-extension MainViewController {
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+extension MainViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case mainTableView:
             switch indexPath.row {
             case 0:
-                return 20
+                return 50
             case 1:
                 return 200
             case 2:

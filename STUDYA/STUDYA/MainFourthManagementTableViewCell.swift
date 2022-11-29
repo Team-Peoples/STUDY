@@ -85,7 +85,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-        backgroundColor = UIColor.appColor(.background)
+        backgroundColor = .systemBackground
         
         addSubviews()
         setConstraint()
