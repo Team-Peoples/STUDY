@@ -56,7 +56,7 @@ final class StudyGeneralRuleViewController: UIViewController {
     @IBOutlet weak var rightLabel: UILabel!
     @IBOutlet weak var underBar: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var doneButton: CustomButton!
+    @IBOutlet weak var doneButton: BrandButton!
     
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!

@@ -225,7 +225,7 @@ public class UBottomSheetCoordinator: NSObject {
      
      ```
      let sheetCoordinator = UBottomSheetCoordinator(parent: self)
-     sheetCoordinator.addSheet(vc, to: self, didContainerCreate: { container in
+     sheetCoordinator.presentBottomSheet(vc, to: self, didContainerCreate: { container in
          container.layer.shadowColor = UIColor.black.cgColor
          container.layer.shadowRadius = 10
          container.layer.shadowOpacity = 0.5

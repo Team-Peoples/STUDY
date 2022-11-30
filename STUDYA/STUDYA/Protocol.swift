@@ -11,3 +11,20 @@ protocol Navigatable {
     func push(vc: UIViewController)
     func present(vc: UIViewController)
 }
+
+protocol BottomSheetAddable: UIViewController {
+    
+}
+
+extension BottomSheetAddable {
+    func presentBottomSheet(vc: UIViewController, detent: CGFloat, prefersGrabberVisible: Bool) {
+        
+        guard let sheet = vc.sheetPresentationController else { return }
+        
+        sheet.detents = [ .custom { _ in return detent }]
+        sheet.preferredCornerRadius = 24
+        sheet.prefersGrabberVisible = prefersGrabberVisible
+        
+        present(vc, animated: true)
+    }
+}

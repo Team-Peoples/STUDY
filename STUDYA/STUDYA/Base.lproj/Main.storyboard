@@ -74,7 +74,6 @@
                                     <constraint firstItem="V6I-ZL-9cH" firstAttribute="width" secondItem="Oif-Xd-cUr" secondAttribute="width" id="G5r-To-mhk"/>
                                     <constraint firstItem="Oif-Xd-cUr" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="top" id="IgV-f2-UaB"/>
                                     <constraint firstItem="MfH-Gd-84W" firstAttribute="centerY" secondItem="4Fj-bf-mS8" secondAttribute="centerY" id="QzH-Pv-gZ1"/>
-                                    <constraint firstItem="Oif-Xd-cUr" firstAttribute="top" secondItem="4Fj-bf-mS8" secondAttribute="top" id="T6Q-4T-zEd"/>
                                     <constraint firstAttribute="trailing" secondItem="V6I-ZL-9cH" secondAttribute="trailing" id="Yfr-1E-Nzs"/>
                                     <constraint firstItem="V6I-ZL-9cH" firstAttribute="leading" secondItem="Oif-Xd-cUr" secondAttribute="trailing" id="ZXq-7I-OAF"/>
                                     <constraint firstItem="q0o-X2-gQi" firstAttribute="centerX" secondItem="V6I-ZL-9cH" secondAttribute="centerX" id="ck3-E8-mGI"/>
@@ -112,7 +111,7 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="CustomButton" customModule="STUDYA" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="BrandButton" customModule="STUDYA" customModuleProvider="target">
                                 <rect key="frame" x="20" y="802" width="374" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
@@ -156,7 +155,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P4C-Jo-5Kj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="971.01449275362324" y="116.51785714285714"/>
+            <point key="canvasLocation" x="969.60000000000002" y="116.00985221674877"/>
         </scene>
         <!--Study General Rule Attendance Table View Controller-->
         <scene sceneID="OlK-3U-R84">

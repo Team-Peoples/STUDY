@@ -12,7 +12,7 @@ import SnapKit
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
     
-    let button = CustomButton(title: "", isBold: false, fontSize: 16, height: 28)
+    let button = BrandButton(title: "", isBold: false, fontSize: 16, height: 28)
     var title: String? {
         didSet {
             guard let title = title else { return }
@@ -20,37 +20,37 @@ class RoundedPurpleCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Initailize
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(button)
-        
+    }
+    
+    internal func configure(backgroundColor: AssetColor, normalBorderColor: AssetColor?, selectedBorderColor: AssetColor?, normalTextColor: AssetColor, selectedTextColor: AssetColor?, fontSize: Int, height: Int, insets: Int) {
         button.backgroundColor = UIColor.appColor(.background)
         button.resetColorFor(normal: .ppsGray1, forSelected: .keyColor1)
         button.layer.borderWidth = 0
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-        setConstraints(button)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     // MARK: - Setting Constraints
     
-    func setConstraints(_ button: UIButton) {
+    func setConstraints(height: Int) {
         button.snp.makeConstraints { make in
-            make.height.equalTo(28)
+            make.height.equalTo(height)
             make.top.bottom.leading.trailing.equalTo(self)
         }
     }
 }
 
 final class CategoryCell: RoundedPurpleCell {
-    // MARK: - Initailize
+    // MARK: - Initialization
     
     
     override init(frame: CGRect) {

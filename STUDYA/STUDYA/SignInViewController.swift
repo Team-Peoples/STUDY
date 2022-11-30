@@ -17,7 +17,7 @@ final class SignInViewController: UIViewController {
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
-    private let completeButton = CustomButton(title: "완료")
+    private let completeButton = BrandButton(title: "완료")
     
     // MARK: - Life Cycle
     
