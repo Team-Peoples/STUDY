@@ -7,6 +7,5 @@ target 'STUDYA' do
 
   # Pods for STUDYA
 pod 'naveridlogin-sdk-ios'
-pod 'MarqueeLabel'
 pod 'MultiProgressView'
 end
