@@ -18,14 +18,14 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     internal var isManagerMode = true
     internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
     
-    private lazy var mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
+    private lazy var mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private lazy var afterStudyView: RoundableView = {
 
-        let v = RoundableView(cornerRadius: 24)
+        let v = RoundableView(cornerRadius: 25)
 
         let symbolView = UIImageView()
         var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
-        let innerView = RoundableView(cornerRadius: 24)
+        let innerView = RoundableView(cornerRadius: 22)
 
         v.addSubview(symbolView)
         v.addSubview(titleLabel)
@@ -114,12 +114,12 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             
             if attendable {
                 mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-                mainButton = CustomButton(title: "", isBold: true, isFill: true, fontSize: 20)
+                mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
                 mainButton.fillIn(title: "  인증번호 확인")
                 mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
             } else {
-                mainButton = CustomButton(title: "", isBold: true, isFill: false, fontSize: 20)
+                mainButton = BrandButton(title: "", isBold: true, isFill: false, fontSize: 20)
                 mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
                 mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
                 mainButton.fillOut(title: "  인증번호 확인")

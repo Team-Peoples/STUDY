@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MarqueeLabel
 
 class MainFirstStudyToggleTableViewCell: UITableViewCell {
     

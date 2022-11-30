@@ -52,7 +52,7 @@ class StudyInfoPreViewController: UIViewController {
     ///
     @IBOutlet weak var freeRuleTextView: UITextView!
     
-    private let completeButton = CustomButton(title: "완료", isFill: true)
+    private let completeButton = BrandButton(title: "완료", isFill: true)
     
     // MARK: - Life Cycle
     

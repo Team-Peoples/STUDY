@@ -27,7 +27,7 @@ class MainSpreadUpTableViewCell: UITableViewCell {
     static let identifier = "MainSpreadUpTableViewCell"
     private let containerView: RoundableView = {
        
-        let v = RoundableView(cornerRadius: 24)
+        let v = RoundableView(cornerRadius: 25)
         v.backgroundColor = .appColor(.background)
         v.layer.applySketchShadow(color: .black, alpha: 0.25, x: 0, y: 4, blur: 10, spread: 0)
         

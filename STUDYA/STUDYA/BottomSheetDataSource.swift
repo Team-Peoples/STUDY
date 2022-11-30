@@ -16,13 +16,3 @@ class CalendarBottomSheetDatasource: UBottomSheetCoordinatorDataSource {
         return availableHeight * 0.6
     }
 }
-
-class MemberBottomSheetDataSource: UBottomSheetCoordinatorDataSource {
-    func sheetPositions(_ availableHeight: CGFloat) -> [CGFloat] {
-        return [0.94, 0.5].map{ $0 * availableHeight }
-    }
-    
-    func initialPosition(_ availableHeight: CGFloat) -> CGFloat {
-        return availableHeight * 0.94
-    }
-}

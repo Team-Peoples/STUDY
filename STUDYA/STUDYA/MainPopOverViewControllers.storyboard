@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -13,7 +12,7 @@
         <scene sceneID="g0U-1b-Sbj">
             <objects>
                 <viewController storyboardIdentifier="ValidationNumberFillingInPopViewController" id="Biy-uF-mCF" customClass="ValidationNumberFillingInPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="zId-Wb-7JT" customClass="RoundedCornersView" customModule="STUDYA" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="zId-Wb-7JT" customClass="RoundableView" customModule="STUDYA" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="286" height="247"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -145,7 +144,7 @@
         <scene sceneID="RVh-jq-pfN">
             <objects>
                 <viewController storyboardIdentifier="ValidationNumberCheckingPopViewController" id="1f7-nD-acw" customClass="ValidationNumberCheckingPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="u17-Nf-XFz" customClass="RoundedCornersView" customModule="STUDYA" customModuleProvider="target">
+                    <view key="view" contentMode="scaleToFill" id="u17-Nf-XFz" customClass="RoundableView" customModule="STUDYA" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="286" height="247"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -155,7 +154,7 @@
                                 <color key="textColor" name="ppsGray1"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTR-w3-hrv" customClass="RoundedCornersView" customModule="STUDYA" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTR-w3-hrv" customClass="RoundableView" customModule="STUDYA" customModuleProvider="target">
                                 <rect key="frame" x="34" y="77.666666666666671" width="218" height="59.000000000000014"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r4C-Tl-2h7">

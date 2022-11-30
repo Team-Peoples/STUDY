@@ -14,9 +14,9 @@ final class WelcomViewController: UIViewController {
     var loginAction: (User) -> Void = { _ in }
     
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
-    private let kakaoLoginButton = CustomButton(title: "카카오로 시작하기")
-    private let naverLoginButton = CustomButton(title: "네이버로 시작하기")
-    private let emailLoginButton = CustomButton(title: "이메일로 시작하기")
+    private let kakaoLoginButton = BrandButton(title: "카카오로 시작하기")
+    private let naverLoginButton = BrandButton(title: "네이버로 시작하기")
+    private let emailLoginButton = BrandButton(title: "이메일로 시작하기")
     private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .keyColor1, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
