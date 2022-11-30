@@ -1,11 +1,18 @@
 {
   "images" : [
     {
+<<<<<<< HEAD
       "filename" : "calendar.png",
+=======
+>>>>>>> main
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+<<<<<<< HEAD
+=======
+      "filename" : "Calendar.png",
+>>>>>>> main
       "idiom" : "universal",
       "scale" : "2x"
     },

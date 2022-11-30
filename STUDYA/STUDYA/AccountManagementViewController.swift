@@ -62,7 +62,7 @@ final class AccountManagementViewController: UIViewController {
     private let naviBar = UINavigationBar(frame: .zero)
     private lazy var leftButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
     private lazy var rightButton = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(save))
-    private let profileImageView = ProfileImageSelectorView(size: 80)
+    private let profileImageView = ProfileImageView(size: 80)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let nickNameField: UITextField = {
        

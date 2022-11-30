@@ -35,7 +35,7 @@ class ScheduleTableViewCell: UITableViewCell {
         return btn
     }()
     
-    // MARK: - Initialize
+    // MARK: - Initialization
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -49,6 +49,7 @@ class ScheduleTableViewCell: UITableViewCell {
         bookmarkColorView.layer.cornerRadius = 1
         
         etcButton.addTarget(self, action: #selector(etcButtonDidTapped), for: .touchUpInside)
+        
         setConstraints()
     }
     

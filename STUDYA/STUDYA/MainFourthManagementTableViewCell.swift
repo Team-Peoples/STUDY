@@ -13,7 +13,7 @@ class MainFourthManagementTableViewCell: UITableViewCell {
     var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
-    internal var navigatable: Navigatable!
+    internal var navigateDelegate: Navigatable!
 //    internal var hideTabBar: (() -> ())?
     
     private let attendanceBackView: UIView = {
@@ -98,17 +98,15 @@ class MainFourthManagementTableViewCell: UITableViewCell {
     
     @objc private func tapped(sender: UIButton) {
         switch sender.tag {
-        case 1: break
+        case 1: navigateDelegate.push(vc: AttendanceViewController())
         case 2: break
         case 3:
-            navigatable.push(vc: AnnouncementBoardViewController())
+            navigateDelegate.push(vc: AnnouncementBoardViewController())
         case 4:
-            navigatable.push(vc: MemberViewController())
+            navigateDelegate.push(vc: MemberViewController())
 //            hideTabBar!()
         case 5:
-            if sender == informationButton {
             informationButtonAction()
-        }
         default: break
         }
     }

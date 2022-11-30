@@ -163,7 +163,7 @@ final class MainViewController: SwitchableViewController {
     private func configureViewWhenNoStudy() {
         let studyEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
-        let createStudyButton = CustomButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
+        let createStudyButton = BrandButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
         
         studyEmptyImageView.backgroundColor = .lightGray
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
@@ -266,7 +266,7 @@ extension MainViewController {
                 return cell
             case 3:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthManagementTableViewCell.identifier) as! MainFourthManagementTableViewCell
-                cell.navigatable = self
+                cell.navigateDelegate = self
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }

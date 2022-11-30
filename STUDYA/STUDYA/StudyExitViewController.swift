@@ -15,8 +15,8 @@ class StudyExitViewController: UIViewController {
     
     private var titleLabel: CustomLabel?
     private var subtitleLabel: CustomLabel?
-    private let okButton = CustomButton(title: "확인", isFill: true)
-    private lazy var backButton = CustomButton(title: "돌아가기", isFill: true)
+    private let okButton = BrandButton(title: "확인", isFill: true)
+    private lazy var backButton = BrandButton(title: "돌아가기", isFill: true)
     private lazy var goToResignAdminButton: UIButton = {
         let btn = UIButton()
         let attributedString: NSAttributedString = NSAttributedString(string: "스터디장 양도하러 가기 >", attributes: [.font: UIFont.boldSystemFont(ofSize: 14), .foregroundColor: UIColor.appColor(.keyColor1), .underlineColor: UIColor.appColor(.keyColor1), .underlineStyle: NSUnderlineStyle.single.rawValue])
@@ -94,7 +94,7 @@ class StudyExitViewController: UIViewController {
     }
     
     
-    @objc func buttonDidTapped(_ sender: CustomButton) {
+    @objc func buttonDidTapped(_ sender: BrandButton) {
         if sender.titleLabel?.text == "확인" {
             switch type {
                 case .exit:

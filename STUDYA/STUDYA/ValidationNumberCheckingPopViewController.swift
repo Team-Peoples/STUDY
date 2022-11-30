@@ -23,10 +23,6 @@ final class ValidationNumberCheckingPopViewController: UIViewController {
     @IBOutlet weak var validationNumberLabel: UILabel!
     @IBOutlet weak var attendButton: UIButton!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         

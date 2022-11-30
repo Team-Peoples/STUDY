@@ -43,7 +43,7 @@ class SignUpViewController: UIViewController {
         return stackView
     }()
     
-    private let doneButton = CustomButton(title: "완료", isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: "완료", isBold: true, isFill: false)
 
     var bottomConstraint: NSLayoutConstraint!
     
