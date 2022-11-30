@@ -18,6 +18,17 @@ extension UIView {
 
 final class BrandButton: UIButton {
     
+    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat) {
+        super.init(frame: .zero)
+        
+        setTitle(title, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+        
+        setHeight(42)
+        layer.cornerRadius = radius
+    }
+    
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
         
@@ -647,7 +658,7 @@ class CheckBoxButton: UIButton {
     // MARK: - Properties
 
     // MARK: - Initialization
-    init(title: String, selected: String, unselected: String) {
+    init(title: String) {
         
         super.init(frame: .zero)
         
