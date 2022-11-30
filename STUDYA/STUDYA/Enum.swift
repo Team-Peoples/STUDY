@@ -55,6 +55,7 @@ enum AttendanceBottomViewType {
         }
     }
 }
+
 enum CalendarKind {
     case study
     case personal
