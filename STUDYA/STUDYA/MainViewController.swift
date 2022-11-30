@@ -101,6 +101,7 @@ final class MainViewController: SwitchableViewController {
         t.register(MainSecondScheduleTableViewCell.self, forCellReuseIdentifier: MainSecondScheduleTableViewCell.identifier)
         t.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
         t.register(MainFourthAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFourthAnnouncementTableViewCell.identifier)
+        t.register(MainFifthAttendanceTableViewCell.self, forCellReuseIdentifier: MainFifthAttendanceTableViewCell.identifier)
         
         t.separatorStyle = .none
         t.backgroundColor = .systemBackground
@@ -426,7 +427,7 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
-        case mainTableView: return 4
+        case mainTableView: return 5
         case dropdownTableView: return willDropDown ? myStudyList.count : 0
         case spreadUpTableView: return willSpreadUp ? 3 : 0
         default: return 0
@@ -469,6 +470,14 @@ extension MainViewController: UITableViewDataSource {
 //                    }
                     
                 return cell
+                
+            case 4:
+                let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as! MainFifthAttendanceTableViewCell
+                
+                cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
+                cell.penalty = 9900
+                
+                return cell
             default:
                 return UITableViewCell()
             }
@@ -505,11 +514,13 @@ extension MainViewController: UITableViewDelegate {
             case 1:
                 return 165
             case 2:
-                return 70
+                return 90
             case 3:
                 return 60
+            case 4:
+                return 175
             default:
-                return 100
+                return 52
             }
         case dropdownTableView:
             return 50
