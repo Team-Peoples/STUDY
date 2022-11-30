@@ -17,7 +17,7 @@ final class MainViewController: SwitchableViewController {
             } else {
                 dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
             }
-            print(dropdownHeight)
+            currentStudy = myStudyList[0]
             /// 스터디가 없을때는 안되지않나
 //            currentStudy = myStudyList[0]
         }
@@ -172,27 +172,21 @@ final class MainViewController: SwitchableViewController {
         
         myStudyList = [
             Study(id: 1, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-            Study(id: nil, title: "개시끼야", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: 12, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: 13, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
             Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
         ]
         
         view.backgroundColor = .systemBackground
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
+        configureDropdown()
+        configureTabBarSeparator()
         
-        if let tabBar = tabBarController?.tabBar {
-            
-            let separator = UIView(frame: .zero)
-            
-            separator.backgroundColor = .appColor(.ppsGray2)
-            
-            tabBar.addSubview(separator)
-            
-            separator.snp.makeConstraints { make in
-                make.leading.trailing.equalTo(tabBar)
-                make.height.equalTo(1)
-                make.top.equalTo(tabBar.snp.top)
-            }
-        }
         super.viewDidLoad()
     }
     
@@ -262,25 +256,12 @@ final class MainViewController: SwitchableViewController {
             tabBarView.addSubview(dropdownContainerView)
             
             dropdownDimmingView.snp.makeConstraints { make in
-                make.top.equalTo(navigationController!.navigationBar.snp.bottom)
-                make.leading.trailing.bottom.equalTo(tabBarView)
+                make.edges.equalTo(tabBarView)
             }
-            
             dropdownContainerView.snp.makeConstraints { make in
-                make.top.equalTo(dropdownDimmingView.snp.top)
-                make.leading.trailing.equalTo(dropdownDimmingView).inset(9)
-            }
-        } else {
-            view.addSubview(dropdownDimmingView)
-            view.addSubview(dropdownContainerView)
-            
-            dropdownDimmingView.snp.makeConstraints { make in
-                make.edges.equalTo(view.safeAreaLayoutGuide)
-            }
-            
-            dropdownContainerView.snp.makeConstraints { make in
-                make.top.equalTo(view.safeAreaLayoutGuide)
-                make.leading.trailing.equalTo(view).inset(9)
+                make.top.equalTo(dropdownDimmingView.snp.top).inset(100)
+                make.leading.equalTo(dropdownDimmingView).inset(38)
+                make.width.equalTo(206)
             }
         }
         
@@ -324,7 +305,7 @@ final class MainViewController: SwitchableViewController {
             createStudyButton.setHeight(50)
             
             dropdownContainerView.layer.cornerRadius = 24
-            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner)
             dropdownContainerView.clipsToBounds = true
             
             animateDropdown()
@@ -422,6 +403,23 @@ final class MainViewController: SwitchableViewController {
             make.edges.equalTo(spreadUpContainerView)
         }
     }
+    
+    private func configureTabBarSeparator() {
+        if let tabBar = tabBarController?.tabBar {
+            
+            let separator = UIView(frame: .zero)
+            
+            separator.backgroundColor = .appColor(.ppsGray2)
+            
+            tabBar.addSubview(separator)
+            
+            separator.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(tabBar)
+                make.height.equalTo(1)
+                make.top.equalTo(tabBar.snp.top)
+            }
+        }
+    }
 }
 
 extension MainViewController: UITableViewDataSource {
@@ -488,15 +486,15 @@ extension MainViewController: UITableViewDataSource {
                 return UITableViewCell()
             }
         case dropdownTableView:
-            guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
             
+            guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
             let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
             
             if currentStudyID == myStudyList[indexPath.row].id {
-                cell.backgroundColor = UIColor(red: 247/255, green: 246/255, blue: 249/255, alpha: 1)
+                cell.isCurrentStudy = true
             }
             
-            cell.title = myStudyList[indexPath.row].title!
+            cell.study = myStudyList[indexPath.row]
             
             return cell
             
