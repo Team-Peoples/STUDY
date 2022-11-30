@@ -102,10 +102,11 @@ final class MainViewController: SwitchableViewController {
         t.register(MainThirdButtonTableViewCell.self, forCellReuseIdentifier: MainThirdButtonTableViewCell.identifier)
         t.register(MainFourthAnnouncementTableViewCell.self, forCellReuseIdentifier: MainFourthAnnouncementTableViewCell.identifier)
         t.register(MainFifthAttendanceTableViewCell.self, forCellReuseIdentifier: MainFifthAttendanceTableViewCell.identifier)
+        t.register(MainSixthETCTableViewCell.self, forCellReuseIdentifier: MainSixthETCTableViewCell.identifier)
         
+        t.showsVerticalScrollIndicator = false
         t.separatorStyle = .none
         t.backgroundColor = .systemBackground
-        t.isScrollEnabled = false
         
         return t
     }()
@@ -167,7 +168,6 @@ final class MainViewController: SwitchableViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
-        super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
         
         myStudyList = [
@@ -193,6 +193,7 @@ final class MainViewController: SwitchableViewController {
                 make.top.equalTo(tabBar.snp.top)
             }
         }
+        super.viewDidLoad()
     }
     
     // MARK: - Actions
@@ -245,11 +246,11 @@ final class MainViewController: SwitchableViewController {
         willSpreadUp ? spreadUpTableView.insertRows(at: indexPaths, with: .top) : spreadUpTableView.deleteRows(at: indexPaths, with: .top)
     }
     
-    override func configureNavigationItem() {
+    override func configureNavigationBar() {
         
         guard !myStudyList.isEmpty else { navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]; return }
         
-        super.configureNavigationItem()
+        super.configureNavigationBar()
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
     }
     
@@ -427,7 +428,7 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
-        case mainTableView: return 5
+        case mainTableView: return 6
         case dropdownTableView: return willDropDown ? myStudyList.count : 0
         case spreadUpTableView: return willSpreadUp ? 3 : 0
         default: return 0
@@ -476,6 +477,11 @@ extension MainViewController: UITableViewDataSource {
                 
                 cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
                 cell.penalty = 9900
+                
+                return cell
+                
+            case 5:
+                let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
                 
                 return cell
             default:

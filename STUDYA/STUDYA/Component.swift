@@ -1114,7 +1114,7 @@ class SwitchableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigationItem()
+        configureNavigationBar()
     }
     
     @objc func toggleNavigationBarBy(sender: BrandSwitch) {
@@ -1133,7 +1133,9 @@ class SwitchableViewController: UIViewController {
         }
     }
     
-    func configureNavigationItem() {
+    func configureNavigationBar() {
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
         
         if isAdmin {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]

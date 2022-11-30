@@ -55,6 +55,7 @@
 		D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */; };
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
+		D314D2D929374F2F0018062F /* MainSixthETCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
 		D346404C292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D346404B292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift */; };
 		D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3488DCE293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift */; };
@@ -166,6 +167,7 @@
 		D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
+		D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSixthETCTableViewCell.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
 		D346404B292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceTimeCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3488DCE293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomIndividualPeriodSearchSettingView.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
 				D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */,
 				D38FA4D42936559000A9B0DF /* MainFifthAttendanceTableViewCell.swift */,
+				D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */,
 				D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */,
@@ -551,6 +554,7 @@
 				D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */,
+				D314D2D929374F2F0018062F /* MainSixthETCTableViewCell.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
 				D306E6C9292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift in Sources */,
 				72F7CFAD28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift in Sources */,
