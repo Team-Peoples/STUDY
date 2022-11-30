@@ -9,7 +9,9 @@ import UIKit
 
 class StudyScheduleViewController: UIViewController {
     
-    weak var presentingVC: UIViewController?
+    // MARK: - Properties
+    
+    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule()]
     
     let calendarView: UICalendarView = {
         let c = UICalendarView()
@@ -19,32 +21,47 @@ class StudyScheduleViewController: UIViewController {
         
         return c
     }()
+    
+    let scheduleTableView = ScheduleTableView()
+    
+    let floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+      
 
+    // MARK: - Life Cycle
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
         view.addSubview(calendarView)
+        view.addSubview(scheduleTableView)
+        view.addSubview(floatingButtonView)
         
         let dateSelection = UICalendarSelectionSingleDate(delegate: self)
         calendarView.selectionBehavior = dateSelection
         
+        scheduleTableView.dataSource = self
+        scheduleTableView.delegate = self
+        scheduleTableView.backgroundColor = .appColor(.background)
+        
+       
+        floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
+        
         setConstraints()
-        
-        let vcToPresent = StudyScheduleBottomSheetController()
-        vcToPresent.isModalInPresentation = true
-        if let sheet = vcToPresent.sheetPresentationController {
-            
-            sheet.detents = [ .custom(identifier: .small) { _ in return 300 }, .large() ]
-            
-            sheet.preferredCornerRadius = 10
-            sheet.prefersGrabberVisible = true
-            sheet.largestUndimmedDetentIdentifier = .small
-            sheet.prefersScrollingExpandsWhenScrolledToEdge = true
-        }
-        
-        present(vcToPresent, animated: true, completion: nil)
     }
+    
+    // MARK: - Actions
+    
+    @objc func floatingButtonDidTapped() {
+        print(#function)
+        
+        let vc = StudySchedulePriodFormViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    // MARK: - Configure
+
+    // MARK: - Setting Constraints
     
     private func setConstraints() {
         
@@ -52,18 +69,17 @@ class StudyScheduleViewController: UIViewController {
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(view.frame.height / 2)
         }
+        
+        scheduleTableView.snp.makeConstraints { make in
+            make.top.equalTo(calendarView.snp.bottom)
+            make.leading.trailing.bottom.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        floatingButtonView.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.width.equalTo(102)
+            make.height.equalTo(50)
+        }
     }
-    
-    deinit {
-        presentingVC?.dismiss(animated: true)
-    }
-}
-
-extension UISheetPresentationController.Detent.Identifier {
-    
-    
-    @available(iOS 15.0, *)
-    public static let small: UISheetPresentationController.Detent.Identifier = .init("small")
 }
 
 extension StudyScheduleViewController: UICalendarViewDelegate {
@@ -77,3 +93,26 @@ extension StudyScheduleViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
     }
 }
+
+extension StudyScheduleViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        studySchedules.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! ScheduleTableViewCell
+        
+        let schedule = studySchedules[indexPath.row]
+        
+        cell.configure(schedule: schedule, kind: .study)
+        
+        return cell
+    }
+}
+
+extension StudyScheduleViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+}
+

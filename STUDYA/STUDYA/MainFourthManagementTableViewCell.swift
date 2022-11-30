@@ -10,7 +10,6 @@ import SnapKit
 
 class MainFourthManagementTableViewCell: UITableViewCell {
     
-//    var announcementButtonAction: () -> () = { }
     var informationButtonAction: () -> () = { }
 
     static let identifier = "MainFourthManagementTableViewCell"
@@ -101,7 +100,8 @@ class MainFourthManagementTableViewCell: UITableViewCell {
         switch sender.tag {
         case 1: break
         case 2: break
-        case 3: break
+        case 3:
+            navigatable.push(vc: AnnouncementBoardViewController())
         case 4:
             navigatable.push(vc: MemberViewController())
 //            hideTabBar!()

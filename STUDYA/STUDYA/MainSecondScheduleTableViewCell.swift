@@ -67,7 +67,6 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     @objc private func scheduleTapped() {
         let ssvc = StudyScheduleViewController()
-        ssvc.presentingVC = navigatable as? UIViewController
         
         navigatable.push(vc: ssvc)
     }

@@ -24,14 +24,14 @@ class CustomButton: UIButton {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
-    
+        
         setHeight(42)
         layer.cornerRadius = radius
     }
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
-
+        
         configure(title: title, isBold: isBold, isFill: isFill, fontSize: fontSize, height: height)
     }
     
@@ -49,7 +49,7 @@ class CustomButton: UIButton {
         if isFill {
             backgroundColor = UIColor.appColor(.keyColor1)
             setTitleColor(.white, for: .normal)
-
+            
         } else {
             backgroundColor = .systemBackground
             setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
@@ -129,7 +129,7 @@ class BaseTextView: UITextView {
     }
     
     private func setPlaceHolderLabelConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
-
+        
         placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
@@ -198,39 +198,39 @@ final class CharactersNumberLimitedTextView: BaseTextView {
 
 class ValidationInputView: UIStackView {
     // MARK: - Properties
-
+    
     private let basicInputView: BasicInputView!
     private let validationLabel = UILabel()
-
+    
     // MARK: - Ininitalize
-
+    
     init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, validationText: String, cancelButton: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
-
+        
         basicInputView = BasicInputView(titleText: titleText, fontSize: fontSize, titleBottomPadding: titleBottomPadding, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure, isCancel: cancelButton, target: target, textFieldAction: textFieldAction)
-
+        
         super.init(frame: .zero)
-
+        
         addArrangedSubview(basicInputView)
         addArrangedSubview(validationLabel)
-
+        
         configureValidationLabel(text: validationText)
         configureStackView()
     }
-
+    
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Actions
-
+    
     func setUnderlineColor(as color: AssetColor) {
         basicInputView?.setUnderlineColor(as: color)
     }
-
+    
     internal func getInputview() -> BasicInputView {
         basicInputView
     }
-
+    
     internal func getInputField() -> UITextField {
         basicInputView.getInputField()
     }
@@ -238,15 +238,15 @@ class ValidationInputView: UIStackView {
     func getValidationLabel() -> UILabel {
         validationLabel
     }
-
-     //MARK: - Configure Views
+    
+    //MARK: - Configure Views
     
     private func configureStackView() {
         axis = .vertical
         distribution = .equalSpacing
         spacing = 6
     }
-
+    
     private func configureValidationLabel(text: String) {
         validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.ppsGray1)
@@ -350,7 +350,7 @@ class CustomTextField: UITextField {
         autocorrectionType = .no
         autocapitalizationType = .none
         font = UIFont.systemFont(ofSize: 18)
-    
+        
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
@@ -408,7 +408,7 @@ class CustomLabel: UILabel {
     // MARK: - Configure
     
     private func configure(title: String, isNecessaryTitle: Bool) {
-
+        
         if isNecessaryTitle {
             setTitleAndRedStar(upperLabelTitle: title)
         } else {
@@ -430,7 +430,7 @@ class SimpleAlert: UIAlertController {
 
 
 class ProfileImageSelectorView: UIView {
-
+    
     private let backgroundView = UIView(frame: .zero)
     private let internalImageView = UIImageView(frame: .zero)
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
@@ -484,7 +484,7 @@ class ProfileImageSelectorView: UIView {
     internal func configure(_ image: UIImage?) {
         internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
     }
-
+    
     
     private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
         if isManager {
@@ -493,7 +493,7 @@ class ProfileImageSelectorView: UIView {
             setDimensions(height: size + 4, width: size + 4)
             
             configureAdminMark()
-
+            
         } else {
             
             setDimensions(height: size + 2, width: size + 2)
@@ -557,7 +557,7 @@ class CheckBoxButton: UIButton {
     // MARK: - Initialize
     init(title: String) {
         super.init(frame: .zero)
-
+        
         configure(title: title)
     }
     
@@ -730,6 +730,11 @@ final class BrandSwitch: UIControl {
 
 class RoundedCustomLabel: UILabel {
     
+    enum CornerPart {
+        case left
+        case all
+    }
+    
     private var padding = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
     
     override func drawText(in rect: CGRect) {
@@ -744,18 +749,24 @@ class RoundedCustomLabel: UILabel {
         return contentSize
     }
     
-    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil) {
+    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil, cornerPart: CornerPart = .all) {
         self.init()
         
         self.text = text
         self.textColor = textColor
         self.font = UIFont.systemFont(ofSize: fontSize)
         self.clipsToBounds = true
+        
+        if cornerPart == .left {
+            self.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+        }
+        
         self.layer.cornerRadius = radius
         self.backgroundColor = backgroundColor
         
-        guard let padding = padding else { return }
-        self.padding = padding
+        if let padding = padding {
+            self.padding = padding
+        }
     }
     
     func change(textColor: UIColor) {
@@ -766,12 +777,12 @@ class RoundedCustomLabel: UILabel {
 class RoundableView: UIView {
     init(cornerRadius: CGFloat) {
         super.init(frame: .zero)
-
+        
         self.layer.cornerRadius = cornerRadius
     }
     
     required init?(coder: NSCoder) {
-
+        
         super.init(coder: coder)
     }
     
@@ -785,7 +796,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     
     let strArray: [String] = {
-       
+        
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
         
@@ -1001,7 +1012,7 @@ final class PurpleRoundedInputField: UITextField {
         
         rightButton.tintColor = UIColor.appColor(.keyColor3)
         rightButton.addTarget(target, action: action, for: .touchUpInside)
-    
+        
         rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
         rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
         
@@ -1030,7 +1041,7 @@ extension String {
 }
 
 class SwitchableViewController: UIViewController {
-
+    
     var myStudyList = [Study]() {
         didSet {
             if myStudyList.count < 5 {
@@ -1040,7 +1051,7 @@ class SwitchableViewController: UIViewController {
             }
             print(dropdownHeight)
             /// 스터디가 없을때는 안되지않나
-//            currentStudy = myStudyList[0]
+            //            currentStudy = myStudyList[0]
         }
     }
     var currentStudy: Study?
@@ -1059,7 +1070,7 @@ class SwitchableViewController: UIViewController {
     lazy var dropdownButton = UIButton()
     lazy var dropdownContainerView = UIView()
     lazy var dropdownTableView: UITableView = {
-
+        
         let t = UITableView()
         
         t.delegate = self
@@ -1068,23 +1079,23 @@ class SwitchableViewController: UIViewController {
         t.bounces = false
         t.showsVerticalScrollIndicator = false
         t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
-
+        
         return t
     }()
     lazy var dropdownDimmingView: UIView = {
-
+        
         let v = UIView()
-
+        
         v.isUserInteractionEnabled = true
         let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownButtonDidTapped))
         v.addGestureRecognizer(recog)
         v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
         v.isHidden = true
-
+        
         return v
     }()
     lazy var createStudyButton: UIButton = {
-       
+        
         let b = UIButton()
         
         b.backgroundColor = UIColor.appColor(.brandMilky)
@@ -1119,12 +1130,12 @@ class SwitchableViewController: UIViewController {
         dropdownButton.isHidden.toggle()
         
         if sender.isOn {
-
+            
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
         } else {
-
+            
             navigationController?.navigationBar.backgroundColor = .systemBackground
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
             navigationController?.navigationBar.tintColor = .black
@@ -1163,7 +1174,7 @@ class SwitchableViewController: UIViewController {
     
     func configureDropdownButton() {
         guard let dropdownTitle = myStudyList.first?.title else { return }
-
+        
         dropdownButton.setTitle("\(dropdownTitle)  ", for: .normal)
         dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .normal)
         dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .selected)
@@ -1230,7 +1241,7 @@ class SwitchableViewController: UIViewController {
     }
     
     private func toggleDropdown() {
-
+        
         willDropDown.toggle()
         
         var indexPaths = [IndexPath]()
@@ -1260,7 +1271,7 @@ class SwitchableViewController: UIViewController {
         } else {
             
             dropdownTableView.deleteRows(at: indexPaths, with: .top)
-
+            
             dropdownHeight.isActive = false
             dropdownHeightZero.isActive = true
             createStudyButton.isHidden = true
@@ -1278,7 +1289,7 @@ extension SwitchableViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+        
         guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
@@ -1333,3 +1344,71 @@ final class RoundedCornersView: UIView {
         super.init(coder: coder)
     }
 }
+
+class PlusButtonWithLabelContainerView: UIView {
+    
+    // MARK: - Properties
+    
+    private let plusButton: UIButton = {
+        let btn = UIButton()
+        let image = UIImage(named: "plus.circle.fill.black")
+        
+        btn.setImage(image, for: .normal)
+        
+        btn.layer.shadowRadius = 10
+        btn.layer.shadowOpacity = 0.3
+        btn.layer.cornerRadius = 50 / 2
+        
+        return btn
+    }()
+    
+    private let sideLabel = RoundedCustomLabel(text: "", fontSize: 12, radius: 26 / 2, backgroundColor: UIColor(red: 0.208, green: 0.176, blue: 0.282, alpha: 0.5), textColor: .white, padding: UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 25), cornerPart: .left)
+    
+    // MARK: - Initialization
+    
+    init(labelText: String) {
+        
+        self.sideLabel.text = labelText
+        self.sideLabel.sizeToFit()
+        
+        super.init(frame: .zero)
+        
+        configureViews()
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Actions
+    
+    func addTapAction(target: Any?, action: Selector) {
+        plusButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    // MARK: - Configures
+    
+    private func configureViews() {
+        
+        self.addSubview(sideLabel)
+        self.addSubview(plusButton)
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        
+        sideLabel.snp.makeConstraints { make in
+            make.bottom.leading.equalTo(self)
+            make.top.equalTo(plusButton.snp.centerY)
+            make.trailing.equalTo(plusButton.snp.centerX)
+        }
+        plusButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(self)
+            make.width.height.equalTo(50)
+        }
+    }
+}
+
+

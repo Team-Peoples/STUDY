@@ -96,39 +96,17 @@ final class AnnouncementBoardViewController: UIViewController {
             navigationItem.title = "관리자 모드"
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             
-            let floatingButton: UIButton = {
-                let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-                let lbl = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 26))
-                let image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 32, weight: .medium))
-                
-                lbl.text = "   공지 추가"
-                lbl.textAlignment = .left
-                lbl.layer.backgroundColor = UIColor(red: 0.208, green: 0.176, blue: 0.282, alpha: 0.5).cgColor
-                lbl.layer.cornerRadius = 26 / 2
-                lbl.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
-                lbl.textColor = .white
-                lbl.font = UIFont.systemFont(ofSize: 12)
-                
-                btn.backgroundColor = .black
-                btn.setImage(image, for: .normal)
-                btn.tintColor = .white
-
-                btn.layer.shadowRadius = 10
-                btn.layer.shadowOpacity = 0.3
-                btn.layer.cornerRadius = 50 / 2
-                
-                btn.addSubview(lbl)
-                lbl.sendSubviewToBack(btn)
-                
-                setConstraints(lbl, btn)
-                
-                return btn
-            }()
+            let floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
             
-            view.addSubview(floatingButton)
+            view.addSubview(floatingButtonView)
             
-            floatingButton.addTarget(nil, action: #selector(floatingButtonDidTapped), for: .touchUpInside)
-            floatingButton.frame.origin = CGPoint(x: view.frame.size.width - 50 - 10, y: view.frame.size.height - 60 - 90)
+            floatingButtonView.addTapAction(target: nil, action: #selector(floatingButtonDidTapped))
+            
+            floatingButtonView.snp.makeConstraints { make in
+                make.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
+                make.width.equalTo(102)
+                make.height.equalTo(50)
+            }
             if announcement.count >= 1 {
                 for i in 0...announcement.count - 1 {
                     let cell = announcementBoardTableView.cellForRow(at: IndexPath(row: i, section: 0)) as! AnnouncementBoardTableViewCell
@@ -137,11 +115,14 @@ final class AnnouncementBoardViewController: UIViewController {
             }
         } else {
             
+            guard let floatingButtonView = view.subviews.last as? PlusButtonWithLabelContainerView else { return }
+            
+            floatingButtonView.removeFromSuperview()
+            
             navigationController?.navigationBar.backgroundColor = .systemBackground
             navigationItem.title = nil
             navigationController?.navigationBar.tintColor = .black
             
-            view.subviews.last?.removeFromSuperview()
             if announcement.count >= 1 {
                 for i in 0...announcement.count - 1 {
                     let cell = announcementBoardTableView.cellForRow(at: IndexPath(row: i, section: 0)) as! AnnouncementBoardTableViewCell
