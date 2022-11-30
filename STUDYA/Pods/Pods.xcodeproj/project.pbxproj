@@ -16,7 +16,6 @@
 			dependencies = (
 			);
 			name = "naveridlogin-sdk-ios";
-			productName = "naveridlogin-sdk-ios";
 		};
 /* End PBXAggregateTarget section */
 
@@ -203,7 +202,8 @@
 				3B60FF893B03E4C317CEF9C651342406 /* Frameworks */,
 				291AF5F83607B6FF1EE7EE15E59DA81C /* Support Files */,
 			);
-			path = "naveridlogin-sdk-ios";
+			name = "Support Files";
+			path = "../Target Support Files/MarqueeLabel";
 			sourceTree = "<group>";
 		};
 		9E37915182B8715BE9C810FF0904D8C2 /* Targets Support Files */ = {
@@ -276,7 +276,43 @@
 			);
 			name = "Pods-STUDYA";
 			productName = Pods_STUDYA;
-			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods_STUDYA.framework */;
+			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */;
+			productType = "com.apple.product-type.framework";
+		};
+		B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8BED82769B2B6D421054E3349B321064 /* Build configuration list for PBXNativeTarget "MultiProgressView" */;
+			buildPhases = (
+				D8F1A8D53D405DC76207BCD4E6DBF1D8 /* Headers */,
+				4D8ED8BB86F29B15944328B503309E8C /* Sources */,
+				19BB4C2E9EB49093E66BC51F90BBD5F9 /* Frameworks */,
+				DCDBB38421C919C9E3A20945DA46CBC6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MultiProgressView;
+			productName = MultiProgressView;
+			productReference = 2DBC19E0436A3E8D2D3670C588B2B9BD /* MultiProgressView */;
+			productType = "com.apple.product-type.framework";
+		};
+		C23DB88E45B0ED14F0C8827BE9C46C95 /* MarqueeLabel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 251180A9B6B807638C65029608571B8F /* Build configuration list for PBXNativeTarget "MarqueeLabel" */;
+			buildPhases = (
+				AAAAA2AF2FEEBF748BED3AC45024887C /* Headers */,
+				CE51103B19EB6AFC57B1C6125F7EB6C5 /* Sources */,
+				DE1746FCBBF82FC26CB045D88B1BCC1C /* Frameworks */,
+				1D85F9BE0FDD1AA06297EB5F21E58E97 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MarqueeLabel;
+			productName = MarqueeLabel;
+			productReference = CF0AA9FBFBDB70858C030769541505ED /* MarqueeLabel */;
 			productType = "com.apple.product-type.framework";
 		};
 		B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */ = {
