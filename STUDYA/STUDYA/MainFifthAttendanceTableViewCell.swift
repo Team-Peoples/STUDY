@@ -22,7 +22,8 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             penaltyLabel.text = String(penalty!.formatted(.number))
         }
     }
-    var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.allowedMain)]
+    
+    internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
 
     private let backView = RoundableView(cornerRadius: 24)
     private let titleLabel = CustomLabel(title: "지금까지의 출결", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -48,7 +49,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         return s
     }()
+    private let hoveringButton = UIButton()
     
+    var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.allowedMain)]
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -59,12 +62,26 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         progressView.dataSource = self
         
+        hoveringButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
         addSubviews()
         setConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc private func buttonTapped() {
+        let nextVC = AttendanceViewController()
+        
+        navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
+        
+        nextVC.syncSwitchReverse = { sender in
+            self.navigatableSwitchSyncableDelegate.syncSwitchReverseWith(nextVC: nextVC)
+        }
+        
+        navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
     
     private func setupProgress() {
@@ -89,6 +106,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         backView.addSubview(disclosureIndicatorView)
         backView.addSubview(progressView)
         backView.addSubview(stackView)
+        backView.addSubview(hoveringButton)
     }
     
     private func setConstraints() {
@@ -111,6 +129,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         stackView.snp.makeConstraints { make in
             make.centerX.equalTo(backView)
             make.top.equalTo(progressView.snp.bottom).offset(16)
+        }
+        hoveringButton.snp.makeConstraints { make in
+            make.edges.equalTo(backView)
         }
     }
 }

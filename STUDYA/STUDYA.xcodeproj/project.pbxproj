@@ -64,6 +64,7 @@
 		D35D6F812930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35D6F802930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift */; };
 		D371D2172923D5A000E28231 /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D371D2162923D5A000E28231 /* Protocol.swift */; };
 		D371D2192924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */; };
+		D37C0CB92939BD1000702177 /* SwitchableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37C0CB82939BD1000702177 /* SwitchableViewController.swift */; };
 		D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D37D8A4729081974004AF8E9 /* TabBarViewController.swift */; };
 		D381A96B291EA72C008A2102 /* InviteMemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */; };
 		D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D381A96C291EA744008A2102 /* MemberCollectionViewCell.swift */; };
@@ -177,6 +178,7 @@
 		D35D6F802930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomMembersPeriodSearchSettingView.swift; sourceTree = "<group>"; };
 		D371D2162923D5A000E28231 /* Protocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocol.swift; sourceTree = "<group>"; };
 		D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationNumberFillingInPopViewController.swift; sourceTree = "<group>"; };
+		D37C0CB82939BD1000702177 /* SwitchableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchableViewController.swift; sourceTree = "<group>"; };
 		D37D8A4729081974004AF8E9 /* TabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteMemberCollectionViewCell.swift; sourceTree = "<group>"; };
 		D381A96C291EA744008A2102 /* MemberCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 				726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */,
 				72F7CFAE28F83D0400E0D0C0 /* BottomSheetDataSource.swift */,
 				D3C23A5F28EDE7A1009B53B4 /* Enum.swift */,
+				D37C0CB82939BD1000702177 /* SwitchableViewController.swift */,
 				72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */,
 				72E2BF0A292B7427009BCCB7 /* AttendanceUserView.swift */,
 				72E2BEDC29264B9D009BCCB7 /* AttendanceReusableProgressView.swift */,
@@ -447,7 +450,7 @@
 			);
 			mainGroup = 72ED259B2897788900031AD1;
 			packageReferences = (
-				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
@@ -529,6 +532,7 @@
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3BF053028BDF2B400AF7D3B /* AccountManagementViewController.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
+				D37C0CB92939BD1000702177 /* SwitchableViewController.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */,
 				D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */,
 				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
@@ -851,7 +855,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
+		72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -880,7 +884,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		72ED25C028978AA400031AD1 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
+			package = 72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 		D3AFCE1928A7F53D004FBAB9 /* Alamofire */ = {

@@ -35,11 +35,12 @@ class MainSixthETCTableViewCell: UITableViewCell {
         memberBackgroundView.addSubview(membersLabel)
         
         infoBackgroundView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(contentView)
+            make.top.equalTo(contentView.snp.top)
+            make.bottom.equalTo(contentView).inset(18)
             make.leading.equalTo(contentView.snp.leading).inset(14)
         }
         memberBackgroundView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(contentView)
+            make.top.bottom.equalTo(infoBackgroundView)
             make.leading.equalTo(infoBackgroundView.snp.trailing).offset(12)
             make.trailing.equalTo(contentView).inset(14)
             make.width.equalTo(infoBackgroundView)

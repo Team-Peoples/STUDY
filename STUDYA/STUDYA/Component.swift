@@ -1105,45 +1105,36 @@ final class PurpleRoundedInputField: UITextField {
     }
 }
 
-class SwitchableViewController: UIViewController {
-    
-    var isAdmin = true
-    
-    private lazy var masterSwitch = BrandSwitch()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureNavigationBar()
-    }
-    
-    @objc func toggleNavigationBarBy(sender: BrandSwitch) {
-        
-        if sender.isOn {
 
-            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        } else {
-
-            navigationController?.navigationBar.backgroundColor = .systemBackground
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
-            navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
-            navigationController?.navigationBar.backgroundColor = .systemBackground
-        }
-    }
-    
-    func configureNavigationBar() {
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
-        if isAdmin {
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
-            masterSwitch.addTarget(self, action: #selector(toggleNavigationBarBy), for: .valueChanged)
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-        }
-    }
-}
+//struct SwitchableManager {
+//    var managerSwitch = BrandSwitch()
+//    var isSwitchOn = false {
+//        didSet {
+//
+//        }
+//    }
+//
+//
+//}
+//
+//struct MainVCSwitchableViewModel: SwitchableViewModelProtocol {
+//    var isSwitchOn: Bool
+//
+//    func toggleNavigationBar(vc: SwitchableViewController) {
+////        vc.toggle
+//    }
+//
+//    func toggleView() {
+//        <#code#>
+//    }
+//}
+//
+//protocol SwitchableViewModelProtocol {
+//    var isSwitchOn: Bool { get set }
+//
+//    func toggleNavigationBar()
+//    func toggleView()
+//}
 
 final class RoundedCornersField: UITextField {
     @IBInspectable var cornerRadius: CGFloat {

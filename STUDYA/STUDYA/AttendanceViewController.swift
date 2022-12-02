@@ -7,15 +7,17 @@
 import UIKit
 import MultiProgressView
 
-final class AttendanceViewController: UIViewController, BottomSheetAddable {
+final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
 
-    var dailyStudyAttendance: [String: Int] = ["출석": 60, "지각": 15, "결석": 3, "사유": 5] {
+    internal var dailyStudyAttendance: [String: Int] = ["출석": 60, "지각": 15, "결석": 3, "사유": 5] {
         didSet {
 
         }
     }
     
-    let managerView: AttendanceManagerModeView = {
+    internal var syncSwitchReverse: (Bool) -> () = { sender in }
+    
+    private lazy var managerView: AttendanceManagerModeView = {
        
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)
         let v = nib.instantiate(withOwner: AttendanceViewController.self).first as! AttendanceManagerModeView
@@ -27,10 +29,27 @@ final class AttendanceViewController: UIViewController, BottomSheetAddable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        managerView.BottomSheetAddableDelegate = self
+        if isAdmin {
+            managerView.BottomSheetAddableDelegate = self
+        }
         userView.bottomSheetAddableDelegate = self
+        configureNavigationBar()
+    }
     
-//        view = managerView
-        view = userView
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tabBarController?.tabBar.isHidden = true
+        view = managerSwitch.isOn ? managerView : userView
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(managerSwitch.isOn)
+    }
+    
+    override func extraWorkWhenSwitchToggled() {
+        view = isSwitchOn ? managerView : userView
     }
 }

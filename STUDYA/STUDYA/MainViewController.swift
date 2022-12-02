@@ -168,6 +168,7 @@ final class MainViewController: SwitchableViewController {
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
+        super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
         
         myStudyList = [
@@ -186,8 +187,19 @@ final class MainViewController: SwitchableViewController {
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         configureDropdown()
         configureTabBarSeparator()
+        configureNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        super.viewDidLoad()
+        tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        floatingButtonContainerView.isHidden = true
     }
     
     // MARK: - Actions
@@ -222,13 +234,11 @@ final class MainViewController: SwitchableViewController {
         toggleSpreadUp()
     }
     
-    override func toggleNavigationBarBy(sender: BrandSwitch) {
-        super.toggleNavigationBarBy(sender: sender)
+    override func extraWorkWhenSwitchToggled() {
+        notificationBtn.isHidden = isSwitchOn ? true : false
+        floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         
-        notificationBtn.isHidden.toggle()
-        floatingButtonContainerView.isHidden.toggle()
-        
-        guard !sender.isOn else { return }
+        guard !isSwitchOn else { return }
         floatingButton.isSelected = false
     }
     
@@ -475,6 +485,7 @@ extension MainViewController: UITableViewDataSource {
                 
                 cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
                 cell.penalty = 9900
+                cell.navigatableSwitchSyncableDelegate = self
                 
                 return cell
                 
@@ -524,7 +535,7 @@ extension MainViewController: UITableViewDelegate {
             case 4:
                 return 175
             default:
-                return 52
+                return 70
             }
         case dropdownTableView:
             return 50
@@ -556,11 +567,7 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController: Navigatable {
-    func push(vc: UIViewController) {
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
+extension MainViewController {    
     func present(vc: UIViewController) {
         present(vc, animated: true)
     }
