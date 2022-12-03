@@ -76,11 +76,6 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         let nextVC = AttendanceViewController()
         
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
-        
-        nextVC.syncSwitchReverse = { sender in
-            self.navigatableSwitchSyncableDelegate.syncSwitchReverseWith(nextVC: nextVC)
-        }
-        
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
     

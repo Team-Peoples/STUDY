@@ -492,6 +492,9 @@ extension MainViewController: UITableViewDataSource {
             case 5:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
                 
+                cell.currentStudy = currentStudy
+                cell.navigatableSwitchSyncableDelegate = self
+                
                 return cell
             default:
                 return UITableViewCell()

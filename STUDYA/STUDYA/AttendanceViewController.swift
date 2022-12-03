@@ -15,8 +15,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         }
     }
     
-    internal var syncSwitchReverse: (Bool) -> () = { sender in }
-    
     private lazy var managerView: AttendanceManagerModeView = {
        
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)

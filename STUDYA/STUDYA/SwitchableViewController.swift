@@ -17,6 +17,8 @@ class SwitchableViewController: UIViewController {
             extraWorkWhenSwitchToggled()
         }
     }
+    internal var syncSwitchReverse: (Bool) -> () = { sender in }
+    
     lazy var managerSwitch = BrandSwitch()
     
 
@@ -49,6 +51,7 @@ class SwitchableViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .systemBackground
     }
     
+//    needs to call in every VC's viewDidLaod
     func configureNavigationBar() {
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -65,10 +68,9 @@ extension SwitchableViewController: SwitchSyncable {
     
     func syncSwitchWith(nextVC: SwitchableViewController) {
         nextVC.managerSwitch.isOn = managerSwitch.isOn
-    }
-    
-    func syncSwitchReverseWith(nextVC: SwitchableViewController) {
-        managerSwitch.isOn = nextVC.managerSwitch.isOn
+        nextVC.syncSwitchReverse = { sender in
+            self.managerSwitch.isOn = nextVC.managerSwitch.isOn
+        }
     }
 }
 
@@ -80,5 +82,4 @@ extension SwitchableViewController: Navigatable {
 
 protocol SwitchSyncable {
     func syncSwitchWith(nextVC: SwitchableViewController)
-    func syncSwitchReverseWith(nextVC: SwitchableViewController)
 }
