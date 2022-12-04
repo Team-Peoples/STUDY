@@ -32,8 +32,9 @@ final class NotificationViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         title = "알림"
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.ppsBlack)]
         
-        configureViewWhenYesNotification()
+        configureViewWhenNoNotification()
     }
     
     private func configureViewWhenNoNotification() {
