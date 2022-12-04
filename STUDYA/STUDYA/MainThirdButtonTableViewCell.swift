@@ -108,7 +108,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = UIColor.appColor(.background)
+        backgroundColor = .systemBackground
 
         if isManagerMode {
             
@@ -128,7 +128,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             }
             
             addSubview(mainButton)
-            mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
             
         } else {
             
@@ -166,7 +166,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        navigatable.present(vc: vc)
+        navigatable.present!(vc: vc)
     }
     
     @objc private func mainButtonTappedWhenNotManager() {
@@ -175,7 +175,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        navigatable.present(vc: vc)
+        navigatable.present!(vc: vc)
     }
     
     func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
