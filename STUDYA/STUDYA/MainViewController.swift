@@ -10,7 +10,7 @@ import UIKit
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
 
-    var myStudyList = [Study]() {
+    private var myStudyList = [Study]() {
         didSet {
             if myStudyList.count < 5 {
                 dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight)
@@ -22,7 +22,15 @@ final class MainViewController: SwitchableViewController {
 //            currentStudy = myStudyList[0]
         }
     }
-    var currentStudy: Study?
+    private var currentStudy: Study?
+    private var notification: String? {
+        didSet {
+            if notification != nil {
+                notificationBtn.setImage(UIImage(named: "noti-new"), for: .normal)
+            }
+        }
+    }
+    
     
     var willDropDown = false
     private var willSpreadUp = false
@@ -204,6 +212,9 @@ final class MainViewController: SwitchableViewController {
     
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
+        
+        let nextVC = NotificationViewController()
+        push(vc: nextVC)
         print(#function)
     }
     
@@ -251,14 +262,17 @@ final class MainViewController: SwitchableViewController {
     }
     
     override func configureNavigationBar() {
-        
-        guard !myStudyList.isEmpty else { navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]; return }
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+        guard !myStudyList.isEmpty else { return }
         
         super.configureNavigationBar()
+    }
+    
+    private func configureNavigationBarNotiBtn() {
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
     }
     
-    func configureDropdown() {
+    private func configureDropdown() {
         guard !myStudyList.isEmpty else { return }
         
         if let tabBarView = tabBarController?.view {

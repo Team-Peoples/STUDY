@@ -52,6 +52,8 @@
 		D306E6CD292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D306E6CC292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift */; };
 		D306E6CF292A683600F9BE5C /* AttendanceOverallCheckHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D306E6CE292A683600F9BE5C /* AttendanceOverallCheckHeaderView.xib */; };
 		D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D306E6D0292BA78300F9BE5C /* AttendanceBottomViewController.swift */; };
+		D309A3CB293CA061007BD2FF /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3CA293CA061007BD2FF /* NotificationViewController.swift */; };
+		D309A3CD293CE494007BD2FF /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */; };
 		D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */; };
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
@@ -165,6 +167,8 @@
 		D306E6CC292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceOverallCheckHeaderView.swift; sourceTree = "<group>"; };
 		D306E6CE292A683600F9BE5C /* AttendanceOverallCheckHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttendanceOverallCheckHeaderView.xib; sourceTree = "<group>"; };
 		D306E6D0292BA78300F9BE5C /* AttendanceBottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomViewController.swift; sourceTree = "<group>"; };
+		D309A3CA293CA061007BD2FF /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
@@ -293,6 +297,8 @@
 				726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */,
 				72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */,
 				D3EC2F45289A7F8400D4DA18 /* ProfileSettingViewController.swift */,
+				D309A3CA293CA061007BD2FF /* NotificationViewController.swift */,
+				D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */,
 				72ED25BD289778CB00031AD1 /* Color.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
@@ -548,6 +554,7 @@
 				D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */,
 				D3C23A7528F9B418009B53B4 /* MainThirdButtonTableViewCell.swift in Sources */,
 				7299968828BE44090008A1C1 /* MainViewController.swift in Sources */,
+				D309A3CD293CE494007BD2FF /* NotificationTableViewCell.swift in Sources */,
 				D3EC2F3E289918B200D4DA18 /* WelcomeViewController.swift in Sources */,
 				726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */,
 				D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */,
@@ -601,6 +608,7 @@
 				D3D8D1B62927E8C400B9D6B6 /* AttendanceIndividualInfoTableViewCell.swift in Sources */,
 				D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */,
 				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
+				D309A3CB293CA061007BD2FF /* NotificationViewController.swift in Sources */,
 				D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				D306E6CD292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift in Sources */,
