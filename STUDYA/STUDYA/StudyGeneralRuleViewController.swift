@@ -138,7 +138,7 @@ extension StudyGeneralRuleViewController: UICollectionViewDataSource {
             vc.view.snp.makeConstraints { make in
                 make.edges.equalTo(cell)
             }
-            vc.bottomConst = cell.safeAreaLayoutGuide.snp.bottom
+            vc.bottomConstraintItem = cell.safeAreaLayoutGuide.snp.bottom
             generalRuleViewModel.configure(vc: vc)
 
             return cell

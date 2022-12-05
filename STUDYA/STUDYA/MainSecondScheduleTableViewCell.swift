@@ -10,6 +10,7 @@ import UIKit
 class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
+    internal var navigatable: Navigatable!
     
     private let isScheduleExist = true
     
@@ -106,6 +107,8 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     }
     
     @objc private func scheduleTapped() {
-        print(#function)
+        let studyScheduleVC = StudyScheduleViewController()
+        
+        navigatable.push(vc: studyScheduleVC)
     }
 }

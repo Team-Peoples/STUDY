@@ -97,6 +97,15 @@ extension UIView {
     }
 }
 
+extension UIView {
+    convenience init(backgroundColor: UIColor) {
+        self.init(frame: .zero)
+        
+        self.backgroundColor = backgroundColor
+        
+    }
+}
+
 extension String {
     func checkOnlyNumbers() -> Bool{
         do {

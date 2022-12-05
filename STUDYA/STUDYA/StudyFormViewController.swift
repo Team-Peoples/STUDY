@@ -80,8 +80,8 @@ class StudyFormViewController: UIViewController {
     /// 스터디 형태 on/off
     private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
-    let onlineButton = CheckBoxButton(title: "온라인", selected: "on", unselected: "off")
-    let offlineButton = CheckBoxButton(title: "오프라인", selected: "on", unselected: "off")
+    let onlineButton = CheckBoxButton(title: "온라인")
+    let offlineButton = CheckBoxButton(title: "오프라인")
     
     /// 스터디 한줄 소개
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
@@ -363,7 +363,7 @@ extension StudyFormViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CategoryCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
         cell.title = StudyCategory.allCases[indexPath.row].rawValue
         return cell
     }

@@ -18,9 +18,20 @@ extension UIView {
 
 final class BrandButton: UIButton {
     
+    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat) {
+        super.init(frame: .zero)
+        
+        setTitle(title, for: .normal)
+        self.backgroundColor = backgroundColor
+        setTitleColor(textColor, for: .normal)
+        
+        setHeight(42)
+        layer.cornerRadius = radius
+    }
+    
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
-
+        
         configure(title: title, isBold: isBold, isFill: isFill, fontSize: fontSize, height: height)
         configureBorder(color: .keyColor1, width: 1, radius: height / 2)
     }
@@ -41,7 +52,7 @@ final class BrandButton: UIButton {
     private func configure(title: String, isBold: Bool, isFill: Bool, fontSize: CGFloat, height: CGFloat) {
         
         isFill ? fillIn(title: title) : fillOut(title: title)
-        
+    
         titleLabel?.font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
         setHeight(height)
     }
@@ -221,7 +232,7 @@ class BaseTextView: UITextView {
     }
     
     private func setPlaceHolderLabelConstraints(topConstant: CGFloat, leadingConstant: CGFloat) {
-
+        
         placeHolderLabel.anchor(top: self.topAnchor, topConstant: topConstant, leading: self.leadingAnchor, leadingConstant: leadingConstant)
     }
 }
@@ -290,39 +301,39 @@ final class CharactersNumberLimitedTextView: BaseTextView {
 
 class ValidationInputView: UIStackView {
     // MARK: - Properties
-
+    
     private let basicInputView: BasicInputView!
     private let validationLabel = UILabel()
-
+    
     // MARK: - Ininitalize
-
+    
     init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, validationText: String, cancelButton: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
-
+        
         basicInputView = BasicInputView(titleText: titleText, fontSize: fontSize, titleBottomPadding: titleBottomPadding, placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure, isCancel: cancelButton, target: target, textFieldAction: textFieldAction)
-
+        
         super.init(frame: .zero)
-
+        
         addArrangedSubview(basicInputView)
         addArrangedSubview(validationLabel)
-
+        
         configureValidationLabel(text: validationText)
         configureStackView()
     }
-
+    
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Actions
-
+    
     func setUnderlineColor(as color: AssetColor) {
         basicInputView?.setUnderlineColor(as: color)
     }
-
+    
     internal func getInputview() -> BasicInputView {
         basicInputView
     }
-
+    
     internal func getInputField() -> UITextField {
         basicInputView.getInputField()
     }
@@ -330,15 +341,15 @@ class ValidationInputView: UIStackView {
     func getValidationLabel() -> UILabel {
         validationLabel
     }
-
-     //MARK: - Configure Views
+    
+    //MARK: - Configure Views
     
     private func configureStackView() {
         axis = .vertical
         distribution = .equalSpacing
         spacing = 6
     }
-
+    
     private func configureValidationLabel(text: String) {
         validationLabel.text = text
         validationLabel.textColor = UIColor.appColor(.ppsGray1)
@@ -442,7 +453,7 @@ class CustomTextField: UITextField {
         autocorrectionType = .no
         autocapitalizationType = .none
         font = UIFont.systemFont(ofSize: 18)
-    
+        
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
@@ -500,7 +511,7 @@ class CustomLabel: UILabel {
     // MARK: - Configure
     
     private func configure(title: String, isNecessaryTitle: Bool) {
-
+        
         if isNecessaryTitle {
             setTitleAndRedStar(upperLabelTitle: title)
         } else {
@@ -519,6 +530,7 @@ class SimpleAlert: UIAlertController {
         self.addAction(okAction)
     }
 }
+
 
 class ProfileImageView: UIView {
 
@@ -575,7 +587,7 @@ class ProfileImageView: UIView {
     internal func configure(_ image: UIImage?) {
         internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
     }
-
+    
     
     private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
         if isManager {
@@ -584,7 +596,7 @@ class ProfileImageView: UIView {
             setDimensions(height: size + 4, width: size + 4)
             
             configureAdminMark()
-
+            
         } else {
             
             setDimensions(height: size + 2, width: size + 2)
@@ -644,12 +656,13 @@ class PlusCircleFillView: UIImageView {
 
 class CheckBoxButton: UIButton {
     // MARK: - Properties
-    
-    // MARK: - Initialization
-    init(title: String, selected: String, unselected: String) {
-        super.init(frame: .zero)
 
-        configure(title: title, selected: selected, unselected: unselected)
+    // MARK: - Initialization
+    init(title: String) {
+        
+        super.init(frame: .zero)
+        
+        configure(title: title)
     }
     
     required init?(coder: NSCoder) {
@@ -658,7 +671,7 @@ class CheckBoxButton: UIButton {
     
     // MARK: - Configure
     
-    private func configure(title: String, selected: String, unselected: String) {
+    private func configure(title: String) {
         titleLabel?.font = .systemFont(ofSize: 16)
         
         titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
@@ -666,8 +679,8 @@ class CheckBoxButton: UIButton {
         
         setTitle(title, for: .normal)
         [.normal, .selected].forEach { setTitleColor(.appColor(.ppsBlack), for: $0) }
-        setImage(UIImage(named: unselected), for: .normal)
-        setImage(UIImage(named: selected), for: .selected)
+        setImage(UIImage(named: "off"), for: .normal)
+        setImage(UIImage(named: "on"), for: .selected)
     }
     // MARK: - Actions
     
@@ -821,6 +834,11 @@ final class BrandSwitch: UIControl {
 
 class RoundedCustomLabel: UILabel {
     
+    enum CornerPart {
+        case left
+        case all
+    }
+    
     private var padding = UIEdgeInsets(top: 2.0, left: 4.0, bottom: 2.0, right: 4.0)
     
     override func drawText(in rect: CGRect) {
@@ -835,18 +853,24 @@ class RoundedCustomLabel: UILabel {
         return contentSize
     }
     
-    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil) {
+    convenience init(text: String, fontSize: CGFloat, radius: CGFloat, backgroundColor: UIColor, textColor: UIColor, padding: UIEdgeInsets? = nil, cornerPart: CornerPart = .all) {
         self.init()
         
         self.text = text
         self.textColor = textColor
         self.font = UIFont.systemFont(ofSize: fontSize)
         self.clipsToBounds = true
+        
+        if cornerPart == .left {
+            self.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
+        }
+        
         self.layer.cornerRadius = radius
         self.backgroundColor = backgroundColor
         
-        guard let padding = padding else { return }
-        self.padding = padding
+        if let padding = padding {
+            self.padding = padding
+        }
     }
     
     func change(textColor: UIColor) {
@@ -857,12 +881,12 @@ class RoundedCustomLabel: UILabel {
 class RoundableView: UIView {
     init(cornerRadius: CGFloat) {
         super.init(frame: .zero)
-
+        
         self.layer.cornerRadius = cornerRadius
     }
     
     required init?(coder: NSCoder) {
-
+        
         super.init(coder: coder)
     }
     
@@ -876,7 +900,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     
     let strArray: [String] = {
-       
+        
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
         
@@ -1092,7 +1116,7 @@ final class PurpleRoundedInputField: UITextField {
         
         rightButton.tintColor = UIColor.appColor(.keyColor3)
         rightButton.addTarget(target, action: action, for: .touchUpInside)
-    
+        
         rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
         rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
         
@@ -1104,7 +1128,6 @@ final class PurpleRoundedInputField: UITextField {
         view.alpha = alpha
     }
 }
-
 
 //struct SwitchableManager {
 //    var managerSwitch = BrandSwitch()
@@ -1218,3 +1241,71 @@ class FullDoneButtonButtomView: UIView {
         }
     }
 }
+
+class PlusButtonWithLabelContainerView: UIView {
+    
+    // MARK: - Properties
+    
+    private let plusButton: UIButton = {
+        let btn = UIButton()
+        let image = UIImage(named: "plus.circle.fill.black")
+        
+        btn.setImage(image, for: .normal)
+        
+        btn.layer.shadowRadius = 10
+        btn.layer.shadowOpacity = 0.3
+        btn.layer.cornerRadius = 50 / 2
+        
+        return btn
+    }()
+    
+    private let sideLabel = RoundedCustomLabel(text: "", fontSize: 12, radius: 26 / 2, backgroundColor: UIColor(red: 0.208, green: 0.176, blue: 0.282, alpha: 0.5), textColor: .white, padding: UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 25), cornerPart: .left)
+    
+    // MARK: - Initialization
+    
+    init(labelText: String) {
+        
+        self.sideLabel.text = labelText
+        self.sideLabel.sizeToFit()
+        
+        super.init(frame: .zero)
+        
+        configureViews()
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Actions
+    
+    func addTapAction(target: Any?, action: Selector) {
+        plusButton.addTarget(target, action: action, for: .touchUpInside)
+    }
+    
+    // MARK: - Configures
+    
+    private func configureViews() {
+        
+        self.addSubview(sideLabel)
+        self.addSubview(plusButton)
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        
+        sideLabel.snp.makeConstraints { make in
+            make.bottom.leading.equalTo(self)
+            make.top.equalTo(plusButton.snp.centerY)
+            make.trailing.equalTo(plusButton.snp.centerX)
+        }
+        plusButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(self)
+            make.width.height.equalTo(50)
+        }
+    }
+}
+
+

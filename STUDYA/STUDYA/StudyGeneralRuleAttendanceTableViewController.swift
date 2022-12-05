@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-// 따로 테이블 뷰로 만들어서 사용하려했지만 그렇게 할경우 MakingDetailStudyRuleViewController가 collectionView와 tableView를 모두 관리해야하므로 vc를 분리하는게 더 나아 보여서 이렇게 만들었음.
 
 class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
+    
     // MARK: - Properties
     
     /// 출결 규칙
@@ -22,7 +22,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     @IBOutlet weak var latenessFineTextField: UITextField!
     @IBOutlet weak var absenceFineTextField: UITextField!
     
-    
     /// 보증금
     @IBOutlet weak var depositTextField: UITextField!
     
@@ -33,9 +32,10 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     private var keyboardFrameHeight: CGFloat = 0
-    var bottomConst: ConstraintItem?
+    var bottomConstraintItem: ConstraintItem?
     
     // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,7 +60,8 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
             make.centerX.equalTo(view)
             make.width.equalTo(view.frame.width - 14)
             make.height.equalTo(42)
-            make.bottom.equalTo(bottomConst!).offset(-keyboardFrameHeight + 100)
+            guard let bottomConstraintItem = bottomConstraintItem else { return }
+            make.bottom.equalTo(bottomConstraintItem).offset(-keyboardFrameHeight + 100)
         }
     }
     
@@ -113,16 +114,18 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     
     @objc func dimmingViewDidTapped() {
         
+        guard let bottomConstraintItem = bottomConstraintItem else { return }
+        
         fineDimmingView.isUserInteractionEnabled = false
         depositDimmingView.isUserInteractionEnabled = false
         
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
             if keyboardFrameHeight == 0 {
                 toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(self.bottomConst!).offset(-100) }
+                    make.bottom.equalTo(bottomConstraintItem).offset(-100) }
             } else {
                 toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(self.bottomConst!).offset(-keyboardFrameHeight-10)
+                    make.bottom.equalTo(bottomConstraintItem).offset(-keyboardFrameHeight-10)
                 }
             }
             
@@ -133,7 +136,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
                 self.toastMessage.alpha = 0
             } completion: {[self] _ in
                 toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(self.bottomConst!).offset(100)
+                    make.bottom.equalTo(bottomConstraintItem).offset(100)
                 }
                 toastMessage.alpha = 0.9
                 fineDimmingView.isUserInteractionEnabled = true
