@@ -8,11 +8,13 @@
 import UIKit
 import SnapKit
 
-class StudyInfoViewController: UIViewController {
+class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
     var study: Study?
+    
+//    internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
     /// 스터디 폼
     ///
@@ -82,12 +84,19 @@ class StudyInfoViewController: UIViewController {
             make.height.equalTo(42)
             make.bottom.equalTo(view.snp.bottom).offset(40)
         }
+        configureNavigationBar()
     }
   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         configureViews()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(managerSwitch.isOn)
     }
     
     // MARK: - Actions

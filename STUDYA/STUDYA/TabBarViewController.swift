@@ -43,8 +43,10 @@ final class TabBarViewController: UITabBarController {
     private func templateNavigationController(selectedImage: UIImage, unselectedImage: UIImage, rootViewController: UIViewController, title: String) -> UINavigationController {
         
         let nav = UINavigationController(rootViewController: rootViewController)
-        
+
         nav.tabBarItem.image = unselectedImage
+//        nav.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
+//        nav.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 4)
         nav.tabBarItem.selectedImage = selectedImage
         nav.navigationBar.tintColor = .black
         nav.title = title

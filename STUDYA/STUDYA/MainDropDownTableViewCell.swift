@@ -10,9 +10,17 @@ import UIKit
 class MainDropDownTableViewCell: UITableViewCell {
 
     static let identifier = "MainDropDownTableViewCell"
-    internal var title = "" {
+    
+    internal var study: Study? {
         didSet {
-            titleLabel.text = title
+            titleLabel.text = study?.title
+        }
+    }
+    internal var isCurrentStudy = false {
+        didSet {
+            if isCurrentStudy {
+                contentView.backgroundColor = UIColor(red: 247/255, green: 246/255, blue: 249/255, alpha: 1)
+            }
         }
     }
     
@@ -20,7 +28,9 @@ class MainDropDownTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print(#function)
+        
+        contentView.backgroundColor = .systemBackground
+        
         contentView.addSubview(titleLabel)
         
         titleLabel.centerY(inView: contentView)
@@ -29,5 +39,11 @@ class MainDropDownTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        contentView.backgroundColor = .systemBackground
     }
 }
