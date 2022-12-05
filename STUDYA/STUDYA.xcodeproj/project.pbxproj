@@ -14,6 +14,7 @@
 		72512A7C292CDE7C0003F431 /* StudyScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */; };
 		72512A7E292CDEEE0003F431 /* StudySchedulePriodFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7D292CDEEE0003F431 /* StudySchedulePriodFormViewController.swift */; };
 		72512A80292CDFC40003F431 /* StudyScheduleContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7F292CDFC40003F431 /* StudyScheduleContentViewController.swift */; };
+		72512AFE2938BD6D0003F431 /* PopUpCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */; };
 		726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4622901A352004E49A9 /* ScheduleTableView.swift */; };
 		726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
@@ -125,6 +126,7 @@
 		72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleViewController.swift; sourceTree = "<group>"; };
 		72512A7D292CDEEE0003F431 /* StudySchedulePriodFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySchedulePriodFormViewController.swift; sourceTree = "<group>"; };
 		72512A7F292CDFC40003F431 /* StudyScheduleContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleContentViewController.swift; sourceTree = "<group>"; };
+		72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpCalendarViewController.swift; sourceTree = "<group>"; };
 		726FA4622901A352004E49A9 /* ScheduleTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableView.swift; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */,
 				72512A7D292CDEEE0003F431 /* StudySchedulePriodFormViewController.swift */,
 				72512A7F292CDFC40003F431 /* StudyScheduleContentViewController.swift */,
+				72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */,
 				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
 				72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */,
 				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
@@ -433,7 +436,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1400;
 				TargetAttributes = {
 					72ED25A32897788900031AD1 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -536,12 +539,10 @@
 				D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */,
 				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
 				D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */,
-				72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */,
 				72512A7E292CDEEE0003F431 /* StudySchedulePriodFormViewController.swift in Sources */,
 				D35D6F7F292E581000514980 /* AttendanceBottomIndividualUpdateView.swift in Sources */,
 				726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */,
 				D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */,
-				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
 				D381A96B291EA72C008A2102 /* InviteMemberCollectionViewCell.swift in Sources */,
 				D371D2192924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift in Sources */,
 				D3C23A7128F9A6CA009B53B4 /* MainSecondScheduleTableViewCell.swift in Sources */,
@@ -555,7 +556,6 @@
 				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */,
 				D3C23A7328F9A7CD009B53B4 /* MainFirstAnnouncementTableViewCell.swift in Sources */,
-				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
 				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
 				D306E6C9292A232000F9BE5C /* AttendanceOverallCheckCollectionViewCell.swift in Sources */,
@@ -578,6 +578,7 @@
 				D3C23A7728FA84DF009B53B4 /* MainFourthManagementTableViewCell.swift in Sources */,
 				7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */,
 				D346404C292BDB9E00F60FED /* AttendanceTimeCollectionViewCell.swift in Sources */,
+				72512AFE2938BD6D0003F431 /* PopUpCalendarViewController.swift in Sources */,
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
@@ -602,10 +603,8 @@
 				D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */,
 				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
 				D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */,
-				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				D306E6CD292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift in Sources */,
 				D3F0983E2914E25100D1E55F /* UBottomSheet.swift in Sources */,
-				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */,
 				D3D8D1BA29291E0B00B9D6B6 /* AttendanceModificationCollectionViewCell.swift in Sources */,
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
@@ -614,16 +613,10 @@
 				D3A4C855292E55E80052F4E0 /* AttendanceBottomDaySearchSettingView.swift in Sources */,
 				D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */,
 				72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */,
-				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
-				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
 				D35D6F812930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift in Sources */,
-				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
 				72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */,
-				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
 				72E2BEDB2921AE66009BCCB7 /* StudyExitViewController.swift in Sources */,
-				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
-				72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,

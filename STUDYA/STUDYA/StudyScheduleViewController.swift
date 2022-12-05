@@ -37,14 +37,14 @@ class StudyScheduleViewController: UIViewController {
         view.addSubview(scheduleTableView)
         view.addSubview(floatingButtonView)
         
-        let dateSelection = UICalendarSelectionSingleDate(delegate: self)
-        calendarView.selectionBehavior = dateSelection
+        calendarView.selectionBehavior = UICalendarSelectionSingleDate(delegate: self)
         
         scheduleTableView.dataSource = self
         scheduleTableView.delegate = self
         scheduleTableView.backgroundColor = .appColor(.background)
         
-       
+        tabBarController?.tabBar.isHidden = true
+        
         floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
         
         setConstraints()
@@ -53,8 +53,7 @@ class StudyScheduleViewController: UIViewController {
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
-        print(#function)
-        
+    
         let vc = StudySchedulePriodFormViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -100,7 +99,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! ScheduleTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
         let schedule = studySchedules[indexPath.row]
         

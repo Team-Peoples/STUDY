@@ -9,6 +9,8 @@ import UIKit
 
 class StudyScheduleContentViewController: UIViewController {
     
+    // MARK: - Properties
+    
     let topicTitleLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     let topicTextView: BaseTextView = {
         let bt = BaseTextView(placeholder: "모임 주제는 무엇인가요?", fontSize: 16)
@@ -25,20 +27,84 @@ class StudyScheduleContentViewController: UIViewController {
         return bt
     }()
     let placeTextViewCharactersCountLimitLabel = CustomLabel(title: "0/20", tintColor: .ppsGray1, size: 12)
+    private let bottomStickyView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .white
+        v.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor
+        return v
+    }()
+    private let creatingScheduleButton = BrandButton(title: "일정만들기", isBold: true, isFill: false)
+    
+    // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureViews()
+        
+        creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
+        creatingScheduleButton.isEnabled = false
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        topicTextView.delegate = self
+        placeTextView.delegate = self
+        
+        setConstraints()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Actions
+    
+    @objc func creatingScheduleButtonDidTapped() {
+        
+    }
+    
+    @objc func onKeyboardAppear(_ notification: NSNotification) {
+        
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardFrame.cgRectValue
+        
+        bottomStickyView.snp.updateConstraints { make in
+            make.bottom.equalTo(view).inset(keyboardSize.height - 30)
+        }
+        view.layoutIfNeeded()
+    }
+    
+    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+        bottomStickyView.snp.updateConstraints { make in
+            make.bottom.equalTo(view)
+        }
+        view.layoutIfNeeded()
+    }
+    
+    // MARK: - Configure
+    
+    private func configureViews() {
+        
         view.backgroundColor = .systemBackground
-
+        
         view.addSubview(topicTitleLabel)
         view.addSubview(topicTextView)
         view.addSubview(topicTextViewCharactersCountLimitLabel)
         view.addSubview(placeTitleLabel)
         view.addSubview(placeTextView)
         view.addSubview(placeTextViewCharactersCountLimitLabel)
+        view.addSubview(bottomStickyView)
         
-        topicTextView.delegate = self
-        placeTextView.delegate = self
+        bottomStickyView.addSubview(creatingScheduleButton)
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func setConstraints() {
         
         topicTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
@@ -66,8 +132,20 @@ class StudyScheduleContentViewController: UIViewController {
             make.trailing.equalTo(placeTextView).inset(20)
             make.bottom.equalTo(placeTextView.snp.top).offset(-13)
         }
+        bottomStickyView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalTo(view)
+            make.height.equalTo(100 + 30)
+        }
+        creatingScheduleButton.snp.makeConstraints { make in
+            make.top.equalTo(bottomStickyView).inset(16)
+            make.height.equalTo(50)
+            make.leading.trailing.equalTo(bottomStickyView).inset(20)
+            make.centerX.equalTo(bottomStickyView)
+        }
     }
 }
+
+// MARK: - UITextViewDelegate
 
 extension StudyScheduleContentViewController: UITextViewDelegate {
     
@@ -100,6 +178,13 @@ extension StudyScheduleContentViewController: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if !topicTextView.text.isEmpty && !placeTextView.text.isEmpty { creatingScheduleButton.isEnabled = true
+            creatingScheduleButton.fillIn(title: "일정 만들기")
+        } else {
+            creatingScheduleButton.isEnabled = false
+                creatingScheduleButton.fillOut(title: "일정 만들기")
+        }
         
         switch textView {
             case topicTextView:

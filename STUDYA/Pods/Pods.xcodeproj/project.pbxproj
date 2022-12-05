@@ -16,6 +16,7 @@
 			dependencies = (
 			);
 			name = "naveridlogin-sdk-ios";
+			productName = "naveridlogin-sdk-ios";
 		};
 /* End PBXAggregateTarget section */
 
@@ -60,15 +61,15 @@
 		3A2FF09D3F1C4ADA9A8209E750849040 /* MultiProgressView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "MultiProgressView-Info.plist"; sourceTree = "<group>"; };
 		411FD4EAB0FE5CEAF5C60FE20788438E /* naveridlogin-sdk-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "naveridlogin-sdk-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		50053C06AB3CA4D88963DE199337A24D /* Pods-STUDYA.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-STUDYA.modulemap"; sourceTree = "<group>"; };
-		61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-STUDYA"; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		61C47FD8943562CE787CFE39E1673CF7 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		630FB94FA4A712DBCFB26FB85991A780 /* LayoutProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutProvider.swift; path = Sources/MultiProgressView/LayoutProvider.swift; sourceTree = "<group>"; };
 		673F78547C4EA4685113BDBAB1608F5F /* naveridlogin-sdk-ios-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "naveridlogin-sdk-ios-xcframeworks.sh"; sourceTree = "<group>"; };
 		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		755DF81AA70B95A6A9A4B78272D835DA /* ProgressViewSection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ProgressViewSection.swift; path = Sources/MultiProgressView/ProgressViewSection.swift; sourceTree = "<group>"; };
 		7EFB4F196A195A833119AEBCFF305290 /* Pods-STUDYA-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-STUDYA-dummy.m"; sourceTree = "<group>"; };
-		8AB74CFD332137692C5E48D40DFBAF22 /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
+		8AB74CFD332137692C5E48D40DFBAF22 /* NaverThirdPartyLogin.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = NaverThirdPartyLogin.xcframework; sourceTree = "<group>"; };
 		8B1573CF7A772B684E6CEA55B17B3436 /* Pods-STUDYA-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-STUDYA-Info.plist"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E30D0A5CC56583A6EB6CDD53C89D646 /* MultiProgressView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MultiProgressView-dummy.m"; sourceTree = "<group>"; };
 		AAE2E449BCEF1E8D660197F94FB8A24B /* MultiProgressView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MultiProgressView.release.xcconfig; sourceTree = "<group>"; };
 		AEC57E4BF7A8E7A57B4A2DAF35E8963B /* LineCapType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LineCapType.swift; path = Sources/MultiProgressView/LineCapType.swift; sourceTree = "<group>"; };
@@ -143,7 +144,6 @@
 				755DF81AA70B95A6A9A4B78272D835DA /* ProgressViewSection.swift */,
 				8644D6A0ED5AE8375A4D2B8528246BEE /* Support Files */,
 			);
-			name = MultiProgressView;
 			path = MultiProgressView;
 			sourceTree = "<group>";
 		};
@@ -176,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				2DBC19E0436A3E8D2D3670C588B2B9BD /* MultiProgressView */,
-				61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */,
+				61C47FD8943562CE787CFE39E1673CF7 /* Pods_STUDYA.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,7 +210,6 @@
 				44F37EDB46C1CD28CA88688870347115 /* Frameworks */,
 				0964049AD59815403F8F4BC38440D506 /* Support Files */,
 			);
-			name = "naveridlogin-sdk-ios";
 			path = "naveridlogin-sdk-ios";
 			sourceTree = "<group>";
 		};
@@ -273,7 +272,7 @@
 			);
 			name = "Pods-STUDYA";
 			productName = Pods_STUDYA;
-			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods-STUDYA */;
+			productReference = 61C47FD8943562CE787CFE39E1673CF7 /* Pods_STUDYA.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		B873A6476768FC5172942E3D926EABF2 /* MultiProgressView */ = {
@@ -561,6 +560,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -632,6 +634,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

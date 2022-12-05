@@ -55,7 +55,26 @@ enum AttendanceBottomViewType {
         }
     }
 }
+
+enum RepeatOption: String {
+    case everyDay = "매일"
+    case everyWeek = "매주"
+    case everyTwoWeeks = "2주 마다"
+    case everyMonth = "매달"
+    
+    var kor: String {
+        switch self {
+        case .everyDay, .everyWeek, .everyTwoWeeks, .everyMonth:
+            return self.rawValue
+        }
+    }
+}
+
 enum CalendarKind {
     case study
     case personal
+}
+enum PopUpCalendarType {
+    case open
+    case deadline
 }

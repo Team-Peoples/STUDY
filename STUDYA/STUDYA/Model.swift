@@ -182,6 +182,17 @@ struct Schedule: Codable {
     }
 }
 
+struct StudySchedule {
+    
+    var openDate: Date?
+    var deadlineDate: Date?
+    var startTime: Date?
+    var endTime: Date?
+    var repeatOption: RepeatOption?
+    var topic: String?
+    var place: String?
+}
+
 struct Absence: Codable {
     var time, fine: Int?
 }

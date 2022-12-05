@@ -96,3 +96,11 @@ extension UIView {
         self.layer.addSublayer(shapeLayer)
     }
 }
+
+extension UIView {
+    convenience init(backgroundColor: UIColor) {
+        self.init(frame: .zero)
+        
+        self.backgroundColor = backgroundColor
+    }
+}

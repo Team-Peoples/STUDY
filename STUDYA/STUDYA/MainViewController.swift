@@ -110,12 +110,12 @@ final class MainViewController: SwitchableViewController {
         super.viewDidLoad()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        tabBarController?.tabBar.isHidden = false
-//    }
-//
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tabBarController?.tabBar.isHidden = false
+    }
+
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         print(#function)

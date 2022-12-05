@@ -7,6 +7,7 @@
 
 import Foundation
 
+// domb: 참조타입의 전역함수를 사용하는 Formatter 클래스, 클래스 선언이유?
 final class Formatter {
     static func formatIntoDecimal(number: Int) -> String {
         let numberFormatter = NumberFormatter()
@@ -19,12 +20,12 @@ final class Formatter {
 // MARK: - Date Format
 
 extension Date {
-    enum Lang {
+    enum Language {
         case kor
         case eng
     }
     
-    func formatToString(language: Lang) -> String {
+    func formatToString(language: Language) -> String {
         switch language {
             case .kor:
                 
@@ -39,4 +40,18 @@ extension Date {
                 return dateFormatter.string(from: self)
         }
     }
+}
+
+struct TimeFormatter {
+    static let shared: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale(identifier: "en_gb")
+
+        return dateFormatter
+    }()
+    
+    private init() { }
 }
