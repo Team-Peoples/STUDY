@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MemberViewController: UIViewController {
+final class MemberViewController: SwitchableViewController {
     
     var members = [
         Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
@@ -37,7 +37,7 @@ final class MemberViewController: UIViewController {
         Member(nickName: "ehd4", isManager: false, role: "판사")
     ]
     
-    private let titleLabel = CustomLabel(title: "멤버 관리", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private let bottomVC = MemberBottomSheetViewController()
@@ -61,6 +61,7 @@ final class MemberViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
+        configureNavigationBar()
     }
     
     @objc private func dimmingViewTapped() {
