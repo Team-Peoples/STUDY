@@ -29,7 +29,6 @@
 		7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */; };
 		72B5BE4D28D0A08C000137CD /* StudyInfoPreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5BE4C28D0A08C000137CD /* StudyInfoPreViewController.swift */; };
 		72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */; };
-		72E2BED9291E01AF009BCCB7 /* StudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */; };
 		72E2BEDB2921AE66009BCCB7 /* StudyExitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */; };
 		72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDC29264B9D009BCCB7 /* AttendanceReusableProgressView.swift */; };
 		72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */; };
@@ -146,7 +145,6 @@
 		7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTableViewController.swift; sourceTree = "<group>"; };
 		72B5BE4C28D0A08C000137CD /* StudyInfoPreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoPreViewController.swift; sourceTree = "<group>"; };
 		72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFormViewController.swift; sourceTree = "<group>"; };
-		72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFormViewController.swift; sourceTree = "<group>"; };
 		72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExitViewController.swift; sourceTree = "<group>"; };
 		72E2BEDC29264B9D009BCCB7 /* AttendanceReusableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceReusableProgressView.swift; sourceTree = "<group>"; };
 		72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceViewController.swift; sourceTree = "<group>"; };
@@ -296,7 +294,6 @@
 				72512A7F292CDFC40003F431 /* StudyScheduleContentViewController.swift */,
 				72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */,
 				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
-				72E2BED8291E01AF009BCCB7 /* StudyFormViewController.swift */,
 				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */,
 				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
@@ -605,7 +602,6 @@
 				7299968028AF54190008A1C1 /* AnnouncementBoardViewController.swift in Sources */,
 				D306E6CB292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift in Sources */,
 				D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift in Sources */,
-				72E2BED9291E01AF009BCCB7 /* StudyFormViewController.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
