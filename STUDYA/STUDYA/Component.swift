@@ -47,6 +47,7 @@ final class BrandButton: UIButton {
         super.init(frame: .zero)
         
         configure(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
+        configureBorder(color: .keyColor1, width: 1, radius: 50 / 2)
     }
     
     private func configure(title: String, isBold: Bool, isFill: Bool, fontSize: CGFloat, height: CGFloat) {
@@ -78,7 +79,7 @@ final class BrandButton: UIButton {
         configureBorder(color: borderColor, width: 1, radius: radius)
     }
     
-    func resetColorFor(normal: AssetColor, forSelected: AssetColor) {
+    func resetTitleColor(normal: AssetColor, forSelected: AssetColor) {
         setTitleColor(UIColor.appColor(forSelected), for: .selected)
         setTitleColor(UIColor.appColor(normal), for: .normal)
     }
@@ -1305,6 +1306,28 @@ class PlusButtonWithLabelContainerView: UIView {
             make.bottom.trailing.equalTo(self)
             make.width.height.equalTo(50)
         }
+    }
+}
+
+class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        let attributes = super.layoutAttributesForElements(in: rect)
+        var leftMargin = sectionInset.left
+        var maxY: CGFloat = -1.0
+        
+        attributes?.forEach { layoutAttribute in
+            if layoutAttribute.frame.origin.y >= maxY {
+                leftMargin = sectionInset.left
+            }
+            
+            layoutAttribute.frame.origin.x = leftMargin
+            
+            leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
+            maxY = max(layoutAttribute.frame.maxY , maxY)
+        }
+        
+        return attributes
     }
 }
 

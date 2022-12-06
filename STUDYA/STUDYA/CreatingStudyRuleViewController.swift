@@ -127,7 +127,7 @@ class CreatingStudyRuleViewController: UIViewController {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-        
+        studyGeneralRuleVC.type = .creating
         studyGeneralRuleVC.generalRuleViewModel.generalRule = studyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.studyRuleViewModel.study.generalRule = rule

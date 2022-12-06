@@ -51,6 +51,7 @@ final class StudyGeneralRuleViewController: UIViewController {
     var doneButtonDidTapped: (GeneralStudyRule) -> () = { rule in }
     var viewDidUpdated: (UICollectionView) -> () = { collectionView in }
     var generalRuleViewModel = GeneralStudyRuleViewModel()
+    var type: StudyGeneralRuleViewType?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -72,6 +73,8 @@ final class StudyGeneralRuleViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
+        
+        doneButton.isHidden = type == .editing ? true : false
         
         collectionView.register(AttendanceRuleCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceRuleCollectionViewCell.identifier)
         collectionView.register(ExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier)
