@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 
-
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
     
@@ -28,9 +27,9 @@ class RoundedPurpleCell: UICollectionViewCell {
         addSubview(button)
     }
     
-    internal func configure(backgroundColor: AssetColor, normalBorderColor: AssetColor?, selectedBorderColor: AssetColor?, normalTextColor: AssetColor, selectedTextColor: AssetColor?, fontSize: Int, height: Int, insets: Int) {
-        button.backgroundColor = UIColor.appColor(.background)
-        button.resetColorFor(normal: .ppsGray1, forSelected: .keyColor1)
+    internal func configure(backgroundColor: AssetColor, normalTextColor: AssetColor, selectedTextColor: AssetColor) {
+        button.backgroundColor = UIColor.appColor(backgroundColor)
+        button.resetTitleColor(normal: normalTextColor, forSelected: selectedTextColor)
         button.layer.borderWidth = 0
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     }
@@ -50,13 +49,15 @@ class RoundedPurpleCell: UICollectionViewCell {
 }
 
 final class CategoryCell: RoundedPurpleCell {
-    // MARK: - Initialization
     
+    // MARK: - Initialization
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         button.addTarget(nil, action: #selector(buttonDidTapped), for: .touchUpInside)
+        configure(backgroundColor: .background, normalTextColor: .ppsGray1, selectedTextColor: .keyColor1)
+        setConstraints(height: 28)
     }
     
     required init?(coder: NSCoder) {
