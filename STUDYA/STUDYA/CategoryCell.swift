@@ -47,7 +47,6 @@ class RoundedPurpleCell: UICollectionViewCell {
         }
     }
 }
-
 final class CategoryCell: RoundedPurpleCell {
     
     // MARK: - Initialization
@@ -56,6 +55,7 @@ final class CategoryCell: RoundedPurpleCell {
         super.init(frame: frame)
         
         button.addTarget(nil, action: #selector(buttonDidTapped), for: .touchUpInside)
+        
         configure(backgroundColor: .background, normalTextColor: .ppsGray1, selectedTextColor: .keyColor1)
         setConstraints(height: 28)
     }
