@@ -10,7 +10,7 @@ import SnapKit
 
 class StudyExitViewController: UIViewController {
     
-    var type: SceneType!
+    var type: StudyExitViewBottomSheetType!
     weak var presentingVC: UIViewController?
     
     private var titleLabel: CustomLabel?

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -111,7 +111,7 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="BrandButton" customModule="STUDYA" customModuleProvider="target">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhD-E0-hZ1" customClass="BrandButton" customModule="STUDYA" customModuleProvider="target">
                                 <rect key="frame" x="20" y="802" width="374" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
@@ -463,7 +463,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Crc-IM-fQz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1640.5797101449277" y="117.1875"/>
+            <point key="canvasLocation" x="1640" y="116.74876847290641"/>
         </scene>
         <!--Study Free Rule View Controller-->
         <scene sceneID="RWJ-5d-CSQ">
@@ -1186,7 +1186,7 @@
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dC-ks-Zdr">
                                                         <rect key="frame" x="316" y="5" width="46" height="20"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="etc" title="">
+                                                        <buttonConfiguration key="configuration" style="plain" image="etc-row" title="">
                                                             <color key="baseForegroundColor" name="ppsGray1"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -1530,7 +1530,7 @@
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZK-O1-yW9">
                                                         <rect key="frame" x="311" y="20.666666666666686" width="46" height="20"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="etc" title="">
+                                                        <buttonConfiguration key="configuration" style="plain" image="etc-row" title="">
                                                             <color key="baseForegroundColor" name="ppsGray1"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -1541,7 +1541,7 @@
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOl-MG-yKe">
                                                         <rect key="frame" x="311" y="322" width="46" height="20"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" image="etc" title="">
+                                                        <buttonConfiguration key="configuration" style="plain" image="etc-row" title="">
                                                             <color key="baseForegroundColor" name="ppsGray1"/>
                                                         </buttonConfiguration>
                                                         <connections>
@@ -1705,7 +1705,7 @@
     </scenes>
     <resources>
         <image name="check" width="10" height="12"/>
-        <image name="etc" width="22" height="6"/>
+        <image name="etc-row" width="22" height="6"/>
         <namedColor name="background">
             <color red="0.97600001096725464" green="0.97600001096725464" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
