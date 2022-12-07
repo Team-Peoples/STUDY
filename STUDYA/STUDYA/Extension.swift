@@ -107,7 +107,7 @@ extension UIView {
 }
 
 extension String {
-    func checkOnlyNumbers() -> Bool{
+    func checkOnlyNumbers() -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: "^[0-9]$", options: .caseInsensitive)
             
@@ -118,5 +118,20 @@ extension String {
             return false
         }
         return false
+    }
+}
+
+extension UITableView {
+    public func cellsForRows(at section: Int) -> [UITableViewCell] {
+        let numberOfRows = self.numberOfRows(inSection: section)
+        let indexPaths = (0...numberOfRows).map { IndexPath(row: $0, section: section)
+        }
+        /// indexPath에서 오류 발생시 nil 처리하여 cell을 반환하지 않는다.
+        let cells = indexPaths.compactMap { indexPath in
+            let cell = self.cellForRow(at: indexPath)
+            return cell
+        }
+        
+        return cells
     }
 }

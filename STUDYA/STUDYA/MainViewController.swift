@@ -530,6 +530,15 @@ extension MainViewController: UITableViewDataSource {
 }
 
 extension MainViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 {
+            let announcementBoardVC = AnnouncementBoardViewController()
+            self.syncSwitchWith(nextVC: announcementBoardVC)
+            self.push(vc: announcementBoardVC)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case mainTableView:

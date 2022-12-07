@@ -9,14 +9,14 @@ import UIKit
 import SnapKit
 
 
-final class AnnouncementBoardViewController: UIViewController {
+final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     var announcement: [Announcement] = [
         Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
         Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", createdDate: Date()),
         Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date(), isPinned: true)]
-        
-//    var announcement: [Announcement] = []
+    
+    //    var announcement: [Announcement] = []
     
     private lazy var announcementEmptyView: UIView = {
         let v = UIView()
@@ -43,7 +43,7 @@ final class AnnouncementBoardViewController: UIViewController {
     }()
     
     private lazy var announcementBoardTableView = UITableView()
-    private let masterSwitch = BrandSwitch()
+    private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
     
     // MARK: - Life Cycle
     
@@ -51,14 +51,30 @@ final class AnnouncementBoardViewController: UIViewController {
         super.viewDidLoad()
         
         configureTableView()
-        configureMasterSwitch()
+        configureNavigationBar()
+        view.addSubview(floatingButtonView)
+        floatingButtonView.isHidden = true
+        floatingButtonView.addTapAction(target: nil, action: #selector(floatingButtonDidTapped))
+
+        floatingButtonView.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
+            make.width.equalTo(102)
+            make.height.equalTo(50)
+        }
         
         setConstraints(view: announcementBoardTableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         checkAnnouncementBoardIsEmpty()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(isSwitchOn)
     }
     
     override func viewDidLayoutSubviews() {
@@ -80,54 +96,20 @@ final class AnnouncementBoardViewController: UIViewController {
         announcementBoardTableView.tableHeaderView = headerView
     }
     
-    private func configureMasterSwitch() {
-        
-        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .valueChanged)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
-    }
-    
     // MARK: - Actions
     
-    @objc private func toggleMaster(_ sender: BrandSwitch) {
+    override func extraWorkWhenSwitchToggled() {
+        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
+        navigationController?.navigationBar.titleTextAttributes = isSwitchOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
         
-        if sender.isOn {
-            
-            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-            navigationItem.title = "관리자 모드"
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-            
-            let floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
-            
-            view.addSubview(floatingButtonView)
-            
-            floatingButtonView.addTapAction(target: nil, action: #selector(floatingButtonDidTapped))
-            
-            floatingButtonView.snp.makeConstraints { make in
-                make.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
-                make.width.equalTo(102)
-                make.height.equalTo(50)
+        if announcement.count >= 1 {
+            let cells = announcementBoardTableView.cellsForRows(at: 0)
+            let announcementBoardTableViewCells = cells.compactMap { cell in
+                let cell = cell as? AnnouncementBoardTableViewCell
+                return cell
             }
-            if announcement.count >= 1 {
-                for i in 0...announcement.count - 1 {
-                    let cell = announcementBoardTableView.cellForRow(at: IndexPath(row: i, section: 0)) as! AnnouncementBoardTableViewCell
-                    cell.etcButtonIsHiddenToggle()
-                }
-            }
-        } else {
-            
-            guard let floatingButtonView = view.subviews.last as? PlusButtonWithLabelContainerView else { return }
-            
-            floatingButtonView.removeFromSuperview()
-            
-            navigationController?.navigationBar.backgroundColor = .systemBackground
-            navigationItem.title = nil
-            navigationController?.navigationBar.tintColor = .black
-            
-            if announcement.count >= 1 {
-                for i in 0...announcement.count - 1 {
-                    let cell = announcementBoardTableView.cellForRow(at: IndexPath(row: i, section: 0)) as! AnnouncementBoardTableViewCell
-                    cell.etcButtonIsHiddenToggle()
-                }
+            announcementBoardTableViewCells.forEach { cell in
+                cell.etcButtonIsHiddenToggle()
             }
         }
     }
@@ -143,12 +125,12 @@ final class AnnouncementBoardViewController: UIViewController {
     private func checkAnnouncementBoardIsEmpty(){
         
         if announcement.isEmpty {
-
+            
         } else {
             
         }
     }
-                                                
+    
     // MARK: - Setting Constraints
     
     private func setConstraints(view selectedView: UIView) {
@@ -193,6 +175,7 @@ final class AnnouncementBoardViewController: UIViewController {
         }
     }
 }
+
 
 // MARK: - UITableViewDataSource
 

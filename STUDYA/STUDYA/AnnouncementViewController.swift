@@ -96,12 +96,15 @@ class AnnouncementViewController: UIViewController {
         addNotification()
         enableTapGesture()
         
+        navigationItem.title = "스터디 이름"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
+        
         setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        
         if !contentTextView.text.isEmpty || !titleTextView.text.isEmpty {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)

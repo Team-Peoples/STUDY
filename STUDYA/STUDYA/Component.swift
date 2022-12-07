@@ -1268,7 +1268,6 @@ class PlusButtonWithLabelContainerView: UIView {
         
         self.sideLabel.text = labelText
         self.sideLabel.sizeToFit()
-        
         super.init(frame: .zero)
         
         configureViews()
