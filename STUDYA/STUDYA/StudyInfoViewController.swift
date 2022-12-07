@@ -94,7 +94,7 @@ class StudyInfoViewController: SwitchableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(managerSwitch.isOn)
+        syncSwitchReverse(isSwitchOn)
     }
     
     // MARK: - Actions
@@ -209,15 +209,11 @@ class StudyInfoViewController: SwitchableViewController {
     }
     
     override func extraWorkWhenSwitchToggled() {
-        studyformEditButton.isHidden = !managerSwitch.isOn
-        generalRuleEditButton.isHidden = !managerSwitch.isOn
-        freeRuleEditButton.isHidden = !managerSwitch.isOn
+        studyformEditButton.isHidden = !isSwitchOn
+        generalRuleEditButton.isHidden = !isSwitchOn
+        freeRuleEditButton.isHidden = !isSwitchOn
         
-        if managerSwitch.isOn {
-            studyExitButton.setTitle("스터디 종료", for: .normal)
-        } else {
-            studyExitButton.setTitle("스터디 탈퇴", for: .normal)
-        }
+        isSwitchOn ? studyExitButton.setTitle("스터디 종료", for: .normal) : studyExitButton.setTitle("스터디 탈퇴", for: .normal)
     }
 
     private func check(_ value: Int?, AndSetupHeightOf view: UIView) {

@@ -11,13 +11,14 @@ final class EditingStudyFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyViewModel: StudyViewModel?
-    var cellIsLoaded = false {
+    var studyViewModel: StudyViewModel? {
         didSet {
+            print(studyViewModel?.study)
             guard let study = studyViewModel?.study else { return }
-            configure(study: study)
+            bind(study)
         }
     }
+   
     var categoryChoice: StudyCategory? {
         willSet(value) {
             if categoryChoice == nil {
@@ -126,7 +127,7 @@ final class EditingStudyFormViewController: UIViewController {
         containerView.addSubview(studyIntroductionTextView)
     }
     
-    func configure(study: Study) {
+    func bind(_ study: Study) {
         
         studyNameTextView.text = study.title
         studyIntroductionTextView.text = study.studyDescription
@@ -152,15 +153,6 @@ final class EditingStudyFormViewController: UIViewController {
             studyIntroductionTextView.hidePlaceholder(true)
             studyIntroductionTextView.getCharactersNumerLabel().text = "\(study.studyDescription!.count)/10"
         }
-        
-        guard let studyCategory = study.category else { return }
-        guard let indexPath = StudyCategory(rawValue: studyCategory)?.indexPath else { return }
-        
-        // tobefixed: 셀을 가져오지 못함. 버튼을 눌러야 샐을 가져옴.
-        print("2")
-        print(studyCategoryCollectionView)
-        guard let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as? CategoryCell else { return }
-        cell.toogleButton()
     }
     
     // MARK: - Actions
@@ -420,9 +412,9 @@ extension EditingStudyFormViewController: UICollectionViewDataSource {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
         cell.title = StudyCategory.allCases[indexPath.row].rawValue
-        
+    
         if let category = studyViewModel?.study.category, cell.title == category {
-            print(category)
+            cell.isSameTitle = true
         }
         
         return cell

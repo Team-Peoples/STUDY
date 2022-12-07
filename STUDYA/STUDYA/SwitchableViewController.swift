@@ -10,6 +10,8 @@ import UIKit
 class SwitchableViewController: UIViewController {
     
     var isAdmin = true
+    
+    //to be fixed: isSwitchOn과 managerSwitch중 하나만 사용해서 UI 처리할 수 있는 방법 찾기
     lazy var isSwitchOn = false {
         didSet {
             toggleNavigationBar()

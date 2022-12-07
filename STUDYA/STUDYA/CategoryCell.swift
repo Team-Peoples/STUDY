@@ -49,6 +49,12 @@ class RoundedPurpleCell: UICollectionViewCell {
 }
 final class CategoryCell: RoundedPurpleCell {
     
+    var isSameTitle: Bool = false {
+        didSet {
+            isSameTitle ? categoryChanged() : nil
+        }
+    }
+    
     // MARK: - Initialization
     
     override init(frame: CGRect) {
@@ -67,7 +73,11 @@ final class CategoryCell: RoundedPurpleCell {
     
     // MARK: - Actions
     
-    @objc func buttonDidTapped() {
+    @objc private func buttonDidTapped() {
+       categoryChanged()
+    }
+    
+    func categoryChanged() {
         toogleButton()
         NotificationCenter.default.post(name: Notification.Name.categoryDidChange, object:  ["title": button.titleLabel?.text ?? ""])
     }
