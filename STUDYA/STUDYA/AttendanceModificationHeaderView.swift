@@ -11,7 +11,7 @@ final class AttendanceModificationHeaderView: UIView {
     
     static let identifier = "AttendanceModificationHeaderView"
     
-    internal var bottomSheetAddableDelegate: BottomSheetAddable!
+    internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
     
     internal var leftButtonTapped: (() -> ()) = {}
     internal var rightButtonTapped: (() -> ()) = {}
@@ -27,9 +27,15 @@ final class AttendanceModificationHeaderView: UIView {
         let bottomVC = AttendanceBottomViewController()
         
         bottomVC.viewType = .daySearchSetting
-        bottomSheetAddableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
+        print(#function)
+        let vc = AttendancePopUpDayCalendarViewController()
         
+        vc.presentingVC =  navigatableBottomSheetableDelegate
+//        guard let delegate = navigatableBottomSheetableDelegate else { return }
+//        print(delegate)
+        navigatableBottomSheetableDelegate.present(vc: vc)
     }
 }
