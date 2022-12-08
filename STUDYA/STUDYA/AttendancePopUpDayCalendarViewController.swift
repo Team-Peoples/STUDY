@@ -12,8 +12,8 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     // MARK: - Properties
     
     var selectedDate: Date = Date() //임시
-    lazy var selectedDateComponents: DateComponents? = Calendar.current.dateComponents([.year, .month, .day, .era, .calendar], from: selectedDate as Date)
-//    lazy var selectedDateComponents = DateComponents(year: 2022, month: 12, day: 30)
+    lazy var selectedDateComponents: DateComponents? = selectedDate.convertToDateComponents()
+
     weak var presentingVC: UIViewController?
     
     private let dimmingViewButton = UIButton(frame: .zero)
@@ -35,10 +35,6 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         calendarView.calendar = Calendar(identifier: .gregorian)
         calendarView.tintColor = .appColor(.keyColor1)
         calendarView.fontDesign = .rounded
-        
-//        selectionSingleDate.w(DateComponents(year: 2022, month: 12, day: 6), animated: true)
-//        selectedDate.
-        
         
         return calendarView
     }()
@@ -127,26 +123,27 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
             make.top.greaterThanOrEqualTo(calendarView.snp.bottom).offset(20)
         }
     }
-    
-    private func daySelected() {
-//        calendarView.
-    }
 }
 
 extension AttendancePopUpDayCalendarViewController: UICalendarSelectionSingleDateDelegate {
     
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        let today = Date()  //투데이가 아니라 원래는 선택되어있던 날짜를 가져오면 됨
-        let todayDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: today)
+
+        guard let selectedDateComponents = selectedDateComponents else { return }
         guard let dateComponents = dateComponents else { return }
         
-        if dateComponents.year == todayDateComponents.year
-            && dateComponents.month == todayDateComponents.month
-            && dateComponents.day == todayDateComponents.day {
+        if dateComponents.year == selectedDateComponents.year
+            && dateComponents.month == selectedDateComponents.month
+            && dateComponents.day == selectedDateComponents.day {
+            
             selectionSingleDate.setSelected(nil, animated: true)
+            
             doneButton.fillOut(title: "완료")
+            doneButton.isEnabled = false
         } else {
+            
             doneButton.fillIn(title: "완료")
+            doneButton.isEnabled = true
         }
     }
     
@@ -154,17 +151,8 @@ extension AttendancePopUpDayCalendarViewController: UICalendarSelectionSingleDat
         let today = Date()  //여기서는 오늘 이후에는 선택해봤자 의미가 없기 땜에 오늘이 맞음.
 //        let todayDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: today)
         
-        guard let dateComponents = dateComponents, let selectedDate = Calendar.current.date(from: dateComponents) else { return false }
+        guard let dateComponents = dateComponents, let selectedDate = dateComponents.convertToDate() else { return false }
         
         if today < selectedDate { return false } else { return true }
-    }
-}
-
-extension Date {
-    func dateToDateComponents() -> DateComponents {
-        
-        let com = Calendar.current.dateComponents([.year, .month, .day], from: self)
-        
-        return com
     }
 }

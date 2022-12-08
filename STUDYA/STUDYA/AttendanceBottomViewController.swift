@@ -16,9 +16,15 @@ final class AttendanceBottomViewController: UIViewController {
         didSet {
             let bottomView = viewType!.view
             
-            if viewType == .daySearchSetting {
+            switch viewType {
+            case .daySearchSetting:
                 (bottomView as! AttendanceBottomDaySearchSettingView).delegate = self
+            case .membersPeriodSearchSetting:
+                print("🥹")
+                (bottomView as! AttendanceBottomMembersPeriodSearchSettingView).navigatableDelegate = self
+            default: break
             }
+            
             view = bottomView
         }
     }
@@ -75,3 +81,9 @@ extension AttendanceBottomViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: label.frame.width + leftRightInsets, height: 32)
     }
 }
+//
+//extension AttendanceBottomViewController: Navigatable {
+//    func present(vc: UIViewController) {
+//        self.present(vc, animated: true)
+//    }
+//}

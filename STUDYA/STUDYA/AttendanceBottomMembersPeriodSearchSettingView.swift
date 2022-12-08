@@ -9,6 +9,12 @@ import UIKit
 
 final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtomView {
     
+    internal var navigatableDelegate: UIViewController! {
+        didSet {
+            print(navigatableDelegate)
+        }
+    }
+    
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
         
@@ -38,13 +44,13 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
         
         return s
     }()
-    private lazy var selectDayButton = UIButton(frame: .zero)
+    private lazy var selectPeriodButton = UIButton(frame: .zero)
     
     override init(doneButtonTitle: String) {
         super.init(doneButtonTitle: doneButtonTitle)
         
         backgroundContainerView.backgroundColor = .appColor(.ppsGray3)
-        selectDayButton.addTarget(self, action: #selector(selectDayButtonTapped), for: .touchUpInside)
+        selectPeriodButton.addTarget(self, action: #selector(selectPeriodButtonTapped), for: .touchUpInside)
         
         backgroundColor = .systemBackground
         
@@ -70,8 +76,11 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
         customPeriodButton.toggle()
     }
     
-    @objc private func selectDayButtonTapped() {
-        print(#function)
+    @objc private func selectPeriodButtonTapped() {
+        print(#function, 1)
+        let vc = AttendancePopUpPeriodCalendarViewController()
+        vc.presentingVC = navigatableDelegate
+        navigatableDelegate.present(vc, animated: true)
     }
     
     private func addSubviews() {
@@ -85,7 +94,7 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
         addSubview(customPeriodButton)
         addSubview(backgroundContainerView)
         backgroundContainerView.addSubview(stackView)
-        backgroundContainerView.addSubview(selectDayButton)
+        backgroundContainerView.addSubview(selectPeriodButton)
     }
     
     private func setConstraints() {
@@ -131,7 +140,7 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
         stackView.snp.makeConstraints { make in
             make.centerX.centerY.equalTo(backgroundContainerView)
         }
-        selectDayButton.snp.makeConstraints { make in
+        selectPeriodButton.snp.makeConstraints { make in
             make.edges.equalTo(backgroundContainerView)
         }
     }
