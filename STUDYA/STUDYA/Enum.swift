@@ -20,7 +20,7 @@ enum AttendanceStatus {
     case allowed
 }
 
-enum StudyExitViewBottomSheetType {
+enum StudyExitBottomSheetTask {
     case exit
     case close
     case resignMaster
@@ -32,9 +32,9 @@ enum Task {
     case viewing
 }
 
-enum AttendanceViewType {
-    case detail
-    case userMode
+enum Viewer {
+    case manager
+    case user
 }
 
 enum AttendanceBottomViewType {

@@ -195,7 +195,7 @@ extension AttendanceReusableProgressView: MultiProgressViewDelegate {
 
 
 
-class AttendanceUserModeStatusView: UIView {
+class AttendanceStatusView: UIView {
     
     // MARK: - Properties
     
@@ -248,7 +248,7 @@ class AttendanceUserModeStatusView: UIView {
     }
 }
 
-class AttendanceUserDetailStatusView: UIView {
+class AttendanceStatusWithProfileView: UIView {
     
     // MARK: - Properties
     

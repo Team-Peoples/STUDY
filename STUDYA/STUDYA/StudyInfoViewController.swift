@@ -142,7 +142,7 @@ class StudyInfoViewController: SwitchableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let studygeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
         
-        studygeneralRuleVC.type = .editing
+        studygeneralRuleVC.task = .editing
         studygeneralRuleVC.navigationItem.title = "규칙 관리"
         studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
         studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
@@ -177,8 +177,8 @@ class StudyInfoViewController: SwitchableViewController {
     @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
         switch sender.title(for: .normal) {
         case "스터디 탈퇴":
-            let vcToPresent = StudyExitViewController()
-            vcToPresent.type = .exit
+            let vcToPresent = StudyExitViewController(task: .exit)
+
             vcToPresent.presentingVC = self
             if let sheet = vcToPresent.sheetPresentationController {
                 
@@ -188,8 +188,8 @@ class StudyInfoViewController: SwitchableViewController {
             }
             present(vcToPresent, animated: true, completion: nil)
         case "스터디 종료":
-            let vcToPresent = StudyExitViewController()
-            vcToPresent.type = .close
+            let vcToPresent = StudyExitViewController(task: .close)
+           
             vcToPresent.presentingVC = self
             if let sheet = vcToPresent.sheetPresentationController {
                 
