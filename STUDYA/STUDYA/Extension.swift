@@ -133,5 +133,15 @@ extension UITableView {
         }
         
         return cells
+
+extension Date {
+    func convertToDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day], from: self)
+    }
+}
+
+extension DateComponents {
+    func convertToDate() -> Date? {
+        Calendar.current.date(from: self)
     }
 }

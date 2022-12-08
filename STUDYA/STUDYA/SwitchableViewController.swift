@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SwitchableViewController: UIViewController {
+class SwitchableViewController: UIViewController, Navigatable {
     
     var isAdmin = true
     
@@ -70,12 +70,6 @@ extension SwitchableViewController: SwitchSyncable {
         nextVC.syncSwitchReverse = { sender in
             self.managerSwitch.isOn = nextVC.managerSwitch.isOn
         }
-    }
-}
-
-extension SwitchableViewController: Navigatable {
-    func push(vc: UIViewController) {
-        navigationController?.pushViewController(vc, animated: true)
     }
 }
 

@@ -57,6 +57,8 @@
 		D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D306E6D0292BA78300F9BE5C /* AttendanceBottomViewController.swift */; };
 		D309A3CB293CA061007BD2FF /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3CA293CA061007BD2FF /* NotificationViewController.swift */; };
 		D309A3CD293CE494007BD2FF /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */; };
+		D309A3CF293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3CE293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift */; };
+		D309A3D1293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D309A3D0293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift */; };
 		D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */; };
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
@@ -175,6 +177,8 @@
 		D306E6D0292BA78300F9BE5C /* AttendanceBottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceBottomViewController.swift; sourceTree = "<group>"; };
 		D309A3CA293CA061007BD2FF /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		D309A3CE293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendancePopUpDayCalendarViewController.swift; sourceTree = "<group>"; };
+		D309A3D0293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendancePopUpPeriodCalendarViewController.swift; sourceTree = "<group>"; };
 		D314A1D82902931800093C0E /* ToDoItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTableViewCell.swift; sourceTree = "<group>"; };
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
@@ -313,6 +317,7 @@
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
 				D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */,
+				D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */,
 				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
 				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
 				D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */,
@@ -321,7 +326,6 @@
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */,
 				D371D2182924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift */,
-				D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */,
 				D3DD808A29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				D34E4F5D291D3F9A00958557 /* MemberViewController.swift */,
@@ -376,6 +380,8 @@
 				D35D6F7E292E581000514980 /* AttendanceBottomIndividualUpdateView.swift */,
 				D35D6F802930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift */,
 				D3488DCE293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift */,
+				D309A3CE293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift */,
+				D309A3D0293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
@@ -549,6 +555,7 @@
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				D37C0CB92939BD1000702177 /* SwitchableViewController.swift in Sources */,
 				72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */,
+				D309A3D1293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift in Sources */,
 				D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */,
 				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
 				D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */,
@@ -588,6 +595,7 @@
 				72512A80292CDFC40003F431 /* StudyScheduleContentViewController.swift in Sources */,
 				72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */,
 				72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */,
+				D309A3CF293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
 				72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */,

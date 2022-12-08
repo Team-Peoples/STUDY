@@ -11,9 +11,9 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceOverallCheckCollectionViewCell"
     
-    internal var bottomSheetAddableDelegate: BottomSheetAddable! {
+    internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)! {
         didSet {
-            headerView.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+            headerView.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
         }
     }
     

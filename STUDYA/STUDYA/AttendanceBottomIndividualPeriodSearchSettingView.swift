@@ -45,7 +45,7 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
         
         allPeriodButton.isSelected = true
         
-        selectDayButton.addTarget(self, action: #selector(selectDayButtonTapped), for: .touchUpInside)
+        selectDayButton.addTarget(self, action: #selector(selectPeriodButtonTapped), for: .touchUpInside)
         
         addSubviews()
         setConstraints()
@@ -61,7 +61,7 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
         customPeriodButton.toggle()
     }
     
-    @objc private func selectDayButtonTapped() {
+    @objc private func selectPeriodButtonTapped() {
         print(#function)
     }
     
