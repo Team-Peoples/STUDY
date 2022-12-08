@@ -86,10 +86,10 @@ final class BrandButton: UIButton {
 
 final class CustomButton: UIButton {
     
-    var selectedBorderColor: CGColor?
-    var normalBorderColor: CGColor?
-    var selectedBackgroundColor: UIColor?
-    var normalBackgroundColor: UIColor?
+    private var selectedBorderColor: CGColor?
+    private var normalBorderColor: CGColor?
+    private var selectedBackgroundColor: UIColor?
+    private var normalBackgroundColor: UIColor?
     
     override var isSelected: Bool {
         didSet {

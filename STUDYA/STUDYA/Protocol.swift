@@ -7,9 +7,17 @@
 
 import UIKit
 
-@objc protocol Navigatable {
+protocol Navigatable: UIViewController {
     func push(vc: UIViewController)
-    @objc optional func present(vc: UIViewController)
+}
+
+extension Navigatable {
+    func push(vc: UIViewController) {
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    func present(vc: UIViewController) {
+        navigationController?.present(vc, animated: true)
+    }
 }
 
 protocol BottomSheetAddable: UIViewController {

@@ -166,7 +166,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        navigatable.present!(vc: vc)
+        navigatable.present(vc: vc)
     }
     
     @objc private func mainButtonTappedWhenNotManager() {
@@ -175,7 +175,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        navigatable.present!(vc: vc)
+        navigatable.present(vc: vc)
     }
     
     func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
