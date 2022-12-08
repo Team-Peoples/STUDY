@@ -32,7 +32,7 @@ class SwitchableViewController: UIViewController {
     }
     
     func toggleBackButtonColor() {
-        navigationController?.navigationBar.backIndicatorImage = isSwitchOn ? UIImage(named: "back")?.withTintColor(.white) : UIImage(named: "back")
+        navigationController?.navigationBar.tintColor = isSwitchOn ? .appColor(.whiteLabel) : .appColor(.ppsBlack)
     }
     
     func toggleNavigationBar() {
@@ -42,21 +42,21 @@ class SwitchableViewController: UIViewController {
     func turnOnNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.tintColor = .white
     }
     
     func turnOffNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .systemBackground
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.ppsBlack)]
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
     
-//    needs to call in every VC's viewDidLaod
+    //needs to call in every VC's viewDidLaod
     func configureNavigationBar() {
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.setBrandNavigation()
         
         if isAdmin {
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             managerSwitch.addTarget(self, action: #selector(managerSwitchTappedAction), for: .valueChanged)
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: managerSwitch)
         }

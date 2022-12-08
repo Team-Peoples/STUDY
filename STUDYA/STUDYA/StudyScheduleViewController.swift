@@ -7,11 +7,18 @@
 
 import UIKit
 
-class StudyScheduleViewController: UIViewController {
+class StudyScheduleViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule()]
+    var studySchedules: [StudySchedule] = [
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구")
+    ]
     
     let calendarView: UICalendarView = {
         let c = UICalendarView()
@@ -24,7 +31,7 @@ class StudyScheduleViewController: UIViewController {
     
     let scheduleTableView = ScheduleTableView()
     
-    let floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+    lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
       
 
     // MARK: - Life Cycle
@@ -48,14 +55,32 @@ class StudyScheduleViewController: UIViewController {
         floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
         
         setConstraints()
+        
+        configureNavigationBar()
     }
     
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
+        
+        let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+        
+        let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
+        
+        navigation.modalPresentationStyle = .fullScreen
+        present(navigation, animated: true)
+    }
     
-        let vc = StudySchedulePriodFormViewController()
-        navigationController?.pushViewController(vc, animated: true)
+    override func extraWorkWhenSwitchToggled() {
+        floatingButtonView.isHidden = !managerSwitch.isOn
+        let cells = scheduleTableView.cellsForRows(at: 0)
+        let scheduleTableViewCells = cells.compactMap { cell in
+            let cell = cell as? ScheduleTableViewCell
+            return cell
+        }
+        scheduleTableViewCells.forEach { cell in
+            cell.editable = isSwitchOn
+        }
     }
     
     // MARK: - Configure
@@ -104,8 +129,55 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let schedule = studySchedules[indexPath.row]
         
         cell.configure(schedule: schedule, kind: .study)
+        cell.editable = self.isSwitchOn
+        
+        cell.etcButtonAction = { [unowned self] in
+            presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
+        }
         
         return cell
+    }
+    
+    func presentActionSheet(selected cell: ScheduleTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
+          
+            let editingStudyScheduleVC = EditingStudySchduleViewController()
+            editingStudyScheduleVC.studySchedule = studySchedules[indexPath.row]
+            
+            let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
+            navigationVC.modalPresentationStyle = .fullScreen
+            
+            present(navigationVC, animated: true)
+        }
+        
+        let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+            
+            let alertController = UIAlertController(title: "이일정을 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "삭제", style: .destructive) {
+                _ in
+
+                self.studySchedules.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.reloadData()
+            }
+            
+            let cancelAction = UIAlertAction(title: "닫기", style: .cancel)
+            
+            alertController.addAction(okAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+
+        actionSheet.addAction(editAction)
+        actionSheet.addAction(deleteAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true)
     }
 }
 
