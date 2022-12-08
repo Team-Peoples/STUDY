@@ -7,26 +7,28 @@
 
 import UIKit
 
-class StudyScheduleContentViewController: UIViewController {
+class CreatingStudyScheduleContentViewController: UIViewController {
     
     // MARK: - Properties
     
-    let topicTitleLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    let topicTextView: BaseTextView = {
+    var studySchedule: StudySchedule?
+    
+    private let topicTitleLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let topicTextView: BaseTextView = {
         let bt = BaseTextView(placeholder: "모임 주제는 무엇인가요?", fontSize: 16)
         bt.backgroundColor = .appColor(.background)
         bt.layer.cornerRadius = 21
         return bt
     }()
-    let topicTextViewCharactersCountLimitLabel = CustomLabel(title: "0/20", tintColor: .ppsGray1, size: 12)
-    let placeTitleLabel = CustomLabel(title: "장소", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
-    let placeTextView: BaseTextView = {
+    private let topicTextViewCharactersCountLimitLabel = CustomLabel(title: "0/20", tintColor: .ppsGray1, size: 12)
+    private let placeTitleLabel = CustomLabel(title: "장소", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let placeTextView: BaseTextView = {
         let bt = BaseTextView(placeholder: "모임 장소를 입력해주세요.", fontSize: 16)
         bt.backgroundColor = .appColor(.background)
         bt.layer.cornerRadius = 21
         return bt
     }()
-    let placeTextViewCharactersCountLimitLabel = CustomLabel(title: "0/20", tintColor: .ppsGray1, size: 12)
+    private let placeTextViewCharactersCountLimitLabel = CustomLabel(title: "0/20", tintColor: .ppsGray1, size: 12)
     private let bottomStickyView: UIView = {
         let v = UIView()
         v.backgroundColor = .white
@@ -34,6 +36,7 @@ class StudyScheduleContentViewController: UIViewController {
         return v
     }()
     private let creatingScheduleButton = BrandButton(title: "일정만들기", isBold: true, isFill: false)
+    private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close")?.withTintColor(.white), style: .done, target: self, action: #selector(closeButtonDidTapped))
     
     // MARK: - Life Cycle
     
@@ -41,6 +44,7 @@ class StudyScheduleContentViewController: UIViewController {
         super.viewDidLoad()
         
         configureViews()
+        setNavigation()
         
         creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
         creatingScheduleButton.isEnabled = false
@@ -62,11 +66,15 @@ class StudyScheduleContentViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc func creatingScheduleButtonDidTapped() {
-        
+    @objc private  func closeButtonDidTapped() {
+        self.dismiss(animated: true)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func creatingScheduleButtonDidTapped() {
+        self.dismiss(animated: true)
+    }
+    
+    @objc private func onKeyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -78,7 +86,7 @@ class StudyScheduleContentViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         bottomStickyView.snp.updateConstraints { make in
             make.bottom.equalTo(view)
         }
@@ -100,6 +108,17 @@ class StudyScheduleContentViewController: UIViewController {
         view.addSubview(bottomStickyView)
         
         bottomStickyView.addSubview(creatingScheduleButton)
+    }
+
+    private func setNavigation() {
+        
+        navigationController?.setBrandNavigation()
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+        
+        navigationItem.title = "일정 만들기"
+        navigationItem.rightBarButtonItem = closeButton
     }
     
     // MARK: - Setting Constraints
@@ -147,7 +166,7 @@ class StudyScheduleContentViewController: UIViewController {
 
 // MARK: - UITextViewDelegate
 
-extension StudyScheduleContentViewController: UITextViewDelegate {
+extension CreatingStudyScheduleContentViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         
@@ -177,15 +196,9 @@ extension StudyScheduleContentViewController: UITextViewDelegate {
         }
     }
     
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        if !topicTextView.text.isEmpty && !placeTextView.text.isEmpty { creatingScheduleButton.isEnabled = true
-            creatingScheduleButton.fillIn(title: "일정 만들기")
-        } else {
-            creatingScheduleButton.isEnabled = false
-                creatingScheduleButton.fillOut(title: "일정 만들기")
-        }
-        
+
         switch textView {
             case topicTextView:
                 
@@ -209,16 +222,26 @@ extension StudyScheduleContentViewController: UITextViewDelegate {
         
         ///엔터 입력할때 안되도록...막아야함
         switch textView {
-            case topicTextView:
-                if topicTextView.text.contains(where: { $0 == "\n" }) {
-                    topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
-                }
-            case placeTextView:
-                if placeTextView.text.contains(where: { $0 == "\n" }) {
-                    placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
-                }
-            default:
-                break
+        case topicTextView:
+            if topicTextView.text.contains(where: { $0 == "\n" }) {
+                topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
+            }
+            studySchedule?.topic = topicTextView.text
+        case placeTextView:
+            if placeTextView.text.contains(where: { $0 == "\n" }) {
+                placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
+            }
+            studySchedule?.place = placeTextView.text
+        default:
+            break
+        }
+        
+        if !topicTextView.text.isEmpty && !placeTextView.text.isEmpty {
+            creatingScheduleButton.isEnabled = true
+            creatingScheduleButton.fillIn(title: "일정 만들기")
+        } else {
+            creatingScheduleButton.isEnabled = false
+            creatingScheduleButton.fillOut(title: "일정 만들기")
         }
     }
 }

@@ -7,19 +7,16 @@
 
 import UIKit
 
-// dummy data
-struct Studyschedule {
-    let studyName = "스터디이름최대10글자"
-    let repeatOption = "매일"
-    let color = UIColor.orange
-    let place = "강남구"
-    let topic = "HIG 톺아보기"
-    let time = "00:00-00:00"
-}
-
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    let studySchedules: [Studyschedule] = [Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule(), Studyschedule()]
+    let studySchedules: [StudySchedule] = [
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
+        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구")
+    ]
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"

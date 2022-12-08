@@ -463,7 +463,7 @@ extension MainViewController: UITableViewDataSource {
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
-                    cell.navigatable = self
+                cell.navigatableSwitchSyncableDelegate = self
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell

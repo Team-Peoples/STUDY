@@ -184,6 +184,7 @@ struct Schedule: Codable {
 
 struct StudySchedule {
     
+    var studyName: String?
     var openDate: Date?
     var deadlineDate: Date?
     var startTime: Date?
