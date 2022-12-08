@@ -30,7 +30,6 @@ final class AttendanceModificationHeaderView: UIView {
         navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
-        print(#function)
         let vc = AttendancePopUpDayCalendarViewController()
         
         vc.presentingVC =  navigatableBottomSheetableDelegate

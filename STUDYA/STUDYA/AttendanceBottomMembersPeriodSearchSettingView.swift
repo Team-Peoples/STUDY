@@ -9,12 +9,7 @@ import UIKit
 
 final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtomView {
     
-    internal var navigatableDelegate: UIViewController! {
-        didSet {
-            print(navigatableDelegate)
-        }
-    }
-    
+    internal var delegate: AttendanceBottomViewController!
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
         
@@ -31,16 +26,15 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
     private lazy var allPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "전체", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changePeriodType))
     private lazy var customPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "직접설정", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changePeriodType))
     private let backgroundContainerView = RoundableView(cornerRadius: 12)
-    private let precedingDayLabel = CustomLabel(title: "22.06.10", tintColor: .ppsGray1, size: 16, isBold: false)
+    private let precedingDayLabel = CustomLabel(title: "2022.06.10", tintColor: .ppsGray1, size: 16, isBold: false)
     private let middleLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16, isBold: false)
-    private let follwingDayLabel = CustomLabel(title: "23.01.14", tintColor: .ppsGray1, size: 16, isBold: false)
+    private let followingDayLabel = CustomLabel(title: "2023.01.14", tintColor: .ppsGray1, size: 16, isBold: false)
     private lazy var stackView: UIStackView = {
        
-        let s = UIStackView(arrangedSubviews: [precedingDayLabel, middleLabel, follwingDayLabel])
+        let s = UIStackView(arrangedSubviews: [precedingDayLabel, middleLabel, followingDayLabel])
         
         s.axis = .horizontal
         s.distribution = .equalSpacing
-        s.spacing = 32
         
         return s
     }()
@@ -77,10 +71,19 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
     }
     
     @objc private func selectPeriodButtonTapped() {
-        print(#function, 1)
         let vc = AttendancePopUpPeriodCalendarViewController()
-        vc.presentingVC = navigatableDelegate
-        navigatableDelegate.present(vc, animated: true)
+        vc.presentingVC = delegate
+        delegate.present(vc, animated: true)
+    }
+    
+    internal func setPrecedingDateLabel(with date: Date) {
+        print(date.formatToString(language: .eng))
+        precedingDayLabel.text = date.formatToString(language: .eng)
+
+    }
+    
+    internal func setFollowingDateLabel(with date: Date) {
+        followingDayLabel.text = date.formatToString(language: .eng)
     }
     
     private func addSubviews() {
@@ -138,7 +141,8 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
             make.height.equalTo(30)
         }
         stackView.snp.makeConstraints { make in
-            make.centerX.centerY.equalTo(backgroundContainerView)
+            make.centerY.equalTo(backgroundContainerView)
+            make.leading.trailing.equalTo(backgroundContainerView).inset(25)
         }
         selectPeriodButton.snp.makeConstraints { make in
             make.edges.equalTo(backgroundContainerView)
