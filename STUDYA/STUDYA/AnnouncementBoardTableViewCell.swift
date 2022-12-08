@@ -12,7 +12,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     
     var announcement: Announcement? {
         didSet {
-            
             titleLabel.text = announcement?.title
             contentLabel.text = announcement?.content
             timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
@@ -20,9 +19,24 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         }
     }
     
+    var editable: Bool = false {
+        didSet {
+            etcButton.isHidden = !editable
+        }
+    }
+    
     var cellAction: (() -> Void) = {}
     var etcAction: (() -> Void) = {}
-//    var hideEtcButton: (() -> Void) = {}
+    
+    var isPinned: Bool? {
+        willSet(value) {
+            if value == true {
+                cell.layer.borderWidth = 1
+            } else {
+                cell.layer.borderWidth = 0
+            }
+        }
+    }
     
     private let cell: UIView = {
         let v = UIView()
@@ -31,6 +45,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         v.clipsToBounds = false
         v.backgroundColor = .appColor(.background)
 
+        v.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         v.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         v.layer.shadowOpacity = 1
         v.layer.shadowRadius = 5
@@ -38,17 +53,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         
         return v
     }()
-    
-    var isPinned: Bool? {
-        willSet(value) {
-            if value == true {
-                
-                cell.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-                cell.layer.borderWidth = 1
-            }
-        }
-    }
-    
     private let titleLabel: CustomLabel = {
         let lbl = CustomLabel(title: "", tintColor: .ppsBlack, size: 18, isBold: true)
         
@@ -57,7 +61,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         
         return lbl
     }()
-    
     private let contentLabel: UILabel = {
         let lbl = UILabel()
         
@@ -67,7 +70,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         
         return lbl
     }()
-    
     private let timeLabel: UILabel = {
         let lbl = UILabel()
         
@@ -76,7 +78,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         
         return lbl
     }()
-    
     private lazy var etcButton: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(named: "etc-row"), for: .normal)
@@ -104,7 +105,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     
     private func configureViews() {
         backgroundColor = .clear
-        self.contentView.addSubview(cell)
+        contentView.addSubview(cell)
 
         cell.addSubview(titleLabel)
         cell.addSubview(timeLabel)
@@ -120,10 +121,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     
     @objc private func cellDidTapped() {
         cellAction()
-    }
-    
-    func etcButtonIsHiddenToggle() {
-        etcButton.isHidden.toggle()
     }
     
     // MARK: - Setting Constraints
@@ -143,6 +140,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
             make.leading.equalTo(titleLabel.snp.trailing).offset(10)
             make.trailing.equalTo(cell).inset(24)
             make.bottom.equalTo(titleLabel.snp.bottom)
+            make.width.equalTo(80)
         }
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(13)
@@ -150,6 +148,8 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
             make.leading.trailing.equalTo(cell).inset(24)
         }
         etcButton.snp.makeConstraints { make in
+            make.height.equalTo(18)
+            make.width.equalTo(38)
             make.trailing.equalTo(timeLabel.snp.trailing)
             make.bottom.equalTo(timeLabel.snp.top)
         }

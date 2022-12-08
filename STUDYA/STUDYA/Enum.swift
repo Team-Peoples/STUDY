@@ -26,9 +26,10 @@ enum StudyExitViewBottomSheetType {
     case resignMaster
 }
 
-enum StudyGeneralRuleViewType {
+enum Task {
     case creating
     case editing
+    case viewing
 }
 
 enum AttendanceViewType {

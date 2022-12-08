@@ -22,7 +22,6 @@ class SwitchableViewController: UIViewController {
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
     lazy var managerSwitch = BrandSwitch()
-    
 
     @objc func managerSwitchTappedAction(sender: BrandSwitch) {
         isSwitchOn = sender.isOn ? true : false
@@ -30,7 +29,6 @@ class SwitchableViewController: UIViewController {
 
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
-        
     }
     
     func toggleBackButtonColor() {
@@ -50,7 +48,6 @@ class SwitchableViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .systemBackground
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.background2)]
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
-        navigationController?.navigationBar.backgroundColor = .systemBackground
     }
     
 //    needs to call in every VC's viewDidLaod
