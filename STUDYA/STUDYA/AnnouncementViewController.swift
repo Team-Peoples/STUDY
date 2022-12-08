@@ -63,8 +63,7 @@ class AnnouncementViewController: UIViewController {
         tv.textColor = UIColor.appColor(.ppsBlack)
         tv.tintColor = .black
         tv.isEditable = false
-        tv.isScrollEnabled = true
-//        tv.textContainer.maximumNumberOfLines = 1
+        tv.isScrollEnabled = false
         tv.enablesReturnKeyAutomatically = true
         tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
@@ -113,6 +112,8 @@ class AnnouncementViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.setBrandNavigation()
+        
         configureViews()
         checkIfUserIsMaster()
         
@@ -141,6 +142,7 @@ class AnnouncementViewController: UIViewController {
     // MARK: - Configure
     
     private func configureViews() {
+        
         view.backgroundColor = .systemBackground
         
         view.addSubview(scrollView)

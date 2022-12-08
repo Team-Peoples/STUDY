@@ -26,7 +26,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     }
     
     var cellAction: (() -> Void) = {}
-    var etcAction: (() -> Void) = {}
+    var etcButtonAction: (() -> Void) = {}
     
     var isPinned: Bool? {
         willSet(value) {
@@ -116,7 +116,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @objc private func etcButtonDidTapped() {
-        etcAction()
+        etcButtonAction()
     }
     
     @objc private func cellDidTapped() {

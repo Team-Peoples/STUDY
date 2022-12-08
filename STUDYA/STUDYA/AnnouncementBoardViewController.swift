@@ -45,12 +45,17 @@ final class AnnouncementBoardViewController: SwitchableViewController {
     private let titleLabel = CustomLabel(title: "공지사항", tintColor: .ppsBlack, size: 16, isBold: true)
     
     private let announcementBoardTableView = UITableView()
-    private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+    private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "공지추가")
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.title = managerSwitch.isOn ? "관리자 모드" : "스터디 이름"
+        titleLabel.text = managerSwitch.isOn ? "공지사항 관리" : "공지사항"
+        
+        navigationController?.navigationBar.titleTextAttributes = managerSwitch.isOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
         
         view.backgroundColor = .systemBackground
         
@@ -116,7 +121,6 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         
         view.addSubview(floatingButtonView)
         
-        floatingButtonView.isHidden = true
         floatingButtonView.addTapAction(target: nil, action: #selector(floatingButtonDidTapped))
         
         floatingButtonView.snp.makeConstraints { make in
@@ -129,10 +133,10 @@ final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Actions
     
     override func extraWorkWhenSwitchToggled() {
-        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
-        titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
-        navigationController?.navigationBar.titleTextAttributes = isSwitchOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
         
+        navigationItem.title = managerSwitch.isOn ? "관리자 모드" : "스터디 이름"
+        titleLabel.text = managerSwitch.isOn ? "공지사항 관리" : "공지사항"
+
         floatingButtonView.isHidden.toggle()
         
         if announcements.count >= 1 {
@@ -200,7 +204,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
         //자사용 이슈 떄문에 설정해줌.
         cell.editable = self.isSwitchOn
         
-        cell.etcAction = { [unowned self] in
+        cell.etcButtonAction = { [unowned self] in
             presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
         }
 
