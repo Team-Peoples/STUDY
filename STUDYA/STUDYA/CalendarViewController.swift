@@ -8,7 +8,7 @@
 import UIKit
 
 @available(iOS 16.0, *)
-class CalendarViewController: UIViewController {
+class CalendarViewController: SwitchableViewController {
     // MARK: - Properties
     
     var sheetCoordinator: UBottomSheetCoordinator!
@@ -33,6 +33,7 @@ class CalendarViewController: UIViewController {
         
         configureViews()
         setConstraints()
+        configureNavigationBar()
     }
     
     override func viewWillLayoutSubviews() {
