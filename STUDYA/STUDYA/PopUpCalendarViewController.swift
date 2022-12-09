@@ -22,7 +22,7 @@ class PopUpCalendarViewController: UIViewController {
     private let dismissButton: UIButton = {
         
         let button = UIButton()
-        let image = UIImage(named: "Dismiss")
+        let image = UIImage(named: "dismiss")
         
         button.setImage(image, for: .normal)
         
