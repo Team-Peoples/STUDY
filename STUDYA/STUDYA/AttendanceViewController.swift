@@ -30,6 +30,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         if isAdmin {
             managerView.navigatableBottomSheetableDelegate = self
+            managerView.navigatiableSwitchSyncableDelegate = self
         }
         userView.bottomSheetAddableDelegate = self
         configureNavigationBar()
