@@ -12,26 +12,40 @@ final class AttendanceBottomViewController: UIViewController {
 
     internal let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
     
+    internal lazy var precedingDate = Date() {
+        didSet { (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate) } }
+    internal lazy var followingDate = Date() {
+        didSet { (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate) }
+    }
+    
     internal  var viewType: AttendanceBottomViewType! {
         didSet {
-            let bottomView = viewType!.view
-            
-            if viewType == .daySearchSetting {
+            switch viewType {
+            case .daySearchSetting:
                 (bottomView as! AttendanceBottomDaySearchSettingView).delegate = self
+            case .membersPeriodSearchSetting:
+                (bottomView as! AttendanceBottomMembersPeriodSearchSettingView).delegate = self
+            default: break
             }
+            
             view = bottomView
         }
     }
+    private lazy var bottomView = viewType!.view
     
-    private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
-    private lazy var attendanceBottomIndividualUpdateViwe = AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
-    private lazy var attendanceBottomMembersPeriodSearchSettingView = AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
-    private lazy var attendanceBottomIndividualPeriodSearchSettingView = AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
+//    private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
+//    private lazy var attendanceBottomIndividualUpdateViwe = AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
+//    private lazy var attendanceBottomMembersPeriodSearchSettingView = AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
+//    private lazy var attendanceBottomIndividualPeriodSearchSettingView = AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(#function)
+    }
+    
+    internal func setDateLabels(preceding: Date, following: Date) {
+        precedingDate = preceding
+        followingDate = following   
     }
 }
 

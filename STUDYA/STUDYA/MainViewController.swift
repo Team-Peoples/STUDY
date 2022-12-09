@@ -132,17 +132,12 @@ final class MainViewController: SwitchableViewController {
         return t
     }()
     private lazy var floatingButton: UIButton = {
-        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        let normalImage = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(pointSize: 24, weight: .heavy))
-        let selectedImage = UIImage(systemName: "xmark", withConfiguration: UIImage.SymbolConfiguration(pointSize: 18, weight: .heavy))
+        let btn = UIButton(frame: .zero)
+        let normalImage = UIImage(named: "mainFloatingPlus")
+        let selectedImage = UIImage(named: "mainFloatingDismiss")
 
-        btn.backgroundColor = .black
         btn.setImage(normalImage, for: .normal)
         btn.setImage(selectedImage, for: .selected)
-        btn.tintColor = .white
-
-        btn.layer.cornerRadius = 50 / 2
-        btn.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 4, blur: 6, spread: 0)
         btn.addTarget(self, action: #selector(floatingButtonDidTapped), for: .touchUpInside)
 
         return btn
@@ -398,8 +393,9 @@ final class MainViewController: SwitchableViewController {
             make.bottom.equalTo(tabBarController!.tabBar.snp.top).offset(-20)
             make.width.height.equalTo(50)
         }
-        floatingButton.frame.origin = CGPoint(x: 0, y: 0)
-        floatingButton.frame.origin = floatingButton.bounds.origin
+        floatingButton.snp.makeConstraints { make in
+            make.leading.top.equalTo(floatingButtonContainerView)
+        }
     }
     
     private func configureSpreadUp() {

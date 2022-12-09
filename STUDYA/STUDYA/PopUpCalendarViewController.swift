@@ -15,8 +15,9 @@ class PopUpCalendarViewController: UIViewController {
     lazy var selectedDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: selectedDate)
     var selectedDate: Date
     weak var presentingVC: UIViewController?
-    
+
     private let calendarType: PopUpCalendarType
+    private let button = UIButton(frame: .zero)
     private let popUpContainerView = UIView(backgroundColor: .systemBackground)
     private let dismissButton: UIButton = {
         
@@ -45,8 +46,7 @@ class PopUpCalendarViewController: UIViewController {
         
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen
-        
+        modalPresentationStyle = .overFullScreen    
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -56,14 +56,14 @@ class PopUpCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureViews()
-        
         let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
         calendarView.selectionBehavior = selectionDelegate
         selectionDelegate.setSelected(selectedDateComponents, animated: false)
         
+        button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         
+        configureViews()
         setConstraints()
     }
     
@@ -74,10 +74,10 @@ class PopUpCalendarViewController: UIViewController {
     }
     
     // MARK: - Configure
-    
     private func configureViews() {
         view.backgroundColor = .black.withAlphaComponent(0.3)
         
+        view.addSubview(button)
         view.addSubview(popUpContainerView)
         
         popUpContainerView.layer.cornerRadius = 24
@@ -88,7 +88,9 @@ class PopUpCalendarViewController: UIViewController {
     // MARK: - Setting Constraints
     
     private func setConstraints() {
-        
+        button.snp.makeConstraints { make in
+            make.edges.equalTo(view)
+        }
         popUpContainerView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(400)

@@ -137,6 +137,18 @@ extension UITableView {
     }
 }
 
+extension Date {
+    func convertToDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day], from: self)
+    }
+}
+
+extension DateComponents {
+    func convertToDate() -> Date? {
+        Calendar.current.date(from: self)
+    }
+}
+
 extension UINavigationController {
     var backButtonImage: UIImage? {
         UIImage(named: "back")?.withAlignmentRectInsets(UIEdgeInsets(top: 0.0, left: -12.0, bottom: 0.0, right: 0.0))
