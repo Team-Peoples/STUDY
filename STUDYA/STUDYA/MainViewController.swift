@@ -347,7 +347,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureViewWhenNoStudy() {
-        let studyEmptyImageView = UIImageView(image: UIImage(named: "noStudy"))
+        let studyEmptyImageView = UIImageView(image: UIImage(named: "emptyViewImage"))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = BrandButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
         
@@ -473,7 +473,7 @@ extension MainViewController: UITableViewDataSource {
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
-//                
+//
 //                    cell.informationButtonAction = {
 //                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
@@ -563,18 +563,18 @@ extension MainViewController: UITableViewDelegate {
 //
 //extension MainViewController: UIPopoverControllerDelegate {
 //    class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
-//        
+//
 //        // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
 //        private static let sharedInstance = AlwaysPresentAsPopover()
-//        
+//
 //        private override init() {
 //            super.init()
 //        }
-//        
+//
 //        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
 //            return .none
 //        }
-//        
+//
 //        static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
 //            let presentationController = controller.presentationController as! UIPopoverPresentationController
 //            presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
@@ -582,7 +582,7 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController {    
+extension MainViewController {
     func present(vc: UIViewController) {
         present(vc, animated: true)
     }

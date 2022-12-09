@@ -19,6 +19,7 @@
 		726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4622901A352004E49A9 /* ScheduleTableView.swift */; };
 		726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
+		727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */; };
 		7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */; };
 		7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */; };
 		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
@@ -138,6 +139,7 @@
 		726FA4622901A352004E49A9 /* ScheduleTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableView.swift; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
+		727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyCompleteViewController.swift; sourceTree = "<group>"; };
 		7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCollectionViewCell.swift; sourceTree = "<group>"; };
 		7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
 		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
@@ -307,6 +309,7 @@
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */,
 				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
+				727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */,
 				7299967B28A9FE6E0008A1C1 /* CustomAF.swift */,
 				D3AFCE1628A7F3F4004FBAB9 /* Network.swift */,
 				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
@@ -643,6 +646,7 @@
 				D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */,
 				72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */,
 				D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */,
+				727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */,
 				D35D6F812930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift in Sources */,
 				72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */,
 				72E2BEDB2921AE66009BCCB7 /* StudyExitViewController.swift in Sources */,

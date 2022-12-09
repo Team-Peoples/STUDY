@@ -110,7 +110,7 @@ class CreatingStudyRuleViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        title = "스터디 만들기"
+//        title = "스터디 만들기"
         
         addsubViews()
         setNavigation()
@@ -168,15 +168,8 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoPreViewController") as! StudyInfoPreViewController
-        
-        vc.study = self.studyRuleViewModel.study
-        vc.navigationItem.title = "스터디 만들기"
-        vc.navigationItem.rightBarButtonItem = closeButton
-        
-        navigationController?.pushViewController(vc, animated: true)
+        let nextVC = CreatingStudyCompleteViewController()
+        navigationController?.pushViewController(nextVC, animated: true)
     }
     
     @objc func closeButtonDidTapped() {
@@ -186,6 +179,7 @@ class CreatingStudyRuleViewController: UIViewController {
     
     private func setNavigation() {
         
+        navigationController?.setBrandNavigation()
         self.navigationItem.title = "스터디 만들기"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.navigationItem.rightBarButtonItem = closeButton

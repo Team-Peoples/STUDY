@@ -330,7 +330,7 @@ final class DateSelectableRoundedView: UIView {
     
     private lazy var titleLabel = CustomLabel(title: self.title, tintColor: .ppsBlack, size: 16, isNecessaryTitle: self.isNecessary)
     let calendarLinkedDateLabel = CustomLabel(title: "\(Date().formatToString(language: .kor))", tintColor: .ppsBlack, size: 16, isBold: true)
-    let calendarIcon = UIImageView(image: UIImage(named: "Calendar"))
+    let calendarIcon = UIImageView(image: UIImage(named: "calendar"))
     
     // MARK: - Initialization
     

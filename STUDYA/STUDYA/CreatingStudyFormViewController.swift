@@ -210,7 +210,6 @@ final class CreatingStudyFormViewController: UIViewController {
         let vc = CreatingStudyRuleViewController()
 
         vc.studyRuleViewModel.study = studyViewModel!.study
-        vc.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -422,4 +421,3 @@ extension CreatingStudyFormViewController: UICollectionViewDataSource {
         return cell
     }
 }
-

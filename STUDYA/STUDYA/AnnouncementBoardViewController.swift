@@ -32,7 +32,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         view.addSubview(announcementEmptyImageView)
         view.addSubview(announcementEmptyLabel)
         
-        announcementEmptyImageView.image = UIImage(named: "EmptyViewImage")
+        announcementEmptyImageView.image = UIImage(named: "emptyViewImage")
         
         setConstraints(announcementEmptyImageView, in: view)
         setConstraints(of: announcementEmptyLabel, with: announcementEmptyImageView)

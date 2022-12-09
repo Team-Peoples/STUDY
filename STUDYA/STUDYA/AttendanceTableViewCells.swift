@@ -22,7 +22,7 @@ class AttendanceDetailsCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세내역")
+        lbl.attributedText = AttributedString.custom(image: UIImage(named: "details")!, text: " 상세내역")
         return lbl
     }()
     private let periodSettingButton = BrandButton(title: "22.06.01~22.08.20", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
@@ -300,4 +300,3 @@ class MonthlyFooterView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
