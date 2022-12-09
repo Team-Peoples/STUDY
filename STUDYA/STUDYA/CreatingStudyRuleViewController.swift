@@ -178,7 +178,7 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     private func setNavigation() {
-        
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.setBrandNavigation()
         self.navigationItem.title = "스터디 만들기"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
