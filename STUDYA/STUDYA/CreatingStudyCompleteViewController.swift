@@ -33,7 +33,37 @@ class CreatingStudyCompleteViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func completeButtonDidTapped() {
-        self.dismiss(animated: true)
+        let linkShareMessageView = LinkShareMessageView()
+        
+        linkShareMessageView.addTapGesture(target: self, action: #selector(linkShare))
+        linkShareMessageView.addAction(target: self, action: #selector(closeButtonDidTapped))
+        
+        self.view.addSubview(linkShareMessageView)
+        
+        linkShareMessageView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) {
+            
+            linkShareMessageView.alpha = 1.0
+        } completion: { _ in
+            
+            UIView.animate(withDuration: 2000, delay: 3, options: .curveLinear) {
+                linkShareMessageView.alpha = 0.0
+            } completion: { _ in
+                linkShareMessageView.removeFromSuperview()
+            }
+        }
+    }
+    
+    @objc func linkShare() {
+        print(#function)
+    }
+    
+    @objc func closeButtonDidTapped() {
+        print(#function)
     }
     
     
