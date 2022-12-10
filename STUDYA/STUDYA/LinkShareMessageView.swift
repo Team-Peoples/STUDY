@@ -11,9 +11,12 @@ class LinkShareMessageView: RoundableView {
     
     // MARK: - Properties
     
+    weak var delegate: UIViewController?
+    
     private let titleLabel = CustomLabel(title: "스터디 링크를 공유할래요!", tintColor: .keyColor2, size: 16, isBold: true)
     private let subTitleLabel = CustomLabel(title: "링크 공유를 통해 멤버를 초대해 보세요☺️", tintColor: .background, size: 12)
     private let disclosureIcon = UIImageView(image: UIImage(named: "smallDisclosureIndicator"))
+    private let linkShareButton = UIButton()
     private let closeButton: UIButton = {
         
         let button = UIButton()
@@ -28,9 +31,8 @@ class LinkShareMessageView: RoundableView {
     init() {
         super.init(cornerRadius: 24)
         
-        titleLabel.isUserInteractionEnabled = true
-        subTitleLabel.isUserInteractionEnabled = true
-        disclosureIcon.isUserInteractionEnabled = true
+        linkShareButton.addTarget(self, action: #selector(linkShareRegionTapped), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(closeButtonDidTapped), for: .touchUpInside)
         
         configureViews()
         setConstraints()
@@ -42,25 +44,20 @@ class LinkShareMessageView: RoundableView {
     
     // MARK: - Actions
     
-    func addTapGesture(target: Any?, action: Selector) {
-        let tapGesture = UITapGestureRecognizer(target: target, action: action)
+    @objc private func linkShareRegionTapped() {
+        let shareText: String = "share text test!"
+        var shareObject = [Any]()
         
-        titleLabel.addGestureRecognizer(tapGesture)
-        subTitleLabel.addGestureRecognizer(tapGesture)
-        disclosureIcon.addGestureRecognizer(tapGesture)
+        shareObject.append(shareText)
+        
+        let activityViewController = UIActivityViewController(activityItems : shareObject, applicationActivities: nil)
+
+        delegate?.present(activityViewController, animated: true, completion: nil)
     }
     
-    func addAction(target: Any?, action: Selector) {
-        closeButton.addTarget(target, action: action, for: .touchUpInside)
+    @objc private func closeButtonDidTapped() {
+        self.removeFromSuperview()
     }
-    
-//    @objc private func linkShare() {
-//        print(#function)
-//    }
-//    
-//    @objc private func closeButtonDidTapped() {
-//        print(#function)
-//    }
     
     
     // MARK: - Configure
@@ -72,6 +69,7 @@ class LinkShareMessageView: RoundableView {
         addSubview(disclosureIcon)
         addSubview(subTitleLabel)
         addSubview(closeButton)
+        addSubview(linkShareButton)
     }
     
     // MARK: - Setting Constraints
@@ -96,6 +94,10 @@ class LinkShareMessageView: RoundableView {
             make.height.width.equalTo(14)
             make.trailing.equalTo(self).inset(20)
             make.centerY.equalTo(self)
+        }
+        linkShareButton.snp.makeConstraints { make in
+            make.top.leading.equalTo(titleLabel)
+            make.trailing.bottom.equalTo(subTitleLabel)
         }
     }
 }
