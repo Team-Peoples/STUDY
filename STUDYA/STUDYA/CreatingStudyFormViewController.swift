@@ -188,7 +188,7 @@ final class CreatingStudyFormViewController: UIViewController {
         scrollView.setContentOffset(scrollPoint, animated: true)
 
         bottomStickyView.snp.updateConstraints { make in
-            make.bottom.equalTo(view).inset(keyboardSize.height - 30)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(keyboardSize.height - view.safeAreaInsets.bottom)
         }
         view.layoutIfNeeded()
     }
@@ -198,7 +198,7 @@ final class CreatingStudyFormViewController: UIViewController {
         scrollView.contentInset = UIEdgeInsets.zero
         
         bottomStickyView.snp.updateConstraints { make in
-            make.bottom.equalTo(view)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         view.layoutIfNeeded()
         
@@ -299,8 +299,8 @@ final class CreatingStudyFormViewController: UIViewController {
             make.bottom.equalTo(containerView).inset(140)
         }
         bottomStickyView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalTo(view)
-            make.height.equalTo(100 + 30)
+            make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(100)
         }
         doneButton.snp.makeConstraints { make in
             make.top.equalTo(bottomStickyView).inset(16)

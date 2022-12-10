@@ -13,7 +13,7 @@ class CreatingStudyCompleteViewController: UIViewController {
     
     private let titleLabel = CustomLabel(title: "스터디를 만들었어요!", tintColor: .ppsBlack, size: 28, isBold: true)
     private let completeImageView = UIImageView(image: UIImage(named: "congratulation"))
-    private let completeButton = BrandButton(title: "완료", isBold: true, isFill: true, fontSize: 28, height: 50)
+    private let completeButton = BrandButton(title: "완료", isBold: true, isFill: true)
     
     // MARK: - Life Cycle
     
@@ -33,27 +33,18 @@ class CreatingStudyCompleteViewController: UIViewController {
     // MARK: - Actions
     
     @objc private func completeButtonDidTapped() {
-        let linkShareMessageView = LinkShareMessageView()
+        guard let tabbarController = self.presentingViewController as? UITabBarController else { return }
+        guard let mainNavigationController = tabbarController.selectedViewController as? UINavigationController else { return }
+        guard let mainVC = mainNavigationController.viewControllers.first as? MainViewController else { return }
         
-        linkShareMessageView.addTapGesture(target: self, action: #selector(linkShare))
-        linkShareMessageView.addAction(target: self, action: #selector(closeButtonDidTapped))
-        
-        self.view.addSubview(linkShareMessageView)
-        
-        linkShareMessageView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(20)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-40)
-        }
-        
-        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) {
+        dismiss(animated: true) {
+            let linkShareMessageView = LinkShareMessageView()
+            linkShareMessageView.delegate = mainVC
+            mainVC.view.addSubview(linkShareMessageView)
             
-            linkShareMessageView.alpha = 1.0
-        } completion: { _ in
-            
-            UIView.animate(withDuration: 2000, delay: 3, options: .curveLinear) {
-                linkShareMessageView.alpha = 0.0
-            } completion: { _ in
-                linkShareMessageView.removeFromSuperview()
+            linkShareMessageView.snp.makeConstraints { make in
+                make.leading.trailing.equalTo(mainVC.view.safeAreaLayoutGuide).inset(20)
+                make.bottom.equalTo(mainVC.view.safeAreaLayoutGuide).offset(-40)
             }
         }
     }
@@ -82,16 +73,15 @@ class CreatingStudyCompleteViewController: UIViewController {
     
     private func setConstraints() {
         completeImageView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(50)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(200)
+            make.center.equalTo(view.safeAreaLayoutGuide)
+            make.height.width.equalTo(view.safeAreaLayoutGuide).multipliedBy(0.73)
         }
         titleLabel.snp.makeConstraints { make in
             make.bottom.equalTo(completeImageView.snp.top).offset(-35)
             make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         completeButton.snp.makeConstraints { make in
-            make.top.equalTo(completeImageView.snp.bottom).offset(10)
+            make.top.equalTo(completeImageView.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
             make.height.equalTo(50)
         }
