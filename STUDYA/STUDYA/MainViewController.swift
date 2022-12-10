@@ -41,7 +41,6 @@ final class MainViewController: SwitchableViewController {
         }
     }
     private var willDropDown = false
-    private var willSpreadUp = false
     
     private lazy var notificationBtn: UIButton = {
         
@@ -116,21 +115,7 @@ final class MainViewController: SwitchableViewController {
         
         return t
     }()
-    private lazy var spreadUpContainerView = UIView()
-    private lazy var spreadUpTableView: UITableView = {
-
-        let t = UITableView()
-
-        t.delegate = self
-        t.dataSource = self
-        t.separatorStyle = .none
-        t.backgroundColor = .clear
-        t.bounces = false
-        t.showsVerticalScrollIndicator = false
-        t.register(MainSpreadUpTableViewCell.self, forCellReuseIdentifier: MainSpreadUpTableViewCell.identifier)
-
-        return t
-    }()
+    
     private lazy var floatingButton: UIButton = {
         let btn = UIButton(frame: .zero)
         let normalImage = UIImage(named: "mainFloatingPlus")
@@ -149,19 +134,7 @@ final class MainViewController: SwitchableViewController {
 
         return v
     }()
-    private lazy var spreadUpDimmingView: UIView = {
-
-        let v = UIView()
-
-        v.isUserInteractionEnabled = true
-        let recog = UITapGestureRecognizer(target: self, action: #selector(floatingButtonDidTapped))
-        v.addGestureRecognizer(recog)
-        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        v.isHidden = true
-
-        return v
-    }()
-
+    
     private let createStudyButtonHeight: CGFloat = 50
     private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
     private lazy var dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: createStudyButtonHeight)
@@ -172,17 +145,17 @@ final class MainViewController: SwitchableViewController {
         super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
         
-//        myStudyList = [
-//            Study(id: 1, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: 12, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: 13, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
-//            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
-//        ]
+        myStudyList = [
+            Study(id: 1, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: 12, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: 13, title: "팀피플즈", onoff: .on, category: .getJob, studyDescription: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "우야노우리스터디", onoff: nil, category: nil, studyDescription: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil),
+            Study(id: nil, title: "무한도전", onoff: nil, category: nil, studyDescription: "보고 싶다", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", po: nil, isBlocked: false, isPaused: false, generalRule: nil, startDate: nil, endDate: nil)
+        ]
         
         view.backgroundColor = .systemBackground
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
@@ -217,7 +190,6 @@ final class MainViewController: SwitchableViewController {
         
         let nextVC = NotificationViewController()
         push(vc: nextVC)
-        print(#function)
     }
     
     @objc private func dropdownButtonDidTapped() {
@@ -242,9 +214,8 @@ final class MainViewController: SwitchableViewController {
     
     @objc private func floatingButtonDidTapped() {
         floatingButton.isSelected.toggle()
-        spreadUpContainerView.isHidden.toggle()
-        spreadUpDimmingView.isHidden.toggle()
-        toggleSpreadUp()
+        
+        present(MainSpreadUpViewController(tabBarHeight: tabBarController?.tabBar.frame.height ?? 83, dimmingViewTappedAction: { self.floatingButton.isSelected.toggle() }), animated: true)
     }
     
     override func extraWorkWhenSwitchToggled() {
@@ -254,20 +225,12 @@ final class MainViewController: SwitchableViewController {
 //        appearance.backgroundColor = .appColor(.keyColor1)
 //        self.navigationItem.standardAppearance = appearance
 //        self.navigationItem.scrollEdgeAppearance = appearance
-//
+        
         notificationBtn.isHidden = isSwitchOn ? true : false
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         
         guard !isSwitchOn else { return }
         floatingButton.isSelected = false
-    }
-    
-    private func toggleSpreadUp() {
-        
-        let indexPaths = [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0), IndexPath(row: 2, section: 0)]
-        
-        willSpreadUp.toggle()
-        willSpreadUp ? spreadUpTableView.insertRows(at: indexPaths, with: .top) : spreadUpTableView.deleteRows(at: indexPaths, with: .top)
     }
     
     override func configureNavigationBar() {
@@ -397,7 +360,6 @@ final class MainViewController: SwitchableViewController {
         guard isAdmin else { return }
         
         configureFloatingButton()
-        configureSpreadUp()
     }
     
     private func configureFloatingButton() {
@@ -414,24 +376,6 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    private func configureSpreadUp() {
-        spreadUpContainerView.backgroundColor = .clear
-        spreadUpContainerView.isHidden = true
-        
-        tabBarController!.view.addSubview(spreadUpDimmingView)
-        tabBarController!.view.addSubview(spreadUpContainerView)
-        
-        spreadUpContainerView.addSubview(spreadUpTableView)
-        
-        spreadUpDimmingView.snp.makeConstraints { make in
-            make.edges.equalTo(tabBarController!.view)
-        }
-        
-        spreadUpContainerView.anchor(bottom: floatingButtonContainerView.topAnchor, trailing: floatingButtonContainerView.trailingAnchor, width: 142, height: 186)
-        spreadUpTableView.snp.makeConstraints { make in
-            make.edges.equalTo(spreadUpContainerView)
-        }
-    }
     
     private func configureTabBarSeparator() {
         if let tabBar = tabBarController?.tabBar {
@@ -457,7 +401,6 @@ extension MainViewController: UITableViewDataSource {
         switch tableView {
         case mainTableView: return 6
         case dropdownTableView: return willDropDown ? myStudyList.count : 0
-        case spreadUpTableView: return willSpreadUp ? 3 : 0
         default: return 0
         }
     }
@@ -530,12 +473,6 @@ extension MainViewController: UITableViewDataSource {
             cell.study = myStudyList[indexPath.row]
             
             return cell
-            
-        case spreadUpTableView:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainSpreadUpTableViewCell.identifier) as! MainSpreadUpTableViewCell
-            cell.cellNumber = indexPath.row + 1
-            
-            return cell
         default: return UITableViewCell()
         }
     }
@@ -544,11 +481,16 @@ extension MainViewController: UITableViewDataSource {
 extension MainViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 3 {
-            let announcementBoardVC = AnnouncementBoardViewController()
-            self.syncSwitchWith(nextVC: announcementBoardVC)
-            self.push(vc: announcementBoardVC)
+        switch tableView {
+        case mainTableView:
+            if indexPath.row == 3 {
+                let announcementBoardVC = AnnouncementBoardViewController()
+                self.syncSwitchWith(nextVC: announcementBoardVC)
+                self.push(vc: announcementBoardVC)
+            }
+        default: break
         }
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -570,8 +512,6 @@ extension MainViewController: UITableViewDelegate {
             }
         case dropdownTableView:
             return 50
-        case spreadUpTableView:
-            return 62
         default: return 0
         }
     }

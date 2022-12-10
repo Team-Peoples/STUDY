@@ -1,5 +1,5 @@
 //
-//  InformationViewController.swift
+//  MyPageInformationViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/08/25.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-final class InformationViewController: UIViewController {
+final class MyPageInformationViewController: UIViewController {
     
     private let data = ["개인정보처리방침", "이용약관"]
-    private let contributors = ["Choisang 🌴", "Domb 💎", "EHD 🚀", "Eddy 🚗", "Ever ✨", "L 🐳", "Wisdom 🎨"]
+    private let contributors = ["Domb 💎", "EHD 🚀", "Ever ✨", "L 🐳", "Choisang 🌴", "Lims 🎨","Eddy 🚗"]
     
     private let tableView: UITableView = {
        
@@ -43,7 +43,10 @@ final class InformationViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        
         title = "앱 정보"
+        navigationController?.setBrandNavigation()
+        
         tableView.dataSource = self
         tableView.delegate = self
         contributorCollectionView.dataSource = self
@@ -61,16 +64,17 @@ final class InformationViewController: UIViewController {
     private func getCollectionView() -> UICollectionView {
         let flowLayout = LeftAlignedCollectionViewFlowLayout()
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        flowLayout.minimumInteritemSpacing = 3
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(RoundedPurpleCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
         
         return cv
     }
 }
 
-extension InformationViewController: UITableViewDataSource {
+extension MyPageInformationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -89,7 +93,7 @@ extension InformationViewController: UITableViewDataSource {
     }
 }
 
-extension InformationViewController: UITableViewDelegate {
+extension MyPageInformationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0: break
@@ -104,7 +108,7 @@ extension InformationViewController: UITableViewDelegate {
     }
 }
 
-extension InformationViewController: UICollectionViewDataSource {
+extension MyPageInformationViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return contributors.count

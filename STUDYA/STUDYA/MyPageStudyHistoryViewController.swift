@@ -26,10 +26,13 @@ final class MyPageStudyHistoryViewController: UIViewController {
         super.viewDidLoad()
         
         studyHistoryList = [StudyHistory(name: "토익 영단어1", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어2", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어3", start: "2022.01.01", end: "2022.03.01", auth: "어")]
+                
+        view.backgroundColor = .systemBackground
+        
+        title = "참여한 스터디"
+        navigationController?.setBrandNavigation()
         
         tableView.dataSource = self
-        title = "참여한 스터디"
-        view.backgroundColor = .systemBackground
         
         view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor)
