@@ -9,6 +9,9 @@ import UIKit
 
 final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonButtomView {
     
+    internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
+    internal weak var navigatableDelegate: Navigatable?
+    
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
         
@@ -24,10 +27,10 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
     private let backgroundContainerView = RoundableView(cornerRadius: 12)
     private let precedingDayLabel = CustomLabel(title: "22.06.10", tintColor: .ppsGray1, size: 16, isBold: false)
     private let middleLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16, isBold: false)
-    private let follwingDayLabel = CustomLabel(title: "23.01.14", tintColor: .ppsGray1, size: 16, isBold: false)
+    private let followingDayLabel = CustomLabel(title: "23.01.14", tintColor: .ppsGray1, size: 16, isBold: false)
     private lazy var stackView: UIStackView = {
        
-        let s = UIStackView(arrangedSubviews: [precedingDayLabel, middleLabel, follwingDayLabel])
+        let s = UIStackView(arrangedSubviews: [precedingDayLabel, middleLabel, followingDayLabel])
         
         s.axis = .horizontal
         s.distribution = .equalSpacing
@@ -63,6 +66,17 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
     
     @objc private func selectPeriodButtonTapped() {
         print(#function)
+        let vc = AttendancePopUpPeriodCalendarViewController()
+        vc.dateLabelUpdatableDelegate = dateLabelUpdatableDelegate
+        navigatableDelegate?.present(vc)
+    }
+    
+    internal func setPrecedingDateLabel(with date: Date) {
+        precedingDayLabel.text = date.formatToString(language: .eng)
+    }
+    
+    internal func setFollowingDateLabel(with date: Date) {
+        followingDayLabel.text = date.formatToString(language: .eng)
     }
     
     private func addSubviews() {

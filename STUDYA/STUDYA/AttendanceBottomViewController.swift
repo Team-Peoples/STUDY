@@ -8,23 +8,49 @@
 import UIKit
 import SnapKit
 
-final class AttendanceBottomViewController: UIViewController {
+protocol DateLabelUpdatable: AnyObject {
+    func updateDateLabels(preceding: Date, following: Date)
+}
+
+final class AttendanceBottomViewController: UIViewController, Navigatable {
 
     internal let times = ["99:99", "15:00", "19:15", "11:11", "15:00", "19:15"]
     
     internal lazy var precedingDate = Date() {
-        didSet { (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate) } }
+        didSet {
+            if viewType == .membersPeriodSearchSetting {
+                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
+            } else {
+                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
+            }
+        }
+        
+        
+    }
     internal lazy var followingDate = Date() {
-        didSet { (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate) }
+        didSet {
+            if viewType == . membersPeriodSearchSetting {
+                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
+            } else {
+                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
+            }
+        }
     }
     
     internal  var viewType: AttendanceBottomViewType! {
         didSet {
             switch viewType {
             case .daySearchSetting:
-                (bottomView as! AttendanceBottomDaySearchSettingView).delegate = self
+                (bottomView as? AttendanceBottomDaySearchSettingView)?.delegate = self
             case .membersPeriodSearchSetting:
-                (bottomView as! AttendanceBottomMembersPeriodSearchSettingView).delegate = self
+                guard let bottomView = bottomView as? AttendanceBottomMembersPeriodSearchSettingView else { return }
+                bottomView.navigatableDelegate = self
+                bottomView.dateLabelUpdatableDelegate = self
+            case .individualPeriodSearchSetting:
+                guard let bottomView = bottomView as? AttendanceBottomIndividualPeriodSearchSettingView else { return }
+                bottomView.navigatableDelegate = self
+                bottomView.dateLabelUpdatableDelegate = self
+                
             default: break
             }
             
@@ -32,20 +58,12 @@ final class AttendanceBottomViewController: UIViewController {
         }
     }
     private lazy var bottomView = viewType!.view
-    
-//    private lazy var attendanceBottomDaySearchSettingView = AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
-//    private lazy var attendanceBottomIndividualUpdateViwe = AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
-//    private lazy var attendanceBottomMembersPeriodSearchSettingView = AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
-//    private lazy var attendanceBottomIndividualPeriodSearchSettingView = AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    internal func setDateLabels(preceding: Date, following: Date) {
+}
+
+extension AttendanceBottomViewController: DateLabelUpdatable {
+    internal func updateDateLabels(preceding: Date, following: Date) {
         precedingDate = preceding
-        followingDate = following   
+        followingDate = following
     }
 }
 

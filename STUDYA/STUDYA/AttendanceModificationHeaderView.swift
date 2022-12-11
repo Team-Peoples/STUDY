@@ -33,8 +33,6 @@ final class AttendanceModificationHeaderView: UIView {
         let vc = AttendancePopUpDayCalendarViewController()
         
         vc.presentingVC =  navigatableBottomSheetableDelegate
-//        guard let delegate = navigatableBottomSheetableDelegate else { return }
-//        print(delegate)
-        navigatableBottomSheetableDelegate.present(vc: vc)
+        navigatableBottomSheetableDelegate.present(vc)
     }
 }

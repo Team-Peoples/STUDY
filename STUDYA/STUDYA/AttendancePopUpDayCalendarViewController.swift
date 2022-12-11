@@ -64,6 +64,8 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
+        doneButton.isEnabled = false
+        
         configureViews()
         setConstraints()
     }
@@ -103,7 +105,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         }
         popUpContainerView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(Const.screenHeight * 0.56)
+            make.height.equalTo(450)
             make.width.equalTo(Const.screenWidth * 0.94)
         }
         titleLabel.snp.makeConstraints { make in

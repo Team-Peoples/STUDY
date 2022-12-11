@@ -9,7 +9,9 @@ import UIKit
 
 final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtomView {
     
-    internal var delegate: AttendanceBottomViewController!
+    internal var navigatableDelegate: Navigatable?
+    internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
+    
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
         
@@ -72,14 +74,12 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
     
     @objc private func selectPeriodButtonTapped() {
         let vc = AttendancePopUpPeriodCalendarViewController()
-        vc.presentingVC = delegate
-        delegate.present(vc, animated: true)
+        vc.dateLabelUpdatableDelegate = dateLabelUpdatableDelegate
+        navigatableDelegate?.present(vc)
     }
     
     internal func setPrecedingDateLabel(with date: Date) {
-        print(date.formatToString(language: .eng))
         precedingDayLabel.text = date.formatToString(language: .eng)
-
     }
     
     internal func setFollowingDateLabel(with date: Date) {
