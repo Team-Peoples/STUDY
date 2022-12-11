@@ -1,5 +1,5 @@
 //
-//  MainSpreadUpViewController.swift
+//  MainSpreadUpDimmingViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/12/10.
@@ -7,11 +7,12 @@
 
 import UIKit
 
-final class MainSpreadUpViewController: UIViewController {
+final class MainSpreadUpDimmingViewController: UIViewController {
     
     private var willSpreadUp = false
     
-    private var dimmingViewTappedAction: () -> () = {}
+    internal var dimmingViewTappedAction: () -> () = {}
+    internal var presentNextVC: (UIViewController) -> () = { sender in }
     
     private lazy var spreadUpContainerView = UIView()
     private lazy var spreadUpTableView: UITableView = {
@@ -30,21 +31,8 @@ final class MainSpreadUpViewController: UIViewController {
     }()
     private lazy var spreadUpDimmingViewButton = UIButton()
     
-    private var tabBarHeight: CGFloat?
+    internal var tabBarHeight: CGFloat?
     private let interTabBarSpaceHeight: CGFloat = 84
-    init(tabBarHeight: CGFloat, dimmingViewTappedAction: @escaping (() -> ()) ) {
-        super.init(nibName: nil, bundle: nil)
-        
-        self.tabBarHeight = tabBarHeight
-        modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen
-        
-        self.dimmingViewTappedAction = dimmingViewTappedAction
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +83,7 @@ final class MainSpreadUpViewController: UIViewController {
     }
 }
 
-extension MainSpreadUpViewController: UITableViewDataSource {
+extension MainSpreadUpDimmingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         willSpreadUp ? 2 : 0
     }
@@ -109,16 +97,29 @@ extension MainSpreadUpViewController: UITableViewDataSource {
     }
 }
 
-extension MainSpreadUpViewController: UITableViewDelegate {
+extension MainSpreadUpDimmingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let creatingAnnouncementVC = AnnouncementViewController(task: .creating)
-            creatingAnnouncementVC.isMaster = true
-            
-            let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
-            navigationVC.modalPresentationStyle = .fullScreen
-            
-            present(navigationVC, animated: true)
+            dismiss(animated: true) {
+                
+                let creatingAnnouncementVC = AnnouncementViewController(task: .creating)
+                creatingAnnouncementVC.isMaster = true
+                
+                let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
+                navigationVC.modalPresentationStyle = .fullScreen
+                
+                self.presentNextVC(navigationVC)
+            }
+        } else {
+            dismiss(animated: true) {
+                
+                let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+                let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
+                
+                navigation.modalPresentationStyle = .fullScreen
+                
+                self.presentNextVC(navigation)
+            }
         }
     }
     

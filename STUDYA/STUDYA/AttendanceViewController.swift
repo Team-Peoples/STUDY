@@ -32,14 +32,14 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
             managerView.navigatableBottomSheetableDelegate = self
         }
         userView.bottomSheetAddableDelegate = self
-        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        view = isSwitchOn ? managerView : userView
+        view = switchStatusWhenWillAppear ? managerView : userView
+        configureNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

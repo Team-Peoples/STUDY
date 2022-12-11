@@ -10,18 +10,7 @@ import UIKit
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
 
-    private var myStudyList = [Study]() {
-        didSet {
-            if myStudyList.count < 5 {
-                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight)
-            } else {
-                dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
-            }
-            currentStudy = myStudyList[0]
-            /// 스터디가 없을때는 안되지않나
-//            currentStudy = myStudyList[0]
-        }
-    }
+    private var myStudyList = [Study]()
     private var currentStudy: Study?
     private var notification: String? {
         didSet {
@@ -30,17 +19,6 @@ final class MainViewController: SwitchableViewController {
             }
         }
     }
-    
-    private var dropDownCellNumber: CGFloat {
-        if myStudyList.count == 0 {
-            return 0
-        } else if myStudyList.count > 0, myStudyList.count < 5 {
-            return CGFloat(myStudyList.count)
-        } else {
-            return 4
-        }
-    }
-    private var willDropDown = false
     
     private lazy var notificationBtn: UIButton = {
         
@@ -52,47 +30,6 @@ final class MainViewController: SwitchableViewController {
         n.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 35)
         
         return n
-    }()
-    
-    private lazy var dropdownContainerView = UIView()
-    private lazy var dropdownTableView: UITableView = {
-
-        let t = UITableView()
-        
-        t.delegate = self
-        t.dataSource = self
-        t.separatorColor = UIColor.appColor(.ppsGray3)
-        t.bounces = false
-        t.showsVerticalScrollIndicator = false
-        t.register(MainDropDownTableViewCell.self, forCellReuseIdentifier: MainDropDownTableViewCell.identifier)
-
-        return t
-    }()
-    private lazy var dropdownDimmingView: UIView = {
-
-        let v = UIView()
-
-        v.isUserInteractionEnabled = true
-        let recog = UITapGestureRecognizer(target: self, action: #selector(dropdownButtonDidTapped))
-        v.addGestureRecognizer(recog)
-        v.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.6)
-        v.isHidden = true
-
-        return v
-    }()
-    private lazy var createStudyButton: UIButton = {
-       
-        let b = UIButton()
-        
-        b.backgroundColor = UIColor.appColor(.brandMilky)
-        b.setImage(UIImage(named: "plusCircleFill"), for: .normal)
-        b.setTitle("   스터디 만들기", for: .normal)
-        b.titleLabel?.font = .boldSystemFont(ofSize: 16)
-        b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
-        b.isHidden = true
-        b.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
-        
-        return b
     }()
     
     private lazy var mainTableView: UITableView = {
@@ -135,10 +72,6 @@ final class MainViewController: SwitchableViewController {
         return v
     }()
     
-    private let createStudyButtonHeight: CGFloat = 50
-    private lazy var dropdownHeightZero = dropdownContainerView.heightAnchor.constraint(equalToConstant: 0)
-    private lazy var dropdownHeight = dropdownContainerView.heightAnchor.constraint(equalToConstant: createStudyButtonHeight)
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -159,7 +92,7 @@ final class MainViewController: SwitchableViewController {
         
         view.backgroundColor = .systemBackground
         myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
-        configureDropdown()
+        
         configureTabBarSeparator()
         configureNavigationBar()
     }
@@ -182,7 +115,7 @@ final class MainViewController: SwitchableViewController {
 //        self.navigationItem.standardAppearance = nil
 //        self.navigationItem.scrollEdgeAppearance = nil
         
-        floatingButtonContainerView.isHidden = true
+//        floatingButtonContainerView.isHidden = true
     }
     
     // MARK: - Actions
@@ -190,11 +123,6 @@ final class MainViewController: SwitchableViewController {
         
         let nextVC = NotificationViewController()
         push(vc: nextVC)
-    }
-    
-    @objc private func dropdownButtonDidTapped() {
-        toggleDropdown()
-        dropdownDimmingView.isHidden.toggle()
     }
     
     @objc private func createStudyButtonDidTapped() {
@@ -212,10 +140,32 @@ final class MainViewController: SwitchableViewController {
         present(presentVC, animated: true)
     }
     
-    @objc private func floatingButtonDidTapped() {
-        floatingButton.isSelected.toggle()
+    @objc private func dropdownButtonDidTapped() {
+        let dimmingVC = MainDropDownDimmingViewController()
         
-        present(MainSpreadUpViewController(tabBarHeight: tabBarController?.tabBar.frame.height ?? 83, dimmingViewTappedAction: { self.floatingButton.isSelected.toggle() }), animated: true)
+        dimmingVC.modalTransitionStyle = .crossDissolve
+        dimmingVC.modalPresentationStyle = .overFullScreen
+        dimmingVC.currentStudy = currentStudy
+        dimmingVC.myStudyList = myStudyList
+        dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
+        
+        present(dimmingVC, animated: true)
+    }
+    
+    @objc private func floatingButtonDidTapped() {
+        floatingButton.isSelected = true
+        
+        let dimmingVC = MainSpreadUpDimmingViewController()
+        
+        dimmingVC.modalTransitionStyle = .crossDissolve
+        dimmingVC.modalPresentationStyle = .overFullScreen
+        dimmingVC.tabBarHeight = tabBarController?.tabBar.frame.height ?? 83
+        dimmingVC.dimmingViewTappedAction = { self.floatingButton.isSelected = false }
+        dimmingVC.presentNextVC = { sender in
+            self.present(sender, animated: true) { self.floatingButton.isSelected = false }
+        }
+        
+        present(dimmingVC, animated: true)
     }
     
     override func extraWorkWhenSwitchToggled() {
@@ -242,87 +192,6 @@ final class MainViewController: SwitchableViewController {
     
     private func configureNavigationBarNotiBtn() {
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-    }
-    
-    private func configureDropdown() {
-        guard !myStudyList.isEmpty else { return }
-        
-        if let tabBarView = tabBarController?.view {
-            tabBarView.addSubview(dropdownDimmingView)
-            tabBarView.addSubview(dropdownContainerView)
-            
-            dropdownDimmingView.snp.makeConstraints { make in
-                make.edges.equalTo(tabBarView)
-            }
-            dropdownContainerView.snp.makeConstraints { make in
-                make.top.equalTo(dropdownDimmingView.snp.top).inset(100)
-                make.leading.equalTo(dropdownDimmingView).inset(38)
-                make.width.equalTo(206)
-            }
-        }
-        
-        dropdownContainerView.addSubview(dropdownTableView)
-        dropdownContainerView.addSubview(createStudyButton)
-        
-        dropdownTableView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(dropdownContainerView)
-            make.bottom.equalTo(createStudyButton.snp.top)
-        }
-        
-        createStudyButton.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(dropdownContainerView)
-        }
-        
-        dropdownHeight.isActive = false
-        dropdownHeightZero.isActive = true
-    }
-    
-    private func toggleDropdown() {
-
-        willDropDown.toggle()
-        
-        var indexPaths = [IndexPath]()
-        var row = 0
-        
-        while row < myStudyList.count {
-            let indexPath = IndexPath(row: row, section: 0)
-            indexPaths.append(indexPath)
-            row += 1
-        }
-        
-        if willDropDown {
-            
-            dropdownHeightZero.isActive = false
-            dropdownHeight.isActive = true
-            
-            dropdownTableView.insertRows(at: indexPaths, with: .top)
-            
-            createStudyButton.isHidden = false
-            createStudyButton.setHeight(50)
-            
-            dropdownContainerView.layer.cornerRadius = 24
-            dropdownContainerView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner)
-            dropdownContainerView.clipsToBounds = true
-            
-            animateDropdown()
-        } else {
-            
-            dropdownTableView.deleteRows(at: indexPaths, with: .top)
-
-            dropdownHeight.isActive = false
-            dropdownHeightZero.isActive = true
-            createStudyButton.isHidden = true
-            
-            animateDropdown()
-        }
-    }
-    
-    private func animateDropdown() {
-        let tabBarView = self.tabBarController?.view
-        
-        UIView.animate(withDuration: 0.3, delay: 0) {
-            tabBarView == nil ? self.view.layoutIfNeeded() : tabBarView?.layoutIfNeeded()
-        }
     }
     
     private func configureViewWhenNoStudy() {
@@ -364,11 +233,11 @@ final class MainViewController: SwitchableViewController {
     
     private func configureFloatingButton() {
         floatingButtonContainerView.isHidden = true
-        tabBarController!.view.addSubview(floatingButtonContainerView)
+        view.addSubview(floatingButtonContainerView)
         floatingButtonContainerView.addSubview(floatingButton)
         floatingButtonContainerView.snp.makeConstraints { make in
-            make.trailing.equalTo(tabBarController!.view).inset(10)
-            make.bottom.equalTo(tabBarController!.tabBar.snp.top).offset(-20)
+            make.trailing.equalTo(view).inset(15)
+            make.bottom.equalTo(view).inset(100)
             make.width.height.equalTo(50)
         }
         floatingButton.snp.makeConstraints { make in
@@ -397,83 +266,62 @@ final class MainViewController: SwitchableViewController {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        switch tableView {
-        case mainTableView: return 6
-        case dropdownTableView: return willDropDown ? myStudyList.count : 0
-        default: return 0
-        }
+        6
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch tableView {
-        case mainTableView:
-            switch indexPath.row {
-            case 0:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as! MainFirstStudyToggleTableViewCell
-                
-                cell.studyTitle = myStudyList.first?.title
-                cell.buttonTapped = { self.dropdownButtonDidTapped() }
-                
-                return cell
-            case 1:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
-                cell.navigatableSwitchSyncableDelegate = self
-                return cell
-            case 2:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
-                cell.navigatable = self
-                
-                return cell
-            case 3:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
-                cell.navigatable = self
-                cell.announcement = Announcement(id: 1, studyID: 1, title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdDate: nil, isPinned: true)
-//                cell.hideTabBar = { [weak self] in
-//                    self?.tabBarController?.tabBar.isHidden = true
-//                }
-//
-//                    cell.informationButtonAction = {
-//                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
-//                        vc.study = self.myStudyList.first!
-//                        self.navigationController?.pushViewController(vc, animated: true)
-//                    }
-                    
-                return cell
-                
-            case 4:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as! MainFifthAttendanceTableViewCell
-                
-                cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
-                cell.penalty = 9900
-                cell.navigatableSwitchSyncableDelegate = self
-                
-                return cell
-                
-            case 5:
-                let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
-                
-                cell.currentStudy = currentStudy
-                cell.navigatableSwitchSyncableDelegate = self
-                
-                return cell
-            default:
-                return UITableViewCell()
-            }
-        case dropdownTableView:
+        switch indexPath.row {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as! MainFirstStudyToggleTableViewCell
             
-            guard let currentStudyID = currentStudy?.id else { return UITableViewCell() }
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainDropDownTableViewCell.identifier) as! MainDropDownTableViewCell
-            
-            if currentStudyID == myStudyList[indexPath.row].id {
-                cell.isCurrentStudy = true
-            }
-            
-            cell.study = myStudyList[indexPath.row]
+            cell.studyTitle = myStudyList.first?.title
+            cell.buttonTapped = { self.dropdownButtonDidTapped() }
             
             return cell
-        default: return UITableViewCell()
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
+            cell.navigatableSwitchSyncableDelegate = self
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
+            cell.navigatable = self
+            
+            return cell
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
+            cell.navigatable = self
+            cell.announcement = Announcement(id: 1, studyID: 1, title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdDate: nil, isPinned: true)
+            //                cell.hideTabBar = { [weak self] in
+            //                    self?.tabBarController?.tabBar.isHidden = true
+            //                }
+            //
+            //                    cell.informationButtonAction = {
+            //                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            //                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
+            //                        vc.study = self.myStudyList.first!
+            //                        self.navigationController?.pushViewController(vc, animated: true)
+            //                    }
+            
+            return cell
+            
+        case 4:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as! MainFifthAttendanceTableViewCell
+            
+            cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
+            cell.penalty = 9900
+            cell.navigatableSwitchSyncableDelegate = self
+            
+            return cell
+            
+        case 5:
+            let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
+            
+            cell.currentStudy = currentStudy
+            cell.navigatableSwitchSyncableDelegate = self
+            
+            return cell
+        default:
+            return UITableViewCell()
         }
     }
 }
@@ -494,25 +342,19 @@ extension MainViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch tableView {
-        case mainTableView:
-            switch indexPath.row {
-            case 0:
-                return 50
-            case 1:
-                return 165
-            case 2:
-                return 90
-            case 3:
-                return 60
-            case 4:
-                return 175
-            default:
-                return 70
-            }
-        case dropdownTableView:
+        switch indexPath.row {
+        case 0:
             return 50
-        default: return 0
+        case 1:
+            return 165
+        case 2:
+            return 90
+        case 3:
+            return 60
+        case 4:
+            return 175
+        default:
+            return 70
         }
     }
 }

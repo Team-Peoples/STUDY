@@ -72,7 +72,7 @@ class StudyScheduleViewController: SwitchableViewController {
     }
     
     override func extraWorkWhenSwitchToggled() {
-        floatingButtonView.isHidden = !managerSwitch.isOn
+        floatingButtonView.isHidden = !isSwitchOn
         let cells = scheduleTableView.cellsForRows(at: 0)
         let scheduleTableViewCells = cells.compactMap { cell in
             let cell = cell as? ScheduleTableViewCell

@@ -123,7 +123,8 @@
 		D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70028B380C900CEC549 /* KakaoSDKShare */; };
 		D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */; };
 		D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70428B380C900CEC549 /* KakaoSDKUser */; };
-		D3FA79D62944C3BC001F6E5D /* MainSpreadUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA79D52944C3BC001F6E5D /* MainSpreadUpViewController.swift */; };
+		D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */; };
+		D3FA79D82944DCE7001F6E5D /* MainDropDownDimmingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -241,7 +242,8 @@
 		D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMainViewController.swift; sourceTree = "<group>"; };
 		D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		D3FA79D52944C3BC001F6E5D /* MainSpreadUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpViewController.swift; sourceTree = "<group>"; };
+		D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpDimmingViewController.swift; sourceTree = "<group>"; };
+		D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDropDownDimmingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,7 +330,8 @@
 				D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
-				D3FA79D52944C3BC001F6E5D /* MainSpreadUpViewController.swift */,
+				D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */,
+				D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */,
 				D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */,
@@ -645,6 +648,7 @@
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
 				D314A1DB2905190100093C0E /* Extension.swift in Sources */,
 				72E2BF0B292B7428009BCCB7 /* AttendanceView.swift in Sources */,
+				D3FA79D82944DCE7001F6E5D /* MainDropDownDimmingViewController.swift in Sources */,
 				D3A4C855292E55E80052F4E0 /* AttendanceBottomDaySearchSettingView.swift in Sources */,
 				D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */,
 				72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */,
@@ -657,7 +661,7 @@
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
-				D3FA79D62944C3BC001F6E5D /* MainSpreadUpViewController.swift in Sources */,
+				D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
 				D398B47228B7617F00598B03 /* MyPageInformationViewController.swift in Sources */,
 			);
