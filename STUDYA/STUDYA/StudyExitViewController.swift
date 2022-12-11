@@ -10,7 +10,7 @@ import SnapKit
 
 class StudyExitViewController: UIViewController {
     
-    var type: SceneType!
+    let task: StudyExitBottomSheetTask
     weak var presentingVC: UIViewController?
     
     private var titleLabel: CustomLabel?
@@ -25,12 +25,21 @@ class StudyExitViewController: UIViewController {
         return btn
     }()
     
+    init(task: StudyExitBottomSheetTask) {
+        self.task = task
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         
-        switch type {
+        switch task {
             case .exit:
                 titleLabel = CustomLabel(title: "이 스터디에서 탈퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
                 subtitleLabel = CustomLabel(title: "스터디에서 탈퇴해도 초대 링크를 통해\n다시 참여할 수 있어요.", tintColor: .ppsGray1, size: 14)
@@ -40,8 +49,6 @@ class StudyExitViewController: UIViewController {
             case .resignMaster:
                 titleLabel = CustomLabel(title: "지금은 탈퇴할 수 없어요.", tintColor: .ppsBlack, size: 18, isBold: true)
                 subtitleLabel = CustomLabel(title: "스터디에서 탈퇴하려면 다른 멤버에게\n스터디장을 양도해주세요.", tintColor: .ppsGray1, size: 14)
-            case .none:
-                return
         }
         
         guard let titleLabel = titleLabel else { return }
@@ -70,7 +77,7 @@ class StudyExitViewController: UIViewController {
         okButton.addTarget(self, action: #selector(buttonDidTapped), for: .touchUpInside)
         
         
-        switch type {
+        switch task {
             case .exit, .close:
                 view.addSubview(backButton)
                 
@@ -88,21 +95,19 @@ class StudyExitViewController: UIViewController {
                     make.top.equalTo(subtitleLabel.snp.bottom).offset(10)
                     make.leading.equalTo(subtitleLabel.snp.leading)
                 }
-            case .none:
-                return
         }
     }
     
     
     @objc func buttonDidTapped(_ sender: BrandButton) {
         if sender.titleLabel?.text == "확인" {
-            switch type {
+            switch task {
                 case .exit:
                     
                     self.dismiss(animated: true) { [self] in
                         
-                        let vcToPresent = StudyExitViewController()
-                        vcToPresent.type = .resignMaster
+                        let vcToPresent = StudyExitViewController(task: .resignMaster)
+
                         vcToPresent.presentingVC = presentingVC
                         
                         if let sheet = vcToPresent.sheetPresentationController {
@@ -116,8 +121,6 @@ class StudyExitViewController: UIViewController {
                     
                 case .close, .resignMaster:
                     self.dismiss(animated: true)
-                case .none:
-                    return
             }
         } else {
             self.dismiss(animated: true)

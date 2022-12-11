@@ -7,9 +7,63 @@
 
 import UIKit
 
-final class EditingStudyFormViewController: StudyFormViewController {
+final class EditingStudyFormViewController: UIViewController {
+    
     // MARK: - Properties
     
+    var studyViewModel: StudyViewModel? {
+        didSet {
+            print(studyViewModel?.study)
+            guard let study = studyViewModel?.study else { return }
+            bind(study)
+        }
+    }
+   
+    var categoryChoice: StudyCategory? {
+        willSet(value) {
+            if categoryChoice == nil {
+                
+            } else {
+                guard let indexPath = categoryChoice?.indexPath else { fatalError() }
+                let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
+                cell.toogleButton()
+            }
+            studyViewModel?.study.category = value?.rawValue
+        }
+    }
+    private var token: NSObjectProtocol?
+    
+    /// 스크롤 구현
+    private let scrollView = UIScrollView()
+    let containerView = UIView()
+    
+    /// 스터디 카테고리
+    let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    let studyCategoryCollectionView: UICollectionView = {
+
+        let flowLayout = LeftAlignedCollectionViewFlowLayout()
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        cv.showsHorizontalScrollIndicator = false
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        
+        return cv
+    }()
+    
+    /// 스터디명
+    private let studyNameLabel = CustomLabel(title: "스터디명", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    let studyNameTextView = CharactersNumberLimitedTextView(placeholder: "스터디명을 입력해주세요.", maxCharactersNumber: 10, radius: 21, position: .center, fontSize: 12)
+    
+    /// 스터디 형태 on/off
+    private let studyTypeLabel = CustomLabel(title: "형태", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let studyTypeGuideLabel = CustomLabel(title: "중복 선택 가능", tintColor: .ppsGray1, size: 12, isBold: false)
+    let onlineButton = CheckBoxButton(title: "온라인")
+    let offlineButton = CheckBoxButton(title: "오프라인")
+    
+    /// 스터디 한줄 소개
+    private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
     private lazy var doneButton = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(barButtonDidTapped))
     private lazy var cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(barButtonDidTapped))
     
@@ -19,14 +73,61 @@ final class EditingStudyFormViewController: StudyFormViewController {
         super.viewDidLoad()
 
         /// 스터디 불러와서 스터디 뷰모델을 생성해줌.
-        configure(study: studyViewModel!.study)
         
+        configureViews()
+        setDelegate()
+        enableTapGesture()
+        onlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
+        offlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
+        setConstraints()
         setNavigation()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        addNotification()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+      
+        NotificationCenter.default.removeObserver(self)
+        if let token = token {
+            NotificationCenter.default.removeObserver(token)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    
     // MARK: - Configure
     
-    func configure(study: Study) {
+    func configureViews() {
+        view.backgroundColor = .systemBackground
+        view.addSubview(scrollView)
+        
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.addSubview(containerView)
+
+        containerView.addSubview(studyCategoryLabel)
+        containerView.addSubview(studyCategoryCollectionView)
+        containerView.addSubview(studyNameLabel)
+        containerView.addSubview(studyNameTextView)
+        containerView.addSubview(studyTypeLabel)
+        containerView.addSubview(studyTypeGuideLabel)
+        containerView.addSubview(onlineButton)
+        containerView.addSubview(offlineButton)
+        containerView.addSubview(studyIntroductionLabel)
+        containerView.addSubview(studyIntroductionTextView)
+    }
+    
+    func bind(_ study: Study) {
         
         studyNameTextView.text = study.title
         studyIntroductionTextView.text = study.studyDescription
@@ -52,14 +153,28 @@ final class EditingStudyFormViewController: StudyFormViewController {
             studyIntroductionTextView.hidePlaceholder(true)
             studyIntroductionTextView.getCharactersNumerLabel().text = "\(study.studyDescription!.count)/10"
         }
-    
-        let indexPath = StudyCategory(rawValue: study.category!)?.indexPath
-        // tobefixed: 셀을 가져오지 못함. 버튼을 눌러야 샐을 가져옴.
-        let cell = studyCategoryCollectionView.cellForItem(at: indexPath!) as? CategoryCell
-        cell?.toogleButton()
     }
     
     // MARK: - Actions
+    
+    @objc func typeButtonDidTapped(_ sender: CheckBoxButton) {
+        
+        if studyViewModel?.study.onoff == nil {
+            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.on.eng : OnOff.off.eng
+        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.off.kor {
+            studyViewModel?.study.onoff = OnOff.onoff.eng
+        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.on.kor {
+            studyViewModel?.study.onoff = nil
+        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.on.kor {
+            studyViewModel?.study.onoff = OnOff.onoff.eng
+        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.off.kor {
+            studyViewModel?.study.onoff = nil
+        } else if studyViewModel?.study.onoff == OnOff.onoff.eng {
+            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.off.eng : OnOff.on.eng
+        }
+        
+        sender.toggleState()
+    }
     
     @objc func barButtonDidTapped(sender: UIBarButtonItem) {
         
@@ -73,6 +188,50 @@ final class EditingStudyFormViewController: StudyFormViewController {
             default:
                 return
         }
+    }
+    
+    @objc func onKeyboardAppear(_ notification: NSNotification) {
+        
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardFrame.cgRectValue
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        
+        scrollView.contentInset = insets
+        
+        var viewFrame = self.view.frame
+        
+        viewFrame.size.height -= keyboardSize.height
+        
+        let activeTextView: UITextView? = [studyNameTextView, studyIntroductionTextView].first { $0.isFirstResponder }
+        
+        if let activeTextView = activeTextView {
+            
+            if !viewFrame.contains(activeTextView.frame.origin) {
+                print(activeTextView.frame.origin)
+                
+                let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height + activeTextView.frame.height)
+                
+                scrollView.setContentOffset(scrollPoint, animated: true)
+            }
+        }
+    }
+    
+    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+        
+        scrollView.contentInset = UIEdgeInsets.zero
+        self.view.endEditing(true)
+    }
+    
+    private func enableTapGesture() {
+        
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     private func setNavigation() {
@@ -89,4 +248,175 @@ final class EditingStudyFormViewController: StudyFormViewController {
     }
     
     // MARK: - Setting Constraints
+    
+    func setConstraints() {
+        
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(view.safeAreaLayoutGuide)
+        }
+        containerView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.snp.width)
+            make.height.greaterThanOrEqualTo(view.safeAreaLayoutGuide.snp.height)
+        }
+        studyCategoryLabel.snp.makeConstraints { make in
+            make.top.equalTo(containerView.safeAreaLayoutGuide.snp.top).offset(40)
+            make.leading.equalTo(containerView.snp.leading).inset(26)
+        }
+        studyCategoryCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(studyCategoryLabel.snp.bottom).offset(17)
+            make.leading.trailing.equalTo(containerView).inset(20)
+            make.height.equalTo(110)
+        }
+        studyNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(studyCategoryCollectionView.snp.bottom).offset(40)
+            make.leading.equalTo(studyCategoryLabel)
+        }
+        studyNameTextView.snp.makeConstraints { make in
+            make.top.equalTo(studyNameLabel.snp.bottom).offset(17)
+            make.leading.trailing.equalTo(studyCategoryCollectionView)
+            make.height.equalTo(42).priority(.low)
+        }
+        studyTypeLabel.snp.makeConstraints { make in
+            make.top.equalTo(studyNameTextView.snp.bottom).offset(40)
+            make.leading.equalTo(studyCategoryLabel)
+        }
+        studyTypeGuideLabel.snp.makeConstraints { make in
+            make.leading.equalTo(studyTypeLabel.snp.trailing).offset(7)
+            make.bottom.equalTo(studyTypeLabel.snp.bottom)
+        }
+        onlineButton.snp.makeConstraints { make in
+            make.top.equalTo(studyTypeLabel.snp.bottom).offset(17)
+            make.leading.equalTo(studyTypeLabel)
+        }
+        offlineButton.snp.makeConstraints { make in
+            make.top.equalTo(onlineButton.snp.bottom).offset(4)
+            make.leading.equalTo(studyTypeLabel)
+        }
+        studyIntroductionLabel.snp.makeConstraints { make in
+            make.top.equalTo(offlineButton.snp.bottom).offset(40)
+            make.leading.trailing.equalTo(studyCategoryLabel)
+        }
+        studyIntroductionTextView.snp.makeConstraints { make in
+            make.height.greaterThanOrEqualTo(105)
+            make.top.equalTo(studyIntroductionLabel.snp.bottom).offset(17)
+            make.leading.trailing.equalTo(containerView).inset(30)
+            make.bottom.equalTo(containerView).inset(140)
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func addNotification() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
+            guard let cellInfo = noti.object as? [String: Any] else { return }
+            let title = cellInfo["title"] as! String
+            
+            categoryChoice = StudyCategory(rawValue: title)
+        }
+    }
+    
+    private func setDelegate() {
+        
+        studyNameTextView.delegate = self
+        studyIntroductionTextView.delegate = self
+        studyCategoryCollectionView.dataSource = self
+    }
+}
+
+// MARK: - UITextViewDelegate
+
+extension EditingStudyFormViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        switch textView {
+            case studyNameTextView:
+                studyNameTextView.hidePlaceholder(true)
+                
+            case studyIntroductionTextView:
+                studyIntroductionTextView.hidePlaceholder(true)
+            default:
+                return
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if textView.text == "" {
+            
+            switch textView {
+                case studyNameTextView:
+                    studyNameTextView.hidePlaceholder(false)
+                case studyIntroductionTextView:
+                    studyIntroductionTextView.hidePlaceholder(false)
+                default:
+                    return
+            }
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        switch textView {
+            case studyNameTextView:
+                
+                guard let inputedText = textView.text else { return true }
+                let newLength = inputedText.count + text.count - range.length
+                studyNameTextView.getCharactersNumerLabel().text = newLength > 10 ? "10/10" : "\(newLength)/10"
+                return newLength <= 10
+            case studyIntroductionTextView:
+                
+                guard let inputedText = textView.text else { return true }
+                let newLength = inputedText.count + text.count - range.length
+                studyIntroductionTextView.getCharactersNumerLabel().text = newLength > 50 ? "50/50" : "\(newLength)/50"
+                return newLength <= 50
+                
+            default:
+                return false
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        
+        ///엔터 입력할때 안되도록...막아야함
+        switch textView {
+            case studyNameTextView:
+                if textView.text.contains(where: { $0 == "\n" }) {
+                    textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+                }
+                studyViewModel?.study.title = studyNameTextView.text
+            case studyIntroductionTextView:
+                if textView.text.contains(where: { $0 == "\n" }) {
+                    textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
+                }
+                studyViewModel?.study.studyDescription = studyIntroductionTextView.text
+            default:
+                break
+        }
+    }
+}
+
+// MARK: - UICollectionViewDataSource
+
+extension EditingStudyFormViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return StudyCategory.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
+        cell.title = StudyCategory.allCases[indexPath.row].rawValue
+    
+        if let category = studyViewModel?.study.category, cell.title == category {
+            cell.isSameTitle = true
+        }
+        
+        return cell
+    }
 }

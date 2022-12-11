@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StudySchedulePriodFormViewController: UIViewController {
+class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -23,25 +23,13 @@ class StudySchedulePriodFormViewController: UIViewController {
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
-            
             selectedRepeatOptionCheckBox?.isSelected.toggle()
-            
-            if oldValue != selectedRepeatOptionCheckBox {
-                oldValue?.isSelected.toggle()
-            } else {
-                selectedRepeatOptionCheckBox = nil
-                studySchedule?.repeatOption = nil
-            }
-            
-            guard let title = selectedRepeatOptionCheckBox?.currentTitle else { return }
-            guard let repeatOption = RepeatOption(rawValue: title) else { return }
-            
-            studySchedule?.repeatOption = repeatOption
+            oldValue?.isSelected.toggle()
         }
     }
     
     private let openDateSelectableView = DateSelectableRoundedView(title: "날짜", isNecessary: true)
-    private let timeTitle = CustomLabel(title: "시간", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
+    private let timeLabel = CustomLabel(title: "시간", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let startTimeSelectButton = BrandButton(title: "--:--", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
     private let startTimeSuffixLabel = CustomLabel(title: "부터", tintColor: .ppsBlack, size: 16)
     private let endTimeSelectButton = BrandButton(title: "--:--", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
@@ -67,56 +55,74 @@ class StudySchedulePriodFormViewController: UIViewController {
     }()
     private let deadlineDateSelectableView = DateSelectableRoundedView(title: "이날까지", isNecessary: false)
     private let nextButton = BrandButton(title: "다음", isBold: true, isFill: false)
+    private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close")?.withTintColor(.white), style: .done, target: self, action: #selector(closeButtonDidTapped))
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setNavigation()
+        
         configureViews()
         addActionsAtButtons()
         setConstraints()
         
-        studySchedule = StudySchedule(openDate: Date())
+        studySchedule = StudySchedule(openDate: Date(), deadlineDate: Date())
         
         nextButton.isEnabled = false
     }
     
     // MARK: - Actions
     
-    @objc func nextButtonDidTapped() {
+    @objc private func nextButtonDidTapped() {
         
-        let periodFormVC = StudyScheduleContentViewController()
+        let periodFormVC = CreatingStudyScheduleContentViewController()
         
+        periodFormVC.studySchedule = studySchedule
         navigationController?.pushViewController(periodFormVC, animated: true)
     }
     
-    @objc func openDateSelect() {
+    @objc private func closeButtonDidTapped() {
+        self.dismiss(animated: true)
+    }
+    
+    @objc private func openDateSelectableViewTapped() {
         
-        let popUpCalendarVC = PopUpCalendarViewController(type: .open)
+        guard let openDate = studySchedule?.openDate else { return }
+        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
         
         popUpCalendarVC.presentingVC = self
-        popUpCalendarVC.selectedDate = studySchedule?.openDate
         
         present(popUpCalendarVC, animated: true)
     }
     
-    @objc func deadlineDateSelect() {
-        
-        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline)
+    @objc private func deadlineDateSelectableViewTapped() {
+        guard let deadlineDate = studySchedule?.deadlineDate else { return }
+        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
         
         popUpCalendarVC.presentingVC = self
-        popUpCalendarVC.selectedDate = studySchedule?.deadlineDate
         
         present(popUpCalendarVC, animated: true)
     }
     
-    @objc func checkboxDidTapped(_ sender: CheckBoxButton) {
-        
-        selectedRepeatOptionCheckBox = sender
+    @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
+
+        if selectedRepeatOptionCheckBox == sender {
+            
+            studySchedule?.repeatOption = nil
+            selectedRepeatOptionCheckBox = nil
+        } else {
+            
+            guard let title = sender.currentTitle else { return }
+            guard let repeatOption = RepeatOption(rawValue: title) else { return }
+            
+            studySchedule?.repeatOption = repeatOption
+            selectedRepeatOptionCheckBox = sender
+        }
     }
     
-    @objc func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
+    @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
@@ -152,7 +158,7 @@ class StudySchedulePriodFormViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    @objc func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
+    @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
@@ -190,15 +196,15 @@ class StudySchedulePriodFormViewController: UIViewController {
     
     private func addActionsAtButtons() {
         
-        openDateSelectableView.addTapGesture(target: self, action: #selector(openDateSelect))
-        deadlineDateSelectableView.addTapGesture(target: self, action: #selector(deadlineDateSelect))
+        openDateSelectableView.addTapGesture(target: self, action: #selector(openDateSelectableViewTapped))
+        deadlineDateSelectableView.addTapGesture(target: self, action: #selector(deadlineDateSelectableViewTapped))
         
         startTimeSelectButton.addTarget(self, action: #selector(startTimeSelectButtonDidTapped), for: .touchUpInside)
         endTimeSelectButton.addTarget(self, action: #selector(endTimeSelectButtonDidTapped), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
     }
     
-    func configureUI(_ studySchedule: StudySchedule) {
+    private func configureUI(_ studySchedule: StudySchedule) {
         
         print(studySchedule)
         
@@ -224,7 +230,11 @@ class StudySchedulePriodFormViewController: UIViewController {
     }
     
     private func checkNextButtonIsEnabled(_ studySchedule: StudySchedule) {
-        if studySchedule.openDate != nil && studySchedule.startTime != nil && studySchedule.endTime != nil {
+        let opendate = studySchedule.openDate
+        let startTime = studySchedule.startTime
+        let endTime = studySchedule.endTime
+        
+        if opendate != nil && startTime != nil && endTime != nil && startTime! < endTime! {
             nextButton.isEnabled = true
             nextButton.fillIn(title: "다음")
         } else {
@@ -239,7 +249,7 @@ class StudySchedulePriodFormViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(openDateSelectableView)
-        view.addSubview(timeTitle)
+        view.addSubview(    timeLabel)
         view.addSubview(startTimeSelectButton)
         view.addSubview(startTimeSuffixLabel)
         view.addSubview(endTimeSelectButton)
@@ -250,6 +260,13 @@ class StudySchedulePriodFormViewController: UIViewController {
         view.addSubview(nextButton)
     }
     
+    private func setNavigation() {
+        self.navigationItem.title = "일정 만들기"
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+        self.navigationItem.rightBarButtonItem = closeButton
+    }
+    
     // MARK: - Setting Constraints
     
     private func setConstraints() {
@@ -258,13 +275,13 @@ class StudySchedulePriodFormViewController: UIViewController {
             make.height.equalTo(42)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
-        timeTitle.snp.makeConstraints { make in
+        timeLabel.snp.makeConstraints { make in
             make.top.equalTo(openDateSelectableView.snp.bottom).offset(40)
             make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         startTimeSelectButton.snp.makeConstraints { make in
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(20)
-            make.top.equalTo(timeTitle.snp.bottom).offset(10)
+            make.top.equalTo(    timeLabel.snp.bottom).offset(10)
             make.width.equalTo(100)
         }
         startTimeSuffixLabel.snp.makeConstraints { make in
@@ -313,7 +330,7 @@ final class DateSelectableRoundedView: UIView {
     
     private lazy var titleLabel = CustomLabel(title: self.title, tintColor: .ppsBlack, size: 16, isNecessaryTitle: self.isNecessary)
     let calendarLinkedDateLabel = CustomLabel(title: "\(Date().formatToString(language: .kor))", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let calendarIcon = UIImageView(image: UIImage(named: "Calendar"))
+    let calendarIcon = UIImageView(image: UIImage(named: "calendar"))
     
     // MARK: - Initialization
     

@@ -9,6 +9,16 @@ import UIKit
 
 class ScheduleTableViewCell: UITableViewCell {
     
+    // MARK: - Propertied
+    
+    var editable: Bool = false {
+        didSet {
+            etcButton.isHidden = !editable
+        }
+    }
+    
+    var etcButtonAction: (() -> Void) = {}
+    
     let roundedBackgroundView = RoundableView(cornerRadius: 24)
     private let bookmarkColorView = UIView()
     private lazy var optionalLabel = RoundedCustomLabel(text: "옵션", fontSize: 10, radius: 6, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray1))
@@ -60,23 +70,27 @@ class ScheduleTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @objc func etcButtonDidTapped() {
-        print(#function)
+        etcButtonAction()
     }
     
-    func configure(schedule: Studyschedule, kind: CalendarKind) {
-        let time = schedule.time.components(separatedBy: "-")
+    func configure(schedule: StudySchedule, kind: CalendarKind) {
         
-        bookmarkColorView.backgroundColor = schedule.color
-        startTimeLabel.text = time.first
-        endTimeLabel.text = time.last
+        guard let startTime = schedule.startTime else { return }
+        guard let endTime = schedule.endTime else { return }
+        
+        bookmarkColorView.backgroundColor = UIColor.orange
+        
+        startTimeLabel.text = TimeFormatter.shared.string(from: startTime)
+        endTimeLabel.text = TimeFormatter.shared.string(from: endTime)
         topicLabel.text = schedule.topic
         placeLabel.text = schedule.place
         
-        if kind == .study {
+        switch kind {
+        case .personal:
             optionalLabel.text = schedule.studyName
             optionalLabel.change(textColor: .appColor(.keyColor1))
-        } else {
-            optionalLabel.text = schedule.repeatOption
+        case .study:
+            optionalLabel.text = schedule.repeatOption?.kor
         }
     }
     
@@ -124,10 +138,9 @@ class ScheduleTableViewCell: UITableViewCell {
             make.bottom.equalTo(bookmarkColorView.snp.centerY).offset(-2)
         }
         locationIcon.snp.makeConstraints { make in
-            make.leading.equalTo(bookmarkColorView.snp.trailing).offset(6)
+            make.leading.equalTo(bookmarkColorView.snp.trailing).offset(7)
             make.top.equalTo(bookmarkColorView.snp.centerY).offset(2)
-            
-            make.height.equalTo(17)
+            make.height.equalTo(13)
             make.width.equalTo(10)
         }
         placeLabel.snp.makeConstraints { make in

@@ -7,21 +7,28 @@
 
 import UIKit
 
-class AttendanceUserView: UIView {
+class AttendanceView: UIView {
     
-    var type: AttendanceViewType?
+    var viewer: Viewer
     
     // MARK: - Properties
     
     weak var bottomSheetAddableDelegate: BottomSheetAddable?
     
-    lazy var attendanceStatusView = type == .userMode ? AttendanceUserModeStatusView() : AttendanceUserDetailStatusView()
+    lazy var attendanceStatusView: UIView = {
+        switch self.viewer {
+        case .user:
+            return AttendanceStatusView()
+        case .manager:
+            return AttendanceStatusWithProfileView()
+        }
+    }()
     let attendanceDetailsTableView = UITableView(frame: .zero, style: .grouped)
     
     // MARK: - Initialization
     
-    init(type: AttendanceViewType) {
-        self.type = type
+    init(viewer: Viewer) {
+        self.viewer = viewer
         
         super.init(frame: .zero)
         
@@ -71,7 +78,7 @@ class AttendanceUserView: UIView {
 
 // MARK: UITableViewDataSource
 
-extension AttendanceUserView: UITableViewDataSource {
+extension AttendanceView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
@@ -148,7 +155,7 @@ extension AttendanceUserView: UITableViewDataSource {
         }
     }
 }
-extension AttendanceUserView: UITableViewDelegate {
+extension AttendanceView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 

@@ -13,6 +13,8 @@ import SnapKit
 class AnnouncementViewController: UIViewController {
     // MARK: - Properties
     
+    let task: Task
+    
     ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
         didSet {
@@ -41,7 +43,19 @@ class AnnouncementViewController: UIViewController {
         }
     }
     
-    var announcementTitleHeaderView: UIView?
+    private let headerView: UIView = {
+        let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Const.screenWidth, height: 48)))
+        let titleLabel = CustomLabel(title: "공지사항", tintColor: .ppsBlack, size: 16, isBold: true)
+        
+        headerView.addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(headerView)
+            make.leading.equalTo(30)
+        }
+        
+        return headerView
+    }()
     
     private let titleTextView: BaseTextView = {
         let tv = BaseTextView(placeholder: "제목을 입력해주세요.", fontSize: 18, isBold: true, topInset: 0, leadingInset: 0)
@@ -82,10 +96,23 @@ class AnnouncementViewController: UIViewController {
     let scrollView = UIScrollView()
     let contentView = UIView()
     
+    // MARK: - Initialization
+    
+    init(task: Task) {
+        self.task = task
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.setBrandNavigation()
         
         configureViews()
         checkIfUserIsMaster()
@@ -101,7 +128,7 @@ class AnnouncementViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
+        
         if !contentTextView.text.isEmpty || !titleTextView.text.isEmpty {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)
@@ -110,21 +137,27 @@ class AnnouncementViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Configure
     
     private func configureViews() {
+        
         view.backgroundColor = .systemBackground
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        if announcementTitleHeaderView != nil {
-            contentView.addSubview(announcementTitleHeaderView!)
+        
+        switch task {
+        case .viewing:
+            contentView.addSubview(headerView)
+        case .creating, .editing:
+            break
         }
+        
         contentView.addSubview(titleTextView)
-        contentView.addSubview(timeLabel)
         contentView.addSubview(contentTextView)
+        contentView.addSubview(timeLabel)
     }
     
     // MARK: - Actions
@@ -145,18 +178,21 @@ class AnnouncementViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
-        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
     }
     
     @objc func cancel() {
-        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
     }
     
     private func enableTapGesture() {
+        
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
+        
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
@@ -167,18 +203,21 @@ class AnnouncementViewController: UIViewController {
     }
     
     private func checkIfCreateOrEdit() {
-        
-        if titleTextView.text.isEmpty && contentTextView.text.isEmpty {
+    
+        switch task {
+        case .creating:
             navigationItem.title = "공지사항 만들기"
-            titleTextView.setHeight(24)
-        } else {
+        case .editing:
             navigationItem.title = "공지사항 수정"
+        case .viewing:
+            navigationItem.title = "스터디 이름"
         }
         
+        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(doneButtonDidTapped))
-        navigationItem.rightBarButtonItem?.tintColor = .orange
+        navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
-        navigationItem.leftBarButtonItem?.tintColor = .orange
+        navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
@@ -191,7 +230,7 @@ class AnnouncementViewController: UIViewController {
     func setConstraints() {
         
         scrollView.snp.makeConstraints { make in
-            make.centerX.width.top.bottom.equalTo(view)
+            make.centerX.width.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
         scrollView.contentLayoutGuide.snp.makeConstraints { make in
@@ -202,44 +241,37 @@ class AnnouncementViewController: UIViewController {
             make.centerX.width.top.bottom.equalTo(scrollView)
         }
         
-        if announcementTitleHeaderView != nil {
-            announcementTitleHeaderView?.snp.makeConstraints({ make in
+        switch task {
+        case .creating:
+            titleTextView.snp.makeConstraints { make in
+                make.top.equalTo(contentView).inset(30)
+                make.leading.trailing.equalTo(contentView).inset(30)
+            }
+        case .editing:
+            titleTextView.snp.makeConstraints { make in
+                make.top.equalTo(contentView).inset(50)
+                make.leading.trailing.equalTo(contentView).inset(30)
+            }
+        case .viewing:
+            headerView.snp.makeConstraints({ make in
                 make.leading.top.trailing.equalTo(contentView)
                 make.height.equalTo(48)
             })
-            
             titleTextView.snp.makeConstraints { make in
-                make.top.equalTo(announcementTitleHeaderView!.snp.bottom).offset(30)
+                make.top.equalTo(headerView.snp.bottom).offset(30)
                 make.leading.trailing.equalTo(contentView).inset(30)
             }
-            
-            contentTextView.snp.makeConstraints { make in
-                make.top.equalTo(titleTextView.snp.bottom).offset(25)
-                make.bottom.equalTo(contentView.snp.bottom).inset(110)
-                make.leading.trailing.equalTo(titleTextView)
-            }
-            
-            timeLabel.snp.makeConstraints { make in
-                make.trailing.equalTo(contentView.snp.trailing).inset(30)
-                make.bottom.equalTo(titleTextView.snp.top).offset(-8)
-            }
-        } else {
-            
-            titleTextView.snp.makeConstraints { make in
-                make.top.equalTo(contentView.snp.top).offset(50)
-                make.leading.trailing.equalTo(contentView).inset(30)
-            }
-            
-            contentTextView.snp.makeConstraints { make in
-                make.top.equalTo(titleTextView.snp.bottom).offset(25)
-                make.bottom.equalTo(contentView.snp.bottom).inset(110)
-                make.leading.trailing.equalTo(titleTextView)
-            }
-            
-            timeLabel.snp.makeConstraints { make in
-                make.trailing.equalTo(contentView.snp.trailing).inset(30)
-                make.bottom.equalTo(titleTextView.snp.top).offset(-8)
-            }
+        }
+    
+        contentTextView.snp.makeConstraints { make in
+            make.top.equalTo(titleTextView.snp.bottom).offset(25)
+            make.bottom.equalTo(contentView.snp.bottom).inset(110)
+            make.leading.trailing.equalTo(titleTextView)
+        }
+        
+        timeLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(contentView.snp.trailing).inset(30)
+            make.bottom.equalTo(titleTextView.snp.top).offset(-8)
         }
     }
 }

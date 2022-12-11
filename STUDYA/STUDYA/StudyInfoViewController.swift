@@ -14,7 +14,7 @@ class StudyInfoViewController: SwitchableViewController {
     
     var study: Study?
     
-//    internal var syncSwitchReverse: (Bool) -> () = { sender in }
+    //    internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
     /// 스터디 폼
     ///
@@ -62,16 +62,13 @@ class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var studyExitButton: UIButton!
     
     lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
-    private let masterSwitch = BrandSwitch()
     
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         /// 스터디 정보 가져오기
-        
-        configureMasterSwitch()
         
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
@@ -86,17 +83,18 @@ class StudyInfoViewController: SwitchableViewController {
         }
         configureNavigationBar()
     }
-  
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        tabBarController?.tabBar.isHidden = true
         configureViews()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(managerSwitch.isOn)
+        syncSwitchReverse(isSwitchOn)
     }
     
     // MARK: - Actions
@@ -133,7 +131,8 @@ class StudyInfoViewController: SwitchableViewController {
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
         
-        editingStudyFormVC.studyViewModel = StudyViewModel(study: study!)
+        guard let study = study else { return }
+        editingStudyFormVC.studyViewModel = StudyViewModel(study: study)
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
@@ -143,6 +142,7 @@ class StudyInfoViewController: SwitchableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let studygeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
         
+        studygeneralRuleVC.task = .editing
         studygeneralRuleVC.navigationItem.title = "규칙 관리"
         studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
         studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
@@ -176,53 +176,48 @@ class StudyInfoViewController: SwitchableViewController {
     
     @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
         switch sender.title(for: .normal) {
-            case "스터디 탈퇴":
-                let vcToPresent = StudyExitViewController()
-                vcToPresent.type = .exit
-                vcToPresent.presentingVC = self
-                if let sheet = vcToPresent.sheetPresentationController {
-                    
-                    sheet.detents = [ .custom { _ in return 300 } ]
-                    
-                    sheet.preferredCornerRadius = 24
-                }
-                present(vcToPresent, animated: true, completion: nil)
-            case "스터디 종료":
-                let vcToPresent = StudyExitViewController()
-                vcToPresent.type = .close
-                vcToPresent.presentingVC = self
-                if let sheet = vcToPresent.sheetPresentationController {
-                    
-                    sheet.detents = [ .custom { _ in return 300 } ]
-                    
-                    sheet.preferredCornerRadius = 24
-                }
-                present(vcToPresent, animated: true, completion: nil)
-            default:
-                return
+        case "스터디 탈퇴":
+            let vcToPresent = StudyExitViewController(task: .exit)
+
+            vcToPresent.presentingVC = self
+            if let sheet = vcToPresent.sheetPresentationController {
+                
+                sheet.detents = [ .custom { _ in return 300 } ]
+                
+                sheet.preferredCornerRadius = 24
+            }
+            present(vcToPresent, animated: true, completion: nil)
+        case "스터디 종료":
+            let vcToPresent = StudyExitViewController(task: .close)
+           
+            vcToPresent.presentingVC = self
+            if let sheet = vcToPresent.sheetPresentationController {
+                
+                sheet.detents = [ .custom { _ in return 300 } ]
+                
+                sheet.preferredCornerRadius = 24
+            }
+            present(vcToPresent, animated: true, completion: nil)
+        default:
+            return
         }
     }
     
     @objc func closeButtonDidTapped() {
-
+        
         self.dismiss(animated: true)
     }
+    
+    override func extraWorkWhenSwitchToggled() {
+        studyformEditButton.isHidden = !isSwitchOn
+        generalRuleEditButton.isHidden = !isSwitchOn
+        freeRuleEditButton.isHidden = !isSwitchOn
         
-    @objc private func toggleMaster(_ sender: BrandSwitch) {
-        
-        studyformEditButton.isHidden = !sender.isOn
-        generalRuleEditButton.isHidden = !sender.isOn
-        freeRuleEditButton.isHidden = !sender.isOn
-        
-        if sender.isOn {
-            studyExitButton.setTitle("스터디 종료", for: .normal)
-        } else {
-            studyExitButton.setTitle("스터디 탈퇴", for: .normal)
-        }
+        isSwitchOn ? studyExitButton.setTitle("스터디 종료", for: .normal) : studyExitButton.setTitle("스터디 탈퇴", for: .normal)
     }
-    
+
     private func check(_ value: Int?, AndSetupHeightOf view: UIView) {
-    
+        
         if value != nil {
             view.isHidden = false
             view.snp.remakeConstraints { make in
@@ -284,11 +279,5 @@ class StudyInfoViewController: SwitchableViewController {
         
         latenessCountLabel.text = "\(excommunicationRule?.lateness ?? 0)번 지각 시 강퇴"
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"
-    }
-    
-    private func configureMasterSwitch() {
-        
-        masterSwitch.addTarget(self, action: #selector(toggleMaster(_:)), for: .valueChanged)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: masterSwitch)
     }
 }

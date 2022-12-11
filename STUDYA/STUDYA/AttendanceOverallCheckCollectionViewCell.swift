@@ -17,6 +17,8 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    weak var navigatiableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)?
+    
     private lazy var tableView: UITableView = {
        
         let t = UITableView(frame: .zero)
@@ -80,5 +82,8 @@ extension AttendanceOverallCheckCollectionViewCell: UITableViewDataSource {
 
 extension AttendanceOverallCheckCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let AttendancePersonalVC = AttendancePersonalViewController()
+        navigatiableSwitchSyncableDelegate?.syncSwitchWith(nextVC: AttendancePersonalVC)
+        navigatiableSwitchSyncableDelegate?.push(vc: AttendancePersonalVC)
     }
 }

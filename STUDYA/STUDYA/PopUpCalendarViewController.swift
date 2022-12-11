@@ -11,17 +11,18 @@ import SnapKit
 class PopUpCalendarViewController: UIViewController {
     
     // MARK: - Properties
-    
-    var selectedDate: Date?
+
+    lazy var selectedDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: selectedDate)
+    var selectedDate: Date
     weak var presentingVC: UIViewController?
+
     private let calendarType: PopUpCalendarType
-    
     private let button = UIButton(frame: .zero)
     private let popUpContainerView = UIView(backgroundColor: .systemBackground)
     private let dismissButton: UIButton = {
         
         let button = UIButton()
-        let image = UIImage(named: "Dismiss")
+        let image = UIImage(named: "dismiss")
         
         button.setImage(image, for: .normal)
         
@@ -39,8 +40,9 @@ class PopUpCalendarViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(type: PopUpCalendarType) {
+    init(type: PopUpCalendarType, selectedDate: Date) {
         self.calendarType = type
+        self.selectedDate = selectedDate
         
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
@@ -54,7 +56,10 @@ class PopUpCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.selectionBehavior = UICalendarSelectionSingleDate(delegate: self)
+        let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
+        calendarView.selectionBehavior = selectionDelegate
+        selectionDelegate.setSelected(selectedDateComponents, animated: false)
+        
         button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         
@@ -105,11 +110,11 @@ class PopUpCalendarViewController: UIViewController {
 }
 
 extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
-    
+   
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         
         
-        guard let presentingVC = presentingVC as? StudySchedulePriodFormViewController else { return }
+        guard let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController else { return }
     
         switch calendarType {
         case .open:

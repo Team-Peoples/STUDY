@@ -31,10 +31,18 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    
-    var willDropDown = false
+    private var dropDownCellNumber: CGFloat {
+        if myStudyList.count == 0 {
+            return 0
+        } else if myStudyList.count > 0, myStudyList.count < 5 {
+            return CGFloat(myStudyList.count)
+        } else {
+            return 4
+        }
+    }
+    private var willDropDown = false
     private var willSpreadUp = false
-
+    
     private lazy var notificationBtn: UIButton = {
         
         let n = UIButton(frame: .zero)
@@ -47,18 +55,8 @@ final class MainViewController: SwitchableViewController {
         return n
     }()
     
-    var dropDownCellNumber: CGFloat {
-        if myStudyList.count == 0 {
-            return 0
-        } else if myStudyList.count > 0, myStudyList.count < 5 {
-            return CGFloat(myStudyList.count)
-        } else {
-            return 4
-        }
-    }
-    
-    lazy var dropdownContainerView = UIView()
-    lazy var dropdownTableView: UITableView = {
+    private lazy var dropdownContainerView = UIView()
+    private lazy var dropdownTableView: UITableView = {
 
         let t = UITableView()
         
@@ -71,7 +69,7 @@ final class MainViewController: SwitchableViewController {
 
         return t
     }()
-    lazy var dropdownDimmingView: UIView = {
+    private lazy var dropdownDimmingView: UIView = {
 
         let v = UIView()
 
@@ -83,7 +81,7 @@ final class MainViewController: SwitchableViewController {
 
         return v
     }()
-    lazy var createStudyButton: UIButton = {
+    private lazy var createStudyButton: UIButton = {
        
         let b = UIButton()
         
@@ -218,7 +216,7 @@ final class MainViewController: SwitchableViewController {
         dropdownDimmingView.isHidden.toggle()
     }
     
-    @objc func createStudyButtonDidTapped() {
+    @objc private func createStudyButtonDidTapped() {
         dropdownButtonDidTapped()
         let creatingStudyFormVC = CreatingStudyFormViewController()
         
@@ -349,7 +347,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureViewWhenNoStudy() {
-        let studyEmptyImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 120, height: 150))
+        let studyEmptyImageView = UIImageView(image: UIImage(named: "emptyViewImage"))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = BrandButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
         
@@ -360,12 +358,7 @@ final class MainViewController: SwitchableViewController {
         view.addSubview(studyEmptyLabel)
         view.addSubview(createStudyButton)
         
-        studyEmptyImageView.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(150)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(228)
-            make.centerX.equalTo(view)
-        }
+        studyEmptyImageView.centerXY(inView: view, yConstant: -Const.screenHeight * 0.06)
         
         studyEmptyLabel.snp.makeConstraints { make in
             make.centerX.equalTo(studyEmptyImageView)
@@ -466,7 +459,7 @@ extension MainViewController: UITableViewDataSource {
                 return cell
             case 1:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
-                    cell.navigatable = self
+                cell.navigatableSwitchSyncableDelegate = self
                 return cell
             case 2:
                 let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
@@ -480,7 +473,7 @@ extension MainViewController: UITableViewDataSource {
 //                cell.hideTabBar = { [weak self] in
 //                    self?.tabBarController?.tabBar.isHidden = true
 //                }
-//                
+//
 //                    cell.informationButtonAction = {
 //                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
 //                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
@@ -533,6 +526,15 @@ extension MainViewController: UITableViewDataSource {
 }
 
 extension MainViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 3 {
+            let announcementBoardVC = AnnouncementBoardViewController()
+            self.syncSwitchWith(nextVC: announcementBoardVC)
+            self.push(vc: announcementBoardVC)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case mainTableView:
@@ -561,18 +563,18 @@ extension MainViewController: UITableViewDelegate {
 //
 //extension MainViewController: UIPopoverControllerDelegate {
 //    class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
-//        
+//
 //        // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
 //        private static let sharedInstance = AlwaysPresentAsPopover()
-//        
+//
 //        private override init() {
 //            super.init()
 //        }
-//        
+//
 //        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
 //            return .none
 //        }
-//        
+//
 //        static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
 //            let presentationController = controller.presentationController as! UIPopoverPresentationController
 //            presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
@@ -580,7 +582,7 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController {    
+extension MainViewController {
     func present(vc: UIViewController) {
         present(vc, animated: true)
     }

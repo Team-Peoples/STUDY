@@ -22,13 +22,15 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         return v
     }()
-    let userView = AttendanceUserView(type: .userMode)
+    
+    let userView = AttendanceView(viewer: .user)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if isAdmin {
             managerView.navigatableBottomSheetableDelegate = self
+            managerView.navigatiableSwitchSyncableDelegate = self
         }
         userView.bottomSheetAddableDelegate = self
         configureNavigationBar()
@@ -38,13 +40,13 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        view = managerSwitch.isOn ? managerView : userView
+        view = isSwitchOn ? managerView : userView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(managerSwitch.isOn)
+        syncSwitchReverse(isSwitchOn)
     }
     
     override func extraWorkWhenSwitchToggled() {
