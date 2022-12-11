@@ -19,15 +19,7 @@ class SwitchableViewController: UIViewController, Navigatable {
             extraWorkWhenSwitchToggled()
         }
     }
-    
-    var switchStatusWhenWillAppear = false {
-        didSet {
-            managerSwitch.isOn = switchStatusWhenWillAppear
-            toggleNavigationBar()
-            toggleBackButtonColor()
-            extraWorkWhenSwitchToggled()
-        }
-    }
+    var switchStatusWhenWillAppear = false
     
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
@@ -36,7 +28,24 @@ class SwitchableViewController: UIViewController, Navigatable {
     @objc func managerSwitchTappedAction(sender: BrandSwitch) {
         isSwitchOn = sender.isOn ? true : false
     }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        managerSwitch.isOn = switchStatusWhenWillAppear
+        isSwitchOn = switchStatusWhenWillAppear
+        
+        toggleNavigationBar()
+        toggleBackButtonColor()
+        extraWorkWhenSwitchToggled()
+    }
+    
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
     }
@@ -61,7 +70,6 @@ class SwitchableViewController: UIViewController, Navigatable {
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
     
-    //needs to call in every VC's viewDidLaod
     func configureNavigationBar() {
         navigationController?.setBrandNavigation()
         
