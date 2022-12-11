@@ -59,6 +59,12 @@ class StudyScheduleViewController: SwitchableViewController {
         configureNavigationBar()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(isSwitchOn)
+    }
+    
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
