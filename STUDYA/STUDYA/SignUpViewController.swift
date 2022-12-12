@@ -116,6 +116,12 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
+        let nextVC = ProfileSettingViewController()
+        
+        nextVC.email = emailInputField.text
+        nextVC.password = passwordInputField.text
+        nextVC.passwordCheck = checkInputField.text
+        
         navigationController?.pushViewController(ProfileSettingViewController(), animated: true)
     }
     
