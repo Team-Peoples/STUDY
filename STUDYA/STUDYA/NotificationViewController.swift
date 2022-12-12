@@ -31,6 +31,8 @@ final class NotificationViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
+        navigationController?.setBrandNavigation()
+        
         title = "알림"
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.ppsBlack)]
         

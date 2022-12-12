@@ -59,6 +59,12 @@ class StudyScheduleViewController: SwitchableViewController {
         configureNavigationBar()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(isSwitchOn)
+    }
+    
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
@@ -72,7 +78,7 @@ class StudyScheduleViewController: SwitchableViewController {
     }
     
     override func extraWorkWhenSwitchToggled() {
-        floatingButtonView.isHidden = !managerSwitch.isOn
+        floatingButtonView.isHidden = !isSwitchOn
         let cells = scheduleTableView.cellsForRows(at: 0)
         let scheduleTableViewCells = cells.compactMap { cell in
             let cell = cell as? ScheduleTableViewCell

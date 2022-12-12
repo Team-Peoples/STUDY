@@ -15,8 +15,8 @@ extension Navigatable {
     func push(vc: UIViewController) {
         navigationController?.pushViewController(vc, animated: true)
     }
-    func present(vc: UIViewController) {
-        navigationController?.present(vc, animated: true)
+    func present(_ vc: UIViewController) {
+        present(vc, animated: true)
     }
 }
 

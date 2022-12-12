@@ -12,21 +12,40 @@ class SwitchableViewController: UIViewController, Navigatable {
     var isAdmin = true
     
     //to be fixed: isSwitchOn과 managerSwitch중 하나만 사용해서 UI 처리할 수 있는 방법 찾기
-    lazy var isSwitchOn = false {
+    var isSwitchOn = false {
         didSet {
             toggleNavigationBar()
             toggleBackButtonColor()
             extraWorkWhenSwitchToggled()
         }
     }
+    var switchStatusWhenWillAppear = false
+    
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
-    lazy var managerSwitch = BrandSwitch()
+    private lazy var managerSwitch = BrandSwitch()
 
     @objc func managerSwitchTappedAction(sender: BrandSwitch) {
         isSwitchOn = sender.isOn ? true : false
     }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        managerSwitch.isOn = switchStatusWhenWillAppear
+        isSwitchOn = switchStatusWhenWillAppear
+        
+        toggleNavigationBar()
+        toggleBackButtonColor()
+        extraWorkWhenSwitchToggled()
+    }
+    
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
     }
@@ -36,7 +55,7 @@ class SwitchableViewController: UIViewController, Navigatable {
     }
     
     func toggleNavigationBar() {
-        if managerSwitch.isOn { turnOnNavigationBar() } else { turnOffNavigationBar() }
+        if isSwitchOn { turnOnNavigationBar() } else { turnOffNavigationBar() }
     }
     
     func turnOnNavigationBar() {
@@ -51,7 +70,6 @@ class SwitchableViewController: UIViewController, Navigatable {
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
     
-    //needs to call in every VC's viewDidLaod
     func configureNavigationBar() {
         navigationController?.setBrandNavigation()
         
@@ -66,9 +84,9 @@ class SwitchableViewController: UIViewController, Navigatable {
 extension SwitchableViewController: SwitchSyncable {
     
     func syncSwitchWith(nextVC: SwitchableViewController) {
-        nextVC.managerSwitch.isOn = managerSwitch.isOn
+        nextVC.switchStatusWhenWillAppear = isSwitchOn
         nextVC.syncSwitchReverse = { sender in
-            self.managerSwitch.isOn = nextVC.managerSwitch.isOn
+            self.switchStatusWhenWillAppear = nextVC.isSwitchOn
         }
     }
 }

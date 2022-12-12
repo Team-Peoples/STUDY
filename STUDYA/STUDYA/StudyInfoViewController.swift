@@ -67,7 +67,6 @@ class StudyInfoViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         /// 스터디 정보 가져오기
         
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
@@ -81,7 +80,6 @@ class StudyInfoViewController: SwitchableViewController {
             make.height.equalTo(42)
             make.bottom.equalTo(view.snp.bottom).offset(40)
         }
-        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {

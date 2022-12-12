@@ -41,7 +41,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
 
     private var isPrecedingDateTurn = true
     
-    weak var presentingVC: AttendanceBottomViewController?
+    internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
     
     private let dimmingViewButton = UIButton(frame: .zero)
     private let popUpContainerView = UIView(backgroundColor: .systemBackground)
@@ -104,6 +104,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
+        doneButton.isEnabled = false
         precedingDateButton.isSelected = true
         
         configureViews()
@@ -127,7 +128,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         guard let precedingDate = precedingDateComponents?.convertToDate(), let followingDate = followingDateComponents?.convertToDate() else { return }
-        presentingVC?.setDateLabels(preceding: precedingDate, following: followingDate)
+        dateLabelUpdatableDelegate?.updateDateLabels(preceding: precedingDate, following: followingDate)
         self.dismiss(animated: true)
     }
     
@@ -169,7 +170,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         }
         popUpContainerView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(Const.screenHeight * 0.65)
+            make.height.equalTo(530)
             make.width.equalTo(Const.screenWidth * 0.94)
         }
         upperContainerView.snp.makeConstraints { make in

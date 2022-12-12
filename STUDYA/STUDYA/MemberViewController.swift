@@ -64,6 +64,18 @@ final class MemberViewController: SwitchableViewController {
         configureNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        syncSwitchReverse(isSwitchOn)
+    }
+    
     @objc private func dimmingViewTapped() {
         print(#function)
     }

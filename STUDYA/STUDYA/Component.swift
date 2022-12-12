@@ -1231,7 +1231,7 @@ class FullDoneButtonButtomView: UIView {
         view.addSubview(doneButton)
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view)
-            make.top.equalTo(upperView.snp.bottom).offset(constant)
+            make.top.lessThanOrEqualTo(upperView.snp.bottom).offset(constant)
             make.height.greaterThanOrEqualTo(70)
         }
 

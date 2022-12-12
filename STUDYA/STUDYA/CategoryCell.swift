@@ -24,14 +24,15 @@ class RoundedPurpleCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(button)
+        contentView.addSubview(button)
+        setConstraints(height: 28)
     }
     
     internal func configure(backgroundColor: AssetColor, normalTextColor: AssetColor, selectedTextColor: AssetColor) {
         button.backgroundColor = UIColor.appColor(backgroundColor)
         button.resetTitleColor(normal: normalTextColor, forSelected: selectedTextColor)
         button.layer.borderWidth = 0
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
     }
     
     required init?(coder: NSCoder) {
@@ -43,7 +44,7 @@ class RoundedPurpleCell: UICollectionViewCell {
     func setConstraints(height: Int) {
         button.snp.makeConstraints { make in
             make.height.equalTo(height)
-            make.top.bottom.leading.trailing.equalTo(self)
+            make.top.bottom.leading.trailing.equalTo(contentView)
         }
     }
 }
@@ -63,7 +64,6 @@ final class CategoryCell: RoundedPurpleCell {
         button.addTarget(nil, action: #selector(buttonDidTapped), for: .touchUpInside)
         
         configure(backgroundColor: .background, normalTextColor: .ppsGray1, selectedTextColor: .keyColor1)
-        setConstraints(height: 28)
     }
     
     required init?(coder: NSCoder) {

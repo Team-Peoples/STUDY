@@ -9,15 +9,15 @@ import UIKit
 
 class MainSpreadUpTableViewCell: UITableViewCell {
 
-    internal var cellNumber = 0 {
+    internal var row = 0 {
         didSet {
-            switch cellNumber {
-            case 1:
-                titleLabel.text = "투표 만들기"
-            case 2:
+            switch row {
+            case 0:
                 titleLabel.text = "공지 만들기"
-            case 3:
+                iconImageView.image = UIImage(named: "createAnnouncement")
+            case 1:
                 titleLabel.text = "일정 만들기"
+                iconImageView.image = UIImage(named: "createSchedule")
             default:
                 break
             }
@@ -33,18 +33,18 @@ class MainSpreadUpTableViewCell: UITableViewCell {
         
         return v
     }()
-    private lazy var titleLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 18)
-    private lazy var dummyView = UIView()
+    private lazy var titleLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 18, isBold: true)
+    private lazy var iconImageView = UIImageView(frame: .zero)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
         
-        dummyView.backgroundColor = .black
+        iconImageView.backgroundColor = .black
         selectionStyle = .none
         contentView.addSubview(containerView)
         containerView.addSubview(titleLabel)
-        containerView.addSubview(dummyView)
+        containerView.addSubview(iconImageView)
         
         containerView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(contentView)
@@ -53,7 +53,7 @@ class MainSpreadUpTableViewCell: UITableViewCell {
         titleLabel.snp.makeConstraints { make in
             make.top.leading.bottom.equalTo(containerView).inset(15)
         }
-        dummyView.snp.makeConstraints { make in
+        iconImageView.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(15)
             make.top.trailing.bottom.equalTo(containerView).inset(15)
         }

@@ -11,8 +11,10 @@ final class MyPageMainViewController: UIViewController {
     
     internal var nickName: String?
     internal var myMail: String?
-    private let titles = ["참여한 스터디", "푸시알림 설정", "앱 정보"]
     
+    private let numberOfRows = 3
+    
+    private let headerContainerView = UIView(backgroundColor: .appColor(.background))
     private let headerView: UIView = {
        
         let view = UIView(frame: .zero)
@@ -40,6 +42,7 @@ final class MyPageMainViewController: UIViewController {
         tableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: MyPageTableViewCell.identifier)
         tableView.rowHeight = 55
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .appColor(.background)
         
         return tableView
     }()
@@ -47,11 +50,13 @@ final class MyPageMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.appColor(.background)
+        view.backgroundColor = .systemBackground
+        
         title = "마이페이지"
         
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.isScrollEnabled = false
         
         headerView.layer.applySketchShadow(color: .black, alpha: 0.1, x: 0, y: 0, blur: 10, spread: 0)
         
@@ -59,11 +64,6 @@ final class MyPageMainViewController: UIViewController {
         settingImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(settingViewTapped)))
         
         addSubviews()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
         setConstraints()
     }
     
@@ -80,7 +80,8 @@ final class MyPageMainViewController: UIViewController {
     }
     
     private func addSubviews() {
-        view.addSubview(headerView)
+        view.addSubview(headerContainerView)
+        headerContainerView.addSubview(headerView)
         headerView.addSubview(profileImageSelectorView)
         headerView.addSubview(nickNameLabel)
         headerView.addSubview(myMailLabel)
@@ -90,26 +91,31 @@ final class MyPageMainViewController: UIViewController {
     }
     
     private func setConstraints() {
-        headerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 15, leading: view.leadingAnchor, leadingConstant: 10, trailing: view.trailingAnchor, trailingConstant: 10, height: 134)
+        headerContainerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(tableView.snp.top)
+            make.height.equalTo(164)
+        }
+        headerView.anchor(top: headerContainerView.topAnchor, topConstant: 15, leading: headerContainerView.leadingAnchor, leadingConstant: 10, trailing: headerContainerView.trailingAnchor, trailingConstant: 10, height: 134)
         profileImageSelectorView.anchor(top: headerView.topAnchor, topConstant: 20, leading: headerView.leadingAnchor, leadingConstant: 20)
         nickNameLabel.anchor(top: headerView.topAnchor, topConstant: 35, leading: profileImageSelectorView.trailingAnchor, leadingConstant: 24)
         myMailLabel.anchor(top: nickNameLabel.bottomAnchor, topConstant: 7, leading: nickNameLabel.leadingAnchor)
         settingImageView.anchor(top: headerView.topAnchor, topConstant: 12, trailing: headerView.trailingAnchor, trailingConstant: 12)
         separatorView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
-        tableView.anchor(top: headerView.bottomAnchor, topConstant: 15, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
+        tableView.anchor(top: headerContainerView.bottomAnchor, topConstant: 15, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
     }
 }
 
 extension MyPageMainViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        titles.count
+        numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MyPageTableViewCell.identifier, for: indexPath) as? MyPageTableViewCell else { return MyPageTableViewCell() }
         
-        cell.title = titles[indexPath.row]
+        cell.row = indexPath.row
         
         return cell
     }
@@ -123,7 +129,7 @@ extension MyPageMainViewController: UITableViewDelegate {
         case 1:
             navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
         case 2:
-            navigationController?.pushViewController(InformationViewController(), animated: true)
+            navigationController?.pushViewController(MyPageInformationViewController(), animated: true)
         default: break
         }
         tableView.deselectRow(at: indexPath, animated: false)

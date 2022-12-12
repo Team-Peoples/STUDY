@@ -84,7 +84,7 @@
 		D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */; };
 		D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */; };
 		D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */; };
-		D398B47228B7617F00598B03 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47128B7617F00598B03 /* InformationViewController.swift */; };
+		D398B47228B7617F00598B03 /* MyPageInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47128B7617F00598B03 /* MyPageInformationViewController.swift */; };
 		D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */; };
 		D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */; };
 		D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D8A2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift */; };
@@ -124,6 +124,8 @@
 		D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70028B380C900CEC549 /* KakaoSDKShare */; };
 		D3F2C70328B380C900CEC549 /* KakaoSDKTemplate in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */; };
 		D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = D3F2C70428B380C900CEC549 /* KakaoSDKUser */; };
+		D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */; };
+		D3FA79D82944DCE7001F6E5D /* MainDropDownDimmingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -208,7 +210,7 @@
 		D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingAlertTableViewCell.swift; sourceTree = "<group>"; };
 		D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSettingAlertTableViewController.swift; sourceTree = "<group>"; };
-		D398B47128B7617F00598B03 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
+		D398B47128B7617F00598B03 /* MyPageInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageInformationViewController.swift; sourceTree = "<group>"; };
 		D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreatingPersonalDataViewController.swift; sourceTree = "<group>"; };
 		D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceManagerModeView.swift; sourceTree = "<group>"; };
 		D39F6D8A2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceModificationHeaderView.swift; sourceTree = "<group>"; };
@@ -242,6 +244,8 @@
 		D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageMainViewController.swift; sourceTree = "<group>"; };
 		D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageTableViewCell.swift; sourceTree = "<group>"; };
 		D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpDimmingViewController.swift; sourceTree = "<group>"; };
+		D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDropDownDimmingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,7 +321,7 @@
 				727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */,
 				72ED89A32943A2CD0072227C /* LinkShareMessageView.swift */,
 				72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */,
-				D398B47128B7617F00598B03 /* InformationViewController.swift */,
+				D398B47128B7617F00598B03 /* MyPageInformationViewController.swift */,
 				D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */,
 				D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */,
 				D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */,
@@ -329,6 +333,8 @@
 				D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
+				D3FA79D72944DCE7001F6E5D /* MainDropDownDimmingViewController.swift */,
+				D3FA79D52944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift */,
 				D3DD8088292687F2001250CF /* MainPopOverViewControllers.storyboard */,
 				7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */,
 				D3C9AB0A291F7C6A004E774C /* MemberBottomSheetViewController.swift */,
@@ -646,6 +652,7 @@
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
 				D314A1DB2905190100093C0E /* Extension.swift in Sources */,
 				72E2BF0B292B7428009BCCB7 /* AttendanceView.swift in Sources */,
+				D3FA79D82944DCE7001F6E5D /* MainDropDownDimmingViewController.swift in Sources */,
 				D3A4C855292E55E80052F4E0 /* AttendanceBottomDaySearchSettingView.swift in Sources */,
 				D3C9AB0B291F7C6A004E774C /* MemberBottomSheetViewController.swift in Sources */,
 				72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */,
@@ -658,8 +665,9 @@
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
+				D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
-				D398B47228B7617F00598B03 /* InformationViewController.swift in Sources */,
+				D398B47228B7617F00598B03 /* MyPageInformationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

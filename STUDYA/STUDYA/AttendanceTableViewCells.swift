@@ -22,7 +22,7 @@ class AttendanceDetailsCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "details")!, text: " 상세내역")
+        lbl.attributedText = AttributedString.custom(image: UIImage(named: "details")!, text: " 상세 내역")
         return lbl
     }()
     private let periodSettingButton = BrandButton(title: "22.06.01~22.08.20", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
@@ -60,7 +60,6 @@ class AttendanceDetailsCell: UITableViewCell {
     // MARK: - Actions
     
     @objc func periodSettingButtonDidTapped() {
-        
         let bottomVC = AttendanceBottomViewController()
         
         bottomVC.viewType = .individualPeriodSearchSetting
