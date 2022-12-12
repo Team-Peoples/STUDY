@@ -8,9 +8,11 @@
 import UIKit
 import KakaoSDKUser
 import KakaoSDKAuth
+import NaverThirdPartyLogin
 
 final class WelcomViewController: UIViewController {
     
+    let naverLogin = NaverThirdPartyLoginConnection.getSharedInstance()
     var loginAction: (User) -> Void = { _ in }
     
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
@@ -38,18 +40,14 @@ final class WelcomViewController: UIViewController {
         signUpView.isUserInteractionEnabled = true
         signUpView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(signUpViewDidTapped)))
         
-        addSubviews()
-        addArangedSubviewsToStack()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
         configureButtons()
         configureStackView()
         addConstraints()
         
         underBar.backgroundColor = UIColor.appColor(.keyColor3)
+        
+        addSubviews()
+        addArangedSubviewsToStack()
     }
     
     @objc private func kakaoLoginButtonTapped() {
@@ -63,15 +61,22 @@ final class WelcomViewController: UIViewController {
                     
                     guard let accessToken = oauthToken?.accessToken else { return }
                     Network.shared.SNSSignIn(token: accessToken, sns: .kakao) { user in
-                        NotificationCenter.default.post(name: .loginSuccess, object: user)
-                    }
+                        if user != nil {
+                            NotificationCenter.default.post(name: .loginSuccess, object: user)
+                        } else {
+                            DispatchQueue.main.async {
+                                let alert = SimpleAlert(message: Const.serverErrorMessage)
+                                present(alert, animated: true)
+                            }
+                        }
                 }
             }
         }
     }
     
     @objc private func naverLoginButtonTapped() {
-        
+        naverLogin?.delegate = self
+        naverLogin?.requestThirdPartyLogin()
     }
     
     @objc private func emailLoginButtonDidTapped() {
@@ -132,5 +137,45 @@ final class WelcomViewController: UIViewController {
         signUpView.centerX(inView: view)
         
         underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
+    }
+}
+
+extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        guard let accessToken = naverLogin?.accessToken else { return }
+        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+            if user != nil {
+                NotificationCenter.default.post(name: .loginSuccess, object: user)
+            } else {
+                DispatchQueue.main.async {
+                    let alert = SimpleAlert(message: Const.serverErrorMessage)
+                    present(alert, animated: true)
+                }
+            }
+        }
+    }
+
+    func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
+        guard let accessToken = naverLogin?.accessToken else { return }
+        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+            if user != nil {
+                NotificationCenter.default.post(name: .loginSuccess, object: user)
+            } else {
+                DispatchQueue.main.async {
+                    let alert = SimpleAlert(message: Const.serverErrorMessage)
+                    present(alert, animated: true)
+                }
+            }
+        }
+    }
+
+    func oauth20ConnectionDidFinishDeleteToken() {
+//        로그아웃시 사용하는 토큰 삭제시 호출되는 함수
+    }
+
+    func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
+//        네아로의 모든 에러에서 호출
+        let alert = SimpleAlert(message: "네이버 로그인을 확인해주세요.")
+        present(alert, animated: true)
     }
 }

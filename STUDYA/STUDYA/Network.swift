@@ -44,17 +44,19 @@ struct Network {
         }
     }
     
-    func SNSSignIn(token: String, sns: SNS, completion: @escaping (User) -> () ) {
+    func SNSSignIn(token: String, sns: SNS, completion: @escaping (User?) -> () ) {
         AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
+            
             switch response.result {
             case .success(let data):
+                
                 let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
                 guard let user = decodedData?.result else { return }
-                print(user)
                 
                 completion(user)
-            case .failure(let error):
-                print(error)
+                
+            case .failure:
+                completion(nil)
             }
         }
     }
@@ -88,6 +90,7 @@ struct Network {
                 case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
                 default: completion(.failure(.unknownError(response.response?.statusCode)))
                 }
+            case 401: break //🛑🛑🛑🛑🛑🛑🛑
             case 500:
                 completion(.failure(.serverError))
             default:
