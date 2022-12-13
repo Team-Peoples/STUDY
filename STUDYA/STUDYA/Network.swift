@@ -7,6 +7,7 @@
 
 import UIKit
 import Alamofire
+import JWTDecode
 
 enum PeoplesError: Error {
     case alreadyExistingEmail
@@ -97,16 +98,13 @@ struct Network {
             switch response.result {
             case .success(let data):
     
-                guard let accessJWTToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
-                guard let refreshJWTToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
+                guard let accessToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
+                guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
                 guard let data = data, let user = jsonDecode(type: User.self, data: data) else {
                     let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
                     completion(.failure(.notServerError(message)))
                     return
                 }
-
-                let accessToken = accessJWTToken
-                let refreshToken = refreshJWTToken
                 
                 guard let userId = user.id else { fatalError() }
                 
@@ -277,3 +275,4 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let study: W
     let schedule: Z
 }
+
