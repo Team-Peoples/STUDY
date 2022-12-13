@@ -170,6 +170,8 @@ extension RequestPurpose {
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
+        case .refreshToken:
+            return .none
             
 //    HTTPMethod: PUT
         case .updateAnnouncement(let title, let content, let id):
@@ -191,6 +193,8 @@ extension RequestPurpose {
 //            HTTPMethod: GET
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
+        case .getJWTToken(let token, _):
+            return .queryString(["token" : token])
         default:
             return .none
         }
@@ -315,14 +319,31 @@ extension Data {
 
 
 struct User: Codable {
-    var id: String
+    var id: String?
     let oldPassword: String?
     let password: String?
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool?
+    let isNaverLogin: Bool?
+    let isKakaoLogin: Bool?
 //    let userStats:
+    
+    init(id: String, password: String?, passwordCheck: String?, nickName: String?) {
+        self.id = id
+        self.oldPassword = nil
+        self.password = password
+        self.passwordCheck = passwordCheck
+        self.nickName = nickName
+        self.image = nil
+        self.isEmailAuthorized = nil
+        self.isBlocked = nil
+        self.isPaused = nil
+        self.isFirstLogin = nil
+        self.isKakaoLogin = nil
+        self.isNaverLogin = nil
+    }
 
     enum CodingKeys: String, CodingKey {
 
@@ -337,5 +358,8 @@ struct User: Codable {
         case isEmailAuthorized = "emailAuthentication"
         case isBlocked = "userBlock"
         case isPaused = "userPause"
+        case isNaverLogin = "sns_naver"
+        case isKakaoLogin = "sns_kakao"
     }
 }
+

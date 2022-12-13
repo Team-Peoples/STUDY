@@ -9,6 +9,15 @@ import UIKit
 
 final class MyPageMainViewController: UIViewController {
     
+    internal var userInfo: User? {
+        didSet {
+            guard let userInfo = userInfo else { return }
+            nickNameLabel.text = userInfo.nickName
+            myMailLabel.text = userInfo.id
+            // 이미지 설정
+        }
+    }
+    
     internal var nickName: String?
     internal var myMail: String?
     
@@ -67,16 +76,44 @@ final class MyPageMainViewController: UIViewController {
         setConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        getUserInfo { user in
+            self.userInfo = user
+        }
+    }
+    
     @objc private func settingViewTapped() {
         
         let nextVC = AccountManagementViewController()
-        nextVC.profileImage = UIImage(named: "mailCheck")
-        nextVC.email = "sem789456@gmail.com"
-        nextVC.nickName = "사람개발자살려"
-        nextVC.sns = nil
+        
+        getUserInfo { userInfo in
+           // 이미지
+            nextVC.nickName = userInfo.nickName
+            nextVC.email = userInfo.id
+            if let naver = userInfo.isNaverLogin, !naver {
+                nextVC.sns = .naver
+            }
+            if let kakao = userInfo.isKakaoLogin , !kakao {
+                nextVC.sns = .kakao
+            }
+        }
+        
         nextVC.modalPresentationStyle = .fullScreen
         
         present(nextVC, animated: true)
+    }
+    
+    private func getUserInfo(completion: @escaping (User) -> Void) {
+        Network.shared.getUserInfo { result in
+            switch result {
+            case .success(let user):
+                completion(user)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     private func addSubviews() {

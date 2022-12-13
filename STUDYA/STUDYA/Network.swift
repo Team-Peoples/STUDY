@@ -8,87 +8,203 @@
 import UIKit
 import Alamofire
 
+enum PeoplesError: Error {
+    case alreadyExistingEmail
+    case alreadySNSSignUp
+    case notAuthEmail
+    
+    case unknownError(Int?)
+    case serverError
+    case notServerError(String)
+    case badRequest(ResponseResult<Bool>)
+}
 
 struct Network {
     
     static let shared = Network()
     
-    func SNSSignIn(token: String, sns: SNS, completion: @escaping (User) -> () ) {
-        AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                
-                let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
-                
-                guard let user = decodedData?.result else { return }
-                
-                completion(user)
-                
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
-//    func signUp(userID: String, image: UIImage?) {
-//        var value: String?
-//        lazy var user1 = User(userId: value, oldPassword: nil, password: nil, passwordCheck: nil, nickName: nil)
-//        
-//        value = userID
-//        guard let jsonData = try? JSONEncoder().encode(user1) else { return }
+//    func checkEmail(email: String, completion: @escaping (PeoplesError?) -> Void) {
+//        AF.request(RequestPurpose.emailCheck(email)).response { response in
+//
+//            if let _ = response.error { completion(.serverError) }
+//            guard let httpResponse = response.response, let _ = response.data else { completion(.serverError); return }
+//
+//            switch httpResponse.statusCode {
+//            case (200...299):
+//                completion(nil)
+//            default: completion(.serverError)
+//            }
+//        }
+//    }
+//
+//    func SNSSignIn(token: String, sns: SNS, completion: @escaping (User) -> Void) {
+//        AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
+//            switch response.result {
+//            case .success(let data):
+//                let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
+//                guard let user = decodedData?.result else { return }
+//                print(user)
+//                completion(user)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+//    }
+//
+//
+//    func signUp(userId: String, pw: String, pwCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<ResponseResult<Bool>, PeoplesError>) -> Void) {
+//
+//        let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
+//
+//        guard let jsonData = try? JSONEncoder().encode(user) else { return }
 //        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-//        
+//
 //        AF.upload(multipartFormData: { data in
 //            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
 //            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-//        }, with: RequestPurpose.signUp(user)).responseData { response in
+//        }, with: RequestPurpose.signUp).response { response in
+//
+//            guard let httpResponse = response.response else { return }
+//
+//            switch httpResponse.statusCode {
+//            case 200:
+//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
+//                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+//                    completion(.failure(.notServerError(message)))
+//                    return
+//                }
+//                completion(.success(body))
+//            case 400:
+//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
+//                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+//                    completion(.failure(.notServerError(message)))
+//                    return
+//                }
+//                completion(.failure(.badRequest(body)))
+//            case 500:
+//                completion(.failure(.serverError))
+//            default:
+//                completion(.failure(.unknownError(response.response?.statusCode)))
+//            }
+//        }
+//    }
+//
+//    func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>?) -> Void) {
+//        AF.request(RequestPurpose.signIn(id, pw)).validate().responseData { response in
 //            switch response.result {
-//                case .success(let data):
-//                    let response = data.toDictionary()
-//                    print(response)
-//                case .failure(let error):
-//                    print(error)
+//            case .success(let data):
+//
+//                guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
+//                guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
+//                guard let user = jsonDecode(type: ResponseResult<User>.self, data: data)?.result else { return }
+//
+//                UserDefaults.standard.removeObject(forKey: Const.userId)
+//                UserDefaults.standard.set(user.id, forKey: Const.userId)
+//                KeyChain.create(key: id, token: accesToken)
+//                KeyChain.create(key: accesToken, token: refreshToken)
+//
+//                completion(.success(user))
+////                    guard let message = decodedData?.message else { return }
+////                    let arry = message.components(separatedBy: ",")
+////                    let loginSuccess = arry[0]
+////                    let accessToken = arry[1]
+////                    let refreshToken = arry[2]
+////                    print(loginSuccess, accessToken, refreshToken)
+////                    AF.download(user.image!).responseData { response in
+////                        print(response.result)
+////                    }
+//            case .failure:
+//                completion(.failure(.serverError))
+//            }
+//        }
+//    }
+//    
+//    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
+//        AF.request(RequestPurpose.resendEmail).response { response in
+//
+//            if let _ = response.error { completion(.serverError) }
+//            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
+//
+//            switch httpResponse.statusCode {
+//            case (200...299):
+//                completion(nil)
+//            default: completion(.serverError)
 //            }
 //        }
 //    }
     
-    func signIn(id: String, pw: String, completion: @escaping (User?) -> Void) {
-        AF.request(RequestPurpose.signIn(id, pw)).validate().responseData { response in
-            switch response.result {
-                case .success(let data):
-                    
-                    let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
-                    guard let user = decodedData?.result else { return }
-                    guard let message = decodedData?.message else { return }
-                    let arry = message.components(separatedBy: ",")
-                    let loginSuccess = arry[0]
-                    let accessToken = arry[1]
-                    let refreshToken = arry[2]
-                    print(loginSuccess, accessToken, refreshToken)
-                    
-                    AF.download(user.image!).responseData { response in
-                        print(response.result)
+    func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getNewPassord(id)).response { response in
+            
+            guard let httpResponse = response.response else { return }
+            
+            switch httpResponse.statusCode {
+                case 200:
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let result = body.result else {
+                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                        completion(.failure(.notServerError(message)))
+                        return
                     }
                     
-                    completion(user)
-                case .failure(let error):
-                    print(error)
+                completion(.success(result))
+                default:
+                    completion(.failure(.unknownError(response.response?.statusCode)))
             }
         }
     }
     
-//    
-//    func check(email: String) {
-//        AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in
-//            switch response.result {
-//                case .success(let data):
-//                    let response = data.toDictionary()
-//                    print(response)
-//                case .failure(let error):
-//                    print(error)
-//            }
-//        }
-//    }
+    func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getMyInfo).validate().response { response in
+            guard let httpResponse = response.response else { return }
+            
+            switch httpResponse.statusCode {
+                case 200:
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<User>.self, data: data), let user = body.result else {
+                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                        completion(.failure(.notServerError(message)))
+                        return
+                    }
+                    completion(.success(user))
+                default:
+                    completion(.failure(.unknownError(response.response?.statusCode)))
+            }
+        }
+    }
+    
+    
+    
+    func refreshToken(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.refreshToken).validate().response { response in
+            guard let httpResponse = response.response else { return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = body.result else {
+                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                    completion(.failure(.notServerError(message)))
+                    return
+                }
+            
+                if isSuccessed {
+                    
+                    guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
+                    guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
+                    
+                    // 엑세스 토큰 비교해서 저장하기
+                    // User Id는 어디서 가져올 것인가.
+                    UserDefaults.standard.removeObject(forKey: Const.userId)
+                    UserDefaults.standard.set("", forKey: Const.userId)
+                    KeyChain.create(key: Const.userId, token: accesToken)
+                    KeyChain.create(key: accesToken, token: refreshToken)
+                }
+                
+            default:
+                
+                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
+                completion(.failure(.serverError))
+            }
+        }
+    }
     
     func jsonDecode<T: Codable>(type: T.Type, data: Data) -> T? {
         
@@ -147,7 +263,7 @@ struct ResponseResultTypes<T: Codable, S: Codable, X: Codable>: Codable {
     let result: Dummy<T, S, X>?
     let message: String
     let timestamp: String
-
+    
     enum CodingKeys: String, CodingKey {
         case result, message, timestamp
     }

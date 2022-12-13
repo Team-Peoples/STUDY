@@ -35,13 +35,22 @@ final class FindPasswordViewController: UIViewController {
     }
     
     @objc private func completeButtonDidTapped() {
-        guard let text = emailInputView.getInputField().text else { return }
-        if text.isEmpty {
-            let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
-            present(okAlert, animated: true)
-        } else {
-            let nextVC = FindPasswordCompleteViewController()
-            navigationController?.pushViewController(nextVC, animated: true)
+        guard let email = emailInputView.getInputField().text else { return }
+        
+        Network.shared.getNewPassword(id: email) { result in
+            switch result {
+                case .success(let success):
+                    if success {
+                        let nextVC = FindPasswordCompleteViewController()
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                    } else {
+                        let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
+                        self.present(okAlert, animated: true)
+                    }
+                    
+                case .failure(let error):
+                    print(error)
+            }
         }
     }
     
