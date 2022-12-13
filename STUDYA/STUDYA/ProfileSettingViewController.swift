@@ -11,7 +11,11 @@ import Photos
 
 class ProfileSettingViewController: UIViewController {
     
-    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
+    internal var email: String = ""
+    internal var password: String = ""
+    internal var passwordCheck: String = ""
+    
+    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .ppsBlack, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)
@@ -31,8 +35,8 @@ class ProfileSettingViewController: UIViewController {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
         
-        plusCircleView.addGestureRecognizer(tapGesture)
-        plusCircleView.isUserInteractionEnabled = true
+        profileImageSelectorView.addGestureRecognizer(tapGesture)
+        profileImageSelectorView.isUserInteractionEnabled = true
         
         doneButton.isEnabled = false
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
@@ -75,10 +79,18 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        let vc = MailCheckViewController()
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
+        Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImageSelectorView.internalImageView.image) { result in
+            switch result {
+                case .success(let responseResult):
+                    print(responseResult.result!, responseResult.message)
+                    let vc = MailCheckViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    self.present(vc, animated: true)
+                case .failure(let error):
+                    let alert = SimpleAlert(message: "에러: \(error)")
+                    self.present(alert, animated: true)
+            }
+        }
     }
     
     private func setupImagePicker() {

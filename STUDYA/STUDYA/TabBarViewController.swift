@@ -11,6 +11,7 @@ final class TabBarViewController: UITabBarController {
     // MARK: - Properties
     var user: User? {
         didSet {
+            print(user)
             configureTabbarController()
         }
     }
@@ -20,8 +21,14 @@ final class TabBarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTabbarController()
-//        checkIfUserIsLoggedIn()
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        perform(#selector(checkIfUserIsLoggedIn), with: nil, afterDelay: 1)
+        checkIfUserIsLoggedIn()
     }
     
     // MARK: - Configure
@@ -58,10 +65,11 @@ final class TabBarViewController: UITabBarController {
     // MARK: - Actions
     
     @objc func login(_ sender: Notification) {
+        print(#function)
         guard let userInfo = sender.userInfo as? [String: User], let user = userInfo["user"] else { return }
-        
         self.user = user
         NotificationCenter.default.removeObserver(self)
+        self.dismiss(animated: true)
     }
     
     private func presentWelcomeVC() {
@@ -79,7 +87,7 @@ final class TabBarViewController: UITabBarController {
         }
     }
     
-    private func checkIfUserIsLoggedIn() {
+   @objc private func checkIfUserIsLoggedIn() {
         if user == nil {
             presentWelcomeVC()
         } else {

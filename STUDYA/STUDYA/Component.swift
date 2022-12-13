@@ -536,7 +536,7 @@ class SimpleAlert: UIAlertController {
 class ProfileImageView: UIView {
 
     private let backgroundView = UIView(frame: .zero)
-    private let internalImageView = UIImageView(frame: .zero)
+    let internalImageView = UIImageView(frame: .zero)
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     private let roleMark = UIButton(frame: .zero)
     

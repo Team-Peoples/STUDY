@@ -137,8 +137,16 @@ final class SignInViewController: UIViewController {
         
         guard let id = emailInputView.getInputField().text else { return }
         guard let pw = passwordInputView.getInputField().text else { return }
-        Network.shared.signIn(id: id, pw: pw) { user in
-            NotificationCenter.default.post(name: .loginSuccess, object: user)
+        Network.shared.signIn(id: id, pw: pw) { result in
+            switch result {
+            case .success(let user):
+//                NotificationCenter.default.post(name: .loginSuccess, object: user)
+                guard let tabBarController = self.presentingViewController as? TabBarViewController else { return }
+                tabBarController.user = user
+                self.dismiss(animated: true)
+            case .failure(let error):
+                print(error)
+            }
         }
     }
     

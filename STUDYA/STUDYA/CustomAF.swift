@@ -328,7 +328,7 @@ struct User: Codable {
     let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool?
     let isNaverLogin: Bool?
     let isKakaoLogin: Bool?
-//    let userStats:
+    let userStats: Bool?
     
     init(id: String, password: String?, passwordCheck: String?, nickName: String?) {
         self.id = id
@@ -343,6 +343,7 @@ struct User: Codable {
         self.isFirstLogin = nil
         self.isKakaoLogin = nil
         self.isNaverLogin = nil
+        self.userStats = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -353,7 +354,7 @@ struct User: Codable {
         case passwordCheck = "password_check"
         case nickName = "nickname"
         case image = "img"
-//        case userStats = "userStats"
+        case userStats = "userStats"
         case isFirstLogin = "firstLogin"
         case isEmailAuthorized = "emailAuthentication"
         case isBlocked = "userBlock"
