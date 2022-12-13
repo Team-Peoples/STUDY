@@ -8,4 +8,5 @@ target 'STUDYA' do
   # Pods for STUDYA
 pod 'naveridlogin-sdk-ios'
 pod 'MultiProgressView'
+pod 'Kingfisher', '~> 7.0'
 end
