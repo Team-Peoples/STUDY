@@ -9,4 +9,5 @@ target 'STUDYA' do
 pod 'naveridlogin-sdk-ios'
 pod 'MultiProgressView'
 pod 'Kingfisher', '~> 7.0'
+pod 'JWTDecode', '~> 3.0'
 end
