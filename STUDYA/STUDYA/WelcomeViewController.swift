@@ -25,14 +25,14 @@ final class WelcomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         view.backgroundColor = .systemBackground
         
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")
         navigationController?.navigationBar.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
+        
         kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped), for: .touchUpInside)
         naverLoginButton.addTarget(self, action: #selector(naverLoginButtonTapped), for: .touchUpInside)
         emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTapped), for: .touchUpInside)
@@ -55,127 +55,131 @@ final class WelcomViewController: UIViewController {
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
                 if let error = error {
                     print(error)
-                }
-                else {
+                } else {
                     print("loginWithKakaoTalk() success.")
                     
                     guard let accessToken = oauthToken?.accessToken else { return }
                     Network.shared.SNSSignIn(token: accessToken, sns: .kakao) { user in
+                        
                         if user != nil {
                             NotificationCenter.default.post(name: .loginSuccess, object: user)
                         } else {
                             DispatchQueue.main.async {
                                 let alert = SimpleAlert(message: Const.serverErrorMessage)
-                                present(alert, animated: true)
+                                self.present(alert, animated: true)
                             }
                         }
+                    }
                 }
             }
         }
     }
-    
-    @objc private func naverLoginButtonTapped() {
-        naverLogin?.delegate = self
-        naverLogin?.requestThirdPartyLogin()
-    }
-    
-    @objc private func emailLoginButtonDidTapped() {
-        let signInVC = SignInViewController()
-        navigationController?.pushViewController(signInVC, animated: true)
-    }
-    
-    @objc private func signUpViewDidTapped() {
-        let signUpVC = SignUpViewController()
-        navigationController?.pushViewController(signUpVC, animated: true)
-    }
-    
-    private func addSubviews() {
         
-        view.addSubview(welcomeLabel)
-        view.addSubview(buttonsStackView)
-        view.addSubview(signUpView)
-        view.addSubview(underBar)
-    }
-    
-    private func addArangedSubviewsToStack() {
+        @objc private func naverLoginButtonTapped() {
+            naverLogin?.delegate = self
+            naverLogin?.requestThirdPartyLogin()
+        }
         
-        buttonsStackView.addArrangedSubview(kakaoLoginButton)
-        buttonsStackView.addArrangedSubview(naverLoginButton)
-        buttonsStackView.addArrangedSubview(emailLoginButton)
-    }
-    
-    private func configureButtons() {
+        @objc private func emailLoginButtonDidTapped() {
+            let signInVC = SignInViewController()
+            navigationController?.pushViewController(signInVC, animated: true)
+        }
         
-        kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
-        kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
-        kakaoLoginButton.backgroundColor = .appColor(.kakao)
-        kakaoLoginButton.layer.borderWidth = 0
-        kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+        @objc private func signUpViewDidTapped() {
+            let signUpVC = SignUpViewController()
+            navigationController?.pushViewController(signUpVC, animated: true)
+        }
         
-        naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
-        naverLoginButton.setTitleColor(.white, for: .normal)
-        naverLoginButton.backgroundColor = .appColor(.naver)
-        naverLoginButton.layer.borderWidth = 0
-        naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
-    }
-    
-    private func configureStackView() {
+        private func addSubviews() {
+            
+            view.addSubview(welcomeLabel)
+            view.addSubview(buttonsStackView)
+            view.addSubview(signUpView)
+            view.addSubview(underBar)
+        }
         
-        buttonsStackView.spacing = 14
-        buttonsStackView.distribution = .fillEqually
-        buttonsStackView.axis = .vertical
-    }
-    
-    private func addConstraints() {
+        private func addArangedSubviewsToStack() {
+            
+            buttonsStackView.addArrangedSubview(kakaoLoginButton)
+            buttonsStackView.addArrangedSubview(naverLoginButton)
+            buttonsStackView.addArrangedSubview(emailLoginButton)
+        }
         
-        welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
+        private func configureButtons() {
+            
+            kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
+            kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
+            kakaoLoginButton.backgroundColor = .appColor(.kakao)
+            kakaoLoginButton.layer.borderWidth = 0
+            kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+            
+            naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
+            naverLoginButton.setTitleColor(.white, for: .normal)
+            naverLoginButton.backgroundColor = .appColor(.naver)
+            naverLoginButton.layer.borderWidth = 0
+            naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+        }
         
-        buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
-//        buttonsStackView.setHeight(150 + 28)
+        private func configureStackView() {
+            
+            buttonsStackView.spacing = 14
+            buttonsStackView.distribution = .fillEqually
+            buttonsStackView.axis = .vertical
+        }
         
-        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
-        signUpView.centerX(inView: view)
-        
-        underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
-    }
+        private func addConstraints() {
+            
+            welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
+            
+            buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+            //        buttonsStackView.setHeight(150 + 28)
+            
+            signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
+            signUpView.centerX(inView: view)
+            
+            underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
+        }
 }
 
 extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
     func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
         guard let accessToken = naverLogin?.accessToken else { return }
         Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+//            소셜로그인시 firstlogin이면 화면전환
             if user != nil {
                 NotificationCenter.default.post(name: .loginSuccess, object: user)
             } else {
                 DispatchQueue.main.async {
                     let alert = SimpleAlert(message: Const.serverErrorMessage)
-                    present(alert, animated: true)
+                    self.present(alert, animated: true)
                 }
             }
         }
     }
-
+    
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
         guard let accessToken = naverLogin?.accessToken else { return }
         Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
+//            소셜로그인시 firstlogin이면 화면전환
             if user != nil {
                 NotificationCenter.default.post(name: .loginSuccess, object: user)
             } else {
                 DispatchQueue.main.async {
                     let alert = SimpleAlert(message: Const.serverErrorMessage)
-                    present(alert, animated: true)
+                    self.present(alert, animated: true)
                 }
             }
         }
     }
-
+    
     func oauth20ConnectionDidFinishDeleteToken() {
-//        로그아웃시 사용하는 토큰 삭제시 호출되는 함수
+        //        로그아웃시 사용하는 토큰 삭제시 호출되는 함수
     }
-
+    
     func oauth20Connection(_ oauthConnection: NaverThirdPartyLoginConnection!, didFailWithError error: Error!) {
-//        네아로의 모든 에러에서 호출
+        //        네아로의 모든 에러에서 호출
         let alert = SimpleAlert(message: "네이버 로그인을 확인해주세요.")
         present(alert, animated: true)
     }
 }
+

@@ -15,7 +15,7 @@ enum Const {
     static let serverErrorMessage = "서버에 에러가 발생했어요. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
 }
 
-enum AttendanceStatus {ㅈ
+enum AttendanceStatus {
     case attended
     case late
     case absent

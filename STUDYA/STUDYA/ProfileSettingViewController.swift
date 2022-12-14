@@ -95,11 +95,11 @@ class ProfileSettingViewController: UIViewController {
                         switch error {
                         case .duplicatedEmail:
                             alert = SimpleAlert(buttonTitle: "확인", message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
-                                navigationController?.popViewController(animated: true)
+                                self.navigationController?.popViewController(animated: true)
                             })
                         case .wrongPassword:
-                            alert = SimpleAlert(buttonTitle: "확인", mmessage: "이전화면에서 비밀번호를 다시 확인해주세요. 비밀번호와 비밀번호 확인이 서로 달라요.", completion: { _ in
-                                navigationController?.popViewController(animated: true)
+                            alert = SimpleAlert(buttonTitle: "확인", message: "이전화면에서 비밀번호를 다시 확인해주세요. 비밀번호와 비밀번호 확인이 서로 달라요.", completion: { _ in
+                                self.navigationController?.popViewController(animated: true)
                             })
     //                        🛑500이나 401에러 대한 대처??
                         default:

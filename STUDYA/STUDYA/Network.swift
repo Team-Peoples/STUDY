@@ -30,16 +30,16 @@ struct Network {
     
     static let shared = Network()
     
-    func checkEmail(email: String, completion: @escaping (PeoplesError?) -> ()) {
-        AF.request(RequestPurpose.emailCheck(email)).response { response in
-            
-            if let _ = response.error { completion(.serverError) }
-            guard let httpResponse = response.response, let _ = response.data else { completion(.serverError); return }
-            
-            switch httpResponse.statusCode {
-            case (200...299):
-                completion(nil)
-            default: completion(.serverError)
+    func checkIfDuplicatedEmail(email: String, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in
+            switch response.result {
+            case .success(let data):
+                
+                guard let decodedData = jsonDecode(type: Bool.self, data: data) else { completion(.failure(.unknownError(response.response?.statusCode))); return }
+                completion(.success(decodedData))
+                
+            case .failure:
+                completion(.failure(.unknownError(response.response?.statusCode)))
             }
         }
     }
@@ -197,11 +197,11 @@ extension DateFormatter {
 
 struct ResponseResult<T: Codable>: Codable {
     let result: T?
-    let status: Int
-    let error: String
-    let code: String
-    let message: String
-    let timestamp: String
+    let status: Int?
+    let error: String?
+    let code: String?
+    let message: String?
+    let timestamp: String?
     
     enum CodingKeys: String, CodingKey {
         case result, status, error, code, message, timestamp
