@@ -9,6 +9,11 @@ import UIKit
 
 enum Const {
     static let userId = "userId"
+    static let accessToken = "accessToken"
+    static let refreshToken = "refreshToken"
+    static let tempUserId = "tempUserId"
+    static let tempPassword = "tempPassword"
+    static let tempPasswordCheck = "tempPasswordCheck"
     static let screenHeight = UIScreen.main.bounds.height
     static let screenWidth = UIScreen.main.bounds.width
     static let unknownErrorMessage = "알 수 없는 에러가 발생했습니다. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."

@@ -47,14 +47,6 @@ class SignUpViewController: UIViewController {
     
     var bottomConstraint: NSLayoutConstraint!
     
-    private func addSubviews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(stackView)
-        containerView.addSubview(doneButton)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,26 +68,18 @@ class SignUpViewController: UIViewController {
         passwordInputField.rightView?.tag = 1
         passwordCheckInputField.rightView?.tag = 2
         
-        addSubviews()
-        
         setScrollView()
         passwordCheckValidationLabel.textColor = .systemBackground
         
         enableScroll()
         emailInputField.becomeFirstResponder()
+        
+        addSubviews()
+        setConstraints()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        
-        setConstraints()
     }
     
     @objc private func clear() {
@@ -116,43 +100,10 @@ class SignUpViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
-        let nextVC = ProfileSettingViewController()
-        
-        nextVC.email = emailInputField.text
-        nextVC.password = passwordInputField.text
-        nextVC.passwordCheck = passwordCheckInputField.text
+        guard let email = emailInputField.text, let password = passwordInputField.text, let passwordCheck = passwordCheckInputField.text else { return }
+        saveUserInformation(email: email, password: password, passwordCheck: passwordCheck)
         
         navigationController?.pushViewController(ProfileSettingViewController(), animated: true)
-    }
-    
-    private func setScrollView() {
-        
-        let safeArea = view.safeAreaLayoutGuide
-        
-        scrollView.showsVerticalScrollIndicator = false
-        
-        scrollView.anchor(top: safeArea.topAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
-        scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
-        
-        containerView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
-            make.height.greaterThanOrEqualTo(safeArea.snp.height)
-            make.width.equalTo(scrollView.snp.width)
-        }
-    }
-    
-    private func enableScroll() {
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
-        singleTapGestureRecognizer.numberOfTapsRequired = 1
-        singleTapGestureRecognizer.isEnabled = true
-        singleTapGestureRecognizer.cancelsTouchesInView = false
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-    }
-    
-    private func setConstraints() {
-        titleLabel.anchor(top: containerView.topAnchor, topConstant: 40, leading: containerView.leadingAnchor, leadingConstant: 20)
-        stackView.anchor(top: titleLabel.bottomAnchor, topConstant: 70,  leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
-        doneButton.anchor(bottom: containerView.bottomAnchor, bottomConstant: 30, leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
     }
     
     @objc func pullKeyboard(sender: UITapGestureRecognizer) {
@@ -188,6 +139,12 @@ class SignUpViewController: UIViewController {
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    private func saveUserInformation(email: String, password: String, passwordCheck: String) {
+        KeyChain.create(key: Const.tempUserId, value: email)
+        KeyChain.create(key: Const.tempPassword, value: password)
+        KeyChain.create(key: Const.tempPasswordCheck, value: passwordCheck)
     }
     
     private func checkDoneButtonPossible() {
@@ -274,6 +231,44 @@ class SignUpViewController: UIViewController {
             
             passwordCheckValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.subColor1)
         }
+    }
+    
+    private func addSubviews() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(stackView)
+        containerView.addSubview(doneButton)
+    }
+    
+    private func setConstraints() {
+        titleLabel.anchor(top: containerView.topAnchor, topConstant: 40, leading: containerView.leadingAnchor, leadingConstant: 20)
+        stackView.anchor(top: titleLabel.bottomAnchor, topConstant: 70,  leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
+        doneButton.anchor(bottom: containerView.bottomAnchor, bottomConstant: 30, leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
+    }
+    
+    private func setScrollView() {
+        
+        let safeArea = view.safeAreaLayoutGuide
+        
+        scrollView.showsVerticalScrollIndicator = false
+        
+        scrollView.anchor(top: safeArea.topAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
+        scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
+        
+        containerView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.greaterThanOrEqualTo(safeArea.snp.height)
+            make.width.equalTo(scrollView.snp.width)
+        }
+    }
+    
+    private func enableScroll() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
 }
 

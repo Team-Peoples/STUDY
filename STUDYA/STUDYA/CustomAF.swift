@@ -200,9 +200,9 @@ extension RequestPurpose {
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
-        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String ?? ""
-        let accessToken = KeyChain.read(key: userID) ?? ""
-        let refreshToken = KeyChain.read(key: accessToken) ?? ""
+        let userID = KeyChain.read(key: Const.userId) ?? ""
+        let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
+        let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
         var headers = HTTPHeaders()
     
         switch header {

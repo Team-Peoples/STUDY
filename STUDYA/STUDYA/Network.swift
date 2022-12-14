@@ -108,10 +108,9 @@ struct Network {
                 guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
                 guard let user = jsonDecode(type: ResponseResult<User>.self, data: data)?.result else { return }
                 
-                UserDefaults.standard.removeObject(forKey: Const.userId)
-                UserDefaults.standard.set(user.id, forKey: Const.userId)
-                KeyChain.create(key: id, token: accesToken)
-                KeyChain.create(key: accesToken, token: refreshToken)
+                KeyChain.create(key: Const.userId, value: user.id)
+                KeyChain.create(key: Const.accessToken, value: accesToken)
+                KeyChain.create(key: Const.refreshToken, value: refreshToken)
                 
                 completion(.success(user))
                 //                    guard let message = decodedData?.message else { return }

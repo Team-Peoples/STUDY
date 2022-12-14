@@ -11,10 +11,6 @@ import Photos
 
 class ProfileSettingViewController: UIViewController {
     
-    internal var email: String?
-    internal var password: String?
-    internal var passwordCheck: String?
-    
     private var isAuthForAlbum: Bool?
 //    private var isButtonFilled = false
     private var profileImage: UIImage?
@@ -82,7 +78,9 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        if let email = email, let password = password, let passwordCheck = passwordCheck {
+        if let email = KeyChain.read(key: Const.tempUserId),
+           let password = KeyChain.read(key: Const.tempPassword),
+           let passwordCheck = KeyChain.read(key: Const.tempPasswordCheck) {
             
             Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
                 switch result {
