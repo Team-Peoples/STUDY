@@ -189,7 +189,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureViewWhenNoStudy() {
-        let studyEmptyImageView = UIImageView(image: UIImage(named: "noStudy"))
+        let studyEmptyImageView = UIImageView(image: UIImage(named: "emptyViewImage"))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = BrandButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
         
