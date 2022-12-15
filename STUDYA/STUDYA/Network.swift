@@ -220,15 +220,15 @@ struct Network {
             
                 if isSuccessed {
                     
-                    guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
+                    guard let accessToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
                     guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
                     
-                    // 엑세스 토큰 비교해서 저장하기
-                    // User Id는 어디서 가져올 것인가.
-                    UserDefaults.standard.removeObject(forKey: Const.userId)
-                    UserDefaults.standard.set("", forKey: Const.userId)
-                    KeyChain.create(key: Const.userId, token: accesToken)
-                    KeyChain.create(key: accesToken, token: refreshToken)
+                    
+                    guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { return }
+                    print(userId)
+                    
+                    KeyChain.create(key: userId, token: accessToken)
+                    KeyChain.create(key: accessToken, token: refreshToken)
                 }
                 
             default:

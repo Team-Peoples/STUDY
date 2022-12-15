@@ -82,7 +82,7 @@ class ProfileSettingViewController: UIViewController {
         Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImageSelectorView.internalImageView.image) { result in
             switch result {
                 case .success(let responseResult):
-                    print(responseResult.result!, responseResult.message)
+                
                     let vc = MailCheckViewController()
                     vc.modalPresentationStyle = .fullScreen
                     self.present(vc, animated: true)
