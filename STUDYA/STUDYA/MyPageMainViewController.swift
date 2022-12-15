@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class MyPageMainViewController: UIViewController {
     
@@ -14,7 +15,9 @@ final class MyPageMainViewController: UIViewController {
             guard let userInfo = userInfo else { return }
             nickNameLabel.text = userInfo.nickName
             myMailLabel.text = userInfo.id
-            // 이미지 설정
+            guard let imageURL = userInfo.image else { return }
+            let url = URL(string: imageURL)
+            profileImageSelectorView.internalImageView.kf.setImage(with: url)
         }
     }
     
@@ -88,18 +91,6 @@ final class MyPageMainViewController: UIViewController {
         
         let nextVC = AccountManagementViewController()
         
-        getUserInfo { userInfo in
-           // 이미지
-            nextVC.nickName = userInfo.nickName
-            nextVC.email = userInfo.id
-            if let naver = userInfo.isNaverLogin, !naver {
-                nextVC.sns = .naver
-            }
-            if let kakao = userInfo.isKakaoLogin , !kakao {
-                nextVC.sns = .kakao
-            }
-        }
-        
         nextVC.modalPresentationStyle = .fullScreen
         
         present(nextVC, animated: true)
@@ -133,13 +124,33 @@ final class MyPageMainViewController: UIViewController {
             make.bottom.equalTo(tableView.snp.top)
             make.height.equalTo(164)
         }
-        headerView.anchor(top: headerContainerView.topAnchor, topConstant: 15, leading: headerContainerView.leadingAnchor, leadingConstant: 10, trailing: headerContainerView.trailingAnchor, trailingConstant: 10, height: 134)
-        profileImageSelectorView.anchor(top: headerView.topAnchor, topConstant: 20, leading: headerView.leadingAnchor, leadingConstant: 20)
-        nickNameLabel.anchor(top: headerView.topAnchor, topConstant: 35, leading: profileImageSelectorView.trailingAnchor, leadingConstant: 24)
-        myMailLabel.anchor(top: nickNameLabel.bottomAnchor, topConstant: 7, leading: nickNameLabel.leadingAnchor)
-        settingImageView.anchor(top: headerView.topAnchor, topConstant: 12, trailing: headerView.trailingAnchor, trailingConstant: 12)
-        separatorView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
-        tableView.anchor(top: headerContainerView.bottomAnchor, topConstant: 15, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
+        headerView.snp.makeConstraints { make in
+            make.top.bottom.equalTo(headerContainerView).inset(15)
+            make.leading.trailing.equalTo(headerContainerView).inset(10)
+        }
+        profileImageSelectorView.snp.makeConstraints { make in
+            make.top.leading.equalTo(headerView).inset(20)
+        }
+        nickNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(headerView).inset(35)
+            make.leading.equalTo(profileImageSelectorView.snp.trailing).offset(24)
+        }
+        myMailLabel.snp.makeConstraints { make in
+            make.top.equalTo(nickNameLabel.snp.bottom).offset(7)
+            make.leading.equalTo(nickNameLabel)
+        }
+        settingImageView.snp.makeConstraints { make in
+            make.top.trailing.equalTo(headerView).inset(12)
+        }
+        separatorView.snp.makeConstraints { make in
+            make.top.equalTo(profileImageSelectorView.snp.bottom).offset(10)
+            make.leading.equalTo(headerView).inset(16)
+            make.trailing.equalTo(headerView).inset(24)
+            make.height.equalTo(4)
+        }
+        tableView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }
 

@@ -159,19 +159,47 @@ struct Network {
     }
     
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getMyInfo).validate().response { response in
+        AF.request(RequestPurpose.getMyInfo, interceptor: TokenRequestInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { return }
             
             switch httpResponse.statusCode {
                 case 200:
-                guard let data = response.data, let body = jsonDecode(type: ResponseResult<User>.self, data: data), let user = body.result else {
-                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                        completion(.failure(.notServerError(message)))
-                        return
-                    }
-                    completion(.success(user))
-                default:
-                    completion(.failure(.unknownError(response.response?.statusCode)))
+                guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
+                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                    completion(.failure(.notServerError(message)))
+                    return
+                }
+                completion(.success(user))
+            default:
+                // domb: token 인증실패
+                completion(.failure(.unknownError(response.response?.statusCode)))
+            }
+        }
+    }
+    
+    func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
+        
+        let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
+
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+
+        AF.upload(multipartFormData: { data in
+            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
+            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
+        }, with: RequestPurpose.updateUser, interceptor: TokenRequestInterceptor()).response { response in
+            
+            switch response.response?.statusCode {
+            case 200:
+                guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
+                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                    completion(.failure(.notServerError(message)))
+                    return
+                }
+                completion(.success(user))
+            default:
+                // domb: token 인증실패
+                completion(.failure(.unknownError(response.response?.statusCode)))
             }
         }
     }

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import PhotosUI
 import Photos
+import Kingfisher
 
 //To be fixed: 입력칸 rightbutton 오른쪽 padding 10 넣기
 
@@ -162,8 +163,8 @@ final class AccountManagementViewController: UIViewController {
         logoutLabel.isUserInteractionEnabled = true
         leftLabel.isUserInteractionEnabled = true
         
-        logoutLabel.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(logout)))
-        leftLabel.addGestureRecognizer(UIGestureRecognizer(target: self, action: #selector(leaveApp)))
+        logoutLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(logout)))
+        leftLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveApp)))
         
         stackView.addArrangedSubview(logoutLabel)
         stackView.addArrangedSubview(separator2)
@@ -201,6 +202,7 @@ final class AccountManagementViewController: UIViewController {
         addSubviews()
         enableScroll()
         setAlertView()
+        setConstraints()
         
         oldPasswordInputField.rightView?.tag = 0
         newPasswordField.rightView?.tag = 1
@@ -208,6 +210,18 @@ final class AccountManagementViewController: UIViewController {
         
         disableNewPasswordFields()
         newPasswordCheckValidationLabel.textColor = .systemBackground
+        
+        getUserInfo { user in
+            DispatchQueue.main.async {
+                self.nickName = user.nickName
+                self.email = user.id
+                
+                guard let imageURL = user.image else { return }
+                let url = URL(string: imageURL)
+                
+                self.profileImageView.internalImageView.kf.setImage(with: url)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -219,41 +233,28 @@ final class AccountManagementViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        naviBar.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(containerView)
-        }
-        profileImageView.centerX(inView: containerView)
-        profileImageView.anchor(top: naviBar.bottomAnchor, topConstant: 40)
-        plusCircleView.snp.makeConstraints { make in
-            make.trailing.bottom.equalTo(profileImageView)
-        }
-        nickNameField.centerX(inView: containerView)
-        nickNameField.anchor(top: profileImageView.bottomAnchor, topConstant: 24)
-        separator.centerX(inView: containerView)
-        separator.anchor(top: nickNameField.bottomAnchor, width: 170, height: 2)
-        horizontalEmailStackView.centerX(inView: containerView)
-        horizontalEmailStackView.anchor(top: separator.bottomAnchor, topConstant: 5)
-        if sns == nil {
-            centerStackView.anchor(top: horizontalEmailStackView.bottomAnchor, topConstant: 60, leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
-        }
-        beneathStackView.centerX(inView: containerView)
-        beneathStackView.snp.makeConstraints { make in
-            make.bottom.equalTo(containerView).offset(-30)
-            if sns == nil {
-                make.top.greaterThanOrEqualTo(centerStackView).offset(40)
-            }
-        }
-    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//
+//    }
     
     @objc private func cancel() {
         dismiss(animated: true)
     }
     
     @objc private func save() {
-        dismiss(animated: true)
+        print(#function)
+        let profileImage = profileImageView.internalImageView.image
+        Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
+            switch result {
+            case .success(let success):
+                print(success)
+                self.dismiss(animated: true)
+            case .failure(let failure):
+                print(failure)
+            }
+            
+        }
     }
     
     @objc private func touchUpImageView() {
@@ -316,6 +317,14 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func logout() {
         print(#function)
+        guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { fatalError() }
+        print(userId)
+        guard let accessToken = KeyChain.read(key: userId) else { fatalError() }
+        
+        KeyChain.delete(key: userId)
+        KeyChain.delete(key: accessToken)
+        
+        UserDefaults.standard.removeObject(forKey: Const.userId)
     }
     
     @objc private func leaveApp() {
@@ -617,6 +626,19 @@ final class AccountManagementViewController: UIViewController {
             }
         }
     }
+    
+    // MARK: - Networking
+    
+    private func getUserInfo(completion: @escaping (User) -> Void) {
+        Network.shared.getUserInfo { result in
+            switch result {
+            case .success(let user):
+                completion(user)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 extension AccountManagementViewController: PHPickerViewControllerDelegate {
@@ -656,7 +678,32 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
             print("이미지 못 불러왔음!!!!")
         }
     }
-    
+    private func setConstraints() {
+        naviBar.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(containerView)
+        }
+        profileImageView.centerX(inView: containerView)
+        profileImageView.anchor(top: naviBar.bottomAnchor, topConstant: 40)
+        plusCircleView.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(profileImageView)
+        }
+        nickNameField.centerX(inView: containerView)
+        nickNameField.anchor(top: profileImageView.bottomAnchor, topConstant: 24)
+        separator.centerX(inView: containerView)
+        separator.anchor(top: nickNameField.bottomAnchor, width: 170, height: 2)
+        horizontalEmailStackView.centerX(inView: containerView)
+        horizontalEmailStackView.anchor(top: separator.bottomAnchor, topConstant: 5)
+        if sns == nil {
+            centerStackView.anchor(top: horizontalEmailStackView.bottomAnchor, topConstant: 60, leading: containerView.leadingAnchor, leadingConstant: 20, trailing: containerView.trailingAnchor, trailingConstant: 20)
+        }
+        beneathStackView.centerX(inView: containerView)
+        beneathStackView.snp.makeConstraints { make in
+            make.bottom.equalTo(containerView).inset(30)
+            if sns == nil {
+                make.top.greaterThanOrEqualTo(centerStackView).offset(40)
+            }
+        }
+    }
 }
 
 extension AccountManagementViewController: UITextFieldDelegate {
