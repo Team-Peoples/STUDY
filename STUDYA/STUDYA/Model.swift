@@ -62,7 +62,7 @@ import Foundation
 //}
 
 struct Credential: Encodable {
-    let userId: String
+    let userID: String
     let password: String?
 }
 

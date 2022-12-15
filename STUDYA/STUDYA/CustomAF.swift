@@ -16,9 +16,6 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
-let accessToken = "accessToken"
-let refreshToken = "refreshToken"
-
 enum HeaderContentType: String {
     case json = "application/json"
     case multipart = "multipart/form-data"
@@ -204,22 +201,27 @@ extension RequestPurpose {
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
-        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String ?? ""
-        let accessToken = KeyChain.read(key: userID) ?? ""
-        let refreshToken = KeyChain.read(key: accessToken) ?? ""
+//        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String
+////
+//        let accessToken = "Bearer \(KeyChain.read(key: userID) ?? "")"
+//        let refreshToken = "Bearer \(KeyChain.read(key: accessToken) ?? "")"
+//
+//        print(accessToken)
+//        print(refreshToken)
+        
         var headers = HTTPHeaders()
     
         switch header {
         case .json:
             headers = [Header.contentType.type : Header.json.type]
-        case .jsonWithToken:
-            headers = [Header.contentType.type : Header.json.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]  //Bearer 넣어야 할지도
+//        case .jsonWithToken:
+//            headers = [Header.contentType.type : Header.json.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]  //Bearer 넣어야 할지도
         case .multipart:
             headers = [Header.contentType.type : Header.multipart.type]
-        case .multipartWithToken:
-            headers = [Header.contentType.type : Header.multipart.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
-        case .token:
-            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
+//        case .multipartWithToken:
+//            headers = [Header.contentType.type : Header.multipart.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
+//        case .token:
+//            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
         default: break
         }
         
@@ -287,14 +289,36 @@ enum RequestParameters {
 
 struct TokenRequestInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        completion(.success(urlRequest))
-        let accessToken = ""
-        let refreshToken = ""
+        
+        guard let userID = UserDefaults.standard.object(forKey: Const.userId) as? String else {
+            return
+        }
+        
+        let accessToken = KeyChain.read(key: userID) ?? ""
+        let refreshToken = KeyChain.read(key: accessToken) ?? ""
+        
         var request = urlRequest
         request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "AccessToken")
         request.addValue("Bearer \(refreshToken)", forHTTPHeaderField: "RefreshToken")
         
         completion(.success(request))
+    }
+    
+    func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+        
+        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 else {
+                   completion(.doNotRetryWithError(error))
+                   return
+               }
+
+        Network.shared.refreshToken { result in
+            switch result {
+            case .success(let isSuccessed):
+                print(isSuccessed)
+            case .failure(let error):
+                completion(.doNotRetryWithError(error))
+            }
+        }
     }
 }
 // MARK: - Helpers
@@ -330,20 +354,20 @@ struct User: Codable {
     let isKakaoLogin: Bool?
     let userStats: Bool?
     
-    init(id: String, password: String?, passwordCheck: String?, nickName: String?) {
+    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil) {
         self.id = id
-        self.oldPassword = nil
+        self.oldPassword = oldPassword
         self.password = password
         self.passwordCheck = passwordCheck
         self.nickName = nickName
-        self.image = nil
-        self.isEmailAuthorized = nil
-        self.isBlocked = nil
-        self.isPaused = nil
-        self.isFirstLogin = nil
-        self.isKakaoLogin = nil
-        self.isNaverLogin = nil
-        self.userStats = nil
+        self.image = image
+        self.isEmailAuthorized = isEmailAuthorized
+        self.isBlocked = isBlocked
+        self.isPaused = isPaused
+        self.isFirstLogin = isFirstLogin
+        self.isNaverLogin = isNaverLogin
+        self.isKakaoLogin = isKakaoLogin
+        self.userStats = userStats
     }
 
     enum CodingKeys: String, CodingKey {
