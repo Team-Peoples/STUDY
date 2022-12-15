@@ -44,30 +44,37 @@ struct Network {
         }
     }
     
-    func SNSSignIn(token: String, sns: SNS, completion: @escaping (User?) -> () ) {
-        AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
+    func SNSSignIn(token: String, sns: SNS, completion: @escaping (Result<User,PeoplesError>?) -> Void) {
+        AF.request(RequestPurpose.getJWTToken(token, sns)).response { response in
             
-            switch response.result {
-            case .success(let data):
+            guard let httpStatus = response.response?.statusCode else { return }
+            guard let data = response.data else { return }
+            
+            switch httpStatus {
+            case 200:
+                guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String,
+                      let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String,
+                      let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.serverError)); return }
+                      
+                KeyChain.create(key: Const.accessToken, value: accesToken)
+                KeyChain.create(key: Const.refreshToken, value: refreshToken)
+                KeyChain.create(key: Const.userId, value: user.id)
                 
-                let decodedData = jsonDecode(type: ResponseResult<User>.self, data: data)
-                guard let user = decodedData?.result else { return }
-                
-                completion(user)
-                
-            case .failure:
-                completion(nil)
+                completion(.success(user))
+            default:
+                completion(.failure(.serverError))
             }
         }
     }
     
+//    회원가입시 사진 선택 안하면 이미지에 nil을 보내게할 수는 없는건가
     func signUp(userId: String, pw: String, pwCheck: String, nickname: String?, image: UIImage?, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
-        let user = User(id: userId, oldPassword: nil, password: pw, passwordCheck: pwCheck, nickName: nickname, image: nil, isEmailAuthorized: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil)
-        
+        let user = User(id: userId, oldPassword: nil, password: pw, passwordCheck: pwCheck, nickName: nickname, image: nil, isEmailAuthorized: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, pushStart: nil, pushImmininet: nil, pushDayAgo: nil, userStats: nil)
+
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-        
+
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
@@ -80,12 +87,9 @@ struct Network {
                 completion(.success(true))
             case 400:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
-                    completion(.failure(.unknownError(400)))
-                    return
-                }
+                    completion(.failure(.unknownError(400))); return }
                 
                 switch body.code {
-                    
                 case  ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
                 case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
                 default: completion(.failure(.unknownError(response.response?.statusCode)))
@@ -104,13 +108,13 @@ struct Network {
             switch response.result {
             case .success(let data):
                 
-                guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
-                guard let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String else { completion(.failure(.serverError)); return }
-                guard let user = jsonDecode(type: ResponseResult<User>.self, data: data)?.result else { return }
+                guard let accesToken = response.response?.allHeaderFields[Const.accessToken] as? String else { completion(.failure(.serverError)); return }
+                guard let refreshToken = response.response?.allHeaderFields[Const.refreshToken] as? String else { completion(.failure(.serverError)); return }
+                guard let user = jsonDecode(type: ResponseResult<User>.self, data: data)?.result else { completion(.failure(.serverError)); return }
                 
-                KeyChain.create(key: Const.userId, value: user.id)
                 KeyChain.create(key: Const.accessToken, value: accesToken)
                 KeyChain.create(key: Const.refreshToken, value: refreshToken)
+                KeyChain.create(key: Const.userId, value: user.id)
                 
                 completion(.success(user))
                 //                    guard let message = decodedData?.message else { return }

@@ -532,9 +532,9 @@ class SimpleAlert: UIAlertController {
     }
     
     convenience init(buttonTitle: String?, message: String?, completion: ((UIAlertAction) -> Void)?) {
-        self.init(title: buttonTitle, message: message, preferredStyle: .alert)
+        self.init(title: nil, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: message, style: .default, handler: completion)
+        let okAction = UIAlertAction(title: buttonTitle, style: .default, handler: completion)
         
         self.addAction(okAction)
     }

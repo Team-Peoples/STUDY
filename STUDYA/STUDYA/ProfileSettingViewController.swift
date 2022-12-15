@@ -13,7 +13,7 @@ class ProfileSettingViewController: UIViewController {
     
     private var isAuthForAlbum: Bool?
 //    private var isButtonFilled = false
-    private var profileImage: UIImage?
+    private var profileImage: UIImage? = UIImage(named: "defaultProfile")
     
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
@@ -41,11 +41,6 @@ class ProfileSettingViewController: UIViewController {
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
         
         addSubViews()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
         addConstraints()
     }
     
@@ -85,8 +80,11 @@ class ProfileSettingViewController: UIViewController {
             Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
                 switch result {
                 case .success:
-                    self.pushNextVC()
-                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.pushNextVC()
+                    }
+                    
+                case .failure(let error):                    
                     var alert = SimpleAlert(message: "")
                     
                     DispatchQueue.main.async {

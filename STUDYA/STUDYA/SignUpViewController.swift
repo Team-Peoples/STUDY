@@ -67,15 +67,15 @@ class SignUpViewController: UIViewController {
         
         passwordInputField.rightView?.tag = 1
         passwordCheckInputField.rightView?.tag = 2
-        
-        setScrollView()
         passwordCheckValidationLabel.textColor = .systemBackground
-        
-        enableScroll()
-        emailInputField.becomeFirstResponder()
         
         addSubviews()
         setConstraints()
+        
+        setScrollView()
+        
+        enableScroll()
+        emailInputField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -188,12 +188,17 @@ class SignUpViewController: UIViewController {
     
     private func checkIfIdenticalEmail(_ email: String) {
         Network.shared.checkIfDuplicatedEmail(email: email) { result in
+            
             switch result {
             case .success(let isIdenticalEmail):
                 if isIdenticalEmail { self.isIdenticalEmail = true } else { self.isIdenticalEmail = false }
+                
             case .failure(let errorCode):
                 DispatchQueue.main.async {
-                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = \(errorCode)")
+                    
+                    let alert = SimpleAlert(buttonTitle: "확인", message: "이메일 중복검사 실패. 서버에러가 발생했습니다." + "code = \(errorCode)") { finished in
+                        self.navigationController?.popViewController(animated: true)
+                    }
                     self.present(alert, animated: true)
                 }
             }
@@ -209,7 +214,7 @@ class SignUpViewController: UIViewController {
             let text = emailInputField.text
             
             emailValidationLabel.textColor = text == nil ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
-            emailValidationLabel.text = isIdenticalEmail ? "이메일 형식을 올바르게 입력해주세요." : "이미 가입된 이메일이에요.😮"
+            emailValidationLabel.text = isIdenticalEmail ? "이메일 형식을 올바르게 입력해주세요." : "이미 가입된 이메일이에요."
         }
     }
     

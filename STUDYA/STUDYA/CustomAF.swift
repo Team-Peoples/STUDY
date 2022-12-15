@@ -16,9 +16,6 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
-let accessToken = "accessToken"
-let refreshToken = "refreshToken"
-
 enum HeaderContentType: String {
     case json = "application/json"
     case multipart = "multipart/form-data"
@@ -191,6 +188,8 @@ extension RequestPurpose {
 //            HTTPMethod: GET
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
+        case .getJWTToken(let SNSToken, _):
+            return .queryString(["token" : SNSToken])
         default:
             return .none
         }
@@ -228,12 +227,7 @@ extension RequestPurpose {
             
         case .body(let params):
             
-            let data = try! JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
-            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            
-            guard let json = json else { return urlRequest }
-            
-            urlRequest.httpBody = json.data(using: String.Encoding.utf8.rawValue)
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: params)
             
             return urlRequest
             
@@ -321,12 +315,11 @@ struct User: Codable {
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool?
-//    let userStats:
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, pushStart, pushImmininet, pushDayAgo, userStats: Bool?
 
     enum CodingKeys: String, CodingKey {
 
-        case password
+        case password, pushStart, pushImmininet, pushDayAgo
         case id = "userId"
         case oldPassword = "old_password"
         case passwordCheck = "password_check"
@@ -336,6 +329,6 @@ struct User: Codable {
         case isEmailAuthorized = "emailAuthentication"
         case isBlocked = "userBlock"
         case isPaused = "userPause"
-//        case userStats = "userStats"
+        case userStats = "userStats"
     }
 }

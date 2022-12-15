@@ -42,12 +42,13 @@ final class WelcomViewController: UIViewController {
         
         configureButtons()
         configureStackView()
-        addConstraints()
+        
         
         underBar.backgroundColor = UIColor.appColor(.keyColor3)
         
         addSubviews()
         addArangedSubviewsToStack()
+        addConstraints()
     }
     
     @objc private func kakaoLoginButtonTapped() {
@@ -59,17 +60,7 @@ final class WelcomViewController: UIViewController {
                     print("loginWithKakaoTalk() success.")
                     
                     guard let accessToken = oauthToken?.accessToken else { return }
-                    Network.shared.SNSSignIn(token: accessToken, sns: .kakao) { user in
-                        
-                        if user != nil {
-                            NotificationCenter.default.post(name: .loginSuccess, object: user)
-                        } else {
-                            DispatchQueue.main.async {
-                                let alert = SimpleAlert(message: Const.serverErrorMessage)
-                                self.present(alert, animated: true)
-                            }
-                        }
-                    }
+                    self.socialSignIn(SNSToken: accessToken, service: .kakao)
                 }
             }
         }
@@ -132,23 +123,38 @@ final class WelcomViewController: UIViewController {
             welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
             
             buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
-            //        buttonsStackView.setHeight(150 + 28)
+    //        buttonsStackView.setHeight(150 + 28)
             
             signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
             signUpView.centerX(inView: view)
             
             underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
         }
-}
-
-extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
-    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
-        guard let accessToken = naverLogin?.accessToken else { return }
-        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
-//            소셜로그인시 firstlogin이면 화면전환
-            if user != nil {
-                NotificationCenter.default.post(name: .loginSuccess, object: user)
-            } else {
+    
+    private func socialSignIn(SNSToken: String,service: SNS) {
+        Network.shared.SNSSignIn(token: SNSToken, sns: service) { result in
+            switch result {
+            case .success(let user):
+                
+                if let isEmailAuthorized = user.isEmailAuthorized {
+                    if isEmailAuthorized {
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .loginSuccess, object: user)
+                            self.dismiss(animated: true)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            let nextVC = MailCheckViewController()
+                            self.navigationController?.pushViewController(nextVC, animated: true)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(message: Const.serverErrorMessage)
+                        self.present(alert, animated: true)
+                    }
+                }
+            default:
                 DispatchQueue.main.async {
                     let alert = SimpleAlert(message: Const.serverErrorMessage)
                     self.present(alert, animated: true)
@@ -156,20 +162,19 @@ extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
             }
         }
     }
+}
+
+extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
+    func oauth20ConnectionDidFinishRequestACTokenWithAuthCode() {
+        guard let accessToken = naverLogin?.accessToken else { return }
+        
+        socialSignIn(SNSToken: accessToken, service: .naver)
+    }
     
     func oauth20ConnectionDidFinishRequestACTokenWithRefreshToken() {
         guard let accessToken = naverLogin?.accessToken else { return }
-        Network.shared.SNSSignIn(token: accessToken, sns: .naver) { user in
-//            소셜로그인시 firstlogin이면 화면전환
-            if user != nil {
-                NotificationCenter.default.post(name: .loginSuccess, object: user)
-            } else {
-                DispatchQueue.main.async {
-                    let alert = SimpleAlert(message: Const.serverErrorMessage)
-                    self.present(alert, animated: true)
-                }
-            }
-        }
+        
+        socialSignIn(SNSToken: accessToken, service: .naver)
     }
     
     func oauth20ConnectionDidFinishDeleteToken() {
@@ -182,4 +187,3 @@ extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
         present(alert, animated: true)
     }
 }
-

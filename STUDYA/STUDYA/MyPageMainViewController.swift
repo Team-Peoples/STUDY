@@ -102,7 +102,7 @@ final class MyPageMainViewController: UIViewController {
         myMailLabel.anchor(top: nickNameLabel.bottomAnchor, topConstant: 7, leading: nickNameLabel.leadingAnchor)
         settingImageView.anchor(top: headerView.topAnchor, topConstant: 12, trailing: headerView.trailingAnchor, trailingConstant: 12)
         separatorView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
-        tableView.anchor(top: headerContainerView.bottomAnchor, topConstant: 15, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
+        tableView.anchor(bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 55 * 3)
     }
 }
 
