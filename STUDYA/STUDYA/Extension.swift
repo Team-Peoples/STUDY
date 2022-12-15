@@ -35,7 +35,7 @@ extension AttributedString {
         
         let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(string: frontLabel, attributes: [.font: UIFont.systemFont(ofSize: labelFontSize), .foregroundColor: UIColor.appColor(labelColor)])
         
-        let fineAttrString = NSAttributedString(string: Formatter.formatIntoDecimal(number: value), attributes: [.font: UIFont.boldSystemFont(ofSize: valueFontSize), .foregroundColor: UIColor.appColor(valueTextColor)])
+        let fineAttrString = NSAttributedString(string: Formatter.formatIntoDecimal(number: value) ?? "", attributes: [.font: UIFont.boldSystemFont(ofSize: valueFontSize), .foregroundColor: UIColor.appColor(valueTextColor)])
         
         mutableAttributedText.append(fineAttrString)
         

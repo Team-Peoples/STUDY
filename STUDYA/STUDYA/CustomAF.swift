@@ -66,7 +66,7 @@ extension RequestPurpose {
         switch self {
         case .getNewPassord, .getJWTToken:
             return .none
-        case .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog:
+        case .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy:
             return .token
         case .signUp:
             return .multipart

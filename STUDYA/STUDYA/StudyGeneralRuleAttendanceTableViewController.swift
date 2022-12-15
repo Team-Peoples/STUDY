@@ -13,6 +13,12 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     
     // MARK: - Properties
     
+    var generalRule: GeneralStudyRule = GeneralStudyRule() {
+        didSet {
+            print(generalRule)
+        }
+    }
+    
     /// 출결 규칙
     @IBOutlet weak var latenessRuleTimeField: RoundedNumberField!
     @IBOutlet weak var absenceRuleTimeField: RoundedNumberField!
@@ -44,11 +50,13 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         setDelegate()
         setNotification()
     
-        configure(latenessFineTextField)
-        configure(absenceFineTextField)
-        configure(depositTextField)
+        setup(latenessFineTextField)
+        setup(absenceFineTextField)
+        setup(depositTextField)
         
         fineAndDepositFieldsAreEnabled(false)
+        
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -72,9 +80,18 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
 
     // MARK: - Actions
+    
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            view.endEditing(true) // todo...
+        }
+        sender.cancelsTouchesInView = false
+    }
+    
     private func setDelegate() {
         latenessRuleTimeField.delegate = self
         absenceRuleTimeField.delegate = self
+        perLateMinuteField.delegate = self
     }
     
     private func setNotification() {
@@ -87,7 +104,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         depositDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
     }
     
-    private func configure(_ textField: UITextField) {
+    private func setup(_ textField: UITextField) {
         textField.delegate = self
         textField.backgroundColor = .appColor(.background)
         textField.font = .boldSystemFont(ofSize: 20)
@@ -187,6 +204,26 @@ extension StudyGeneralRuleAttendanceTableViewController {
 // MARK: - UITextFieldDelegate
 
 extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        switch textField {
+        case latenessFineTextField:
+            if let latenessFine = generalRule.lateness?.fine {
+                latenessFineTextField.text = Formatter.formatIntoDecimal(number: latenessFine)
+            }
+        case absenceFineTextField:
+            if let absenceFine = generalRule.absence?.fine {
+                absenceFineTextField.text = Formatter.formatIntoDecimal(number: absenceFine)
+            }
+        case depositTextField:
+            if let deposit = generalRule.deposit {
+                depositTextField.text = Formatter.formatIntoDecimal(number: deposit)
+            }
+        default:
+            return
+        }
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         if latenessRuleTimeField?.text != "--" || absenceRuleTimeField.text != "--" {
             
@@ -201,21 +238,35 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
             absenceFineTextField.text = nil
         }
         
+        // domb: 0원과 nil을 똑같이 처리할 것인가
+        
         switch textField {
-            case latenessFineTextField:
-                if let text = textField.text, let intText = Int(text) {
-                    textField.text = Formatter.formatIntoDecimal(number: intText)
-                }
-            case absenceFineTextField:
-                if let text = textField.text, let intText = Int(text) {
-                    textField.text = Formatter.formatIntoDecimal(number: intText)
-                }
-            case depositTextField:
-                if let text = textField.text, let intText = Int(text) {
-                    textField.text = Formatter.formatIntoDecimal(number: intText)
-                }
-            default:
-                return
+        case latenessRuleTimeField:
+            generalRule.lateness?.time = Int(latenessRuleTimeField.text!)
+        case absenceRuleTimeField:
+            generalRule.absence?.time = Int(absenceRuleTimeField.text!)
+        case perLateMinuteField:
+            generalRule.lateness?.count = Int(perLateMinuteField.text!)
+        case latenessFineTextField:
+            if let text = latenessFineTextField.text, let intText = Int(text) {
+                latenessFineTextField.text = Formatter.formatIntoDecimal(number: intText)
+            }
+            
+            generalRule.lateness?.fine = Formatter.formatIntoNoneDecimal(latenessFineTextField.text)
+        case absenceFineTextField:
+            if let text = absenceFineTextField.text, let intText = Int(text) {
+                absenceFineTextField.text = Formatter.formatIntoDecimal(number: intText)
+            }
+            
+            generalRule.absence?.fine = Formatter.formatIntoNoneDecimal(absenceFineTextField.text)
+        case depositTextField:
+            if let text = depositTextField.text, let intText = Int(text) {
+                depositTextField.text = Formatter.formatIntoDecimal(number: intText)
+            }
+            
+            generalRule.deposit = Formatter.formatIntoNoneDecimal(depositTextField.text)
+        default:
+            return
         }
     }
 }

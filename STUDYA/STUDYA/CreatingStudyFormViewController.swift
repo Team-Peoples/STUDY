@@ -15,12 +15,13 @@ final class CreatingStudyFormViewController: UIViewController {
     var studyViewModel: StudyViewModel? {
         didSet {
             guard let studyViewModel = studyViewModel else { return }
+            print(studyViewModel)
             doneButton.isEnabled = studyViewModel.formIsValid
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
     }
     var categoryChoice: StudyCategory? {
-        willSet(value) {
+        willSet(newCategory) {
             if categoryChoice == nil {
                 
             } else {
@@ -28,7 +29,7 @@ final class CreatingStudyFormViewController: UIViewController {
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
             }
-            studyViewModel?.study.category = value?.rawValue
+            studyViewModel?.study.category = newCategory?.rawValue
         }
     }
     private var token: NSObjectProtocol?
@@ -151,21 +152,16 @@ final class CreatingStudyFormViewController: UIViewController {
     
     @objc func typeButtonDidTapped(_ sender: CheckBoxButton) {
         
-        if studyViewModel?.study.onoff == nil {
-            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.on.eng : OnOff.off.eng
-        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.off.kor {
-            studyViewModel?.study.onoff = OnOff.onoff.eng
-        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.on.kor {
-            studyViewModel?.study.onoff = nil
-        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.on.kor {
-            studyViewModel?.study.onoff = OnOff.onoff.eng
-        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.off.kor {
-            studyViewModel?.study.onoff = nil
-        } else if studyViewModel?.study.onoff == OnOff.onoff.eng {
-            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.off.eng : OnOff.on.eng
-        }
-        
         sender.toggleState()
+        
+        switch sender {
+        case onlineButton:
+            studyViewModel?.study.studyOn = sender.isSelected ? true : false
+        case offlineButton:
+            studyViewModel?.study.studyOff = sender.isSelected ? true : false
+        default:
+            return
+        }
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {
@@ -208,8 +204,9 @@ final class CreatingStudyFormViewController: UIViewController {
     @objc func doneButtonDidTapped() {
 
         let vc = CreatingStudyRuleViewController()
-
-        vc.studyRuleViewModel.study = studyViewModel!.study
+        guard let studyViewModel = studyViewModel else { return }
+        
+        vc.creatingStudyRuleViewModel.study = studyViewModel.study
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -394,12 +391,12 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.title = studyNameTextView.text
+                studyViewModel?.study.studyName = studyNameTextView.text
             case studyIntroductionTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyDescription = studyIntroductionTextView.text
+                studyViewModel?.study.studyIntroduction = studyIntroductionTextView.text
             default:
                 break
         }

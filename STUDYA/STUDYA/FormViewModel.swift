@@ -25,10 +25,14 @@ struct SignInViewModel: FormViewModel {
 }
 
 struct StudyViewModel: FormViewModel {
-    var study = Study(id: nil, title: nil, onoff: nil, category: nil, studyDescription: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)
-    
+    var study: Study
     var formIsValid: Bool {
         
-        return study.category != nil && study.title != nil && study.title != "" && study.onoff != nil && study.studyDescription != nil && study.studyDescription != ""
+        return study.category != nil && study.studyName != nil && study.studyName != "" && (study.studyOn != false || study.studyOff != false) && study.studyIntroduction != nil && study.studyIntroduction != ""
+    }
+    
+    init(study: Study = Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)) {
+        self.study = study
     }
 }
+

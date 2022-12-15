@@ -236,9 +236,21 @@ class StudyInfoViewController: SwitchableViewController {
         //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
         
         studyCategoryLabel.text = study?.category
-        studyNameLabel.text = study?.title
-        studyIntroductionLabel.text = study?.studyDescription
-        studyTypeLabel.text = OnOff(rawValue: (study?.onoff) ?? "on")?.kor
+        studyNameLabel.text = study?.studyName
+        studyIntroductionLabel.text = study?.studyIntroduction
+        
+        guard let studyOn = study?.studyOn, let studyOff = study?.studyOff else { return }
+        
+        switch (studyOn, studyOff) {
+        case (true, true):
+            studyTypeLabel.text = OnOff.onoff.kor
+        case (false, true):
+            studyTypeLabel.text = OnOff.off.kor
+        case (true, false):
+            studyTypeLabel.text = OnOff.on.kor
+        case (false, false):
+            return
+        }
         
         // freeRule부터 확인한 이유: 따로 ui작업이 필요없기때문에 먼저 확인
         if let freeRule = study?.freeRule {

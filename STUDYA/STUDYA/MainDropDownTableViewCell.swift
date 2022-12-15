@@ -13,8 +13,7 @@ class MainDropDownTableViewCell: UITableViewCell {
     
     internal var study: Study? {
         didSet {
-            print(#function)
-            titleLabel.text = study?.title
+            titleLabel.text = study?.studyName
         }
     }
     internal var isCurrentStudy = false {

@@ -129,29 +129,20 @@ final class EditingStudyFormViewController: UIViewController {
     
     func bind(_ study: Study) {
         
-        studyNameTextView.text = study.title
-        studyIntroductionTextView.text = study.studyDescription
+        studyNameTextView.text = study.studyName
+        studyIntroductionTextView.text = study.studyIntroduction
         
-        switch study.onoff {
-            case "on":
-                onlineButton.isSelected = true
-            case "off":
-                offlineButton.isSelected = true
-            case "onoff":
-                onlineButton.isSelected = true
-                offlineButton.isSelected = true
-            default:
-                return
-        }
+        onlineButton.isSelected = study.studyOn ? true : false
+        offlineButton.isSelected = study.studyOff ? true : false
         
         if studyNameTextView.text != "" {
             studyNameTextView.hidePlaceholder(true)
-            studyNameTextView.getCharactersNumerLabel().text = "\(study.title!.count)/10"
+            studyNameTextView.getCharactersNumerLabel().text = "\(study.studyName!.count)/10"
         }
         
         if studyIntroductionTextView.text != "" {
             studyIntroductionTextView.hidePlaceholder(true)
-            studyIntroductionTextView.getCharactersNumerLabel().text = "\(study.studyDescription!.count)/10"
+            studyIntroductionTextView.getCharactersNumerLabel().text = "\(study.studyIntroduction!.count)/10"
         }
     }
     
@@ -159,21 +150,16 @@ final class EditingStudyFormViewController: UIViewController {
     
     @objc func typeButtonDidTapped(_ sender: CheckBoxButton) {
         
-        if studyViewModel?.study.onoff == nil {
-            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.on.eng : OnOff.off.eng
-        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.off.kor {
-            studyViewModel?.study.onoff = OnOff.onoff.eng
-        } else if studyViewModel?.study.onoff == OnOff.on.eng, sender.titleLabel?.text == OnOff.on.kor {
-            studyViewModel?.study.onoff = nil
-        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.on.kor {
-            studyViewModel?.study.onoff = OnOff.onoff.eng
-        } else if studyViewModel?.study.onoff == OnOff.off.eng, sender.titleLabel?.text == OnOff.off.kor {
-            studyViewModel?.study.onoff = nil
-        } else if studyViewModel?.study.onoff == OnOff.onoff.eng {
-            studyViewModel?.study.onoff = sender.titleLabel?.text == OnOff.on.kor ? OnOff.off.eng : OnOff.on.eng
-        }
-        
         sender.toggleState()
+        
+        switch sender {
+        case onlineButton:
+            studyViewModel?.study.studyOn = sender.isSelected ? true : false
+        case offlineButton:
+            studyViewModel?.study.studyOff = sender.isSelected ? true : false
+        default:
+            return
+        }
     }
     
     @objc func barButtonDidTapped(sender: UIBarButtonItem) {
@@ -388,12 +374,12 @@ extension EditingStudyFormViewController: UITextViewDelegate {
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.title = studyNameTextView.text
+                studyViewModel?.study.studyName = studyNameTextView.text
             case studyIntroductionTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyDescription = studyIntroductionTextView.text
+                studyViewModel?.study.studyIntroduction = studyIntroductionTextView.text
             default:
                 break
         }

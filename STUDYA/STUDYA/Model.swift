@@ -78,7 +78,8 @@ struct SNSInfo {
 
 struct Study: Codable {
     let id: Int?
-    var title, onoff, category, studyDescription, freeRule, po: String?
+    var studyOn, studyOff: Bool
+    var studyName, category, studyIntroduction, freeRule, po: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
     let startDate: Date?
@@ -87,24 +88,25 @@ struct Study: Codable {
     enum CodingKeys: String, CodingKey {
         
         case id = "studyId"
-        case title = "studyName"
+        case studyName = "studyName"
         case category = "studyCategory"
-        case studyDescription = "studyInfo"
+        case studyIntroduction = "studyInfo"
         case freeRule = "studyFlow"
         case isBlocked = "studyBlock"
         case isPaused = "studyPause"
         case generalRule = "studyRule"
         case startDate = "start"
         case endDate = "end"
-        case onoff, po
+        case studyOn, studyOff, po
     }
     
-    init(id: Int?, title: String? = nil, onoff: OnOff? = nil, category: StudyCategory? = nil, studyDescription: String? = nil, freeRule: String? = nil, po: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = nil, startDate: Date?, endDate: Date?) {
+    init(id: Int?, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, po: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication()), startDate: Date?, endDate: Date?) {
         self.id = id
-        self.title = title
-        self.onoff = onoff?.eng
+        self.studyName = studyName
+        self.studyOn = studyOn
+        self.studyOff = studyOff
         self.category = category?.rawValue
-        self.studyDescription = studyDescription
+        self.studyIntroduction = studyIntroduction
         self.freeRule = freeRule
         self.po = po
         self.isBlocked = isBlocked

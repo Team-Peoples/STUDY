@@ -7,15 +7,29 @@
 
 import Foundation
 
-// domb: 참조타입의 전역함수를 사용하는 Formatter 클래스, 클래스 선언이유?
 final class Formatter {
-    static func formatIntoDecimal(number: Int) -> String {
+    
+    static func formatIntoDecimal(number: Int) -> String? {
+        
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
         
-        return numberFormatter.string(from: NSNumber(value: number))!
+        
+        return numberFormatter.string(from: NSNumber(value: number))
+    }
+    
+    static func formatIntoNoneDecimal(_ text: String?) -> Int? {
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        guard let text = text else { return nil }
+        
+        return numberFormatter.number(from: text) as? Int
     }
 }
+
+
 
 // MARK: - Date Format
 

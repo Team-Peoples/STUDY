@@ -8,6 +8,8 @@
 import UIKit
 
 struct GeneralStudyRuleViewModel {
+    // model: generalRule
+    
     var generalRule: GeneralStudyRule
     var lateness: Lateness {
         return generalRule.lateness ?? Lateness(time: nil, count: nil, fine: nil)
@@ -30,9 +32,9 @@ struct GeneralStudyRuleViewModel {
         vc.latenessRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
         vc.absenceRuleTimeField.text = absence.time == nil ? "--" : String(absence.time!)
         vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count!)
-        vc.latenessFineTextField.text = lateness.fine == nil ? nil : String(lateness.fine!)
-        vc.absenceFineTextField.text = absence.fine == nil ? nil : String(absence.fine!)
-        vc.depositTextField.text = deposit == nil ? nil : String(deposit!)
+        vc.latenessFineTextField.text = lateness.fine == nil ? nil : Formatter.formatIntoDecimal(number: lateness.fine!)
+        vc.absenceFineTextField.text = absence.fine == nil ? nil : Formatter.formatIntoDecimal(number: absence.fine!)
+        vc.depositTextField.text = deposit == nil ? nil : Formatter.formatIntoDecimal(number: deposit!)
         
         let isFieldsEnabled: Bool = lateness.time != nil || absence.time != nil ? true : false
         
@@ -48,7 +50,7 @@ struct GeneralStudyRuleViewModel {
 
 final class StudyGeneralRuleViewController: UIViewController {
     
-    var doneButtonDidTapped: (GeneralStudyRule) -> () = { rule in }
+    var doneButtonDidTapped: (GeneralStudyRule) -> () = { generalRule in }
     var viewDidUpdated: (UICollectionView) -> () = { collectionView in }
     var generalRuleViewModel = GeneralStudyRuleViewModel()
     var task: Task?
@@ -85,6 +87,9 @@ final class StudyGeneralRuleViewController: UIViewController {
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
+        
+        //vc의 generalRule에 할당
+        vc.generalRule = generalRuleViewModel.generalRule
     }
     
     override func viewWillLayoutSubviews() {
@@ -121,11 +126,19 @@ final class StudyGeneralRuleViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        generalRuleViewModel.generalRule.lateness = Lateness(time: Int(vc.latenessRuleTimeField.text!), count: Int(vc.perLateMinuteField.text!), fine: Int(vc.latenessFineTextField.text!))
-        generalRuleViewModel.generalRule.absence = Absence(time: Int(vc.absenceRuleTimeField.text!), fine: Int(vc.absenceFineTextField.text!))
-        generalRuleViewModel.generalRule.deposit = Int(vc.depositTextField.text!)
+        
+        let generalRule = vc.generalRule
+        let lateness = generalRule.lateness
+        let absence = generalRule.absence
+        let deposit = generalRule.deposit
+        
+        print(generalRule, "sefsefsefsef")
+        
+        generalRuleViewModel.generalRule.lateness = lateness
+        generalRuleViewModel.generalRule.absence = absence
+        generalRuleViewModel.generalRule.deposit = deposit
         generalRuleViewModel.generalRule.excommunication = Excommunication(lateness: Int(excommunicationCell.lateNumberField.text!), absence: Int(excommunicationCell.absenceNumberField.text!))
-        print(generalRuleViewModel.generalRule)
+       
         doneButtonDidTapped(generalRuleViewModel.generalRule)
         dismiss(animated: true)
     }

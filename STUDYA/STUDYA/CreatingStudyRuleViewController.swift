@@ -20,7 +20,7 @@ struct CreatingStudyRuleViewModel {
     var isFreeFormFilled = false
     
     init() {
-        study = Study(id: nil, title: nil, onoff: nil, category: nil, studyDescription: nil, freeRule: nil, po: nil, isBlocked: nil, isPaused: nil, generalRule: nil, startDate: nil, endDate: nil)
+        study = Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)
     }
     
     func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: BrandButton) {
@@ -36,7 +36,7 @@ struct CreatingStudyRuleViewModel {
 
 class CreatingStudyRuleViewController: UIViewController {
     
-    internal var studyRuleViewModel = CreatingStudyRuleViewModel()
+    internal var creatingStudyRuleViewModel = CreatingStudyRuleViewModel()
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true)
     private let subTitleLabel = CustomLabel(title: "스터디 정보에서 언제든지 수정할 수 있어요!", tintColor: .ppsBlack, size: 18)
     private lazy var settingStudyGeneralRuleView: UIView = {
@@ -110,7 +110,7 @@ class CreatingStudyRuleViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-//        title = "스터디 만들기"
+        title = "스터디 만들기"
         
         addsubViews()
         setNavigation()
@@ -128,10 +128,11 @@ class CreatingStudyRuleViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
         studyGeneralRuleVC.task = .creating
-        studyGeneralRuleVC.generalRuleViewModel.generalRule = studyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
+        studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
-            self.studyRuleViewModel.study.generalRule = rule
-            self.studyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
+            self.creatingStudyRuleViewModel.study.generalRule = rule
+            self.creatingStudyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
+            print(rule, #function)
         }
         
         studyGeneralRuleVC.navigationItem.title = "규칙"
@@ -149,11 +150,11 @@ class CreatingStudyRuleViewController: UIViewController {
         let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
         
         studyFreeRuleVC.viewDidUpdated = { textView in
-            textView.text = self.studyRuleViewModel.study.freeRule
+            textView.text = self.creatingStudyRuleViewModel.study.freeRule
         }
         studyFreeRuleVC.completeButtonTapped = { freeRule in
-            self.studyRuleViewModel.study.freeRule = freeRule
-            self.studyRuleViewModel.configure(self.settingStudyFreeRuleView, isUpperView: false, label: self.descriptionLabel, button: self.doneButton)
+            self.creatingStudyRuleViewModel.study.freeRule = freeRule
+            self.creatingStudyRuleViewModel.configure(self.settingStudyFreeRuleView, isUpperView: false, label: self.descriptionLabel, button: self.doneButton)
         }
         
         studyFreeRuleVC.navigationItem.title = "진행방식"
@@ -168,8 +169,20 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        let nextVC = CreatingStudyCompleteViewController()
-        navigationController?.pushViewController(nextVC, animated: true)
+        
+        let study = creatingStudyRuleViewModel.study
+        
+        Network.shared.createStudy(study) { result in
+            switch result {
+            case .success(let study):
+                print(study)
+                
+                let nextVC = CreatingStudyCompleteViewController()
+                self.navigationController?.pushViewController(nextVC, animated: true)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     @objc func closeButtonDidTapped() {

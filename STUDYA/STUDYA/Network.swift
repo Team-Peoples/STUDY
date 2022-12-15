@@ -239,6 +239,29 @@ struct Network {
         }
     }
     
+    // MARK: - Study
+    
+    func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createStudy(study)).validate().response { response in
+            guard let httpResponse = response.response else { return }
+            print(String(describing: response.request?.headers))
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Study>.self, data: data), let study = body.result else {
+                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                    completion(.failure(.notServerError(message)))
+                    return
+                }
+                
+                completion(.success(study))
+            default:
+                // domb: 토큰 인증 실패
+                completion(.failure(.unknownError(httpResponse.statusCode)))
+            }
+        }
+    }
+    
     func jsonDecode<T: Codable>(type: T.Type, data: Data) -> T? {
         
         let jsonDecoder = JSONDecoder()
