@@ -30,6 +30,15 @@ struct Network {
     
     static let shared = Network()
     
+    func saveLoginformation(urlResponse: HTTPURLResponse, user: User,completion: (Result<User, PeoplesError>) -> Void) {
+        guard let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
+              let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String else { completion(.failure(.serverError)); return }
+        
+        KeyChain.create(key: Const.accessToken, value: accesToken)
+        KeyChain.create(key: Const.refreshToken, value: refreshToken)
+        KeyChain.create(key: Const.userId, value: user.id)
+    }
+    
     func checkIfDuplicatedEmail(email: String, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in
             switch response.result {
@@ -55,7 +64,7 @@ struct Network {
             switch httpStatus {
             case 200:
                 guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.serverError)); return }
-                saveLogInformation(urlResponse: urlResponse, user: user, completion: completion)
+                saveLoginformation(urlResponse: urlResponse, user: user, completion: completion)
                 
                 completion(.success(user))
             default:
@@ -64,51 +73,43 @@ struct Network {
         }
     }
     
-    func saveLogInformation(urlResponse: HTTPURLResponse, user: User,completion: (Result<User, PeoplesError>) -> Void) {
-        guard let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
-              let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String else { completion(.failure(.serverError)); return }
-        
-        KeyChain.create(key: Const.accessToken, value: accesToken)
-        KeyChain.create(key: Const.refreshToken, value: refreshToken)
-        KeyChain.create(key: Const.userId, value: user.id)
-    }
-    
 //    회원가입시 사진 선택 안하면 이미지에 nil을 보내게할 수는 없는건가
-    func signUp(userId: String, pw: String, pwCheck: String, nickname: String?, image: UIImage?, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        
-        let user = User(id: userId, oldPassword: nil, password: pw, passwordCheck: pwCheck, nickName: nickname, image: nil, isEmailAuthorized: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, pushStart: nil, pushImmininet: nil, pushDayAgo: nil, userStats: nil)
-
-        guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-
-        AF.upload(multipartFormData: { data in
-            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
-            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-        }, with: RequestPurpose.signUp).response { response in
+    func signUp(userId: String, pw: String, pwCheck: String, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
             
-            guard let httpResponse = response.response else { return }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                completion(.success(true))
-            case 400:
-                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
-                    completion(.failure(.unknownError(400))); return }
+            let user = User(id: userId, oldPassword: nil, password: pw, passwordCheck: pwCheck, nickName: nickname, image: nil, isEmailAuthorized: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, pushStart: nil, pushImmininet: nil, pushDayAgo: nil, userStats: nil)
+
+            guard let jsonData = try? JSONEncoder().encode(user),
+                  let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+
+            AF.upload(multipartFormData: { data in
+                data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
+                data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
+            }, with: RequestPurpose.signUp).response { response in
                 
-                switch body.code {
-                case  ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
-                case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
-                default: completion(.failure(.unknownError(response.response?.statusCode)))
+                guard let urlResponse = response.response,
+                      let data = response.data,
+                      let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else { completion(.failure(.unknownError(400))); return }
+                
+                switch urlResponse.statusCode {
+                case 200:
+                    saveLoginformation(urlResponse: urlResponse, user: user, completion: completion )
+                    
+                    completion(.success(user))
+                case 400:
+                    
+                    switch body.code {
+                    case  ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
+                    case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
+                    default: completion(.failure(.unknownError(response.response?.statusCode)))
+                    }
+                case 401: break //🛑🛑🛑🛑🛑🛑🛑
+                case 500:
+                    completion(.failure(.serverError))
+                default:
+                    completion(.failure(.unknownError(response.response?.statusCode)))
                 }
-            case 401: break //🛑🛑🛑🛑🛑🛑🛑
-            case 500:
-                completion(.failure(.serverError))
-            default:
-                completion(.failure(.unknownError(response.response?.statusCode)))
             }
         }
-    }
-    
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>?) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).validate().responseData { response in
             switch response.result {
