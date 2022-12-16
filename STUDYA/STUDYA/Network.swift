@@ -25,18 +25,18 @@ struct Network {
     
     func checkEmail(email: String, completion: @escaping (PeoplesError?) -> Void) {
         AF.request(RequestPurpose.emailCheck(email)).response { response in
-
+            
             if let _ = response.error { completion(.serverError) }
             guard let httpResponse = response.response, let _ = response.data else { completion(.serverError); return }
-
+            
             switch httpResponse.statusCode {
-            case (200...299):
+            case 200:
                 completion(nil)
             default: completion(.serverError)
             }
         }
     }
-
+    
     func SNSSignIn(token: String, sns: SNS, completion: @escaping (User) -> Void) {
         AF.request(RequestPurpose.getJWTToken(token, sns)).validate().responseData { response in
             switch response.result {
@@ -50,37 +50,37 @@ struct Network {
             }
         }
     }
-
-
+    
+    
     func signUp(userId: String, pw: String, pwCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<ResponseResult<Bool>, PeoplesError>) -> Void) {
-
+        
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
-
+        
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-
+        
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
         }, with: RequestPurpose.signUp).response { response in
-
+            
             guard let httpResponse = response.response else { return }
-
+            
             switch httpResponse.statusCode {
             case 200:
-//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
-//                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-//                    completion(.failure(.notServerError(message)))
-//                    return
-//                }
-//                completion(.success(body))
+                //                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
+                //                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
+                //                    completion(.failure(.notServerError(message)))
+                //                    return
+                //                }
+                //                completion(.success(body))
                 
                 guard let data = response.data else { fatalError() }
                 print(data)
             case 400:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                   
+                    completion(.failure(.decodingError))
                     return
                 }
                 completion(.failure(.badRequest(body)))
@@ -91,12 +91,12 @@ struct Network {
             }
         }
     }
-
+    
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).validate().response { response in
             switch response.result {
             case .success(let data):
-    
+                
                 guard let accessToken = response.response?.allHeaderFields["AccessToken"] as? String else {
                     completion(.failure(.serverError))
                     return
@@ -105,8 +105,7 @@ struct Network {
                     return
                 }
                 guard let data = data, let user = jsonDecode(type: User.self, data: data) else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                    completion(.failure(.decodingError))
                     return
                 }
                 
@@ -116,7 +115,7 @@ struct Network {
                 UserDefaults.standard.set(userId, forKey: Const.userId)
                 KeyChain.create(key: userId, token: accessToken)
                 KeyChain.create(key: accessToken, token: refreshToken)
-
+                
                 completion(.success(user))
             case .failure:
                 completion(.failure(.unknownError(response.response?.statusCode)))
@@ -124,19 +123,19 @@ struct Network {
         }
     }
     
-    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
-        AF.request(RequestPurpose.resendEmail).response { response in
-
-            if let _ = response.error { completion(.serverError) }
-            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
-
-            switch httpResponse.statusCode {
-            case (200...299):
-                completion(nil)
-            default: completion(.serverError)
-            }
-        }
-    }
+//    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
+//        AF.request(RequestPurpose.resendEmail).response { response in
+//            
+//            if let _ = response.error { completion(.serverError) }
+//            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
+//            
+//            switch httpResponse.statusCode {
+//            case (200...299):
+//                completion(nil)
+//            default: completion(.serverError)
+//            }
+//        }
+//    }
     
     func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getNewPassord(id)).response { response in
@@ -144,16 +143,15 @@ struct Network {
             guard let httpResponse = response.response else { return }
             
             switch httpResponse.statusCode {
-                case 200:
+            case 200:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let result = body.result else {
-                        let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                        completion(.failure(.notServerError(message)))
-                        return
-                    }
-                    
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
                 completion(.success(result))
-                default:
-                    completion(.failure(.unknownError(response.response?.statusCode)))
+            default:
+                completion(.failure(.unknownError(response.response?.statusCode)))
             }
         }
     }
@@ -163,10 +161,9 @@ struct Network {
             guard let httpResponse = response.response else { return }
             
             switch httpResponse.statusCode {
-                case 200:
+            case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                    completion(.failure(.decodingError))
                     return
                 }
                 completion(.success(user))
@@ -180,10 +177,10 @@ struct Network {
     func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
         
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
-
+        
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-
+        
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
@@ -192,8 +189,7 @@ struct Network {
             switch response.response?.statusCode {
             case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                    completion(.failure(.decodingError))
                     return
                 }
                 completion(.success(user))
@@ -204,7 +200,23 @@ struct Network {
         }
     }
     
-    
+    func closeAccount(userID: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteUser(userID), interceptor: TokenRequestInterceptor()).validate().response { response in
+            
+            switch response.response?.statusCode {
+            case 200:
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isNotManager = body.result else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isNotManager))
+            case 404:
+                completion(.failure(.notFound))
+            default:
+                completion(.failure(.unknownError(response.response?.statusCode)))
+            }
+        }
+    }
     
     func refreshToken(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.refreshToken).validate().response { response in
@@ -213,11 +225,10 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = body.result else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                    completion(.failure(.decodingError))
                     return
                 }
-            
+                
                 if isSuccessed {
                     
                     guard let accessToken = response.response?.allHeaderFields["AccessToken"] as? String else { completion(.failure(.serverError)); return }
@@ -242,15 +253,14 @@ struct Network {
     // MARK: - Study
     
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.createStudy(study)).validate().response { response in
+        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { return }
-            print(String(describing: response.request?.headers))
+            
             switch httpResponse.statusCode {
             case 200:
                 
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Study>.self, data: data), let study = body.result else {
-                    let message = "Error: response Data is nil or jsonDecoding failure, Error Point: \(#function)"
-                    completion(.failure(.notServerError(message)))
+                    completion(.failure(.decodingError))
                     return
                 }
                 
@@ -285,7 +295,7 @@ struct Network {
 
 extension DateFormatter {
     
-    static let myDateFormatter: DateFormatter  = {
+    static let myDateFormatter: DateFormatter = {
         
         let dateFormatter = DateFormatter()
         
@@ -297,11 +307,12 @@ extension DateFormatter {
 
 struct ResponseResult<T: Codable>: Codable {
     let result: T?
+    let studyMemberList: [Study]?
     let message: String?
     let timestamp: String?
     
     enum CodingKeys: String, CodingKey {
-        case result, message, timestamp
+        case result, message, timestamp, studyMemberList
     }
 }
 

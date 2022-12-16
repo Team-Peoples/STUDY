@@ -185,6 +185,7 @@ class SignUpViewController: UIViewController {
 //            }
 //        }
     }
+    
     @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero

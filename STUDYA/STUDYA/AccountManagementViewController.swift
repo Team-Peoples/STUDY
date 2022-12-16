@@ -253,7 +253,6 @@ final class AccountManagementViewController: UIViewController {
             case .failure(let failure):
                 print(failure)
             }
-            
         }
     }
     
@@ -318,17 +317,31 @@ final class AccountManagementViewController: UIViewController {
     @objc private func logout() {
         print(#function)
         guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { fatalError() }
-        print(userId)
         guard let accessToken = KeyChain.read(key: userId) else { fatalError() }
         
         KeyChain.delete(key: userId)
         KeyChain.delete(key: accessToken)
         
         UserDefaults.standard.removeObject(forKey: Const.userId)
+        
+        
+        self.tabBarController?.selectedIndex = 0
+        
+//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(WelcomViewController())
     }
     
     @objc private func leaveApp() {
-        navigationController?.pushViewController(ByeViewController(), animated: true)
+        let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
+            _ in
+            
+            self.closeAccount()
+        }
+        
+        alertController.addAction(closeAccountAction)
+        alertController.addAction(cancelAction)
+
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {
@@ -634,6 +647,26 @@ final class AccountManagementViewController: UIViewController {
             switch result {
             case .success(let user):
                 completion(user)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func closeAccount() {
+        guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { fatalError() }
+        
+        Network.shared.closeAccount(userID: userId) { result in
+            switch result {
+            case .success(let isNotManager):
+                switch isNotManager {
+                case true:
+                    print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
+                    self.navigationController?.pushViewController(ByeViewController(), animated: true)
+                case false:
+                    print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
+                }
+                
             case .failure(let error):
                 print(error)
             }

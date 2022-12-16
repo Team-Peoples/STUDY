@@ -29,6 +29,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
     }
+    
+//    func setRootViewController(_ viewController: UIViewController, _ userId: Int? = nil) {
+//        if let window = self.window {
+//            
+//            window.rootViewController = viewController
+//            UIView.transition(with: window,
+//                              duration: 0.8,
+//                              options: .transitionCurlDown,
+//                              animations: nil)
+//        }
+//    }
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
