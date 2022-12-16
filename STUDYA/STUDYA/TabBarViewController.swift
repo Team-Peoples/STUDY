@@ -19,9 +19,8 @@ final class TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTabbarController()
         
-        // Do any additional setup after loading the view.
+        configureTabbarController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,14 +85,11 @@ final class TabBarViewController: UITabBarController {
         }
     }
     
-    @objc private func checkIfUserIsLoggedIn() {
-        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String
-        print(userID, #function)
-        
-        if userID == nil {
+   @objc private func checkIfUserIsLoggedIn() {
+        if user == nil {
             presentWelcomeVC()
         } else {
-            
+
         }
     }
     

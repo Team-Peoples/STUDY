@@ -64,18 +64,12 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken:
+        case .getNewPassord, .getJWTToken, .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy:
             return .none
-        case .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy:
-            return .token
-        case .signUp:
+        case .signUp, .updateUser:
             return .multipart
-        case .updateUser:
-            return .multipartWithToken
-        case .emailCheck, .signIn, .resendEmail:
-            return .json
         default:
-            return .jsonWithToken
+            return .json
         }
     }
     
@@ -190,8 +184,8 @@ extension RequestPurpose {
 //            HTTPMethod: GET
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
-        case .getJWTToken(let token, _):
-            return .queryString(["token" : token])
+        case .getJWTToken(let SNSToken, _):
+            return .queryString(["token" : SNSToken])
         default:
             return .none
         }
@@ -201,27 +195,14 @@ extension RequestPurpose {
     func asURLRequest() throws -> URLRequest {
         let url = try baseUrl.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
-//        let userID = UserDefaults.standard.object(forKey: Const.userId) as? String
-////
-//        let accessToken = "Bearer \(KeyChain.read(key: userID) ?? "")"
-//        let refreshToken = "Bearer \(KeyChain.read(key: accessToken) ?? "")"
-//
-//        print(accessToken)
-//        print(refreshToken)
-        
+
         var headers = HTTPHeaders()
     
         switch header {
         case .json:
             headers = [Header.contentType.type : Header.json.type]
-//        case .jsonWithToken:
-//            headers = [Header.contentType.type : Header.json.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]  //Bearer 넣어야 할지도
         case .multipart:
             headers = [Header.contentType.type : Header.multipart.type]
-//        case .multipartWithToken:
-//            headers = [Header.contentType.type : Header.multipart.type, Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
-//        case .token:
-//            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
         default: break
         }
         
@@ -234,12 +215,7 @@ extension RequestPurpose {
             
         case .body(let params):
             
-            let data = try! JSONSerialization.data(withJSONObject: params, options: .prettyPrinted)
-            let json = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-            
-            guard let json = json else { return urlRequest }
-            
-            urlRequest.httpBody = json.data(using: String.Encoding.utf8.rawValue)
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: params)
             
             return urlRequest
             
@@ -349,10 +325,7 @@ struct User: Codable {
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin: Bool?
-    let isNaverLogin: Bool?
-    let isKakaoLogin: Bool?
-    let userStats: Bool?
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImmininet, pushDayAgo: Bool?
     
     init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil) {
         self.id = id
@@ -372,19 +345,19 @@ struct User: Codable {
 
     enum CodingKeys: String, CodingKey {
 
-        case password
+        case password, pushStart, pushImmininet, pushDayAgo
         case id = "userId"
         case oldPassword = "old_password"
         case passwordCheck = "password_check"
         case nickName = "nickname"
         case image = "img"
-        case userStats = "userStats"
         case isFirstLogin = "firstLogin"
         case isEmailAuthorized = "emailAuthentication"
         case isBlocked = "userBlock"
         case isPaused = "userPause"
         case isNaverLogin = "sns_naver"
         case isKakaoLogin = "sns_kakao"
+        case userStats = "userStats"
     }
 }
 

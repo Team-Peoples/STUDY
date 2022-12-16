@@ -10,11 +10,11 @@ import Foundation
 
 class KeyChain {
     // Create
-    class func create(key: String, token: String) {
+    class func create(key: String, value: String) {
         let query: NSDictionary = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,   // 저장할 Account
-            kSecValueData: token.data(using: .utf8, allowLossyConversion: false) as Any   // 저장할 Token
+            kSecValueData: value.data(using: .utf8, allowLossyConversion: false) as Any   // 저장할 Token
         ]
         SecItemDelete(query)    // Keychain은 Key값에 중복이 생기면, 저장할 수 없기 때문에 먼저 Delete해줌
 

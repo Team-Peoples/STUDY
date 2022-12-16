@@ -530,8 +530,15 @@ class SimpleAlert: UIAlertController {
         
         self.addAction(okAction)
     }
+    
+    convenience init(buttonTitle: String?, message: String?, completion: ((UIAlertAction) -> Void)?) {
+        self.init(title: nil, message: message, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: buttonTitle, style: .default, handler: completion)
+        
+        self.addAction(okAction)
+    }
 }
-
 
 class ProfileImageView: UIView {
 
