@@ -44,27 +44,33 @@ struct Network {
         }
     }
     
-    func SNSSignIn(token: String, sns: SNS, completion: @escaping (Result<User,PeoplesError>?) -> Void) {
+    func SNSSignIn(token: String, sns: SNS, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getJWTToken(token, sns)).response { response in
             
-            guard let httpStatus = response.response?.statusCode else { return }
-            guard let data = response.data else { return }
+            guard let urlResponse = response.response,
+                  let data = response.data else { completion(.failure(.serverError)); return }
+            
+            let httpStatus = urlResponse.statusCode
             
             switch httpStatus {
             case 200:
-                guard let accesToken = response.response?.allHeaderFields["AccessToken"] as? String,
-                      let refreshToken = response.response?.allHeaderFields["RefreshToken"] as? String,
-                      let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.serverError)); return }
-                      
-                KeyChain.create(key: Const.accessToken, value: accesToken)
-                KeyChain.create(key: Const.refreshToken, value: refreshToken)
-                KeyChain.create(key: Const.userId, value: user.id)
+                guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.serverError)); return }
+                saveLogInformation(urlResponse: urlResponse, user: user, completion: completion)
                 
                 completion(.success(user))
             default:
                 completion(.failure(.serverError))
             }
         }
+    }
+    
+    func saveLogInformation(urlResponse: HTTPURLResponse, user: User,completion: (Result<User, PeoplesError>) -> Void) {
+        guard let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
+              let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String else { completion(.failure(.serverError)); return }
+        
+        KeyChain.create(key: Const.accessToken, value: accesToken)
+        KeyChain.create(key: Const.refreshToken, value: refreshToken)
+        KeyChain.create(key: Const.userId, value: user.id)
     }
     
 //    회원가입시 사진 선택 안하면 이미지에 nil을 보내게할 수는 없는건가
@@ -145,6 +151,7 @@ struct Network {
             }
         }
     }
+    
     func getNewPassword(id: UserID, completion: @escaping (Result<Bool?, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getNewPassord(id)).response { response in
             
@@ -163,7 +170,6 @@ struct Network {
             }
         }
     }
-    
     
     func jsonDecode<T: Codable>(type: T.Type, data: Data) -> T? {
         
