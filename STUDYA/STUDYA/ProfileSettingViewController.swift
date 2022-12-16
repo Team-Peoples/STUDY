@@ -10,20 +10,19 @@ import PhotosUI
 import Photos
 
 class ProfileSettingViewController: UIViewController {
+
+    private var isAuthForAlbum: Bool?
+//    private var isButtonFilled = false
+    private var profileImage: UIImage? = UIImage(named: "defaultProfile")
     
-    internal var email: String = ""
-    internal var password: String = ""
-    internal var passwordCheck: String = ""
-    
-    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .ppsBlack, size: 24)
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)
     private let profileImageSelectorView = ProfileImageView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let doneButton = BrandButton(title: "완료", isBold: true, isFill: false)
-    private let isButtonFilled = false
-    private var isAuthForAlbum: Bool?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,11 +41,6 @@ class ProfileSettingViewController: UIViewController {
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
         
         addSubViews()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
         addConstraints()
     }
     
@@ -79,18 +73,49 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImageSelectorView.internalImageView.image) { result in
-            switch result {
-                case .success(let responseResult):
-                
-                    let vc = MailCheckViewController()
-                    vc.modalPresentationStyle = .fullScreen
-                    self.present(vc, animated: true)
-                case .failure(let error):
-                    let alert = SimpleAlert(message: "에러: \(error)")
-                    self.present(alert, animated: true)
+        if let email = KeyChain.read(key: Const.tempUserId),
+           let password = KeyChain.read(key: Const.tempPassword),
+           let passwordCheck = KeyChain.read(key: Const.tempPasswordCheck) {
+            
+            Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
+                switch result {
+                case .success:
+                    DispatchQueue.main.async {
+                        self.pushNextVC()
+                    }
+                    
+                case .failure(let error):                    
+                    var alert = SimpleAlert(message: "")
+                    
+                    DispatchQueue.main.async {
+                        switch error {
+                        case .duplicatedEmail:
+                            alert = SimpleAlert(buttonTitle: "확인", message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
+                                self.navigationController?.popViewController(animated: true)
+                            })
+                        case .wrongPassword:
+                            alert = SimpleAlert(buttonTitle: "확인", message: "이전화면에서 비밀번호를 다시 확인해주세요. 비밀번호와 비밀번호 확인이 서로 달라요.", completion: { _ in
+                                self.navigationController?.popViewController(animated: true)
+                            })
+                        default:
+                            alert = SimpleAlert(message: Const.unknownErrorMessage)
+                        }
+                        
+                        self.present(alert, animated: true)
+                    }
+                }
             }
+        } else {
+            let alert = SimpleAlert(message: Const.unknownErrorMessage)
+            present(alert, animated: true)
         }
+    }
+    
+    private func pushNextVC() {
+        let vc = MailCheckViewController()
+        
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
     
     private func setupImagePicker() {

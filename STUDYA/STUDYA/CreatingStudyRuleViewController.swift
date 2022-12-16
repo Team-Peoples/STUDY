@@ -92,7 +92,7 @@ class CreatingStudyRuleViewController: UIViewController {
         let attributedString = NSMutableAttributedString.init(string: "나중에 결정하시겠어요?")
         
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
-            NSRange.init(location: 0, length: attributedString.length));
+            NSRange.init(location: 0, length: attributedString.length))
         label.attributedText = attributedString
         
         return label
