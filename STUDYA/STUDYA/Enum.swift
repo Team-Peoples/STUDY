@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Enum.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/10/06.
@@ -20,6 +20,7 @@ enum Const {
     static let screenWidth = UIScreen.main.bounds.width
     static let unknownErrorMessage = "알 수 없는 에러가 발생했습니다. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
     static let serverErrorMessage = "서버에 에러가 발생했어요. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
+    static let statusCode = "statusCode"
 }
 
 enum AttendanceStatus {

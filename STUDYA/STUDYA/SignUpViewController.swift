@@ -47,8 +47,6 @@ class SignUpViewController: UIViewController {
     
     private var bottomConstraint: NSLayoutConstraint!
     
-    var bottomConstraint: NSLayoutConstraint!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

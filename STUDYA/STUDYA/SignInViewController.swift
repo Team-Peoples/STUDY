@@ -149,6 +149,7 @@ final class SignInViewController: UIViewController {
                 self.dismiss(animated: true)
             case .failure(let error):
                 print(error)
+            default: break
             }
         }
     }

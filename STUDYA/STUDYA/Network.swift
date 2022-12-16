@@ -16,6 +16,7 @@ enum PeoplesError: Error {
     case loginInformationSavingError
     case unauthorizedUser
     case expiredToken
+    case notFound
 }
 
 enum ErrorCode {
@@ -32,24 +33,25 @@ struct Network {
     }
 
     private func sendDecodingErrorNotification() {
-        NotificationCenter.default.post(Notification.Name.decodingError)
+        NotificationCenter.default.post(name: .decodingError, object: nil)
     }
     
     private func sendServerErrorNotification() {
-        NotificationCenter.default.post(Notification.Name.serverError)
+        NotificationCenter.default.post(name: .serverError, object: nil)
     }
     
     private func sendUnknownErrorNotification(statusCode: Int?) {
         guard let statusCode = statusCode else { return }
-        NotificationCenter.default.post(name: Notification.Name.unknownError, object: nil, userInfo: [htttpStatusCode: statusCode])
+        NotificationCenter.default.post(name: Notification.Name.unknownError, object: nil, userInfo: [Const.statusCode: statusCode])
     }
 
     private func saveLoginformation(urlResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
         if let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
-           let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String {
+           let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String,
+           let userID = user.id {
             KeyChain.create(key: Const.accessToken, value: accesToken)
             KeyChain.create(key: Const.refreshToken, value: refreshToken)
-            KeyChain.create(key: Const.userId, value: user.id)
+            KeyChain.create(key: Const.userId, value: userID)
         } else {
             completion(.failure(.loginInformationSavingError))
         }
@@ -76,7 +78,7 @@ struct Network {
         AF.request(RequestPurpose.getJWTToken(token, sns)).response { response in
             
             guard let urlResponse = response.response,
-                  let data = response.data else { completion(.failure(.serverError)); return }
+                  let data = response.data else { sendServerErrorNotification(); return }
             let httpStatus = urlResponse.statusCode
             
             switch httpStatus {
@@ -94,7 +96,7 @@ struct Network {
 //    회원가입시 사진 선택 안하면 이미지에 nil을 보내게할 수는 없는건가
     func signUp(userId: String, pw: String, pwCheck: String, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
             
-            let user = User(id: userId, oldPassword: nil, password: pw, passwordCheck: pwCheck, nickName: nickname, image: nil, isEmailAuthorized: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, pushStart: nil, pushImmininet: nil, pushDayAgo: nil, userStats: nil)
+        let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
 
             guard let jsonData = try? JSONEncoder().encode(user),
                   let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
@@ -132,16 +134,16 @@ struct Network {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
             switch response.result {
             case .success(let data):
-                guard let urlResponse = response.response, let data = response.result else {
+                guard let urlResponse = response.response else {
                     sendServerErrorNotification()
                     return
                 }
-                guard let user = jsonDecode(type: User.self, data: data) else {
+                guard let data = data, let user = jsonDecode(type: User.self, data: data) else {
                     sendDecodingErrorNotification()
                     return
                 }
                 
-                saveLoginformation(urlResponse: HTTPURLResponse, user: user, completion: completion)
+                saveLoginformation(urlResponse: urlResponse, user: user, completion: completion)
                 completion(.success(user))
             case .failure:
                 sendServerErrorNotification()
@@ -150,16 +152,16 @@ struct Network {
     }
     
     func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
-        AF.request(RequestPurpose.resendEmail).response { response in
-            if let _ = response.error { completion(.serverError) }
-            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
-
-            switch httpResponse.statusCode {
-            case (200...299):
-                completion(nil)
-            default: completion(.serverError)
-            }
-        }
+//        AF.request(RequestPurpose.resendEmail).response { response in
+//            if let _ = response.error { completion(.serverError) }
+//            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
+//
+//            switch httpResponse.statusCode {
+//            case (200...299):
+//                completion(nil)
+//            default: completion(.serverError)
+//            }
+//        }
     }
     
     func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {        AF.request(RequestPurpose.getNewPassord(id)).response { response in
@@ -236,14 +238,14 @@ struct Network {
             switch response.response?.statusCode {
             case 200:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isNotManager = body.result else {
-                    completion(.failure(.decodingError))
+                    sendDecodingErrorNotification()
                     return
                 }
                 completion(.success(isNotManager))
             case 404:
                 completion(.failure(.notFound))
             default:
-                completion(.failure(.unknownError(response.response?.statusCode)))
+                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
             }
         }
     }
@@ -264,8 +266,8 @@ struct Network {
             
                 guard isSuccessed else { return }
                 
-                if let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
-                   let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String {
+                if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
+                   let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String {
                     KeyChain.create(key: Const.accessToken, value: accesToken)
                     KeyChain.create(key: Const.refreshToken, value: refreshToken)
                 } else {
@@ -296,7 +298,7 @@ struct Network {
                 
                 completion(.success(study))
             case 401:
-                completion(.failure(.))
+                completion(.failure(.unauthorizedUser))
             default:
                 // domb: 토큰 인증 실패
                 sendUnknownErrorNotification(statusCode: httpResponse.statusCode)
@@ -365,8 +367,6 @@ struct ResponseResultTypes<T: Codable, S: Codable, X: Codable>: Codable {
     let result: Dummy<T, S, X>?
     let message: String?
     let timestamp: String?
-    let message: String
-    let timestamp: String
     
     enum CodingKeys: String, CodingKey {
         case result, message, timestamp

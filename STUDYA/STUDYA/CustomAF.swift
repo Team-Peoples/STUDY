@@ -325,9 +325,9 @@ struct User: Codable {
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImmininet, pushDayAgo: Bool?
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
     
-    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil) {
+    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
         self.id = id
         self.oldPassword = oldPassword
         self.password = password
@@ -341,11 +341,14 @@ struct User: Codable {
         self.isNaverLogin = isNaverLogin
         self.isKakaoLogin = isKakaoLogin
         self.userStats = userStats
+        self.pushStart = pushStart
+        self.pushImminent = pushImminent
+        self.pushDayAgo = pushDayAgo
     }
 
     enum CodingKeys: String, CodingKey {
 
-        case password, pushStart, pushImmininet, pushDayAgo
+        case password, pushStart, pushImminent, pushDayAgo
         case id = "userId"
         case oldPassword = "old_password"
         case passwordCheck = "password_check"
