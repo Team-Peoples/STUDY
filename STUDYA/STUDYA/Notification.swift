@@ -15,4 +15,5 @@ extension Notification.Name {
     static let decodingError = Notification.Name(rawValue: "decodingError")
     static let serverError = Notification.Name(rawValue: "serverError")
     static let unknownError = Notification.Name(rawValue: "unknowError")
+    static let authStateDidChange = NSNotification.Name("authStateDidChange")
 }
