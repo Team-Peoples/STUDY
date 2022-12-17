@@ -56,23 +56,3 @@ final class AppController {
         rootViewController = UINavigationController(rootViewController: SignInViewController())
     }
 }
-//
-//struct LoginManager {
-//    static let shared = LoginManager()
-//    
-//    private init() {}
-//    
-//    func logout() {
-//        KeyChain.delete(key: Const.accessToken)
-//        KeyChain.delete(key: Const.refreshToken)
-//        KeyChain.delete(key: Const.userId)
-//        
-//        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
-//        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-//    }
-//    
-//    func logIn() {
-//        UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-//        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-//    }
-//}

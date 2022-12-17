@@ -47,7 +47,7 @@ enum RequestPurpose: Requestable {
     case getNewPassord(UserID)  //3
     case getMyInfo    //5
     case getJWTToken(SNSToken, SNS)   //7
-    case resendEmail    //8
+    case resendAuthEmail    //8
     case getAllStudy    //12
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
@@ -117,7 +117,7 @@ extension RequestPurpose {
             return "/user"
         case .getJWTToken(_, let sns):
             return "/login/oauth2/\(sns.rawValue)"
-        case .resendEmail:
+        case .resendAuthEmail:
             return "/user/email/auth"
         case .getAllStudy:
             return "/study"
@@ -142,7 +142,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog : return .get
         }
     }
     

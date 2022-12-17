@@ -21,6 +21,12 @@ final class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         configureTabbarController()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .tokenExpired, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unauthorizedUser, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .decodingError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .serverError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unknownError, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +38,11 @@ final class TabBarViewController: UITabBarController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .tokenExpired, object: nil)
+        print(#function, "탭바컨트롤러에서 불림. ishidden 됐다가 풀릴 때마다 뜨는 지 확인해야.")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Configure
@@ -78,8 +88,31 @@ final class TabBarViewController: UITabBarController {
     
     @objc func logout() {
         let alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.") { finished in
+            UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+            
+            KeyChain.delete(key: Const.accessToken)
+            KeyChain.delete(key: Const.refreshToken)
+            KeyChain.delete(key: Const.userId)
+            
             NotificationCenter.default.post(name: .authStateDidChange, object: nil)
         }
+    }
+    
+    @objc func showDecodingError() {
+        let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 1")
+        present(alert, animated: true)
+    }
+    
+    @objc func showServerError() {
+        let alert = SimpleAlert(message: Const.serverErrorMessage)
+        present(alert, animated: true)
+    }
+    
+    @objc func showUnknownError(_ sender: Notification) {
+        guard let userInfo = sender.userInfo as? [String: User], let code = userInfo[Const.statusCode] else { return }
+        
+        let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = \(code)")
+        present(alert, animated: true)
     }
     
     private func presentWelcomeVC() {

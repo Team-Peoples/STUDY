@@ -31,7 +31,8 @@ struct Network {
     private init() {
         self.init()
     }
-
+    
+//    🛑로그인 전 vc들에서 아래세개 노티들 addobserver 할 때 tokenexpired도 같이 해줘야함. 이메일 확인 씬에서 딱 한번 토큰을 보내는데 그 씬은 탭바위에 있지 않기 때문. 아니면 그씬만 따로 해줘도 되긴 함.
     private func sendDecodingErrorNotification() {
         NotificationCenter.default.post(name: .decodingError, object: nil)
     }
@@ -43,6 +44,10 @@ struct Network {
     private func sendUnknownErrorNotification(statusCode: Int?) {
         guard let statusCode = statusCode else { return }
         NotificationCenter.default.post(name: Notification.Name.unknownError, object: nil, userInfo: [Const.statusCode: statusCode])
+    }
+    
+    private func sendUnAuthorizedUserNotification() {
+        NotificationCenter.default.post(name: .unauthorizedUser, object: nil)
     }
 
     func saveLoginformation(urlResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
@@ -151,22 +156,22 @@ struct Network {
         }
     }
     
-//    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
-//        AF.request(RequestPurpose.resendEmail).response { response in
-//            
-//            guard let urlResponse = response.response, let finished = response.data else { sendServerErrorNotification(); return }
-//
-//            switch urlResponse.statusCode {
-//            case 200:
-//                completion(nil)
-//            case 500:
-//                sendServerErrorNotification()
-//            case 401:
-//                
-//            }
-//
-//        }
-//    }
+    func resendAuthEmail(completion: @escaping (PeoplesError?) -> Void) {
+        AF.request(RequestPurpose.resendAuthEmail).response { response in
+            
+            guard let urlResponse = response.response, let finished = response.data else { sendServerErrorNotification(); return }
+
+            switch urlResponse.statusCode {
+            case 200:
+                completion(nil)
+            case 500:
+                sendServerErrorNotification()
+            case 401:
+                
+            }
+
+        }
+    }
     
     func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {        AF.request(RequestPurpose.getNewPassord(id)).response { response in
             
@@ -302,7 +307,7 @@ struct Network {
                 
                 completion(.success(study))
             case 401:
-                completion(.failure(.unauthorizedUser))
+                sendUnAuthorizedUserNotification()
             default:
                 // domb: 토큰 인증 실패
                 sendUnknownErrorNotification(statusCode: httpResponse.statusCode)

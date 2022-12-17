@@ -17,4 +17,5 @@ extension Notification.Name {
     static let unknownError = Notification.Name(rawValue: "unknowError")
     static let authStateDidChange = Notification.Name(rawValue: "authStateDidChange")
     static let tokenExpired = Notification.Name(rawValue: "tokenExpired")
+    static let unauthorizedUser = Notification.Name(rawValue: "unauthorizedUser")
 }
