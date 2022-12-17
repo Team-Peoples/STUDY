@@ -159,7 +159,7 @@ struct Network {
     func resendAuthEmail(completion: @escaping (PeoplesError?) -> Void) {
         AF.request(RequestPurpose.resendAuthEmail).response { response in
             
-            guard let urlResponse = response.response, let finished = response.data else { sendServerErrorNotification(); return }
+            guard let urlResponse = response.response, let _ = response.data else { sendServerErrorNotification(); return }
 
             switch urlResponse.statusCode {
             case 200:
@@ -167,7 +167,9 @@ struct Network {
             case 500:
                 sendServerErrorNotification()
             case 401:
-                
+                sendUnAuthorizedUserNotification()
+            default:
+                sendUnknownErrorNotification(statusCode: urlResponse.statusCode)
             }
 
         }

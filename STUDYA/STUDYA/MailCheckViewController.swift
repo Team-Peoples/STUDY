@@ -36,8 +36,11 @@ final class MailCheckViewController: UIViewController {
     }
     
     @objc private func buttonTapped() {
-        
-        animate()
+        Network.shared.resendAuthEmail { error in
+            if error == nil {
+                self.animate()
+            }
+        }
     }
     
     private func addSubviews() {
