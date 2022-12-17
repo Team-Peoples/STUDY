@@ -54,6 +54,7 @@ enum RequestPurpose: Requestable {
     case getUserAllStudySchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
+    case checkEmailCertificated
 }
 
 extension RequestPurpose {
@@ -64,7 +65,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy:
+        case .getNewPassord, .getJWTToken, .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
             return .none
         case .signUp, .updateUser:
             return .multipart
@@ -131,6 +132,8 @@ extension RequestPurpose {
             return "/user/schedule"
         case .getStudyLog:
             return "/user/history"
+        case .checkEmailCertificated:
+            return "/signup/email/auth"
         }
     }
     
@@ -142,7 +145,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated : return .get
         }
     }
     

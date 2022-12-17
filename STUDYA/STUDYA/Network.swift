@@ -28,10 +28,6 @@ struct Network {
     
     static let shared = Network()
     
-    private init() {
-        self.init()
-    }
-    
 //    🛑로그인 전 vc들에서 아래세개 노티들 addobserver 할 때 tokenexpired도 같이 해줘야함. 이메일 확인 씬에서 딱 한번 토큰을 보내는데 그 씬은 탭바위에 있지 않기 때문. 아니면 그씬만 따로 해줘도 되긴 함.
     private func sendDecodingErrorNotification() {
         NotificationCenter.default.post(name: .decodingError, object: nil)
@@ -50,9 +46,9 @@ struct Network {
         NotificationCenter.default.post(name: .unauthorizedUser, object: nil)
     }
 
-    func saveLoginformation(urlResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
-        if let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
-           let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String,
+    func saveLoginformation(httpResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
+        if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
+           let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String,
            let userID = user.id {
             KeyChain.create(key: Const.accessToken, value: accesToken)
             KeyChain.create(key: Const.refreshToken, value: refreshToken)
@@ -74,7 +70,7 @@ struct Network {
                 completion(.success(decodedData))
                 
             case .failure:
-                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: response.response?.statusCode)
             }
         }
     }
@@ -82,18 +78,18 @@ struct Network {
     func SNSSignIn(token: String, sns: SNS, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getJWTToken(token, sns)).response { response in
             
-            guard let urlResponse = response.response,
+            guard let httpResponse = response.response,
                   let data = response.data else { sendServerErrorNotification(); return }
-            let httpStatus = urlResponse.statusCode
+            let httpStatusCode = httpResponse.statusCode
             
-            switch httpStatus {
+            switch httpStatusCode {
             case 200:
                 guard let user = jsonDecode(type: User.self, data: data) else { sendDecodingErrorNotification(); return }
-                saveLoginformation(urlResponse: urlResponse, user: user, completion: completion)
+                saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 
                 completion(.success(user))
             default:
-                sendServerErrorNotification()
+                seperateCommonErrors(statusCode: httpStatusCode)
             }
         }
     }
@@ -111,13 +107,13 @@ struct Network {
                 data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
             }, with: RequestPurpose.signUp).response { response in
                 
-                guard let urlResponse = response.response,
+                guard let httpResponse = response.response,
                       let data = response.data else { sendServerErrorNotification(); return }
                 guard let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else { sendDecodingErrorNotification(); return }
                 
-                switch urlResponse.statusCode {
+                switch httpResponse.statusCode {
                 case 200:
-                    saveLoginformation(urlResponse: urlResponse, user: user, completion: completion )
+                    saveLoginformation(httpResponse: httpResponse, user: user, completion: completion )
                     
                     completion(.success(user))
                 case 400:
@@ -127,10 +123,8 @@ struct Network {
                     case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
                     default: sendUnknownErrorNotification(statusCode: 400)
                     }
-                case 500:
-                    sendServerErrorNotification()
                 default:
-                    sendUnknownErrorNotification(statusCode: urlResponse.statusCode)
+                    seperateCommonErrors(statusCode: httpResponse.statusCode)
                 }
             }
         }
@@ -139,7 +133,7 @@ struct Network {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
             switch response.result {
             case .success(let data):
-                guard let urlResponse = response.response else {
+                guard let httpResponse = response.response else {
                     sendServerErrorNotification()
                     return
                 }
@@ -148,30 +142,40 @@ struct Network {
                     return
                 }
                 
-                saveLoginformation(urlResponse: urlResponse, user: user, completion: completion)
+                saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 completion(.success(user))
             case .failure:
-                sendServerErrorNotification()
+                seperateCommonErrors(statusCode: response.response?.statusCode)
             }
         }
     }
     
-    func resendAuthEmail(completion: @escaping (PeoplesError?) -> Void) {
-        AF.request(RequestPurpose.resendAuthEmail).response { response in
-            
-            guard let urlResponse = response.response, let _ = response.data else { sendServerErrorNotification(); return }
-
-            switch urlResponse.statusCode {
+    func resendAuthEmail(completion: @escaping (Bool) -> Void) {
+        AF.request(RequestPurpose.resendAuthEmail, interceptor: TokenRequestInterceptor()).response { response in
+            guard let httpResponse = response.response, let _ = response.data else { sendServerErrorNotification(); return }
+            switch httpResponse.statusCode {
             case 200:
-                completion(nil)
-            case 500:
-                sendServerErrorNotification()
-            case 401:
-                sendUnAuthorizedUserNotification()
+                completion(true)
             default:
-                sendUnknownErrorNotification(statusCode: urlResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode)
             }
 
+        }
+    }
+    
+    func checkIfEmailCertificated(completion: @escaping (Bool) -> Void) {
+        AF.request(RequestPurpose.checkEmailCertificated, interceptor: TokenRequestInterceptor()).response { response in
+            guard let statusCode = response.response?.statusCode else { sendServerErrorNotification(); return }
+            
+            switch statusCode {
+            case 200:
+                guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else {
+                    sendDecodingErrorNotification()
+                    return }
+                
+                completion(isEmailCertificated)
+            default: seperateCommonErrors(statusCode: statusCode)
+            }
         }
     }
     
@@ -191,7 +195,7 @@ struct Network {
                 
                 completion(.success(user))
             default:
-                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode)
             }
         }
     }
@@ -212,7 +216,7 @@ struct Network {
                 
                 completion(.success(user))
             default:
-                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode)
             }
         }
     }
@@ -238,7 +242,7 @@ struct Network {
                 completion(.success(user))
             default:
                 // domb: token 인증실패
-                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: response.response?.statusCode)
             }
         }
     }
@@ -256,7 +260,7 @@ struct Network {
             case 404:
                 completion(.failure(.notFound))
             default:
-                sendUnknownErrorNotification(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: response.response?.statusCode)
             }
         }
     }
@@ -288,6 +292,7 @@ struct Network {
             default:
                 
                 //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
+//                🛑ehd: 여기서 무슨액션을 하면 retry에 failure쪽 코드가 정상 실행 되나?
                 sendServerErrorNotification()
             }
         }
@@ -308,11 +313,9 @@ struct Network {
                 }
                 
                 completion(.success(study))
-            case 401:
-                sendUnAuthorizedUserNotification()
             default:
                 // domb: 토큰 인증 실패
-                sendUnknownErrorNotification(statusCode: httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode)
             }
         }
     }
@@ -334,6 +337,16 @@ struct Network {
             print(error)
             
             return nil
+        }
+    }
+    
+    func seperateCommonErrors(statusCode: Int?) {
+        guard let statusCode = statusCode else { return }
+        
+        switch statusCode {
+        case 500: sendServerErrorNotification()
+        case 401: sendUnAuthorizedUserNotification()
+        default: sendUnknownErrorNotification(statusCode: statusCode)
         }
     }
 }

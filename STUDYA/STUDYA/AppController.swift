@@ -40,10 +40,6 @@ final class AppController {
         if isLoggedin {
             setHome()
         } else {
-            KeyChain.delete(key: Const.accessToken)
-            KeyChain.delete(key: Const.refreshToken)
-            KeyChain.delete(key: Const.userId)
-            
             routeToLogin()
         }
     }

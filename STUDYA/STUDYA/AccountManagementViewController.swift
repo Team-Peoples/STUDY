@@ -341,7 +341,7 @@ final class AccountManagementViewController: UIViewController {
         
         alertController.addAction(closeAccountAction)
         alertController.addAction(cancelAction)
-
+        present(alertController, animated: true)
     }
     
     @objc func onKeyboardAppear(_ notification: NSNotification) {
@@ -654,7 +654,7 @@ final class AccountManagementViewController: UIViewController {
     }
     
     private func closeAccount() {
-        guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { fatalError() }
+        guard let userId = KeyChain.read(key: Const.userId) else { return }
         
         Network.shared.closeAccount(userID: userId) { result in
             switch result {

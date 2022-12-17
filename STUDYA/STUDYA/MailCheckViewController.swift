@@ -24,21 +24,44 @@ final class MailCheckViewController: UIViewController {
     private lazy var alertImage = UIImageView(image: UIImage(named: "emailCheck"))
     private var bottomConst: Constraint?
     
+    
+    
+    private let checkEmailCertificationButton = BrandButton(title: "인증 완료", isBold: true, isFill: true, fontSize: 20, height: 50)
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        retryButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        retryButton.addTarget(self, action: #selector(resendEmailButtonTapped), for: .touchUpInside)
+        checkEmailCertificationButton.addTarget(self, action: #selector(checkEmailCertificationButtonTapped), for: .touchUpInside)
         
         addSubviews()
         setConstraints()
         setAlertView()
     }
     
-    @objc private func buttonTapped() {
-        Network.shared.resendAuthEmail { error in
-            if error == nil {
-                self.animate()
+    @objc private func checkEmailCertificationButtonTapped() {
+        Network.shared.checkIfEmailCertificated { isEmailCertificated in
+            if isEmailCertificated {
+                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+            } else {
+                DispatchQueue.main.async {
+                    let alert = SimpleAlert(message: "이메일 인증을 완료해 주세요.")
+                    self.present(alert, animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc private func resendEmailButtonTapped() {
+        Network.shared.resendAuthEmail { isMailCome in
+            if isMailCome == true {
+                DispatchQueue.main.async {
+                    self.animate()
+                }
             }
         }
     }
@@ -48,6 +71,7 @@ final class MailCheckViewController: UIViewController {
         view.addSubview(announceLabel1)
         view.addSubview(mailImageView)
         view.addSubview(announceLabel2)
+        view.addSubview(checkEmailCertificationButton)
         view.addSubview(retryButton)
         view.addSubview(announceLabel3)
     }
@@ -58,6 +82,10 @@ final class MailCheckViewController: UIViewController {
         mailImageView.centerXY(inView: view, yConstant: 10)
         announceLabel2.anchor(top: mailImageView.bottomAnchor, topConstant: 27)
         announceLabel2.centerX(inView: view)
+        checkEmailCertificationButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view).inset(100)
+            make.bottom.equalTo(view.snp.bottom).inset(300)
+        }
         retryButton.anchor(bottom: announceLabel3.topAnchor, bottomConstant: 6, leading: view.leadingAnchor, leadingConstant: 54, trailing: view.trailingAnchor, trailingConstant: 54)
         announceLabel3.anchor(bottom: view.bottomAnchor, bottomConstant: 90)
         announceLabel3.centerX(inView: view)
