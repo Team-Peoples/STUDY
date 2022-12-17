@@ -266,31 +266,27 @@ enum RequestParameters {
 struct TokenRequestInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        guard let userID = UserDefaults.standard.object(forKey: Const.userId) as? String else {
-            return
-        }
-        
-        let accessToken = KeyChain.read(key: userID) ?? ""
-        let refreshToken = KeyChain.read(key: accessToken) ?? ""
+        let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
+        let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
         
         var request = urlRequest
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "AccessToken")
-        request.addValue("Bearer \(refreshToken)", forHTTPHeaderField: "RefreshToken")
+        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: Const.accessToken)
+        request.addValue("Bearer \(refreshToken)", forHTTPHeaderField: Const.refreshToken)
         
         completion(.success(request))
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         
-        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 401 else {
+        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 403 else {
                    completion(.doNotRetryWithError(error))
                    return
                }
 
         Network.shared.refreshToken { result in
             switch result {
-            case .success(let isSuccessed):
-                print(isSuccessed)
+            case .success:
+                completion(.retry)
             case .failure(let error):
                 completion(.doNotRetryWithError(error))
             }
