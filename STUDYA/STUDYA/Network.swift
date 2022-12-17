@@ -45,7 +45,7 @@ struct Network {
         NotificationCenter.default.post(name: Notification.Name.unknownError, object: nil, userInfo: [Const.statusCode: statusCode])
     }
 
-    private func saveLoginformation(urlResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
+    func saveLoginformation(urlResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
         if let accesToken = urlResponse.allHeaderFields[Const.accessToken] as? String,
            let refreshToken = urlResponse.allHeaderFields[Const.refreshToken] as? String,
            let userID = user.id {
@@ -151,18 +151,22 @@ struct Network {
         }
     }
     
-    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
+//    func resendEmail(completion: @escaping (PeoplesError?) -> Void) {
 //        AF.request(RequestPurpose.resendEmail).response { response in
-//            if let _ = response.error { completion(.serverError) }
-//            guard let httpResponse = response.response,let _ = response.data else { completion(.serverError); return }
+//            
+//            guard let urlResponse = response.response, let finished = response.data else { sendServerErrorNotification(); return }
 //
-//            switch httpResponse.statusCode {
-//            case (200...299):
+//            switch urlResponse.statusCode {
+//            case 200:
 //                completion(nil)
-//            default: completion(.serverError)
+//            case 500:
+//                sendServerErrorNotification()
+//            case 401:
+//                
 //            }
+//
 //        }
-    }
+//    }
     
     func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {        AF.request(RequestPurpose.getNewPassord(id)).response { response in
             

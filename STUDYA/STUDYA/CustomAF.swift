@@ -288,7 +288,7 @@ struct TokenRequestInterceptor: RequestInterceptor {
             case .success:
                 completion(.retry)
             case .failure(let error):
-                completion(.doNotRetryWithError(error))
+                NotificationCenter.default.post(name: .tokenExpired, object: nil)
             }
         }
     }
