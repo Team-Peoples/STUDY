@@ -268,7 +268,6 @@ enum RequestParameters {
 
 struct TokenRequestInterceptor: RequestInterceptor {
     
-    var maxTryCount = 2
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
         let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
@@ -287,13 +286,13 @@ struct TokenRequestInterceptor: RequestInterceptor {
                    completion(.doNotRetryWithError(error))
                    return
                }
-
+        
         Network.shared.refreshToken { result in
             switch result {
             case .success:
                 completion(.retry)
             case .failure(let error):
-                NotificationCenter.default.post(name: .tokenExpired, object: nil)
+                completion(.doNotRetryWithError(error))
             }
         }
     }
