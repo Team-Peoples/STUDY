@@ -141,15 +141,11 @@ final class SignInViewController: UIViewController {
         Network.shared.signIn(id: id, pw: pw) { result in
             switch result {
             case .success(let user):
-                
-//                NotificationCenter.default.post(name: .loginSuccess, object: user)
-                
-                guard let tabBarController = self.presentingViewController as? TabBarViewController else { return }
-                tabBarController.user = user
-                self.dismiss(animated: true)
+                print(user)
+                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
             case .failure(let error):
-                print(error)
-            default: break
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }

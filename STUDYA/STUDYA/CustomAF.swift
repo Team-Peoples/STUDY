@@ -10,7 +10,7 @@ import Alamofire
 import UIKit
 
 protocol Requestable: URLRequestConvertible {
-    var baseUrl: String { get }
+    var baseURL: String { get }
     var header: RequestHeaders { get }
     var path: String { get }
     var parameters: RequestParameters { get }
@@ -58,7 +58,7 @@ enum RequestPurpose: Requestable {
 }
 
 extension RequestPurpose {
-    var baseUrl: String {
+    var baseURL: String {
         return "http://13.209.99.229:8082/api/v1"
     }
     
@@ -196,7 +196,7 @@ extension RequestPurpose {
     
 //            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
     func asURLRequest() throws -> URLRequest {
-        let url = try baseUrl.asURL()
+        let url = try baseURL.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
 
         var headers = HTTPHeaders()
@@ -267,7 +267,6 @@ enum RequestParameters {
 }
 
 struct TokenRequestInterceptor: RequestInterceptor {
-    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
         let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
@@ -283,16 +282,16 @@ struct TokenRequestInterceptor: RequestInterceptor {
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         
         guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 403 else {
-                   completion(.doNotRetryWithError(error))
-                   return
-               }
-        
+            completion(.doNotRetryWithError(error))
+            return
+        }
+
         Network.shared.refreshToken { result in
             switch result {
             case .success:
-                completion(.retry)
+                completion(.doNotRetry)
             case .failure(let error):
-                completion(.doNotRetryWithError(error))
+                completion(.retry)
             }
         }
     }

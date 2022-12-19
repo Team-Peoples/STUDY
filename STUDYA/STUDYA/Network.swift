@@ -30,6 +30,9 @@ enum ErrorCode {
 struct Network {
     
     static let shared = Network()
+    
+    private init() {
+    }
 
     func saveLoginformation(httpResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
         if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
@@ -120,7 +123,7 @@ struct Network {
             }
         }
 
-    func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>?) -> Void) {
+    func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
             switch response.result {
             case .success(let data):
@@ -181,12 +184,14 @@ struct Network {
         AF.request(RequestPurpose.getNewPassord(id)).response { response in
 
             guard let httpResponse = response.response else {
+                
                 completion(.failure(.serverError))
                 return
             }
 
             switch httpResponse.statusCode {
             case 200:
+                
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let user = body.result else {
                     completion(.failure(.decodingError))
                     return
@@ -194,6 +199,7 @@ struct Network {
 
                 completion(.success(user))
             default:
+                
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -202,21 +208,24 @@ struct Network {
     }
 
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getMyInfo, interceptor: TokenRequestInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.getMyInfo, interceptor: TokenRequestInterceptor()).response { response in
             guard let httpResponse = response.response else {
+                
                 completion(.failure(.serverError))
                 return
             }
 
             switch httpResponse.statusCode {
                 case 200:
+                
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-
+                
                 completion(.success(user))
             default:
+                
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -224,104 +233,141 @@ struct Network {
         }
     }
 
-//    func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
-//
-//        let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
-//
-//        guard let jsonData = try? JSONEncoder().encode(user) else { return }
-//        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
-//
-//        AF.upload(multipartFormData: { data in
-//            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
-//            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-//        }, with: RequestPurpose.updateUser, interceptor: TokenRequestInterceptor()).response { response in
-//
-//            switch response.response?.statusCode {
-//            case 200:
-//                guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
-//                    sendDecodingErrorNotification()
-//                    return
-//                }
-//                completion(.success(user))
-//            default:
-//                // domb: token 인증실패
-//                seperateCommonErrors(statusCode: response.response?.statusCode)
-//            }
-//        }
-//    }
-//
-//    func closeAccount(userID: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-//        AF.request(RequestPurpose.deleteUser(userID), interceptor: TokenRequestInterceptor()).validate().response { response in
-//
-//            switch response.response?.statusCode {
-//            case 200:
-//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isNotManager = body.result else {
-//                    sendDecodingErrorNotification()
-//                    return
-//                }
-//                completion(.success(isNotManager))
-//            case 404:
-//                completion(.failure(.notFound))
-//            default:
-//                seperateCommonErrors(statusCode: response.response?.statusCode)
-//            }
-//        }
-//    }
-//
-//    func refreshToken(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-//        AF.request(RequestPurpose.refreshToken).validate().response { response in
-//            guard let httpResponse = response.response else {
-//                sendServerErrorNotification()
-//                return
-//            }
-//
-//            switch httpResponse.statusCode {
-//            case 200:
-//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = body.result else {
-//                    sendDecodingErrorNotification()
-//                    return
-//                }
-//
-//                guard isSuccessed else { return }
-//
-//                if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
-//                   let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String {
-//                    KeyChain.create(key: Const.accessToken, value: accesToken)
-//                    KeyChain.create(key: Const.refreshToken, value: refreshToken)
-//                } else {
-//                    completion(.failure(.loginInformationSavingError))
-//                }
-//
-//            default:
-//
-//                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
-////                🛑ehd: 여기서 무슨액션을 하면 retry에 failure쪽 코드가 정상 실행 되나?
-//                sendServerErrorNotification()
-//            }
-//        }
-//    }
-//
-//    // MARK: - Study
-//
-//    func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-//        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).validate().response { response in
-//            guard let httpResponse = response.response else { return }
-//
-//            switch httpResponse.statusCode {
-//            case 200:
-//
-//                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Study>.self, data: data), let study = body.result else {
-//                    sendDecodingErrorNotification()
-//                    return
-//                }
-//
-//                completion(.success(study))
-//            default:
-//                // domb: 토큰 인증 실패
-//                seperateCommonErrors(statusCode: httpResponse.statusCode)
-//            }
-//        }
-//    }
+    func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
+
+        let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
+
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+
+        AF.upload(multipartFormData: { data in
+            
+            data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
+            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
+        }, with: RequestPurpose.updateUser, interceptor: TokenRequestInterceptor()).response { response in
+
+            guard let httpResponse = response.response else {
+                
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(user))
+            default:
+                
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+
+    func closeAccount(userID: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteUser(userID), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else {
+                
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data,
+                      let body = jsonDecode(type: ResponseResult<Bool>.self, data: data),
+                      let isNotManager = body.result else {
+                    
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isNotManager))
+            case 404:
+                
+                completion(.failure(.notFound))
+            default:
+                
+                seperateCommonErrors(statusCode:  httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+
+    func refreshToken(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.refreshToken).response { response in
+            
+            guard let httpResponse = response.response else {
+                
+                completion(.failure(.serverError))
+                return
+            }
+
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data,
+                      let body = jsonDecode(type: ResponseResult<Bool>.self, data: data),
+                      let isSuccessed = body.result else {
+                    
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                guard isSuccessed else { return }
+                
+                if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
+                   let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String {
+                    KeyChain.create(key: Const.accessToken, value: accesToken)
+                    KeyChain.create(key: Const.refreshToken, value: refreshToken)
+                } else {
+                    completion(.failure(.loginInformationSavingError))
+                }
+
+            default:
+
+                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
+                completion(.failure(.tokenExpired))
+//                🛑ehd: 여기서 무슨액션을 하면 retry에 failure쪽 코드가 정상 실행 되나?
+            }
+        }
+    }
+
+    // MARK: - Study
+
+    func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { return }
+
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data,
+                      let body = jsonDecode(type: ResponseResult<Study>.self, data: data),
+                      let study = body.result else {
+                    
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(study))
+            default:
+                // domb: 토큰 인증 실패
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
 
     func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
@@ -333,7 +379,9 @@ struct Network {
 //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
                 completion(.success(studies))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
             }
         }
     }
