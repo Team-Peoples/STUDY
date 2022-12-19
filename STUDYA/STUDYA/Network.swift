@@ -15,7 +15,6 @@ enum PeoplesError: Error {
     case wrongPassword
     case loginInformationSavingError
     case unauthorizedUser
-    case expiredToken
     case notFound
 }
 

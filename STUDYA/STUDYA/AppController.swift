@@ -17,11 +17,18 @@ final class AppController {
     private var rootViewController: UIViewController? {
         didSet {
             window.rootViewController = rootViewController
+            UIView.transition(with: window,
+                              duration: 0.8,
+                              options: .transitionCrossDissolve,
+                              animations: nil)
         }
     }
     
-    func show(in window: UIWindow) {
+    func show(in window: UIWindow?) {
         self.window = window
+        
+        guard let window = window else  { return }
+        
         window.backgroundColor = .systemBackground
         window.makeKeyAndVisible()
         
@@ -49,6 +56,6 @@ final class AppController {
     }
 
     private func routeToLogin() {
-        rootViewController = UINavigationController(rootViewController: SignInViewController())
+        rootViewController = UINavigationController(rootViewController: WelcomViewController())
     }
 }

@@ -26,8 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = TabBarViewController()
-        window?.makeKeyAndVisible()
+        AppController.shared.show(in: window)
     }
     
 //    func setRootViewController(_ viewController: UIViewController, _ userId: Int? = nil) {

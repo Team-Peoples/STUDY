@@ -24,9 +24,9 @@ final class TabBarViewController: UITabBarController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .tokenExpired, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unauthorizedUser, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .decodingError, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .serverError, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unknownError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showDecodingError), name: .decodingError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showServerError), name: .serverError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showUnknownError), name: .unknownError, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -30,10 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         instance?.consumerSecret = kConsumerSecret // pw
         instance?.appName = kServiceAppName // app name
         
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-        AppController.shared.show(in: window)
-        
         return true
     }
 
