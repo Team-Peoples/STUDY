@@ -65,10 +65,12 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .refreshToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
             return .none
         case .signUp, .updateUser:
             return .multipart
+        case .refreshToken:
+            return .token
         default:
             return .json
         }
@@ -200,12 +202,17 @@ extension RequestPurpose {
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
 
         var headers = HTTPHeaders()
-    
+        
+        let accessToken = KeyChain.read(key: Header.accessToken.type) ?? ""
+        let refreshToken = KeyChain.read(key: Header.refreshToken.type) ?? ""
+        
         switch header {
         case .json:
             headers = [Header.contentType.type : Header.json.type]
         case .multipart:
             headers = [Header.contentType.type : Header.multipart.type]
+        case .token:
+            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
         default: break
         }
         
@@ -239,9 +246,7 @@ extension RequestPurpose {
 enum RequestHeaders {
     case token
     case json
-    case jsonWithToken
     case multipart
-    case multipartWithToken
     case none
 }
 
