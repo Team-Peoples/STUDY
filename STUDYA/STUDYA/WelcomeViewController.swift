@@ -52,18 +52,18 @@ final class WelcomViewController: UIViewController {
     }
     
     @objc private func kakaoLoginButtonTapped() {
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("loginWithKakaoTalk() success.")
-                    
-                    guard let accessToken = oauthToken?.accessToken else { return }
-                    self.socialSignIn(SNSToken: accessToken, service: .kakao)
-                }
-            }
-        }
+//        if (UserApi.isKakaoTalkLoginAvailable()) {
+//            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+//                if let error = error {
+//                    print(error)
+//                } else {
+//                    print("loginWithKakaoTalk() success.")
+//
+//                    guard let accessToken = oauthToken?.accessToken else { return }
+//                    self.socialSignIn(SNSToken: accessToken, service: .kakao)
+//                }
+//            }
+//        }
     }
         
         @objc private func naverLoginButtonTapped() {

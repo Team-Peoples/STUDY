@@ -35,6 +35,16 @@ final class AppController {
         checkLoginIn()
     }
     
+    func deleteUserInformationAndLogout() {
+        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+        
+        KeyChain.delete(key: Const.accessToken)
+        KeyChain.delete(key: Const.refreshToken)
+        KeyChain.delete(key: Const.userId)
+        
+        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+    }
+    
     private func registerAuthStateDidChangeEvent() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(checkLoginIn),

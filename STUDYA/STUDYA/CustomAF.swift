@@ -267,6 +267,8 @@ enum RequestParameters {
 }
 
 struct TokenRequestInterceptor: RequestInterceptor {
+    
+    var maxTryCount = 2
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
         let accessToken = KeyChain.read(key: Const.accessToken) ?? ""

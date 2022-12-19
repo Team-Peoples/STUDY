@@ -88,13 +88,7 @@ final class TabBarViewController: UITabBarController {
     
     @objc func logout() {
         let alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.") { finished in
-            UserDefaults.standard.set(false, forKey: Const.isLoggedin)
-            
-            KeyChain.delete(key: Const.accessToken)
-            KeyChain.delete(key: Const.refreshToken)
-            KeyChain.delete(key: Const.userId)
-            
-            NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+            AppController.shared.deleteUserInformationAndLogout()
         }
     }
     
