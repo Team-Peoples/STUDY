@@ -62,18 +62,18 @@ struct Network {
     }
     
     func checkIfDuplicatedEmail(email: String, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.emailCheck(email)).validate().responseData { response in
-            switch response.result {
-            case .success(let data):
-                
-                guard let decodedData = jsonDecode(type: Bool.self, data: data) else {
-                    sendDecodingErrorNotification()
+        AF.request(RequestPurpose.emailCheck(email)).response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return}
+            let httpStatusCode = httpResponse.statusCode
+            switch httpStatusCode {
+            case 200:
+                guard let data = response.data, let decodedData = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
                     return
                 }
                 completion(.success(decodedData))
-                
-            case .failure:
-                seperateCommonErrors(statusCode: response.response?.statusCode)
+            default:
+                seperateCommonErrors(statusCode: response.response?.statusCode, completion: completion)
             }
         }
     }
@@ -82,17 +82,18 @@ struct Network {
         AF.request(RequestPurpose.getJWTToken(token, sns)).response { response in
 
             guard let httpResponse = response.response,
-                  let data = response.data else { sendServerErrorNotification(); return }
+                  let data = response.data else { completion(.failure(.serverError)); return }
             let httpStatusCode = httpResponse.statusCode
 
             switch httpStatusCode {
             case 200:
-                guard let user = jsonDecode(type: User.self, data: data) else { sendDecodingErrorNotification(); return }
+                guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.decodingError)); return }
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
 
                 completion(.success(user))
             default:
-                seperateCommonErrors(statusCode: httpStatusCode)
+                
+                seperateCommonErrors(statusCode: httpStatusCode, completion: completion)
             }
         }
     }
@@ -111,8 +112,8 @@ struct Network {
             }, with: RequestPurpose.signUp).response { response in
 
                 guard let httpResponse = response.response,
-                      let data = response.data else { sendServerErrorNotification(); return }
-                guard let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else { sendDecodingErrorNotification(); return }
+                      let data = response.data else { completion(.failure(.serverError)); return }
+                guard let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else { completion(.failure(.decodingError)); return }
 
                 switch httpResponse.statusCode {
                 case 200:
@@ -124,10 +125,10 @@ struct Network {
                     switch body.code {
                     case ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
                     case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
-                    default: sendUnknownErrorNotification(statusCode: 400)
+                    default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                     }
                 default:
-                    seperateCommonErrors(statusCode: httpResponse.statusCode)
+                    seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             }
         }
@@ -137,68 +138,69 @@ struct Network {
             switch response.result {
             case .success(let data):
                 guard let httpResponse = response.response else {
-                    sendServerErrorNotification()
+                    completion(.failure(.serverError))
                     return
                 }
                 guard let data = data, let user = jsonDecode(type: User.self, data: data) else {
-                    sendDecodingErrorNotification()
+                    completion(.failure(.decodingError))
                     return
                 }
 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 completion(.success(user))
             case .failure:
-                seperateCommonErrors(statusCode: response.response?.statusCode)
+                seperateCommonErrors(statusCode: response.response?.statusCode, completion: completion)
             }
         }
     }
 
-    func resendAuthEmail(completion: @escaping (Bool) -> Void) {
+    func resendAuthEmail(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.resendAuthEmail, interceptor: TokenRequestInterceptor()).response { response in
-            guard let httpResponse = response.response, let _ = response.data else { sendServerErrorNotification(); return }
+            guard let httpResponse = response.response, let _ = response.data else { completion(.failure(.serverError)); return }
             switch httpResponse.statusCode {
             case 200:
-                completion(true)
+                completion(.success(true))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
 
         }
     }
 
-    func checkIfEmailCertificated(completion: @escaping (Bool) -> Void) {
+    func checkIfEmailCertificated(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.checkEmailCertificated, interceptor: TokenRequestInterceptor()).response { response in
-            guard let statusCode = response.response?.statusCode else { sendServerErrorNotification(); return }
+            guard let statusCode = response.response?.statusCode else { completion(.failure(.serverError)); return }
 
             switch statusCode {
             case 200:
                 guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else {
-                    sendDecodingErrorNotification()
+                    completion(.failure(.decodingError))
                     return }
 
                 completion(isEmailCertificated)
-            default: seperateCommonErrors(statusCode: statusCode)
+            default: seperateCommonErrors(statusCode: statusCode, completion: completion)
             }
         }
     }
 
-    func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {        AF.request(RequestPurpose.getNewPassord(id)).response { response in
+    func getNewPassword(id: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getNewPassord(id)).response { response in
 
             guard let httpResponse = response.response else {
-                sendServerErrorNotification()
+                completion(.failure(.serverError))
                 return
             }
 
             switch httpResponse.statusCode {
             case 200:
                 guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let user = body.result else {
-                    sendDecodingErrorNotification()
+                    completion(.failure(.decodingError))
                     return
                 }
 
                 completion(.success(user))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -206,20 +208,20 @@ struct Network {
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getMyInfo, interceptor: TokenRequestInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
-                sendServerErrorNotification()
+                completion(.failure(.serverError))
                 return
             }
 
             switch httpResponse.statusCode {
                 case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
-                    sendDecodingErrorNotification()
+                    completion(.failure(.decodingError))
                     return
                 }
 
                 completion(.success(user))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -359,7 +361,7 @@ struct Network {
         }
     }
     
-    func seperateCommonErrors(statusCode: Int?, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func seperateCommonErrors(statusCode: Int?, completion: (Result<Bool, PeoplesError>) -> Void) {
         
         guard let statusCode = statusCode else { return }
         
@@ -372,7 +374,7 @@ struct Network {
         }
     }
     
-    func seperateCommonErrors<T>(statusCode: Int?, completion: @escaping (Result<User, PeoplesError>) -> Void, completionType: T.Type) {
+    func seperateCommonErrors(statusCode: Int?, completion: (Result<User, PeoplesError>) -> Void) {
         
         guard let statusCode = statusCode else { return }
         
@@ -385,7 +387,7 @@ struct Network {
         }
     }
     
-    func seperateCommonErrors<T>(statusCode: Int?, completion: @escaping (Result<Study, PeoplesError>) -> Void, completionType: T.Type) {
+    func seperateCommonErrors(statusCode: Int?, completion: (Result<Study, PeoplesError>) -> Void) {
         
         guard let statusCode = statusCode else { return }
         
@@ -398,7 +400,7 @@ struct Network {
         }
     }
     
-    func seperateCommonErrors<T>(statusCode: Int?, completion: @escaping (Result<[Study], PeoplesError>) -> Void, completionType: T.Type) {
+    func seperateCommonErrors(statusCode: Int?, completion: (Result<[Study], PeoplesError>) -> Void) {
         
         guard let statusCode = statusCode else { return }
         
@@ -410,6 +412,7 @@ struct Network {
         default: completion(.failure(.unknownError(statusCode)))
         }
     }
+    
 }
 
 extension UIAlertController {
