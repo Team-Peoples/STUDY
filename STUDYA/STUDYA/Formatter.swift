@@ -29,6 +29,19 @@ final class Formatter {
     }
 }
 
+extension DateFormatter {
+    
+    static let myDateFormatter: DateFormatter = {
+        
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        
+        return dateFormatter
+    }()
+}
+
+
 
 
 // MARK: - Date Format
@@ -69,3 +82,4 @@ struct TimeFormatter {
     
     private init() { }
 }
+

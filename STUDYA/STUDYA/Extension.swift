@@ -157,7 +157,7 @@ extension UINavigationController {
     func setBrandNavigation() {
         navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationBar.shadowImage = UIImage()
-        navigationBar.topItem?.title = ""
+//        navigationBar.topItem?.title = ""
         
         navigationBar.backIndicatorImage = backButtonImage
         navigationBar.backIndicatorTransitionMaskImage = backButtonImage

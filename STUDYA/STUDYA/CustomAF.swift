@@ -16,9 +16,25 @@ protocol Requestable: URLRequestConvertible {
     var parameters: RequestParameters { get }
 }
 
-enum HeaderContentType: String {
+enum Header: String {
+    case contentType = "Content-Type"
+    case authorization = "Authorization"
+    case accessToken = "AccessToken"
+    case refreshToken = "RefreshToken"
+    
     case json = "application/json"
     case multipart = "multipart/form-data"
+    
+    var type: String {
+        return self.rawValue
+    }
+}
+
+enum RequestHeaders {
+    case token
+    case json
+    case multipart
+    case none
 }
 
 enum RequestPurpose: Requestable {
@@ -31,6 +47,7 @@ enum RequestPurpose: Requestable {
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
+    case createStudySchedule(StudySchedule)
     
     //    HTTPMethod: PUT
     case updateUser   //6
@@ -51,7 +68,7 @@ enum RequestPurpose: Requestable {
     case getAllStudy    //12
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
-    case getUserAllStudySchedule ////19
+    case getAllStudySchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
     case checkEmailCertificated
@@ -65,7 +82,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
             return .none
         case .signUp, .updateUser:
             return .multipart
@@ -93,8 +110,10 @@ extension RequestPurpose {
         case .createAnnouncement:
             return "/noti"
         case .createSchedule:
-            return  "/user/schedule"
-             
+            return "/user/schedule"
+        case .createStudySchedule:
+            return "/study/schedule"
+            
         //    HTTPMethod: PUT
         case .updateUser:
             return "/user"
@@ -128,7 +147,7 @@ extension RequestPurpose {
             return "/study/\(id)"
         case .getAllAnnouncements(let id):
             return "/noti/\(id)"
-        case .getUserAllStudySchedule:
+        case .getAllStudySchedule:
             return "/study/schedule"
         case .getUserSchedule:
             return "/user/schedule"
@@ -141,35 +160,32 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, . createSchedule: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, .createSchedule, .createStudySchedule: return .post
             
         case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule: return .put
             
         case .deleteUser, .deleteAnnouncement: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated : return .get
         }
     }
     
     var parameters: RequestParameters {
         switch self {
+// Body
             
-//    HTTPMethod: POST
+///    HTTPMethod: POST
         case .emailCheck(let id):
             return .body(["userId": id])
         case .signIn(let id, let pw):
             return .body(["userId" : id,
                           "password" : pw])
-        case .createStudy(let study):
-            return .encodableBody(study)
         case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
-        case .refreshToken:
-            return .none
             
-//    HTTPMethod: PUT
+///    HTTPMethod: PUT
         case .updateAnnouncement(let title, let content, let id):
             return .body(["notificationSubject": title,
                           "notificationContents": content,
@@ -180,23 +196,30 @@ extension RequestPurpose {
         case .updateSchedule(let id):
             return .body(["scheduleId" : id])
             
-//    HTTPMethod: DEL
+///    HTTPMethod: DELETE
         case .deleteAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "notificationId" : id])
             
-//            HTTPMethod: GET
+// EndodableBody
+        case .createStudy(let study):
+            return .encodableBody(study)
+            
+// Query
         case .getNewPassord(let id):
             return .queryString(["userId" : id])
         case .getJWTToken(let SNSToken, _):
             return .queryString(["token" : SNSToken])
+            
+// None
         default:
             return .none
         }
     }
     
-//            기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
+// EHD: 기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
+    
     func asURLRequest() throws -> URLRequest {
         let url = try baseURL.asURL()
         var urlRequest = try URLRequest(url: url.appendingPathComponent(path).absoluteString.removingPercentEncoding!, method: method)  //🤔.absoluteString.removingPercentEncoding! 이부분 없어도 될지 확인해보자 나중에
@@ -243,27 +266,6 @@ extension RequestPurpose {
     }
 }
 
-enum RequestHeaders {
-    case token
-    case json
-    case multipart
-    case none
-}
-
-enum Header: String {
-    case contentType = "Content-Type"
-    case authorization = "Authorization"
-    case accessToken = "AccessToken"
-    case refreshToken = "RefreshToken"
-    
-    case json = "application/json"
-    case multipart = "multipart/form-data"
-    
-    var type: String {
-        return self.rawValue
-    }
-}
-
 enum RequestParameters {
     case queryString([String : String])
     case body([String : Codable])
@@ -290,17 +292,18 @@ struct TokenRequestInterceptor: RequestInterceptor {
             completion(.doNotRetryWithError(error))
             return
         }
-
+        
         Network.shared.refreshToken { result in
             switch result {
             case .success:
                 completion(.doNotRetry)
-            case .failure(let error):
+            case .failure(_):
                 completion(.retry)
             }
         }
     }
 }
+
 // MARK: - Helpers
 
 extension Encodable {
@@ -316,55 +319,3 @@ extension Data {
         return dictionaryData
     }
 }
-
-// MARK: - Model
-///네트워크에서 쓰이는 모델
-///
-
-
-struct User: Codable {
-    var id: String?
-    let oldPassword: String?
-    let password: String?
-    let passwordCheck: String?
-    let nickName: String?
-    let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
-    
-    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
-        self.id = id
-        self.oldPassword = oldPassword
-        self.password = password
-        self.passwordCheck = passwordCheck
-        self.nickName = nickName
-        self.image = image
-        self.isEmailAuthorized = isEmailAuthorized
-        self.isBlocked = isBlocked
-        self.isPaused = isPaused
-        self.isFirstLogin = isFirstLogin
-        self.isNaverLogin = isNaverLogin
-        self.isKakaoLogin = isKakaoLogin
-        self.userStats = userStats
-        self.pushStart = pushStart
-        self.pushImminent = pushImminent
-        self.pushDayAgo = pushDayAgo
-    }
-
-    enum CodingKeys: String, CodingKey {
-
-        case password, pushStart, pushImminent, pushDayAgo
-        case id = "userId"
-        case oldPassword = "old_password"
-        case passwordCheck = "password_check"
-        case nickName = "nickname"
-        case image = "img"
-        case isFirstLogin = "firstLogin"
-        case isEmailAuthorized = "emailAuthentication"
-        case isBlocked = "userBlock"
-        case isPaused = "userPause"
-        case isNaverLogin = "sns_naver"
-        case isKakaoLogin = "sns_kakao"
-        case userStats = "userStats"
-    }
-}
-

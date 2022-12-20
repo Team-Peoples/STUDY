@@ -9,57 +9,53 @@ import Foundation
 
 // MARK: - Model
 
-//protocol Object: Encodable {
-//    
-//}
-//
-//struct Study: Object  {
-//    
-//}
-//
-//struct Schedule: Object {
-//    
-//}
-//
-//struct UserProfile: Codable {
-//    let nickname: String
-//    let img: Data
-//}
-//
-//struct User: Codable {
-//    let userId: String?
-//    let password: String?
-//    let password_check: String?
-//    let nickname: String?
-//}
-//
-//struct Credential: Encodable {
-//    let userId: String
-//    let password: String?
-//}
+struct User: Codable {
+    var id: String?
+    let oldPassword: String?
+    let password: String?
+    let passwordCheck: String?
+    let nickName: String?
+    let image: String?
+    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
+    
+    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
+        self.id = id
+        self.oldPassword = oldPassword
+        self.password = password
+        self.passwordCheck = passwordCheck
+        self.nickName = nickName
+        self.image = image
+        self.isEmailAuthorized = isEmailAuthorized
+        self.isBlocked = isBlocked
+        self.isPaused = isPaused
+        self.isFirstLogin = isFirstLogin
+        self.isNaverLogin = isNaverLogin
+        self.isKakaoLogin = isKakaoLogin
+        self.userStats = userStats
+        self.pushStart = pushStart
+        self.pushImminent = pushImminent
+        self.pushDayAgo = pushDayAgo
+    }
 
-//struct GeneralStudyRule {
-//    let attendanceRule: AttendanceRule?
-//    let excommunicationRule: ExcommunicationRule?
-//}
-//
-//struct FreeStudyRule {
-//    let content: String?
-//}
-//
-//struct ExcommunicationRule {
-//    var lateNumber: String?
-//    var absenceNumber: String?
-//}
-//
-//struct AttendanceRule {
-//    var lateRuleTime: String?
-//    var absenceRuleTime: String?
-//    var perLateMinute: String?
-//    var latePenalty: String?
-//    var absentPenalty: String?
-//    var deposit: String?
-//}
+    enum CodingKeys: String, CodingKey {
+
+        case password, pushStart, pushImminent, pushDayAgo
+        case id = "userId"
+        case oldPassword = "old_password"
+        case passwordCheck = "password_check"
+        case nickName = "nickname"
+        case image = "img"
+        case isFirstLogin = "firstLogin"
+        case isEmailAuthorized = "emailAuthentication"
+        case isBlocked = "userBlock"
+        case isPaused = "userPause"
+        case isNaverLogin = "sns_naver"
+        case isKakaoLogin = "sns_kakao"
+        case userStats = "userStats"
+    }
+}
+
+
 
 struct Credential: Encodable {
     let userID: String
@@ -184,7 +180,7 @@ struct Schedule: Codable {
     }
 }
 
-struct StudySchedule {
+struct StudySchedule: Decodable {
     
     var studyName: String?
     var openDate: Date?

@@ -102,7 +102,7 @@ enum StudyCategory: String, CaseIterable {
     }
 }
 
-enum RepeatOption: String {
+enum RepeatOption: String, Decodable {
     case everyDay = "매일"
     case everyWeek = "매주"
     case everyTwoWeeks = "2주 마다"
