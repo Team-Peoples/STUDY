@@ -8,7 +8,10 @@
 import UIKit
 
 enum Const {
+    static let screenHeight = UIScreen.main.bounds.height
+    static let screenWidth = UIScreen.main.bounds.width
     static let userId = "userId"
+    static let isEmailCertificated = "isEmailCertificated"
     static let nickName = "nickName"
     static let profileImageURL = "profileImageURL"
     static let accessToken = "AccessToken"
@@ -16,8 +19,7 @@ enum Const {
     static let tempUserId = "tempUserId"
     static let tempPassword = "tempPassword"
     static let tempPasswordCheck = "tempPasswordCheck"
-    static let screenHeight = UIScreen.main.bounds.height
-    static let screenWidth = UIScreen.main.bounds.width
+    static let tempNickname = "tempNickname"
     static let unknownErrorMessage = "알 수 없는 에러가 발생했습니다. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
     static let serverErrorMessage = "서버에 에러가 발생했어요. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
     static let statusCode = "statusCode"

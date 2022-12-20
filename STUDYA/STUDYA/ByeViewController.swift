@@ -19,16 +19,18 @@ final class ByeViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "회원 탈퇴"
         
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        
         view.addSubview(titleLabel)
         view.addSubview(descriptionLabel)
         view.addSubview(button)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
         
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 40, leading: view.leadingAnchor, leadingConstant: 20)
         descriptionLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 64, leading: titleLabel.leadingAnchor)
         button.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 30, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+    }
+    
+    @objc private func doneButtonTapped() {
+        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
     }
 }

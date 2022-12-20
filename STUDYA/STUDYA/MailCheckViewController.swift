@@ -10,8 +10,8 @@ import SnapKit
 
 final class MailCheckViewController: UIViewController {
  
-    var nickName: String?
-    var email: String?
+    private var nickName = KeyChain.read(key: Const.tempNickname)
+    private var email = KeyChain.read(key: Const.tempUserId)
     
     private lazy var helloLabel = CustomLabel(title: "반가워요\n\(nickName ?? "회원")님!😀", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var announceLabel1 = CustomLabel(title: "\(email ?? "메일")로\n인증 안내를 보내드렸어요.", tintColor: .ppsBlack, size: 18)
@@ -43,27 +43,39 @@ final class MailCheckViewController: UIViewController {
     }
     
     @objc private func checkEmailCertificationButtonTapped() {
-//        Network.shared.checkIfEmailCertificated { isEmailCertificated in
-//            if isEmailCertificated {
-//                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-//                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-//            } else {
-//                DispatchQueue.main.async {
-//                    let alert = SimpleAlert(message: "이메일 인증을 완료해 주세요.")
-//                    self.present(alert, animated: true)
-//                }
-//            }
-//        }
+//        여기서 temp 값들 다 삭제
+        Network.shared.checkIfEmailCertificated { result in
+            switch result {
+            case .success(let isCertificated):
+                if isCertificated {
+                    UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                    KeyChain.create(key: Const.isEmailCertificated, value: "1")
+                    NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+                } else {
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(message: "이메일 인증을 완료해 주세요.")
+                        self.present(alert, animated: true)
+                    }
+                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }   
+        }
     }
     
     @objc private func resendEmailButtonTapped() {
-//        Network.shared.resendAuthEmail { isMailCome in
-//            if isMailCome == true {
-//                DispatchQueue.main.async {
-//                    self.animate()
-//                }
-//            }
-//        }
+        Network.shared.resendAuthEmail { result in
+            switch result {
+            case .success(let isResended):
+                if isResended {
+                    DispatchQueue.main.async {
+                        self.animate()
+                    }
+                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     private func addSubviews() {

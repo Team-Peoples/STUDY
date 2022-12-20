@@ -16,16 +16,16 @@ struct User: Codable {
     let passwordCheck: String?
     let nickName: String?
     let image: String?
-    let isEmailAuthorized, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
+    let isEmailCertificated, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
     
-    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailAuthorized: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
+    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailCertificated: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
         self.id = id
         self.oldPassword = oldPassword
         self.password = password
         self.passwordCheck = passwordCheck
         self.nickName = nickName
         self.image = image
-        self.isEmailAuthorized = isEmailAuthorized
+        self.isEmailCertificated = isEmailCertificated
         self.isBlocked = isBlocked
         self.isPaused = isPaused
         self.isFirstLogin = isFirstLogin
@@ -46,7 +46,7 @@ struct User: Codable {
         case nickName = "nickname"
         case image = "img"
         case isFirstLogin = "firstLogin"
-        case isEmailAuthorized = "emailAuthentication"
+        case isEmailCertificated = "emailAuthentication"
         case isBlocked = "userBlock"
         case isPaused = "userPause"
         case isNaverLogin = "sns_naver"

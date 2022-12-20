@@ -65,11 +65,14 @@ struct Network {
             
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
+            
             let httpStatusCode = httpResponse.statusCode
             
             switch httpStatusCode {
             case 200:
+                
                 guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.decodingError)); return }
+                
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 
                 completion(.success(user))
@@ -93,24 +96,28 @@ struct Network {
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
         }, with: RequestPurpose.signUp).response { response in
-            
+
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
-            guard let body = jsonDecode(type: ResponseResult<Bool>.self, data: data) else { completion(.failure(.decodingError)); return }
-            
+
             switch httpResponse.statusCode {
             case 200:
-                saveLoginformation(httpResponse: httpResponse, user: user, completion: completion )
-                
-                completion(.success(user))
-            case 400:
-                
-                switch body.code {
-                case ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
-                case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
-                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                guard let decodedUser = jsonDecode(type: User.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
                 }
+                saveLoginformation(httpResponse: httpResponse, user: decodedUser, completion: completion)
+                
+                completion(.success(decodedUser))
+            case 400:
+                print(400)
+//                switch data.code {
+//                case ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
+//                case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
+//                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+//                }
             default:
+                print("3")
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -406,7 +413,7 @@ struct Network {
     }
     
     func createStudySchedyle() {
-        AF.request(RequestPurpose.createSchedule(<#T##Schedule#>))
+//        AF.request(RequestPurpose.createSchedule(<#T##Schedule#>))
     }
     
     func updateStudySchedule() {
@@ -425,10 +432,20 @@ extension Network {
     func saveLoginformation(httpResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
         if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
            let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String,
-           let userID = user.id {
+           let userID = user.id,
+           let isEmailCertificated = user.isEmailCertificated {
+            
             KeyChain.create(key: Const.accessToken, value: accesToken)
             KeyChain.create(key: Const.refreshToken, value: refreshToken)
             KeyChain.create(key: Const.userId, value: userID)
+            
+            if isEmailCertificated {
+                print(accesToken)
+                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                KeyChain.create(key: Const.isEmailCertificated, value: "1")
+            } else {
+                KeyChain.create(key: Const.isEmailCertificated, value: "0")
+            }
         } else {
             completion(.failure(.loginInformationSavingError))
         }
@@ -461,7 +478,7 @@ extension Network {
         switch statusCode {
         case 200: completion(.failure(.decodingError))
         case 500: completion(.failure(.serverError))
-        case 401:completion(.failure(.unauthorizedUser))
+        case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))
         }
@@ -470,33 +487,31 @@ extension Network {
 
 extension UIAlertController {
     static func handleCommonErros(presenter: UIViewController, error: PeoplesError?) {
-        DispatchQueue.main.async {
             
-            var alert = SimpleAlert(message: "")
-            guard let error = error else { return }
-            
-            switch error {
-            case .serverError:
-                alert = SimpleAlert(message: Const.serverErrorMessage)
-            case .decodingError:
-                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
-            case .unauthorizedUser:
-                alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
-                    AppController.shared.deleteUserInformationAndLogout()
-                })
-            case .tokenExpired:
-                alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
-                    AppController.shared.deleteUserInformationAndLogout()
-                })
-            case .unknownError(let errorCode):
-                guard let errorCode = errorCode else { return }
-                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
-            default:
-                alert = SimpleAlert(message: Const.unknownErrorMessage)
-            }
-            
-            presenter.present(alert, animated: true)
+        var alert = SimpleAlert(message: "")
+        guard let error = error else { return }
+        
+        switch error {
+        case .serverError:
+            alert = SimpleAlert(message: Const.serverErrorMessage)
+        case .decodingError:
+            alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+        case .unauthorizedUser:
+            alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+                AppController.shared.deleteUserInformationAndLogout()
+            })
+        case .tokenExpired:
+            alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                AppController.shared.deleteUserInformationAndLogout()
+            })
+        case .unknownError(let errorCode):
+            guard let errorCode = errorCode else { return }
+            alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+        default:
+            alert = SimpleAlert(message: Const.unknownErrorMessage)
         }
+        
+        presenter.present(alert, animated: true)
     }
     
     static func showDecodingError(presenter: UIViewController) {

@@ -141,12 +141,39 @@ final class SignInViewController: UIViewController {
         Network.shared.signIn(id: id, pw: pw) { result in
             switch result {
             case .success(let user):
-                print(user)
-                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-                print(UserDefaults.standard.bool(forKey: Const.isLoggedin))
-                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+                DispatchQueue.main.async {
+                    if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
+                        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+                    } else {
+                        self.navigationController?.pushViewController(MailCheckViewController(), animated: true)
+                    }
+                }
             case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
+                print(String(describing: error))
+                var alert = SimpleAlert(message: "")
+                
+                switch error {
+                case .serverError:
+                    alert = SimpleAlert(message: Const.serverErrorMessage)
+                case .decodingError:
+                    alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+                case .unauthorizedUser:
+                    alert = SimpleAlert(buttonTitle: "확인", message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
+                        AppController.shared.deleteUserInformationAndLogout()
+                    })
+                case .tokenExpired:
+                    alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                        AppController.shared.deleteUserInformationAndLogout()
+                    })
+                case .unknownError(let errorCode):
+                    guard let errorCode = errorCode else { return }
+                    alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+                default:
+                    print(#function)
+                    alert = SimpleAlert(message: Const.unknownErrorMessage)
+                }
+                
+                self.present(alert, animated: true)
             }
         }
     }

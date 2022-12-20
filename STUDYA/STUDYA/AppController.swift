@@ -54,7 +54,15 @@ final class AppController {
         
     @objc private func checkLoginIn() {
         
-        UserDefaults.standard.bool(forKey: Const.isLoggedin) ? setHome() : routeToLogin()
+        if let _ = KeyChain.read(key: Const.accessToken),
+           let _ = KeyChain.read(key: Const.refreshToken),
+           let isEmailCertificated = KeyChain.read(key: Const.isEmailCertificated),
+           isEmailCertificated == "1",
+           UserDefaults.standard.bool(forKey: Const.isLoggedin) == true {
+            setHome()
+        } else {
+            routeToLogin()
+        }
     }
     
     private func setHome() {

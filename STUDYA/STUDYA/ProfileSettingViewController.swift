@@ -13,6 +13,7 @@ class ProfileSettingViewController: UIViewController {
 
     private var isAuthForAlbum: Bool?
 //    private var isButtonFilled = false
+    
     private var profileImage: UIImage? = UIImage(named: "defaultProfile")
     
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
@@ -72,6 +73,21 @@ class ProfileSettingViewController: UIViewController {
         })
     }
     
+    @objc private func toggleDoneButton() {
+        if let nickName = nickNameInputView.getInputField().text {
+            
+            if nickName.count > 0 {
+                
+                doneButton.isEnabled = true
+                doneButton.fillIn(title: "완료")
+            } else {
+                
+                doneButton.isEnabled = false
+                doneButton.fillOut(title: "완료")
+            }
+        }
+    }
+    
     @objc private func doneButtonDidTapped() {
         if let email = KeyChain.read(key: Const.tempUserId),
            let password = KeyChain.read(key: Const.tempPassword),
@@ -79,12 +95,25 @@ class ProfileSettingViewController: UIViewController {
             
             Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
                 switch result {
-                case .success:
+                case .success(let user):
                     DispatchQueue.main.async {
-                        self.pushNextVC()
+                        if let nickName = user.nickName {
+                            
+                            KeyChain.create(key: Const.tempNickname, value: nickName)
+                            
+                            let vc = MailCheckViewController()
+                            vc.modalPresentationStyle = .fullScreen
+                            
+                            self.present(vc, animated: true)
+                        } else {
+                            
+                            let alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 2")
+                            
+                            self.present(alert, animated: true)
+                        }
                     }
                     
-                case .failure(let error):                    
+                case .failure(let error):
                     var alert = SimpleAlert(message: "")
                     
                     DispatchQueue.main.async {
@@ -94,11 +123,11 @@ class ProfileSettingViewController: UIViewController {
                                 self.navigationController?.popViewController(animated: true)
                             })
                         case .wrongPassword:
-                            alert = SimpleAlert(buttonTitle: "확인", message: "이전화면에서 비밀번호를 다시 확인해주세요. 비밀번호와 비밀번호 확인이 서로 달라요.", completion: { _ in
+                            alert = SimpleAlert(buttonTitle: "확인", message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
                                 self.navigationController?.popViewController(animated: true)
                             })
                         default:
-                            alert = SimpleAlert(message: Const.unknownErrorMessage)
+                            UIAlertController.handleCommonErros(presenter: self, error: error)
                         }
                         
                         self.present(alert, animated: true)
@@ -109,13 +138,6 @@ class ProfileSettingViewController: UIViewController {
             let alert = SimpleAlert(message: Const.unknownErrorMessage)
             present(alert, animated: true)
         }
-    }
-    
-    private func pushNextVC() {
-        let vc = MailCheckViewController()
-        
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
     }
     
     private func setupImagePicker() {
@@ -186,21 +208,6 @@ class ProfileSettingViewController: UIViewController {
                                                         constant: 0))
         
         present(alert, animated: true, completion: nil)
-    }
-    
-    @objc private func toggleDoneButton() {
-        if let nickName = nickNameInputView.getInputField().text {
-            
-            if nickName.count > 0 {
-                
-                doneButton.isEnabled = true
-                doneButton.fillIn(title: "완료")
-            } else {
-                
-                doneButton.isEnabled = false
-                doneButton.fillOut(title: "완료")
-            }
-        }
     }
     
     private func addSubViews() {
