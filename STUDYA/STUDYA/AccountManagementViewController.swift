@@ -315,19 +315,8 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func logout() {
-        print(#function)
-        guard let userId = UserDefaults.standard.object(forKey: Const.userId) as? String else { fatalError() }
-        guard let accessToken = KeyChain.read(key: userId) else { fatalError() }
         
-        KeyChain.delete(key: userId)
-        KeyChain.delete(key: accessToken)
-        
-        UserDefaults.standard.removeObject(forKey: Const.userId)
-        
-        
-        self.tabBarController?.selectedIndex = 0
-        
-//        (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.setRootViewController(WelcomViewController())
+        AppController.shared.deleteUserInformationAndLogout()
     }
     
     @objc private func leaveApp() {

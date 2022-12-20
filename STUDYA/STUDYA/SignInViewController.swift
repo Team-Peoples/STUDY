@@ -143,6 +143,7 @@ final class SignInViewController: UIViewController {
             case .success(let user):
                 print(user)
                 UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                print(UserDefaults.standard.bool(forKey: Const.isLoggedin))
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)

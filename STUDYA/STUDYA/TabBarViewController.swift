@@ -8,13 +8,9 @@
 import UIKit
 
 final class TabBarViewController: UITabBarController {
-    // MARK: - Properties
-    var user: User? {
-        didSet {
-//            configureTabbarController()
-        }
-    }
     
+    // MARK: - Properties
+ 
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -24,15 +20,10 @@ final class TabBarViewController: UITabBarController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .tokenExpired, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unauthorizedUser, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showDecodingError), name: .decodingError, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showServerError), name: .serverError, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(showUnknownError), name: .unknownError, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        checkIfUserIsLoggedIn()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,57 +69,9 @@ final class TabBarViewController: UITabBarController {
 
     // MARK: - Actions
     
-    @objc func login(_ sender: Notification) {
-       
-        guard let userInfo = sender.userInfo as? [String: User], let user = userInfo["user"] else { return }
-        self.user = user
-        NotificationCenter.default.removeObserver(self)
-        self.dismiss(animated: true)
-    }
-    
     @objc func logout() {
         let alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.") { finished in
             AppController.shared.deleteUserInformationAndLogout()
-        }
-    }
-    
-    @objc func showDecodingError() {
-        let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 1")
-        present(alert, animated: true)
-    }
-    
-    @objc func showServerError() {
-        let alert = SimpleAlert(message: Const.serverErrorMessage)
-        present(alert, animated: true)
-    }
-    
-    @objc func showUnknownError(_ sender: Notification) {
-        guard let userInfo = sender.userInfo as? [String: User], let code = userInfo[Const.statusCode] else { return }
-        
-        let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = \(code)")
-        present(alert, animated: true)
-    }
-    
-    private func presentWelcomeVC() {
-        
-//        NotificationCenter.default.addObserver(self, selector: #selector(login), name: .loginSuccess, object: User.self)
-        
-        DispatchQueue.main.async { [weak self] in
-
-            let welcomeVC = WelcomViewController()
-            let nav = UINavigationController(rootViewController: welcomeVC)
-            
-            nav.modalPresentationStyle = .fullScreen
-            
-            self?.present(nav, animated: false, completion: nil)
-        }
-    }
-    
-   @objc private func checkIfUserIsLoggedIn() {
-        if user == nil {
-            presentWelcomeVC()
-        } else {
-
         }
     }
     

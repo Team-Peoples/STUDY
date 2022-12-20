@@ -53,16 +53,12 @@ final class AppController {
     }
         
     @objc private func checkLoginIn() {
-        let isLoggedin = UserDefaults.standard.bool(forKey: Const.isLoggedin) == true
-        if isLoggedin {
-            setHome()
-        } else {
-            routeToLogin()
-        }
+        
+        UserDefaults.standard.bool(forKey: Const.isLoggedin) ? setHome() : routeToLogin()
     }
     
     private func setHome() {
-        rootViewController = UINavigationController(rootViewController: TabBarViewController())
+        rootViewController = TabBarViewController()
     }
 
     private func routeToLogin() {

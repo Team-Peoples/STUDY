@@ -43,27 +43,27 @@ final class MailCheckViewController: UIViewController {
     }
     
     @objc private func checkEmailCertificationButtonTapped() {
-        Network.shared.checkIfEmailCertificated { isEmailCertificated in
-            if isEmailCertificated {
-                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-            } else {
-                DispatchQueue.main.async {
-                    let alert = SimpleAlert(message: "이메일 인증을 완료해 주세요.")
-                    self.present(alert, animated: true)
-                }
-            }
-        }
+//        Network.shared.checkIfEmailCertificated { isEmailCertificated in
+//            if isEmailCertificated {
+//                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+//                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+//            } else {
+//                DispatchQueue.main.async {
+//                    let alert = SimpleAlert(message: "이메일 인증을 완료해 주세요.")
+//                    self.present(alert, animated: true)
+//                }
+//            }
+//        }
     }
     
     @objc private func resendEmailButtonTapped() {
-        Network.shared.resendAuthEmail { isMailCome in
-            if isMailCome == true {
-                DispatchQueue.main.async {
-                    self.animate()
-                }
-            }
-        }
+//        Network.shared.resendAuthEmail { isMailCome in
+//            if isMailCome == true {
+//                DispatchQueue.main.async {
+//                    self.animate()
+//                }
+//            }
+//        }
     }
     
     private func addSubviews() {
