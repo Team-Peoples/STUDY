@@ -414,16 +414,78 @@ struct Network {
         }
     }
     
-    func createStudySchedyle() {
-//        AF.request(RequestPurpose.createSchedule(<#T##Schedule#>))
+    func createStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data,
+                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSuccessed))
+            case 404:
+                completion(.failure(.notFound))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
     }
     
-    func updateStudySchedule() {
-        
+    func updateStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data,
+                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                // domb: 현재 방식대로 한다면 studyschedule 수정후 수정사항을 반영하려면 모든 스터디 스케쥴을 가져온후 리로드하는 방법이라 낭비가 크다고 생각함.
+                completion(.success(isSuccessed))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
     }
     
-    func deleteStudySchedule() {
-        
+    func deleteStudySchedule(_ studyScheduleID: ID, deleteRepeatSchedule: Bool,  completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data,
+                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSuccessed))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
     }
 }
 
