@@ -75,11 +75,9 @@ struct SNSInfo {
 struct Study: Codable {
     let id: Int?
     var studyOn, studyOff: Bool
-    var studyName, category, studyIntroduction, freeRule, po: String?
+    var studyName, category, studyIntroduction, freeRule: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
-    let startDate: Date?
-    let endDate: Date?
     
     enum CodingKeys: String, CodingKey {
         
@@ -91,12 +89,10 @@ struct Study: Codable {
         case isBlocked = "studyBlock"
         case isPaused = "studyPause"
         case generalRule = "studyRule"
-        case startDate = "start"
-        case endDate = "end"
-        case studyOn, studyOff, po
+        case studyOn, studyOff
     }
     
-    init(id: Int?, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, po: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication()), startDate: Date?, endDate: Date?) {
+    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())) {
         self.id = id
         self.studyName = studyName
         self.studyOn = studyOn
@@ -104,12 +100,9 @@ struct Study: Codable {
         self.category = category?.rawValue
         self.studyIntroduction = studyIntroduction
         self.freeRule = freeRule
-        self.po = po
         self.isBlocked = isBlocked
         self.isPaused = isPaused
         self.generalRule = generalRule
-        self.startDate = startDate
-        self.endDate = endDate
     }
 }
 
@@ -146,6 +139,24 @@ struct GeneralStudyRule: Codable {
         case excommunication = "out"
     }
 }
+
+struct Absence: Codable {
+    var time, fine: Int?
+}
+
+struct Lateness: Codable {
+    var time, count, fine: Int?
+}
+
+struct Excommunication: Codable {
+    var lateness, absence: Int?
+    
+    enum CodingKeys: String, CodingKey {
+        case lateness
+        case absence = "absent"
+    }
+}
+
 
 struct Announcement: Codable {
     let id: Int?

@@ -20,7 +20,7 @@ struct CreatingStudyRuleViewModel {
     var isFreeFormFilled = false
     
     init() {
-        study = Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)
+        study = Study(id: nil, isBlocked: nil, isPaused: nil)
     }
     
     func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: BrandButton) {

@@ -104,17 +104,6 @@ enum StudyCategory: String, CaseIterable {
     }
 }
 
-enum RepeatOption: String, Decodable {
-    case everyDay = "매일"
-    case everyWeek = "매주"
-    case everyTwoWeeks = "2주 마다"
-    case everyMonth = "매달"
-    
-    var kor: String {
-        return self.rawValue
-    }
-}
-
 enum CalendarKind {
     case study
     case personal

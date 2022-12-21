@@ -31,7 +31,7 @@ struct StudyViewModel: FormViewModel {
         return study.category != nil && study.studyName != nil && study.studyName != "" && (study.studyOn != false || study.studyOff != false) && study.studyIntroduction != nil && study.studyIntroduction != ""
     }
     
-    init(study: Study = Study(id: nil, isBlocked: nil, isPaused: nil, startDate: nil, endDate: nil)) {
+    init(study: Study = Study(id: nil, isBlocked: nil, isPaused: nil)) {
         self.study = study
     }
 }
