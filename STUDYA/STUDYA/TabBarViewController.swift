@@ -17,9 +17,6 @@ final class TabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         configureTabbarController()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .tokenExpired, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(logout), name: .unauthorizedUser, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,12 +65,6 @@ final class TabBarViewController: UITabBarController {
     }
 
     // MARK: - Actions
-    
-    @objc func logout() {
-        let alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.") { finished in
-            AppController.shared.deleteUserInformationAndLogout()
-        }
-    }
     
     // MARK: - Setting Constraints
 }

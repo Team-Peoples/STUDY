@@ -55,10 +55,12 @@ enum RequestPurpose: Requestable {
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
+    case updateStudySchedule(StudySchedule)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
     case deleteAnnouncement(Title, Content, ID)  //18
+    case deleteStudySchedule(ID, Bool)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -125,16 +127,20 @@ extension RequestPurpose {
             return "/user/schedule/\(id)"
         case .updateSchedule:
             return "/user/schedule"
+        case  .updateStudySchedule:
+            return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
 
         //    HTTPMethod: DEL
         case .deleteUser(let id):
             return "/user/\(id)"
         case .deleteAnnouncement(_,_,let id):
             return "/noti/\(id)"
+        case .deleteStudySchedule:
+            return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
             
         //    HTTPMethod: GET
         case .getNewPassord:
-            return "/user/password"
+            return "/user"
         case .getMyInfo:
             return "/user"
         case .getJWTToken(_, let sns):
@@ -162,9 +168,9 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, .createSchedule, .createStudySchedule: return .post
             
-        case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule: return .put
+        case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule: return .put
             
-        case .deleteUser, .deleteAnnouncement: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated : return .get
         }
@@ -198,19 +204,26 @@ extension RequestPurpose {
             
 ///    HTTPMethod: DELETE
         case .deleteAnnouncement(let title, let content, let id):
-            return .body(["notificationSubject" : title,
-                          "notificationContents" : content,
-                          "notificationId" : id])
+            return .body(["notificationSubject": title,
+                          "notificationContents": content,
+                          "notificationId": id])
+        case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):
+            return .body(["studyScheduleId": studyScheduleID,
+                          "repeatDelete": deleteRepeatSchedule])
             
 // EndodableBody
         case .createStudy(let study):
             return .encodableBody(study)
+        case .createStudySchedule(let studySchedule):
+            return .encodableBody(studySchedule)
+        case .updateStudySchedule(let studySchedule):
+            return .encodableBody(studySchedule)
             
 // Query
         case .getNewPassord(let id):
-            return .queryString(["userId" : id])
+            return .queryString(["userId": id])
         case .getJWTToken(let SNSToken, _):
-            return .queryString(["token" : SNSToken])
+            return .queryString(["token": SNSToken])
             
 // None
         default:
@@ -226,16 +239,16 @@ extension RequestPurpose {
 
         var headers = HTTPHeaders()
         
-        let accessToken = KeyChain.read(key: Header.accessToken.type) ?? ""
-        let refreshToken = KeyChain.read(key: Header.refreshToken.type) ?? ""
+//        let accessToken = KeyChain.read(key: Header.accessToken.type) ?? ""
+//        let refreshToken = KeyChain.read(key: Header.refreshToken.type) ?? ""
         
         switch header {
         case .json:
             headers = [Header.contentType.type : Header.json.type]
         case .multipart:
             headers = [Header.contentType.type : Header.multipart.type]
-        case .token:
-            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
+//        case .token:
+//            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
         default: break
         }
         
@@ -288,11 +301,13 @@ struct TokenRequestInterceptor: RequestInterceptor {
     
     func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
         
-        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 403 else {
-            completion(.doNotRetryWithError(error))
-            return
-        }
+//        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 403 else {
+//            print(403)
+//            completion(.doNotRetryWithError(error))
+//            return
+//        }
         
+        print("retry")
         Network.shared.refreshToken { result in
             switch result {
             case .success:
