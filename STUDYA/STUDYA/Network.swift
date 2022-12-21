@@ -19,6 +19,7 @@ enum PeoplesError: Error {
     case unauthorizedUser
     case notFound
     case serverError
+    case internalServerError
     case decodingError
     case unknownError(Int?)
     case tokenExpired
@@ -127,21 +128,22 @@ struct Network {
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
-            switch response.result {
-            case .success(let data):
-                guard let httpResponse = response.response else {
-                    completion(.failure(.serverError))
-                    return
-                }
-                guard let data = data, let user = jsonDecode(type: User.self, data: data) else {
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 completion(.success(user))
-            case .failure:
-                seperateCommonErrors(statusCode: response.response?.statusCode) { result in
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
             }
@@ -186,7 +188,7 @@ struct Network {
         AF.request(RequestPurpose.getNewPassord(id)).response { response in
             
             guard let httpResponse = response.response else {
-                
+                print("여기에러")
                 completion(.failure(.serverError))
                 return
             }
@@ -194,12 +196,12 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 
-                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let user = body.result else {
+                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = body.result else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(user))
+                completion(.success(isSuccessed))
             default:
                 
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -368,7 +370,6 @@ struct Network {
                 
                 completion(.success(study))
             default:
-                // domb: 토큰 인증 실패
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -394,6 +395,7 @@ struct Network {
     }
     
     // MARK: - Study Schedule
+    
     func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudySchedule, interceptor: TokenRequestInterceptor()).response { response in
             
@@ -477,8 +479,8 @@ extension Network {
 
         switch statusCode {
         case 200: completion(.failure(.decodingError))
-        case 500: completion(.failure(.serverError))
-        case 401: completion(.failure(.unauthorizedUser))
+        case 500: completion(.failure(.internalServerError))
+        case 401:completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))
         }

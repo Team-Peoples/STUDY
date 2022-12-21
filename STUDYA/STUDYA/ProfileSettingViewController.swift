@@ -96,6 +96,8 @@ class ProfileSettingViewController: UIViewController {
             Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
                 switch result {
                 case .success(let user):
+                    print("성공")
+                    print(user)
                     DispatchQueue.main.async {
                         if let nickName = user.nickName {
                             

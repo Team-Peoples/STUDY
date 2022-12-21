@@ -64,8 +64,9 @@ final class FindPasswordViewController: UIViewController {
         
         Network.shared.getNewPassword(id: email) { result in
             switch result {
-                case .success(let success):
-                    if success {
+                case .success(let isSuccessed):
+                    if isSuccessed {
+                        //domb: 이때 사용자의 닉네임을 받아와야하는데 true값만 보내줌.
                         let nextVC = FindPasswordCompleteViewController()
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     } else {
