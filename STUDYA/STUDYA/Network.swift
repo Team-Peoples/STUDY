@@ -142,6 +142,8 @@ struct Network {
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
                 completion(.success(user))
+            case 401:
+                completion(.failure(.unauthorizedUser))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -542,7 +544,7 @@ extension Network {
         switch statusCode {
         case 200: completion(.failure(.decodingError))
         case 500: completion(.failure(.internalServerError))
-        case 401:completion(.failure(.unauthorizedUser))
+        case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))
         }

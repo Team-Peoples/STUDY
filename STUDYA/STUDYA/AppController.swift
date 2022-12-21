@@ -35,13 +35,37 @@ final class AppController {
         checkLoginIn()
     }
     
+    func deleteUserInformation() {
+        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+        
+        if KeyChain.read(key: Const.accessToken) != nil {
+            KeyChain.delete(key: Const.accessToken)
+        }
+        
+        if KeyChain.read(key: Const.refreshToken) != nil {
+            KeyChain.delete(key: Const.refreshToken)
+        }
+        
+        if KeyChain.read(key: Const.userId) != nil {
+            KeyChain.delete(key: Const.userId)
+        }
+    }
+    
     func deleteUserInformationAndLogout() {
         UserDefaults.standard.set(false, forKey: Const.isLoggedin)
         
-        KeyChain.delete(key: Const.accessToken)
-        KeyChain.delete(key: Const.refreshToken)
-        KeyChain.delete(key: Const.userId)
+        if KeyChain.read(key: Const.accessToken) != nil {
+            KeyChain.delete(key: Const.accessToken)
+        }
         
+        if KeyChain.read(key: Const.refreshToken) != nil {
+            KeyChain.delete(key: Const.refreshToken)
+        }
+        
+        if KeyChain.read(key: Const.userId) != nil {
+            KeyChain.delete(key: Const.userId)
+        }
+    
         NotificationCenter.default.post(name: .authStateDidChange, object: nil)
     }
     

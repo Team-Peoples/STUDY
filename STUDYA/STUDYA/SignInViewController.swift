@@ -159,11 +159,11 @@ final class SignInViewController: UIViewController {
                     alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
                 case .unauthorizedUser:
                     alert = SimpleAlert(buttonTitle: "확인", message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
-                        AppController.shared.deleteUserInformationAndLogout()
+                        AppController.shared.deleteUserInformation()
                     })
                 case .tokenExpired:
                     alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
-                        AppController.shared.deleteUserInformationAndLogout()
+                        AppController.shared.deleteUserInformation()
                     })
                 case .unknownError(let errorCode):
                     guard let errorCode = errorCode else { return }
