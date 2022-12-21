@@ -12,12 +12,11 @@ class StudyScheduleViewController: SwitchableViewController {
     // MARK: - Properties
     
     var studySchedules: [StudySchedule] = [
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구"),
-        StudySchedule(openDate: Date(), deadlineDate: Date(), startTime: Date(), endTime: Date(), repeatOption: RepeatOption.everyDay, topic: "HIG 높아보기", place: "강남구")
+        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay)
     ]
     
     let calendarView: UICalendarView = {

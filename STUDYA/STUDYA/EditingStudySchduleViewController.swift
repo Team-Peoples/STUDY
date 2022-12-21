@@ -117,21 +117,21 @@ class EditingStudySchduleViewController: UIViewController {
     @objc private func openDateSelectableViewTapped() {
         
         guard let openDate = studySchedule?.openDate else { return }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
+//        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
         
-        popUpCalendarVC.presentingVC = self
+//        popUpCalendarVC.presentingVC = self
         
-        present(popUpCalendarVC, animated: true)
+//        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func deadlineDateSelectableViewTapped() {
         
         guard let deadlineDate = studySchedule?.deadlineDate else { return }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
+//        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
         
-        popUpCalendarVC.presentingVC = self
+//        popUpCalendarVC.presentingVC = self
         
-        present(popUpCalendarVC, animated: true)
+//        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
@@ -162,7 +162,7 @@ class EditingStudySchduleViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "확인", style: .default) { _ in
             
-            self.studySchedule?.startTime = datePicker.date
+//            self.studySchedule?.startTime = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -198,7 +198,7 @@ class EditingStudySchduleViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "확인", style: .default) { _ in
             
-            self.studySchedule?.endTime = datePicker.date
+//            self.studySchedule?.endTime = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -278,13 +278,13 @@ class EditingStudySchduleViewController: UIViewController {
     
     private func configureUI(_ studySchedule: StudySchedule) {
         
-        openDateSelectableView.calendarLinkedDateLabel.text =
-        studySchedule.openDate?.formatToString(language: .kor)
-        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
+//        openDateSelectableView.calendarLinkedDateLabel.text =
+//        studySchedule.openDate?.formatToString(language: .kor)
+//        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
         
         if let startTime = studySchedule.startTime {
             
-            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
+//            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             
@@ -294,7 +294,7 @@ class EditingStudySchduleViewController: UIViewController {
         
         if let endTime = studySchedule.endTime {
             
-            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
+//            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             

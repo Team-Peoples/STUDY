@@ -191,28 +191,69 @@ struct Schedule: Codable {
     }
 }
 
-struct StudySchedule: Decodable {
+struct StudySchedule: Codable {
     
-    var studyName: String?
-    var openDate: Date?
-    var deadlineDate: Date?
-    var startTime: Date?
-    var endTime: Date?
-    var repeatOption: RepeatOption?
-    var topic: String?
+    let studyId: String? = nil
+    let studyName: String?
+    
+    var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
     var place: String?
+    
+    var openDate: String?
+    var deadlineDate: String?
+    var startTime: String?
+    var endTime: String?
+    var repeatOption: RepeatOption?
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case studyId
+        case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
+        
+        case topic = "studyScheduleName"
+        case place = "studySchedulePlace"
+        
+        case openDate = "studyScheduleDate"
+        case deadlineDate = "targetDate"
+        case startTime = "studyScheduleStart"
+        case endTime = "studyScheduleEnd"
+        case repeatOption = "repeatDay"
+    }
 }
 
-struct Absence: Codable {
-    var time, fine: Int?
-}
-
-struct Lateness: Codable {
-    var time, count, fine: Int?
-}
-
-struct Excommunication: Codable {
-    var lateness, absence: Int?
+enum RepeatOption: String, Codable {
+    case everyDay
+    case everyWeek
+    case everyTwoWeeks // domb: git book에는 everyTwoWeek으로 되어있어 수정요청
+    case everyMonth
+//    case unknown
+    
+    var kor: String {
+        switch self {
+        case .everyDay:
+            return "매일"
+        case .everyWeek:
+            return "매주"
+        case .everyTwoWeeks:
+            return "2주 마다"
+        case .everyMonth:
+            return "매달"
+//        case .unknown:
+//            return "반복 설정 오류"
+        }
+    }
+    
+//    public init(from decoder: Decoder) throws {
+//        self = try RepeatOption(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+//    }
+//
+//    public init(to encoder: Encoder) throws {
+//        var container = encoder.container(keyedBy: )
+////            try container.encode(id, forKey: .id)
+////            try container.encode(name, forKey: .name)
+////            try container.encode(birth, forKey: .birth)
+////            try container.encode(phoneNum, forKey: .phoneNum)
+//        }
 }
 
 typealias UserID = String //사용자의 아이디

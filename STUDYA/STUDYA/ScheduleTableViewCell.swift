@@ -80,8 +80,8 @@ class ScheduleTableViewCell: UITableViewCell {
         
         bookmarkColorView.backgroundColor = UIColor.orange
         
-        startTimeLabel.text = TimeFormatter.shared.string(from: startTime)
-        endTimeLabel.text = TimeFormatter.shared.string(from: endTime)
+        startTimeLabel.text = startTime
+        endTimeLabel.text = endTime
         topicLabel.text = schedule.topic
         placeLabel.text = schedule.place
         

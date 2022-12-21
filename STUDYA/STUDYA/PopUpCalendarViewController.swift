@@ -118,10 +118,10 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     
         switch calendarType {
         case .open:
-            presentingVC.studySchedule?.openDate = dateComponents?.date
+//            presentingVC.studySchedule?.openDate = dateComponents?.date
             self.dismiss(animated: true)
         case .deadline:
-            presentingVC.studySchedule?.deadlineDate = dateComponents?.date
+//            presentingVC.studySchedule?.deadlineDate = dateComponents?.date
             self.dismiss(animated: true)
         }
     }

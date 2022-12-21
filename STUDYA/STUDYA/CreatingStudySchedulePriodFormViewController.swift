@@ -68,7 +68,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
         addActionsAtButtons()
         setConstraints()
         
-        studySchedule = StudySchedule(openDate: Date(), deadlineDate: Date())
+//        studySchedule = StudySchedule(openDate: Date(), deadlineDate: Date())
         
         nextButton.isEnabled = false
     }
@@ -89,21 +89,21 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     @objc private func openDateSelectableViewTapped() {
         
-        guard let openDate = studySchedule?.openDate else { return }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
-        
-        popUpCalendarVC.presentingVC = self
-        
-        present(popUpCalendarVC, animated: true)
+//        guard let openDate = studySchedule?.openDate else { return }
+//        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
+//
+//        popUpCalendarVC.presentingVC = self
+//
+//        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func deadlineDateSelectableViewTapped() {
         guard let deadlineDate = studySchedule?.deadlineDate else { return }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
-        
-        popUpCalendarVC.presentingVC = self
-        
-        present(popUpCalendarVC, animated: true)
+//        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
+//
+//        popUpCalendarVC.presentingVC = self
+//
+//        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
@@ -134,7 +134,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "확인", style: .default) { _ in
             
-            self.studySchedule?.startTime = datePicker.date
+//            self.studySchedule?.startTime = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -170,7 +170,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "확인", style: .default) { _ in
             
-            self.studySchedule?.endTime = datePicker.date
+//            self.studySchedule?.endTime = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
@@ -208,12 +208,12 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         print(studySchedule)
         
-        openDateSelectableView.calendarLinkedDateLabel.text =
-        studySchedule.openDate?.formatToString(language: .kor)
-        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
+//        openDateSelectableView.calendarLinkedDateLabel.text =
+//        studySchedule.openDate?.formatToString(language: .kor)
+//        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
         if let startTime = studySchedule.startTime {
             
-            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
+//            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             startTimeSelectButton.setTitle("--:--", for: .normal)
@@ -221,7 +221,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
         }
         
         if let endTime = studySchedule.endTime {
-            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
+//            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             endTimeSelectButton.setTitle("--:--", for: .normal)
