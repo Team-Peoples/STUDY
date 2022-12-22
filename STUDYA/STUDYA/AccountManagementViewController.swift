@@ -643,6 +643,7 @@ final class AccountManagementViewController: UIViewController {
     }
     
     private func closeAccount() {
+        
         guard let userId = KeyChain.read(key: Const.userId) else { return }
         
         Network.shared.closeAccount(userID: userId) { result in

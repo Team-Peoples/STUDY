@@ -12,6 +12,7 @@ import Photos
 class ProfileSettingViewController: UIViewController {
 
     private var isAuthForAlbum: Bool?
+    private var nickName: String?
 //    private var isButtonFilled = false
     
     private var profileImage: UIImage? = UIImage(named: "defaultProfile")
@@ -89,56 +90,85 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func doneButtonDidTapped() {
-        if let email = KeyChain.read(key: Const.tempUserId),
-           let password = KeyChain.read(key: Const.tempPassword),
-           let passwordCheck = KeyChain.read(key: Const.tempPasswordCheck) {
+        view.endEditing(true)
+        if let isSNSFirstLogin = KeyChain.read(key: Const.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
+            setProfileWhenSNSSignUp()
+        } else {
+            signUp()
+        }
+    }
+    
+    private func signUp() {
+        guard let email = KeyChain.read(key: Const.tempUserId),
+              let password = KeyChain.read(key: Const.tempPassword),
+              let passwordCheck = KeyChain.read(key: Const.tempPasswordCheck) else {
             
-            Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickNameInputView.getInputField().text, image: profileImage) { result in
-                switch result {
-                case .success(let user):
-                    print("성공")
-                    print(user)
-                    DispatchQueue.main.async {
-                        if let nickName = user.nickName {
-                            
-                            KeyChain.create(key: Const.tempNickname, value: nickName)
-                            
-                            let vc = MailCheckViewController()
-                            vc.modalPresentationStyle = .fullScreen
-                            
-                            self.present(vc, animated: true)
-                        } else {
-                            
-                            let alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 2")
-                            
-                            self.present(alert, animated: true)
-                        }
-                    }
-                    
-                case .failure(let error):
-                    var alert = SimpleAlert(message: "")
-                    
-                    DispatchQueue.main.async {
-                        switch error {
-                        case .duplicatedEmail:
-                            alert = SimpleAlert(buttonTitle: "확인", message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
-                                self.navigationController?.popViewController(animated: true)
-                            })
-                        case .wrongPassword:
-                            alert = SimpleAlert(buttonTitle: "확인", message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
-                                self.navigationController?.popViewController(animated: true)
-                            })
-                        default:
-                            UIAlertController.handleCommonErros(presenter: self, error: error)
-                        }
+            let alert = SimpleAlert(message: Const.unknownErrorMessage)
+            present(alert, animated: true)
+            return
+        }
+        
+        Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickName, image: profileImage) { result in
+            switch result {
+            case .success(let user):
+                
+                DispatchQueue.main.async {
+                    if let nickName = user.nickName {
+                        
+                        KeyChain.create(key: Const.tempNickname, value: nickName)
+                        
+                        let vc = MailCheckViewController()
+                        vc.modalPresentationStyle = .fullScreen
+                        
+                        self.present(vc, animated: true)
+                    } else {
+                        
+                        let alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 2")
                         
                         self.present(alert, animated: true)
                     }
                 }
+                
+            case .failure(let error):
+                var alert = SimpleAlert(message: "")
+                
+                DispatchQueue.main.async {
+                    switch error {
+                    case .duplicatedEmail:
+                        alert = SimpleAlert(buttonTitle: "확인", message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    case .wrongPassword:
+                        alert = SimpleAlert(buttonTitle: "확인", message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
+                            self.navigationController?.popViewController(animated: true)
+                        })
+                    default:
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                    }
+                    
+                    self.present(alert, animated: true)
+                }
             }
-        } else {
-            let alert = SimpleAlert(message: Const.unknownErrorMessage)
-            present(alert, animated: true)
+        }
+    }
+    
+    private func setProfileWhenSNSSignUp() {
+        Network.shared.updateUserInfo(oldPassword: "", password: "", passwordCheck: "", nickname: nickName, image: profileImage) { result in
+            switch result {
+            case .success:
+                KeyChain.delete(key: Const.tempIsFirstSNSLogin)
+                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+            case .failure(let error):
+                
+                switch error {
+                case .imageNotFound:
+                    let alert = SimpleAlert(message: "이미지를 불러올 수 없습니다. 이미지를 확인해주세요.")
+                    self.present(alert, animated: true)
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
         }
     }
     
@@ -288,6 +318,10 @@ extension ProfileSettingViewController: UITextFieldDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        nickName = textField.text
     }
 }
 

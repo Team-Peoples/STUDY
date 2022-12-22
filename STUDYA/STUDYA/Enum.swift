@@ -16,6 +16,7 @@ enum Const {
     static let profileImageURL = "profileImageURL"
     static let accessToken = "AccessToken"
     static let refreshToken = "RefreshToken"
+    static let tempIsFirstSNSLogin = "tempIsFirstSNSLogin"
     static let tempUserId = "tempUserId"
     static let tempPassword = "tempPassword"
     static let tempPasswordCheck = "tempPasswordCheck"

@@ -48,6 +48,16 @@ final class MailCheckViewController: UIViewController {
             switch result {
             case .success(let isCertificated):
                 if isCertificated {
+                    if let _ = KeyChain.read(key: Const.tempNickname),
+                       let _ = KeyChain.read(key: Const.userId),
+                       let _ = KeyChain.read(key: Const.tempPassword),
+                       let _ = KeyChain.read(key: Const.tempPasswordCheck) {
+                        KeyChain.delete(key: Const.tempNickname)
+                        KeyChain.delete(key: Const.tempUserId)
+                        KeyChain.delete(key: Const.tempPassword)
+                        KeyChain.delete(key: Const.tempPasswordCheck)
+                    }
+                    
                     UserDefaults.standard.set(true, forKey: Const.isLoggedin)
                     KeyChain.create(key: Const.isEmailCertificated, value: "1")
                     NotificationCenter.default.post(name: .authStateDidChange, object: nil)

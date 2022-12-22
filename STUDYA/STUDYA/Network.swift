@@ -23,6 +23,7 @@ enum PeoplesError: Error {
     case decodingError
     case unknownError(Int?)
     case tokenExpired
+    case imageNotFound
 }
 
 enum ErrorCode {
@@ -71,7 +72,7 @@ struct Network {
             
             switch httpStatusCode {
             case 200:
-                
+                print(200)
                 guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.decodingError)); return }
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
@@ -95,12 +96,12 @@ struct Network {
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
-            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
+            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
         }, with: RequestPurpose.signUp).response { response in
 
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
-
+            print(httpResponse.statusCode, "😲")
             switch httpResponse.statusCode {
             case 200:
                 guard let decodedUser = jsonDecode(type: User.self, data: data) else {
@@ -128,7 +129,7 @@ struct Network {
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
-            
+            print(String(describing: response.request))
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
             }
@@ -205,7 +206,7 @@ struct Network {
                 
                 completion(.success(isSuccessed))
             default:
-                
+                print(httpResponse.statusCode)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -241,7 +242,7 @@ struct Network {
     
     func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
         
-        let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
+        let user = User(id: nil, oldPassword: "", password: password, passwordCheck: passwordCheck, nickName: nickname, image: nil, isEmailCertificated: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, isNaverLogin: nil, isKakaoLogin: nil, userStats: nil, pushStart: nil, pushImminent: nil, pushDayAgo: nil)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
@@ -249,9 +250,9 @@ struct Network {
         AF.upload(multipartFormData: { data in
             
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
-            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/formed-data")
-        }, with: RequestPurpose.updateUser, interceptor: TokenRequestInterceptor()).response { response in
-            
+            data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
+        }, with: RequestPurpose.updateUser(user), interceptor: TokenRequestInterceptor()).response { response in
+            dump(response.request)
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -267,6 +268,22 @@ struct Network {
                 }
                 
                 completion(.success(user))
+            case 404:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                if errorCode == "IMG_NOT_FOUND" {
+                    completion(.failure(.imageNotFound))
+                } else if errorCode ==  "USER_NOT_FOUND" {
+                    completion(.failure(.unauthorizedUser))
+                } else {
+                    completion(.failure(.unknownError(httpResponse.statusCode)))
+                }
+                
             default:
                 
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -500,7 +517,8 @@ extension Network {
            let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String,
            let userID = user.id,
            let isEmailCertificated = user.isEmailCertificated {
-            
+            print(accesToken, "😅")
+            print(refreshToken, "😅😅")
             KeyChain.create(key: Const.accessToken, value: accesToken)
             KeyChain.create(key: Const.refreshToken, value: refreshToken)
             KeyChain.create(key: Const.userId, value: userID)
@@ -513,6 +531,7 @@ extension Network {
                 KeyChain.create(key: Const.isEmailCertificated, value: "0")
             }
         } else {
+            print(#function)
             completion(.failure(.loginInformationSavingError))
         }
     }
@@ -600,6 +619,14 @@ struct ResponseResult<T: Codable>: Codable {
     enum CodingKeys: String, CodingKey {
         case result, status, error, code, message, timestamp, studyMemberList
     }
+}
+
+struct ErrorResult: Codable {
+    let status: Int?
+    let error: String?
+    let code: String?
+    let message: String?
+    let timestamp: String?
 }
 
 struct ResponseResults<T: Codable>: Codable {
