@@ -390,21 +390,45 @@ struct Network {
     }
     
     func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
-//        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
-//            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-//
-//            switch httpResponse.statusCode {
-//            case 200:
-//                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
-//                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
-//                completion(.success(studies))
-//            default:
-//                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-//                    completion(result)
-//                }
-//            }
-//        }
+        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studies = jsonDecode(type: [Study].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studies))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
     }
+    
+    func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studyOverall))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    
     
     // MARK: - Study Schedule
     
