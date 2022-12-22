@@ -163,8 +163,10 @@ class ProfileSettingViewController: UIViewController {
                 
                 switch error {
                 case .imageNotFound:
-                    let alert = SimpleAlert(message: "이미지를 불러올 수 없습니다. 이미지를 확인해주세요.")
-                    self.present(alert, animated: true)
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(message: "이미지를 불러올 수 없습니다. 이미지를 확인해주세요.")
+                        self.present(alert, animated: true)
+                    }
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }

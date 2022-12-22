@@ -12,12 +12,12 @@ import Alamofire
 
 enum PeoplesError: Error {
     case duplicatedEmail
+    case userNotFound
     case alreadySNSSignUp
     case notAuthEmail
     case wrongPassword
     case loginInformationSavingError
     case unauthorizedUser
-    case notFound
     case serverError
     case internalServerError
     case decodingError
@@ -48,16 +48,13 @@ struct Network {
             let httpStatusCode = httpResponse.statusCode
             switch httpStatusCode {
             case 200:
-                guard let data = response.data, let decodedData = jsonDecode(type: Bool.self, data: data) else {
+                guard let data = response.data, let isIdenticalEmail = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-                completion(.success(decodedData))
+                completion(.success(isIdenticalEmail))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    print(#function)
-                    completion(result)
-                }
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -72,12 +69,9 @@ struct Network {
             
             switch httpStatusCode {
             case 200:
-                print(200)
                 guard let user = jsonDecode(type: User.self, data: data) else { completion(.failure(.decodingError)); return }
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
-                
-                completion(.success(user))
             default:
                 seperateCommonErrors(statusCode: httpStatusCode) { result in
                     completion(result)
@@ -101,7 +95,7 @@ struct Network {
 
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
-            print(httpResponse.statusCode, "😲")
+            
             switch httpResponse.statusCode {
             case 200:
                 guard let decodedUser = jsonDecode(type: User.self, data: data) else {
@@ -109,27 +103,26 @@ struct Network {
                     return
                 }
                 saveLoginformation(httpResponse: httpResponse, user: decodedUser, completion: completion)
-                
-                completion(.success(decodedUser))
             case 400:
-                print(400)
-//                switch data.code {
-//                case ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
-//                case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
-//                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
-//                }
-            default:
-                print("3")
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
+                guard let decodedResponse = jsonDecode(type: ErrorResponse.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
                 }
+                
+                switch decodedResponse.code {
+                case ErrorCode.duplicatedEmail: completion(.failure(.duplicatedEmail))
+                case ErrorCode.wrongPassword: completion(.failure(.wrongPassword))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
         AF.request(RequestPurpose.signIn(id, pw)).response { response in
-            print(String(describing: response.request))
+            
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
             }
@@ -142,9 +135,6 @@ struct Network {
                 }
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
-                completion(.success(user))
-            case 401:
-                completion(.failure(.unauthorizedUser))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -180,7 +170,6 @@ struct Network {
                 completion(.success(isEmailCertificated))
             default:
                 seperateCommonErrors(statusCode: statusCode) { result in
-                    print(#function)
                     completion(result)
                 }
             }
@@ -191,7 +180,7 @@ struct Network {
         AF.request(RequestPurpose.getNewPassord(id)).response { response in
             
             guard let httpResponse = response.response else {
-                print("여기에러")
+                
                 completion(.failure(.serverError))
                 return
             }
@@ -199,12 +188,14 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 
-                guard let data = response.data, let body = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = body.result else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type:Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
                 completion(.success(isSuccessed))
+            case 404:
+                completion(.failure(.userNotFound))
             default:
                 print(httpResponse.statusCode)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -231,6 +222,8 @@ struct Network {
                 }
                 
                 completion(.success(user))
+            case 404:
+                completion(.failure(.userNotFound))
             default:
                 
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -316,7 +309,7 @@ struct Network {
                 completion(.success(isNotManager))
             case 404:
                 
-                completion(.failure(.notFound))
+                completion(.failure(.userNotFound))
             default:
                 
                 seperateCommonErrors(statusCode:  httpResponse.statusCode) { result in
@@ -373,44 +366,44 @@ struct Network {
     // MARK: - Study
     
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).response { response in
-            guard let httpResponse = response.response else { return }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                
-                guard let data = response.data,
-                      let body = jsonDecode(type: ResponseResult<Study>.self, data: data),
-                      let study = body.result else {
-                    
-                    completion(.failure(.decodingError))
-                    return
-                }
-                
-                completion(.success(study))
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
-                }
-            }
-        }
+//        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).response { response in
+//            guard let httpResponse = response.response else { return }
+//
+//            switch httpResponse.statusCode {
+//            case 200:
+//
+//                guard let data = response.data,
+//                      let body = jsonDecode(type: Study.self, data: data),
+//                      let study = body.result else {
+//
+//                    completion(.failure(.decodingError))
+//                    return
+//                }
+//
+//                completion(.success(study))
+//            default:
+//                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+//                    completion(result)
+//                }
+//            }
+//        }
     }
     
     func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
-            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
-                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
-                completion(.success(studies))
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
-                }
-            }
-        }
+//        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
+//            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+//
+//            switch httpResponse.statusCode {
+//            case 200:
+//                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
+//                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
+//                completion(.success(studies))
+//            default:
+//                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+//                    completion(result)
+//                }
+//            }
+//        }
     }
     
     // MARK: - Study Schedule
@@ -517,21 +510,22 @@ extension Network {
            let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String,
            let userID = user.id,
            let isEmailCertificated = user.isEmailCertificated {
-            print(accesToken, "😅")
-            print(refreshToken, "😅😅")
+            
             KeyChain.create(key: Const.accessToken, value: accesToken)
             KeyChain.create(key: Const.refreshToken, value: refreshToken)
             KeyChain.create(key: Const.userId, value: userID)
             
             if isEmailCertificated {
-                print(accesToken)
+                
                 UserDefaults.standard.set(true, forKey: Const.isLoggedin)
                 KeyChain.create(key: Const.isEmailCertificated, value: "1")
             } else {
                 KeyChain.create(key: Const.isEmailCertificated, value: "0")
             }
+            
+            completion(.success(user))
         } else {
-            print(#function)
+            
             completion(.failure(.loginInformationSavingError))
         }
     }
@@ -615,10 +609,14 @@ struct ResponseResult<T: Codable>: Codable {
     let message: String?
     let timestamp: String?
     let studyMemberList: [Study]?
-    
-    enum CodingKeys: String, CodingKey {
-        case result, status, error, code, message, timestamp, studyMemberList
-    }
+}
+
+struct ErrorResponse: Codable {
+    let status: Int?
+    let error: String?
+    let code: String?
+    let message: String?
+    let timestamp: String?
 }
 
 struct ErrorResult: Codable {

@@ -652,11 +652,9 @@ final class AccountManagementViewController: UIViewController {
                 switch isNotManager {
                 case true:
                     print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
-                    KeyChain.delete(key: Const.accessToken)
-                    KeyChain.delete(key: Const.refreshToken)
-                    KeyChain.delete(key: Const.userId)
-                    KeyChain.delete(key: Const.isEmailCertificated)
-                    UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+                    
+                    AppController.shared.deleteUserInformation()
+                    
                     DispatchQueue.main.async {
                         let vc = ByeViewController()
                         vc.modalPresentationStyle = .fullScreen
@@ -664,11 +662,12 @@ final class AccountManagementViewController: UIViewController {
                     }
                     
                 case false:
+//                    🛑🛑🛑🛑
                     print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
                 }
                 
             case .failure(let error):
-                print(error)
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
