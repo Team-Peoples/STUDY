@@ -442,7 +442,7 @@ struct Network {
                 }
                 completion(.success(isSuccessed))
             case 404:
-                completion(.failure(.notFound))
+                completion(.failure(.userNotFound))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
