@@ -200,13 +200,7 @@ class SignUpViewController: UIViewController {
                 if isIdenticalEmail { self.isIdenticalEmail = true } else { self.isIdenticalEmail = false }
                 
             case .failure(let errorCode):
-                DispatchQueue.main.async {
-                    
-                    let alert = SimpleAlert(buttonTitle: "확인", message: "이메일 중복검사 실패. 서버에러가 발생했습니다." + "code = \(errorCode)") { finished in
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    self.present(alert, animated: true)
-                }
+                UIAlertController.handleCommonErros(presenter: self, error: errorCode)
             }
             self.emailValidationOkay = self.isIdenticalEmail ? true : false
             self.checkValidation1Label()

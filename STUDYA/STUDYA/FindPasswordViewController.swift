@@ -75,7 +75,13 @@ final class FindPasswordViewController: UIViewController {
                     }
                     
                 case .failure(let error):
-                    print(error)
+                switch error {
+                case .userNotFound:
+                    let alert = SimpleAlert(message: "사용자를 찾을 수 없습니다. 이메일을 확인해주세요.")
+                    self.present(alert, animated: true)
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
             }
         }
     }

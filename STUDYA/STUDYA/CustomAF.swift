@@ -50,7 +50,7 @@ enum RequestPurpose: Requestable {
     case createStudySchedule(StudySchedule)
     
     //    HTTPMethod: PUT
-    case updateUser   //6
+    case updateUser(User)   //6
     case updateAnnouncement(Title, Content, ID) //16
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
@@ -140,7 +140,7 @@ extension RequestPurpose {
             
         //    HTTPMethod: GET
         case .getNewPassord:
-            return "/user"
+            return "/user/password"
         case .getMyInfo:
             return "/user"
         case .getJWTToken(_, let sns):
@@ -209,6 +209,8 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 // EndodableBody
+        case .updateUser(let user):
+            return .encodableBody(user)
         case .createStudy(let study):
             return .encodableBody(study)
         case .createStudySchedule(let studySchedule):

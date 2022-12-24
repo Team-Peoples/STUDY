@@ -181,28 +181,29 @@ final class WelcomViewController: UIViewController {
             case .success(let user):
                 
                 if let isFirstLogin = user.isFirstLogin {
+                    
                     if isFirstLogin {
+                        KeyChain.create(key: Const.tempIsFirstSNSLogin, value: "1")
+                        KeyChain.create(key: Const.isEmailCertificated, value: "1")
                         DispatchQueue.main.async {
                             let nextVC = ProfileSettingViewController()
                             self.navigationController?.pushViewController(nextVC, animated: true)
                         }
 
                     } else {
-//                        DispatchQueue.main.async {
-//                            NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-//                        }
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+                        }
                     }
+                    
                 } else {
                     DispatchQueue.main.async {
                         let alert = SimpleAlert(message: Const.serverErrorMessage)
                         self.present(alert, animated: true)
                     }
                 }
-            default:
-                DispatchQueue.main.async {
-                    let alert = SimpleAlert(message: Const.serverErrorMessage)
-                    self.present(alert, animated: true)
-                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }

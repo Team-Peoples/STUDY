@@ -47,7 +47,19 @@ final class MailCheckViewController: UIViewController {
         Network.shared.checkIfEmailCertificated { result in
             switch result {
             case .success(let isCertificated):
+                
                 if isCertificated {
+                    
+                    if let _ = KeyChain.read(key: Const.tempNickname),
+                       let _ = KeyChain.read(key: Const.userId),
+                       let _ = KeyChain.read(key: Const.tempPassword),
+                       let _ = KeyChain.read(key: Const.tempPasswordCheck) {
+                        KeyChain.delete(key: Const.tempNickname)
+                        KeyChain.delete(key: Const.tempUserId)
+                        KeyChain.delete(key: Const.tempPassword)
+                        KeyChain.delete(key: Const.tempPasswordCheck)
+                    }
+                    
                     UserDefaults.standard.set(true, forKey: Const.isLoggedin)
                     KeyChain.create(key: Const.isEmailCertificated, value: "1")
                     NotificationCenter.default.post(name: .authStateDidChange, object: nil)
@@ -73,7 +85,33 @@ final class MailCheckViewController: UIViewController {
                     }
                 }
             case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
+                DispatchQueue.main.async {
+                    var alert = SimpleAlert(message: "")
+                    
+                    switch error {
+                        
+                    case .serverError:
+                        alert = SimpleAlert(message: "인증 메일 발송 실패. 관리자에게 문의하세요.")
+                        self.present(alert, animated: true)
+                    case .decodingError:
+                        alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+                    case .unauthorizedUser:
+                        alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+                            AppController.shared.deleteUserInformationAndLogout()
+                        })
+                    case .tokenExpired:
+                        alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                            AppController.shared.deleteUserInformationAndLogout()
+                        })
+                    case .unknownError(let errorCode):
+                        guard let errorCode = errorCode else { return }
+                        alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+                    default:
+                        alert = SimpleAlert(message: Const.unknownErrorMessage)
+                    
+                        self.present(alert, animated: true)
+                    }
+                }
             }
         }
     }
