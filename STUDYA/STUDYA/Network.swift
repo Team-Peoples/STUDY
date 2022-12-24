@@ -357,14 +357,17 @@ struct Network {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { return }
             
+            let requestBody = response.request?.httpBody
+            let body = jsonDecode(type: MockStudy.self, data: requestBody!)
+            print(body)
+            
             switch httpResponse.statusCode {
             case 200:
                 
                 guard let data = response.data,
-                      let body = jsonDecode(type: ResponseResult<Study>.self, data: data),
-                      let study = body.result else {
+                      let study = jsonDecode(type: MockStudy.self, data: data) else {
                     
-                    completion(.failure(.decodingError))
+//                    completion(.failure())
                     return
                 }
                 

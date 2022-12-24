@@ -242,17 +242,17 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
         
         switch textField {
         case latenessRuleTimeField:
-            generalRule.lateness?.time = Int(latenessRuleTimeField.text!)
+            generalRule.lateness?.time = Int(latenessRuleTimeField.text!)!
         case absenceRuleTimeField:
             generalRule.absence?.time = Int(absenceRuleTimeField.text!)
         case perLateMinuteField:
-            generalRule.lateness?.count = Int(perLateMinuteField.text!)
+            generalRule.lateness?.count = Int(perLateMinuteField.text!)!
         case latenessFineTextField:
             if let text = latenessFineTextField.text, let intText = Int(text) {
                 latenessFineTextField.text = Formatter.formatIntoDecimal(number: intText)
             }
             
-            generalRule.lateness?.fine = Formatter.formatIntoNoneDecimal(latenessFineTextField.text)
+            generalRule.lateness?.fine = Formatter.formatIntoNoneDecimal(latenessFineTextField.text)!
         case absenceFineTextField:
             if let text = absenceFineTextField.text, let intText = Int(text) {
                 absenceFineTextField.text = Formatter.formatIntoDecimal(number: intText)

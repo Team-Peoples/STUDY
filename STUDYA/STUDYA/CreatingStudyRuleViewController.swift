@@ -170,19 +170,19 @@ class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         
-        let study = creatingStudyRuleViewModel.study
-        
-        Network.shared.createStudy(study) { result in
-            switch result {
-            case .success(let study):
-                print(study)
-                
-                let nextVC = CreatingStudyCompleteViewController()
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            case .failure(let error):
-                print(error)
-            }
-        }
+//        let study = creatingStudyRuleViewModel.study
+//        
+//        Network.shared.createStudy(study) { result in
+//            switch result {
+//            case .success(let study):
+//                print(study)
+//                
+//                let nextVC = CreatingStudyCompleteViewController()
+//                self.navigationController?.pushViewController(nextVC, animated: true)
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
     }
     
     @objc func closeButtonDidTapped() {

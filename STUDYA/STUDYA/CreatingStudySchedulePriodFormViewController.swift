@@ -212,7 +212,6 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
 //        studySchedule.openDate?.formatToString(language: .kor)
 //        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
         if let startTime = studySchedule.startTime {
-            
 //            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
