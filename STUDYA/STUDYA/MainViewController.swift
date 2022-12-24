@@ -6,7 +6,7 @@
 //
 
 import UIKit
-//🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isAdmin 값 didset에서 수정하도록
+//🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
     
@@ -22,6 +22,7 @@ final class MainViewController: SwitchableViewController {
     }
     private var currentStudyOverall: StudyOverall? {
         didSet {
+            isManager
             mainTableView.reloadData()
         }
     }
@@ -89,18 +90,20 @@ final class MainViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(KeyChain.read(key: Const.accessToken))
+        print(KeyChain.read(key: Const.refreshToken))
 //        📣네트워킹으로 myStudyList 넣어주기
-//        getUserInformationAndStudies()
-        myStudyList = [
-            Study(id: 1, studyName: "웃기지마", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-            Study(id: 3, studyName: "우야노우리스터디", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5)))
-        ]
-        currentStudyOverall = StudyOverall(announcement: nil, study: myStudyList.first!, isManager: true, totalFine: 0, attendedCount: 0, absentcount: 0, totalMeetingCount: 0, lateCount: 0, allowedCount: 0, studySchedule: nil, ownerID: "d")
+        getUserInformationAndStudies()
+//        myStudyList = [
+//            Study(id: 1, studyName: "웃기지마", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
+//            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
+//            Study(id: 3, studyName: "우야노우리스터디", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5)))
+//        ]
+//        currentStudyOverall = StudyOverall(announcement: nil, study: myStudyList.first!, isManager: true, totalFine: 0, attendedCount: 0, absentcount: 0, totalStudyHeldCount: 0, lateCount: 0, allowedCount: 0, studySchedule: nil, ownerID: "d")
         
         
         view.backgroundColor = .systemBackground
-        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
+//        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         
         configureTabBarSeparator()
         configureNavigationBar()
@@ -246,7 +249,8 @@ final class MainViewController: SwitchableViewController {
             
             switch result {
             case .success(let studyOverall):
-                print(#function,1)
+                self.isManager = studyOverall.isManager
+                
                 self.currentStudyOverall = studyOverall
                 DispatchQueue.main.async {
                     self.configureViewWhenYesStudy()
@@ -301,7 +305,7 @@ final class MainViewController: SwitchableViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        guard isAdmin else { return }
+        guard isManager else { return }
         
         configureFloatingButton()
     }
@@ -385,6 +389,8 @@ extension MainViewController: UITableViewDataSource {
                 .absent: currentStudyOverall.absentcount,
                 .allowed: currentStudyOverall.allowedCount
             ]
+            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
+            
             cell.penalty = currentStudyOverall.totalFine
             cell.navigatableSwitchSyncableDelegate = self
             

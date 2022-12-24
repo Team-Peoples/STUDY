@@ -159,7 +159,7 @@ struct StudyOverall: Codable {
     let announcement: Announcement?
     let study: Study
     let isManager: Bool
-    let totalFine, attendedCount, absentcount, totalMeetingCount, lateCount, allowedCount: Int
+    let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
     let ownerID: String
     
@@ -170,7 +170,7 @@ struct StudyOverall: Codable {
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
         case absentcount = "absentCnt"
-        case totalMeetingCount = "dayCnt"
+        case totalStudyHeldCount = "dayCnt"
         case ownerID = "master"
         case study, studySchedule, totalFine
     }

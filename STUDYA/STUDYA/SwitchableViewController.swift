@@ -9,7 +9,11 @@ import UIKit
 
 class SwitchableViewController: UIViewController, Navigatable {
     
-    var isAdmin = true
+    var isManager = false {
+        didSet {
+            configureNavigationBar()
+        }
+    }
     
     //to be fixed: isSwitchOn과 managerSwitch중 하나만 사용해서 UI 처리할 수 있는 방법 찾기
     var isSwitchOn = false {
@@ -32,7 +36,6 @@ class SwitchableViewController: UIViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,7 +76,7 @@ class SwitchableViewController: UIViewController, Navigatable {
     func configureNavigationBar() {
         navigationController?.setBrandNavigation()
         
-        if isAdmin {
+        if isManager {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             managerSwitch.addTarget(self, action: #selector(managerSwitchTappedAction), for: .valueChanged)
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: managerSwitch)

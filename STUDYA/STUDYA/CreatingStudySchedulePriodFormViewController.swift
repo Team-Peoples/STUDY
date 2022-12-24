@@ -137,7 +137,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
 //            self.studySchedule?.startTime = datePicker.date
         }
         
-        let cancelAction = UIAlertAction(title: "Const.cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -173,7 +173,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
 //            self.studySchedule?.endTime = datePicker.date
         }
         
-        let cancelAction = UIAlertAction(title: "Const.cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)

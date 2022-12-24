@@ -48,10 +48,8 @@ extension DateFormatter {
 //        print(date)
 //    }
     
-    
-    
 //    let dateFormatter = DateFormatter()
-//    dateFormatter.dateFormat =  "HH:mm"
+//    dateFormatter.dateFormat = "HH:mm"
 //
 //    let timeString = "23:30"
 //    if let time = dateFormatter.date(from: timeString) {
@@ -62,9 +60,6 @@ extension DateFormatter {
 //        print(date)
 //    }
 }
-
-
-
 
 // MARK: - Date Format
 

@@ -264,7 +264,7 @@ final class AccountManagementViewController: UIViewController {
         lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
             self.profileImage = nil
         }
-        let cancelAction = UIAlertAction(title: "Const.cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         alert.addAction(selectImageAction)
         if profileImage != nil {
             alert.addAction(defaultImageAction)
@@ -321,7 +321,7 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func leaveApp() {
         let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Const.cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
             _ in
             
@@ -391,7 +391,7 @@ final class AccountManagementViewController: UIViewController {
 
         let message = "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다"
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Const.cancel", style: .default)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .default)
         let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }

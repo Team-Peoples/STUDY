@@ -121,19 +121,23 @@ struct Network {
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.signIn(id, pw)).response { response in
+
+        AF.upload(multipartFormData: { data in
+            data.append(id.data(using: .utf8)!, withName: "userId")
+            data.append(pw.data(using: .utf8)!, withName: "password")
+        }, with: RequestPurpose.signIn(id, pw)).response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
             }
-            
+
             switch httpResponse.statusCode {
             case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-                
+
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
