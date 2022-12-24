@@ -39,7 +39,7 @@ class AnnouncementViewController: UIViewController {
             
             titleTextView.text = announcement?.title
             contentTextView.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
+            timeLabel.text = announcement?.createdDate.formatToString(language: .eng)
         }
     }
     
@@ -214,9 +214,9 @@ class AnnouncementViewController: UIViewController {
         }
         
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(doneButtonDidTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(doneButtonDidTapped))
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }

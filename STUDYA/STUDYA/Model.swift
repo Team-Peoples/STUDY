@@ -55,8 +55,6 @@ struct User: Codable {
     }
 }
 
-
-
 struct Credential: Encodable {
     let userID: String
     let password: String?

@@ -142,7 +142,7 @@ class StudyInfoViewController: SwitchableViewController {
         
         studygeneralRuleVC.task = .editing
         studygeneralRuleVC.navigationItem.title = "규칙 관리"
-        studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
+        studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(closeButtonDidTapped))
         studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         
         let vc = UINavigationController(rootViewController: studygeneralRuleVC)
@@ -160,7 +160,7 @@ class StudyInfoViewController: SwitchableViewController {
         
         studyFreeRuleVC.navigationItem.title = "진행방식"
         studyFreeRuleVC.navigationItem.titleView?.tintColor = .appColor(.whiteLabel)
-        studyFreeRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
+        studyFreeRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(closeButtonDidTapped))
         studyFreeRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)

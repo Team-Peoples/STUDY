@@ -14,8 +14,10 @@ class MainFourthAnnouncementTableViewCell: UITableViewCell {
     
     internal var announcement: Announcement? {
         didSet {
-            titleLabel.text = announcement?.title
-            subTitleLabel.text = announcement?.content
+            if announcement != nil {
+                titleLabel.text = announcement?.title
+                subTitleLabel.text = announcement?.content
+            }
         }
     }
     

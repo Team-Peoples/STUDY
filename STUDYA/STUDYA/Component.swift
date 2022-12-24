@@ -46,7 +46,7 @@ final class BrandButton: UIButton {
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
         
-        configure(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
+        configure(title: Const.done, isBold: true, isFill: true, fontSize: 18, height: 50)
         configureBorder(color: .keyColor1, width: 1, radius: 50 / 2)
     }
     
@@ -526,7 +526,7 @@ class SimpleAlert: UIAlertController {
     convenience init(message: String?) {
         self.init(title: nil, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: Const.OK, style: .default, handler: nil)
         
         self.addAction(okAction)
     }
@@ -987,9 +987,9 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         // 만들어줄 버튼
         // flexibleSpace는 취소~완료 간의 거리를 만들어준다.
-        let doneBT = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(self.donePicker))
+        let doneBT = UIBarButtonItem(title: Const.done, style: .plain, target: self, action: #selector(self.donePicker))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelBT = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(self.cancelPicker))
+        let cancelBT = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(self.cancelPicker))
         
         // 만든 아이템들을 세팅해주고
         toolBar.setItems([cancelBT,flexibleSpace,doneBT], animated: false)
@@ -999,7 +999,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         self.inputAccessoryView = toolBar
     }
     
-    // "완료" 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
+    // Const.done 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
     @objc private func donePicker() {
         let row = self.picker.selectedRow(inComponent: 0)
         self.picker.selectRow(row, inComponent: 0, animated: false)
@@ -1214,7 +1214,7 @@ final class AttendanceStatusCapsuleView: RoundableView {
 class FullDoneButtonButtomView: UIView {
     
     internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: "완료", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Const.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
     
     init(doneButtonTitle: String) {
         super.init(frame: .zero)

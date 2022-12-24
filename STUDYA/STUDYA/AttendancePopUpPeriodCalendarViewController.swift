@@ -79,7 +79,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         return calendarView
     }()
     private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
-    private let doneButton = BrandButton(title: "확인", isBold: true, isFill: false, fontSize: 16, height: 40)
+    private let doneButton = BrandButton(title: Const.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
     // MARK: - Life Cycle
     
@@ -207,7 +207,7 @@ extension AttendancePopUpPeriodCalendarViewController: UICalendarSelectionSingle
         if isPrecedingDateTurn {
             precedingDateComponents = dateComponents
             enableFollowingButton()
-            doneButton.fillOut(title: "확인")
+            doneButton.fillOut(title: Const.OK)
             doneButton.isEnabled = false
             isPrecedingDateTurn = false
         } else {
@@ -215,11 +215,11 @@ extension AttendancePopUpPeriodCalendarViewController: UICalendarSelectionSingle
                let precedingDate = precedingDateComponents?.convertToDate(),
                date < precedingDate {
                    precedingDateComponents = dateComponents
-                doneButton.fillOut(title: "확인")
+                doneButton.fillOut(title: Const.OK)
                 doneButton.isEnabled = false
             } else {
                 followingDateComponents = dateComponents
-                doneButton.fillIn(title: "확인")
+                doneButton.fillIn(title: Const.OK)
                 doneButton.isEnabled = true
             }
         }

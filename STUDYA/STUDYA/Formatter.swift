@@ -39,6 +39,28 @@ extension DateFormatter {
         
         return dateFormatter
     }()
+
+//    let dateFormatter = DateFormatter()
+//    dateFormatter.dateFormat = "yyyy-MM-dd"
+//
+//    let dateString = "2022-12-05"
+//    if let date = dateFormatter.date(from: dateString) {
+//        print(date)
+//    }
+    
+    
+    
+//    let dateFormatter = DateFormatter()
+//    dateFormatter.dateFormat =  "HH:mm"
+//
+//    let timeString = "23:30"
+//    if let time = dateFormatter.date(from: timeString) {
+//        // 오늘 날짜를 구합니다.
+//        let today = Calendar.current.startOfDay(for: Date())
+//        // 오늘 날짜와 시간을 결합해 `Date`로 변환합니다.
+//        let date = Calendar.current.date(bySettingHour: Calendar.current.component(.hour, from: time), minute: Calendar.current.component(.minute, from: time), second: 0, of: today)
+//        print(date)
+//    }
 }
 
 

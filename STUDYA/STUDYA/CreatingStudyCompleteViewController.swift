@@ -13,7 +13,7 @@ class CreatingStudyCompleteViewController: UIViewController {
     
     private let titleLabel = CustomLabel(title: "스터디를 만들었어요!", tintColor: .ppsBlack, size: 28, isBold: true)
     private let completeImageView = UIImageView(image: UIImage(named: "congratulation"))
-    private let completeButton = BrandButton(title: "완료", isBold: true, isFill: true)
+    private let completeButton = BrandButton(title: Const.done, isBold: true, isFill: true)
     
     // MARK: - Life Cycle
     

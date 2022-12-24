@@ -12,11 +12,11 @@ class StudyScheduleViewController: SwitchableViewController {
     // MARK: - Properties
     
     var studySchedules: [StudySchedule] = [
-        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay)
+//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
+//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay)
     ]
     
     let calendarView: UICalendarView = {
@@ -176,7 +176,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
             self.present(alertController, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
 
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)

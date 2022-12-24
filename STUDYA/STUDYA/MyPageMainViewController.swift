@@ -10,9 +10,9 @@ import Kingfisher
 
 final class MyPageMainViewController: UIViewController {
     
-    internal var userInfo: User? {
+    internal var user: User? {
         didSet {
-            guard let userInfo = userInfo else { return }
+            guard let userInfo = user else { return }
             nickNameLabel.text = userInfo.nickName
             myMailLabel.text = userInfo.id
             guard let imageURL = userInfo.image else { return }
@@ -82,7 +82,7 @@ final class MyPageMainViewController: UIViewController {
         super.viewWillAppear(animated)
         // AccountManagerment에서 로그아웃하면서 이 VC가 한번 보여지고 사라지는지 이함수가 호출됨.
         getUserInfo { user in
-            self.userInfo = user
+            self.user = user
         }
     }
     

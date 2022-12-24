@@ -12,7 +12,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     static let identifier = "MainFifthAttendanceTableViewCell"
     
-    internal var studyAttendance: [String: Int]! {
+    internal var studyAttendance: [AttendanceStatus: Int]! {
         didSet {
             setupProgress()
         }
@@ -82,10 +82,10 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     private func setupProgress() {
 
         let total = studyAttendance.map { (_, value) in return value }.reduce(0, +)
-        let attendanceRatio = Float(studyAttendance["출석"]! * 100 / total) / 100
-        let latendssRatio = Float(studyAttendance["지각"]! * 100 / total) / 100
-        let absenceRatio = Float(studyAttendance["결석"]! * 100 / total) / 100
-        let allowedRatio = Float(studyAttendance["사유"]! * 100 / total) / 100
+        let attendanceRatio = Float(studyAttendance[.attended]! * 100 / total) / 100
+        let latendssRatio = Float(studyAttendance[.late]! * 100 / total) / 100
+        let absenceRatio = Float(studyAttendance[.absent]! * 100 / total) / 100
+        let allowedRatio = Float(studyAttendance[.allowed]! * 100 / total) / 100
 
         self.progressView.setProgress(section: 0, to: attendanceRatio)
         self.progressView.setProgress(section: 1, to: latendssRatio)
