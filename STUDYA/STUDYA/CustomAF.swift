@@ -42,7 +42,7 @@ enum RequestPurpose: Requestable {
     //    HTTPMethod: POST
     case signUp   ////1
     case emailCheck(UserID) ////2
-    case signIn(UserID, Password) ////4
+    case signIn ////4
     case refreshToken ////9
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
@@ -183,9 +183,6 @@ extension RequestPurpose {
 ///    HTTPMethod: POST
         case .emailCheck(let id):
             return .body(["userId": id])
-        case .signIn(let id, let pw):
-            return .body(["userId" : id,
-                          "password" : pw])
         case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,

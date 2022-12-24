@@ -127,7 +127,11 @@ struct Network {
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.signIn(id, pw)).response { response in
+        
+        AF.upload(multipartFormData: { data in
+            data.append(id.data(using: .utf8)!, withName: "userId")
+            data.append(pw.data(using: .utf8)!, withName: "password")
+        }, with: RequestPurpose.signIn).response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -346,9 +350,6 @@ struct Network {
     }
     
     // MARK: - User Schedule
-    
-    
-    
     
     // MARK: - Study
     
