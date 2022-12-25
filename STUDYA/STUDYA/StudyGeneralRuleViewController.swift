@@ -12,7 +12,7 @@ struct GeneralStudyRuleViewModel {
     
     var generalRule: GeneralStudyRule
     var lateness: Lateness {
-        return generalRule.lateness ?? Lateness(time: nil, count: nil, fine: nil)
+        return generalRule.lateness!
     }
     var absence: Absence {
         return generalRule.absence ?? Absence(time: nil, fine: nil)
@@ -29,10 +29,10 @@ struct GeneralStudyRuleViewModel {
     }
     
     func configure(vc: StudyGeneralRuleAttendanceTableViewController) {
-        vc.latenessRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time!)
+        vc.latenessRuleTimeField.text = lateness.time == nil ? "--" : String(lateness.time)
         vc.absenceRuleTimeField.text = absence.time == nil ? "--" : String(absence.time!)
-        vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count!)
-        vc.latenessFineTextField.text = lateness.fine == nil ? nil : Formatter.formatIntoDecimal(number: lateness.fine!)
+        vc.perLateMinuteField.text = lateness.count == nil ? "--" : String(lateness.count)
+        vc.latenessFineTextField.text = lateness.fine == nil ? nil : Formatter.formatIntoDecimal(number: lateness.fine)
         vc.absenceFineTextField.text = absence.fine == nil ? nil : Formatter.formatIntoDecimal(number: absence.fine!)
         vc.depositTextField.text = deposit == nil ? nil : Formatter.formatIntoDecimal(number: deposit!)
         

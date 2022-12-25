@@ -42,9 +42,9 @@ enum RequestPurpose: Requestable {
     //    HTTPMethod: POST
     case signUp   ////1
     case emailCheck(UserID) ////2
-    case signIn(UserID, Password) ////4
+    case signIn ////4
     case refreshToken ////9
-    case createStudy(Study) //11
+    case createStudy(MockStudy) //11
     case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
     case createStudySchedule(StudySchedule)
@@ -183,9 +183,6 @@ extension RequestPurpose {
 ///    HTTPMethod: POST
         case .emailCheck(let id):
             return .body(["userId": id])
-        case .signIn(let id, let pw):
-            return .body(["userId" : id,
-                          "password" : pw])
         case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
@@ -239,9 +236,6 @@ extension RequestPurpose {
 
         var headers = HTTPHeaders()
         
-//        let accessToken = KeyChain.read(key: Header.accessToken.type) ?? ""
-//        let refreshToken = KeyChain.read(key: Header.refreshToken.type) ?? ""
-        
         switch header {
         case .json:
             headers = [Header.contentType.type : Header.json.type]
@@ -293,28 +287,10 @@ struct TokenRequestInterceptor: RequestInterceptor {
         let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
         
         var request = urlRequest
-        request.addValue("Bearer \(accessToken)", forHTTPHeaderField: Const.accessToken)
-        request.addValue("Bearer \(refreshToken)", forHTTPHeaderField: Const.refreshToken)
+        request.headers.add(.bearerAccessToken(accessToken))
+        request.headers.add(.bearerRefreshToken(refreshToken))
         
         completion(.success(request))
-    }
-    
-    func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
-        
-        guard let response = request.task?.response as? HTTPURLResponse, response.statusCode == 403 else {
-            print(403)
-            completion(.doNotRetryWithError(error))
-            return
-        }
-        
-        Network.shared.refreshToken { result in
-            switch result {
-            case .success:
-                completion(.doNotRetry)
-            case .failure(_):
-                completion(.retry)
-            }
-        }
     }
 }
 

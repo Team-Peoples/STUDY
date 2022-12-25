@@ -121,11 +121,10 @@ struct Network {
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
-
         AF.upload(multipartFormData: { data in
             data.append(id.data(using: .utf8)!, withName: "userId")
             data.append(pw.data(using: .utf8)!, withName: "password")
-        }, with: RequestPurpose.signIn(id, pw)).response { response in
+        }, with: RequestPurpose.signIn).response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -148,7 +147,7 @@ struct Network {
     }
     
     func resendAuthEmail(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.resendAuthEmail, interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.resendAuthEmail, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response, let _ = response.data else { completion(.failure(.serverError)); return }
             switch httpResponse.statusCode {
             case 200:
@@ -162,7 +161,7 @@ struct Network {
     }
     
     func checkIfEmailCertificated(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.checkEmailCertificated, interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.checkEmailCertificated, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let statusCode = response.response?.statusCode else { completion(.failure(.serverError)); return }
             
             switch statusCode {
@@ -192,7 +191,7 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 
-                guard let data = response.data, let isSuccessed = jsonDecode(type:Bool.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -201,7 +200,7 @@ struct Network {
             case 404:
                 completion(.failure(.userNotFound))
             default:
-                print(httpResponse.statusCode)
+                
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -210,7 +209,7 @@ struct Network {
     }
     
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getMyInfo, interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.getMyInfo, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -239,7 +238,7 @@ struct Network {
     
     func updateUserInfo(oldPassword: String?, password: String?, passwordCheck: String?, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
         
-        let user = User(id: nil, oldPassword: "", password: password, passwordCheck: passwordCheck, nickName: nickname, image: nil, isEmailCertificated: nil, isBlocked: nil, isPaused: nil, isFirstLogin: nil, isNaverLogin: nil, isKakaoLogin: nil, userStats: nil, pushStart: nil, pushImminent: nil, pushDayAgo: nil)
+        let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
         guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
@@ -248,8 +247,8 @@ struct Network {
             
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
-        }, with: RequestPurpose.updateUser(user), interceptor: TokenRequestInterceptor()).response { response in
-            dump(response.request)
+        }, with: RequestPurpose.updateUser(user), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -291,7 +290,7 @@ struct Network {
     }
     
     func closeAccount(userID: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.deleteUser(userID), interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.deleteUser(userID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 
@@ -324,7 +323,7 @@ struct Network {
     }
     
     func refreshToken(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.refreshToken).response { response in
+        AF.request(RequestPurpose.refreshToken, interceptor: TokenRequestInterceptor()).response { response in
             
             guard let httpResponse = response.response else {
                 
@@ -336,10 +335,7 @@ struct Network {
             case 200:
                 
                 guard let data = response.data,
-                      let body = jsonDecode(type: ResponseResult<Bool>.self, data: data),
-                      let isSuccessed = body.result else {
-                    
-                    completion(.failure(.decodingError))
+                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     return
                 }
                 
@@ -354,43 +350,43 @@ struct Network {
                 }
                 
             default:
-                
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
                 //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
-                completion(.failure(.tokenExpired))
-                //                🛑ehd: 여기서 무슨액션을 하면 retry에 failure쪽 코드가 정상 실행 되나?
             }
         }
     }
     
     // MARK: - User Schedule
     
-    
-    
-    
     // MARK: - Study
     
-    func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-//        AF.request(RequestPurpose.createStudy(study), interceptor: TokenRequestInterceptor()).response { response in
-//            guard let httpResponse = response.response else { return }
-//
-//            switch httpResponse.statusCode {
-//            case 200:
-//
-//                guard let data = response.data,
-//                      let body = jsonDecode(type: Study.self, data: data),
-//                      let study = body.result else {
-//
-//                    completion(.failure(.decodingError))
-//                    return
-//                }
-//
-//                completion(.success(study))
-//            default:
-//                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-//                    completion(result)
-//                }
-//            }
-//        }
+    func createStudy(_ study: MockStudy, completion: @escaping (Result<MockStudy, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { return }
+            
+            let requestBody = response.request?.httpBody
+            let body = jsonDecode(type: MockStudy.self, data: requestBody!)
+            print(body)
+            
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data,
+                      let study = jsonDecode(type: MockStudy.self, data: data) else {
+                    
+//                    completion(.failure())
+                    return
+                }
+                
+                completion(.success(study))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
     }
     
     func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
@@ -437,7 +433,7 @@ struct Network {
     // MARK: - Study Schedule
     
     func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudySchedule, interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.getAllStudySchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -455,7 +451,8 @@ struct Network {
     }
     
     func createStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: TokenRequestInterceptor()).response { response in
+        
+        AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -480,7 +477,7 @@ struct Network {
     }
     
     func updateStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -505,7 +502,7 @@ struct Network {
     }
     
     func deleteStudySchedule(_ studyScheduleID: ID, deleteRepeatSchedule: Bool,  completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule), interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
@@ -564,7 +561,7 @@ extension Network {
         let result: Codable?
 
         jsonDecoder.dateDecodingStrategy = .formatted(DateFormatter.myDateFormatter)
-
+        
         do {
 
             result = try jsonDecoder.decode(type, from: data)

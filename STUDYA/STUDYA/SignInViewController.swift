@@ -141,12 +141,18 @@ final class SignInViewController: UIViewController {
         Network.shared.signIn(id: id, pw: pw) { result in
             switch result {
             case .success(let user):
-                DispatchQueue.main.async {
-                    if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
-                        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-                    } else {
-                        self.navigationController?.pushViewController(MailCheckViewController(), animated: true)
-                    }
+               
+                guard let userID = user.id else { fatalError("사용자 아이디 없음") }
+                guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음")}
+                
+                KeyChain.create(key: Const.tempUserId, value: userID)
+                KeyChain.create(key: Const.tempNickname, value: nickname)
+                print("키체인에 저장")
+                
+                if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
+                    NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+                } else {
+                    self.navigationController?.pushViewController(MailCheckViewController(), animated: true)
                 }
             case .failure(let error):
                 print(String(describing: error))
