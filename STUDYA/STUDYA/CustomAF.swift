@@ -44,7 +44,7 @@ enum RequestPurpose: Requestable {
     case emailCheck(UserID) ////2
     case signIn ////4
     case refreshToken ////9
-    case createStudy(MockStudy) //11
+    case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
     case createStudySchedule(StudySchedule)
@@ -84,7 +84,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .createStudy, .checkEmailCertificated:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated:
             return .none
         case .signUp, .updateUser:
             return .multipart

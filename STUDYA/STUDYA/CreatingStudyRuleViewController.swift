@@ -10,7 +10,7 @@ import UIKit
 struct CreatingStudyRuleViewModel {
     var study: Study {
         didSet {
-            let condition = study.generalRule?.absence?.time != nil || study.generalRule?.lateness?.time != nil || study.generalRule?.excommunication?.lateness != nil || study.generalRule?.excommunication?.absence != nil
+            let condition = study.generalRule?.absence.time != nil || study.generalRule?.lateness.time != nil || study.generalRule?.excommunication.lateness != nil || study.generalRule?.excommunication.absence != nil
             isGeneralFormFilled = condition ? true : false
             isFreeFormFilled = study.freeRule != "" && study.freeRule != nil ? true : false
         }
@@ -128,11 +128,10 @@ class CreatingStudyRuleViewController: UIViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
         studyGeneralRuleVC.task = .creating
-        studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: nil, absence: nil, deposit: nil, excommunication: nil)
+        studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.creatingStudyRuleViewModel.study.generalRule = rule
             self.creatingStudyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
-            print(rule, #function)
         }
         
         studyGeneralRuleVC.navigationItem.title = "규칙"
@@ -170,19 +169,19 @@ class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func doneButtonTapped() {
         
-//        let study = creatingStudyRuleViewModel.study
-//        
-//        Network.shared.createStudy(study) { result in
-//            switch result {
-//            case .success(let study):
-//                print(study)
-//                
-//                let nextVC = CreatingStudyCompleteViewController()
-//                self.navigationController?.pushViewController(nextVC, animated: true)
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
+        let study = creatingStudyRuleViewModel.study
+        
+        Network.shared.createStudy(study) { result in
+            switch result {
+            case .success(let study):
+                print(study)
+                
+                let nextVC = CreatingStudyCompleteViewController()
+                self.navigationController?.pushViewController(nextVC, animated: true)
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     @objc func closeButtonDidTapped() {

@@ -300,8 +300,11 @@ final class EditingStudyFormViewController: UIViewController {
         token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String
+            let selectedCategory = StudyCategory.allCases.filter { category in
+                category.rawValueWithKorean == title
+            }.first
             
-            categoryChoice = StudyCategory(rawValue: title)
+            categoryChoice = selectedCategory
         }
     }
     
@@ -397,9 +400,9 @@ extension EditingStudyFormViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
-        cell.title = StudyCategory.allCases[indexPath.row].rawValue
+        cell.title = StudyCategory.allCases[indexPath.row].rawValueWithKorean
     
-        if let category = studyViewModel?.study.category, cell.title == category {
+        if let rawValue = studyViewModel?.study.category, let category = StudyCategory(rawValue: rawValue)?.rawValueWithKorean, category == cell.title {
             cell.isSameTitle = true
         }
         

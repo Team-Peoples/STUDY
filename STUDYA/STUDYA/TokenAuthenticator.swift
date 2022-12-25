@@ -35,7 +35,7 @@ class TokenAuthenticator: Authenticator {
     }
     
     func didRequest(_ urlRequest: URLRequest, with response: HTTPURLResponse, failDueToAuthenticationError error: Error) -> Bool {
-        return response.statusCode == 401
+        return response.statusCode == 403
     }
     
     func refresh(_ credential: Credential, for session: Alamofire.Session, completion: @escaping (Result<Credential, Error>) -> Void) {

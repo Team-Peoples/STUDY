@@ -160,7 +160,7 @@ class ProfileSettingViewController: UIViewController {
                 UserDefaults.standard.set(true, forKey: Const.isLoggedin)
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)
             case .failure(let error):
-                
+
                 switch error {
                 case .imageNotFound:
                     DispatchQueue.main.async {
