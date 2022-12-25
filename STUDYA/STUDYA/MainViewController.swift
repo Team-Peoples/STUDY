@@ -22,7 +22,8 @@ final class MainViewController: SwitchableViewController {
     }
     private var currentStudyOverall: StudyOverall? {
         didSet {
-            isManager
+            guard let currentStudyOverall = currentStudyOverall else { return }
+            isManager = currentStudyOverall.isManager
             mainTableView.reloadData()
         }
     }
@@ -90,8 +91,6 @@ final class MainViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(KeyChain.read(key: Const.accessToken))
-        print(KeyChain.read(key: Const.refreshToken))
 //        📣네트워킹으로 myStudyList 넣어주기
         getUserInformationAndStudies()
 //        myStudyList = [
@@ -159,6 +158,7 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.modalPresentationStyle = .overFullScreen
         dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
+        dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
         present(dimmingVC, animated: true)
@@ -200,7 +200,8 @@ final class MainViewController: SwitchableViewController {
             switch result {
                 
             case .success(let user):
-                print(#function)
+                print(KeyChain.read(key: Const.accessToken))
+                print(KeyChain.read(key: Const.refreshToken))
                 self.nickName = user.nickName
                 self.getAllStudies()
             case .failure(let error):

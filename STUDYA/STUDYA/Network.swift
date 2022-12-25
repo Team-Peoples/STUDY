@@ -368,7 +368,6 @@ struct Network {
             
             let requestBody = response.request?.httpBody
             let body = jsonDecode(type: MockStudy.self, data: requestBody!)
-            print(body)
             
             switch httpResponse.statusCode {
             case 200:

@@ -11,14 +11,15 @@ class MainDropDownTableViewCell: UITableViewCell {
 
     static let identifier = "MainDropDownTableViewCell"
     
-    internal var study: Study? {
+    internal var studyName: String? {
         didSet {
-            titleLabel.text = study?.studyName
+            titleLabel.text = studyName
         }
     }
     internal var isCurrentStudy = false {
         didSet {
             if isCurrentStudy {
+                selectionStyle = .none
                 contentView.backgroundColor = UIColor(red: 247/255, green: 246/255, blue: 249/255, alpha: 1)
             }
         }
@@ -44,6 +45,7 @@ class MainDropDownTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
+        selectionStyle = .default
         contentView.backgroundColor = .systemBackground
     }
 }

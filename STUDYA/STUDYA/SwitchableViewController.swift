@@ -80,6 +80,8 @@ class SwitchableViewController: UIViewController, Navigatable {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             managerSwitch.addTarget(self, action: #selector(managerSwitchTappedAction), for: .valueChanged)
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: managerSwitch)
+        } else {
+            navigationItem.setRightBarButtonItems(nil, animated: true)
         }
     }
 }
