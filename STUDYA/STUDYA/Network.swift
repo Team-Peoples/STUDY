@@ -242,7 +242,7 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        guard let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
         
         AF.upload(multipartFormData: { data in
             
@@ -250,6 +250,7 @@ struct Network {
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
         }, with: RequestPurpose.updateUser(user), interceptor: AuthenticationInterceptor()).validate().response { response in
             
+            guard let responseo = response.request?.httpBody else { return }
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -406,6 +407,27 @@ struct Network {
         }
     }
     
+    func getStudyInfo(of studyID: ID, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let body = response.data, let study = jsonDecode(type: Study.self, data: body) else { return }
+                
+                completion(.success(study))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
     // MARK: - Study Schedule
     
     func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
@@ -507,6 +529,27 @@ struct Network {
 // MARK: - Helpers
 
 extension Network {
+    
+    // MARK: - Image Download
+    
+    func setImage(stringURL: String, completion: @escaping (Result<UIImage?, PeoplesError>) -> Void) {
+
+        AF.request(stringURL).response { response in
+
+            guard let httpResponse = response.response else { return }
+
+            switch httpResponse.statusCode {
+                case 200:
+                    guard let data = response.data, let image = UIImage(data: data) else {
+                        completion(.failure(.decodingError))
+                        return
+                    }
+                    completion(.success(image))
+                default:
+                completion(.failure(.unknownError(httpResponse.statusCode)))
+            }
+        }
+    }
 
     func saveLoginformation(httpResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
         if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,

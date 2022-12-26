@@ -287,6 +287,7 @@ extension ProfileSettingViewController: PHPickerViewControllerDelegate {
                     
                     if let image = image as? UIImage {
                         self.profileImageSelectorView.configure(image)
+                        self.profileImage = image
                     }
                 }
             }

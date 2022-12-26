@@ -12,14 +12,14 @@ final class MemberBottomSheetViewController: UIViewController {
     internal var isMaster = true
     internal lazy var member = Member(nickName: "", isManager: false) {
         didSet {
-            profileView.configure(member.profileImage)
+            profileImageView.profileImage = member.profileImage
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
             managerButton.isSelected = member.isManager ? true : false
         }
     }
     
-    private let profileView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12), target: self, action: #selector(askExcommunication))
        
@@ -140,7 +140,7 @@ final class MemberBottomSheetViewController: UIViewController {
     
     private func configureDefaultView() {
                 
-        view.addSubview(profileView)
+        view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
         view.addSubview(excommunicatingButton)
         view.addSubview(separator)
@@ -149,18 +149,18 @@ final class MemberBottomSheetViewController: UIViewController {
         view.addSubview(roleInputField)
         view.addSubview(doneButton)
         
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.top.equalTo(view.snp.top).inset(30)
             make.leading.equalTo(view.snp.leading).inset(20)
         }
         
-        nicknameLabel.centerY(inView: profileView)
-        nicknameLabel.anchor(leading: profileView.trailingAnchor, leadingConstant: 10)
+        nicknameLabel.centerY(inView: profileImageView)
+        nicknameLabel.anchor(leading: profileImageView.trailingAnchor, leadingConstant: 10)
         
-        excommunicatingButton.centerY(inView: profileView)
+        excommunicatingButton.centerY(inView: profileImageView)
         excommunicatingButton.anchor(trailing: view.trailingAnchor, trailingConstant: 33)
         
-        separator.anchor(top: profileView.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 1)
+        separator.anchor(top: profileImageView.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 1)
         
         ownerButton.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).inset(40)

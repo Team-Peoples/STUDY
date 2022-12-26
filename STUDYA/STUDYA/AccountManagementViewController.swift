@@ -14,12 +14,7 @@ import Kingfisher
 //To be fixed: 입력칸 rightbutton 오른쪽 padding 10 넣기
 
 final class AccountManagementViewController: UIViewController {
-    
-    internal var profileImage: UIImage? {
-        willSet {
-            newValue == nil ? profileImageView.configure(UIImage(named: "defaultProfile")) : profileImageView.configure(newValue)
-        }
-    }
+
     internal var nickName: String? {
         didSet {
             nickNameField.text = nickName
@@ -217,9 +212,15 @@ final class AccountManagementViewController: UIViewController {
                 self.email = user.id
                 
                 guard let imageURL = user.image else { return }
-                let url = URL(string: imageURL)
-                
-                self.profileImageView.internalImageView.kf.setImage(with: url)
+
+                Network.shared.setImage(stringURL: imageURL) { result in
+                    switch result {
+                    case .success(let image):
+                        self.profileImageView.profileImage = image
+                    case .failure(let failure):
+                        print(failure)
+                    }
+                }
             }
         }
     }
@@ -243,12 +244,12 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
-        print(#function)
-        let profileImage = profileImageView.internalImageView.image
+        let profileImage = profileImageView.profileImage
+        
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
             case .success(let success):
-                print(success)
+                print(success,"🐸")
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)
@@ -262,11 +263,12 @@ final class AccountManagementViewController: UIViewController {
             self.openAlbum()
         }
         lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
-            self.profileImage = nil
+            self.profileImageView.profileImage = nil
+            self.saveButtonOkay = true
         }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
         alert.addAction(selectImageAction)
-        if profileImage != nil {
+        if profileImageView.profileImage != nil {
             alert.addAction(defaultImageAction)
         }
         alert.addAction(cancelAction)
@@ -686,10 +688,8 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 
                 DispatchQueue.main.async {
-                    self.profileImage = image as! UIImage
-                    
                     if let image = image as? UIImage {
-                        self.profileImageView.configure(image)
+                        self.profileImageView.profileImage = image
                         self.profileImageChangeOkay = true
                         
                         if self.passwordChangeStarted {

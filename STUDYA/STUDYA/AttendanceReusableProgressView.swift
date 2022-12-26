@@ -253,7 +253,7 @@ class AttendanceStatusWithProfileView: UIView {
     // MARK: - Properties
     
     private let titleLabel = CustomLabel(title: "출결 상세", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let profileView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageView(size: 40)
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
     private let fineLabel: UILabel = {
         let lbl = UILabel()
@@ -280,7 +280,7 @@ class AttendanceStatusWithProfileView: UIView {
     
     func configureViews() {
         addSubview(titleLabel)
-        addSubview(profileView)
+        addSubview(profileImageView)
         addSubview(nickNameLabel)
         addSubview(fineLabel)
         addSubview(attendanceProgressView)
@@ -293,16 +293,16 @@ class AttendanceStatusWithProfileView: UIView {
             make.top.equalTo(self.snp.top).offset(14)
             make.leading.equalTo(self.snp.leading).inset(30)
         }
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
             make.leading.equalTo(self.safeAreaLayoutGuide).offset(20)
         }
         nickNameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileView)
-            make.leading.equalTo(profileView.snp.trailing).offset(10)
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
         fineLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.bottom)
+            make.top.equalTo(profileImageView.snp.bottom)
             make.trailing.equalTo(self.safeAreaLayoutGuide).inset(36)
         }
         attendanceProgressView.snp.makeConstraints { make in
