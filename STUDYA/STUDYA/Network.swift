@@ -12,7 +12,6 @@ import Alamofire
 
 enum PeoplesError: Error {
     case duplicatedEmail
-    case userNotFound
     case alreadySNSSignUp
     case notAuthEmail
     case wrongPassword
@@ -23,12 +22,17 @@ enum PeoplesError: Error {
     case decodingError
     case unknownError(Int?)
     case tokenExpired
+    case userNotFound
+    case studyNotFound
     case imageNotFound
 }
 
 enum ErrorCode {
     static let duplicatedEmail = "DUPLICATE_EMAIL"
     static let wrongPassword = "PASSWORD_MISMATCH"
+    static let userNotFound = "USER_NOT_FOUND"
+    static let studyNotFound = "STUDY_NOT_FOUND"
+    static let imageNotFound = "IMG_NOT_FOUND"
 }
 
 // MARK: - Network
@@ -250,7 +254,6 @@ struct Network {
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
         }, with: RequestPurpose.updateUser(user), interceptor: AuthenticationInterceptor()).validate().response { response in
             
-            guard let responseo = response.request?.httpBody else { return }
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -274,12 +277,11 @@ struct Network {
                     return
                 }
                 
-                if errorCode == "IMG_NOT_FOUND" {
-                    completion(.failure(.imageNotFound))
-                } else if errorCode ==  "USER_NOT_FOUND" {
-                    completion(.failure(.unauthorizedUser))
-                } else {
-                    completion(.failure(.unknownError(httpResponse.statusCode)))
+                switch errorCode {
+                case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
+                case ErrorCode.userNotFound: completion(.failure(.userNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
                 
             default:
@@ -367,6 +369,23 @@ struct Network {
     
     // MARK: - Study
     
+    func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
+                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
+                completion(.success(studies))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
@@ -390,15 +409,95 @@ struct Network {
         }
     }
     
-    func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
-            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+    func updateStudy(_ study: Study, id studyID: ID, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateStudy(studyID, study), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+           
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let study = jsonDecode(type: Study.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(study))
+                
+            case 404:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
+                case ErrorCode.userNotFound: completion(.failure(.userNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
+    func deleteStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+       
+        AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+           
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let study = jsonDecode(type: Study.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(study))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func joinStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.joinStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
-                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
-                completion(.success(studies))
+                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else { return }
+                
+                completion(.success(isSuccessed))
+                
+            case 404:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
+                case ErrorCode.userNotFound: completion(.failure(.userNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)

@@ -22,13 +22,13 @@ class TokenAuthenticator: Authenticator {
     typealias Credential = TokenAuthenticationCredential
     
     func apply(_ credential: Credential, to urlRequest: inout URLRequest) {
-        print(#function)
+       
         urlRequest.headers.add(.bearerAccessToken(credential.accessToken))
         urlRequest.headers.add(.bearerRefreshToken(credential.refreshToken))
     }
     
     func isRequest(_ urlRequest: URLRequest, authenticatedWith credential: Credential) -> Bool {
-        print(#function)
+       
         let bearerAccessToken = HTTPHeader.bearerAccessToken(credential.accessToken).value
         let bearerRefreshToken = HTTPHeader.bearerRefreshToken(credential.refreshToken).value
         return urlRequest.headers["AccessToken"] == bearerAccessToken && urlRequest.headers["RefreshToken"] == bearerRefreshToken

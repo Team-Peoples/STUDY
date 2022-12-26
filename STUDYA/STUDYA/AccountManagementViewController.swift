@@ -248,8 +248,7 @@ final class AccountManagementViewController: UIViewController {
         
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
-            case .success(let success):
-                print(success,"🐸")
+            case .success(let _):
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)

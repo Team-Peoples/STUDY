@@ -48,9 +48,11 @@ enum RequestPurpose: Requestable {
     case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
     case createStudySchedule(StudySchedule)
+    case joinStudy(ID)
     
     //    HTTPMethod: PUT
-    case updateUser(User)   //6
+    case updateUser(User)//6
+    case updateStudy(ID, Study)
     case updateAnnouncement(Title, Content, ID) //16
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
@@ -98,7 +100,7 @@ extension RequestPurpose {
     var path: String {
         switch self {
             
-        //    HTTPMethod: POST
+            //    HTTPMethod: POST
         case .signUp:
             return "/signup"
         case .emailCheck:
@@ -115,10 +117,15 @@ extension RequestPurpose {
             return "/user/schedule"
         case .createStudySchedule:
             return "/study/schedule"
+        case .joinStudy(let id):
+            return "/join/\(id)"
             
-        //    HTTPMethod: PUT
+            //    HTTPMethod: PUT
         case .updateUser:
             return "/user"
+        case .updateStudy(let studyID, _):
+            return "/study/\(studyID)"
+            
         case .updateAnnouncement:
             return "/noti"
         case .updatePinnedAnnouncement:
@@ -129,8 +136,8 @@ extension RequestPurpose {
             return "/user/schedule"
         case  .updateStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
-
-        //    HTTPMethod: DEL
+            
+            //    HTTPMethod: DEL
         case .deleteUser(let id):
             return "/user/\(id)"
         case .deleteAnnouncement(_,_,let id):
@@ -138,7 +145,7 @@ extension RequestPurpose {
         case .deleteStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
             
-        //    HTTPMethod: GET
+            //    HTTPMethod: GET
         case .getNewPassord:
             return "/user/password"
         case .getMyInfo:
@@ -166,9 +173,9 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .createAnnouncement, .createSchedule, .createStudySchedule: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule: return .post
             
-        case .updateUser, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
             
@@ -213,6 +220,8 @@ extension RequestPurpose {
             return .encodableBody(user)
         case .createStudy(let study):
             return .encodableBody(study)
+        case .updateStudy(_, let study):
+            return .encodableBody(study)
         case .createStudySchedule(let studySchedule):
             return .encodableBody(studySchedule)
         case .updateStudySchedule(let studySchedule):
@@ -243,8 +252,6 @@ extension RequestPurpose {
             headers = [Header.contentType.type : Header.json.type]
         case .multipart:
             headers = [Header.contentType.type : Header.multipart.type]
-//        case .token:
-//            headers = [Header.accessToken.type : accessToken, Header.refreshToken.type : refreshToken]
         default: break
         }
         
@@ -289,6 +296,7 @@ struct TokenRequestInterceptor: RequestInterceptor {
         let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
         
         var request = urlRequest
+        
         request.headers.add(.bearerAccessToken(accessToken))
         request.headers.add(.bearerRefreshToken(refreshToken))
         
