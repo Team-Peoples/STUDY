@@ -61,7 +61,7 @@ enum RequestPurpose: Requestable {
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
-    case deleteAnnouncement(Title, Content, ID)  //18
+    case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
     
     //    HTTPMethod: GET
@@ -140,7 +140,7 @@ extension RequestPurpose {
             //    HTTPMethod: DEL
         case .deleteUser(let id):
             return "/user/\(id)"
-        case .deleteAnnouncement(_,_,let id):
+        case .deleteAnnouncement(let id):
             return "/noti/\(id)"
         case .deleteStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
@@ -207,10 +207,6 @@ extension RequestPurpose {
             return .body(["scheduleId" : id])
             
 ///    HTTPMethod: DELETE
-        case .deleteAnnouncement(let title, let content, let id):
-            return .body(["notificationSubject": title,
-                          "notificationContents": content,
-                          "notificationId": id])
         case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):
             return .body(["studyScheduleId": studyScheduleID,
                           "repeatDelete": deleteRepeatSchedule])

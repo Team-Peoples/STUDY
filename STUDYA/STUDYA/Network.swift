@@ -623,6 +623,129 @@ struct Network {
             }
         }
     }
+    
+    // MARK: - Study Announcement
+    
+    // domb: 빈배열로 올경우 어떻게 할것인지 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
+    func getAllAnnouncement(id studyID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllAnnouncements(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(announcements))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func createAnnouncement(title: String, content: String, studyID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createAnnouncement(title, content, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(announcements))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func updateAnnouncement(title: String, content: String, notificationID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateAnnouncement(title, content, notificationID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(announcements))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func updatePinnedAnnouncement(notificationID: ID, isPinned: Bool, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updatePinnedAnnouncement(notificationID, isPinned), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(announcements))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func deleteAnnouncement(notificationID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteAnnouncement(notificationID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(announcements))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Helpers

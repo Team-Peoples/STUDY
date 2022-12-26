@@ -12,17 +12,7 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
-    var announcements: [Announcement] = [
-        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게 보이고 상세페이지로 들어갔을때 이런식으로 보이는게 맞는거지", content: "두줄짜리 공지사항의 경우는\n이렇게 보이는게 맞지", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date(), isPinned: true),
-        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date()),
-        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", createdDate: Date()),
-        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date())
-    ]
+    var announcements: [Announcement] = []
     
     private lazy var announcementEmptyView: UIView = {
         let view = UIView()

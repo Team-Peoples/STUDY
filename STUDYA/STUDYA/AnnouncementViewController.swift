@@ -178,7 +178,7 @@ class AnnouncementViewController: UIViewController {
     }
     
     @objc func doneButtonDidTapped() {
-        self.dismiss(animated: true)
+        Network.shared.createAnnouncement(title: <#T##String#>, content: <#T##String#>, studyID: <#T##ID#>, completion: <#T##(Result<[Announcement], PeoplesError>) -> Void#>)
     }
     
     @objc func cancel() {
