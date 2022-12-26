@@ -699,8 +699,8 @@ struct Network {
         }
     }
     
-    func updatePinnedAnnouncement(notificationID: ID, isPinned: Bool, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.updatePinnedAnnouncement(notificationID, isPinned), interceptor: AuthenticationInterceptor()).validate().response { response in
+    func updatePinnedAnnouncement(_ announcementID: ID, isPinned: Bool, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updatePinnedAnnouncement(announcementID, isPinned), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -723,8 +723,8 @@ struct Network {
         }
     }
     
-    func deleteAnnouncement(notificationID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.deleteAnnouncement(notificationID), interceptor: AuthenticationInterceptor()).validate().response { response in
+    func deleteAnnouncement(_ announcementID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteAnnouncement(announcementID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
