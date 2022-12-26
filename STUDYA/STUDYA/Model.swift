@@ -210,22 +210,27 @@ struct Announcement: Codable {
     let id: Int?
     let title: String?
     let content: String?
-    let createdDate: String?
+    let createdAt: String?
     var isPinned: Bool?
+    
+    var createdDate: Date? {
+        guard let createdAt = createdAt else { return nil }
+        return Formatter.formatToDate(string: createdAt)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "notificationId"
         case title = "notificationSubject"
         case content = "notificationContents"
-        case createdDate = "createdAt"
+        case createdAt
         case isPinned = "pin"
     }
     
-    init(id: Int? = nil, title: String?, content: String?, createdDate: String?, isPinned: Bool? = nil) {
+    init(id: Int? = nil, title: String?, content: String?, createdAt: String?, isPinned: Bool? = nil) {
         self.id = id
         self.title = title
         self.content = content
-        self.createdDate = createdDate
+        self.createdAt = createdAt
         self.isPinned = isPinned
     }
 }

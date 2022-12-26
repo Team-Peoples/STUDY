@@ -1284,7 +1284,6 @@ class PlusButtonWithLabelContainerView: UIView {
         
         configureViews()
         setConstraints()
-        self.isHidden = true
     }
     
     required init?(coder: NSCoder) {

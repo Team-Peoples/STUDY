@@ -12,7 +12,12 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
-    var announcements: [Announcement] = []
+    var announcements: [Announcement] = [] {
+        didSet {
+            self.announcementBoardTableView.reloadData()
+            self.checkAnnouncementBoardIsEmpty()
+        }
+    }
     
     private lazy var announcementEmptyView: UIView = {
         let view = UIView()
@@ -61,7 +66,17 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        checkAnnouncementBoardIsEmpty()
+        
+        let studyID: ID = 1
+        
+        Network.shared.getAllAnnouncement(studyID: studyID) { result in
+            switch result {
+            case .success(let announcements):
+                self.announcements = announcements
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -89,7 +104,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         announcementBoardTableView.delegate = self
         
         announcementBoardTableView.register(AnnouncementBoardTableViewCell.self, forCellReuseIdentifier: "AnnouncementBoardTableViewCell")
-        announcementBoardTableView.rowHeight = 147
+        
         announcementBoardTableView.separatorStyle = .none
         announcementBoardTableView.backgroundColor = .systemBackground
         announcementBoardTableView.tableHeaderView = headerView
@@ -216,7 +231,19 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
             pinnedCell?.announcement?.isPinned = false
             
+            // domb: 아직 409에러 피드백 받아서 할게 있음. ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
             cell.announcement?.isPinned = true
+            
+            if let announcementID = cell.announcement?.id {
+                Network.shared.updatePinnedAnnouncement(notificationID: announcementID, isPinned: true) { result in
+                    switch result {
+                    case .success(let success):
+                        print(success)
+                    case .failure(let failure):
+                        print(failure)
+                    }
+                }
+            }
         }
         
         
@@ -237,10 +264,17 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             let alertController = UIAlertController(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "삭제", style: .destructive) {
                 _ in
-
+                if let announcementID = cell.announcement?.id {
+                    Network.shared.deleteAnnouncement(notificationID: announcementID) { result in
+                        switch result {
+                        case .success(let success):
+                            print(success)
+                        case .failure(let failure):
+                            print(failure)
+                        }
+                    }
+                }
                 self.announcements.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                tableView.reloadData()
             }
             
             let cancelAction = UIAlertAction(title: "닫기", style: .cancel)
@@ -265,5 +299,9 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
 extension AnnouncementBoardViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 48
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }

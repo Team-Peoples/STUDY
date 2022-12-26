@@ -627,7 +627,7 @@ struct Network {
     // MARK: - Study Announcement
     
     // domb: 빈배열로 올경우 어떻게 할것인지 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func getAllAnnouncement(id studyID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+    func getAllAnnouncement(studyID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllAnnouncements(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
@@ -675,8 +675,8 @@ struct Network {
         }
     }
     
-    func updateAnnouncement(title: String, content: String, notificationID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.updateAnnouncement(title, content, notificationID), interceptor: AuthenticationInterceptor()).validate().response { response in
+    func updateAnnouncement(title: String, content: String, announcementID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateAnnouncement(title, content, announcementID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
