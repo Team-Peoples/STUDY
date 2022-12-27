@@ -13,11 +13,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     
     // MARK: - Properties
     
-    var generalRule: GeneralStudyRule = GeneralStudyRule() {
-        didSet {
-            print(generalRule)
-        }
-    }
+    var generalRule: GeneralStudyRule = GeneralStudyRule(lateness: Lateness(), absence: Absence(), excommunication: Excommunication())
     
     /// 출결 규칙
     @IBOutlet weak var latenessRuleTimeField: RoundedNumberField!
@@ -208,11 +204,11 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         switch textField {
         case latenessFineTextField:
-            if let latenessFine = generalRule.lateness?.fine {
+            if let latenessFine = generalRule.lateness.fine {
                 latenessFineTextField.text = Formatter.formatIntoDecimal(number: latenessFine)
             }
         case absenceFineTextField:
-            if let absenceFine = generalRule.absence?.fine {
+            if let absenceFine = generalRule.absence.fine {
                 absenceFineTextField.text = Formatter.formatIntoDecimal(number: absenceFine)
             }
         case depositTextField:
@@ -242,23 +238,23 @@ extension StudyGeneralRuleAttendanceTableViewController: UITextFieldDelegate {
         
         switch textField {
         case latenessRuleTimeField:
-            generalRule.lateness?.time = Int(latenessRuleTimeField.text!)!
+            generalRule.lateness.time = Int(latenessRuleTimeField.text!)
         case absenceRuleTimeField:
-            generalRule.absence?.time = Int(absenceRuleTimeField.text!)
+            generalRule.absence.time = Int(absenceRuleTimeField.text!)
         case perLateMinuteField:
-            generalRule.lateness?.count = Int(perLateMinuteField.text!)!
+            generalRule.lateness.count = Int(perLateMinuteField.text!)
         case latenessFineTextField:
             if let text = latenessFineTextField.text, let intText = Int(text) {
                 latenessFineTextField.text = Formatter.formatIntoDecimal(number: intText)
             }
             
-            generalRule.lateness?.fine = Formatter.formatIntoNoneDecimal(latenessFineTextField.text)!
+            generalRule.lateness.fine = Formatter.formatIntoNoneDecimal(latenessFineTextField.text)
         case absenceFineTextField:
             if let text = absenceFineTextField.text, let intText = Int(text) {
                 absenceFineTextField.text = Formatter.formatIntoDecimal(number: intText)
             }
             
-            generalRule.absence?.fine = Formatter.formatIntoNoneDecimal(absenceFineTextField.text)
+            generalRule.absence.fine = Formatter.formatIntoNoneDecimal(absenceFineTextField.text)
         case depositTextField:
             if let text = depositTextField.text, let intText = Int(text) {
                 depositTextField.text = Formatter.formatIntoDecimal(number: intText)

@@ -79,35 +79,6 @@ enum AttendanceBottomViewType {
     }
 }
 
-enum StudyCategory: String, CaseIterable {
-    case language = "어학"
-    case dev_prod_design = "개발/기획/디자인"
-    case project = "프로젝트"
-    case getJob = "취업"
-    case certificate = "자격시험/자격증"
-    case pastime = "자기계발/취미"
-    case etc = "그 외"
-    
-    var indexPath: IndexPath {
-        switch self {
-            case .language:
-                return IndexPath(item: 0, section: 0)
-            case .dev_prod_design:
-                return IndexPath(item: 1, section: 0)
-            case .project:
-                return IndexPath(item: 2, section: 0)
-            case .getJob:
-                return IndexPath(item: 3, section: 0)
-            case .certificate:
-                return IndexPath(item: 4, section: 0)
-            case .pastime:
-                return IndexPath(item: 5, section: 0)
-            case .etc:
-                return IndexPath(item: 6, section: 0)
-        }
-    }
-}
-
 enum CalendarKind {
     case study
     case personal

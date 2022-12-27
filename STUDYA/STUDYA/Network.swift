@@ -326,7 +326,6 @@ struct Network {
         AF.request(RequestPurpose.refreshToken, interceptor: TokenRequestInterceptor()).response { response in
             
             guard let httpResponse = response.response else {
-                
                 completion(.failure(.serverError))
                 return
             }
@@ -334,15 +333,19 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 
-                guard let data = response.data,
-                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
                     return
                 }
                 
-                guard isSuccessed else { return }
+                guard isSuccessed else {
+                    completion(.failure(.serverError))
+                    return
+                }
                 
                 if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
                    let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String {
+                    
                     KeyChain.create(key: Const.accessToken, value: accesToken)
                     KeyChain.create(key: Const.refreshToken, value: refreshToken)
                 } else {
@@ -362,20 +365,18 @@ struct Network {
     
     // MARK: - Study
     
-    func createStudy(_ study: MockStudy, completion: @escaping (Result<MockStudy, PeoplesError>) -> Void) {
+    func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
-            guard let httpResponse = response.response else { return }
             
-            let requestBody = response.request?.httpBody
-            let body = jsonDecode(type: MockStudy.self, data: requestBody!)
-            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+           
             switch httpResponse.statusCode {
             case 200:
-                
-                guard let data = response.data,
-                      let study = jsonDecode(type: MockStudy.self, data: data) else {
-                    
-//                    completion(.failure())
+                guard let data = response.data, let study = jsonDecode(type: Study.self, data: data) else {
+                    completion(.failure(.decodingError))
                     return
                 }
                 
@@ -434,7 +435,8 @@ struct Network {
     func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudySchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
             
-            guard let httpResponse = response.response else { completion(.failure(.serverError))
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
                 return
             }
             
@@ -453,14 +455,14 @@ struct Network {
         
         AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
-            guard let httpResponse = response.response else { completion(.failure(.serverError))
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
                 return
             }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data,
-                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -478,7 +480,8 @@ struct Network {
     func updateStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
-            guard let httpResponse = response.response else { completion(.failure(.serverError))
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
                 return
             }
             
@@ -503,14 +506,14 @@ struct Network {
     func deleteStudySchedule(_ studyScheduleID: ID, deleteRepeatSchedule: Bool,  completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
-            guard let httpResponse = response.response else { completion(.failure(.serverError))
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
                 return
             }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data,
-                      let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }

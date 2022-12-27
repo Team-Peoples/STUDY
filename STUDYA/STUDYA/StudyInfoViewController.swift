@@ -234,8 +234,9 @@ class StudyInfoViewController: SwitchableViewController {
     private func configureViews() {
         
         //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
-        
-        studyCategoryLabel.text = study?.category
+        if let rawValue = study?.category {
+            studyCategoryLabel.text = StudyCategory(rawValue: rawValue)?.rawValueWithKorean
+        }
         studyNameLabel.text = study?.studyName
         studyIntroductionLabel.text = study?.studyIntroduction
         

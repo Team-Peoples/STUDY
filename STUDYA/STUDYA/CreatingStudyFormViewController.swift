@@ -15,7 +15,7 @@ final class CreatingStudyFormViewController: UIViewController {
     var studyViewModel: StudyViewModel? {
         didSet {
             guard let studyViewModel = studyViewModel else { return }
-            print(studyViewModel)
+           
             doneButton.isEnabled = studyViewModel.formIsValid
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
@@ -318,7 +318,11 @@ final class CreatingStudyFormViewController: UIViewController {
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String
             
-            categoryChoice = StudyCategory(rawValue: title)
+            let selectedCategory = StudyCategory.allCases.filter { category in
+                category.rawValueWithKorean == title
+            }.first
+            
+            categoryChoice = selectedCategory
         }
     }
     
@@ -414,7 +418,7 @@ extension CreatingStudyFormViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
-        cell.title = StudyCategory.allCases[indexPath.row].rawValue
+        cell.title = StudyCategory.allCases[indexPath.row].rawValueWithKorean
         return cell
     }
 }

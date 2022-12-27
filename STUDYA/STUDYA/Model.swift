@@ -70,39 +70,6 @@ struct SNSInfo {
     let provider: String
 }
 
-struct MockStudy: Codable {
-    let studyName: String
-    let studyOn, studyOff: Bool
-    let studyCategory, studyInfo: String
-    let studyRule: StudyRule
-    let studyFlow: String
-}
-
-// MARK: - StudyRule
-struct StudyRule: Codable {
-    let lateness: Lateness
-    let absent: Absent
-    let deposit: Int
-    let out: Out
-}
-
-// MARK: - Absent
-struct Absent: Codable {
-    var time, fine: Int
-}
-
-// MARK: - Lateness
-struct Lateness: Codable {
-    var time, count, fine: Int
-}
-
-// MARK: - Out
-struct Out: Codable {
-    let lateness, absent: Int
-}
-
-
-
 struct Study: Codable {
     let id: Int?
     var studyOn, studyOff: Bool
@@ -123,7 +90,7 @@ struct Study: Codable {
         case studyOn, studyOff
     }
 
-    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool?, isPaused: Bool?, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: 0, count: 0, fine: 0), absence: Absence(), deposit: nil, excommunication: Excommunication())) {
+    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
         self.id = id
         self.studyName = studyName
         self.studyOn = studyOn
@@ -134,6 +101,54 @@ struct Study: Codable {
         self.isBlocked = isBlocked
         self.isPaused = isPaused
         self.generalRule = generalRule
+    }
+}
+
+enum StudyCategory: String, CaseIterable {
+    case language = "LANGUAGE"
+    case dev_prod_design = "DEVELOPED"
+    case project = "PROJECT"
+    case getJob = "EMPLOYMENT"
+    case certificate = "CERTIFICATE"
+    case pastime = "HOBBY"
+    case etc = "ETC"
+    
+    var rawValueWithKorean: String {
+        switch self {
+        case .language:
+            return "어학"
+        case .dev_prod_design:
+            return "개발/기획/디자인"
+        case .project:
+            return "프로젝트"
+        case .getJob:
+            return "취업"
+        case .certificate:
+            return "자격시험/자격증"
+        case .pastime:
+            return "자기계발/취미"
+        case .etc:
+            return "그 외"
+        }
+    }
+    
+    var indexPath: IndexPath {
+        switch self {
+            case .language:
+                return IndexPath(item: 0, section: 0)
+            case .dev_prod_design:
+                return IndexPath(item: 1, section: 0)
+            case .project:
+                return IndexPath(item: 2, section: 0)
+            case .getJob:
+                return IndexPath(item: 3, section: 0)
+            case .certificate:
+                return IndexPath(item: 4, section: 0)
+            case .pastime:
+                return IndexPath(item: 5, section: 0)
+            case .etc:
+                return IndexPath(item: 6, section: 0)
+        }
     }
 }
 
@@ -159,10 +174,10 @@ enum OnOff: String {
 }
 
 struct GeneralStudyRule: Codable {
-    var lateness: Lateness?
-    var absence: Absence?
+    var lateness: Lateness
+    var absence: Absence
     var deposit: Int?
-    var excommunication: Excommunication?
+    var excommunication: Excommunication
 
     enum CodingKeys: String, CodingKey {
         case lateness, deposit
@@ -175,9 +190,9 @@ struct Absence: Codable {
     var time, fine: Int?
 }
 
-//struct Lateness: Codable {
-//    var time, count, fine: Int?
-//}
+struct Lateness: Codable {
+    var time, count, fine: Int?
+}
 
 struct Excommunication: Codable {
     var lateness, absence: Int?
