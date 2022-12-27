@@ -217,9 +217,8 @@ final class AccountManagementViewController: UIViewController {
                 self.email = user.id
                 
                 guard let imageURL = user.imageURL else { return }
-                let url = URL(string: imageURL)
                 
-                self.profileImageView.internalImageView.kf.setImage(with: url)
+                self.profileImageView.setImageWith(imageURL)
             }
         }
     }
@@ -244,7 +243,7 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func save() {
         print(#function)
-        let profileImage = profileImageView.internalImageView.image
+        let profileImage = profileImageView.internalImage
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
             case .success(let success):

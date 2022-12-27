@@ -13,8 +13,10 @@ final class MemberCollectionViewCell: UICollectionViewCell {
 
     internal var member: Member? {
         didSet {
-//            profileView.configure(size: 72, image: member?.profileImageURL, isManager: member?.isManager ?? false, role: member?.role)
-            nickNameLabel.text = member!.nickName
+            guard let member = member else { return }
+            
+            profileView.configure(imageURL: member.profileImageURL, isManager: member.isManager, role: member.role)
+            nickNameLabel.text = member.nickName
         }
     }
     
@@ -22,7 +24,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     
     private lazy var profileView: ProfileImageView = {
        
-        let p = ProfileImageView(size: 72)
+        let p = ProfileImageView(internalImageSize: 72)
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         p.addGestureRecognizer(recognizer)
