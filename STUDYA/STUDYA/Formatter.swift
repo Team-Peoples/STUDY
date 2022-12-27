@@ -35,7 +35,7 @@ extension DateFormatter {
         
         let dateFormatter = DateFormatter()
         
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
         
         return dateFormatter
     }()

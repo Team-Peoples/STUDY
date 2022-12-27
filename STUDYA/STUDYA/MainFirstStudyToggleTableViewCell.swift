@@ -13,7 +13,8 @@ class MainFirstStudyToggleTableViewCell: UITableViewCell {
     
     internal var studyTitle: String! {
         didSet {
-            dropdownButton.setTitle("\(studyTitle!)  ", for: .normal)
+            guard let studyTitle = studyTitle else { return }
+            dropdownButton.setTitle("\(studyTitle)  ", for: .normal)
         }
     }
     

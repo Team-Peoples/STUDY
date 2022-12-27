@@ -11,7 +11,7 @@ class MainSixthETCTableViewCell: UITableViewCell {
     
     static let identifier = "MainSixthETCTableViewCell"
     
-    internal var currentStudy: Study!
+    internal var currentStudyID: Int?
     
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
     
@@ -88,13 +88,23 @@ class MainSixthETCTableViewCell: UITableViewCell {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nextVC  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
         
-        nextVC.study = self.currentStudy
+//        nextVC.study = self.currentStudy
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
     
     @objc private func membersButtonTapped() {
+        guard let currentStudyID = currentStudyID else { return }
         let nextVC = MemberViewController()
+        
+        Network.shared.getAllMembers(studyID: currentStudyID) { result in
+            switch result {
+            case .success(let members):
+                nextVC.members = members
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self.navigatableSwitchSyncableDelegate, error: error)
+            }
+        }
         
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)

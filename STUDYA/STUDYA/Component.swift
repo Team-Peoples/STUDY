@@ -582,7 +582,7 @@ class ProfileImageView: UIView {
     }
     
     private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
-        configure(image)
+        internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
         internalImageView.clipsToBounds = true
         internalImageView.contentMode = .scaleAspectFill
         internalImageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
@@ -590,12 +590,6 @@ class ProfileImageView: UIView {
         internalImageView.centerXY(inView: self)
         internalImageView.setDimensions(height: size, width: size)
     }
-    
-    
-    internal func configure(_ image: UIImage?) {
-        internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
-    }
-    
     
     private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
         if isManager {
@@ -638,6 +632,19 @@ class ProfileImageView: UIView {
     internal func hideMarks() {
         adminMark.isHidden = true
         roleMark.isHidden = true
+    }
+    
+    internal func setImageWith(_ imageURL: String?) {
+        if let imageURL = imageURL {
+            let url = URL(string: imageURL)
+            internalImageView.kf.setImage(with: url)
+        } else {
+            internalImageView.image = UIImage(named: Const.defaultProfile)
+        }
+    }
+    
+    internal func setImageWith(_ image: UIImage? = nil) {
+        internalImageView.image = image == nil ? UIImage(named: Const.defaultProfile) : image
     }
 }
 

@@ -15,16 +15,16 @@ struct User: Codable {
     let password: String?
     let passwordCheck: String?
     let nickName: String?
-    let image: String?
+    let imageURL: String?
     let isEmailCertificated, isBlocked, isPaused, isFirstLogin, isNaverLogin, isKakaoLogin, userStats, pushStart, pushImminent, pushDayAgo: Bool?
     
-    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, image: String? = nil, isEmailCertificated: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
+    init(id: String?, oldPassword: String? = nil, password: String?, passwordCheck: String?, nickName: String?, imageURL: String? = nil, isEmailCertificated: Bool? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, isFirstLogin: Bool? = nil, isNaverLogin: Bool? = nil, isKakaoLogin: Bool? = nil, userStats: Bool? = nil, pushStart: Bool? = nil, pushImminent: Bool? = nil, pushDayAgo: Bool? = nil) {
         self.id = id
         self.oldPassword = oldPassword
         self.password = password
         self.passwordCheck = passwordCheck
         self.nickName = nickName
-        self.image = image
+        self.imageURL = imageURL
         self.isEmailCertificated = isEmailCertificated
         self.isBlocked = isBlocked
         self.isPaused = isPaused
@@ -44,7 +44,7 @@ struct User: Codable {
         case oldPassword = "old_password"
         case passwordCheck = "password_check"
         case nickName = "nickname"
-        case image = "img"
+        case imageURL = "img"
         case isFirstLogin = "firstLogin"
         case isEmailCertificated = "emailAuthentication"
         case isBlocked = "userBlock"
@@ -226,7 +226,7 @@ struct StudyOverall: Codable {
 
 struct Announcement: Codable {
     let id: Int
-    let studyID: Int
+    let studyID: Int?
     let title: String
     let content: String
     let createdDate: Date
@@ -332,3 +332,4 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias StudyID = Int

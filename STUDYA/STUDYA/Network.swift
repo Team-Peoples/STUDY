@@ -413,9 +413,10 @@ struct Network {
         AF.request(RequestPurpose.getStudy(studyID), interceptor: TokenRequestInterceptor()).response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            
+            print(String(describing: response.data?.toDictionary()))
             switch httpResponse.statusCode {
             case 200:
+                
                 guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
@@ -428,7 +429,25 @@ struct Network {
         }
     }
     
-    
+    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: TokenRequestInterceptor()).response { response in
+            print(String(describing: response.request))
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(members))
+            default:
+                print(httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
     
     // MARK: - Study Schedule
     
@@ -679,3 +698,72 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let study: W
     let schedule: Z
 }
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
+//
+//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
+
+import Foundation
+
+// MARK: - Welcome
+struct Welcome: Codable {
+    let notification: Announcement
+    let study: Study
+    let manager: Bool
+    let latenessCnt, holdCnt: Int
+    let studySchedule: StudySchedule?
+    let absentCnt, dayCnt: Int
+    let master: String
+    let totalFine, attendanceCnt: Int
+}
+
+// MARK: - Notification
+//struct Notification1: Codable {
+//    let notificationID: Int
+//    let notificationSubject, notificationContents, createdAt: String
+//    let pin: Bool
+//
+//    enum CodingKeys: String, CodingKey {
+//        case notificationID = "notificationId"
+//        case notificationSubject, notificationContents, createdAt, pin
+//    }
+//}
+
+// MARK: - Study
+struct Study1: Codable {
+    let studyID: Int
+    let studyName, studyCategory: String
+    let studyRule: StudyRule1
+    let studyOn, studyOff: Bool
+    let studyInfo: String
+    let studyBlock, studyPause: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyName, studyCategory, studyRule, studyOn, studyOff, studyInfo, studyBlock, studyPause
+    }
+}
+
+// MARK: - StudyRule
+struct StudyRule1: Codable {
+    let out: Out1
+    let absent: Absent1
+    let deposit: Int
+    let lateness: Lateness1
+}
+
+// MARK: - Absent
+struct Absent1: Codable {
+    let fine, time: Int
+}
+
+// MARK: - Lateness
+struct Lateness1: Codable {
+    let fine, time, count: Int
+}
+
+// MARK: - Out
+struct Out1: Codable {
+    let absent, lateness: Int
+}
+

@@ -10,9 +10,9 @@ import UIKit
 final class MemberBottomSheetViewController: UIViewController {
     
     internal var isMaster = true
-    internal lazy var member = Member(nickName: "", isManager: false) {
+    internal lazy var member = Member(memberID: 0, deposit: 0, nickName: "", profileImageURL: "", role: "", isManager: true) {
         didSet {
-            profileView.configure(member.profileImage)
+            profileView.setImageWith(member.profileImageURL)
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
             managerButton.isSelected = member.isManager ? true : false

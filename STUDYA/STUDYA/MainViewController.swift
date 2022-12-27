@@ -400,7 +400,7 @@ extension MainViewController: UITableViewDataSource {
         case 5:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
             
-            cell.currentStudy = currentStudyOverall?.study
+            cell.currentStudyID = currentStudyOverall?.study.id
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell

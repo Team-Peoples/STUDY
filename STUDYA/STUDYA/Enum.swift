@@ -28,6 +28,7 @@ enum Const {
     static let OK = "확인"
     static let cancel = "취소"
     static let done = "완료"
+    static let defaultProfile = "defaultProfile"
 }
 
 enum AttendanceStatus {

@@ -15,7 +15,7 @@ class ProfileSettingViewController: UIViewController {
     private var nickName: String?
 //    private var isButtonFilled = false
     
-    private var profileImage: UIImage? = UIImage(named: "defaultProfile")
+    private var profileImage: UIImage? = UIImage(named: Const.defaultProfile)
     
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
@@ -286,7 +286,7 @@ extension ProfileSettingViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     
                     if let image = image as? UIImage {
-                        self.profileImageSelectorView.configure(image)
+                        self.profileImageSelectorView.setImageWith(image)
                     }
                 }
             }

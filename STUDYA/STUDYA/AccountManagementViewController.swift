@@ -17,7 +17,7 @@ final class AccountManagementViewController: UIViewController {
     
     internal var profileImage: UIImage? {
         willSet {
-            newValue == nil ? profileImageView.configure(UIImage(named: "defaultProfile")) : profileImageView.configure(newValue)
+            newValue == nil ? profileImageView.setImageWith(UIImage(named: Const.defaultProfile)) : profileImageView.setImageWith(newValue)
         }
     }
     internal var nickName: String? {
@@ -216,7 +216,7 @@ final class AccountManagementViewController: UIViewController {
                 self.nickName = user.nickName
                 self.email = user.id
                 
-                guard let imageURL = user.image else { return }
+                guard let imageURL = user.imageURL else { return }
                 let url = URL(string: imageURL)
                 
                 self.profileImageView.internalImageView.kf.setImage(with: url)
@@ -686,10 +686,10 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 
                 DispatchQueue.main.async {
-                    self.profileImage = image as! UIImage
+//                    self.profileImage = image as! UIImage
                     
                     if let image = image as? UIImage {
-                        self.profileImageView.configure(image)
+                        self.profileImageView.setImageWith(image)
                         self.profileImageChangeOkay = true
                         
                         if self.passwordChangeStarted {

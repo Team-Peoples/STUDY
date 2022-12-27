@@ -13,8 +13,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
 
     internal var member: Member? {
         didSet {
-            
-            profileView.configure(size: 72, image: member?.profileImage, isManager: member?.isManager ?? false, role: member?.role)
+//            profileView.configure(size: 72, image: member?.profileImageURL, isManager: member?.isManager ?? false, role: member?.role)
             nickNameLabel.text = member!.nickName
         }
     }
@@ -69,6 +68,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     var isGoingDown = false
     
     @objc private func profileImageTapped() {
-        profileViewTapped(member!)
+        guard let member = member else { return }
+        profileViewTapped(member)
     }
 }
