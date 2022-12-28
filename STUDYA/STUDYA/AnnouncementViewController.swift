@@ -177,8 +177,36 @@ class AnnouncementViewController: UIViewController {
         view.endEditing(true)
     }
     
-    @objc func doneButtonDidTapped() {
-        self.dismiss(animated: true)
+    @objc func createButtonDidTapped() {
+        
+        let title = titleTextView.text ?? ""
+        let content = contentTextView.text ?? ""
+        let studyID = 1
+        
+        Network.shared.createAnnouncement(title: title, content: content, studyID: studyID) { result in
+            switch result {
+            case .success(_):
+                self.dismiss(animated: true)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+    }
+    
+    @objc func editButtonDidTapped() {
+        
+        let title = titleTextView.text ?? ""
+        let content = contentTextView.text ?? ""
+        guard let announcementID = announcement?.id else { return }
+        
+        Network.shared.updateAnnouncement(title: title, content: content, announcementID: announcementID) { result in
+            switch result {
+            case .success(_):
+                self.dismiss(animated: true)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
     
     @objc func cancel() {
@@ -207,14 +235,15 @@ class AnnouncementViewController: UIViewController {
         switch task {
         case .creating:
             navigationItem.title = "공지사항 만들기"
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
         case .editing:
             navigationItem.title = "공지사항 수정"
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
         case .viewing:
             navigationItem.title = "스터디 이름"
         }
         
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(doneButtonDidTapped))
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)

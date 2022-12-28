@@ -33,7 +33,7 @@ final class MyPageMainViewController: UIViewController {
         
         return view
     }()
-    private let profileImageSelectorView = ProfileImageView(size: 80)
+    private let profileImageView = ProfileImageView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
@@ -107,7 +107,7 @@ final class MyPageMainViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(headerContainerView)
         headerContainerView.addSubview(headerView)
-        headerView.addSubview(profileImageSelectorView)
+        headerView.addSubview(profileImageView)
         headerView.addSubview(nickNameLabel)
         headerView.addSubview(myMailLabel)
         headerView.addSubview(settingImageView)
@@ -122,11 +122,11 @@ final class MyPageMainViewController: UIViewController {
             make.height.equalTo(164)
         }
         headerView.anchor(top: headerContainerView.topAnchor, topConstant: 15, leading: headerContainerView.leadingAnchor, leadingConstant: 10, trailing: headerContainerView.trailingAnchor, trailingConstant: 10, height: 134)
-        profileImageSelectorView.anchor(top: headerView.topAnchor, topConstant: 20, leading: headerView.leadingAnchor, leadingConstant: 20)
-        nickNameLabel.anchor(top: headerView.topAnchor, topConstant: 35, leading: profileImageSelectorView.trailingAnchor, leadingConstant: 24)
+        profileImageView.anchor(top: headerView.topAnchor, topConstant: 20, leading: headerView.leadingAnchor, leadingConstant: 20)
+        nickNameLabel.anchor(top: headerView.topAnchor, topConstant: 35, leading: profileImageView.trailingAnchor, leadingConstant: 24)
         myMailLabel.anchor(top: nickNameLabel.bottomAnchor, topConstant: 7, leading: nickNameLabel.leadingAnchor)
         settingImageView.anchor(top: headerView.topAnchor, topConstant: 12, trailing: headerView.trailingAnchor, trailingConstant: 12)
-        separatorView.anchor(top: profileImageSelectorView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
+        separatorView.anchor(top: profileImageView.bottomAnchor, topConstant: 10, leading: headerView.leadingAnchor, leadingConstant: 16, trailing: headerView.trailingAnchor, trailingConstant: 24, height: 4)
         tableView.anchor(bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor)
     }
 }

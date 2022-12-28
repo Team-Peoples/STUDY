@@ -19,7 +19,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageView(size: 40)
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
     private let attendanceStatusView: AttendanceStatusCapsuleView = {
        
@@ -39,7 +39,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         
         contentView.addSubview(view)
         
-        view.addSubview(profileView)
+        view.addSubview(profileImageView)
         view.addSubview(nickNameLabel)
         view.addSubview(attendanceStatusView)
         view.addSubview(penaltyLabel)
@@ -49,13 +49,13 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
             make.top.equalTo(contentView.snp.top).inset(5)
             make.bottom.equalTo(contentView.snp.bottom).inset(9)
         }
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).inset(20)
             make.centerY.equalTo(view)
         }
         nickNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileView.snp.trailing).offset(10)
-            make.top.equalTo(profileView.snp.top)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            make.top.equalTo(profileImageView.snp.top)
         }
         attendanceStatusView.anchor(top: nickNameLabel.bottomAnchor, topConstant: 8, leading: nickNameLabel.leadingAnchor, width: 32, height: 16)
         penaltyLabel.snp.makeConstraints { make in

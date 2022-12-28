@@ -246,8 +246,7 @@ final class AccountManagementViewController: UIViewController {
         let profileImage = profileImageView.internalImage
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
-            case .success(let success):
-                print(success)
+            case .success(let _):
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)
@@ -261,11 +260,12 @@ final class AccountManagementViewController: UIViewController {
             self.openAlbum()
         }
         lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
-            self.profileImage = nil
+            self.profileImageView.profileImage = nil
+            self.saveButtonOkay = true
         }
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         alert.addAction(selectImageAction)
-        if profileImage != nil {
+        if profileImageView.profileImage != nil {
             alert.addAction(defaultImageAction)
         }
         alert.addAction(cancelAction)

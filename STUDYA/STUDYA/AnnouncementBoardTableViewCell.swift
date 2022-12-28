@@ -104,7 +104,6 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     // MARK: - Configure
     
     private func configureViews() {
-        backgroundColor = .clear
         contentView.addSubview(cell)
 
         cell.addSubview(titleLabel)
@@ -128,8 +127,8 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
     func setConstraints() {
         
         cell.snp.makeConstraints { make in
-            make.top.bottom.equalTo(self).inset(7.5)
-            make.leading.trailing.equalTo(self).inset(10)
+            make.top.bottom.equalTo(contentView).inset(7.5)
+            make.leading.trailing.equalTo(contentView).inset(10)
         }
         titleLabel.snp.makeConstraints { make in
             make.height.equalTo(24)
@@ -144,7 +143,7 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         }
         contentLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(13)
-            make.bottom.greaterThanOrEqualTo(cell).inset(18)
+            make.bottom.equalTo(cell).inset(18)
             make.leading.trailing.equalTo(cell).inset(24)
         }
         etcButton.snp.makeConstraints { make in

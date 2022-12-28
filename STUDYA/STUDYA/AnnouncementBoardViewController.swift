@@ -12,17 +12,13 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
-    var announcements: [Announcement] = [
-//        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게 보이고 상세페이지로 들어갔을때 이런식으로 보이는게 맞는거지", content: "두줄짜리 공지사항의 경우는\n이렇게 보이는게 맞지", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date(), isPinned: true),
-//        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil, title: "한줄짜리 타이틀명", content: "한줄짜리 공지사항의 경우", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "한줄짜리 타이틀명인데 좀 긴경우는 이렇게", content: "두줄짜리 공지사항의 경우는\n 이렇게 보이는게 맞지", createdDate: Date()),
-//        Announcement(id: nil, studyID: nil,title: "핀공지 타이틀", content: "핀공지가 되어있고\n 한줄이상인데다가... 아무튼 많은 공지사항을 쓴경우 이렇게 보인다.", createdDate: Date())
-    ]
+
+    var announcements: [Announcement] = [] {
+        didSet {
+            self.announcementBoardTableView.reloadData()
+            self.checkAnnouncementBoardIsEmpty()
+        }
+    }
     
     private lazy var announcementEmptyView: UIView = {
         let view = UIView()
@@ -71,7 +67,17 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        checkAnnouncementBoardIsEmpty()
+        
+        let studyID: ID = 1
+        
+        Network.shared.getAllAnnouncement(studyID: studyID) { result in
+            switch result {
+            case .success(let announcements):
+                self.announcements = announcements
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -99,7 +105,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         announcementBoardTableView.delegate = self
         
         announcementBoardTableView.register(AnnouncementBoardTableViewCell.self, forCellReuseIdentifier: "AnnouncementBoardTableViewCell")
-        announcementBoardTableView.rowHeight = 147
+        
         announcementBoardTableView.separatorStyle = .none
         announcementBoardTableView.backgroundColor = .systemBackground
         announcementBoardTableView.tableHeaderView = headerView
@@ -226,7 +232,19 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
             pinnedCell?.announcement?.isPinned = false
             
+            // domb: 아직 409에러 피드백 받아서 할게 있음. ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
             cell.announcement?.isPinned = true
+            
+            if let announcementID = cell.announcement?.id {
+                Network.shared.updatePinnedAnnouncement(announcementID: announcementID, isPinned: true) { result in
+                    switch result {
+                    case .success(let success):
+                        print(success)
+                    case .failure(let failure):
+                        print(failure)
+                    }
+                }
+            }
         }
         
         
@@ -247,10 +265,17 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             let alertController = UIAlertController(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "삭제", style: .destructive) {
                 _ in
-
+                if let announcementID = cell.announcement?.id {
+                    Network.shared.deleteAnnouncement(announcementID: announcementID) { result in
+                        switch result {
+                        case .success(let success):
+                            print(success)
+                        case .failure(let failure):
+                            print(failure)
+                        }
+                    }
+                }
                 self.announcements.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                tableView.reloadData()
             }
             
             let cancelAction = UIAlertAction(title: "닫기", style: .cancel)
@@ -275,5 +300,9 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
 extension AnnouncementBoardViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 48
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
 }

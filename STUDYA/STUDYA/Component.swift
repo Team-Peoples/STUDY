@@ -548,6 +548,7 @@ class ProfileImageView: UIView {
     private let roleMark = UIButton(frame: .zero)
     private var radius: CGFloat = 0
     private var size: CGFloat = 0
+    // domb: 여기 없애기
     internal var internalImage: UIImage? {
         internalImageView.image
     }
@@ -1289,7 +1290,6 @@ class PlusButtonWithLabelContainerView: UIView {
         
         configureViews()
         setConstraints()
-        self.isHidden = true
     }
     
     required init?(coder: NSCoder) {

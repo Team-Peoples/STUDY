@@ -14,15 +14,15 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     internal var member: Member? {
         didSet {
             guard let member = member else { return }
-            
-            profileView.configure(imageURL: member.profileImageURL, isManager: member.isManager, role: member.role)
+
+            profileImageView.configure(imageURL: member.profileImageURL, isManager: member.isManager, role: member.role)
             nickNameLabel.text = member.nickName
         }
     }
     
     internal var profileViewTapped: ((Member) -> ()) = { _ in}
     
-    private lazy var profileView: ProfileImageView = {
+    private lazy var profileImageView: ProfileImageView = {
        
         let p = ProfileImageView(internalImageSize: 72)
         
@@ -39,11 +39,11 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         
         button.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
         
-        contentView.addSubview(profileView)
+        contentView.addSubview(profileImageView)
         contentView.addSubview(nickNameLabel)
         contentView.addSubview(button)
         
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.top.equalTo(contentView).inset(2)
             make.centerX.equalTo(contentView)
         }
@@ -64,7 +64,7 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        profileView.hideMarks()
+        profileImageView.hideMarks()
     }
     
     var isGoingDown = false

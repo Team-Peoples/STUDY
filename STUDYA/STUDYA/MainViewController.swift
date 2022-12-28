@@ -376,7 +376,7 @@ extension MainViewController: UITableViewDataSource {
             
             cell.navigatable = self
             cell.announcement = currentStudyOverall?.announcement
-            
+
             return cell
             
         case 4:
