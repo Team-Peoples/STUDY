@@ -10,9 +10,9 @@ import UIKit
 final class MemberBottomSheetViewController: UIViewController {
     
     internal var isMaster = true
-    internal lazy var member = Member(nickName: "", isManager: false) {
+    internal lazy var member = Member(memberID: 0, deposit: 0, nickName: "", profileImageURL: "", role: "", isManager: true) {
         didSet {
-            profileImageView.profileImage = member.profileImage
+            profileImageView.setImageWith(member.profileImageURL)
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
             managerButton.isSelected = member.isManager ? true : false
@@ -57,7 +57,7 @@ final class MemberBottomSheetViewController: UIViewController {
         b.backgroundColor = UIColor.appColor(.keyColor1)
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
 
-        let c = BrandButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 30)
+        let c = BrandButton(title: Const.done, isBold: true, isFill: true, fontSize: 20, height: 30)
         c.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
 
         b.addSubview(c)
@@ -197,7 +197,7 @@ final class AskChangingOwnerViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: "확인")
+        configureButton(button: confirmButton, title: Const.OK)
         
         backButton.addTarget(self, action: #selector(ownerViewBackButtonTapped), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(ownerViewConfirmButtonTapped), for: .touchUpInside)
@@ -276,7 +276,7 @@ final class AskExcommunicationViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: "확인")
+        configureButton(button: confirmButton, title: Const.OK)
         
         backButton.addTarget(self, action: #selector(excommuViewBackButtonTapped), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(excommuViewConfirmButtonTapped), for: .touchUpInside)

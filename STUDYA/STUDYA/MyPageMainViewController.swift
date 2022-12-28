@@ -10,25 +10,12 @@ import Kingfisher
 
 final class MyPageMainViewController: UIViewController {
     
-    internal var userInfo: User? {
+    internal var user: User? {
         didSet {
-            guard let userInfo = userInfo else { return }
+            guard let userInfo = user else { return }
             nickNameLabel.text = userInfo.nickName
             myMailLabel.text = userInfo.id
-            
-            guard let imageURL = userInfo.image else { return }
-            
-            // domb: image를 Data()로 보낼경우 서버에서 url을 보내주지만 그안에 data가 없어서 Network.shared.setImage내부에서 .failure(.decodingError)를 반환. 네트워킹 성공을 못하기 때문에 에디와 상의 하기 전 임시로 profileIamge = nil을 설정해주는 코드를 넣어놨음.
-            
-            Network.shared.setImage(stringURL: imageURL) { result in
-                switch result {
-                case .success(let image):
-                    self.profileImageView.profileImage = image
-                case .failure(let failure):
-                    self.profileImageView.profileImage = nil
-                    print(failure)
-                }
-            }
+            profileImageSelectorView.setImageWith(userInfo.imageURL)
         }
     }
     
@@ -93,7 +80,7 @@ final class MyPageMainViewController: UIViewController {
         super.viewWillAppear(animated)
         // AccountManagerment에서 로그아웃하면서 이 VC가 한번 보여지고 사라지는지 이함수가 호출됨.
         getUserInfo { user in
-            self.userInfo = user
+            self.user = user
         }
     }
     

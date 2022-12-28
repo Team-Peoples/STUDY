@@ -125,7 +125,6 @@ struct Network {
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
-        
         AF.upload(multipartFormData: { data in
             data.append(id.data(using: .utf8)!, withName: "userId")
             data.append(pw.data(using: .utf8)!, withName: "password")
@@ -134,14 +133,14 @@ struct Network {
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
             }
-            
+
             switch httpResponse.statusCode {
             case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-                
+
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -388,6 +387,7 @@ struct Network {
     
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -446,6 +446,7 @@ struct Network {
             }
         }
     }
+    
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
     func deleteStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
        
@@ -491,8 +492,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                
-                switch errorCode {
+                 switch errorCode {
                 case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
                 case ErrorCode.userNotFound: completion(.failure(.userNotFound))
                 case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
@@ -519,10 +519,64 @@ struct Network {
                 guard let body = response.data, let study = jsonDecode(type: Study.self, data: body) else { return }
                 
                 completion(.success(study))
+                
+              
+    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studies = jsonDecode(type: [Study].self, data: data) else {
+                 completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(studies))
+
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
+            }
+        }
+    }
+    
+    func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: TokenRequestInterceptor()).response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            print(String(describing: response.data?.toDictionary()))
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studyOverall))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: TokenRequestInterceptor()).response { response in
+            print(String(describing: response.request))
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(members))
+            default:
+                print(httpResponse.statusCode)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -844,11 +898,11 @@ extension UIAlertController {
         case .decodingError:
             alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
         case .unauthorizedUser:
-            alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Const.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .tokenExpired:
-            alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .unknownError(let errorCode):
@@ -920,3 +974,72 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let study: W
     let schedule: Z
 }
+// This file was generated from JSON Schema using quicktype, do not modify it directly.
+// To parse the JSON, add this file to your project and do:
+//
+//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
+
+import Foundation
+
+// MARK: - Welcome
+struct Welcome: Codable {
+    let notification: Announcement
+    let study: Study
+    let manager: Bool
+    let latenessCnt, holdCnt: Int
+    let studySchedule: StudySchedule?
+    let absentCnt, dayCnt: Int
+    let master: String
+    let totalFine, attendanceCnt: Int
+}
+
+// MARK: - Notification
+//struct Notification1: Codable {
+//    let notificationID: Int
+//    let notificationSubject, notificationContents, createdAt: String
+//    let pin: Bool
+//
+//    enum CodingKeys: String, CodingKey {
+//        case notificationID = "notificationId"
+//        case notificationSubject, notificationContents, createdAt, pin
+//    }
+//}
+
+// MARK: - Study
+struct Study1: Codable {
+    let studyID: Int
+    let studyName, studyCategory: String
+    let studyRule: StudyRule1
+    let studyOn, studyOff: Bool
+    let studyInfo: String
+    let studyBlock, studyPause: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyName, studyCategory, studyRule, studyOn, studyOff, studyInfo, studyBlock, studyPause
+    }
+}
+
+// MARK: - StudyRule
+struct StudyRule1: Codable {
+    let out: Out1
+    let absent: Absent1
+    let deposit: Int
+    let lateness: Lateness1
+}
+
+// MARK: - Absent
+struct Absent1: Codable {
+    let fine, time: Int
+}
+
+// MARK: - Lateness
+struct Lateness1: Codable {
+    let fine, time, count: Int
+}
+
+// MARK: - Out
+struct Out1: Codable {
+    let absent, lateness: Int
+}
+

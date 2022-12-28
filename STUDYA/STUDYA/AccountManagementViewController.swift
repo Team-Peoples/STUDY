@@ -14,7 +14,12 @@ import Kingfisher
 //To be fixed: 입력칸 rightbutton 오른쪽 padding 10 넣기
 
 final class AccountManagementViewController: UIViewController {
-
+    
+    internal var profileImage: UIImage? {
+        willSet {
+            newValue == nil ? profileImageView.setImageWith(UIImage(named: Const.defaultProfile)) : profileImageView.setImageWith(newValue)
+        }
+    }
     internal var nickName: String? {
         didSet {
             nickNameField.text = nickName
@@ -56,8 +61,8 @@ final class AccountManagementViewController: UIViewController {
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     private let naviBar = UINavigationBar(frame: .zero)
-    private lazy var leftButton = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
-    private lazy var rightButton = UIBarButtonItem(title: "확인", style: .plain, target: self, action: #selector(save))
+    private lazy var leftButton = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
+    private lazy var rightButton = UIBarButtonItem(title: Const.OK, style: .plain, target: self, action: #selector(save))
     private let profileImageView = ProfileImageView(size: 80)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let nickNameField: UITextField = {
@@ -211,16 +216,9 @@ final class AccountManagementViewController: UIViewController {
                 self.nickName = user.nickName
                 self.email = user.id
                 
-                guard let imageURL = user.image else { return }
-
-                Network.shared.setImage(stringURL: imageURL) { result in
-                    switch result {
-                    case .success(let image):
-                        self.profileImageView.profileImage = image
-                    case .failure(let failure):
-                        print(failure)
-                    }
-                }
+                guard let imageURL = user.imageURL else { return }
+                
+                self.profileImageView.setImageWith(imageURL)
             }
         }
     }
@@ -244,8 +242,8 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
-        let profileImage = profileImageView.profileImage
-        
+        print(#function)
+        let profileImage = profileImageView.internalImage
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
             case .success(let _):
@@ -265,7 +263,7 @@ final class AccountManagementViewController: UIViewController {
             self.profileImageView.profileImage = nil
             self.saveButtonOkay = true
         }
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         alert.addAction(selectImageAction)
         if profileImageView.profileImage != nil {
             alert.addAction(defaultImageAction)
@@ -322,7 +320,7 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func leaveApp() {
         let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
             _ in
             
@@ -392,7 +390,7 @@ final class AccountManagementViewController: UIViewController {
 
         let message = "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다"
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .default)
         let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
@@ -687,8 +685,10 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 
                 DispatchQueue.main.async {
+//                    self.profileImage = image as! UIImage
+                    
                     if let image = image as? UIImage {
-                        self.profileImageView.profileImage = image
+                        self.profileImageView.setImageWith(image)
                         self.profileImageChangeOkay = true
                         
                         if self.passwordChangeStarted {

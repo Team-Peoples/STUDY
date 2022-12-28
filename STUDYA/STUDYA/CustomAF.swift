@@ -76,6 +76,7 @@ enum RequestPurpose: Requestable {
     case getUserSchedule    ////20
     case getStudyLog    //24
     case checkEmailCertificated
+    case getAllStudyMembers(StudyID)
 }
 
 extension RequestPurpose {
@@ -86,9 +87,9 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers:
             return .none
-        case .signUp, .updateUser:
+        case .signUp, .updateUser, .signIn:
             return .multipart
         case .refreshToken:
             return .token
@@ -168,6 +169,8 @@ extension RequestPurpose {
             return "/user/history"
         case .checkEmailCertificated:
             return "/signup/email/auth"
+        case .getAllStudyMembers(let studyID):
+            return "/studyMember/\(studyID)"
         }
     }
     
@@ -179,7 +182,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers : return .get
         }
     }
     
@@ -234,8 +237,6 @@ extension RequestPurpose {
             return .none
         }
     }
-    
-// EHD: 기본 헤더라고 해야하나 나머지 것들도 다 넣어줘야하나
     
     func asURLRequest() throws -> URLRequest {
         let url = try baseURL.asURL()

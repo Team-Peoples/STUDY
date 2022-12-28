@@ -6,12 +6,27 @@
 //
 
 import UIKit
-//🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isAdmin 값 didset에서 수정하도록
+//🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
-
-    private var myStudyList = [Study]()
-    private lazy var currentStudy: Study? = myStudyList.first
+    
+    internal var nickName: String? {
+        didSet {
+            
+        }
+    }
+    private var myStudyList = [Study]() {
+        didSet {
+            
+        }
+    }
+    private var currentStudyOverall: StudyOverall? {
+        didSet {
+            guard let currentStudyOverall = currentStudyOverall else { return }
+            isManager = currentStudyOverall.isManager
+            mainTableView.reloadData()
+        }
+    }
     private var notification: String? {
         didSet {
             if notification != nil {
@@ -77,15 +92,17 @@ final class MainViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
+        getUserInformationAndStudies()
+//        myStudyList = [
+//            Study(id: 1, studyName: "웃기지마", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
+//            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
+//            Study(id: 3, studyName: "우야노우리스터디", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5)))
+//        ]
+//        currentStudyOverall = StudyOverall(announcement: nil, study: myStudyList.first!, isManager: true, totalFine: 0, attendedCount: 0, absentcount: 0, totalStudyHeldCount: 0, lateCount: 0, allowedCount: 0, studySchedule: nil, ownerID: "d")
         
-        myStudyList = [
-            Study(id: 1, studyName: "팀피플즈", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-            Study(id: 3, studyName: "우야노우리스터디", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5)))
-        ]
         
         view.backgroundColor = .systemBackground
-        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
+//        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         
         configureTabBarSeparator()
         configureNavigationBar()
@@ -139,8 +156,9 @@ final class MainViewController: SwitchableViewController {
         
         dimmingVC.modalTransitionStyle = .crossDissolve
         dimmingVC.modalPresentationStyle = .overFullScreen
-        dimmingVC.currentStudy = currentStudy
+        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
+        dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
         present(dimmingVC, animated: true)
@@ -175,6 +193,74 @@ final class MainViewController: SwitchableViewController {
         
         guard !isSwitchOn else { return }
         floatingButton.isSelected = false
+    }
+    
+    private func getUserInformationAndStudies() {
+        Network.shared.getUserInfo { result in
+            switch result {
+                
+            case .success(let user):
+                print(KeyChain.read(key: Const.accessToken))
+                print(KeyChain.read(key: Const.refreshToken))
+                self.nickName = user.nickName
+                self.getAllStudies()
+            case .failure(let error):
+                print(#function,1)
+                switch error {
+                case .userNotFound:
+                    
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(buttonTitle: Const.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
+                            AppController.shared.deleteUserInformationAndLogout()
+                        }
+                        self.present(alert, animated: true)
+                    }
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
+    }
+    
+    private func getAllStudies() {
+        Network.shared.getAllStudy { result in
+            switch result {
+            case .success(let studies):
+                print(#function,1)
+                if let firstStudy = studies.first {
+                    
+                    self.myStudyList = studies
+                    self.getCurrentStudyOverall(study: firstStudy)
+                } else {
+                    print(#function,2)
+                    DispatchQueue.main.async {
+                        self.configureViewWhenNoStudy()
+                    }
+                }
+            case .failure(let error):
+                print(#function,3)
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
+    private func getCurrentStudyOverall(study: Study) {
+        guard let studyID = study.id else { return }
+        Network.shared.getStudy(studyID: studyID) { result in
+            
+            switch result {
+            case .success(let studyOverall):
+                self.isManager = studyOverall.isManager
+                
+                self.currentStudyOverall = studyOverall
+                DispatchQueue.main.async {
+                    self.configureViewWhenYesStudy()
+                }
+            case .failure(let error):
+                print(#function,2)
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     override func configureNavigationBar() {
@@ -220,7 +306,7 @@ final class MainViewController: SwitchableViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        guard isAdmin else { return }
+        guard isManager else { return }
         
         configureFloatingButton()
     }
@@ -268,31 +354,45 @@ extension MainViewController: UITableViewDataSource {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as! MainFirstStudyToggleTableViewCell
             
-            cell.studyTitle = myStudyList.first?.studyName
+            cell.studyTitle = currentStudyOverall?.study.studyName
             cell.buttonTapped = { self.dropdownButtonDidTapped() }
             
             return cell
         case 1:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
+            
+            cell.nickName = nickName
             cell.navigatableSwitchSyncableDelegate = self
+            
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
+//            🛑스케줄 받아서 남은 시간 비교해서 버튼 변경
             cell.navigatable = self
             
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
+            
             cell.navigatable = self
-            cell.announcement = Announcement(title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdAt: nil, isPinned: true)
-          
+            cell.announcement = currentStudyOverall?.announcement
+
             return cell
             
         case 4:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as! MainFifthAttendanceTableViewCell
             
-            cell.studyAttendance = ["출석": 30, "지각": 15, "결석": 10, "사유": 5]
-            cell.penalty = 9900
+            guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
+            
+            cell.studyAttendance = [
+                .attended: currentStudyOverall.attendedCount,
+                .late: currentStudyOverall.lateCount,
+                .absent: currentStudyOverall.absentcount,
+                .allowed: currentStudyOverall.allowedCount
+            ]
+            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
+            
+            cell.penalty = currentStudyOverall.totalFine
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell
@@ -300,7 +400,7 @@ extension MainViewController: UITableViewDataSource {
         case 5:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
             
-            cell.currentStudy = currentStudy
+            cell.currentStudyID = currentStudyOverall?.study.id
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell

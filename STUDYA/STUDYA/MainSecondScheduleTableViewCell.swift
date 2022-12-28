@@ -10,11 +10,29 @@ import UIKit
 class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
+    
+    internal var nickName: String? {
+        didSet {
+            title.text = "\(nickName ?? "회원")님의 일정"
+        }
+    }
+    
+    internal var schedule: StudySchedule? {
+        didSet {
+            guard let schedule = schedule else { isScheduleExist = false; return }
+            
+            isScheduleExist = true
+            date.text = String(describing: schedule.openDate)
+            place.text = schedule.place
+            todayContent.text = schedule.topic
+        }
+    }
+    
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
     
-    private let isScheduleExist = true
+    private var isScheduleExist = true
     
-    private let title = CustomLabel(title: "EHD님의 일정", tintColor: .ppsBlack, size: 20, isBold: true)
+    private let title = CustomLabel(title: "회원님의 일정", tintColor: .ppsBlack, size: 20, isBold: true)
     private let disclosureIndicatorView = UIImageView(image: UIImage(named: "circleDisclosureIndicator"))
     
     private lazy var noScheudleLabel = CustomLabel(title: "예정된 일정이 없어요 😴", tintColor: .ppsGray1, size: 14)

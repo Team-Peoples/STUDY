@@ -22,7 +22,7 @@ final class MainDropDownDimmingViewController: UIViewController {
     
     internal var currentStudy: Study?
     
-    internal var studyTapped: (Study) -> () = { sender in }
+    internal var studyTapped: (StudyOverall) -> () = { sender in }
     internal var newStudyCreatedConfirmTapped: (Study) -> () = { sender in }
     internal var presentCreateNewStudyVC: (UIViewController) -> () = { sender in }
     
@@ -188,7 +188,7 @@ extension MainDropDownDimmingViewController: UITableViewDataSource {
         if currentStudyID == myStudyList[indexPath.row].id {
             cell.isCurrentStudy = true
         }
-        cell.study = myStudyList[indexPath.row]
+        cell.studyName = myStudyList[indexPath.row].studyName
         
         return cell
     }
@@ -197,5 +197,23 @@ extension MainDropDownDimmingViewController: UITableViewDataSource {
 extension MainDropDownDimmingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let studyID = myStudyList[indexPath.row].id else { return }
+        
+        Network.shared.getStudy(studyID: studyID) { result in
+            
+            switch result {
+            case .success(let studyOverall):
+                
+                self.studyTapped(studyOverall)
+                DispatchQueue.main.async {
+                    self.dismiss(animated: true)
+                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
 }

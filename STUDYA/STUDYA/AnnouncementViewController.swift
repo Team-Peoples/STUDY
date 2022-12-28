@@ -39,7 +39,7 @@ class AnnouncementViewController: UIViewController {
             
             titleTextView.text = announcement?.title
             contentTextView.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
+            timeLabel.text = announcement?.createdDate.formatToString(language: .eng)
         }
     }
     
@@ -235,7 +235,7 @@ class AnnouncementViewController: UIViewController {
         switch task {
         case .creating:
             navigationItem.title = "공지사항 만들기"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(createButtonDidTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
         case .editing:
             navigationItem.title = "공지사항 수정"
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
@@ -244,9 +244,8 @@ class AnnouncementViewController: UIViewController {
         }
         
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-       
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }

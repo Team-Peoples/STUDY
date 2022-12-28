@@ -11,7 +11,7 @@ final class ByeViewController: UIViewController {
     
     private let titleLabel = CustomLabel(title: "탈퇴가\n완료됐어요.", tintColor: .ppsBlack, size: 30, isBold: true, isNecessaryTitle: false)
     private let descriptionLabel = CustomLabel(title: "그동안 피플즈를 이용해주셔서\n감사합니다. 🤗", tintColor: .ppsBlack, size: 20)
-    private let button = BrandButton(title: "완료", isBold: true, isFill: true, fontSize: 20, height: 50)
+    private let button = BrandButton(title: Const.done, isBold: true, isFill: true, fontSize: 20, height: 50)
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -15,7 +15,7 @@ class ProfileSettingViewController: UIViewController {
     private var nickName: String?
 //    private var isButtonFilled = false
     
-    private var profileImage: UIImage? = UIImage(named: "defaultProfile")
+    private var profileImage: UIImage? = UIImage(named: Const.defaultProfile)
     
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
@@ -23,7 +23,7 @@ class ProfileSettingViewController: UIViewController {
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)
     private let profileImageSelectorView = ProfileImageView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
-    private let doneButton = BrandButton(title: "완료", isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: Const.done, isBold: true, isFill: false)
     
     
     override func viewDidLoad() {
@@ -80,11 +80,11 @@ class ProfileSettingViewController: UIViewController {
             if nickName.count > 0 {
                 
                 doneButton.isEnabled = true
-                doneButton.fillIn(title: "완료")
+                doneButton.fillIn(title: Const.done)
             } else {
                 
                 doneButton.isEnabled = false
-                doneButton.fillOut(title: "완료")
+                doneButton.fillOut(title: Const.done)
             }
         }
     }
@@ -135,11 +135,11 @@ class ProfileSettingViewController: UIViewController {
                 DispatchQueue.main.async {
                     switch error {
                     case .duplicatedEmail:
-                        alert = SimpleAlert(buttonTitle: "확인", message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
+                        alert = SimpleAlert(buttonTitle: Const.OK, message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
                     case .wrongPassword:
-                        alert = SimpleAlert(buttonTitle: "확인", message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
+                        alert = SimpleAlert(buttonTitle: Const.OK, message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
                     default:
@@ -193,7 +193,7 @@ class ProfileSettingViewController: UIViewController {
 
         let message = "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다"
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .default)
         let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
@@ -286,8 +286,7 @@ extension ProfileSettingViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     
                     if let image = image as? UIImage {
-                        self.profileImageSelectorView.configure(image)
-                        self.profileImage = image
+                        self.profileImageSelectorView.setImageWith(image)
                     }
                 }
             }

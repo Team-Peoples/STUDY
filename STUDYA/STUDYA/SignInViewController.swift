@@ -17,7 +17,7 @@ final class SignInViewController: UIViewController {
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
-    private let completeButton = BrandButton(title: "완료")
+    private let completeButton = BrandButton(title: Const.done)
     
     // MARK: - Life Cycle
     
@@ -164,11 +164,11 @@ final class SignInViewController: UIViewController {
                 case .decodingError:
                     alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
                 case .unauthorizedUser:
-                    alert = SimpleAlert(buttonTitle: "확인", message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
+                    alert = SimpleAlert(buttonTitle: Const.OK, message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
                         AppController.shared.deleteUserInformation()
                     })
                 case .tokenExpired:
-                    alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                    alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                         AppController.shared.deleteUserInformation()
                     })
                 case .unknownError(let errorCode):
@@ -191,7 +191,7 @@ final class SignInViewController: UIViewController {
     
     private func buttonStateUpdate() {
         completeButton.isEnabled = signInViewModel.formIsValid
-        completeButton.isEnabled ? completeButton.fillIn(title: "완료") : completeButton.fillOut(title: "완료")
+        completeButton.isEnabled ? completeButton.fillIn(title: Const.done) : completeButton.fillOut(title: Const.done)
     }
     
     // MARK: - Setting Constraints

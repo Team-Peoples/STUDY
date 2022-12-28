@@ -15,7 +15,7 @@ class StudyExitViewController: UIViewController {
     
     private var titleLabel: CustomLabel?
     private var subtitleLabel: CustomLabel?
-    private let okButton = BrandButton(title: "확인", isFill: true)
+    private let okButton = BrandButton(title: Const.OK, isFill: true)
     private lazy var backButton = BrandButton(title: "돌아가기", isFill: true)
     private lazy var goToResignAdminButton: UIButton = {
         let btn = UIButton()
@@ -100,7 +100,7 @@ class StudyExitViewController: UIViewController {
     
     
     @objc func buttonDidTapped(_ sender: BrandButton) {
-        if sender.titleLabel?.text == "확인" {
+        if sender.titleLabel?.text == Const.OK {
             switch task {
                 case .exit:
                     

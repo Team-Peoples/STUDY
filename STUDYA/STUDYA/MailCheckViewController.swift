@@ -96,11 +96,11 @@ final class MailCheckViewController: UIViewController {
                     case .decodingError:
                         alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
                     case .unauthorizedUser:
-                        alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+                        alert = SimpleAlert(buttonTitle: Const.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
                             AppController.shared.deleteUserInformationAndLogout()
                         })
                     case .tokenExpired:
-                        alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                        alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                             AppController.shared.deleteUserInformationAndLogout()
                         })
                     case .unknownError(let errorCode):

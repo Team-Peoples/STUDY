@@ -12,6 +12,7 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
+
     var announcements: [Announcement] = [] {
         didSet {
             self.announcementBoardTableView.reloadData()
@@ -285,7 +286,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             self.present(alertController, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
 
         actionSheet.addAction(pinAction)
         actionSheet.addAction(editAction)

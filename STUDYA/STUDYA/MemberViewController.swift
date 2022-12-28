@@ -9,34 +9,11 @@ import UIKit
 
 final class MemberViewController: SwitchableViewController {
     
-    var members = [
-        Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
-        Member(nickName: "ehd1", isManager: false),
-        Member(nickName: "ehd2", isManager: false, profileImage: UIImage(named: "member"), role: "간수"),
-        Member(nickName: "ehd3", isManager: true, role: "재소자"),
-        Member(nickName: "ehd4", isManager: false, role: "판사"),
-        Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
-        Member(nickName: "ehd1", isManager: false),
-        Member(nickName: "ehd2", isManager: false, profileImage: UIImage(named: "member"), role: "간수"),
-        Member(nickName: "ehd3", isManager: true, role: "재소자"),
-        Member(nickName: "ehd4", isManager: false, role: "판사"),
-        Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
-        Member(nickName: "ehd1", isManager: false),
-        Member(nickName: "ehd2", isManager: false, profileImage: UIImage(named: "member"), role: "간수"),
-        Member(nickName: "ehd3", isManager: true, role: "재소자"),
-        Member(nickName: "ehd4", isManager: false, role: "판사"),
-        Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
-        Member(nickName: "ehd1", isManager: false),
-        Member(nickName: "ehd2", isManager: false, profileImage: UIImage(named: "member"), role: "간수"),
-        Member(nickName: "ehd3", isManager: true, role: "재소자"),
-        Member(nickName: "ehd4", isManager: false, role: "판사"),
-        Member(nickName: "ehd", isManager: true, profileImage: UIImage(named: "ehd"), role: "방장"),
-        Member(nickName: "ehd1", isManager: false),
-        Member(nickName: "ehd2", isManager: false, profileImage: UIImage(named: "member"), role: "간수"),
-        Member(nickName: "ehd3", isManager: true, role: "재소자"),
-        Member(nickName: "ehd4", isManager: false, role: "판사")
-    ]
-    
+    internal var members: Members? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -103,7 +80,9 @@ final class MemberViewController: SwitchableViewController {
 
 extension MemberViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        members.count + 1
+        guard let members = members else { return 0 }
+        
+        return members.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -114,6 +93,8 @@ extension MemberViewController: UICollectionViewDataSource {
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MemberCollectionViewCell.identifier, for: indexPath) as! MemberCollectionViewCell
+            
+            guard let members = members else { return MemberCollectionViewCell() }
             
             cell.member = members[indexPath.item - 1]
             
@@ -140,9 +121,20 @@ extension MemberViewController: UICollectionViewDelegate {
     
 }
 
-struct Member {
-    var nickName: String
-    var isManager: Bool
-    var profileImage: UIImage?
-    var role: String?
+
+struct Member: Codable {
+    let memberID, deposit: Int
+    let nickName, profileImageURL, role: String
+    let isManager: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case memberID = "studyMemberId"
+        case nickName = "userNickname"
+        case profileImageURL = "img"
+        case isManager = "userManager"
+        case role = "userRole"
+        case deposit
+    }
 }
+
+typealias Members = [Member]
