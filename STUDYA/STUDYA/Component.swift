@@ -542,8 +542,13 @@ class SimpleAlert: UIAlertController {
 
 class ProfileImageView: UIView {
 
+    var profileImage: UIImage? {
+        didSet {
+            configure(profileImage)
+        }
+    }
     private let backgroundView = UIView(frame: .zero)
-    let internalImageView = UIImageView(frame: .zero)
+    private let internalImageView = UIImageView(frame: .zero)
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     private let roleMark = UIButton(frame: .zero)
     
@@ -592,8 +597,8 @@ class ProfileImageView: UIView {
     }
     
     
-    internal func configure(_ image: UIImage?) {
-        internalImageView.image = image == nil ? UIImage(named: "defaultProfile") : image
+    internal func configure(_ profileImage: UIImage?) {
+        internalImageView.image = profileImage == nil ? UIImage(named: "defaultProfile") : profileImage
     }
     
     
@@ -1279,7 +1284,6 @@ class PlusButtonWithLabelContainerView: UIView {
         
         configureViews()
         setConstraints()
-        self.isHidden = true
     }
     
     required init?(coder: NSCoder) {

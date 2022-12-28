@@ -13,7 +13,6 @@ final class EditingStudyFormViewController: UIViewController {
     
     var studyViewModel: StudyViewModel? {
         didSet {
-            print(studyViewModel?.study)
             guard let study = studyViewModel?.study else { return }
             bind(study)
         }

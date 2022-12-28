@@ -174,7 +174,6 @@ class CreatingStudyRuleViewController: UIViewController {
         Network.shared.createStudy(study) { result in
             switch result {
             case .success(let study):
-                print(study)
                 
                 let nextVC = CreatingStudyCompleteViewController()
                 self.navigationController?.pushViewController(nextVC, animated: true)

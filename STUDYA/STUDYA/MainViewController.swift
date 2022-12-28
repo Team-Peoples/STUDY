@@ -284,18 +284,8 @@ extension MainViewController: UITableViewDataSource {
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
             cell.navigatable = self
-            cell.announcement = Announcement(id: 1, studyID: 1, title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdDate: nil, isPinned: true)
-            //                cell.hideTabBar = { [weak self] in
-            //                    self?.tabBarController?.tabBar.isHidden = true
-            //                }
-            //
-            //                    cell.informationButtonAction = {
-            //                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            //                        let vc  = storyboard.instantiateViewController(withIdentifier: "StudyInfoViewController") as! StudyInfoViewController
-            //                        vc.study = self.myStudyList.first!
-            //                        self.navigationController?.pushViewController(vc, animated: true)
-            //                    }
-            
+            cell.announcement = Announcement(title: "오늘의 공지", content: "공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지공지 송아지 양아치지", createdAt: nil, isPinned: true)
+          
             return cell
             
         case 4:

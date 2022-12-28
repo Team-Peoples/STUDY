@@ -19,7 +19,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "닉네이이이이임", tintColor: .ppsGray1, size: 16, isBold: true)
     private let disclosureIndicatorImageView = UIImageView(image: UIImage(named: "smallDisclosureIndicator"))
     private let innerView: RoundableView = {
@@ -81,7 +81,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         selectionStyle = .none
         
         contentView.addSubview(view)
-        view.addSubview(profileView)
+        view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
         view.addSubview(disclosureIndicatorImageView)
         view.addSubview(innerView)
@@ -93,13 +93,13 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
             make.bottom.equalTo(contentView.snp.bottom).inset(14)
             make.top.equalTo(contentView.snp.top)
         }
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.leading.equalTo(view.snp.leading).inset(20)
             make.top.equalTo(view.snp.top).inset(16)
         }
         nicknameLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(profileView)
-            make.leading.equalTo(profileView.snp.trailing).offset(10)
+            make.centerY.equalTo(profileImageView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
         }
         disclosureIndicatorImageView.snp.makeConstraints { make in
             make.trailing.top.equalTo(view).inset(24)

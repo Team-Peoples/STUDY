@@ -208,19 +208,30 @@ struct Excommunication: Codable {
 
 struct Announcement: Codable {
     let id: Int?
-    let studyID: Int?
     let title: String?
     let content: String?
-    let createdDate: Date?
+    let createdAt: String?
     var isPinned: Bool?
+    
+    var createdDate: Date? {
+        guard let createdAt = createdAt else { return nil }
+        return Formatter.formatToDate(string: createdAt)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "notificationId"
-        case studyID = "studyId"
         case title = "notificationSubject"
         case content = "notificationContents"
-        case createdDate = "createdAt"
+        case createdAt
         case isPinned = "pin"
+    }
+    
+    init(id: Int? = nil, title: String?, content: String?, createdAt: String?, isPinned: Bool? = nil) {
+        self.id = id
+        self.title = title
+        self.content = content
+        self.createdAt = createdAt
+        self.isPinned = isPinned
     }
 }
 

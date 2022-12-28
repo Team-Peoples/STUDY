@@ -9,7 +9,7 @@ import UIKit
 
 final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     
-    private let profileView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
        
@@ -92,7 +92,7 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     }
     
     private func addSubviews() {
-        addSubview(profileView)
+        addSubview(profileImageView)
         addSubview(nicknameLabel)
         addSubview(separator)
         addSubview(stackView)
@@ -100,16 +100,16 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     }
     
     private func setConstraints() {
-        profileView.snp.makeConstraints { make in
+        profileImageView.snp.makeConstraints { make in
             make.leading.equalTo(self.snp.leading).inset(20)
             make.top.equalTo(self.snp.top).inset(30)
         }
         nicknameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(profileView.snp.trailing).offset(10)
-            make.centerY.equalTo(profileView)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(10)
+            make.centerY.equalTo(profileImageView)
         }
         separator.snp.makeConstraints { make in
-            make.top.equalTo(profileView.snp.bottom).offset(12)
+            make.top.equalTo(profileImageView.snp.bottom).offset(12)
             make.leading.trailing.equalTo(self)
         }
         stackView.snp.makeConstraints { make in
