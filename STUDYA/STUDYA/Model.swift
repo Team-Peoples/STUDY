@@ -344,4 +344,3 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
-typealias StudyID = Int

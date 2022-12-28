@@ -76,7 +76,7 @@ enum RequestPurpose: Requestable {
     case getUserSchedule    ////20
     case getStudyLog    //24
     case checkEmailCertificated
-    case getAllStudyMembers(StudyID)
+    case getAllStudyMembers(ID)
 }
 
 extension RequestPurpose {

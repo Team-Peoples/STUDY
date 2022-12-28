@@ -39,7 +39,7 @@ class AnnouncementViewController: UIViewController {
             
             titleTextView.text = announcement?.title
             contentTextView.text = announcement?.content
-            timeLabel.text = announcement?.createdDate.formatToString(language: .eng)
+            timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
         }
     }
     

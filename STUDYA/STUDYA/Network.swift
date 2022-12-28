@@ -359,7 +359,7 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
-                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
+                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.   //ehd: 403을 받으면 refresh -> refresh 시도했는데 실패시 401 뜸 -> seperateCommon에서 unauthuser 뜸 -> handleCommon에서 로그아웃 이렇게 되고 있는 거 아닌가?
             }
         }
     }
@@ -367,24 +367,6 @@ struct Network {
     // MARK: - User Schedule
     
     // MARK: - Study
-    
-    func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
-            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
-                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
-                completion(.success(studies))
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
-                }
-            }
-        }
-    }
-    
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
             
@@ -506,23 +488,8 @@ struct Network {
         }
     }
     
-    func getStudyInfo(of studyID: ID, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
-            guard let httpResponse = response.response else {
-                completion(.failure(.serverError))
-                return
-            }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                guard let body = response.data, let study = jsonDecode(type: Study.self, data: body) else { return }
-                
-                completion(.success(study))
-                
-              
     func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudy, interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
 
             switch httpResponse.statusCode {
@@ -542,7 +509,7 @@ struct Network {
     }
     
     func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getStudy(studyID), interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             print(String(describing: response.data?.toDictionary()))
@@ -562,7 +529,7 @@ struct Network {
     }
     
     func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: TokenRequestInterceptor()).response { response in
+        AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             print(String(describing: response.request))
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             
@@ -974,72 +941,3 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let study: W
     let schedule: Z
 }
-// This file was generated from JSON Schema using quicktype, do not modify it directly.
-// To parse the JSON, add this file to your project and do:
-//
-//   let welcome = try? newJSONDecoder().decode(Welcome.self, from: jsonData)
-
-import Foundation
-
-// MARK: - Welcome
-struct Welcome: Codable {
-    let notification: Announcement
-    let study: Study
-    let manager: Bool
-    let latenessCnt, holdCnt: Int
-    let studySchedule: StudySchedule?
-    let absentCnt, dayCnt: Int
-    let master: String
-    let totalFine, attendanceCnt: Int
-}
-
-// MARK: - Notification
-//struct Notification1: Codable {
-//    let notificationID: Int
-//    let notificationSubject, notificationContents, createdAt: String
-//    let pin: Bool
-//
-//    enum CodingKeys: String, CodingKey {
-//        case notificationID = "notificationId"
-//        case notificationSubject, notificationContents, createdAt, pin
-//    }
-//}
-
-// MARK: - Study
-struct Study1: Codable {
-    let studyID: Int
-    let studyName, studyCategory: String
-    let studyRule: StudyRule1
-    let studyOn, studyOff: Bool
-    let studyInfo: String
-    let studyBlock, studyPause: Bool
-
-    enum CodingKeys: String, CodingKey {
-        case studyID = "studyId"
-        case studyName, studyCategory, studyRule, studyOn, studyOff, studyInfo, studyBlock, studyPause
-    }
-}
-
-// MARK: - StudyRule
-struct StudyRule1: Codable {
-    let out: Out1
-    let absent: Absent1
-    let deposit: Int
-    let lateness: Lateness1
-}
-
-// MARK: - Absent
-struct Absent1: Codable {
-    let fine, time: Int
-}
-
-// MARK: - Lateness
-struct Lateness1: Codable {
-    let fine, time, count: Int
-}
-
-// MARK: - Out
-struct Out1: Codable {
-    let absent, lateness: Int
-}
-

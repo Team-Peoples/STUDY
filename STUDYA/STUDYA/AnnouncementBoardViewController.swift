@@ -236,7 +236,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             cell.announcement?.isPinned = true
             
             if let announcementID = cell.announcement?.id {
-                Network.shared.updatePinnedAnnouncement(announcementID: announcementID, isPinned: true) { result in
+                Network.shared.updatePinnedAnnouncement(announcementID, isPinned: true) { result in
                     switch result {
                     case .success(let success):
                         print(success)
@@ -266,7 +266,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             let okAction = UIAlertAction(title: "삭제", style: .destructive) {
                 _ in
                 if let announcementID = cell.announcement?.id {
-                    Network.shared.deleteAnnouncement(announcementID: announcementID) { result in
+                    Network.shared.deleteAnnouncement(announcementID) { result in
                         switch result {
                         case .success(let success):
                             print(success)
