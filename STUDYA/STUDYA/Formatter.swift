@@ -30,7 +30,7 @@ final class Formatter {
     
     static func formatToDate(string: String) -> Date? {
         let isoFormatter = DateFormatter()
-        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
+        isoFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
        
         return isoFormatter.date(from: string)
     }
@@ -42,7 +42,7 @@ extension DateFormatter {
         
         let dateFormatter = DateFormatter()
       
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         
         return dateFormatter
     }()

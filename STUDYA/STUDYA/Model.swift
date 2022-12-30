@@ -209,7 +209,7 @@ struct StudyOverall: Codable {
     let isManager: Bool
     let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
-    let ownerID: String
+    let isOwner: Bool
     
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
@@ -219,7 +219,7 @@ struct StudyOverall: Codable {
         case allowedCount = "holdCnt"
         case absentcount = "absentCnt"
         case totalStudyHeldCount = "dayCnt"
-        case ownerID = "master"
+        case isOwner = "master"
         case study, studySchedule, totalFine
     }
 }
@@ -279,10 +279,8 @@ struct StudySchedule: Codable {
     var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
     var place: String?
     
-    var openDate: String?
-    var deadlineDate: String?
-    var startTime: String?
-    var endTime: String?
+    var startTime: Date?
+    var endTime: Date?
     var repeatOption: RepeatOption?
     
     enum CodingKeys: String, CodingKey {
@@ -295,10 +293,8 @@ struct StudySchedule: Codable {
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"
         
-        case openDate = "studyScheduleDate"
-        case deadlineDate = "targetDate"
-        case startTime = "studyScheduleStart"
-        case endTime = "studyScheduleEnd"
+        case startTime = "studyScheduleStartDateTime"
+        case endTime = "studyScheduleEndDateTime"
         case repeatOption = "repeatDay"
     }
 }

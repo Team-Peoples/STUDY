@@ -260,14 +260,14 @@ final class AccountManagementViewController: UIViewController {
             self.openAlbum()
         }
         lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
-            self.profileImageView.profileImage = nil
+//            self.profileImageView.profileImage = nil
             self.saveButtonOkay = true
         }
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         alert.addAction(selectImageAction)
-        if profileImageView.profileImage != nil {
-            alert.addAction(defaultImageAction)
-        }
+//        if profileImageView.profileImage != nil {
+//            alert.addAction(defaultImageAction)
+//        }
         alert.addAction(cancelAction)
         present(alert, animated: true)
     }

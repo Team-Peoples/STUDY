@@ -488,7 +488,7 @@ struct Network {
         }
     }
     
-    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+    func getAllStudies(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
 

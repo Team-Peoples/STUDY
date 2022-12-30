@@ -223,7 +223,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func getAllStudies() {
-        Network.shared.getAllStudy { result in
+        Network.shared.getAllStudies { result in
             switch result {
             case .success(let studies):
                 print(#function,1)
@@ -362,6 +362,7 @@ extension MainViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
             
             cell.nickName = nickName
+            cell.schedule = StudySchedule(studyName: "", studyScheduleID: 0, topic: "단어시험1", place: "강남역 스터디룸", startTime: Date(timeInterval: 100000, since: Date()), endTime: Date(timeInterval: 106000, since: Date()) , repeatOption: nil)
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell
