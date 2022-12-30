@@ -550,7 +550,9 @@ class ProfileImageView: UIView {
     private var size: CGFloat = 0
     // domb: 여기 없애기
     internal var internalImage: UIImage? {
-        internalImageView.image
+        didSet {
+            internalImageView.image = internalImage
+        }
     }
     
     init(size: CGFloat) {

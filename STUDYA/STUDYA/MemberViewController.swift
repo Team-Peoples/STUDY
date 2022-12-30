@@ -14,10 +14,19 @@ final class MemberViewController: SwitchableViewController {
             collectionView.reloadData()
         }
     }
+    internal var isOwner: Bool?
+    
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    private let bottomVC = MemberBottomSheetViewController()
+    private lazy var bottomVC: MemberBottomSheetViewController = {
+        let vc = MemberBottomSheetViewController()
+        
+        vc.isOwner = isOwner
+        vc.isManager = isManager
+        
+        return vc
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +52,13 @@ final class MemberViewController: SwitchableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        members = [Member(memberID: 0, deposit: 0, nickName: "쥔", profileImageURL: nil, role: "쥔장", isManager: true, isOwner: true),
+                   Member(memberID: 0, deposit: 0, nickName: "매님", profileImageURL: nil, role: "매님", isManager: true, isOwner: false),
+                   Member(memberID: 0, deposit: 0, nickName: "평", profileImageURL: nil, role: "평민", isManager: false, isOwner: false),
+                   Member(memberID: 0, deposit: 0, nickName: "쩌리", profileImageURL: nil, role: nil, isManager: false, isOwner: false)]
+        isOwner = false
+        isManager = true
         
         tabBarController?.tabBar.isHidden = true
     }
@@ -98,15 +114,17 @@ extension MemberViewController: UICollectionViewDataSource {
             
             cell.member = members[indexPath.item - 1]
             
-            cell.profileViewTapped = { [self] member in
-                guard let sheet = bottomVC.sheetPresentationController else { return }
-                
-                sheet.detents = [ .custom { _ in return 300 }]
-                sheet.preferredCornerRadius = 24
-                sheet.prefersGrabberVisible = true
-                
-                bottomVC.member = member
-                self.present(bottomVC, animated: true)
+            if isManager {
+                cell.profileViewTapped = { [self] member in
+                    guard let sheet = bottomVC.sheetPresentationController else { return }
+                    
+                    sheet.detents = [ .custom { _ in return 300 }]
+                    sheet.preferredCornerRadius = 24
+                    sheet.prefersGrabberVisible = true
+                    
+                    bottomVC.member = member
+                    self.present(bottomVC, animated: true)
+                }
             }
             
             return cell
@@ -118,14 +136,28 @@ extension MemberViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(#function )
     }
-    
 }
 
+//struct Member: Codable {
+//    let memberID, deposit: Int
+//    let nickName, profileImageURL, role: String
+//    let isManager: Bool
+//
+//    enum CodingKeys: String, CodingKey {
+//        case memberID = "studyMemberId"
+//        case nickName = "userNickname"
+//        case profileImageURL = "img"
+//        case isManager = "userManager"
+//        case role = "userRole"
+//        case deposit
+//    }
+//}
 
 struct Member: Codable {
     let memberID, deposit: Int
-    let nickName, profileImageURL, role: String
+    let nickName, profileImageURL, role: String?
     let isManager: Bool
+    let isOwner: Bool
 
     enum CodingKeys: String, CodingKey {
         case memberID = "studyMemberId"
@@ -133,7 +165,7 @@ struct Member: Codable {
         case profileImageURL = "img"
         case isManager = "userManager"
         case role = "userRole"
-        case deposit
+        case deposit, isOwner
     }
 }
 

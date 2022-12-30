@@ -89,14 +89,15 @@ struct Network {
         
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
         
-        guard let jsonData = try? JSONEncoder().encode(user),
-              let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+//              let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+              let imageData = Data()
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
         }, with: RequestPurpose.signUp).response { response in
-
+            
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
             
@@ -245,7 +246,8 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+//        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+        let imageData = Data()
         
         AF.upload(multipartFormData: { data in
             
@@ -528,19 +530,19 @@ struct Network {
         }
     }
     
-    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+    func getAllMembers(studyID: Int, completion: @escaping (Result<MemberListResponse, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             print(String(describing: response.request))
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
+                guard let data = response.data, let memberListResponse = jsonDecode(type: MemberListResponse.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(members))
+                completion(.success(memberListResponse))
             default:
                 print(httpResponse.statusCode)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
@@ -940,4 +942,16 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let noti: U
     let study: W
     let schedule: Z
+}
+
+struct MemberListResponse: Codable {
+    let memberList: [Member]
+    let isManager: Bool
+    let isOwner: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case memberList
+        case isManager = "manager"
+        case isOwner = "master"
+    }
 }

@@ -15,7 +15,7 @@ final class MyPageMainViewController: UIViewController {
             guard let userInfo = user else { return }
             nickNameLabel.text = userInfo.nickName
             myMailLabel.text = userInfo.id
-            profileImageSelectorView.setImageWith(userInfo.imageURL)
+            profileImageView.setImageWith(userInfo.imageURL)
         }
     }
     
@@ -35,7 +35,7 @@ final class MyPageMainViewController: UIViewController {
     }()
     private let profileImageView = ProfileImageView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
-    private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .ppsGray1, size: 12)
+    private lazy var myMailLabel = CustomLabel(title: myMail ?? "이메일 정보를 불러오지 못했습니다." , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
     private let separatorView: RoundableView = {
        
@@ -81,6 +81,7 @@ final class MyPageMainViewController: UIViewController {
         // AccountManagerment에서 로그아웃하면서 이 VC가 한번 보여지고 사라지는지 이함수가 호출됨.
         getUserInfo { user in
             self.user = user
+            print(user.imageURL)
         }
     }
     

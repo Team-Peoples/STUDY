@@ -9,13 +9,31 @@ import UIKit
 
 final class MemberBottomSheetViewController: UIViewController {
     
-    internal var isMaster = true
-    internal lazy var member = Member(memberID: 0, deposit: 0, nickName: "", profileImageURL: "", role: "", isManager: true) {
+    internal var member: Member? {
         didSet {
+            guard let member = member else { return }
+            
             profileImageView.setImageWith(member.profileImageURL)
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
+            
             managerButton.isSelected = member.isManager ? true : false
+            ownerButton.isSelected = member.isOwner ? true : false
+        }
+    }
+    internal var isOwner: Bool? {
+        didSet {
+            guard let isOwner = isOwner else { return }
+            
+            ownerButton.isHidden = isOwner ? false : true
+            managerButton.isHidden = isOwner ? false : true
+        }
+    }
+    internal var isManager: Bool? {
+        didSet {
+            guard let isManager = isManager else { return }
+            
+            excommunicatingButton.isHidden = isManager ? false : true
         }
     }
     
@@ -50,6 +68,8 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return f
     }()
+    private lazy var noticeLabel = CustomLabel(title: "스터디장의 역할은 변경할 수 없습니다.", tintColor: .ppsGray1, size: 12)
+    
     private lazy var doneButton: UIButton = {
 
         let b = UIButton(frame: .zero)
@@ -75,19 +95,9 @@ final class MemberBottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if isMaster {
-            excommunicatingButton.isHidden = false
-            ownerButton.isHidden = false
-            managerButton.isHidden = false
-        } else {
-            excommunicatingButton.isHidden = true
-            ownerButton.isHidden = true
-            managerButton.isHidden = true
-        }
-        
         view.backgroundColor = .systemBackground
         
-        configureDefaultView()
+        configureView()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -138,7 +148,7 @@ final class MemberBottomSheetViewController: UIViewController {
         print(#function)
     }
     
-    private func configureDefaultView() {
+    private func configureView() {
                 
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
@@ -147,6 +157,7 @@ final class MemberBottomSheetViewController: UIViewController {
         view.addSubview(ownerButton)
         view.addSubview(managerButton)
         view.addSubview(roleInputField)
+        view.addSubview(noticeLabel)
         view.addSubview(doneButton)
         
         profileImageView.snp.makeConstraints { make in
@@ -236,7 +247,7 @@ final class AskChangingOwnerViewController: UIViewController {
     
     @objc private func ownerViewBackButtonTapped() {
         guard let presentingViewController = self.presentingViewController else { return }
-        
+        print(presentingViewController, "🇨🇴")
         self.dismiss(animated: true) {
             
             let presentingVC = self.willPresentingAgainVC!
