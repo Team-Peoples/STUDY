@@ -15,7 +15,7 @@ final class MyPageMainViewController: UIViewController {
             guard let userInfo = user else { return }
             nickNameLabel.text = userInfo.nickName
             myMailLabel.text = userInfo.id
-            profileImageSelectorView.setImageWith(userInfo.imageURL)
+            profileImageView.setImageWith(userInfo.imageURL)
         }
     }
     

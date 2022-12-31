@@ -209,7 +209,7 @@ struct StudyOverall: Codable {
     let isManager: Bool
     let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
-    let ownerID: String
+    let isMaster: Bool
     
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
@@ -219,7 +219,7 @@ struct StudyOverall: Codable {
         case allowedCount = "holdCnt"
         case absentcount = "absentCnt"
         case totalStudyHeldCount = "dayCnt"
-        case ownerID = "master"
+        case isMaster = "master"
         case study, studySchedule, totalFine
     }
 }
