@@ -12,7 +12,9 @@ class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    var studyViewModel: StudyViewModel = StudyViewModel() {
+    var studyID: ID?
+    
+    private var studyViewModel: StudyViewModel = StudyViewModel() {
         didSet {
             configureViews()
         }
@@ -89,11 +91,12 @@ class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
+        guard let studyID = studyID else { return }
         
-        Network.shared.getStudyInfo(of: 1) { result in
+        Network.shared.getStudy(studyID: studyID) { result in
             switch result {
-            case .success(let study):
-                self.studyViewModel.study = study
+            case .success(let studyOverall):
+                self.studyViewModel.study = studyOverall.study
             case .failure(let failure):
                 print(failure)
             }
@@ -146,6 +149,7 @@ class StudyInfoViewController: SwitchableViewController {
     }
     
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
+
         let studygeneralRuleVC = EditingStudyGeneralRuleViewController()
         studygeneralRuleVC.study = studyViewModel.study
         
@@ -162,6 +166,7 @@ class StudyInfoViewController: SwitchableViewController {
         
         let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
         studyFreeRuleVC.study = studyViewModel.study
+
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
         
         vc.navigationBar.backgroundColor = .appColor(.keyColor1)

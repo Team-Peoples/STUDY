@@ -12,9 +12,15 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     static let identifier = "MainFifthAttendanceTableViewCell"
     
-    internal var studyAttendance: [String: Int]! {
+    internal var studyAttendance: [AttendanceStatus: Int]?
+    internal var totalStudyHeldCount: Int? {
         didSet {
-            setupProgress()
+            if totalStudyHeldCount != nil && studyAttendance != nil {
+                configureViewWhenYesData()
+            } else {
+                noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
+                configureViewWhenNoData()
+            }
         }
     }
     internal var penalty: Int? {
@@ -28,6 +34,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     private let backView = RoundableView(cornerRadius: 24)
     private let titleLabel = CustomLabel(title: "지금까지의 출결", tintColor: .ppsBlack, size: 16, isBold: true)
     private let disclosureIndicatorView = UIImageView(image: UIImage(named: "circleDisclosureIndicator"))
+    
+    private lazy var noAttendanceDataLabel = CustomLabel(title: "출결 데이터가 없어요 😴", tintColor: .ppsGray1, size: 14)
+    
     private lazy var progressView: MultiProgressView = {
         let MPV = MultiProgressView()
         MPV.trackBackgroundColor = .appColor(.ppsGray2)
@@ -35,10 +44,10 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         MPV.cornerRadius = 5
         return MPV
     }()
-    private let attendanceRatioTitleLabel = CustomLabel(title: "출석률", tintColor: .ppsGray1, size: 12)
-    private let attendanceRatioLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
-    private let penaltyTitleLabel = CustomLabel(title: "| 벌금", tintColor: .ppsGray1, size: 12)
-    private let penaltyLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
+    private lazy var attendanceRatioTitleLabel = CustomLabel(title: "출석률", tintColor: .ppsGray1, size: 12)
+    private lazy var attendanceRatioLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
+    private lazy var penaltyTitleLabel = CustomLabel(title: "| 벌금", tintColor: .ppsGray1, size: 12)
+    private lazy var penaltyLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
     private lazy var stackView: UIStackView = {
        
         let s = UIStackView(arrangedSubviews: [attendanceRatioTitleLabel, attendanceRatioLabel, penaltyTitleLabel, penaltyLabel])
@@ -60,12 +69,22 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         backgroundColor = .systemBackground
         backView.backgroundColor = .appColor(.background2)
         
-        progressView.dataSource = self
         
-        hoveringButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        contentView.addSubview(backView)
+        backView.addSubview(titleLabel)
+        backView.addSubview(disclosureIndicatorView)
         
-        addSubviews()
-        setConstraints()
+        backView.snp.makeConstraints { make in
+            make.edges.equalTo(contentView).inset(15)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(backView.snp.leading).inset(28)
+            make.top.equalTo(backView.snp.top).inset(24)
+        }
+        disclosureIndicatorView.snp.makeConstraints { make in
+            make.trailing.equalTo(backView).inset(29)
+            make.centerY.equalTo(titleLabel)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -79,13 +98,35 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
     
+    private func configureViewWhenYesData() {
+        guard totalStudyHeldCount != 0 else {
+            configureViewWhenNoData()
+            return
+        }
+        
+        progressView.dataSource = self
+        hoveringButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        setupProgress()
+        addSubviewsWhenYesData()
+        setConstraintsWhenYesData()
+    }
+    
+    private func configureViewWhenNoData() {
+        backView.addSubview(noAttendanceDataLabel)
+        noAttendanceDataLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(backView)
+            make.centerY.equalTo(backView).offset(15)
+        }
+    }
+    
     private func setupProgress() {
-
-        let total = studyAttendance.map { (_, value) in return value }.reduce(0, +)
-        let attendanceRatio = Float(studyAttendance["출석"]! * 100 / total) / 100
-        let latendssRatio = Float(studyAttendance["지각"]! * 100 / total) / 100
-        let absenceRatio = Float(studyAttendance["결석"]! * 100 / total) / 100
-        let allowedRatio = Float(studyAttendance["사유"]! * 100 / total) / 100
+        
+        guard let totalStudyHeldCount = totalStudyHeldCount, let studyAttendance = studyAttendance else { return }
+        
+        let attendanceRatio = Float(studyAttendance[.attended]! * 100 / totalStudyHeldCount) / 100
+        let latendssRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
+        let absenceRatio = Float(studyAttendance[.absent]! * 100 / totalStudyHeldCount) / 100
+        let allowedRatio = Float(studyAttendance[.allowed]! * 100 / totalStudyHeldCount) / 100
 
         self.progressView.setProgress(section: 0, to: attendanceRatio)
         self.progressView.setProgress(section: 1, to: latendssRatio)
@@ -95,27 +136,13 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         attendanceRatioLabel.text = "\(Double(attendanceRatio * 100).formatted(.number))%"
     }
     
-    private func addSubviews() {
-        contentView.addSubview(backView)
-        backView.addSubview(titleLabel)
-        backView.addSubview(disclosureIndicatorView)
+    private func addSubviewsWhenYesData() {
         backView.addSubview(progressView)
         backView.addSubview(stackView)
         backView.addSubview(hoveringButton)
     }
     
-    private func setConstraints() {
-        backView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView).inset(15)
-        }
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(backView.snp.leading).inset(28)
-            make.top.equalTo(backView.snp.top).inset(24)
-        }
-        disclosureIndicatorView.snp.makeConstraints { make in
-            make.trailing.equalTo(backView).inset(29)
-            make.centerY.equalTo(titleLabel)
-        }
+    private func setConstraintsWhenYesData() {
         progressView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(backView).inset(16)
             make.height.equalTo(10)

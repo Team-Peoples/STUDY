@@ -28,7 +28,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if isAdmin {
+        if isManager {
             managerView.navigatableBottomSheetableDelegate = self
             managerView.navigatiableSwitchSyncableDelegate = self
         }

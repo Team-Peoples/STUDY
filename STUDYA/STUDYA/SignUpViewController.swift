@@ -43,7 +43,7 @@ class SignUpViewController: UIViewController {
         
         return stackView
     }()
-    private let doneButton = BrandButton(title: "완료", isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: Const.done, isBold: true, isFill: false)
     
     private var bottomConstraint: NSLayoutConstraint!
     
@@ -159,11 +159,11 @@ class SignUpViewController: UIViewController {
             passwordCheckOkay {
             
             doneButton.isEnabled = true
-            doneButton.fillIn(title: "완료")
+            doneButton.fillIn(title: Const.done)
         } else {
             if doneButton.isEnabled {
                 doneButton.isEnabled = false
-                doneButton.fillOut(title: "완료")
+                doneButton.fillOut(title: Const.done)
             }
         }
     }

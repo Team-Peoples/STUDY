@@ -160,12 +160,12 @@ class EditingStudySchduleViewController: UIViewController {
         datePicker.locale = Locale(identifier: "en_gb")
         datePicker.minuteInterval = 5
         
-        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
             
 //            self.studySchedule?.startTime = datePicker.date
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -196,12 +196,12 @@ class EditingStudySchduleViewController: UIViewController {
         datePicker.locale = Locale(identifier: "en_gb")
         datePicker.minuteInterval = 5
         
-        let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
             
 //            self.studySchedule?.endTime = datePicker.date
         }
         
-        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -348,9 +348,9 @@ class EditingStudySchduleViewController: UIViewController {
         navigationItem.title = "일정 만들기"
         
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(doneButtonDidTapped))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(doneButtonDidTapped))
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(cancelButtonDidTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancelButtonDidTapped))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
     }
     

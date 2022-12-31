@@ -26,6 +26,10 @@ enum Const {
     static let serverErrorMessage = "서버에 에러가 발생했어요. 이용에 불편을 드려 죄송합니다. 빠르게 복구하겠습니다."
     static let statusCode = "statusCode"
     static let isLoggedin = "isLoggedin"
+    static let OK = "확인"
+    static let cancel = "취소"
+    static let done = "완료"
+    static let defaultProfile = "defaultProfile"
 }
 
 enum AttendanceStatus {
@@ -61,7 +65,7 @@ enum AttendanceBottomViewType {
     var view: FullDoneButtonButtomView {
         switch self {
             case .daySearchSetting: return AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
-            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: "완료")
+            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: Const.done)
             case .membersPeriodSearchSetting: return AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
             case .individualPeriodSearchSetting: return AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
         }

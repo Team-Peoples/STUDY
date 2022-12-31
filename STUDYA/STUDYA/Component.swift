@@ -46,7 +46,7 @@ final class BrandButton: UIButton {
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
         
-        configure(title: "완료", isBold: true, isFill: true, fontSize: 18, height: 50)
+        configure(title: Const.done, isBold: true, isFill: true, fontSize: 18, height: 50)
         configureBorder(color: .keyColor1, width: 1, radius: 50 / 2)
     }
     
@@ -527,7 +527,7 @@ class SimpleAlert: UIAlertController {
     convenience init(message: String?) {
         self.init(title: nil, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: Const.OK, style: .default, handler: nil)
         
         self.addAction(okAction)
     }
@@ -543,107 +543,113 @@ class SimpleAlert: UIAlertController {
 
 class ProfileImageView: UIView {
 
-    var profileImage: UIImage? {
-        didSet {
-            configure(profileImage)
-        }
-    }
-    private let backgroundView = UIView(frame: .zero)
+    private let outerPurpleLineView = UIView(frame: .zero)
     private let internalImageView = UIImageView(frame: .zero)
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     private let roleMark = UIButton(frame: .zero)
+    private var radius: CGFloat = 0
+    private var size: CGFloat = 0
+    // domb: 여기 없애기
+    internal var internalImage: UIImage? {
+        internalImageView.image
+    }
     
-    init(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
+    init(size: CGFloat) {
         super.init(frame: .zero)
-        addSubviews()
         
-        backgroundView.clipsToBounds = true
-        backgroundView.centerXY(inView: self)
-        configure(size: size, image: image, isManager: isManager, role: role)
+        self.size = size
+        self.radius = size / 2
         
-        hideMarks()
-    }
-    
-    private func addSubviews() {
-        addSubview(backgroundView)
         addSubview(internalImageView)
-        addSubview(adminMark)
-        addSubview(roleMark)
-    }
-    
-    internal func configure(size: CGFloat, image: UIImage? = nil, isManager: Bool = false, role: String? = nil) {
         
-        let radius = size / 2
-        
-        configureInternalImageView(image, radius, size)
-        configureLargerCirlcle(isManager, radius, size)
-        
-        guard let role = role else { return }
-        
-        configureRoleView(role)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureInternalImageView(_ image: UIImage?, _ radius: CGFloat, _ size: CGFloat) {
-        configure(image)
+        internalImageView.image = UIImage(named: "defaultProfile")
         internalImageView.clipsToBounds = true
         internalImageView.contentMode = .scaleAspectFill
         internalImageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
         
         internalImageView.centerXY(inView: self)
         internalImageView.setDimensions(height: size, width: size)
-    }
-    
-    
-    internal func configure(_ profileImage: UIImage?) {
-        internalImageView.image = profileImage == nil ? UIImage(named: "defaultProfile") : profileImage
-    }
-    
-    
-    private func configureLargerCirlcle(_ isManager: Bool, _ radius: CGFloat, _ size: CGFloat) {
-        if isManager {
-            
-            backgroundView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
-            setDimensions(height: size + 4, width: size + 4)
-            
-            configureAdminMark()
-            
-        } else {
-            
-            setDimensions(height: size + 2, width: size + 2)
-        }
-        backgroundView.snp.makeConstraints { make in
-            make.edges.equalTo(self)
+        
+        self.snp.makeConstraints { make in
+            make.height.width.equalTo(size + 2)
         }
     }
     
-    private func configureAdminMark() {
-        adminMark.isHidden = false
-        adminMark.snp.makeConstraints { make in
-            make.top.leading.equalTo(backgroundView)
-        }
-    }
-    
-    private func configureRoleView(_ role: String) {
-        roleMark.isHidden = false
+    convenience init(internalImageSize: CGFloat) {
+        self.init(size: internalImageSize)
+        
+        addSubview(outerPurpleLineView)
+        addSubview(adminMark)
+        addSubview(roleMark)
+        
+        outerPurpleLineView.clipsToBounds = true
+        outerPurpleLineView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
+        
         roleMark.isUserInteractionEnabled = false
         roleMark.backgroundColor = .systemBackground
-        roleMark.setTitle(role, for: .normal)
         roleMark.setTitleColor(.black, for: .normal)
         roleMark.titleLabel?.font = .boldSystemFont(ofSize: 10)
         roleMark.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 0, blur: 4, spread: 0)
         roleMark.layer.cornerRadius = 10
         roleMark.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         
-        roleMark.anchor(bottom: backgroundView.bottomAnchor, bottomConstant: -6, trailing: backgroundView.trailingAnchor, height: 20)
+        outerPurpleLineView.centerXY(inView: self)
+        outerPurpleLineView.snp.makeConstraints { make in
+            make.edges.equalTo(self)
+        }
+        roleMark.anchor(bottom: outerPurpleLineView.bottomAnchor, bottomConstant: -6, trailing: outerPurpleLineView.trailingAnchor, height: 20)
+        adminMark.snp.makeConstraints { make in
+            make.top.leading.equalTo(outerPurpleLineView)
+        }
+        
+        hideMarks()
+    }
+    
+    internal func configure(imageURL: String?, isManager: Bool, role: String?) {
+        
+        setImageWith(imageURL)
+        
+        if isManager {
+            
+            self.snp.updateConstraints { make in
+                make.height.width.equalTo(size + 4)
+            }
+            outerPurpleLineView.isHidden = false
+            adminMark.isHidden = false
+            
+        } else {
+            self.snp.updateConstraints { make in
+                make.height.width.equalTo(size + 2)
+            }
+        }
+        
+        guard let role = role else { return }
+        
+        roleMark.isHidden = false
+        roleMark.setTitle(role, for: .normal)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     internal func hideMarks() {
+        outerPurpleLineView.isHidden = true
         adminMark.isHidden = true
         roleMark.isHidden = true
+    }
+    
+    internal func setImageWith(_ imageURL: String?) {
+        if let imageURL = imageURL {
+            let url = URL(string: imageURL)
+            internalImageView.kf.setImage(with: url)
+        } else {
+            internalImageView.image = UIImage(named: Const.defaultProfile)
+        }
+    }
+    
+    internal func setImageWith(_ image: UIImage? = nil) {
+        internalImageView.image = image == nil ? UIImage(named: Const.defaultProfile) : image
     }
 }
 
@@ -996,9 +1002,9 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         // 만들어줄 버튼
         // flexibleSpace는 취소~완료 간의 거리를 만들어준다.
-        let doneBT = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(self.donePicker))
+        let doneBT = UIBarButtonItem(title: Const.done, style: .plain, target: self, action: #selector(self.donePicker))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelBT = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(self.cancelPicker))
+        let cancelBT = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(self.cancelPicker))
         
         // 만든 아이템들을 세팅해주고
         toolBar.setItems([cancelBT,flexibleSpace,doneBT], animated: false)
@@ -1008,7 +1014,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         self.inputAccessoryView = toolBar
     }
     
-    // "완료" 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
+    // Const.done 클릭 시 데이터를 textfield에 입력 후 입력창 내리기
     @objc private func donePicker() {
         let row = self.picker.selectedRow(inComponent: 0)
         self.picker.selectRow(row, inComponent: 0, animated: false)
@@ -1235,7 +1241,7 @@ final class AttendanceStatusCapsuleView: RoundableView {
 class FullDoneButtonButtomView: UIView {
     
     internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: "완료", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Const.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
     
     init(doneButtonTitle: String) {
         super.init(frame: .zero)

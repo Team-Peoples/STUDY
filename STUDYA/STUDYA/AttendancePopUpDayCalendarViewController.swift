@@ -39,7 +39,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         return calendarView
     }()
     private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
-    private let doneButton = BrandButton(title: "확인", isBold: true, isFill: false, fontSize: 16, height: 40)
+    private let doneButton = BrandButton(title: Const.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
     // MARK: - Life Cycle
     
@@ -140,11 +140,11 @@ extension AttendancePopUpDayCalendarViewController: UICalendarSelectionSingleDat
             
             selectionSingleDate.setSelected(nil, animated: true)
             
-            doneButton.fillOut(title: "완료")
+            doneButton.fillOut(title: Const.done)
             doneButton.isEnabled = false
         } else {
             
-            doneButton.fillIn(title: "완료")
+            doneButton.fillIn(title: Const.done)
             doneButton.isEnabled = true
         }
     }

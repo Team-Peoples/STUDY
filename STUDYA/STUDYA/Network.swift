@@ -134,14 +134,14 @@ struct Network {
             guard let httpResponse = response.response else { completion(.failure(.serverError))
                 return
             }
-            
+
             switch httpResponse.statusCode {
             case 200:
                 guard let data = response.data, let user = jsonDecode(type: User.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-                
+
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -360,7 +360,9 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
-                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.
+                
+                //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.   //ehd: 403을 받으면 refresh -> refresh 시도했는데 실패시 401 뜸 -> seperateCommon에서 unauthuser 뜸 -> handleCommon에서 로그아웃 이렇게 되고 있는 거 아닌가?
+                // 따로 handleCommon을 실행시키는 코드를 작성해주지않았을지도!
             }
         }
     }
@@ -369,15 +371,19 @@ struct Network {
     
     // MARK: - Study
     
+    // domb: study가 없을수도 있다고 생각해서 Result<[Study?]>로 optional 추가
     func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            
+
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let studies = jsonDecode(type: ResponseResults<Study>.self, data: data)?.result else { completion(.failure(.decodingError)); return }
-                //                🛑아무것도 없을 때 reponse에 data 계속 안넣어주면 옵셔널 바인딩 분리해서 if let 으로 해야함.
+                guard let data = response.data, let studies = jsonDecode(type: [Study].self, data: data) else {
+                 completion(.failure(.decodingError))
+                    return
+                }
                 completion(.success(studies))
+
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -386,8 +392,29 @@ struct Network {
         }
     }
     
+    func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            print(String(describing: response.data?.toDictionary()))
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studyOverall))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -446,6 +473,7 @@ struct Network {
             }
         }
     }
+    
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
     func deleteStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
        
@@ -491,8 +519,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                
-                switch errorCode {
+                 switch errorCode {
                 case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
                 case ErrorCode.userNotFound: completion(.failure(.userNotFound))
                 case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
@@ -506,27 +533,22 @@ struct Network {
         }
     }
     
-    func getStudyInfo(of studyID: ID, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
-            guard let httpResponse = response.response else {
-                completion(.failure(.serverError))
-                return
-            }
+    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            print(String(describing: response.request))
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data,
-                      let studyAllInfo = jsonDecode(type: StudyAllInfo.self, data: body) else { completion(.failure(.decodingError))
+
+                guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
+                    completion(.failure(.decodingError))
                     return
                 }
                 
-                let study = studyAllInfo.study
-                completion(.success(study))
+                completion(.success(members))
             default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
-                }
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -848,11 +870,11 @@ extension UIAlertController {
         case .decodingError:
             alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
         case .unauthorizedUser:
-            alert = SimpleAlert(buttonTitle: "확인", message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Const.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .tokenExpired:
-            alert = SimpleAlert(buttonTitle: "확인", message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .unknownError(let errorCode):
@@ -872,22 +894,6 @@ extension UIAlertController {
 }
 
 // MARK: - Networking Model
-
-struct StudyAllInfo: Codable {
-    let announcement: Announcement?
-    let study: Study
-    let manager: Bool?
-    let latenessCnt, holdCnt: Int
-    let studySchedule: StudySchedule?
-    let absentCnt, dayCnt: Int
-    let master: Bool?
-    let totalFine, attendanceCnt: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case announcement = "notification"
-        case study, manager, latenessCnt, holdCnt, studySchedule, absentCnt, dayCnt, master, totalFine, attendanceCnt
-    }
-}
 
 struct ResponseResult<T: Codable>: Codable {
     let result: T?
