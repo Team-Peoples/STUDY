@@ -51,8 +51,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         setup(depositTextField)
         
         fineAndDepositFieldsAreEnabled(false)
-        
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -91,13 +89,14 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
     
     private func setNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func addTapGestureRecognizers() {
         fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
         depositDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dimmingViewDidTapped)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
     
     private func setup(_ textField: UITextField) {
@@ -111,7 +110,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         textField.textAlignment = .right
         textField.clipsToBounds = true
         textField.layer.cornerRadius = 42 / 2
-//        textField.keyboardType = .numberPad
+        textField.keyboardType = .numberPad
     }
     
     func fineAndDepositFieldsAreEnabled(_ bool: Bool) {
@@ -158,7 +157,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         }
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -166,7 +165,7 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
         keyboardFrameHeight = keyboardSize.height
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc func keyboardDisappear(_ notification: NSNotification) {
         keyboardFrameHeight = 0
     }
 }

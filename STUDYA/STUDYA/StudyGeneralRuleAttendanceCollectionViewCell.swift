@@ -1,5 +1,5 @@
 //
-//  AttendanceRuleCollectionViewCell.swift
+//  CreatingStudyGeneralRuleAttendanceCollectionViewCell.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/09/02.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class AttendanceRuleCollectionViewCell: UICollectionViewCell {
+class CreatingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
 
-    static let identifier = "AttendanceRuleCollectionViewCell"
+    static let identifier = "CreatingStudyGeneralRuleAttendanceCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)

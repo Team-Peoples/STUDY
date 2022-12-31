@@ -240,7 +240,7 @@ struct Schedule: Codable {
     let id: Int?
     let name: String?
     let date: Date?
-    let status: String? //상태가 머머 있는거지?
+    let status: String?
     
     enum CodingKeys: String, CodingKey {
         case status

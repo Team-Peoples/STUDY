@@ -66,7 +66,7 @@ class CreatingStudyScheduleContentViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc private  func closeButtonDidTapped() {
+    @objc private func closeButtonDidTapped() {
         self.dismiss(animated: true)
     }
     

@@ -12,7 +12,11 @@ class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    var study: Study?
+    var studyViewModel: StudyViewModel = StudyViewModel() {
+        didSet {
+            configureViews()
+        }
+    }
     
     //    internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
@@ -67,7 +71,6 @@ class StudyInfoViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /// 스터디 정보 가져오기
         
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
@@ -86,7 +89,15 @@ class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        configureViews()
+        
+        Network.shared.getStudyInfo(of: 1) { result in
+            switch result {
+            case .success(let study):
+                self.studyViewModel.study = study
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,21 +140,14 @@ class StudyInfoViewController: SwitchableViewController {
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
         
-        guard let study = study else { return }
-        editingStudyFormVC.studyViewModel = StudyViewModel(study: study)
+        editingStudyFormVC.studyViewModel = studyViewModel
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studygeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-        
-        studygeneralRuleVC.task = .editing
-        studygeneralRuleVC.navigationItem.title = "규칙 관리"
-        studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
-        studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
+        let studygeneralRuleVC = EditingStudyGeneralRuleViewController()
+        studygeneralRuleVC.study = studyViewModel.study
         
         let vc = UINavigationController(rootViewController: studygeneralRuleVC)
         
@@ -156,13 +160,8 @@ class StudyInfoViewController: SwitchableViewController {
     
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
-        
-        studyFreeRuleVC.navigationItem.title = "진행방식"
-        studyFreeRuleVC.navigationItem.titleView?.tintColor = .appColor(.whiteLabel)
-        studyFreeRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(closeButtonDidTapped))
-        studyFreeRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
+        studyFreeRuleVC.study = studyViewModel.study
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
         
         vc.navigationBar.backgroundColor = .appColor(.keyColor1)
@@ -201,11 +200,6 @@ class StudyInfoViewController: SwitchableViewController {
         }
     }
     
-    @objc func closeButtonDidTapped() {
-        
-        self.dismiss(animated: true)
-    }
-    
     override func extraWorkWhenSwitchToggled() {
         studyformEditButton.isHidden = !isSwitchOn
         generalRuleEditButton.isHidden = !isSwitchOn
@@ -229,18 +223,21 @@ class StudyInfoViewController: SwitchableViewController {
         }
     }
     
+    // MARK: - Networking
+    
     // MARK: - Configure Views
     
     private func configureViews() {
         
         //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
-        if let rawValue = study?.category {
+        if let rawValue = studyViewModel.study.category {
             studyCategoryLabel.text = StudyCategory(rawValue: rawValue)?.rawValueWithKorean
         }
-        studyNameLabel.text = study?.studyName
-        studyIntroductionLabel.text = study?.studyIntroduction
+        studyNameLabel.text = studyViewModel.study.studyName
+        studyIntroductionLabel.text = studyViewModel.study.studyIntroduction
         
-        guard let studyOn = study?.studyOn, let studyOff = study?.studyOff else { return }
+        let studyOn = studyViewModel.study.studyOn
+        let studyOff = studyViewModel.study.studyOff
         
         switch (studyOn, studyOff) {
         case (true, true):
@@ -254,7 +251,7 @@ class StudyInfoViewController: SwitchableViewController {
         }
         
         // freeRule부터 확인한 이유: 따로 ui작업이 필요없기때문에 먼저 확인
-        if let freeRule = study?.freeRule {
+        if let freeRule = studyViewModel.study.freeRule {
             
             freeRuleTextView.text = freeRule
             freeRuleTextView.textColor = .appColor(.ppsGray1)
@@ -264,10 +261,10 @@ class StudyInfoViewController: SwitchableViewController {
             freeRuleTextView.textColor = .appColor(.ppsGray2)
         }
         
-        let generalRuleLateness = study?.generalRule?.lateness
-        let generalRuleAbsence = study?.generalRule?.absence
-        let deposit = study?.generalRule?.deposit
-        let excommunicationRule = study?.generalRule?.excommunication
+        let generalRuleLateness = studyViewModel.study.generalRule?.lateness
+        let generalRuleAbsence = studyViewModel.study.generalRule?.absence
+        let deposit = studyViewModel.study.generalRule?.deposit
+        let excommunicationRule = studyViewModel.study.generalRule?.excommunication
         
         check(generalRuleLateness?.time, AndSetupHeightOf: latenessTimeRuleView)
         check(generalRuleAbsence?.time, AndSetupHeightOf: absenceTimeRuleView)

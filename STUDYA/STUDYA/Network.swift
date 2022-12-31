@@ -516,8 +516,12 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data, let study = jsonDecode(type: Study.self, data: body) else { return }
+                guard let body = response.data,
+                      let studyAllInfo = jsonDecode(type: StudyAllInfo.self, data: body) else { completion(.failure(.decodingError))
+                    return
+                }
                 
+                let study = studyAllInfo.study
                 completion(.success(study))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -868,6 +872,22 @@ extension UIAlertController {
 }
 
 // MARK: - Networking Model
+
+struct StudyAllInfo: Codable {
+    let announcement: Announcement?
+    let study: Study
+    let manager: Bool?
+    let latenessCnt, holdCnt: Int
+    let studySchedule: StudySchedule?
+    let absentCnt, dayCnt: Int
+    let master: Bool?
+    let totalFine, attendanceCnt: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case announcement = "notification"
+        case study, manager, latenessCnt, holdCnt, studySchedule, absentCnt, dayCnt, master, totalFine, attendanceCnt
+    }
+}
 
 struct ResponseResult<T: Codable>: Codable {
     let result: T?

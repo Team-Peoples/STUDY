@@ -106,6 +106,12 @@ extension UIView {
     }
 }
 
+extension Int {
+    func toString() -> String {
+        return String(self)
+    }
+}
+
 extension String {
     func checkOnlyNumbers() -> Bool {
         do {
@@ -118,6 +124,10 @@ extension String {
             return false
         }
         return false
+    }
+    
+    func toInt() -> Int? {
+        return Int(self)
     }
 }
 
