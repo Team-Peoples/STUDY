@@ -139,7 +139,7 @@ extension UITableView {
 
 extension Date {
     func convertToDateComponents() -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day], from: self)
+        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
     }
 }
 

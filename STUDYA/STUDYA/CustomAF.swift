@@ -47,7 +47,7 @@ enum RequestPurpose: Requestable {
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
     case createSchedule(Schedule) //21
-    case createStudySchedule(StudySchedule)
+    case createStudySchedule(StudyScheduleGoing)
     case joinStudy(ID)
     
     //    HTTPMethod: PUT

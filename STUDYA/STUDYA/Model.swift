@@ -271,10 +271,10 @@ struct Schedule: Codable {
 
 struct StudySchedule: Codable {
     
-    let studyId: String? = nil
+    let studyID: Int?
     let studyName: String?
     
-    let studyScheduleID: Int
+    let studyScheduleID: Int?
     
     var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
     var place: String?
@@ -285,7 +285,7 @@ struct StudySchedule: Codable {
     
     enum CodingKeys: String, CodingKey {
         
-        case studyId
+        case studyID = "studyId"
         case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
         
         case studyScheduleID = "studyScheduleId"
@@ -299,12 +299,46 @@ struct StudySchedule: Codable {
     }
 }
 
+struct StudyScheduleGoing: Codable {
+    
+    let studyId: Int?
+    let studyName: String?
+    
+    let studyScheduleID: Int
+    
+    var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
+    var place: String?
+    
+    var openDate: String?
+    var deadlineDate: String?
+    var startTime: String?
+    var endTime: String?
+    var repeatOption: RepeatOption?
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case studyId
+        case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
+        
+        case studyScheduleID = "studyScheduleId"
+        
+        case topic = "studyScheduleName"
+        case place = "studySchedulePlace"
+        
+        case openDate = "studyScheduleDate"
+        case deadlineDate = "targetDate"
+        case startTime = "studyScheduleStart"
+        case endTime = "studyScheduleEnd"
+        case repeatOption = "repeatDay"
+    }
+}
+
 enum RepeatOption: String, Codable {
     case everyDay
     case everyWeek
     case everyTwoWeeks // domb: git book에는 everyTwoWeek으로 되어있어 수정요청
     case everyMonth
-//    case unknown
+    case noRepeat
     
     var kor: String {
         switch self {
@@ -316,8 +350,8 @@ enum RepeatOption: String, Codable {
             return "2주 마다"
         case .everyMonth:
             return "매달"
-//        case .unknown:
-//            return "반복 설정 오류"
+        case .noRepeat:
+            return ""
         }
     }
     

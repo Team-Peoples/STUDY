@@ -98,7 +98,7 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
     }
     
     @objc private func deadlineDateSelectableViewTapped() {
-        guard let deadlineDate = studySchedule?.deadlineDate else { return }
+//        guard let deadlineDate = studySchedule?.deadlineDate else { return }
 //        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
 //
 //        popUpCalendarVC.presentingVC = self
@@ -229,17 +229,17 @@ class CreatingStudySchedulePriodFormViewController: UIViewController {
     }
     
     private func checkNextButtonIsEnabled(_ studySchedule: StudySchedule) {
-        let opendate = studySchedule.openDate
+//        let opendate = studySchedule.openDate
         let startTime = studySchedule.startTime
         let endTime = studySchedule.endTime
         
-        if opendate != nil && startTime != nil && endTime != nil && startTime! < endTime! {
-            nextButton.isEnabled = true
-            nextButton.fillIn(title: "다음")
-        } else {
-            nextButton.isEnabled = false
-            nextButton.fillOut(title: "다음")
-        }
+//        if opendate != nil && startTime != nil && endTime != nil && startTime! < endTime! {
+//            nextButton.isEnabled = true
+//            nextButton.fillIn(title: "다음")
+//        } else {
+//            nextButton.isEnabled = false
+//            nextButton.fillOut(title: "다음")
+//        }
     }
     
     // MARK: - Configure

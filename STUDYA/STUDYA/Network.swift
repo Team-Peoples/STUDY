@@ -18,7 +18,6 @@ enum PeoplesError: Error {
     case loginInformationSavingError
     case unauthorizedUser
     case serverError
-    case internalServerError
     case decodingError
     case unknownError(Int?)
     case tokenExpired
@@ -569,7 +568,7 @@ struct Network {
         }
     }
     
-    func createStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func createStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
         AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
@@ -845,7 +844,7 @@ extension Network {
 
         switch statusCode {
         case 200: completion(.failure(.decodingError))
-        case 500: completion(.failure(.internalServerError))
+        case 500: completion(.failure(.serverError))
         case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))

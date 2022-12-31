@@ -125,13 +125,10 @@ final class MainViewController: SwitchableViewController {
 
 //        self.navigationItem.standardAppearance = nil
 //        self.navigationItem.scrollEdgeAppearance = nil
-        
-//        floatingButtonContainerView.isHidden = true
     }
     
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-        
         let nextVC = NotificationViewController()
         push(vc: nextVC)
     }
@@ -362,7 +359,7 @@ extension MainViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
             
             cell.nickName = nickName
-            cell.schedule = StudySchedule(studyName: "", studyScheduleID: 0, topic: "단어시험1", place: "강남역 스터디룸", startTime: Date(timeInterval: 100000, since: Date()), endTime: Date(timeInterval: 106000, since: Date()) , repeatOption: nil)
+            cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell
