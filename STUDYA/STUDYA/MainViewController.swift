@@ -24,8 +24,7 @@ final class MainViewController: SwitchableViewController {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
             isManager = currentStudyOverall.isManager
-            let indexPaths = [IndexPath(row: 0, section: 0),IndexPath(row: 1, section: 0),IndexPath(row: 2, section: 0),IndexPath(row: 3, section: 0),IndexPath(row: 4, section: 0)]
-            mainTableView.reloadRows(at: indexPaths, with: .automatic)
+            mainTableView.reloadData()
         }
     }
     private var notification: String? {
@@ -131,6 +130,7 @@ final class MainViewController: SwitchableViewController {
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         flag.toggle()
+        
 //        Network.shared.createStudySchedule(StudyScheduleGoing(studyId: 3, studyName: nil, studyScheduleID: 3, topic: "묘오오오오오픽", place: "ㅏㅏㅏ앙소", openDate: "2023-01-01", deadlineDate: "2023-01-01", startTime: "16:30", endTime: "17:00", repeatOption: .noRepeat)) { result in
 //            switch result {
 //            case .success:
@@ -393,27 +393,23 @@ extension MainViewController: UITableViewDataSource {
             
             return cell
         case 2:
+            print(#function, "🤟")
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
-            
-            if flag {
-                cell.didAttend = true
-                cell.attendanceStatus = .late
-            } else {
-                cell.didAttend = false
-                
-            }
-//            cell.didAttend = true
-            
-//            if flag {
-//                cell.attendanceStatus = .attended
-//            } else {
-//                cell.attendanceStatus = .late
-//            }
             
 //            cell.schedule = currentStudyOverall?.studySchedule
             cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
-            
             cell.navigatable = self
+            
+            
+            
+            if flag {
+                cell.didAttend = true
+                cell.attendanceStatus = .attended
+                
+            } else {
+                cell.didAttend = true
+                cell.attendanceStatus = .absent
+            }
             
             return cell
         case 3:
@@ -467,7 +463,6 @@ extension MainViewController: UITableViewDelegate {
             }
         default: break
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

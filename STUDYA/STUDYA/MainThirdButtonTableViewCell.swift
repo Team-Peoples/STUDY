@@ -14,7 +14,10 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     
     internal var schedule: StudySchedule? {
         didSet {
-            print("📣")
+            willHideViews.forEach { view in
+                view.isHidden = true
+            }
+            
             guard let schedule = schedule else {
                 
                 mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
@@ -43,8 +46,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             if didAttend {
 //                출석상태 별 뷰 띄우기
                 print("📕")
-//                addSubview(afterStudyView)
-//                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+                afterStudyView.isHidden = false
             } else {
                 mainButton.isHidden = false
                 if timeBetweenTimes > oneHourInSeconds * 24 {
@@ -86,149 +88,34 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     internal var isManagerMode = true
     internal var attendanceStatus: AttendanceStatus? {
         didSet {
+//        guard 출석 이미 했을 때 else { return }
             afterStudyView.isHidden = false
-            contentView.addSubview(afterStudyView)
-            afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            decorateAfterCheckView()
         }
     }
     
-    private lazy var mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
-    private lazy var afterStudyView: RoundableView = {
+    private let mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
+    private let afterStudyView = RoundableView(cornerRadius: 25)
 
-        let v = RoundableView(cornerRadius: 25)
-
-        let symbolView = UIImageView()
-        var titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
-        let innerView = RoundableView(cornerRadius: 22)
-
-        v.addSubview(symbolView)
-        v.addSubview(titleLabel)
-        v.addSubview(innerView)
-
-        symbolView.snp.makeConstraints { make in
-            make.centerY.equalTo(v)
-            make.leading.equalTo(v).offset(25)
-        }
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(v)
-            make.leading.equalTo(symbolView.snp.trailing).offset(15)
-        }
-        innerView.snp.makeConstraints { make in
-            make.top.bottom.trailing.equalTo(v).inset(3)
-            make.leading.equalTo(titleLabel.snp.trailing).offset(50)
-        }
-
-        if attendanceStatus == .attended {
-
-            v.backgroundColor = UIColor.appColor(.attendedMain)
-            symbolView.image = UIImage(named: "attendedSymbol")
-            titleLabel.text = "출석"
-
-            let subTitleLabel = CustomLabel(title: "오늘도 출석하셨군요!", tintColor: .whiteLabel, size: 14, isBold: true)
-
-            v.addSubview(subTitleLabel)
-            subTitleLabel.centerXY(inView: innerView)
-            
-            blink(innerView, subTitleLabel)
-        } else {
-
-            let penaltyLabel = CustomLabel(title: "벌금", tintColor: .whiteLabel, size: 14, isBold: true)
-            let fineLabel = CustomLabel(title: "00,000", tintColor: .whiteLabel, size: 20, isBold: true)
-            let wonLabel = CustomLabel(title: "원", tintColor: .whiteLabel, size: 14, isBold: true)
-
-            v.addSubview(penaltyLabel)
-            v.addSubview(fineLabel)
-            v.addSubview(wonLabel)
-
-            penaltyLabel.snp.makeConstraints { make in
-                make.leading.equalTo(innerView).offset(20)
-                make.centerY.equalTo(innerView).offset(3)
-                make.trailing.greaterThanOrEqualTo(fineLabel).offset(10)
-            }
-            fineLabel.snp.makeConstraints { make in
-                make.centerY.equalTo(innerView)
-                make.trailing.equalTo(innerView).inset(34)
-            }
-            wonLabel.snp.makeConstraints { make in
-                make.leading.equalTo(fineLabel.snp.trailing).offset(3)
-                make.centerY.equalTo(penaltyLabel)
-            }
-            
-            blink(innerView, penaltyLabel, fineLabel, wonLabel)
-            
-            switch attendanceStatus {
-            case .late:
-                v.backgroundColor = UIColor.appColor(.lateMain)
-                symbolView.image = UIImage(named: "attendedSymbol")
-                titleLabel.text = "출석"
-            case .absent:
-                v.backgroundColor = UIColor.appColor(.absentMain)
-                symbolView.image = UIImage(named: "absentSymbol")
-                titleLabel.text = "지각"
-            case .allowed:
-                v.backgroundColor = UIColor.appColor(.allowedMain)
-                symbolView.image = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)
-                titleLabel.text = "사유"
-            default: break
-            }
-        }
-
-        return v
-    }()
-
+    private let symbolView = UIImageView()
+    private let titleLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 20, isBold: true)
+    private let innerView = RoundableView(cornerRadius: 22)
+    private let subTitleLabel = CustomLabel(title: "오늘도 출석하셨군요!", tintColor: .whiteLabel, size: 14, isBold: true)
+    private let penaltyLabel = CustomLabel(title: "벌금", tintColor: .whiteLabel, size: 14, isBold: true)
+    private let fineLabel = CustomLabel(title: "00,000", tintColor: .whiteLabel, size: 20, isBold: true)
+    private let wonLabel = CustomLabel(title: "원", tintColor: .whiteLabel, size: 14, isBold: true)
+    
+    private lazy var willHideViews = [subTitleLabel, penaltyLabel, fineLabel, wonLabel]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print(#function)
+
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
         backgroundColor = .systemBackground
         
         configureMainButton()
         configureAfterCheckView()
-        
-        mainButton.isHidden = true
-        afterStudyView.isHidden = true
-        
-//        if isManagerMode {
-//
-//            if attendable {
-//                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-//                mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
-//                mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-//                mainButton.fillIn(title: "  인증번호 확인")
-//                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-//            } else {
-//                mainButton = BrandButton(title: "", isBold: true, isFill: false, fontSize: 20)
-//                mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
-//                mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-//                mainButton.fillOut(title: "  인증번호 확인")
-//                mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-//                mainButton.isEnabled = false
-//            }
-//        } else {
-//
-//            if didAttend {
-//                addSubview(afterStudyView)
-//                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-//            } else {
-//
-//                if attendable {
-//                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
-//                    mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-//                    mainButton.fillIn(title: "  출석하기")
-//                } else {
-//                    mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
-//                    mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-//                    mainButton.fillOut(title: "  출석하기")
-//                    mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-//                    mainButton.isEnabled = false
-//                }
-//
-//                addSubview(mainButton)
-//                mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-//            }
-//        }
     }
 
     required init?(coder: NSCoder) {
@@ -278,13 +165,89 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
     
+    private func decorateAfterCheckView() {
+        
+        if attendanceStatus == .attended {
+            print("attended!!!")
+            subTitleLabel.isHidden = false
+            
+            afterStudyView.backgroundColor = UIColor.appColor(.attendedMain)
+            symbolView.image = UIImage(named: "attendedSymbol")
+            titleLabel.text = "출석"
+
+            blink(innerView, subTitleLabel)
+            
+        } else {
+            print("No!!!!!")
+            penaltyLabel.isHidden = false
+            fineLabel.isHidden = false
+            wonLabel.isHidden = false
+            
+            switch attendanceStatus {
+            case .late:
+                afterStudyView.backgroundColor = UIColor.appColor(.lateMain)
+                symbolView.image = UIImage(named: "attendedSymbol")
+                titleLabel.text = "출석"
+            case .absent:
+                afterStudyView.backgroundColor = UIColor.appColor(.absentMain)
+                symbolView.image = UIImage(named: "absentSymbol")
+                titleLabel.text = "지각"
+            case .allowed:
+                afterStudyView.backgroundColor = UIColor.appColor(.allowedMain)
+                symbolView.image = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)
+                titleLabel.text = "사유"
+            default: break
+            }
+            
+            blink(innerView, penaltyLabel, fineLabel, wonLabel)
+        }
+        
+    }
+    
     private func configureMainButton() {
+        mainButton.isHidden = true
         contentView.addSubview(mainButton)
         mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
     }
     
     private func configureAfterCheckView() {
+        afterStudyView.isHidden = true
         addSubview(afterStudyView)
-        afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+        afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+        
+        afterStudyView.addSubview(symbolView)
+        afterStudyView.addSubview(titleLabel)
+        afterStudyView.addSubview(innerView)
+        
+        willHideViews.forEach { view in
+            afterStudyView.addSubview(view)
+        }
+
+        symbolView.snp.makeConstraints { make in
+            make.centerY.equalTo(afterStudyView)
+            make.leading.equalTo(afterStudyView).offset(25)
+        }
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(afterStudyView)
+            make.leading.equalTo(symbolView.snp.trailing).offset(15)
+        }
+        innerView.snp.makeConstraints { make in
+            make.top.bottom.trailing.equalTo(afterStudyView).inset(3)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(50)
+        }
+        subTitleLabel.centerXY(inView: innerView)
+        penaltyLabel.snp.makeConstraints { make in
+            make.leading.equalTo(innerView).offset(20)
+            make.centerY.equalTo(innerView).offset(3)
+            make.trailing.greaterThanOrEqualTo(fineLabel).offset(10)
+        }
+        fineLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(innerView)
+            make.trailing.equalTo(innerView).inset(34)
+        }
+        wonLabel.snp.makeConstraints { make in
+            make.leading.equalTo(fineLabel.snp.trailing).offset(3)
+            make.centerY.equalTo(penaltyLabel)
+        }
     }
 }
