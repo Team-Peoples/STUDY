@@ -96,7 +96,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         default: break
         }
         
-        date.text = "\(month)월\(day)일 (\(weekday)) \(amPm) \(hour):\(minute)"
+        date.text = "\(month)월 \(day)일 (\(weekday))  |  \(amPm) \(hour):\(minute)"
     }
     
     private func constrainLine() {

@@ -24,7 +24,8 @@ final class MainViewController: SwitchableViewController {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
             isManager = currentStudyOverall.isManager
-            mainTableView.reloadData()
+            let indexPaths = [IndexPath(row: 0, section: 0),IndexPath(row: 1, section: 0),IndexPath(row: 2, section: 0),IndexPath(row: 3, section: 0),IndexPath(row: 4, section: 0)]
+            mainTableView.reloadRows(at: indexPaths, with: .automatic)
         }
     }
     private var notification: String? {
@@ -126,15 +127,43 @@ final class MainViewController: SwitchableViewController {
 //        self.navigationItem.standardAppearance = nil
 //        self.navigationItem.scrollEdgeAppearance = nil
     }
-    
+    var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-        let nextVC = NotificationViewController()
-        push(vc: nextVC)
+        flag.toggle()
+//        Network.shared.createStudySchedule(StudyScheduleGoing(studyId: 3, studyName: nil, studyScheduleID: 3, topic: "묘오오오오오픽", place: "ㅏㅏㅏ앙소", openDate: "2023-01-01", deadlineDate: "2023-01-01", startTime: "16:30", endTime: "17:00", repeatOption: .noRepeat)) { result in
+//            switch result {
+//            case .success:
+//                print("s")
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+//        Network.shared.getAllStudySchedule { result in
+//            switch result {
+//            case .success(let schedules):
+//                print(schedules)
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+//        Network.shared.deleteStudySchedule(48, deleteRepeatSchedule: false) { result in
+//            switch result {
+//            case .success:
+//                print("S")
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+        
+//        let nextVC = NotificationViewController()
+//        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
-        dropdownButtonDidTapped()
+        if currentStudyOverall != nil {
+            dropdownButtonDidTapped()
+        }
         let creatingStudyFormVC = CreatingStudyFormViewController()
         
         creatingStudyFormVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
@@ -365,7 +394,25 @@ extension MainViewController: UITableViewDataSource {
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
-//            🛑스케줄 받아서 남은 시간 비교해서 버튼 변경
+            
+            if flag {
+                cell.didAttend = true
+                cell.attendanceStatus = .late
+            } else {
+                cell.didAttend = false
+                
+            }
+//            cell.didAttend = true
+            
+//            if flag {
+//                cell.attendanceStatus = .attended
+//            } else {
+//                cell.attendanceStatus = .late
+//            }
+            
+//            cell.schedule = currentStudyOverall?.studySchedule
+            cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
+            
             cell.navigatable = self
             
             return cell

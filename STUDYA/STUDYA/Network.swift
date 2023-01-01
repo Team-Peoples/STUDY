@@ -88,8 +88,8 @@ struct Network {
         
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
         
-        guard let jsonData = try? JSONEncoder().encode(user),
-              let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
@@ -559,7 +559,8 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                print("스터디 스케쥴")
+                guard let data = response.data else { return }
+                print(String(data: data, encoding: .utf8))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)

@@ -11,12 +11,86 @@ import SnapKit
 class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
+    
+    internal var schedule: StudySchedule? {
+        didSet {
+            print("📣")
+            guard let schedule = schedule else {
+                
+                mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+                mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+                mainButton.fillOut(title: "  출석체크")
+                mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+                mainButton.isEnabled = false
+                
+                return
+            }
+            
+            guard let startTime = schedule.startTime, let endTime = schedule.endTime else { return }
+            
+            let now = Date()
+            let calendar = Calendar.current
+            
+            let timeBetweenTimes = startTime.timeIntervalSince(now)
+            let oneHourInSeconds: TimeInterval = 3600
+            let oneMinuteInSeconds: TimeInterval = 60
+            
+            let startDateComponents = calendar.dateComponents([.year, .month, .day], from: startTime)
+            let todayComponents = calendar.dateComponents([.year, .month, .day], from: now)
+            
+            mainButton.isEnabled = false
+//            위의 스케줄에서 받은 didAttend
+            if didAttend {
+//                출석상태 별 뷰 띄우기
+                print("📕")
+//                addSubview(afterStudyView)
+//                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+            } else {
+                mainButton.isHidden = false
+                if timeBetweenTimes > oneHourInSeconds * 24 {
+                    
+                    guard let startDateMidnight = calendar.date(from: startDateComponents),
+                          let todayMidnight = calendar.date(from: todayComponents),
+                          let dayDifference = calendar.dateComponents([.day], from: todayMidnight, to: startDateMidnight).day else { return }
+
+                    mainButton.setTitle("일정이 \(dayDifference)일 남았어요", for: .normal)
+                } else if timeBetweenTimes > oneHourInSeconds * 3 {
+                    guard let hourDifference = calendar.dateComponents([.hour], from: now, to: startTime).hour else { return }
+                    
+                    mainButton.setTitle("일정이 \(hourDifference)시간 남았어요", for: .normal)
+                } else if timeBetweenTimes > oneMinuteInSeconds * 10 {
+                    mainButton.setTitle("곧 출석체크가 시작돼요", for: .normal)
+                } else {
+                    mainButton.isEnabled = true
+                    
+                    if isManagerMode {
+                        
+                        mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
+//                        mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
+                        mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+                        mainButton.fillIn(title: "  인증번호 확인")
+                    } else {
+                        mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
+                        mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+                        mainButton.fillIn(title: "  출석하기")
+                    }
+                }
+            }
+        }
+    }
+    
     internal var navigatable: Navigatable!
     
     internal var attendable = true
     internal var didAttend = false
     internal var isManagerMode = true
-    internal var attendanceStatus: AttendanceStatus? = AttendanceStatus.allowed
+    internal var attendanceStatus: AttendanceStatus? {
+        didSet {
+            afterStudyView.isHidden = false
+            contentView.addSubview(afterStudyView)
+            afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+        }
+    }
     
     private lazy var mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private lazy var afterStudyView: RoundableView = {
@@ -105,55 +179,56 @@ class MainThirdButtonTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        print(#function)
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
         backgroundColor = .systemBackground
-
-        if isManagerMode {
-            
-            if attendable {
-                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-                mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
-                mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                mainButton.fillIn(title: "  인증번호 확인")
-                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-            } else {
-                mainButton = BrandButton(title: "", isBold: true, isFill: false, fontSize: 20)
-                mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
-                mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-                mainButton.fillOut(title: "  인증번호 확인")
-                mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-                mainButton.isEnabled = false
-            }
-            
-            addSubview(mainButton)
-            mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-            
-        } else {
-            
-            if didAttend {
-                addSubview(afterStudyView)
-                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-            } else {
-                
-                if attendable {
-                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
-                    mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                    mainButton.fillIn(title: "  출석하기")
-                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
-                } else {
-                    mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
-                    mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
-                    mainButton.fillOut(title: "  출석하기")
-                    mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
-                    mainButton.isEnabled = false
-                }
-                
-                addSubview(mainButton)
-                mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
-            }
-        }
+        
+        configureMainButton()
+        configureAfterCheckView()
+        
+        mainButton.isHidden = true
+        afterStudyView.isHidden = true
+        
+//        if isManagerMode {
+//
+//            if attendable {
+//                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
+//                mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
+//                mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+//                mainButton.fillIn(title: "  인증번호 확인")
+//                mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
+//            } else {
+//                mainButton = BrandButton(title: "", isBold: true, isFill: false, fontSize: 20)
+//                mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+//                mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+//                mainButton.fillOut(title: "  인증번호 확인")
+//                mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+//                mainButton.isEnabled = false
+//            }
+//        } else {
+//
+//            if didAttend {
+//                addSubview(afterStudyView)
+//                afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+//            } else {
+//
+//                if attendable {
+//                    mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
+//                    mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+//                    mainButton.fillIn(title: "  출석하기")
+//                } else {
+//                    mainButton.setImage(UIImage(named: "allowedSymbol"), for: .normal)
+//                    mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
+//                    mainButton.fillOut(title: "  출석하기")
+//                    mainButton.setTitleColor(UIColor.appColor(.ppsGray2), for: .normal)
+//                    mainButton.isEnabled = false
+//                }
+//
+//                addSubview(mainButton)
+//                mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+//            }
+//        }
     }
 
     required init?(coder: NSCoder) {
@@ -178,7 +253,7 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         navigatable.present(vc)
     }
     
-    func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
+    private func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
         UIView.transition(with: self, duration: 0, options: .transitionCrossDissolve) {
             
             label1.textColor = .clear
@@ -201,5 +276,15 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                 l3.textColor = .appColor(.whiteLabel)
             }
         }
+    }
+    
+    private func configureMainButton() {
+        contentView.addSubview(mainButton)
+        mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+    }
+    
+    private func configureAfterCheckView() {
+        addSubview(afterStudyView)
+        afterStudyView.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
     }
 }
