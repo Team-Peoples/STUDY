@@ -13,8 +13,9 @@ final class EditingStudyFormViewController: UIViewController {
     
     var studyViewModel: StudyViewModel? {
         didSet {
-            guard let study = studyViewModel?.study else { return }
-            bind(study)
+            guard let studyViewModel = studyViewModel else { return }
+            bind(studyViewModel.study)
+            doneButton.isEnabled = studyViewModel.formIsValid
         }
     }
    

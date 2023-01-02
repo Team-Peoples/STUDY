@@ -1045,7 +1045,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         }
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func pickerSelectRowMatchedTextIn(_ textField: UITextField) {
         if isHavePicker {
             let row = strArray.firstIndex(of: textField.text ?? "--") ?? 0
             picker.selectRow(row, inComponent: 0, animated: false)
@@ -1054,11 +1054,15 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        pickerSelectRowMatchedTextIn(textField)
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if let text = textField.text, let intText = Int(text) {
             self.text = Formatter.formatIntoDecimal(number: intText)
-        } else if let text = textField.text, text != "0" {
+        } else if let text = textField.text, text != "", text != "0", text != "--" {
             return
         } else {
             if isHavePicker {

@@ -98,10 +98,11 @@ extension UIView {
 }
 
 extension UIView {
-    convenience init(backgroundColor: UIColor) {
+    convenience init(backgroundColor: UIColor, alpha: CGFloat = 1) {
         self.init(frame: .zero)
         
         self.backgroundColor = backgroundColor
+        self.alpha = alpha
         
     }
 }

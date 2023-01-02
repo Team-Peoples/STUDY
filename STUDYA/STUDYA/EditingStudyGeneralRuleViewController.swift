@@ -11,7 +11,17 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
 
     // MARK: - Model
     
-    var study: Study?
+    var study: Study? {
+        didSet {
+            if oldValue == nil {
+                doneButtonItem.isEnabled = false
+            } else if study == oldValue {
+                doneButtonItem.isEnabled = false
+            } else {
+                doneButtonItem.isEnabled = true
+            }
+        }
+    }
     
     // MARK: - UI Properties
     
@@ -26,11 +36,15 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         
+        collectionView.isScrollEnabled = false
+        
         return collectionView
     }()
     private let underLine = UIView()
     private lazy var leftTabButton: UIButton = tabButton(title: "출결&벌금")
     private lazy var rightTabButton: UIButton = tabButton(title: "강퇴")
+    
+    private lazy var doneButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(ruleEditDone))
     
     // MARK: - Life Cycle
     
@@ -63,9 +77,6 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
                     make.centerX.equalTo(rightTabButton)
                 }
                 contentView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
-                
-                /// 근데 맨처음에는 실행되지않음.
-                /// cellForRowAt에서 코드 추가해주어서 해결.
             default:
                 return
         }
@@ -106,7 +117,7 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     func setNavigation() {
         
         self.navigationItem.title = "규칙 관리"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(ruleEditDone))
+        self.navigationItem.rightBarButtonItem = doneButtonItem
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .done, target: self, action: #selector(cancel))
         self.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         self.navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)

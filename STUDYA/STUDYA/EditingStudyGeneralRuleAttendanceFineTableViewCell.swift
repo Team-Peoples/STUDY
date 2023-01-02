@@ -27,19 +27,18 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
     let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
     
-    /// 디밍처리
-    lazy var fineDimmingView = UIView()
-    
     var perLateMinuteFieldAction: (Int?) -> Void = { perLateMinute in }
     var latenessFineFieldAction: (Int?) -> Void = { latenessFine in }
     var absenceFineFieldAction: (Int?) -> Void = { absenceFine in }
+    
+    lazy var fineDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
 
     // MARK: - Initialization
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        perLateMinuteField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
+        perLateMinuteField.delegate = self
         latenessFineField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
         absenceFineField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
         
@@ -54,17 +53,22 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
-        print(sender)
+    
         switch sender {
         case perLateMinuteField:
             perLateMinuteFieldAction(perLateMinuteField.text?.toInt())
         case latenessFineField:
-            latenessFineFieldAction(latenessFineField.text?.toInt())
+            latenessFineFieldAction(latenessFineField.text?.toInt() == 0 ? nil : latenessFineField.text?.toInt())
         case absenceFineField:
-            absenceFineFieldAction(absenceFineField.text?.toInt())
+            absenceFineFieldAction(absenceFineField.text?.toInt() == 0 ? nil : absenceFineField.text?.toInt())
         default:
             return
         }
+    }
+    
+    func fineDimmingViewAddTapGesture(target: Any?, action: Selector) {
+        print("초기화","🔥")
+        fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
     }
     
     // MARK: - Configure
@@ -83,6 +87,7 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
         contentView.addSubview(absenceFineCountLabel)
         contentView.addSubview(absenceFineField)
         contentView.addSubview(absenceFineFieldBehindLabel)
+        contentView.addSubview(fineDimmingView)
     }
     
     // MARK: - Setting Constraints
@@ -146,6 +151,17 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
             make.leading.equalTo(absenceFineField.snp.trailing).offset(2)
             make.width.equalTo(20)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(40)
+        }
+        fineDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(contentView.safeAreaLayoutGuide)
+        }
+    }
+}
+
+extension EditingStudyGeneralRuleAttendanceFineTableViewCell: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == perLateMinuteField {
+            perLateMinuteFieldAction(textField.text?.toInt())
         }
     }
 }

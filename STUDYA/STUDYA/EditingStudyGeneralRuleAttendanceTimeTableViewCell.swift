@@ -32,8 +32,8 @@ class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        latenessRuleTimeField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
-        absenceRuleTimeField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
+        latenessRuleTimeField.delegate = self
+        absenceRuleTimeField.delegate = self
         
         configureViews()
         setConstraints()
@@ -46,7 +46,7 @@ class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
     // MARK: - Actions
     
     @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
-        print(sender)
+       print(sender, "🫣")
         switch sender {
         case latenessRuleTimeField:
             latenessRuleTimeFieldAction(sender.text?.toInt())
@@ -128,6 +128,32 @@ class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(40)
             make.centerY.equalTo(absenceRuleTimeFieldFrontLabel)
             make.width.equalTo(78)
+        }
+    }
+}
+
+extension EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+        switch textField {
+        case latenessRuleTimeField:
+            latenessRuleTimeField.pickerSelectRowMatchedTextIn(latenessRuleTimeField)
+        case absenceRuleTimeField:
+            absenceRuleTimeField.pickerSelectRowMatchedTextIn(absenceRuleTimeField)
+        default:
+            return
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        switch textField {
+        case latenessRuleTimeField:
+            latenessRuleTimeFieldAction(textField.text?.toInt())
+        case absenceRuleTimeField:
+            absenceRuleTimeFieldAction(textField.text?.toInt())
+        default:
+            return
         }
     }
 }

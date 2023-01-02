@@ -92,7 +92,7 @@ final class MainViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
-        getUserInformationAndStudies()
+//        getUserInformationAndStudies()
 //        myStudyList = [
 //            Study(id: 1, studyName: "웃기지마", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
 //            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
@@ -110,7 +110,7 @@ final class MainViewController: SwitchableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        getUserInformationAndStudies()
         tabBarController?.tabBar.isHidden = false
         
 //        let appearance = UINavigationBarAppearance()
