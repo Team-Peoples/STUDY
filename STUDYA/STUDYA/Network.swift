@@ -371,8 +371,8 @@ struct Network {
     
     // MARK: - Study
     
-    // domb: study가 없을수도 있다고 생각해서 Result<[Study?]>로 optional 추가
-    func getAllStudy(completion: @escaping (Result<[Study?], PeoplesError>) -> Void) {
+    // domb: study가 없을수도 있다고 생각하는데 Result<[Study?]>처럼 optional을 사용 안해도 되는건가요?
+    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
 
@@ -396,7 +396,7 @@ struct Network {
         AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            print(String(describing: response.data?.toDictionary()))
+//            print(String(describing: response.data?.toDictionary()))
             switch httpResponse.statusCode {
             case 200:
                 
@@ -475,9 +475,9 @@ struct Network {
     }
     
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func deleteStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+    func deleteStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
        
-        AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.endStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -485,12 +485,26 @@ struct Network {
            
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let study = jsonDecode(type: Study.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(study))
+                completion(.success(isSuccessed))
+            case 404:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
+                case ErrorCode.userNotFound: completion(.failure(.userNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)

@@ -16,6 +16,26 @@ class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell 
     weak var delegate: EditingStudyGeneralRuleViewController?
     
     private var generalRuleAttendanceTableView = GeneralRuleAttendanceTableView()
+    
+    lazy var fineDimmingViewIsHidden: (LatenessRuleTimeIsNotNil, AbsenceRuleTimeIsNotNil) = (false, false) {
+        didSet {
+            
+            switch fineDimmingViewIsHidden {
+            case (false, false):
+               
+                let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? EditingStudyGeneralRuleAttendanceFineTableViewCell
+                cell?.fineDimmingView.isHidden = false
+                resetData(in: cell)
+            default:
+               
+                let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? EditingStudyGeneralRuleAttendanceFineTableViewCell
+                cell?.fineDimmingView.isHidden = true
+            }
+        }
+    }
+    
+    lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
+    
     private var keyboardHeight: CGFloat = 0
     // MARK: - Initialization
 
@@ -55,8 +75,32 @@ class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell 
     }
     
     @objc func keyboardDisappear(_ notification: NSNotification) {
+        keyboardHeight = 0
         generalRuleAttendanceTableView.endEditing(true)
         generalRuleAttendanceTableView.contentInset = .zero
+    }
+    
+    @objc func dimmingViewDidTapped() {
+        
+        generalRuleAttendanceTableView.isUserInteractionEnabled = false
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
+            toastMessage.snp.updateConstraints { make in
+                make.bottom.equalTo(contentView).offset(-keyboardHeight-60)
+            }
+            contentView.layoutIfNeeded()
+            
+        } completion: { _ in
+            UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
+                self.toastMessage.alpha = 0
+            } completion: {[self] _ in
+                toastMessage.snp.updateConstraints { make in
+                    make.bottom.equalTo(contentView).offset(100)
+                }
+                toastMessage.alpha = 0.9
+                generalRuleAttendanceTableView.isUserInteractionEnabled = true
+            }
+        }
     }
     
     private func enableTapGesture() {
@@ -79,13 +123,22 @@ class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell 
     
     private func configureViews() {
         contentView.addSubview(generalRuleAttendanceTableView)
+        contentView.addSubview(toastMessage)
     }
     // MARK: - Setting Constraints
     
     private func setConstaints() {
+        
         generalRuleAttendanceTableView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView.safeAreaLayoutGuide)
             make.bottom.equalTo(contentView)
+        }
+        
+        toastMessage.snp.makeConstraints { make in
+            make.centerX.equalTo(contentView)
+            make.width.equalTo(contentView.frame.width - 14)
+            make.height.equalTo(42)
+            make.bottom.equalTo(contentView).offset(100)
         }
     }
 }
@@ -100,6 +153,16 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         return 1
     }
     
+    fileprivate func resetData(in cell: EditingStudyGeneralRuleAttendanceFineTableViewCell?) {
+        cell?.perLateMinuteField.text = "--"
+        cell?.latenessFineField.text = "0"
+        cell?.absenceFineField.text = "0"
+        
+        delegate?.study?.generalRule?.lateness.count = nil
+        delegate?.study?.generalRule?.lateness.fine = nil
+        delegate?.study?.generalRule?.absence.fine = nil
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
@@ -110,9 +173,11 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             ?? "--"
             cell.latenessRuleTimeFieldAction = { [self] latenessRuleTime in
                 delegate?.study?.generalRule?.lateness.time = latenessRuleTime
+                fineDimmingViewIsHidden.0 = latenessRuleTime != nil
             }
             cell.absenceRuleTimeFieldAction = { [self] absenceRuleTime in
                 delegate?.study?.generalRule?.absence.time = absenceRuleTime
+                fineDimmingViewIsHidden.1 = absenceRuleTime != nil
             }
             
             return cell
@@ -133,6 +198,14 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             cell.absenceFineFieldAction = { [self] absenceFine in
                 delegate?.study?.generalRule?.absence.fine = absenceFine
             }
+            
+            if delegate?.study?.generalRule?.lateness.time == nil && delegate?.study?.generalRule?.absence.time == nil {
+                cell.fineDimmingView.isHidden = false
+            } else {
+                cell.fineDimmingView.isHidden = true
+            }
+            
+            cell.fineDimmingViewAddTapGesture(target: self, action: #selector(dimmingViewDidTapped))
             
             return cell
         case 2:
@@ -170,3 +243,6 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         }
     }
 }
+
+typealias LatenessRuleTimeIsNotNil = Bool
+typealias AbsenceRuleTimeIsNotNil = Bool

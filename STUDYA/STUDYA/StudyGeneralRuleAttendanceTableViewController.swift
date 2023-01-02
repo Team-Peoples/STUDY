@@ -41,6 +41,8 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .appColor(.background)
+        
         addTapGestureRecognizers()
         
         setDelegate()
@@ -114,8 +116,8 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     }
     
     func fineAndDepositFieldsAreEnabled(_ bool: Bool) {
-        depositDimmingView.isHidden = bool
         fineDimmingView.isHidden = bool
+        depositDimmingView.isHidden = bool
         
         perLateMinuteField.isEnabled = bool
         latenessFineTextField.isEnabled = bool
@@ -174,10 +176,6 @@ class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
 
 extension StudyGeneralRuleAttendanceTableViewController {
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 0 || section == 1 {
             return 10
@@ -188,9 +186,7 @@ extension StudyGeneralRuleAttendanceTableViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 || section == 1 {
-            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 10))
-            footerView.backgroundColor = .appColor(.background)
-            return footerView
+            return UIView()
         } else {
             return nil
         }

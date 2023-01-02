@@ -17,17 +17,18 @@ class EditingStudyGeneralRuleDepositTableViewCell: UITableViewCell {
     let depositBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
   
     /// 보증금
-    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: false)
-    
-    /// 디밍처리
-    let depositDimmingView = UIView()
+    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
     
     var depositTextFieldAction: (Int?) -> Void = { deposit in }
+    
+    lazy var depositDimmingView = UIView()
 
     // MARK: - Initialization
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        depositTextField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
         
         configureViews()
         setConstraints()
@@ -37,6 +38,16 @@ class EditingStudyGeneralRuleDepositTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: - Actions
+    
+    @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
+
+        switch sender {
+        case depositTextField:
+            depositTextFieldAction(depositTextField.text?.toInt() == 0 ? nil : depositTextField.text?.toInt())
+        default:
+            return
+        }
+    }
     
     
     // MARK: - Configure

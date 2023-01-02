@@ -70,7 +70,7 @@ struct SNSInfo {
     let provider: String
 }
 
-struct Study: Codable {
+struct Study: Codable, Equatable {
     let id: Int?
     var studyOn, studyOff: Bool
     var studyName, category, studyIntroduction, freeRule: String?
@@ -101,6 +101,10 @@ struct Study: Codable {
         self.isBlocked = isBlocked
         self.isPaused = isPaused
         self.generalRule = generalRule
+    }
+    
+    static func == (lhs: Study, rhs: Study) -> Bool {
+        return lhs.generalRule?.lateness == rhs.generalRule?.lateness && lhs.generalRule?.absence == rhs.generalRule?.absence && lhs.generalRule?.deposit == rhs.generalRule?.deposit && lhs.generalRule?.excommunication == rhs.generalRule?.excommunication
     }
 }
 
@@ -173,7 +177,8 @@ enum OnOff: String {
     }
 }
 
-struct GeneralStudyRule: Codable {
+struct GeneralStudyRule: Codable, Equatable {
+    
     var lateness: Lateness
     var absence: Absence
     var deposit: Int?
@@ -186,15 +191,15 @@ struct GeneralStudyRule: Codable {
     }
 }
 
-struct Absence: Codable {
+struct Absence: Codable, Equatable {
     var time, fine: Int?
 }
 
-struct Lateness: Codable {
+struct Lateness: Codable, Equatable {
     var time, count, fine: Int?
 }
 
-struct Excommunication: Codable {
+struct Excommunication: Codable, Equatable {
     var lateness, absence: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -229,27 +234,22 @@ struct Announcement: Codable {
     let id: Int?
     let title: String?
     let content: String?
-    let createdAt: String?
+    let createdDate: Date?
     var isPinned: Bool?
-    
-    var createdDate: Date? {
-        guard let createdAt = createdAt else { return nil }
-        return Formatter.formatToDate(string: createdAt)
-    }
     
     enum CodingKeys: String, CodingKey {
         case id = "notificationId"
         case title = "notificationSubject"
         case content = "notificationContents"
-        case createdAt
+        case createdDate = "createdAt"
         case isPinned = "pin"
     }
     
-    init(id: Int? = nil, title: String?, content: String?, createdAt: String?, isPinned: Bool? = nil) {
+    init(id: Int? = nil, title: String?, content: String?, createdDate: Date?, isPinned: Bool? = nil) {
         self.id = id
         self.title = title
         self.content = content
-        self.createdAt = createdAt
+        self.createdDate = createdDate
         self.isPinned = isPinned
     }
 }
