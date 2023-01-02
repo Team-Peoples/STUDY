@@ -42,10 +42,9 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             let todayComponents = calendar.dateComponents([.year, .month, .day], from: now)
             
             mainButton.isEnabled = false
-//            위의 스케줄에서 받은 didAttend
+//            🛑위의 스케줄에서 받은 didAttend
             if didAttend {
-//                출석상태 별 뷰 띄우기
-                print("📕")
+//                출석상태 별 뷰 띄우기 (지금은 attendanceStatus didSet에서 하고 있음.
                 afterStudyView.isHidden = false
             } else {
                 mainButton.isHidden = false
@@ -64,18 +63,8 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                     mainButton.setTitle("곧 출석체크가 시작돼요", for: .normal)
                 } else {
                     mainButton.isEnabled = true
-                    
-                    if isManagerMode {
-                        
-                        mainButton.addTarget(self, action: #selector(mainButtonTappedWhenManager), for: .touchUpInside)
-//                        mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
-                        mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                        mainButton.fillIn(title: "  인증번호 확인")
-                    } else {
-                        mainButton.addTarget(self, action: #selector(mainButtonTappedWhenNotManager), for: .touchUpInside)
-                        mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                        mainButton.fillIn(title: "  출석하기")
-                    }
+                    mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
+                    isManagerMode ? mainButton.fillIn(title: "  인증번호 확인") : mainButton.fillIn(title: "  출석하기")
                 }
             }
         }
@@ -114,6 +103,8 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .systemBackground
         
+        mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
+        
         configureMainButton()
         configureAfterCheckView()
     }
@@ -122,22 +113,32 @@ class MainThirdButtonTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func mainButtonTappedWhenManager() {
-        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberCheckingPopViewController") as! ValidationNumberCheckingPopViewController
-        
-        vc.preferredContentSize = CGSize(width: 286, height: 247)
-        
-        navigatable.present(vc)
-    }
-    
-    @objc private func mainButtonTappedWhenNotManager() {
-        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberFillingInPopViewController") as! ValidationNumberFillingInPopViewController
-        
-        vc.preferredContentSize = CGSize(width: 286, height: 247)
-        
-        navigatable.present(vc)
+    @objc private func mainButtonTapped() {
+        if isManagerMode {
+            guard let scheduleID = schedule?.studyScheduleID else { return }
+            Network.shared.getAttendanceCertificationCode(scheduleID: scheduleID) { result in
+                switch result {
+                case .success(let code):
+                    print(code)
+                case .failure(let error):
+                    UIAlertController.handleCommonErros(presenter: self.navigatable, error: error)
+                }
+            }
+            
+            let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+            let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberCheckingPopViewController") as! ValidationNumberCheckingPopViewController
+            
+            vc.preferredContentSize = CGSize(width: 286, height: 247)
+            
+            navigatable.present(vc)
+        } else{
+            let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+            let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberFillingInPopViewController") as! ValidationNumberFillingInPopViewController
+            
+            vc.preferredContentSize = CGSize(width: 286, height: 247)
+            
+            navigatable.present(vc)
+        }
     }
     
     private func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
@@ -168,7 +169,6 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     private func decorateAfterCheckView() {
         
         if attendanceStatus == .attended {
-            print("attended!!!")
             subTitleLabel.isHidden = false
             
             afterStudyView.backgroundColor = UIColor.appColor(.attendedMain)
@@ -178,7 +178,6 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             blink(innerView, subTitleLabel)
             
         } else {
-            print("No!!!!!")
             penaltyLabel.isHidden = false
             fineLabel.isHidden = false
             wonLabel.isHidden = false

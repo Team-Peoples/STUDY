@@ -18,6 +18,13 @@ final class ValidationNumberCheckingPopViewController: UIViewController {
             attendButton.isEnabled = false
         }
     }
+    internal var checkCode: Int? {
+        didSet {
+            guard let checkCode = checkCode else { return }
+            validationNumberLabel.text = String(checkCode)
+        }
+    }
+    
     private var customTransitioningDelegate = TransitioningDelegate()
     
     @IBOutlet weak var validationNumberLabel: UILabel!

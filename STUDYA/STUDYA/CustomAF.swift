@@ -77,6 +77,7 @@ enum RequestPurpose: Requestable {
     case getStudyLog    //24
     case checkEmailCertificated
     case getAllStudyMembers(ID)
+    case getAttendanceCertificactionCode(ID)
 }
 
 extension RequestPurpose {
@@ -87,7 +88,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode:
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
@@ -171,6 +172,8 @@ extension RequestPurpose {
             return "/signup/email/auth"
         case .getAllStudyMembers(let studyID):
             return "/studyMember/\(studyID)"
+        case .getAttendanceCertificactionCode:
+            return "/attendance/checkNumber"
         }
     }
     
@@ -188,6 +191,7 @@ extension RequestPurpose {
     
     var parameters: RequestParameters {
         switch self {
+            
 // Body
             
 ///    HTTPMethod: POST
@@ -197,6 +201,8 @@ extension RequestPurpose {
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
+        case .getAttendanceCertificactionCode(let id):
+            return .body(["studyScheduleId" : id])
             
 ///    HTTPMethod: PUT
         case .updateAnnouncement(let title, let content, let id):
