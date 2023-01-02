@@ -1,5 +1,5 @@
 //
-//  StudyFreeRuleViewController.swift
+//  CreatingStudyFreeRuleViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/09/02.
@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class StudyFreeRuleViewController: UIViewController {
+class CreatingStudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
@@ -80,7 +80,7 @@ class StudyFreeRuleViewController: UIViewController {
 
 // MARK: - UITextViewDelegate
 
-extension StudyFreeRuleViewController: UITextViewDelegate {
+extension CreatingStudyFreeRuleViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = true
     }

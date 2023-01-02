@@ -125,6 +125,7 @@ struct Network {
     }
     
     func signIn(id: String, pw: String, completion: @escaping (Result<User,PeoplesError>) -> Void) {
+        
         AF.upload(multipartFormData: { data in
             data.append(id.data(using: .utf8)!, withName: "userId")
             data.append(pw.data(using: .utf8)!, withName: "password")
@@ -359,7 +360,9 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
+                
                 //리프레시 토큰도 만료되었을 경우 로그아웃 시킨다.   //ehd: 403을 받으면 refresh -> refresh 시도했는데 실패시 401 뜸 -> seperateCommon에서 unauthuser 뜸 -> handleCommon에서 로그아웃 이렇게 되고 있는 거 아닌가?
+                // 따로 handleCommon을 실행시키는 코드를 작성해주지않았을지도!
             }
         }
     }
@@ -367,6 +370,48 @@ struct Network {
     // MARK: - User Schedule
     
     // MARK: - Study
+    
+    // domb: study가 없을수도 있다고 생각하는데 Result<[Study?]>처럼 optional을 사용 안해도 되는건가요?
+    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studies = jsonDecode(type: [Study].self, data: data) else {
+                 completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(studies))
+
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+//            print(String(describing: response.data?.toDictionary()))
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studyOverall))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
     func createStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
             
@@ -430,9 +475,9 @@ struct Network {
     }
     
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func deleteStudy(_ study: Study, completion: @escaping (Result<Study, PeoplesError>) -> Void) {
+    func deleteStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
        
-        AF.request(RequestPurpose.createStudy(study), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.endStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -440,12 +485,26 @@ struct Network {
            
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let study = jsonDecode(type: Study.self, data: data) else {
+                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(study))
+                completion(.success(isSuccessed))
+            case 404:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
+                case ErrorCode.userNotFound: completion(.failure(.userNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -488,46 +547,6 @@ struct Network {
         }
     }
     
-    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
-            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-
-            switch httpResponse.statusCode {
-            case 200:
-                guard let data = response.data, let studies = jsonDecode(type: [Study].self, data: data) else {
-                 completion(.failure(.decodingError))
-                    return
-                }
-                completion(.success(studies))
-
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
-                    completion(result)
-                }
-            }
-        }
-    }
-    
-    func getStudy(studyID: Int, completion: @escaping (Result<StudyOverall, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
-            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-            print(String(describing: response.data?.toDictionary()))
-            switch httpResponse.statusCode {
-            case 200:
-                
-                guard let data = response.data, let studyOverall = jsonDecode(type: StudyOverall.self, data: data) else {
-                    completion(.failure(.decodingError))
-                    return
-                }
-                
-                completion(.success(studyOverall))
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
-            }
-        }
-    }
-    
     func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             print(String(describing: response.request))
@@ -535,6 +554,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
+
                 guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
@@ -542,7 +562,6 @@ struct Network {
                 
                 completion(.success(members))
             default:
-                print(httpResponse.statusCode)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }

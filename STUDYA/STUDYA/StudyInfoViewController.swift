@@ -12,7 +12,13 @@ class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    var study: Study?
+    var studyID: ID?
+    
+    private var studyViewModel: StudyViewModel = StudyViewModel() {
+        didSet {
+            configureViews()
+        }
+    }
     
     //    internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
@@ -29,6 +35,7 @@ class StudyInfoViewController: SwitchableViewController {
     
     /// 스터디 규칙정보
     ///
+    @IBOutlet weak var studyGeneralRuleBackgroundView: UIView!
     @IBOutlet weak var latenessTimeRuleView: UIView!
     @IBOutlet weak var latenessTimeRuleLabel: UILabel!
     
@@ -67,7 +74,7 @@ class StudyInfoViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /// 스터디 정보 가져오기
+        
         
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
@@ -86,7 +93,17 @@ class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        configureViews()
+        guard let studyID = studyID else { return }
+        
+        Network.shared.getStudy(studyID: studyID) { result in
+            switch result {
+            case .success(let studyOverall):
+                self.studyViewModel.study = studyOverall.study
+                print(studyOverall.study)
+            case .failure(let failure):
+                print(failure)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,21 +146,15 @@ class StudyInfoViewController: SwitchableViewController {
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
         
-        guard let study = study else { return }
-        editingStudyFormVC.studyViewModel = StudyViewModel(study: study)
+        editingStudyFormVC.studyViewModel = studyViewModel
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studygeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-        
-        studygeneralRuleVC.task = .editing
-        studygeneralRuleVC.navigationItem.title = "규칙 관리"
-        studygeneralRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(closeButtonDidTapped))
-        studygeneralRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
+
+        let studygeneralRuleVC = EditingStudyGeneralRuleViewController()
+        studygeneralRuleVC.study = studyViewModel.study
         
         let vc = UINavigationController(rootViewController: studygeneralRuleVC)
         
@@ -156,13 +167,9 @@ class StudyInfoViewController: SwitchableViewController {
     
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
-        
-        studyFreeRuleVC.navigationItem.title = "진행방식"
-        studyFreeRuleVC.navigationItem.titleView?.tintColor = .appColor(.whiteLabel)
-        studyFreeRuleVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(closeButtonDidTapped))
-        studyFreeRuleVC.navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
+        studyFreeRuleVC.study = studyViewModel.study
+
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
         
         vc.navigationBar.backgroundColor = .appColor(.keyColor1)
@@ -187,7 +194,8 @@ class StudyInfoViewController: SwitchableViewController {
             present(vcToPresent, animated: true, completion: nil)
         case "스터디 종료":
             let vcToPresent = StudyExitViewController(task: .close)
-           
+            vcToPresent.studyID = studyID
+            vcToPresent.studyName = studyViewModel.study.studyName
             vcToPresent.presentingVC = self
             if let sheet = vcToPresent.sheetPresentationController {
                 
@@ -201,12 +209,9 @@ class StudyInfoViewController: SwitchableViewController {
         }
     }
     
-    @objc func closeButtonDidTapped() {
-        
-        self.dismiss(animated: true)
-    }
-    
     override func extraWorkWhenSwitchToggled() {
+        print("isSwitchOn: ", isSwitchOn)
+        print("isManager: ", isManager)
         studyformEditButton.isHidden = !isSwitchOn
         generalRuleEditButton.isHidden = !isSwitchOn
         freeRuleEditButton.isHidden = !isSwitchOn
@@ -229,18 +234,21 @@ class StudyInfoViewController: SwitchableViewController {
         }
     }
     
+    // MARK: - Networking
+    
     // MARK: - Configure Views
     
     private func configureViews() {
         
         //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
-        if let rawValue = study?.category {
+        if let rawValue = studyViewModel.study.category {
             studyCategoryLabel.text = StudyCategory(rawValue: rawValue)?.rawValueWithKorean
         }
-        studyNameLabel.text = study?.studyName
-        studyIntroductionLabel.text = study?.studyIntroduction
+        studyNameLabel.text = studyViewModel.study.studyName
+        studyIntroductionLabel.text = studyViewModel.study.studyIntroduction
         
-        guard let studyOn = study?.studyOn, let studyOff = study?.studyOff else { return }
+        let studyOn = studyViewModel.study.studyOn
+        let studyOff = studyViewModel.study.studyOff
         
         switch (studyOn, studyOff) {
         case (true, true):
@@ -250,11 +258,10 @@ class StudyInfoViewController: SwitchableViewController {
         case (true, false):
             studyTypeLabel.text = OnOff.on.kor
         case (false, false):
-            return
+            studyTypeLabel.text = nil
         }
         
-        // freeRule부터 확인한 이유: 따로 ui작업이 필요없기때문에 먼저 확인
-        if let freeRule = study?.freeRule {
+        if let freeRule = studyViewModel.study.freeRule {
             
             freeRuleTextView.text = freeRule
             freeRuleTextView.textColor = .appColor(.ppsGray1)
@@ -264,16 +271,38 @@ class StudyInfoViewController: SwitchableViewController {
             freeRuleTextView.textColor = .appColor(.ppsGray2)
         }
         
-        let generalRuleLateness = study?.generalRule?.lateness
-        let generalRuleAbsence = study?.generalRule?.absence
-        let deposit = study?.generalRule?.deposit
-        let excommunicationRule = study?.generalRule?.excommunication
+        let generalRuleLateness = studyViewModel.study.generalRule?.lateness
+        let generalRuleAbsence = studyViewModel.study.generalRule?.absence
+        let deposit = studyViewModel.study.generalRule?.deposit
+        let excommunicationRule = studyViewModel.study.generalRule?.excommunication
         
         check(generalRuleLateness?.time, AndSetupHeightOf: latenessTimeRuleView)
         check(generalRuleAbsence?.time, AndSetupHeightOf: absenceTimeRuleView)
         
+        if (generalRuleLateness?.time != nil || generalRuleAbsence?.time != nil) && (generalRuleLateness?.fine != nil || generalRuleAbsence?.fine != nil) {
+            let separateLine = UIView(backgroundColor: .appColor(.ppsGray2))
+            studyGeneralRuleBackgroundView.addSubview(separateLine)
+            
+            separateLine.snp.makeConstraints { make in
+                make.top.equalTo(absenceTimeRuleView.snp.bottom).offset(10)
+                make.height.equalTo(1)
+                make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
+            }
+        }
+        
         check(generalRuleLateness?.fine, AndSetupHeightOf: latenessFineRuleView)
         check(generalRuleAbsence?.fine, AndSetupHeightOf: absenceFineRuleView)
+        
+        if (generalRuleLateness?.fine != nil || generalRuleAbsence?.fine != nil) && deposit != nil {
+            let separateLine = UIView(backgroundColor: .appColor(.ppsGray2))
+            studyGeneralRuleBackgroundView.addSubview(separateLine)
+            
+            separateLine.snp.makeConstraints { make in
+                make.top.equalTo(absenceFineRuleView.snp.bottom).offset(10)
+                make.height.equalTo(1)
+                make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
+            }
+        }
         
         check(deposit, AndSetupHeightOf: depositView)
         
@@ -283,10 +312,10 @@ class StudyInfoViewController: SwitchableViewController {
         latenessTimeRuleLabel.text = "스터디 시작후 \(generalRuleLateness?.time ?? 0)분 부터 지각"
         absenceTimeRuleLabel.text = generalRuleAbsence?.time != nil ? "스터디 시작후 \(generalRuleAbsence?.time ?? 0)분 부터 결석" : "스터디에 출석하지않으면 결석"
         
-        latenessFineRuleLabel.text = generalRuleLateness?.count != nil ? "지각 \(generalRuleLateness?.count ?? 0)분당 \(generalRuleLateness?.fine ?? 0)원" : "지각당 \(generalRuleLateness?.fine ?? 0)원"
-        absenceFineRuleLabel.text = "결석 1회당 \(generalRuleAbsence?.fine ?? 0)원"
+        latenessFineRuleLabel.text = generalRuleLateness?.count != nil ? "지각 \(generalRuleLateness?.count ?? 0)분당 \(generalRuleLateness?.fine ?? 0)원" : "지각당 \(Formatter.formatIntoDecimal(number: generalRuleLateness?.fine ?? 0) ?? "0")원"
+        absenceFineRuleLabel.text = "결석 1회당 \(Formatter.formatIntoDecimal(number: generalRuleAbsence?.fine ?? 0) ?? "0")원"
         
-        depositLabel.text = "보증금 \(deposit ?? 0)원"
+        depositLabel.text = "보증금 \(Formatter.formatIntoDecimal(number: deposit ?? 0) ?? "0")원"
         
         latenessCountLabel.text = "\(excommunicationRule?.lateness ?? 0)번 지각 시 강퇴"
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"

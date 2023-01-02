@@ -126,8 +126,8 @@ class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "StudyGeneralRuleViewController") as! StudyGeneralRuleViewController
-        studyGeneralRuleVC.task = .creating
+        let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyGeneralRuleViewController") as! CreatingStudyGeneralRuleViewController
+
         studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.creatingStudyRuleViewModel.study.generalRule = rule
@@ -146,7 +146,7 @@ class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func freeRuleViewTapped() {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyFreeRuleViewController") as! StudyFreeRuleViewController
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreatingStudyFreeRuleViewController") as! CreatingStudyFreeRuleViewController
         
         studyFreeRuleVC.viewDidUpdated = { textView in
             textView.text = self.creatingStudyRuleViewModel.study.freeRule
@@ -173,7 +173,7 @@ class CreatingStudyRuleViewController: UIViewController {
         
         Network.shared.createStudy(study) { result in
             switch result {
-            case .success(let study):
+            case .success(_):
                 
                 let nextVC = CreatingStudyCompleteViewController()
                 self.navigationController?.pushViewController(nextVC, animated: true)

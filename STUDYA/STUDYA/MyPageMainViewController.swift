@@ -99,7 +99,12 @@ final class MyPageMainViewController: UIViewController {
             case .success(let user):
                 completion(user)
             case .failure(let error):
-                print(error)
+                switch error {
+                case .unauthorizedUser:
+                    AppController.shared.deleteUserInformationAndLogout()
+                default:
+                    print(error)
+                }
             }
         }
     }
