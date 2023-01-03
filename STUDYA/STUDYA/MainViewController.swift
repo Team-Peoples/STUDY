@@ -214,6 +214,9 @@ final class MainViewController: SwitchableViewController {
 //        self.navigationItem.standardAppearance = appearance
 //        self.navigationItem.scrollEdgeAppearance = appearance
         
+        let thirdCellIndexPath = IndexPath(row: 2, section: 0)
+        mainTableView.reloadRows(at: [thirdCellIndexPath], with: .automatic)
+        
         notificationBtn.isHidden = isSwitchOn ? true : false
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         
@@ -398,9 +401,7 @@ extension MainViewController: UITableViewDataSource {
             
 //            cell.schedule = currentStudyOverall?.studySchedule
             cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
-            cell.navigatable = self
-            
-            
+            cell.navigatableSwitchObservableDelegate = self            
             
             if flag {
                 cell.didAttend = true
@@ -504,8 +505,12 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController {
-    func present(vc: UIViewController) {
-        present(vc, animated: true)
+extension MainViewController: SwitchStatusObservable {
+    func getSwtichStatus() -> Bool {
+        isSwitchOn
     }
+}
+
+protocol SwitchStatusObservable {
+    func getSwtichStatus() -> Bool
 }

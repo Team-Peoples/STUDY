@@ -24,6 +24,8 @@ enum PeoplesError: Error {
     case userNotFound
     case studyNotFound
     case imageNotFound
+    case unknownMember
+    case wrongAttendanceCode
 }
 
 enum ErrorCode {
@@ -32,6 +34,8 @@ enum ErrorCode {
     static let userNotFound = "USER_NOT_FOUND"
     static let studyNotFound = "STUDY_NOT_FOUND"
     static let imageNotFound = "IMG_NOT_FOUND"
+    static let unknownMember = "NOT_STUDY_MEMBER"
+    static let wrongAttendnaceCode = "CHECK_NUMBER_MISMATCH"
 }
 
 // MARK: - Network
@@ -786,6 +790,45 @@ struct Network {
                 }
                 
                 completion(.success(code))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<ScheduleAttendanceInformation, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.attend(scheduleID, code), interceptor: AuthenticationInterceptor()).validate().response {
+            response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceInformation = jsonDecode(type: ScheduleAttendanceInformation.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(attendanceInformation))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.unknownMember:  completion(.failure(.unknownMember))
+                case ErrorCode.wrongAttendnaceCode: completion(.failure(.wrongAttendanceCode))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)

@@ -49,6 +49,7 @@ enum RequestPurpose: Requestable {
     case createSchedule(Schedule) //21
     case createStudySchedule(StudyScheduleGoing)
     case joinStudy(ID)
+    case attend(ID, Int)
     
     //    HTTPMethod: PUT
     case updateUser(User)//6
@@ -121,6 +122,8 @@ extension RequestPurpose {
             return "/study/schedule"
         case .joinStudy(let id):
             return "/join/\(id)"
+        case .attend:
+            return "/attendance"
             
             //    HTTPMethod: PUT
         case .updateUser:
@@ -179,13 +182,13 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule: return .post
+        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
         case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode : return .get
         }
     }
     
@@ -203,6 +206,9 @@ extension RequestPurpose {
                           "studyId" : id])
         case .getAttendanceCertificactionCode(let id):
             return .body(["studyScheduleId" : id])
+        case .attend(let scheduleID, let checkCode):
+            return .body(["studyScheduleId" : scheduleID,
+                          "checkNumber" : checkCode])
             
 ///    HTTPMethod: PUT
         case .updateAnnouncement(let title, let content, let id):

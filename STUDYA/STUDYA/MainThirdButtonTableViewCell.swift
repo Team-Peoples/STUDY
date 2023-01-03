@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MainThirdButtonTableViewCell: UITableViewCell {
+final class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
     
@@ -54,27 +54,34 @@ class MainThirdButtonTableViewCell: UITableViewCell {
                           let todayMidnight = calendar.date(from: todayComponents),
                           let dayDifference = calendar.dateComponents([.day], from: todayMidnight, to: startDateMidnight).day else { return }
 
+                    mainButton.setImage(nil, for: .normal)
                     mainButton.setTitle("일정이 \(dayDifference)일 남았어요", for: .normal)
+                    
                 } else if timeBetweenTimes > oneHourInSeconds * 3 {
                     guard let hourDifference = calendar.dateComponents([.hour], from: now, to: startTime).hour else { return }
                     
+                    mainButton.setImage(nil, for: .normal)
                     mainButton.setTitle("일정이 \(hourDifference)시간 남았어요", for: .normal)
                 } else if timeBetweenTimes > oneMinuteInSeconds * 10 {
+                    
+                    mainButton.setImage(nil, for: .normal)
                     mainButton.setTitle("곧 출석체크가 시작돼요", for: .normal)
+                    
                 } else {
                     mainButton.isEnabled = true
                     mainButton.setImage(UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal), for: .normal)
-                    isManagerMode ? mainButton.fillIn(title: "  인증번호 확인") : mainButton.fillIn(title: "  출석하기")
+                    
+                    guard let delegate = navigatableSwitchObservableDelegate else { return }
+                    delegate.getSwtichStatus() ? mainButton.fillIn(title: "  인증번호 확인") : mainButton.fillIn(title: "  출석하기")
                 }
             }
         }
     }
-    
-    internal var navigatable: Navigatable!
+//    navigatable & switch상태 알수있able로 바꿔서 아래에 있는 isSwitchOn 컨트롤하기
+    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusObservable)?
     
     internal var attendable = true
     internal var didAttend = false
-    internal var isManagerMode = true
     internal var attendanceStatus: AttendanceStatus? {
         didSet {
 //        guard 출석 이미 했을 때 else { return }
@@ -114,31 +121,8 @@ class MainThirdButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func mainButtonTapped() {
-        if isManagerMode {
-            guard let scheduleID = schedule?.studyScheduleID else { return }
-            Network.shared.getAttendanceCertificationCode(scheduleID: scheduleID) { result in
-                switch result {
-                case .success(let code):
-                    print(code)
-                case .failure(let error):
-                    UIAlertController.handleCommonErros(presenter: self.navigatable, error: error)
-                }
-            }
-            
-            let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-            let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberCheckingPopViewController") as! ValidationNumberCheckingPopViewController
-            
-            vc.preferredContentSize = CGSize(width: 286, height: 247)
-            
-            navigatable.present(vc)
-        } else{
-            let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-            let vc  = storyboard.instantiateViewController(withIdentifier: "ValidationNumberFillingInPopViewController") as! ValidationNumberFillingInPopViewController
-            
-            vc.preferredContentSize = CGSize(width: 286, height: 247)
-            
-            navigatable.present(vc)
-        }
+        guard let delegate = navigatableSwitchObservableDelegate else { return }
+        if delegate.getSwtichStatus() { getCertificationCodeAndShowNextVC() } else { showValidationNumberFillingInVC() }
     }
     
     private func blink(_ innerView: UIView, _ label1: UILabel, _ label2: UILabel? = nil, _ label3: UILabel? = nil) {
@@ -200,7 +184,41 @@ class MainThirdButtonTableViewCell: UITableViewCell {
             
             blink(innerView, penaltyLabel, fineLabel, wonLabel)
         }
+    }
+    
+    private func getCertificationCodeAndShowNextVC() {
+        guard let scheduleID = schedule?.studyScheduleID else { return }
+        Network.shared.getAttendanceCertificationCode(scheduleID: scheduleID) { result in
+            switch result {
+            case .success(let code):
+                DispatchQueue.main.async {
+                    self.showValidationNumberCheckingVC(code: code)
+                }
+            case .failure(let error):
+//                ehd: 이렇게 presenter에 프로토콜로 받아온 VC를 넣어도 되긴 하는데 이래도 되나?
+                guard let vc = self.navigatableSwitchObservableDelegate else { return }
+                UIAlertController.handleCommonErros(presenter: vc, error: error)
+            }
+        }
+    }
+    
+    private func showValidationNumberCheckingVC(code: Int) {
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: ValidationNumberCheckingPopViewController.identifier) as! ValidationNumberCheckingPopViewController
         
+        vc.certificationCode = code
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+        self.navigatableSwitchObservableDelegate?.present(vc)
+    }
+    
+    private func showValidationNumberFillingInVC() {
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: ValidationNumberFillingInPopViewController.identifier) as! ValidationNumberFillingInPopViewController
+        
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+        navigatableSwitchObservableDelegate?.present(vc)
     }
     
     private func configureMainButton() {

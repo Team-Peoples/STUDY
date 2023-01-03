@@ -368,6 +368,18 @@ enum RepeatOption: String, Codable {
 //        }
 }
 
+struct ScheduleAttendanceInformation: Codable {
+    let userID: UserID
+    let attendanceStatus, reason: String
+    let fine: Int
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case attendanceStatus = "attendStatus"
+        case reason, fine
+    }
+}
+
 typealias UserID = String //사용자의 아이디
 typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
 typealias Title = String

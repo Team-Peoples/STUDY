@@ -9,18 +9,23 @@ import UIKit
 
 final class ValidationNumberCheckingPopViewController: UIViewController {
     
-    internal var didAttend = false {
+    static let identifier = "ValidationNumberCheckingPopViewController"
+    
+    internal var didAttend: Bool? {
         didSet {
-            attendButton.setTitle("출석 완료", for: .normal)
-            attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
-            attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
-            attendButton.backgroundColor = .systemBackground
-            attendButton.isEnabled = false
+//            thirdCEll에서 넘어올 때 네트워킹에서 받기도 하고 여기서 출석버튼 눌러서 받기도함.
+            if let didAttend = didAttend, didAttend {
+                attendButton.setTitle("출석 완료", for: .normal)
+                attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
+                attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
+                attendButton.backgroundColor = .systemBackground
+                attendButton.isEnabled = false
+            }
         }
     }
-    internal var checkCode: Int? {
+    internal var certificationCode: Int? {
         didSet {
-            guard let checkCode = checkCode else { return }
+            guard let checkCode = certificationCode else { return }
             validationNumberLabel.text = String(checkCode)
         }
     }
@@ -47,6 +52,33 @@ final class ValidationNumberCheckingPopViewController: UIViewController {
     }
     
     @IBAction func attendButtonTapped(_ sender: Any) {
+//        🛑in에 scheduleID 받아와야
+        guard let certificationCode = certificationCode else { return }
+        Network.shared.attend(in: 1, with: certificationCode) { result in
+            switch result {
+            case .success:
+                self.didAttend = true
+            case .failure(let error):
+                switch error {
+                case .unknownMember:
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(buttonTitle: "확인", message: "더이상 이 스터디의 멤버가 아닙니다.") { finished in
+//                            🛑completion에 메인화면 리로드 넣기
+                            self.dismiss(animated: true, completion: nil)
+                        }
+                        self.present(alert, animated: true)
+                    }
+                case .wrongAttendanceCode:
+                    DispatchQueue.main.async {
+                        let alert = SimpleAlert(message: "오류가 발생했습니다. 다시 시도해주세요.")
+                        self.present(alert, animated: true)
+                    }
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
+        
         didAttend = true
     }
     
