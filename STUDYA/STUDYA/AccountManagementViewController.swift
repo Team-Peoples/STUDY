@@ -263,11 +263,14 @@ final class AccountManagementViewController: UIViewController {
             self.saveButtonOkay = true
         }
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        
         alert.addAction(selectImageAction)
+        
         if profileImage != nil {
             alert.addAction(defaultImageAction)
         }
         alert.addAction(cancelAction)
+        
         present(alert, animated: true)
     }
     
