@@ -1,5 +1,5 @@
 //
-//  StudyGeneralRuleViewController.swift
+//  CreatingStudyGeneralRuleViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/09/01.
@@ -15,13 +15,13 @@ struct GeneralStudyRuleViewModel {
         return generalRule.lateness
     }
     var absence: Absence {
-        return generalRule.absence ?? Absence(time: nil, fine: nil)
+        return generalRule.absence
     }
     var deposit: Int? {
         return generalRule.deposit
     }
     var excommunication: Excommunication {
-        return generalRule.excommunication ?? Excommunication(lateness: nil, absence: nil)
+        return generalRule.excommunication
     }
     
     init() {
@@ -42,18 +42,17 @@ struct GeneralStudyRuleViewModel {
 //        isfieldsenabled에 따라 혹시모를 moneyrelatedfields의 필드의 값을 다 삭제시켜주는 작업 해줘야하나?
     }
     
-    func configure(cell: ExcommunicationRuleCollectionViewCell) {
+    func configure(cell: CreatingExcommunicationRuleCollectionViewCell) {
         cell.lateNumberField.text = excommunication.lateness == nil ? "--" : String(excommunication.lateness!)
         cell.absenceNumberField.text = excommunication.absence == nil ? "--" : String(excommunication.absence!)
     }
 }
 
-final class StudyGeneralRuleViewController: UIViewController {
+final class CreatingStudyGeneralRuleViewController: UIViewController {
     
     var doneButtonDidTapped: (GeneralStudyRule) -> () = { generalRule in }
     var viewDidUpdated: (UICollectionView) -> () = { collectionView in }
     var generalRuleViewModel = GeneralStudyRuleViewModel()
-    var task: Task?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -65,7 +64,7 @@ final class StudyGeneralRuleViewController: UIViewController {
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
     
     private let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StudyGeneralRuleAttendanceTableViewController") as! StudyGeneralRuleAttendanceTableViewController
-    private lazy var excommunicationCell = collectionView.dequeueReusableCell(withReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as! ExcommunicationRuleCollectionViewCell
+    private lazy var excommunicationCell = collectionView.dequeueReusableCell(withReuseIdentifier: CreatingExcommunicationRuleCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as! CreatingExcommunicationRuleCollectionViewCell
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,14 +75,8 @@ final class StudyGeneralRuleViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
         
-        if task == .editing {
-            doneButton.isHidden = true
-        } else if task == .creating {
-            doneButton.isHidden = false
-        }
-        
-        collectionView.register(AttendanceRuleCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceRuleCollectionViewCell.identifier)
-        collectionView.register(ExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: ExcommunicationRuleCollectionViewCell.identifier)
+        collectionView.register(CreatingStudyGeneralRuleAttendanceCollectionViewCell.self, forCellWithReuseIdentifier: CreatingStudyGeneralRuleAttendanceCollectionViewCell.identifier)
+        collectionView.register(CreatingExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: CreatingExcommunicationRuleCollectionViewCell.identifier)
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
@@ -142,7 +135,7 @@ final class StudyGeneralRuleViewController: UIViewController {
     }
 }
 
-extension StudyGeneralRuleViewController: UICollectionViewDataSource {
+extension CreatingStudyGeneralRuleViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         2
     }
@@ -150,7 +143,7 @@ extension StudyGeneralRuleViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceRuleCollectionViewCell.identifier, for: indexPath) as! AttendanceRuleCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreatingStudyGeneralRuleAttendanceCollectionViewCell.identifier, for: indexPath) as! CreatingStudyGeneralRuleAttendanceCollectionViewCell
             
             cell.addSubview(vc.view)
             vc.view.snp.makeConstraints { make in
@@ -173,7 +166,7 @@ extension StudyGeneralRuleViewController: UICollectionViewDataSource {
     }
 }
 
-extension StudyGeneralRuleViewController: UICollectionViewDelegateFlowLayout {
+extension CreatingStudyGeneralRuleViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size
     }

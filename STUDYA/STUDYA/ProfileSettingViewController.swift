@@ -91,6 +91,7 @@ class ProfileSettingViewController: UIViewController {
     
     @objc private func doneButtonDidTapped() {
         view.endEditing(true)
+        
         if let isSNSFirstLogin = KeyChain.read(key: Const.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
             setProfileWhenSNSSignUp()
         } else {

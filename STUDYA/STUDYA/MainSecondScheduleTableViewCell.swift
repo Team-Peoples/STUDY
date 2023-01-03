@@ -22,24 +22,31 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             guard let schedule = schedule else { isScheduleExist = false; return }
             
             isScheduleExist = true
-            date.text = String(describing: schedule.openDate)
+            
             place.text = schedule.place
             todayContent.text = schedule.topic
+            configureDateInformation(schedule.startTime)
         }
     }
     
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
     
-    private var isScheduleExist = true
+    private var isScheduleExist: Bool? {
+        didSet {
+            constrainLine()
+            addSubviews()
+            setConstraints()
+        }
+    }
     
-    private let title = CustomLabel(title: "회원님의 일정", tintColor: .ppsBlack, size: 20, isBold: true)
+    private let title = CustomLabel(title: "", tintColor: .ppsBlack, size: 20, isBold: true)
     private let disclosureIndicatorView = UIImageView(image: UIImage(named: "circleDisclosureIndicator"))
     
     private lazy var noScheudleLabel = CustomLabel(title: "예정된 일정이 없어요 😴", tintColor: .ppsGray1, size: 14)
     
-    private lazy var date = CustomLabel(title: "00월00일 (월) | am 00:00", tintColor: .keyColor1, size: 16, isBold: true)
-    private lazy var place = CustomLabel(title: "강남역 공간이즈", tintColor: .ppsGray1, size: 12)
-    private lazy var todayContent = CustomLabel(title: "동사와 형용사", tintColor: .ppsGray1, size: 14)
+    private lazy var date = CustomLabel(title: "날짜 정보를 가져오지 못했습니다.", tintColor: .keyColor1, size: 16, isBold: true)
+    private lazy var place = CustomLabel(title: "장소 정보를 가져오지 못했습니다.", tintColor: .ppsGray1, size: 12)
+    private lazy var todayContent = CustomLabel(title: "컨텐츠 정보를 가져오지 못했습니다.", tintColor: .ppsGray1, size: 14)
     
     private let scheduleBackView: UIView = {
         let v = UIView()
@@ -60,14 +67,41 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         backgroundColor = .systemBackground
         
         scheduleButton.addTarget(self, action: #selector(scheduleTapped), for: .touchUpInside)
+    }
+    
+    private func configureDateInformation(_ startTime: Date?) {
+        guard let startTime = startTime else { return }
+        let dateComponents = startTime.convertToDateComponents()
+        guard let month = dateComponents.month,
+              let day = dateComponents.day,
+              let unformattedHour = dateComponents.hour,
+              let unformattedminute = dateComponents.minute else { return }
         
-        constrainLine()
-        addSubviews()
-        setConstraints()
+        let amPm = unformattedHour > 11 ? "pm" : "am"
+        let unformattedHour12 = unformattedHour > 12 ? unformattedHour % 12 : unformattedHour
+        let hour = String(format: "%02d", unformattedHour12)
+        let minute = String(format: "%02d", unformattedminute)
+        
+        let calendar = Calendar.current
+        var weekday = "?요일"
+        
+        switch calendar.component(.weekday, from: startTime) {
+        case 1: weekday = "일"
+        case 2: weekday = "월"
+        case 3: weekday = "화"
+        case 4: weekday = "수"
+        case 5: weekday = "목"
+        case 6: weekday = "금"
+        case 7: weekday = "토"
+        default: break
+        }
+        
+        date.text = "\(month)월 \(day)일 (\(weekday))  |  \(amPm) \(hour):\(minute)"
     }
     
     private func constrainLine() {
-        if isScheduleExist {
+        if let isScheduleExist = isScheduleExist, isScheduleExist {
+            
             title.numberOfLines = 1
             date.numberOfLines = 1
             place.numberOfLines = 1
@@ -79,6 +113,8 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         addSubview(scheduleBackView)
         scheduleBackView.addSubview(title)
         scheduleBackView.addSubview(disclosureIndicatorView)
+        
+        guard let isScheduleExist = isScheduleExist else { return }
         
         if isScheduleExist {
             scheduleBackView.addSubview(date)
@@ -104,7 +140,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             make.width.height.equalTo(28)
         }
         
-        if isScheduleExist {
+        if isScheduleExist! {
             date.anchor(top: title.bottomAnchor, topConstant: 30, leading: title.leadingAnchor)
             place.anchor(top: date.bottomAnchor, topConstant: 2, leading: date.leadingAnchor)
             todayContent.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)

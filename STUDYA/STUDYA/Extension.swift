@@ -98,11 +98,18 @@ extension UIView {
 }
 
 extension UIView {
-    convenience init(backgroundColor: UIColor) {
+    convenience init(backgroundColor: UIColor, alpha: CGFloat = 1) {
         self.init(frame: .zero)
         
         self.backgroundColor = backgroundColor
+        self.alpha = alpha
         
+    }
+}
+
+extension Int {
+    func toString() -> String {
+        return String(self)
     }
 }
 
@@ -118,6 +125,10 @@ extension String {
             return false
         }
         return false
+    }
+    
+    func toInt() -> Int? {
+        return Int(self)
     }
 }
 
@@ -139,7 +150,7 @@ extension UITableView {
 
 extension Date {
     func convertToDateComponents() -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day], from: self)
+        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
     }
 }
 

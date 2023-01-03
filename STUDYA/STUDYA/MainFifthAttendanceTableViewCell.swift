@@ -15,11 +15,24 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     internal var studyAttendance: [AttendanceStatus: Int]?
     internal var totalStudyHeldCount: Int? {
         didSet {
-            if totalStudyHeldCount != nil && studyAttendance != nil {
-                configureViewWhenYesData()
-            } else {
+            guard let _ = totalStudyHeldCount else {
                 noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
-                configureViewWhenNoData()
+                return
+            }
+            
+            if totalStudyHeldCount != 0 {
+                setupProgress()
+                
+                noAttendanceDataLabel.isHidden = true
+                progressView.isHidden = false
+                stackView.isHidden = false
+                hoveringButton.isHidden = false
+                
+            } else {
+                noAttendanceDataLabel.isHidden = false
+                progressView.isHidden = true
+                stackView.isHidden = true
+                hoveringButton.isHidden = true
             }
         }
     }
@@ -29,7 +42,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         }
     }
     
-    internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
+    internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)?
 
     private let backView = RoundableView(cornerRadius: 24)
     private let titleLabel = CustomLabel(title: "지금까지의 출결", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -85,6 +98,12 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             make.trailing.equalTo(backView).inset(29)
             make.centerY.equalTo(titleLabel)
         }
+        
+        progressView.dataSource = self
+        hoveringButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        configureViewsWhenYesData()
+        configureViewWhenNoData()
     }
     
     required init?(coder: NSCoder) {
@@ -94,29 +113,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     @objc private func buttonTapped() {
         let nextVC = AttendanceViewController()
         
-        navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
-        navigatableSwitchSyncableDelegate.push(vc: nextVC)
-    }
-    
-    private func configureViewWhenYesData() {
-        guard totalStudyHeldCount != 0 else {
-            configureViewWhenNoData()
-            return
-        }
-        
-        progressView.dataSource = self
-        hoveringButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        setupProgress()
-        addSubviewsWhenYesData()
-        setConstraintsWhenYesData()
-    }
-    
-    private func configureViewWhenNoData() {
-        backView.addSubview(noAttendanceDataLabel)
-        noAttendanceDataLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(backView)
-            make.centerY.equalTo(backView).offset(15)
-        }
+        guard let delegate = navigatableSwitchSyncableDelegate else { return }
+        delegate.syncSwitchWith(nextVC: nextVC)
+        delegate.push(vc: nextVC)
     }
     
     private func setupProgress() {
@@ -136,13 +135,25 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         attendanceRatioLabel.text = "\(Double(attendanceRatio * 100).formatted(.number))%"
     }
     
-    private func addSubviewsWhenYesData() {
+    private func configureViewWhenNoData() {
+        noAttendanceDataLabel.isHidden = true
+        
+        backView.addSubview(noAttendanceDataLabel)
+        noAttendanceDataLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(backView)
+            make.centerY.equalTo(backView).offset(15)
+        }
+    }
+    
+    private func configureViewsWhenYesData() {
+        progressView.isHidden = true
+        stackView.isHidden = true
+        hoveringButton.isHidden = true
+        
         backView.addSubview(progressView)
         backView.addSubview(stackView)
         backView.addSubview(hoveringButton)
-    }
-    
-    private func setConstraintsWhenYesData() {
+        
         progressView.snp.makeConstraints { make in
             make.leading.trailing.equalTo(backView).inset(16)
             make.height.equalTo(10)

@@ -12,7 +12,6 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
-
     var announcements: [Announcement] = [] {
         didSet {
             self.announcementBoardTableView.reloadData()

@@ -19,6 +19,12 @@
 		726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4622901A352004E49A9 /* ScheduleTableView.swift */; };
 		726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
+		72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */; };
+		72758D2B295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */; };
+		72758D2D295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */; };
+		72758D2F295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */; };
+		72758D31295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */; };
+		72758D33295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */; };
 		727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */; };
 		7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */; };
 		7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */; };
@@ -27,9 +33,11 @@
 		7299968228AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */; };
 		7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* AnnouncementViewController.swift */; };
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
-		7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */; };
+		7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */; };
 		7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */; };
 		72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */; };
+		72AAC6E8295A129100FAD71D /* EditingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */; };
+		72AAC6EA295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */; };
 		72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */; };
 		72E2BEDB2921AE66009BCCB7 /* StudyExitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */; };
 		72E2BEDD29264B9D009BCCB7 /* AttendanceReusableProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDC29264B9D009BCCB7 /* AttendanceReusableProgressView.swift */; };
@@ -96,7 +104,7 @@
 		D3BF053028BDF2B400AF7D3B /* AccountManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */; };
 		D3BF053428BE39CA00AF7D3B /* ByeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053328BE39CA00AF7D3B /* ByeViewController.swift */; };
 		D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053528BF901700AF7D3B /* Formatter.swift */; };
-		D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054128C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift */; };
+		D3BF054328C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */; };
 		D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */; };
 		D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */; };
 		D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054B28C3C36700AF7D3B /* Notification.swift */; };
@@ -144,6 +152,12 @@
 		726FA4622901A352004E49A9 /* ScheduleTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableView.swift; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
+		72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceCollectionViewCell.swift; sourceTree = "<group>"; };
+		72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingExcommunicationRuleCollectionViewCell.swift; sourceTree = "<group>"; };
+		72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift; sourceTree = "<group>"; };
+		72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceFineTableViewCell.swift; sourceTree = "<group>"; };
+		72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleDepositTableViewCell.swift; sourceTree = "<group>"; };
+		72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralRuleAttendanceTableView.swift; sourceTree = "<group>"; };
 		727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyCompleteViewController.swift; sourceTree = "<group>"; };
 		7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCollectionViewCell.swift; sourceTree = "<group>"; };
 		7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -152,9 +166,11 @@
 		7299968128AF5C480008A1C1 /* AnnouncementBoardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementBoardTableViewCell.swift; sourceTree = "<group>"; };
 		7299968328B09B110008A1C1 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyFreeRuleViewController.swift; sourceTree = "<group>"; };
+		7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTableViewController.swift; sourceTree = "<group>"; };
 		72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAuthenticator.swift; sourceTree = "<group>"; };
+		72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
+		72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
 		72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFormViewController.swift; sourceTree = "<group>"; };
 		72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExitViewController.swift; sourceTree = "<group>"; };
 		72E2BEDC29264B9D009BCCB7 /* AttendanceReusableProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceReusableProgressView.swift; sourceTree = "<group>"; };
@@ -223,7 +239,7 @@
 		D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManagementViewController.swift; sourceTree = "<group>"; };
 		D3BF053328BE39CA00AF7D3B /* ByeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ByeViewController.swift; sourceTree = "<group>"; };
 		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
-		D3BF054128C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
+		D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
 		D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleExcommunicationCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3BF054B28C3C36700AF7D3B /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -321,7 +337,6 @@
 				72F7CFAC28F834A800E0D0C0 /* CalendarBottomSheetViewController.swift */,
 				721D8A4C28A4EA0100829A2B /* CategoryCell.swift */,
 				721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */,
-				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
 				727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */,
 				72ED89A32943A2CD0072227C /* LinkShareMessageView.swift */,
 				D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */,
@@ -362,15 +377,24 @@
 				D3F2C6F928B2879F00CEC549 /* SignUpViewController.swift */,
 				72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */,
 				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
-				7299968D28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift */,
+				D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */,
 				D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */,
 				7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */,
 				D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */,
-				D3BF054128C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift */,
+				7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */,
 				D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */,
 				726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */,
-				72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */,
+				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
+				72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */,
+				72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */,
+				72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */,
+				72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */,
+				72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */,
+				72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */,
+				72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */,
+				72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */,
 				72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */,
+				72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */,
 				724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */,
 				72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */,
 				D37C0CB82939BD1000702177 /* SwitchableViewController.swift */,
@@ -569,6 +593,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72758D31295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift in Sources */,
 				7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */,
 				D398B46A28B4C23A00598B03 /* MyPageStudyHistoryViewController.swift in Sources */,
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
@@ -582,8 +607,10 @@
 				D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */,
 				72512A7E292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift in Sources */,
 				D35D6F7F292E581000514980 /* AttendanceBottomIndividualUpdateView.swift in Sources */,
+				72AAC6E8295A129100FAD71D /* EditingStudyFreeRuleViewController.swift in Sources */,
 				D38FA4D52936559000A9B0DF /* MainFifthAttendanceTableViewCell.swift in Sources */,
 				726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */,
+				72AAC6EA295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift in Sources */,
 				D37D8A4829081974004AF8E9 /* TabBarViewController.swift in Sources */,
 				D381A96B291EA72C008A2102 /* InviteMemberCollectionViewCell.swift in Sources */,
 				D371D2192924BC6D00E28231 /* ValidationNumberFillingInPopViewController.swift in Sources */,
@@ -595,12 +622,13 @@
 				726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */,
 				D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */,
 				72ED89A82943B6C10072227C /* AttendancePersonalViewController.swift in Sources */,
+				72758D33295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
-				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
+				7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */,
 				D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */,
-				7299968E28C1EEC00008A1C1 /* StudyFreeRuleViewController.swift in Sources */,
+				7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */,
 				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */,
 				D314D2D929374F2F0018062F /* MainSixthETCTableViewCell.swift in Sources */,
 				D314A1D92902931800093C0E /* ToDoItemTableViewCell.swift in Sources */,
@@ -614,6 +642,7 @@
 				D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				D371D2172923D5A000E28231 /* Protocol.swift in Sources */,
+				72758D2D295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */,
 				72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */,
 				72512A80292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift in Sources */,
 				72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */,
@@ -636,14 +665,16 @@
 				72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
 				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
+				72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
 				D3DD808B29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				D3BF053428BE39CA00AF7D3B /* ByeViewController.swift in Sources */,
 				724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */,
+				72758D2F295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */,
 				D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */,
 				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
-				D3BF054328C0E9EC00AF7D3B /* StudyGeneralRuleViewController.swift in Sources */,
+				D3BF054328C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
 				72E2BF09292769DE009BCCB7 /* AttendanceTableViewCells.swift in Sources */,
 				D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */,
@@ -657,6 +688,7 @@
 				D3F0983E2914E25100D1E55F /* UBottomSheet.swift in Sources */,
 				726FA4632901A352004E49A9 /* ScheduleTableView.swift in Sources */,
 				D3D8D1BA29291E0B00B9D6B6 /* AttendanceModificationCollectionViewCell.swift in Sources */,
+				72758D2B295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift in Sources */,
 				7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */,
 				D314A1DB2905190100093C0E /* Extension.swift in Sources */,
 				72E2BF0B292B7428009BCCB7 /* AttendanceView.swift in Sources */,

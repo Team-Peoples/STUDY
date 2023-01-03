@@ -243,11 +243,9 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
-        print(#function)
-//        let profileImage = profileImageView.internalImage
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
-            case .success(let _):
+            case .success(_):
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)
@@ -256,21 +254,25 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func touchUpImageView() {
-//        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
-//            self.openAlbum()
-//        }
-//        lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
-//            self.profileImageView.profileImage = nil
-//            self.saveButtonOkay = true
-//        }
-//        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
-//        alert.addAction(selectImageAction)
-//        if profileImageView.profileImage != nil {
-//            alert.addAction(defaultImageAction)
-//        }
-//        alert.addAction(cancelAction)
-//        present(alert, animated: true)
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
+            self.openAlbum()
+        }
+        lazy var defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
+            self.profileImage = nil
+            self.saveButtonOkay = true
+        }
+        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        
+        alert.addAction(selectImageAction)
+        
+        if profileImage != nil {
+            alert.addAction(defaultImageAction)
+        }
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
     }
     
     @objc private func openAlbum() {

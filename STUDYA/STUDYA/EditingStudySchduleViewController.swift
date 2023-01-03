@@ -116,7 +116,7 @@ class EditingStudySchduleViewController: UIViewController {
     
     @objc private func openDateSelectableViewTapped() {
         
-        guard let openDate = studySchedule?.openDate else { return }
+//        guard let openDate = studySchedule?.openDate else { return }
 //        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
         
 //        popUpCalendarVC.presentingVC = self
@@ -126,7 +126,7 @@ class EditingStudySchduleViewController: UIViewController {
     
     @objc private func deadlineDateSelectableViewTapped() {
         
-        guard let deadlineDate = studySchedule?.deadlineDate else { return }
+//        guard let deadlineDate = studySchedule?.deadlineDate else { return }
 //        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
         
 //        popUpCalendarVC.presentingVC = self
