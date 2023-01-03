@@ -375,7 +375,7 @@ struct Network {
     // MARK: - Study
     
     // domb: study가 없을수도 있다고 생각하는데 Result<[Study?]>처럼 optional을 사용 안해도 되는건가요?
-    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+    func getAllStudies(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
 
