@@ -396,7 +396,7 @@ extension MainViewController: UITableViewDataSource {
             
             return cell
         case 2:
-            print(#function, "🤟")
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
             
 //            cell.schedule = currentStudyOverall?.studySchedule
@@ -426,13 +426,13 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
+            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
             cell.studyAttendance = [
                 .attended: currentStudyOverall.attendedCount,
                 .late: currentStudyOverall.lateCount,
                 .absent: currentStudyOverall.absentcount,
                 .allowed: currentStudyOverall.allowedCount
             ]
-            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
             
             cell.penalty = currentStudyOverall.totalFine
             cell.navigatableSwitchSyncableDelegate = self
