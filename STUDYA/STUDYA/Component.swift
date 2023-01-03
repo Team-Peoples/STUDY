@@ -470,6 +470,7 @@ class CustomTextField: UITextField {
 }
 
 class CustomLabel: UILabel {
+    
     // MARK: - Initialize
     
     init(title: String, tintColor: AssetColor, size: CGFloat, isBold: Bool = false, isNecessaryTitle: Bool = false) {
@@ -482,8 +483,8 @@ class CustomLabel: UILabel {
         configure(title: title, isNecessaryTitle: isNecessaryTitle)
     }
     
-    convenience init(title: String, boldPart: String) {
-        self.init(title: title, tintColor: .ppsBlack, size: 16)
+    convenience init(title: String, boldPart: String, tintColor: AssetColor = .ppsBlack, size: CGFloat = 16) {
+        self.init(title: title, tintColor: tintColor, size: size)
         
         let fontSize = self.font.pointSize
         let font = UIFont.boldSystemFont(ofSize: fontSize)
@@ -929,6 +930,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }()
     
     var isNecessaryField = false
+    var isHavePicker = false
     
     private lazy var picker = UIPickerView()
     
@@ -945,6 +947,8 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         } else {
             text = "--"
         }
+        
+        isHavePicker = isPicker
         
         if isPicker {
             setPicker()
@@ -1026,32 +1030,48 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        let currentText = NSString(string: textField.text ?? "")
-        let finalText = currentText.replacingCharacters(in: range, with: string)
-        
-        guard finalText.count <= 2 else { return false }
-        
-        let utf8Char = string.cString(using: .utf8)
-        let isBackSpace = strcmp(utf8Char, "\\b")
-        
-        if string.checkOnlyNumbers() || isBackSpace == -92 { return true }
-        
-        return false
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("🇨🇦")
-        if textField.text == "--" {
-            text = ""
+        if !isNecessaryField {
+            let currentText = NSString(string: textField.text ?? "")
+            let finalText = currentText.replacingCharacters(in: range, with: string)
+            
+            guard finalText.count <= 2 else { return false }
+            
+            let utf8Char = string.cString(using: .utf8)
+            let isBackSpace = strcmp(utf8Char, "\\b")
+            
+            if string.checkOnlyNumbers() || isBackSpace == -92 { return true }
+            
+            return false
+        } else {
+            return true
         }
     }
     
+    func pickerSelectRowMatchedTextIn(_ textField: UITextField) {
+        if isHavePicker {
+            let row = strArray.firstIndex(of: textField.text ?? "--") ?? 0
+            picker.selectRow(row, inComponent: 0, animated: false)
+        } else {
+            self.text = Formatter.formatIntoNoneDecimal(textField.text)?.toString()
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        pickerSelectRowMatchedTextIn(textField)
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
         if let text = textField.text, let intText = Int(text) {
             self.text = Formatter.formatIntoDecimal(number: intText)
+        } else if let text = textField.text, text != "", text != "0", text != "--" {
+            return
         } else {
-            self.text = "--"
+            if isHavePicker {
+                self.text = "--"
+            } else {
+                self.text = "0"
+            }
         }
     }
     

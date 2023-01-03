@@ -13,8 +13,9 @@ final class EditingStudyFormViewController: UIViewController {
     
     var studyViewModel: StudyViewModel? {
         didSet {
-            guard let study = studyViewModel?.study else { return }
-            bind(study)
+            guard let studyViewModel = studyViewModel else { return }
+            bind(studyViewModel.study)
+            doneButton.isEnabled = studyViewModel.formIsValid
         }
     }
    
@@ -165,8 +166,15 @@ final class EditingStudyFormViewController: UIViewController {
         
         switch sender {
             case doneButton:
-                print("수정 완료")
-                self.dismiss(animated: true)
+            guard let study = studyViewModel?.study, let studyID = study.id else { return }
+            Network.shared.updateStudy(study, id: studyID) { result in
+                switch result {
+                case .success(let _):
+                    self.dismiss(animated: true)
+                case .failure(let failure):
+                    print(failure)
+                }
+            }
             case  cancelButton:
                 print("수정 취소")
                 self.dismiss(animated: true)
@@ -175,7 +183,7 @@ final class EditingStudyFormViewController: UIViewController {
         }
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -202,7 +210,7 @@ final class EditingStudyFormViewController: UIViewController {
         }
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc func keyboardDisappear(_ notification: NSNotification) {
         
         scrollView.contentInset = UIEdgeInsets.zero
         self.view.endEditing(true)
@@ -210,7 +218,7 @@ final class EditingStudyFormViewController: UIViewController {
     
     private func enableTapGesture() {
         
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
         
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
@@ -295,7 +303,7 @@ final class EditingStudyFormViewController: UIViewController {
     
     private func addNotification() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String

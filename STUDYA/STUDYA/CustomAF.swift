@@ -59,6 +59,7 @@ enum RequestPurpose: Requestable {
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudySchedule)
+    case endStudy(ID)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
@@ -130,6 +131,7 @@ extension RequestPurpose {
             return "/user"
         case .updateStudy(let studyID, _):
             return "/study/\(studyID)"
+
             
         case .updateAnnouncement:
             return "/noti"
@@ -141,6 +143,9 @@ extension RequestPurpose {
             return "/user/schedule"
         case  .updateStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+            
+        case .endStudy(let studyID):
+            return "/study/end/\(studyID)"
             
             //    HTTPMethod: DEL
         case .deleteUser(let id):
@@ -184,7 +189,7 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
             

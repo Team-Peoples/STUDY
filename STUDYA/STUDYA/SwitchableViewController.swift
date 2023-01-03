@@ -89,6 +89,7 @@ class SwitchableViewController: UIViewController, Navigatable {
 extension SwitchableViewController: SwitchSyncable {
     
     func syncSwitchWith(nextVC: SwitchableViewController) {
+        nextVC.isManager = self.isManager
         nextVC.switchStatusWhenWillAppear = isSwitchOn
         nextVC.syncSwitchReverse = { sender in
             self.switchStatusWhenWillAppear = nextVC.isSwitchOn
