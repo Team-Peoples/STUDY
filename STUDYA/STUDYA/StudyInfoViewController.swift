@@ -13,10 +13,10 @@ class StudyInfoViewController: SwitchableViewController {
     // MARK: - Properties
     
     var studyID: ID?
-    
     private var studyViewModel: StudyViewModel = StudyViewModel() {
         didSet {
             configureViews()
+            navigationItem.title = studyViewModel.study.studyName
         }
     }
     
