@@ -11,21 +11,25 @@ import Alamofire
 // MARK: - Peoples Error
 
 enum PeoplesError: Error {
-    case duplicatedEmail
-    case alreadySNSSignUp
-    case notAuthEmail
-    case wrongPassword
-    case loginInformationSavingError
     case unauthorizedUser
     case serverError
     case decodingError
     case unknownError(Int?)
     case tokenExpired
+    
+    case duplicatedEmail
+    case alreadySNSSignUp
+    case notAuthEmail
+    case wrongPassword
+    case loginInformationSavingError
     case userNotFound
     case studyNotFound
     case imageNotFound
     case unknownMember
     case wrongAttendanceCode
+    case unauthorizedMember
+    case cantExpelOwner
+    case cantExpelSelf
 }
 
 enum ErrorCode {
@@ -36,6 +40,9 @@ enum ErrorCode {
     static let imageNotFound = "IMG_NOT_FOUND"
     static let unknownMember = "NOT_STUDY_MEMBER"
     static let wrongAttendnaceCode = "CHECK_NUMBER_MISMATCH"
+    static let unauthorizedMember = "NOT_MANAGER"
+    static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
+    static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
 }
 
 // MARK: - Network
@@ -564,6 +571,35 @@ struct Network {
                 completion(.success(response))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func excommunicateMember(_ memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteMember(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSucceed))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                 switch errorCode {
+                case ErrorCode.unauthorizedMember:  completion(.failure(.unauthorizedMember))
+                case ErrorCode.cantExpelOwner: completion(.failure(.cantExpelOwner))
+                case ErrorCode.cantExpelSelf: completion(.failure(.cantExpelSelf))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }

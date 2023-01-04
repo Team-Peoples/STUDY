@@ -8,7 +8,7 @@
 import UIKit
 
 protocol Navigatable: UIViewController {
-    func push(vc: UIViewController)
+
 }
 
 extension Navigatable {
@@ -17,6 +17,9 @@ extension Navigatable {
     }
     func present(_ vc: UIViewController) {
         present(vc, animated: true)
+    }
+    func pop() {
+        navigationController?.popViewController(animated: true)
     }
 }
 

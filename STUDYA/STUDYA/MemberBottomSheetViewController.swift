@@ -9,6 +9,10 @@ import UIKit
 
 final class MemberBottomSheetViewController: UIViewController {
     
+    deinit {
+        print("🚨🚨🚨🚨🚨")
+    }
+    
     internal var member: Member? {
         didSet {
             guard let member = member else { return }
@@ -177,6 +181,7 @@ final class AskChangingOwnerViewController: UIViewController {
     private let confirmButton = UIButton(frame: .zero)
         
     internal var backButtonTapped = {}
+    internal var navigatableDelegate: Navigatable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -241,12 +246,15 @@ final class AskChangingOwnerViewController: UIViewController {
 
 final class AskExcommunicationViewController: UIViewController {
         
+    internal var excommunicatedMemberID: Int?
+    
     private let askLabel = CustomLabel(title: "닉네임님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
     private let descLabel = CustomLabel(title: "강퇴한 멤버는 이 스터디에 다시 참여할 수 없어요.", tintColor: .ppsGray1, size: 14)
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
         
     internal var backButtonTapped = {}
+    internal var navigatableDelegate: Navigatable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -296,7 +304,30 @@ final class AskExcommunicationViewController: UIViewController {
     }
     
     @objc private func excommuViewConfirmButtonTapped() {
-
+        guard let id = excommunicatedMemberID else { return }
+        Network.shared.excommunicateMember(id) { result in
+            switch result {
+            case .success(let isSucced):
+                print(isSucced)
+            case .failure(let error):
+                switch error {
+                case .unauthorizedMember:
+                    let alert = SimpleAlert(buttonTitle: "확인", message: "강퇴 권한이 없습니다.") { finished in
+                        self.dismiss(animated: true) {
+                            self.navigatableDelegate?.pop()
+                        }
+                    }
+                    self.present(alert, animated: true)
+                case .cantExpelOwner:
+                    let alert = SimpleAlert(message: "스터디장은 강퇴할 수 없습니다.")
+                    self.present(alert, animated: true)
+                case .cantExpelSelf:
+                    let alert = SimpleAlert(message: "자기자신은 강퇴할 수 없습니다.\n스터디 정보의 \"스터디 탈퇴\" 통해 탈퇴할 수 있습니다.")
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
     }
     
     private func configureButton(button: UIButton, title: String) {

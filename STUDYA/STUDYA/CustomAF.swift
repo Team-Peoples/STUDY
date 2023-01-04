@@ -65,6 +65,7 @@ enum RequestPurpose: Requestable {
     case deleteUser(UserID) ////10
     case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
+    case deleteMember(ID)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -94,8 +95,6 @@ extension RequestPurpose {
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
-        case .refreshToken:
-            return .token
         default:
             return .json
         }
@@ -154,6 +153,8 @@ extension RequestPurpose {
             return "/noti/\(id)"
         case .deleteStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+        case .deleteMember(let id):
+            return "/studyMember/\(id)"
             
             //    HTTPMethod: GET
         case .getNewPassord:
@@ -191,7 +192,7 @@ extension RequestPurpose {
             
         case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy: return .put
             
-        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode : return .get
         }

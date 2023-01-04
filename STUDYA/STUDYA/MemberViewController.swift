@@ -15,6 +15,7 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         }
     }
     internal var isOwner: Bool?
+    private var nowLookingMemberID: ID?
     
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -25,13 +26,14 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
 
         vc.isOwner = isOwner
         vc.excommunicationButtonTapped = {
-            vc.dismiss(animated: true) {
-                self.configureSheetAndPresent(self.askExcommunicationVC)
+            vc.dismiss(animated: true) { [self] in
+                askExcommunicationVC.excommunicatedMemberID = nowLookingMemberID
+                configureSheetAndPresent(askExcommunicationVC)
             }
         }
         vc.ownerButtonTapped = {
-            vc.dismiss(animated: true) {
-                self.configureSheetAndPresent(self.askChangingOwnerVC)
+            vc.dismiss(animated: true) { [self] in
+                configureSheetAndPresent(askChangingOwnerVC)
             }
         }
         
@@ -41,11 +43,12 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
        
         let vc = AskExcommunicationViewController()
         
-        vc.backButtonTapped = {
-            vc.dismiss(animated: true) {
-                self.configureSheetAndPresent(self.memberBottomVC)
-            }
-        }
+        vc.navigatableDelegate = self
+//        vc.backButtonTapped = {
+//            vc.dismiss(animated: true) { [self] in
+//                configureSheetAndPresent(memberBottomVC)
+//            }
+//        }
         
         return vc
     }()
@@ -153,6 +156,8 @@ extension MemberViewController: UICollectionViewDataSource {
             
             if isManager {
                 cell.profileViewTapped = { [self] member in
+                    
+                    self.nowLookingMemberID = member.memberID
                     
                     guard let sheet = memberBottomVC.sheetPresentationController else { return }
                     
