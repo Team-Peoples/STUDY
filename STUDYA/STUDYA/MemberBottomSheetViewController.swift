@@ -18,7 +18,7 @@ final class MemberBottomSheetViewController: UIViewController {
             roleInputField.text = member.role
             
             managerButton.isSelected = member.isManager ? true : false
-            ownerButton.isSelected = member.isOwner ? true : false
+//            ownerButton.isSelected = member.isOwner ? true : false
         }
     }
     internal var isOwner: Bool? {

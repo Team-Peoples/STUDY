@@ -28,9 +28,7 @@ final class BrandButton: UIButton {
         setHeight(42)
         layer.cornerRadius = radius
     }
-    deinit {
-        print("없어진다!!!!!!!!!!!!")
-    }
+    
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
         

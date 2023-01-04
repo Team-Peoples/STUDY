@@ -551,19 +551,17 @@ struct Network {
         }
     }
     
-    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+    func getAllMembers(studyID: Int, completion: @escaping (Result<MemberListResponse, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            print(String(describing: response.request))
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let memberListResponse = jsonDecode(type: MemberListResponse.self, data: data) else {
+                guard let data = response.data, let response = jsonDecode(type: MemberListResponse.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
-                
-                completion(.success(memberListResponse))
+                completion(.success(response))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
@@ -1028,16 +1026,4 @@ struct Dummy<U: Codable, W: Codable, Z: Codable>: Codable {
     let noti: U
     let study: W
     let schedule: Z
-}
-
-struct MemberListResponse: Codable {
-    let memberList: [Member]
-    let isManager: Bool
-    let isOwner: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case memberList
-        case isManager = "manager"
-        case isOwner = "master"
-    }
 }

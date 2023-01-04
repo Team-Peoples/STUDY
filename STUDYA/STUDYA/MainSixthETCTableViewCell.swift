@@ -101,10 +101,10 @@ class MainSixthETCTableViewCell: UITableViewCell {
         
         Network.shared.getAllMembers(studyID: currentStudyID) { result in
             switch result {
-            case .success(let membersListResponse):
-                nextVC.members = membersListResponse.memberList
-                nextVC.isOwner = membersListResponse.isOwner
-                nextVC.isManager = membersListResponse.isManager
+            case .success(let response):
+                nextVC.members = response.memberList
+                nextVC.isManager = response.isUserManager
+                nextVC.isOwner = response.isUserOwner
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self.navigatableSwitchSyncableDelegate, error: error)
             }
