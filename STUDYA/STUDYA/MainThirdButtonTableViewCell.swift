@@ -78,7 +78,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
 //    navigatable & switch상태 알수있able로 바꿔서 아래에 있는 isSwitchOn 컨트롤하기
-    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusObservable)?
+    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     
     internal var attendable = true
     internal var didAttend = false

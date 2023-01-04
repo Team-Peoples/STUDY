@@ -29,18 +29,10 @@ final class MemberBottomSheetViewController: UIViewController {
             managerButton.isHidden = isOwner ? false : true
         }
     }
-    internal var isManager: Bool? {
-        didSet {
-            guard let isManager = isManager else { return }
-            
-            excommunicatingButton.isHidden = isManager ? false : true
-        }
-    }
     
     private let profileImageView = ProfileImageView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
+    private let nicknameLabel = CustomLabel(title: "닉네임", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12), target: self, action: #selector(askExcommunication))
-       
     private let separator: UIView = {
         let s = UIView(frame: .zero)
         
@@ -48,7 +40,7 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return s
     }()
-    private lazy var ownerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(ownerButtonTapped))
+    private lazy var ownerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(ownerButtonDidTapped))
     private lazy var managerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(toggleManagerButton))
     private lazy var roleInputField: PurpleRoundedInputField = {
        
@@ -68,8 +60,8 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return f
     }()
-    private lazy var noticeLabel = CustomLabel(title: "스터디장의 역할은 변경할 수 없습니다.", tintColor: .ppsGray1, size: 12)
-    
+//    🛑스터디장 역할 수정하려고할 때 색깔바꿔주기
+    private lazy var noticeLabel = CustomLabel(title: "스터디장의 역할은 변경할 수 없습니다.", tintColor: .whiteLabel, size: 12)
     private lazy var doneButton: UIButton = {
 
         let b = UIButton(frame: .zero)
@@ -92,6 +84,9 @@ final class MemberBottomSheetViewController: UIViewController {
     private let bottomViewHeight: CGFloat = 320
     private let askViewHeight: CGFloat = 300
     
+    internal var excommunicationButtonTapped = {}
+    internal var ownerButtonTapped = {}
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,37 +102,11 @@ final class MemberBottomSheetViewController: UIViewController {
     }
     
     @objc private func askExcommunication() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = AskExcommunicationViewController()
-            presentingVC.willPresentingAgainVC = self
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        self.excommunicationButtonTapped()
     }
 
-    @objc private func ownerButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = AskChangingOwnerViewController()
-            presentingVC.willPresentingAgainVC = self
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+    @objc private func ownerButtonDidTapped() {
+        self.ownerButtonTapped()
     }
 
     @objc private func toggleManagerButton() {
@@ -188,6 +157,11 @@ final class MemberBottomSheetViewController: UIViewController {
             make.top.equalTo(managerButton.snp.bottom).offset(18)
         }
 
+        noticeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(roleInputField.snp.leading).offset(22)
+            make.top.equalTo(roleInputField.snp.bottom).offset(6)
+        }
+        
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(roleInputField.snp.bottom).offset(63)
@@ -202,6 +176,8 @@ final class AskChangingOwnerViewController: UIViewController {
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
         
+    internal var backButtonTapped = {}
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -246,19 +222,8 @@ final class AskChangingOwnerViewController: UIViewController {
     internal var willPresentingAgainVC: UIViewController?
     
     @objc private func ownerViewBackButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        print(presentingViewController, "🇨🇴")
-        self.dismiss(animated: true) {
-            
-            let presentingVC = self.willPresentingAgainVC!
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        print(#function)
+        backButtonTapped()
     }
     
     @objc private func ownerViewConfirmButtonTapped() {
@@ -281,6 +246,8 @@ final class AskExcommunicationViewController: UIViewController {
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
         
+    internal var backButtonTapped = {}
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -325,23 +292,11 @@ final class AskExcommunicationViewController: UIViewController {
     internal var willPresentingAgainVC: UIViewController?
     
     @objc private func excommuViewBackButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = self.willPresentingAgainVC!
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        backButtonTapped()
     }
     
     @objc private func excommuViewConfirmButtonTapped() {
-        print(#function)
+
     }
     
     private func configureButton(button: UIButton, title: String) {

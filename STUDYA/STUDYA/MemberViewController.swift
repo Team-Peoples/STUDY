@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MemberViewController: SwitchableViewController {
+final class MemberViewController: SwitchableViewController, SwitchStatusGivable {
     
     internal var members: Members? {
         didSet {
@@ -19,11 +19,45 @@ final class MemberViewController: SwitchableViewController {
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-    private lazy var bottomVC: MemberBottomSheetViewController = {
+    
+    private lazy var memberBottomVC: MemberBottomSheetViewController = {
         let vc = MemberBottomSheetViewController()
-        
+
         vc.isOwner = isOwner
-        vc.isManager = isManager
+        vc.excommunicationButtonTapped = {
+            vc.dismiss(animated: true) {
+                self.configureSheetAndPresent(self.askExcommunicationVC)
+            }
+        }
+        vc.ownerButtonTapped = {
+            vc.dismiss(animated: true) {
+                self.configureSheetAndPresent(self.askChangingOwnerVC)
+            }
+        }
+        
+        return vc
+    }()
+    private lazy var askExcommunicationVC: AskExcommunicationViewController = {
+       
+        let vc = AskExcommunicationViewController()
+        
+        vc.backButtonTapped = {
+            vc.dismiss(animated: true) {
+                self.configureSheetAndPresent(self.memberBottomVC)
+            }
+        }
+        
+        return vc
+    }()
+    private lazy var askChangingOwnerVC: AskChangingOwnerViewController = {
+       
+        let vc = AskChangingOwnerViewController()
+        
+        vc.backButtonTapped = {
+            vc.dismiss(animated: true) {
+                self.configureSheetAndPresent(self.memberBottomVC)
+            }
+        }
         
         return vc
     }()
@@ -33,7 +67,6 @@ final class MemberViewController: SwitchableViewController {
         view.backgroundColor = .systemBackground
         
         configureCollectionView()
-        configureBottomVC()
         
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -71,6 +104,15 @@ final class MemberViewController: SwitchableViewController {
         print(#function)
     }
     
+    private func configureSheetAndPresent(_ vc: UIViewController) {
+        guard let sheet = vc.sheetPresentationController else { return }
+            
+        sheet.detents = [ .custom { _ in return 300 }]
+        sheet.preferredCornerRadius = 24
+        
+        self.present(vc, animated: true)
+    }
+    
     private func configureCollectionView() {
         
         flowLayout.itemSize = CGSize(width: 96, height: 114)
@@ -85,10 +127,6 @@ final class MemberViewController: SwitchableViewController {
         
         collectionView.register(InviteMemberCollectionViewCell.self, forCellWithReuseIdentifier: InviteMemberCollectionViewCell.identifier)
         collectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.identifier)
-    }
-    
-    private func configureBottomVC() {
-        
     }
 }
 
@@ -111,17 +149,20 @@ extension MemberViewController: UICollectionViewDataSource {
             guard let members = members else { return MemberCollectionViewCell() }
             
             cell.member = members[indexPath.item - 1]
+            cell.switchObservableDelegate = self
             
             if isManager {
                 cell.profileViewTapped = { [self] member in
-                    guard let sheet = bottomVC.sheetPresentationController else { return }
+                    
+                    guard let sheet = memberBottomVC.sheetPresentationController else { return }
                     
                     sheet.detents = [ .custom { _ in return 300 }]
                     sheet.preferredCornerRadius = 24
                     sheet.prefersGrabberVisible = true
                     
-                    bottomVC.member = member
-                    self.present(bottomVC, animated: true)
+                    memberBottomVC.member = member
+                    
+                    self.present(memberBottomVC, animated: true)
                 }
             }
             
