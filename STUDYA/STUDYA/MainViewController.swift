@@ -184,6 +184,7 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.modalPresentationStyle = .overFullScreen
         dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
+        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
@@ -341,7 +342,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureFloatingButton() {
-        floatingButtonContainerView.isHidden = true
+        floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         view.addSubview(floatingButtonContainerView)
         floatingButtonContainerView.addSubview(floatingButton)
         floatingButtonContainerView.snp.makeConstraints { make in
@@ -401,7 +402,7 @@ extension MainViewController: UITableViewDataSource {
             
 //            cell.schedule = currentStudyOverall?.studySchedule
             cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
-            cell.navigatableSwitchObservableDelegate = self            
+            cell.navigatableSwitchObservableDelegate = self
             
             if flag {
                 cell.didAttend = true
