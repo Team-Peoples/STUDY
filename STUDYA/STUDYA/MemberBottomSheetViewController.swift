@@ -114,7 +114,21 @@ final class MemberBottomSheetViewController: UIViewController {
     }
 
     @objc private func toggleManagerButton() {
-        managerButton.toggle()
+        guard let memberID = member?.memberID else { return }
+        
+        Network.shared.toggleMangerAuth(memberID: memberID) { result in
+            switch result {
+            case .success(let isSucceed):
+                if isSucceed {
+                    self.managerButton.toggle()
+                } else {
+                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 2")
+                    self.present(alert, animated: true)
+                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     @objc private func doneButtonTapped() {
@@ -224,17 +238,13 @@ final class AskChangingOwnerViewController: UIViewController {
         }
     }
     
-    internal var willPresentingAgainVC: UIViewController?
-    
     @objc private func ownerViewBackButtonTapped() {
-        print(#function)
         backButtonTapped()
     }
     
     @objc private func ownerViewConfirmButtonTapped() {
         print(#function)
     }
-    
     
     private func configureButton(button: UIButton, title: String) {
         button.setTitle(title, for: .normal)
@@ -296,8 +306,6 @@ final class AskExcommunicationViewController: UIViewController {
             make.height.equalTo(40)
         }
     }
-    
-    internal var willPresentingAgainVC: UIViewController?
     
     @objc private func excommuViewBackButtonTapped() {
         backButtonTapped()

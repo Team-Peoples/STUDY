@@ -604,6 +604,20 @@ struct Network {
         }
     }
     
+    func toggleMangerAuth(memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.toggleManagerAuth(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else { return }
+                completion(.success(isSucceed))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
     // MARK: - Study Schedule
     
     func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
