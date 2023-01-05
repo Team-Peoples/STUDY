@@ -214,7 +214,7 @@ struct StudyOverall: Codable {
     let isManager: Bool
     let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
-    let isMaster: Bool
+    let isOwner: Bool
     
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
@@ -224,7 +224,7 @@ struct StudyOverall: Codable {
         case allowedCount = "holdCnt"
         case absentcount = "absentCnt"
         case totalStudyHeldCount = "dayCnt"
-        case isMaster = "master"
+        case isOwner = "master"
         case study, studySchedule, totalFine
     }
 }
@@ -271,7 +271,37 @@ struct Schedule: Codable {
 
 struct StudySchedule: Codable {
     
-    let studyId: String? = nil
+    let studyID: Int?
+    let studyName: String?
+    
+    let studyScheduleID: Int?
+    
+    var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
+    var place: String?
+    
+    var startTime: Date?
+    var endTime: Date?
+    var repeatOption: RepeatOption?
+    
+    enum CodingKeys: String, CodingKey {
+        
+        case studyID = "studyId"
+        case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
+        
+        case studyScheduleID = "studyScheduleId"
+        
+        case topic = "studyScheduleName"
+        case place = "studySchedulePlace"
+        
+        case startTime = "studyScheduleStartDateTime"
+        case endTime = "studyScheduleEndDateTime"
+        case repeatOption = "repeatDay"
+    }
+}
+
+struct StudyScheduleGoing: Codable {
+    
+    let studyId: Int?
     let studyName: String?
     
     let studyScheduleID: Int?
@@ -308,7 +338,7 @@ enum RepeatOption: String, Codable {
     case everyWeek
     case everyTwoWeeks // domb: git book에는 everyTwoWeek으로 되어있어 수정요청
     case everyMonth
-//    case unknown
+    case noRepeat
     
     var kor: String {
         switch self {
@@ -320,8 +350,8 @@ enum RepeatOption: String, Codable {
             return "2주 마다"
         case .everyMonth:
             return "매달"
-//        case .unknown:
-//            return "반복 설정 오류"
+        case .noRepeat:
+            return ""
         }
     }
     
@@ -336,6 +366,18 @@ enum RepeatOption: String, Codable {
 ////            try container.encode(birth, forKey: .birth)
 ////            try container.encode(phoneNum, forKey: .phoneNum)
 //        }
+}
+
+struct ScheduleAttendanceInformation: Codable {
+    let userID: UserID
+    let attendanceStatus, reason: String
+    let fine: Int
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case attendanceStatus = "attendStatus"
+        case reason, fine
+    }
 }
 
 typealias UserID = String //사용자의 아이디

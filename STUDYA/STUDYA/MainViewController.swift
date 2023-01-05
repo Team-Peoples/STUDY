@@ -125,19 +125,45 @@ final class MainViewController: SwitchableViewController {
 
 //        self.navigationItem.standardAppearance = nil
 //        self.navigationItem.scrollEdgeAppearance = nil
-        
-//        floatingButtonContainerView.isHidden = true
     }
-    
+    var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
+        flag.toggle()
         
-        let nextVC = NotificationViewController()
-        push(vc: nextVC)
+//        Network.shared.createStudySchedule(StudyScheduleGoing(studyId: 3, studyName: nil, studyScheduleID: 3, topic: "묘오오오오오픽", place: "ㅏㅏㅏ앙소", openDate: "2023-01-01", deadlineDate: "2023-01-01", startTime: "16:30", endTime: "17:00", repeatOption: .noRepeat)) { result in
+//            switch result {
+//            case .success:
+//                print("s")
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+//        Network.shared.getAllStudySchedule { result in
+//            switch result {
+//            case .success(let schedules):
+//                print(schedules)
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+//        Network.shared.deleteStudySchedule(48, deleteRepeatSchedule: false) { result in
+//            switch result {
+//            case .success:
+//                print("S")
+//            case .failure(let error):
+//                UIAlertController.handleCommonErros(presenter: self, error: error)
+//            }
+//        }
+        
+//        let nextVC = NotificationViewController()
+//        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
-        dropdownButtonDidTapped()
+        if currentStudyOverall != nil {
+            dropdownButtonDidTapped()
+        }
         let creatingStudyFormVC = CreatingStudyFormViewController()
         
         creatingStudyFormVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: nil)
@@ -188,6 +214,9 @@ final class MainViewController: SwitchableViewController {
 //        self.navigationItem.standardAppearance = appearance
 //        self.navigationItem.scrollEdgeAppearance = appearance
         
+        let thirdCellIndexPath = IndexPath(row: 2, section: 0)
+        mainTableView.reloadRows(at: [thirdCellIndexPath], with: .automatic)
+        
         notificationBtn.isHidden = isSwitchOn ? true : false
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         
@@ -223,7 +252,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func getAllStudies() {
-        Network.shared.getAllStudy { result in
+        Network.shared.getAllStudies { result in
             switch result {
             case .success(let studies):
                 print(#function,1)
@@ -362,13 +391,26 @@ extension MainViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
             
             cell.nickName = nickName
+            cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell
         case 2:
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
-//            🛑스케줄 받아서 남은 시간 비교해서 버튼 변경
-            cell.navigatable = self
+            
+//            cell.schedule = currentStudyOverall?.studySchedule
+            cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
+            cell.navigatableSwitchObservableDelegate = self            
+            
+            if flag {
+                cell.didAttend = true
+                cell.attendanceStatus = .attended
+                
+            } else {
+                cell.didAttend = true
+                cell.attendanceStatus = .absent
+            }
             
             return cell
         case 3:
@@ -384,13 +426,13 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
+            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
             cell.studyAttendance = [
                 .attended: currentStudyOverall.attendedCount,
                 .late: currentStudyOverall.lateCount,
                 .absent: currentStudyOverall.absentcount,
                 .allowed: currentStudyOverall.allowedCount
             ]
-            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
             
             cell.penalty = currentStudyOverall.totalFine
             cell.navigatableSwitchSyncableDelegate = self
@@ -422,7 +464,6 @@ extension MainViewController: UITableViewDelegate {
             }
         default: break
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -464,8 +505,12 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController {
-    func present(vc: UIViewController) {
-        present(vc, animated: true)
+extension MainViewController: SwitchStatusObservable {
+    func getSwtichStatus() -> Bool {
+        isSwitchOn
     }
+}
+
+protocol SwitchStatusObservable {
+    func getSwtichStatus() -> Bool
 }

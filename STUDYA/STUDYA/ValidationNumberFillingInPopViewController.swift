@@ -9,6 +9,8 @@ import UIKit
 
 final class ValidationNumberFillingInPopViewController: UIViewController {
     
+    static let identifier = "ValidationNumberFillingInPopViewController"
+    
     private var customTransitioningDelegate = TransitioningDelegate()
     
     @IBOutlet weak var firstField: RoundedCornersField!

@@ -18,13 +18,14 @@ enum PeoplesError: Error {
     case loginInformationSavingError
     case unauthorizedUser
     case serverError
-    case internalServerError
     case decodingError
     case unknownError(Int?)
     case tokenExpired
     case userNotFound
     case studyNotFound
     case imageNotFound
+    case unknownMember
+    case wrongAttendanceCode
 }
 
 enum ErrorCode {
@@ -33,6 +34,8 @@ enum ErrorCode {
     static let userNotFound = "USER_NOT_FOUND"
     static let studyNotFound = "STUDY_NOT_FOUND"
     static let imageNotFound = "IMG_NOT_FOUND"
+    static let unknownMember = "NOT_STUDY_MEMBER"
+    static let wrongAttendnaceCode = "CHECK_NUMBER_MISMATCH"
 }
 
 // MARK: - Network
@@ -89,8 +92,8 @@ struct Network {
         
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
         
-        guard let jsonData = try? JSONEncoder().encode(user),
-              let imageData = image?.jpegData(compressionQuality: 0.5) else { return }
+        guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
@@ -372,7 +375,7 @@ struct Network {
     // MARK: - Study
     
     // domb: study가 없을수도 있다고 생각하는데 Result<[Study?]>처럼 optional을 사용 안해도 되는건가요?
-    func getAllStudy(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+    func getAllStudies(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
 
@@ -579,7 +582,8 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                print("스터디 스케쥴")
+                guard let data = response.data else { return }
+                print(String(data: data, encoding: .utf8))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -588,7 +592,7 @@ struct Network {
         }
     }
     
-    func createStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func createStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
         AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
@@ -786,6 +790,71 @@ struct Network {
             }
         }
     }
+    
+    // MARK: - Study Attendance
+    
+    func getAttendanceCertificationCode(scheduleID: ID, completion: @escaping (Result<Int, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAttendanceCertificactionCode(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let code = jsonDecode(type: Int.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(code))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<ScheduleAttendanceInformation, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.attend(scheduleID, code), interceptor: AuthenticationInterceptor()).validate().response {
+            response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceInformation = jsonDecode(type: ScheduleAttendanceInformation.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(attendanceInformation))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.unknownMember:  completion(.failure(.unknownMember))
+                case ErrorCode.wrongAttendnaceCode: completion(.failure(.wrongAttendanceCode))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Helpers
@@ -864,7 +933,7 @@ extension Network {
 
         switch statusCode {
         case 200: completion(.failure(.decodingError))
-        case 500: completion(.failure(.internalServerError))
+        case 500: completion(.failure(.serverError))
         case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))
