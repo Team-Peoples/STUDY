@@ -8,22 +8,15 @@
 import UIKit
 import SnapKit
 
-class StudyInfoViewController: SwitchableViewController {
+final class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
     var studyID: ID?
-    private var studyViewModel: StudyViewModel = StudyViewModel() {
-        didSet {
-            configureViews()
-            navigationItem.title = studyViewModel.study.studyName
-        }
-    }
     
-    //    internal var syncSwitchReverse: (Bool) -> () = { sender in }
+    private var studyViewModel = StudyViewModel()
     
     /// 스터디 폼
-    ///
     @IBOutlet weak var studyCategoryBackgroundView: UIView!
     @IBOutlet weak var studyCategoryLabel: UILabel!
     @IBOutlet weak var studyInfoBackgroundView: UIView!
@@ -34,7 +27,6 @@ class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var studyformEditButton: UIButton!
     
     /// 스터디 규칙정보
-    ///
     @IBOutlet weak var studyGeneralRuleBackgroundView: UIView!
     @IBOutlet weak var latenessTimeRuleView: UIView!
     @IBOutlet weak var latenessTimeRuleLabel: UILabel!
@@ -51,10 +43,8 @@ class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var depositView: UIView!
     @IBOutlet weak var depositLabel: UILabel!
     
-    
     @IBOutlet weak var latenessCountView: UIView!
     @IBOutlet weak var latenessCountLabel: UILabel!
-    
     
     @IBOutlet weak var absenceCountView: UIView!
     @IBOutlet weak var absenceCountLabel: UILabel!
@@ -68,25 +58,19 @@ class StudyInfoViewController: SwitchableViewController {
     
     @IBOutlet weak var studyExitButton: UIButton!
     
-    lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
+    private lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
-        studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
-        
-        view.addSubview(toastMessage)
-        
-        toastMessage.snp.makeConstraints { make in
-            make.centerX.equalTo(view)
-            make.width.equalTo(view.frame.width - 14)
-            make.height.equalTo(42)
-            make.bottom.equalTo(view.snp.bottom).offset(40)
+        studyViewModel.bind { [self] study in
+            configureViews(study)
         }
+        
+        configureView()
+        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,21 +79,13 @@ class StudyInfoViewController: SwitchableViewController {
         tabBarController?.tabBar.isHidden = true
         guard let studyID = studyID else { return }
         
-        Network.shared.getStudy(studyID: studyID) { result in
-            switch result {
-            case .success(let studyOverall):
-                self.studyViewModel.study = studyOverall.study
-                print(studyOverall.study)
-            case .failure(let failure):
-                print(failure)
-            }
-        }
+        getStudyInfo(studyID)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(isSwitchOn)
+//        syncSwitchReverse(isSwitchOn)
     }
     
     // MARK: - Actions
@@ -121,7 +97,7 @@ class StudyInfoViewController: SwitchableViewController {
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
             
             toastMessage.snp.updateConstraints { make in
-                make.bottom.equalTo(view.snp.bottom).offset(-100)
+                make.bottom.equalTo(view).offset(-100)
             }
             
             sender.isUserInteractionEnabled = false
@@ -133,7 +109,7 @@ class StudyInfoViewController: SwitchableViewController {
             } completion: {[self] _ in
                 
                 toastMessage.snp.updateConstraints { make in
-                    make.bottom.equalTo(view.snp.bottom).offset(40)
+                    make.bottom.equalTo(view).offset(50)
                 }
                 toastMessage.alpha = 0.9
                 sender.isUserInteractionEnabled = true
@@ -154,7 +130,7 @@ class StudyInfoViewController: SwitchableViewController {
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
 
         let studygeneralRuleVC = EditingStudyGeneralRuleViewController()
-        studygeneralRuleVC.study = studyViewModel.study
+        studygeneralRuleVC.studyViewModel = studyViewModel
         
         let vc = UINavigationController(rootViewController: studygeneralRuleVC)
         
@@ -168,7 +144,7 @@ class StudyInfoViewController: SwitchableViewController {
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
         let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
-        studyFreeRuleVC.study = studyViewModel.study
+        studyFreeRuleVC.studyViewModel = studyViewModel
 
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
         
@@ -236,19 +212,30 @@ class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Networking
     
+    private func getStudyInfo(_ studyID: ID) {
+        Network.shared.getStudy(studyID: studyID) { result in
+            switch result {
+            case .success(let studyOverall):
+                self.studyViewModel.study = studyOverall.study
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+    }
+    
     // MARK: - Configure Views
     
-    private func configureViews() {
+    private func configureViews(_ study: Study) {
         
         //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
-        if let rawValue = studyViewModel.study.category {
+        if let rawValue = study.category {
             studyCategoryLabel.text = StudyCategory(rawValue: rawValue)?.rawValueWithKorean
         }
-        studyNameLabel.text = studyViewModel.study.studyName
-        studyIntroductionLabel.text = studyViewModel.study.studyIntroduction
+        studyNameLabel.text = study.studyName
+        studyIntroductionLabel.text = study.studyIntroduction
         
-        let studyOn = studyViewModel.study.studyOn
-        let studyOff = studyViewModel.study.studyOff
+        let studyOn = study.studyOn
+        let studyOff = study.studyOff
         
         switch (studyOn, studyOff) {
         case (true, true):
@@ -261,7 +248,7 @@ class StudyInfoViewController: SwitchableViewController {
             studyTypeLabel.text = nil
         }
         
-        if let freeRule = studyViewModel.study.freeRule {
+        if let freeRule = study.freeRule {
             
             freeRuleTextView.text = freeRule
             freeRuleTextView.textColor = .appColor(.ppsGray1)
@@ -271,10 +258,10 @@ class StudyInfoViewController: SwitchableViewController {
             freeRuleTextView.textColor = .appColor(.ppsGray2)
         }
         
-        let generalRuleLateness = studyViewModel.study.generalRule?.lateness
-        let generalRuleAbsence = studyViewModel.study.generalRule?.absence
-        let deposit = studyViewModel.study.generalRule?.deposit
-        let excommunicationRule = studyViewModel.study.generalRule?.excommunication
+        let generalRuleLateness = study.generalRule?.lateness
+        let generalRuleAbsence = study.generalRule?.absence
+        let deposit = study.generalRule?.deposit
+        let excommunicationRule = study.generalRule?.excommunication
         
         check(generalRuleLateness?.time, AndSetupHeightOf: latenessTimeRuleView)
         check(generalRuleAbsence?.time, AndSetupHeightOf: absenceTimeRuleView)
@@ -319,5 +306,23 @@ class StudyInfoViewController: SwitchableViewController {
         
         latenessCountLabel.text = "\(excommunicationRule?.lateness ?? 0)번 지각 시 강퇴"
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"
+    }
+    
+    private func configureView() {
+        studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
+        studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
+        
+        view.addSubview(toastMessage)
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        toastMessage.snp.makeConstraints { make in
+            make.centerX.equalTo(view)
+            make.width.equalTo(view.frame.width - 14)
+            make.height.equalTo(42)
+            make.bottom.equalTo(view).offset(50)
+        }
     }
 }

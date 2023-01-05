@@ -7,11 +7,14 @@
 
 import UIKit
 
-class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
+final class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     static let identifier = "EditingExcommunicationRuleCollectionViewCell"
+    
+    var excommunication = Excommunication()
+    var excommunicationRuleEditDoneAction: (Excommunication) -> Void = { Excommunication in }
     
     private let excommunicationTitleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true)
     private let excommunicationDescriptionLabel = CustomLabel(title: "* 멤버가 강퇴 조건에 도달하면 관리자에게 알림이 전송돼요.\n* 지각과 결석 조건을 모두 입력하면, 둘 중 하나만 만족해도 강퇴 조건에 도달해요.", tintColor: .ppsGray1, size: 12)
@@ -43,9 +46,9 @@ class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
         switch sender {
         case latenessCountField:
-            latenessCountFieldAction(sender.text?.toInt())
+            excommunication.lateness = sender.text?.toInt()
         case absenceCountField:
-            absenceCountFieldAction(sender.text?.toInt())
+            excommunication.absence = sender.text?.toInt()
         default:
             return
         }

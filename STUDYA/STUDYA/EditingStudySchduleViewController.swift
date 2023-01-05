@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditingStudySchduleViewController: UIViewController {
+final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -17,7 +17,6 @@ class EditingStudySchduleViewController: UIViewController {
             guard let studySchedule = studySchedule else  { return }
             
             configureUI(studySchedule)
-            print(studySchedule.repeatOption)
         }
     }
     

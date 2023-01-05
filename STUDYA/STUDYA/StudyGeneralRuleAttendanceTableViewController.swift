@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 
-class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
+final class StudyGeneralRuleAttendanceTableViewController: UITableViewController {
     
     // MARK: - Properties
     

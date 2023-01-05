@@ -7,36 +7,9 @@
 
 import UIKit
 
-struct CreatingStudyRuleViewModel {
-    var study: Study {
-        didSet {
-            let condition = study.generalRule?.absence.time != nil || study.generalRule?.lateness.time != nil || study.generalRule?.excommunication.lateness != nil || study.generalRule?.excommunication.absence != nil
-            isGeneralFormFilled = condition ? true : false
-            isFreeFormFilled = study.freeRule != "" && study.freeRule != nil ? true : false
-        }
-    }
-
-    var isGeneralFormFilled = false
-    var isFreeFormFilled = false
-    
-    init() {
-        study = Study(id: nil, isBlocked: nil, isPaused: nil)
-    }
-    
-    func configure(_ view: UIView, isUpperView: Bool, label: CustomLabel, button: BrandButton) {
-        if isUpperView {
-            view.layer.borderColor = isGeneralFormFilled ? UIColor.appColor(.keyColor1).cgColor : UIColor.appColor(.ppsGray2).cgColor
-        } else {
-            view.layer.borderColor = isFreeFormFilled ? UIColor.appColor(.keyColor1).cgColor : UIColor.appColor(.ppsGray2).cgColor
-        }
-        label.textColor = isGeneralFormFilled || isFreeFormFilled ? .systemBackground : UIColor.appColor(.keyColor2)
-        if isGeneralFormFilled || isFreeFormFilled { button.fillIn(title: "다음") } else { button.fillOut(title: "다음") }
-    }
-}
-
 class CreatingStudyRuleViewController: UIViewController {
     
-    internal var creatingStudyRuleViewModel = CreatingStudyRuleViewModel()
+    internal var creatingStudyRuleViewModel = StudyViewModel()
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true)
     private let subTitleLabel = CustomLabel(title: "스터디 정보에서 언제든지 수정할 수 있어요!", tintColor: .ppsBlack, size: 18)
     private lazy var settingStudyGeneralRuleView: UIView = {
@@ -109,6 +82,11 @@ class CreatingStudyRuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        creatingStudyRuleViewModel.bind { study in
+            self.configure(self.settingStudyGeneralRuleView, label: self.descriptionLabel, button: self.doneButton, isFormFilled: study.isGeneralFormFilled)
+            self.configure(self.settingStudyFreeRuleView, label: self.descriptionLabel, button: self.doneButton, isFormFilled: study.isFreeFormFilled)
+        }
+        
         view.backgroundColor = .systemBackground
         title = "스터디 만들기"
         
@@ -131,7 +109,6 @@ class CreatingStudyRuleViewController: UIViewController {
         studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.creatingStudyRuleViewModel.study.generalRule = rule
-            self.creatingStudyRuleViewModel.configure(self.settingStudyGeneralRuleView, isUpperView: true, label: self.descriptionLabel, button: self.doneButton)
         }
         
         studyGeneralRuleVC.navigationItem.title = "규칙"
@@ -153,7 +130,6 @@ class CreatingStudyRuleViewController: UIViewController {
         }
         studyFreeRuleVC.completeButtonTapped = { freeRule in
             self.creatingStudyRuleViewModel.study.freeRule = freeRule
-            self.creatingStudyRuleViewModel.configure(self.settingStudyFreeRuleView, isUpperView: false, label: self.descriptionLabel, button: self.doneButton)
         }
         
         studyFreeRuleVC.navigationItem.title = "진행방식"
@@ -168,18 +144,10 @@ class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        
-        let study = creatingStudyRuleViewModel.study
-        
-        Network.shared.createStudy(study) { result in
-            switch result {
-            case .success(_):
-                
-                let nextVC = CreatingStudyCompleteViewController()
-                self.navigationController?.pushViewController(nextVC, animated: true)
-            case .failure(let error):
-                print(error)
-            }
+  
+        creatingStudyRuleViewModel.postNewStudy {
+            let nextVC = CreatingStudyCompleteViewController()
+            self.navigationController?.pushViewController(nextVC, animated: true)
         }
     }
     
@@ -217,5 +185,15 @@ class CreatingStudyRuleViewController: UIViewController {
         descriptionLabel.anchor(bottom: doneButton.topAnchor, bottomConstant: 21)
         descriptionLabel.centerX(inView: view)
         doneButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 40, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor)
+    }
+    
+    func configure(_ view: UIView, label: CustomLabel, button: BrandButton, isFormFilled: Bool) {
+        if isFormFilled {
+            view.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
+        } else {
+            view.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
+        }
+        label.textColor = isFormFilled ? UIColor.appColor(.keyColor2) : .systemBackground
+        if isFormFilled { button.fillIn(title: "다음") } else { button.fillOut(title: "다음") }
     }
 }

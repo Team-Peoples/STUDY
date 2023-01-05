@@ -7,14 +7,14 @@
 
 import UIKit
 
-class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
+final class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
     static let identifier = "EditingStudyGeneralRuleAttendanceTimeTableViewCell"
     
     let attendanceTitleLabel = CustomLabel(title: "출결 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
-    let attendanceDescriptionLabel = CustomLabel(title: "* 결석 조건을 입력하지 않으면 스터디가 끝나는 시간으로 설정돼요.", tintColor: .ppsGray1, size: 12)
+    let attendanceDescriptionLabel = CustomLabel(title: "* 결석 시간을 입력하지 않으면 스터디가 끝나는 시간으로 설정돼요.", tintColor: .ppsGray1, size: 12)
     let latenessRuleTimeFieldFrontLabel = CustomLabel(title: "스터디 시작 후", tintColor: .ppsBlack, size: 16)
     let latenessRuleTimeBehindLabel = CustomLabel(title: "분 부터 지각", boldPart: "지각")
     let absenceRuleTimeFieldFrontLabel = CustomLabel(title: "스터디 시작 후", tintColor: .ppsBlack, size: 16)
@@ -137,9 +137,23 @@ extension EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegat
         
         switch textField {
         case latenessRuleTimeField:
+            
             latenessRuleTimeField.pickerSelectRowMatchedTextIn(latenessRuleTimeField)
+            absenceRuleTimeField.text = "--"
+            absenceRuleTimeFieldAction(absenceRuleTimeField.text?.toInt())
         case absenceRuleTimeField:
+            
             absenceRuleTimeField.pickerSelectRowMatchedTextIn(absenceRuleTimeField)
+            
+            let latenessRuleTimeSelectedTimeindex = latenessRuleTimeField.strArray.firstIndex(of: latenessRuleTimeField.text ?? "--") ?? 0
+            var array = (latenessRuleTimeSelectedTimeindex...99).map{ String($0) }
+            if latenessRuleTimeSelectedTimeindex == 0 {
+                array = array.replacing(["0"], with: ["--"])
+            } else {
+                array.insert("--", at: 0)
+            }
+            
+            absenceRuleTimeField.strArray = array
         default:
             return
         }

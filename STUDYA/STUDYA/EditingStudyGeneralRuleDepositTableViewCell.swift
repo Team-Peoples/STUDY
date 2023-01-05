@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditingStudyGeneralRuleDepositTableViewCell: UITableViewCell {
+final class EditingStudyGeneralRuleDepositTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     

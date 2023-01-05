@@ -921,7 +921,7 @@ class RoundableView: UIView {
 final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
-    let strArray: [String] = {
+    var strArray: [String] = {
         
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
@@ -1080,7 +1080,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     // pickerview의 선택지는 데이터의 개수만큼
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        100
+        strArray.count
     }
     
     // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.

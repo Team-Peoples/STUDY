@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct GeneralStudyRuleViewModel {
+struct GeneralRuleViewModel {
     // model: generalRule
     
     var generalRule: GeneralStudyRule
@@ -25,7 +25,7 @@ struct GeneralStudyRuleViewModel {
     }
     
     init() {
-        generalRule = GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())
+        generalRule = GeneralStudyRule()
     }
     
     func configure(vc: StudyGeneralRuleAttendanceTableViewController) {
@@ -39,7 +39,6 @@ struct GeneralStudyRuleViewModel {
         let isFieldsEnabled: Bool = lateness.time != nil || absence.time != nil ? true : false
         
         vc.fineAndDepositFieldsAreEnabled(isFieldsEnabled)
-//        isfieldsenabled에 따라 혹시모를 moneyrelatedfields의 필드의 값을 다 삭제시켜주는 작업 해줘야하나?
     }
     
     func configure(cell: CreatingExcommunicationRuleCollectionViewCell) {
@@ -52,7 +51,7 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
     
     var doneButtonDidTapped: (GeneralStudyRule) -> () = { generalRule in }
     var viewDidUpdated: (UICollectionView) -> () = { collectionView in }
-    var generalRuleViewModel = GeneralStudyRuleViewModel()
+    var generalRuleViewModel = GeneralRuleViewModel()
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!

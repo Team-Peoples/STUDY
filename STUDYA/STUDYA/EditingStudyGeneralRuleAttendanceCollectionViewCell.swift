@@ -7,7 +7,10 @@
 
 import UIKit
 
-class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
+typealias LatenessRuleTimeIsNil = Bool
+typealias AbsenceRuleTimeIsNil = Bool
+
+final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
   
@@ -17,24 +20,18 @@ class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell 
     
     private var generalRuleAttendanceTableView = GeneralRuleAttendanceTableView()
     
-    lazy var fineDimmingViewIsHidden: (LatenessRuleTimeIsNotNil, AbsenceRuleTimeIsNotNil) = (false, false) {
+    lazy var latenessRuleTimeIsNil: LatenessRuleTimeIsNil = false {
         didSet {
+            let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? EditingStudyGeneralRuleAttendanceFineTableViewCell
             
-            switch fineDimmingViewIsHidden {
-            case (false, false):
-               
-                let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? EditingStudyGeneralRuleAttendanceFineTableViewCell
-                cell?.fineDimmingView.isHidden = false
-                resetData(in: cell)
-            default:
-               
-                let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? EditingStudyGeneralRuleAttendanceFineTableViewCell
-                cell?.fineDimmingView.isHidden = true
-            }
+            cell?.perLateMinuteFieldDimmingView.isHidden = !latenessRuleTimeIsNil
+            cell?.latenessFineFieldDimmingView.isHidden = !latenessRuleTimeIsNil
+            
+            latenessRuleTimeIsNil ? resetData(in: cell) : ()
         }
     }
     
-    lazy var toastMessage = ToastMessage(message: "먼저 지각 규칙을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
+    lazy var toastMessage = ToastMessage(message: "먼저 지각 시간을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
     
     private var keyboardHeight: CGFloat = 0
     // MARK: - Initialization
@@ -158,65 +155,65 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         cell?.latenessFineField.text = "0"
         cell?.absenceFineField.text = "0"
         
-        delegate?.study?.generalRule?.lateness.count = nil
-        delegate?.study?.generalRule?.lateness.fine = nil
-        delegate?.study?.generalRule?.absence.fine = nil
+        delegate?.studyViewModel.study.generalRule?.lateness.count = nil
+        delegate?.studyViewModel.study.generalRule?.lateness.fine = nil
+        delegate?.studyViewModel.study.generalRule?.absence.fine = nil
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: EditingStudyGeneralRuleAttendanceTimeTableViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleAttendanceTimeTableViewCell else { return UITableViewCell() }
+            
         
-            cell.latenessRuleTimeField.text = delegate?.study?.generalRule?.lateness.time?.toString() ?? "--"
-            cell.absenceRuleTimeField.text = delegate?.study?.generalRule?.absence.time?.toString()
-            ?? "--"
+            cell.latenessRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.lateness.time?.toString() ?? "--"
+            cell.absenceRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.absence.time?.toString() ?? "--"
             cell.latenessRuleTimeFieldAction = { [self] latenessRuleTime in
-                delegate?.study?.generalRule?.lateness.time = latenessRuleTime
-                fineDimmingViewIsHidden.0 = latenessRuleTime != nil
+                delegate?.studyViewModel.study.generalRule?.lateness.time = latenessRuleTime
+                latenessRuleTimeIsNil = latenessRuleTime == nil
             }
             cell.absenceRuleTimeFieldAction = { [self] absenceRuleTime in
-                delegate?.study?.generalRule?.absence.time = absenceRuleTime
-                fineDimmingViewIsHidden.1 = absenceRuleTime != nil
+                delegate?.studyViewModel.study.generalRule?.absence.time = absenceRuleTime
             }
             
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: EditingStudyGeneralRuleAttendanceFineTableViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleAttendanceFineTableViewCell else { return UITableViewCell() }
             
-            cell.perLateMinuteField.text = delegate?.study?.generalRule?.lateness.count?.toString()
-            ?? "--"
-            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: delegate?.study?.generalRule?.lateness.fine ?? 0)
-            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: delegate?.study?.generalRule?.absence.fine ?? 0)
+            cell.perLateMinuteField.text = delegate?.studyViewModel.study.generalRule?.lateness.count?.toString() ?? "--"
+            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.lateness.fine ?? 0)
+            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.absence.fine ?? 0)
             
             cell.perLateMinuteFieldAction = { [self] perLateMinute in
-                delegate?.study?.generalRule?.lateness.count = perLateMinute
+                delegate?.studyViewModel.study.generalRule?.lateness.count = perLateMinute
             }
             cell.latenessFineFieldAction = { [self] latenessFine in
-                delegate?.study?.generalRule?.lateness.fine = latenessFine
+                delegate?.studyViewModel.study.generalRule?.lateness.fine = latenessFine
             }
             cell.absenceFineFieldAction = { [self] absenceFine in
-                delegate?.study?.generalRule?.absence.fine = absenceFine
+                delegate?.studyViewModel.study.generalRule?.absence.fine = absenceFine
             }
             
-            if delegate?.study?.generalRule?.lateness.time == nil && delegate?.study?.generalRule?.absence.time == nil {
-                cell.fineDimmingView.isHidden = false
+            if delegate?.studyViewModel.study.generalRule?.lateness.time == nil {
+                cell.perLateMinuteFieldDimmingView.isHidden = false
+                cell.latenessFineFieldDimmingView.isHidden = false
             } else {
-                cell.fineDimmingView.isHidden = true
+                cell.perLateMinuteFieldDimmingView.isHidden = true
+                cell.latenessFineFieldDimmingView.isHidden = true
             }
             
             cell.fineDimmingViewAddTapGesture(target: self, action: #selector(dimmingViewDidTapped))
             
             return cell
         case 2:
+            
             guard let cell = tableView.dequeueReusableCell(withIdentifier: EditingStudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
             
-            cell.depositTextField.text = Formatter.formatIntoDecimal(number: delegate?.study?.generalRule?.deposit ?? 0)
+            cell.depositTextField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.deposit ?? 0)
             
             cell.depositTextFieldAction = { [self] deposit in
-                delegate?.study?.generalRule?.deposit = deposit
+                delegate?.studyViewModel.study.generalRule?.deposit = deposit
             }
-            
             return cell
         default:
             return UITableViewCell()
@@ -243,6 +240,3 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         }
     }
 }
-
-typealias LatenessRuleTimeIsNotNil = Bool
-typealias AbsenceRuleTimeIsNotNil = Bool

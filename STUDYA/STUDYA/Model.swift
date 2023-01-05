@@ -76,6 +76,18 @@ struct Study: Codable, Equatable {
     var studyName, category, studyIntroduction, freeRule: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
+    
+    var formIsFilled: Bool {
+        return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
+    }
+    
+    var isGeneralFormFilled: Bool {
+        // domb: 스터디 규칙쪽 필수 입력 값 시나리오 수정되면 이부분도 수정해야함.
+        return generalRule?.absence.time != nil || generalRule?.lateness.time != nil || generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil || generalRule?.deposit != nil
+    }
+    var isFreeFormFilled: Bool {
+        return freeRule != "" && freeRule != nil
+    }
 
     enum CodingKeys: String, CodingKey {
 
@@ -90,7 +102,7 @@ struct Study: Codable, Equatable {
         case studyOn, studyOff
     }
 
-    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
+    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: nil, excommunication: Excommunication(lateness: nil, absence: nil))) {
         self.id = id
         self.studyName = studyName
         self.studyOn = studyOn
@@ -181,13 +193,20 @@ struct GeneralStudyRule: Codable, Equatable {
     
     var lateness: Lateness
     var absence: Absence
-    var deposit: Int?
+    var deposit: Deposit?
     var excommunication: Excommunication
 
     enum CodingKeys: String, CodingKey {
         case lateness, deposit
         case absence = "absent"
         case excommunication = "out"
+    }
+    
+    init(lateness: Lateness = Lateness(), absence: Absence = Absence(), deposit: Deposit? = nil, excommunication: Excommunication = Excommunication()) {
+        self.lateness = lateness
+        self.absence = absence
+        self.deposit = deposit
+        self.excommunication = excommunication
     }
 }
 
@@ -386,3 +405,4 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias Deposit = Int

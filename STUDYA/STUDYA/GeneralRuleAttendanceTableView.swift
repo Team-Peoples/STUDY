@@ -7,7 +7,7 @@
 
 import UIKit
 
-class GeneralRuleAttendanceTableView: UITableView {
+final class GeneralRuleAttendanceTableView: UITableView {
     
     // MARK: - Properties
     

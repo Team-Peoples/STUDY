@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
+final class CreatingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
 
     static let identifier = "CreatingStudyGeneralRuleAttendanceCollectionViewCell"
     

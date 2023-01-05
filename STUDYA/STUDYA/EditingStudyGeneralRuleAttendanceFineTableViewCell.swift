@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
+final class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
@@ -31,8 +31,9 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     var latenessFineFieldAction: (Int?) -> Void = { latenessFine in }
     var absenceFineFieldAction: (Int?) -> Void = { absenceFine in }
     
-    lazy var fineDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
-
+    lazy var perLateMinuteFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
+    lazy var latenessFineFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
+    
     // MARK: - Initialization
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -67,8 +68,8 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     }
     
     func fineDimmingViewAddTapGesture(target: Any?, action: Selector) {
-        print("초기화","🔥")
-        fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
+        perLateMinuteFieldDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
+        latenessFineFieldDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
     }
     
     // MARK: - Configure
@@ -87,7 +88,8 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
         contentView.addSubview(absenceFineCountLabel)
         contentView.addSubview(absenceFineField)
         contentView.addSubview(absenceFineFieldBehindLabel)
-        contentView.addSubview(fineDimmingView)
+        contentView.addSubview(perLateMinuteFieldDimmingView)
+        contentView.addSubview(latenessFineFieldDimmingView)
     }
     
     // MARK: - Setting Constraints
@@ -152,8 +154,11 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
             make.width.equalTo(20)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(40)
         }
-        fineDimmingView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView.safeAreaLayoutGuide)
+        perLateMinuteFieldDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(perLateMinuteField)
+        }
+        latenessFineFieldDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(latenessFineField)
         }
     }
 }

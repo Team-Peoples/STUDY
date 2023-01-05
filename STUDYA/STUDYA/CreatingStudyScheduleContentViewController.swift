@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatingStudyScheduleContentViewController: UIViewController {
+final class CreatingStudyScheduleContentViewController: UIViewController {
     
     // MARK: - Properties
     

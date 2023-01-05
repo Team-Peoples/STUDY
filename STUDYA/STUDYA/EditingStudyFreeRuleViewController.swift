@@ -9,11 +9,11 @@
 import UIKit
 import SnapKit
 
-class EditingStudyFreeRuleViewController: UIViewController {
+final class EditingStudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
-    var study: Study?
+    var studyViewModel = StudyViewModel()
     
     @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
@@ -22,6 +22,11 @@ class EditingStudyFreeRuleViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        studyViewModel.bind { study in
+            self.freeRuletextView.text = study.freeRule
+            self.placeholderLabel.isHidden = study.freeRule == nil ? false : true
+        }
         
         freeRuletextView.delegate = self
         
@@ -33,28 +38,15 @@ class EditingStudyFreeRuleViewController: UIViewController {
         self.navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        freeRuletextView.text = study?.freeRule
-        placeholderLabel.isHidden = study?.freeRule == nil ? false : true
-    }
     // MARK: - Configure
     
     // MARK: - Actions
     
     @objc func ruleEditDone() {
         
-        guard let study = study else { return }
-        guard let studyID = study.id else { return }
-        Network.shared.updateStudy(study, id: studyID) { result in
-            switch result {
-            case .success(let success):
-                print(success)
-                self.dismiss(animated: true)
-            case .failure(let failure):
-                print(failure)
-            }
+        studyViewModel.updateStudy {
+            print("업데이트 성공")
+            self.dismiss(animated: true)
         }
     }
     
@@ -71,7 +63,7 @@ class EditingStudyFreeRuleViewController: UIViewController {
 extension EditingStudyFreeRuleViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        study?.freeRule = textView.text
+        studyViewModel.study.freeRule = textView.text
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
