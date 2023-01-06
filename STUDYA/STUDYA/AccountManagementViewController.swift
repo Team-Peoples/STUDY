@@ -17,6 +17,7 @@ final class AccountManagementViewController: UIViewController {
     
     internal var profileImage: UIImage? {
         willSet {
+            profileImageView.internalImage = newValue
             newValue == nil ? profileImageView.setImageWith(UIImage(named: Const.defaultProfile)) : profileImageView.setImageWith(newValue)
         }
     }
@@ -242,7 +243,6 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
-        
         Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
             switch result {
             case .success(_):
@@ -254,6 +254,7 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func touchUpImageView() {
+        
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
             self.openAlbum()

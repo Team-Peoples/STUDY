@@ -53,6 +53,9 @@ final class AppController {
     
     func deleteUserInformationAndLogout() {
         
+        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+        
         if KeyChain.read(key: Const.accessToken) != nil {
             KeyChain.delete(key: Const.accessToken)
         }
@@ -72,9 +75,6 @@ final class AppController {
         if let _ = KeyChain.read(key: Const.tempIsFirstSNSLogin) {
             KeyChain.delete(key: Const.tempIsFirstSNSLogin)
         }
-        
-        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
-        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
     }
     
     private func registerAuthStateDidChangeEvent() {

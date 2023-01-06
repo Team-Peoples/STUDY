@@ -49,6 +49,12 @@ class SwitchableViewController: UIViewController, Navigatable {
         extraWorkWhenSwitchToggled()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        switchStatusWhenWillAppear = isSwitchOn
+    }
+    
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
     }
