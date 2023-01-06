@@ -1165,8 +1165,11 @@ final class PurpleRoundedInputField: UITextField {
         rightViewMode = .always
     }
     
-    func update(alpha: CGFloat, of view: UIView) {
+    internal func update(alpha: CGFloat, of view: UIView) {
         view.alpha = alpha
+    }
+    internal func setDelegate(to vc: UITextFieldDelegate) {
+        self.delegate = vc
     }
 }
 

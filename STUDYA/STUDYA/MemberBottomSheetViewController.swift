@@ -33,6 +33,12 @@ final class MemberBottomSheetViewController: UIViewController {
             managerButton.isHidden = isOwner ? false : true
         }
     }
+    private var newRole: String?
+    internal var hasManagerSwitchEverToggled = false
+    
+    internal var askExcommunicateMember = {}
+    internal var askChangeOwner = {}
+    internal var getMemberListAgainAndReload = {}
     
     private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "닉네임", tintColor: .ppsBlack, size: 14, isBold: true)
@@ -50,6 +56,7 @@ final class MemberBottomSheetViewController: UIViewController {
        
         let f = PurpleRoundedInputField(target: nil, action: nil)
         
+        f.setDelegate(to: self)
         f.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
         f.attributedPlaceholder = NSAttributedString(string: "역할 이름을 자유롭게 정해주세요.", attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.boldSystemFont(ofSize: 16)])
         f.isSecureTextEntry = false
@@ -88,15 +95,15 @@ final class MemberBottomSheetViewController: UIViewController {
     private let bottomViewHeight: CGFloat = 320
     private let askViewHeight: CGFloat = 300
     
-    internal var excommunicationButtonTapped = {}
-    internal var ownerButtonTapped = {}
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
-        
         configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if hasManagerSwitchEverToggled { getMemberListAgainAndReload() }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -106,11 +113,11 @@ final class MemberBottomSheetViewController: UIViewController {
     }
     
     @objc private func askExcommunication() {
-        self.excommunicationButtonTapped()
+        self.askExcommunicateMember()
     }
 
     @objc private func ownerButtonDidTapped() {
-        self.ownerButtonTapped()
+        self.askChangeOwner()
     }
 
     @objc private func toggleManagerButton() {
@@ -120,7 +127,10 @@ final class MemberBottomSheetViewController: UIViewController {
             switch result {
             case .success(let isSucceed):
                 if isSucceed {
+                    
+                    self.hasManagerSwitchEverToggled = true
                     self.managerButton.toggle()
+                    
                 } else {
                     let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 2")
                     self.present(alert, animated: true)
@@ -132,7 +142,33 @@ final class MemberBottomSheetViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        print(#function)
+        view.endEditing(true)
+        
+        guard let memberID = member?.memberID, let newRole = newRole else { return }
+        
+        Network.shared.updateUserRole(memberID: memberID, role: newRole) { result in
+            switch result {
+            case .success(let isSucceed):
+                
+                if isSucceed {
+                    self.getMemberListAgainAndReload()
+                    self.dismiss(animated: true)
+                    
+                } else {
+                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 3")
+                    self.present(alert, animated: true)
+                }
+                
+            case .failure(let error):
+                switch error {
+                case .cantChangeOwnerRole:
+                    let alert = SimpleAlert(message: "스터디장의 역할은 변경할 수 없습니다.")
+                    self.present(alert, animated: true)
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
     }
     
     private func configureView() {
@@ -187,6 +223,16 @@ final class MemberBottomSheetViewController: UIViewController {
     }
 }
 
+extension MemberBottomSheetViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        🛑멤버가 스터디장이라면 False 리턴
+        true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        newRole = textField.text
+    }
+}
+
 final class AskChangingOwnerViewController: UIViewController {
         
     private let askLabel = CustomLabel(title: "닉네임님을 스터디장으로 지정할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
@@ -195,6 +241,8 @@ final class AskChangingOwnerViewController: UIViewController {
     private let confirmButton = UIButton(frame: .zero)
         
     internal var backButtonTapped = {}
+    internal var getMemberListAgainAndReload = {}
+    
     internal var navigatableDelegate: Navigatable?
     
     override func viewDidLoad() {
@@ -264,6 +312,8 @@ final class AskExcommunicationViewController: UIViewController {
     private let confirmButton = UIButton(frame: .zero)
         
     internal var backButtonTapped = {}
+    internal var getMemberListAgainAndReload = {}
+    
     internal var navigatableDelegate: Navigatable?
     
     override func viewDidLoad() {
@@ -313,14 +363,16 @@ final class AskExcommunicationViewController: UIViewController {
     
     @objc private func excommuViewConfirmButtonTapped() {
         guard let id = excommunicatedMemberID else { return }
+        
         Network.shared.excommunicateMember(id) { result in
             switch result {
             case .success(let isSucced):
                 print(isSucced)
+                
             case .failure(let error):
                 switch error {
                 case .unauthorizedMember:
-                    let alert = SimpleAlert(buttonTitle: "확인", message: "강퇴 권한이 없습니다.") { finished in
+                    let alert = SimpleAlert(buttonTitle: Const.OK, message: "강퇴 권한이 없습니다.") { finished in
                         self.dismiss(animated: true) {
                             self.navigatableDelegate?.pop()
                         }
@@ -331,6 +383,7 @@ final class AskExcommunicationViewController: UIViewController {
                     self.present(alert, animated: true)
                 case .cantExpelSelf:
                     let alert = SimpleAlert(message: "자기자신은 강퇴할 수 없습니다.\n스터디 정보의 \"스터디 탈퇴\" 통해 탈퇴할 수 있습니다.")
+                    self.present(alert, animated: true)
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }

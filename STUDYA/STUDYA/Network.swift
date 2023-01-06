@@ -30,6 +30,7 @@ enum PeoplesError: Error {
     case unauthorizedMember
     case cantExpelOwner
     case cantExpelSelf
+    case cantChangeOwnerRole
 }
 
 enum ErrorCode {
@@ -43,6 +44,7 @@ enum ErrorCode {
     static let unauthorizedMember = "NOT_MANAGER"
     static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
     static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
+    static let cantChangeOwnerRole = "MASTER_DO_NOT_CHANGE"
 }
 
 // MARK: - Network
@@ -407,7 +409,6 @@ struct Network {
         AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-//            print(String(describing: response.data?.toDictionary()))
             switch httpResponse.statusCode {
             case 200:
                 
@@ -610,8 +611,41 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else { return }
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
                 completion(.success(isSucceed))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func updateUserRole(memberID: ID, role: String, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateUserRole(memberID, role), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response, let data = response.data else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSucceed))
+                
+            case 400:
+                guard let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.cantChangeOwnerRole:  completion(.failure(.cantChangeOwnerRole))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }

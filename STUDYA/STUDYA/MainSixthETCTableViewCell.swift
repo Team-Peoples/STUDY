@@ -103,8 +103,10 @@ class MainSixthETCTableViewCell: UITableViewCell {
             switch result {
             case .success(let response):
                 nextVC.members = response.memberList
+                nextVC.currentStudyID = currentStudyID
                 nextVC.isManager = response.isUserManager
                 nextVC.isOwner = response.isUserOwner
+                
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self.navigatableSwitchSyncableDelegate, error: error)
             }

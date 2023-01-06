@@ -15,6 +15,7 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         }
     }
     internal var isOwner: Bool?
+    internal var currentStudyID: Int?
     private var nowLookingMemberID: ID?
     
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -25,16 +26,19 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         let vc = MemberBottomSheetViewController()
 
         vc.isOwner = isOwner
-        vc.excommunicationButtonTapped = {
+        vc.askExcommunicateMember = {
             vc.dismiss(animated: true) { [self] in
                 askExcommunicationVC.excommunicatedMemberID = nowLookingMemberID
                 configureSheetAndPresent(askExcommunicationVC)
             }
         }
-        vc.ownerButtonTapped = {
+        vc.askChangeOwner = {
             vc.dismiss(animated: true) { [self] in
                 configureSheetAndPresent(askChangingOwnerVC)
             }
+        }
+        vc.getMemberListAgainAndReload = {
+            self.getMemberListAndReload()
         }
         
         return vc
@@ -44,11 +48,15 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         let vc = AskExcommunicationViewController()
         
         vc.navigatableDelegate = self
-//        vc.backButtonTapped = {
-//            vc.dismiss(animated: true) { [self] in
-//                configureSheetAndPresent(memberBottomVC)
-//            }
-//        }
+        
+        vc.backButtonTapped = {
+            vc.dismiss(animated: true) { [self] in
+                configureSheetAndPresent(memberBottomVC)
+            }
+        }
+        vc.getMemberListAgainAndReload = {
+            self.getMemberListAndReload()
+        }
         
         return vc
     }()
@@ -61,12 +69,16 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
                 self.configureSheetAndPresent(self.memberBottomVC)
             }
         }
+        vc.getMemberListAgainAndReload = {
+            self.getMemberListAndReload()
+        }
         
         return vc
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
         
         configureCollectionView()
@@ -105,6 +117,20 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
     
     @objc private func dimmingViewTapped() {
         print(#function)
+    }
+    
+    private func getMemberListAndReload() {
+        guard let currentStudyID = self.currentStudyID else { return }
+        
+        Network.shared.getAllMembers(studyID: currentStudyID) { result in
+            switch result {
+            case .success(let response):
+                self.members = response.memberList
+            case .failure(let error):
+                print(#function)
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     private func configureSheetAndPresent(_ vc: UIViewController) {

@@ -61,6 +61,7 @@ enum RequestPurpose: Requestable {
     case updateStudySchedule(StudySchedule)
     case endStudy(ID)
     case toggleManagerAuth(ID)
+    case updateUserRole(ID, String)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
@@ -131,7 +132,8 @@ extension RequestPurpose {
             return "/user"
         case .updateStudy(let studyID, _):
             return "/study/\(studyID)"
-
+        case .updateUserRole:
+            return "/studyMember/memberRole"
             
         case .updateAnnouncement:
             return "/noti"
@@ -193,7 +195,7 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
@@ -231,6 +233,9 @@ extension RequestPurpose {
             return .body(["scheduleId": id])
         case .toggleManagerAuth(let id):
             return .body(["studyMemberId": id])
+        case .updateUserRole(let memberID, let role):
+            return .body(["studyMemberId": memberID,
+                          "userRole": role])
             
 ///    HTTPMethod: DELETE
         case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):
