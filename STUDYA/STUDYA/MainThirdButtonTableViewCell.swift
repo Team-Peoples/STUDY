@@ -122,6 +122,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     @objc private func mainButtonTapped() {
         guard let delegate = navigatableSwitchObservableDelegate else { return }
+        
+//        switchStatus 도 가져오고 ismanager값이 true인지도 가져올까?
         if delegate.getSwtichStatus() { getCertificationCodeAndShowNextVC() } else { showValidationNumberFillingInVC() }
     }
     

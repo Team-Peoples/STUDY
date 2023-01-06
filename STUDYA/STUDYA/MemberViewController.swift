@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MemberViewController: SwitchableViewController, SwitchStatusGivable {
+final class MemberViewController: SwitchableViewController, SwitchStatusGivable, BottomSheetAddable {
     
     internal var members: Members? {
         didSet {
@@ -29,12 +29,12 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         vc.askExcommunicateMember = {
             vc.dismiss(animated: true) { [self] in
                 askExcommunicationVC.excommunicatedMemberID = nowLookingMemberID
-                configureSheetAndPresent(askExcommunicationVC)
+                presentBottomSheet(vc: askExcommunicationVC, detent: 300, prefersGrabberVisible: false)
             }
         }
         vc.askChangeOwner = {
             vc.dismiss(animated: true) { [self] in
-                configureSheetAndPresent(askChangingOwnerVC)
+                presentBottomSheet(vc: askChangingOwnerVC, detent: 300, prefersGrabberVisible: false)
             }
         }
         vc.getMemberListAgainAndReload = {
@@ -51,7 +51,7 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         
         vc.backButtonTapped = {
             vc.dismiss(animated: true) { [self] in
-                configureSheetAndPresent(memberBottomVC)
+                presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
         vc.getMemberListAgainAndReload = {
@@ -65,8 +65,8 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         let vc = AskChangingOwnerViewController()
         
         vc.backButtonTapped = {
-            vc.dismiss(animated: true) {
-                self.configureSheetAndPresent(self.memberBottomVC)
+            vc.dismiss(animated: true) { [self] in
+                presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
         vc.getMemberListAgainAndReload = {
@@ -133,15 +133,6 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable 
         }
     }
     
-    private func configureSheetAndPresent(_ vc: UIViewController) {
-        guard let sheet = vc.sheetPresentationController else { return }
-            
-        sheet.detents = [ .custom { _ in return 300 }]
-        sheet.preferredCornerRadius = 24
-        
-        self.present(vc, animated: true)
-    }
-    
     private func configureCollectionView() {
         
         flowLayout.itemSize = CGSize(width: 96, height: 114)
@@ -184,16 +175,9 @@ extension MemberViewController: UICollectionViewDataSource {
                 cell.profileViewTapped = { [self] member in
                     
                     self.nowLookingMemberID = member.memberID
-                    
-                    guard let sheet = memberBottomVC.sheetPresentationController else { return }
-                    
-                    sheet.detents = [ .custom { _ in return 300 }]
-                    sheet.preferredCornerRadius = 24
-                    sheet.prefersGrabberVisible = true
-                    
                     memberBottomVC.member = member
                     
-                    self.present(memberBottomVC, animated: true)
+                    presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
                 }
             }
             
