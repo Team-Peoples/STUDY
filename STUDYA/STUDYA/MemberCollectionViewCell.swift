@@ -20,7 +20,8 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal var profileViewTapped: ((Member) -> ()) = { _ in}
+    internal var switchObservableDelegate: SwitchStatusGivable?
+    internal var profileViewTapped: ((Member) -> ()) = { _ in }
     
     private lazy var profileImageView: ProfileImageView = {
        
@@ -67,10 +68,8 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         profileImageView.hideMarks()
     }
     
-    var isGoingDown = false
-    
     @objc private func profileImageTapped() {
-        guard let member = member else { return }
+        guard let switchObservableDelegate = switchObservableDelegate, switchObservableDelegate.getSwtichStatus(), let member = member else { return }
         profileViewTapped(member)
     }
 }

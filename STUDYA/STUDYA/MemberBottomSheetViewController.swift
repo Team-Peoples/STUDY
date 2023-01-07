@@ -9,20 +9,40 @@ import UIKit
 
 final class MemberBottomSheetViewController: UIViewController {
     
-    internal var isMaster = true
-    internal lazy var member = Member(memberID: 0, deposit: 0, nickName: "", profileImageURL: "", role: "", isManager: true) {
+    deinit {
+        print("🚨🚨🚨🚨🚨")
+    }
+    
+    internal var member: Member? {
         didSet {
+            guard let member = member else { return }
+            
             profileImageView.setImageWith(member.profileImageURL)
             nicknameLabel.text = member.nickName
             roleInputField.text = member.role
+            
             managerButton.isSelected = member.isManager ? true : false
+//            ownerButton.isSelected = member.isOwner ? true : false
         }
     }
+    internal var isOwner: Bool? {
+        didSet {
+            guard let isOwner = isOwner else { return }
+            
+            ownerButton.isHidden = isOwner ? false : true
+            managerButton.isHidden = isOwner ? false : true
+        }
+    }
+    private var newRole: String?
+    internal var hasManagerSwitchEverToggled = false
+    
+    internal var askExcommunicateMember = {}
+    internal var askChangeOwner = {}
+    internal var getMemberListAgainAndReload = {}
     
     private let profileImageView = ProfileImageView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "요시", tintColor: .ppsBlack, size: 14, isBold: true)
+    private let nicknameLabel = CustomLabel(title: "닉네임", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12), target: self, action: #selector(askExcommunication))
-       
     private let separator: UIView = {
         let s = UIView(frame: .zero)
         
@@ -30,12 +50,13 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return s
     }()
-    private lazy var ownerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(ownerButtonTapped))
+    private lazy var ownerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "스터디장", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(ownerButtonDidTapped))
     private lazy var managerButton = CustomButton(fontSize: 12, isBold: true, normalBackgroundColor: .whiteLabel, normalTitleColor: .ppsGray2, height: 25, normalBorderColor: .ppsGray2, normalTitle: "관리자", selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, selectedBorderColor: .keyColor1, contentEdgeInsets: UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 13), target: self, action: #selector(toggleManagerButton))
     private lazy var roleInputField: PurpleRoundedInputField = {
        
         let f = PurpleRoundedInputField(target: nil, action: nil)
         
+        f.setDelegate(to: self)
         f.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
         f.attributedPlaceholder = NSAttributedString(string: "역할 이름을 자유롭게 정해주세요.", attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.boldSystemFont(ofSize: 16)])
         f.isSecureTextEntry = false
@@ -50,6 +71,8 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return f
     }()
+//    🛑스터디장 역할 수정하려고할 때 색깔바꿔주기
+    private lazy var noticeLabel = CustomLabel(title: "스터디장의 역할은 변경할 수 없습니다.", tintColor: .whiteLabel, size: 12)
     private lazy var doneButton: UIButton = {
 
         let b = UIButton(frame: .zero)
@@ -75,19 +98,12 @@ final class MemberBottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if isMaster {
-            excommunicatingButton.isHidden = false
-            ownerButton.isHidden = false
-            managerButton.isHidden = false
-        } else {
-            excommunicatingButton.isHidden = true
-            ownerButton.isHidden = true
-            managerButton.isHidden = true
-        }
-        
         view.backgroundColor = .systemBackground
-        
-        configureDefaultView()
+        configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if hasManagerSwitchEverToggled { getMemberListAgainAndReload() }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,48 +113,65 @@ final class MemberBottomSheetViewController: UIViewController {
     }
     
     @objc private func askExcommunication() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = AskExcommunicationViewController()
-            presentingVC.willPresentingAgainVC = self
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        self.askExcommunicateMember()
     }
 
-    @objc private func ownerButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = AskChangingOwnerViewController()
-            presentingVC.willPresentingAgainVC = self
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+    @objc private func ownerButtonDidTapped() {
+        self.askChangeOwner()
     }
 
     @objc private func toggleManagerButton() {
-        managerButton.toggle()
+        guard let memberID = member?.memberID else { return }
+        
+        Network.shared.toggleMangerAuth(memberID: memberID) { result in
+            switch result {
+            case .success(let isSucceed):
+                if isSucceed {
+                    
+                    self.hasManagerSwitchEverToggled = true
+                    self.managerButton.toggle()
+                    
+                } else {
+                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 2")
+                    self.present(alert, animated: true)
+                }
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     @objc private func doneButtonTapped() {
-        print(#function)
+        view.endEditing(true)
+        
+        guard let memberID = member?.memberID, let newRole = newRole else { return }
+        
+        Network.shared.updateUserRole(memberID: memberID, role: newRole) { result in
+            switch result {
+            case .success(let isSucceed):
+                
+                if isSucceed {
+                    self.getMemberListAgainAndReload()
+                    self.dismiss(animated: true)
+                    
+                } else {
+                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 3")
+                    self.present(alert, animated: true)
+                }
+                
+            case .failure(let error):
+                switch error {
+                case .cantChangeOwnerRole:
+                    let alert = SimpleAlert(message: "스터디장의 역할은 변경할 수 없습니다.")
+                    self.present(alert, animated: true)
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
     }
     
-    private func configureDefaultView() {
+    private func configureView() {
                 
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
@@ -147,6 +180,7 @@ final class MemberBottomSheetViewController: UIViewController {
         view.addSubview(ownerButton)
         view.addSubview(managerButton)
         view.addSubview(roleInputField)
+        view.addSubview(noticeLabel)
         view.addSubview(doneButton)
         
         profileImageView.snp.makeConstraints { make in
@@ -177,10 +211,25 @@ final class MemberBottomSheetViewController: UIViewController {
             make.top.equalTo(managerButton.snp.bottom).offset(18)
         }
 
+        noticeLabel.snp.makeConstraints { make in
+            make.leading.equalTo(roleInputField.snp.leading).offset(22)
+            make.top.equalTo(roleInputField.snp.bottom).offset(6)
+        }
+        
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(view)
             make.top.equalTo(roleInputField.snp.bottom).offset(63)
         }
+    }
+}
+
+extension MemberBottomSheetViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        🛑멤버가 스터디장이라면 False 리턴
+        true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        newRole = textField.text
     }
 }
 
@@ -191,6 +240,11 @@ final class AskChangingOwnerViewController: UIViewController {
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
         
+    internal var backButtonTapped = {}
+    internal var getMemberListAgainAndReload = {}
+    
+    internal var navigatableDelegate: Navigatable?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -232,28 +286,13 @@ final class AskChangingOwnerViewController: UIViewController {
         }
     }
     
-    internal var willPresentingAgainVC: UIViewController?
-    
     @objc private func ownerViewBackButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = self.willPresentingAgainVC!
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        backButtonTapped()
     }
     
     @objc private func ownerViewConfirmButtonTapped() {
         print(#function)
     }
-    
     
     private func configureButton(button: UIButton, title: String) {
         button.setTitle(title, for: .normal)
@@ -265,11 +304,18 @@ final class AskChangingOwnerViewController: UIViewController {
 
 final class AskExcommunicationViewController: UIViewController {
         
+    internal var excommunicatedMemberID: Int?
+    
     private let askLabel = CustomLabel(title: "닉네임님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
     private let descLabel = CustomLabel(title: "강퇴한 멤버는 이 스터디에 다시 참여할 수 없어요.", tintColor: .ppsGray1, size: 14)
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
         
+    internal var backButtonTapped = {}
+    internal var getMemberListAgainAndReload = {}
+    
+    internal var navigatableDelegate: Navigatable?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -311,26 +357,38 @@ final class AskExcommunicationViewController: UIViewController {
         }
     }
     
-    internal var willPresentingAgainVC: UIViewController?
-    
     @objc private func excommuViewBackButtonTapped() {
-        guard let presentingViewController = self.presentingViewController else { return }
-        
-        self.dismiss(animated: true) {
-            
-            let presentingVC = self.willPresentingAgainVC!
-            
-            guard let sheet = presentingVC.sheetPresentationController else { return }
-  
-            sheet.detents = [ .custom { _ in return 300 }]
-            sheet.preferredCornerRadius = 24
-
-            presentingViewController.present(presentingVC, animated: true)
-        }
+        backButtonTapped()
     }
     
     @objc private func excommuViewConfirmButtonTapped() {
-        print(#function)
+        guard let id = excommunicatedMemberID else { return }
+        
+        Network.shared.excommunicateMember(id) { result in
+            switch result {
+            case .success(let isSucced):
+                print(isSucced)
+                
+            case .failure(let error):
+                switch error {
+                case .unauthorizedMember:
+                    let alert = SimpleAlert(buttonTitle: Const.OK, message: "강퇴 권한이 없습니다.") { finished in
+                        self.dismiss(animated: true) {
+                            self.navigatableDelegate?.pop()
+                        }
+                    }
+                    self.present(alert, animated: true)
+                case .cantExpelOwner:
+                    let alert = SimpleAlert(message: "스터디장은 강퇴할 수 없습니다.")
+                    self.present(alert, animated: true)
+                case .cantExpelSelf:
+                    let alert = SimpleAlert(message: "자기자신은 강퇴할 수 없습니다.\n스터디 정보의 \"스터디 탈퇴\" 통해 탈퇴할 수 있습니다.")
+                    self.present(alert, animated: true)
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
+                }
+            }
+        }
     }
     
     private func configureButton(button: UIButton, title: String) {

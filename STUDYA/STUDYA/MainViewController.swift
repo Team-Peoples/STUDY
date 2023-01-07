@@ -7,19 +7,11 @@
 
 import UIKit
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
-final class MainViewController: SwitchableViewController {
+final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     // MARK: - Properties
     
-    internal var nickName: String? {
-        didSet {
-            
-        }
-    }
-    private var myStudyList = [Study]() {
-        didSet {
-            
-        }
-    }
+    internal var nickName: String?
+    private var myStudyList = [Study]()
     private var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
@@ -93,16 +85,8 @@ final class MainViewController: SwitchableViewController {
         super.viewDidLoad()
 //        📣네트워킹으로 myStudyList 넣어주기
 //        getUserInformationAndStudies()
-//        myStudyList = [
-//            Study(id: 1, studyName: "웃기지마", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "강남역에서 종종 모여서 앱을 개발하는 스터디라고 할 수 있는 부분이 없지 않아 있다고 생각하는 부분이라고 봅니다.", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-//            Study(id: 2, studyName: "무한도전", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "우리의 스터디", freeRule: "대리운전 불러어어어어 단거어어어어어어어어", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5))),
-//            Study(id: 3, studyName: "우야노우리스터디", studyOn: true, studyOff: false, category: .dev_prod_design, studyIntroduction: "느그 아부지", freeRule: "모하시노? 근달입니더. 니 오늘 쫌 맞자. 우리 동수 마이 컷네", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 10, count: 1, fine: 5000), absence: Absence(time: 30, fine: 10000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 5)))
-//        ]
-//        currentStudyOverall = StudyOverall(announcement: nil, study: myStudyList.first!, isManager: true, totalFine: 0, attendedCount: 0, absentcount: 0, totalStudyHeldCount: 0, lateCount: 0, allowedCount: 0, studySchedule: nil, ownerID: "d")
-        
         
         view.backgroundColor = .systemBackground
-//        myStudyList.isEmpty ? configureViewWhenNoStudy() : configureViewWhenYesStudy()
         
         configureTabBarSeparator()
         configureNavigationBar()
@@ -184,6 +168,7 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.modalPresentationStyle = .overFullScreen
         dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
+        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
@@ -255,19 +240,15 @@ final class MainViewController: SwitchableViewController {
         Network.shared.getAllStudies { result in
             switch result {
             case .success(let studies):
-                print(#function,1)
                 if let firstStudy = studies.first {
                     
                     self.myStudyList = studies
                     self.getCurrentStudyOverall(study: firstStudy)
+                    
                 } else {
-                    print(#function,2)
-                    DispatchQueue.main.async {
-                        self.configureViewWhenNoStudy()
-                    }
+                    self.configureViewWhenNoStudy()
                 }
             case .failure(let error):
-                print(#function,3)
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
@@ -341,7 +322,7 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureFloatingButton() {
-        floatingButtonContainerView.isHidden = true
+        floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         view.addSubview(floatingButtonContainerView)
         floatingButtonContainerView.addSubview(floatingButton)
         floatingButtonContainerView.snp.makeConstraints { make in
@@ -401,7 +382,7 @@ extension MainViewController: UITableViewDataSource {
             
 //            cell.schedule = currentStudyOverall?.studySchedule
             cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
-            cell.navigatableSwitchObservableDelegate = self            
+            cell.navigatableSwitchObservableDelegate = self
             
             if flag {
                 cell.didAttend = true
@@ -505,12 +486,12 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-extension MainViewController: SwitchStatusObservable {
+protocol SwitchStatusGivable: SwitchableViewController {
+    func getSwtichStatus() -> Bool
+}
+
+extension SwitchStatusGivable {
     func getSwtichStatus() -> Bool {
         isSwitchOn
     }
-}
-
-protocol SwitchStatusObservable {
-    func getSwtichStatus() -> Bool
 }

@@ -60,11 +60,14 @@ enum RequestPurpose: Requestable {
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudySchedule)
     case endStudy(ID)
+    case toggleManagerAuth(ID)
+    case updateUserRole(ID, String)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
     case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
+    case deleteMember(ID)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -94,8 +97,6 @@ extension RequestPurpose {
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
-        case .refreshToken:
-            return .token
         default:
             return .json
         }
@@ -131,7 +132,8 @@ extension RequestPurpose {
             return "/user"
         case .updateStudy(let studyID, _):
             return "/study/\(studyID)"
-
+        case .updateUserRole:
+            return "/studyMember/memberRole"
             
         case .updateAnnouncement:
             return "/noti"
@@ -146,6 +148,8 @@ extension RequestPurpose {
             
         case .endStudy(let studyID):
             return "/study/end/\(studyID)"
+        case .toggleManagerAuth:
+            return "/studyMember/manager"
             
             //    HTTPMethod: DEL
         case .deleteUser(let id):
@@ -154,6 +158,8 @@ extension RequestPurpose {
             return "/noti/\(id)"
         case .deleteStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+        case .deleteMember(let id):
+            return "/studyMember/\(id)"
             
             //    HTTPMethod: GET
         case .getNewPassord:
@@ -189,9 +195,9 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole: return .put
             
-        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode : return .get
         }
@@ -224,7 +230,12 @@ extension RequestPurpose {
             return .body(["notificationId": id,
                           "pin": isPinned])
         case .updateSchedule(let id):
-            return .body(["scheduleId" : id])
+            return .body(["scheduleId": id])
+        case .toggleManagerAuth(let id):
+            return .body(["studyMemberId": id])
+        case .updateUserRole(let memberID, let role):
+            return .body(["studyMemberId": memberID,
+                          "userRole": role])
             
 ///    HTTPMethod: DELETE
         case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):

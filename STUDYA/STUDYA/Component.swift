@@ -28,9 +28,7 @@ final class BrandButton: UIButton {
         setHeight(42)
         layer.cornerRadius = radius
     }
-    deinit {
-        print("없어진다!!!!!!!!!!!!")
-    }
+    
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
         super.init(frame: .zero)
         
@@ -553,7 +551,9 @@ class ProfileImageView: UIView {
     private var size: CGFloat = 0
     // domb: 여기 없애기
     internal var internalImage: UIImage? {
-        internalImageView.image
+        didSet {
+            internalImageView.image = internalImage
+        }
     }
     
     init(size: CGFloat) {
@@ -1165,8 +1165,11 @@ final class PurpleRoundedInputField: UITextField {
         rightViewMode = .always
     }
     
-    func update(alpha: CGFloat, of view: UIView) {
+    internal func update(alpha: CGFloat, of view: UIView) {
         view.alpha = alpha
+    }
+    internal func setDelegate(to vc: UITextFieldDelegate) {
+        self.delegate = vc
     }
 }
 

@@ -11,21 +11,26 @@ import Alamofire
 // MARK: - Peoples Error
 
 enum PeoplesError: Error {
-    case duplicatedEmail
-    case alreadySNSSignUp
-    case notAuthEmail
-    case wrongPassword
-    case loginInformationSavingError
     case unauthorizedUser
     case serverError
     case decodingError
     case unknownError(Int?)
     case tokenExpired
+    
+    case duplicatedEmail
+    case alreadySNSSignUp
+    case notAuthEmail
+    case wrongPassword
+    case loginInformationSavingError
     case userNotFound
     case studyNotFound
     case imageNotFound
     case unknownMember
     case wrongAttendanceCode
+    case unauthorizedMember
+    case cantExpelOwner
+    case cantExpelSelf
+    case cantChangeOwnerRole
 }
 
 enum ErrorCode {
@@ -36,6 +41,10 @@ enum ErrorCode {
     static let imageNotFound = "IMG_NOT_FOUND"
     static let unknownMember = "NOT_STUDY_MEMBER"
     static let wrongAttendnaceCode = "CHECK_NUMBER_MISMATCH"
+    static let unauthorizedMember = "NOT_MANAGER"
+    static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
+    static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
+    static let cantChangeOwnerRole = "MASTER_DO_NOT_CHANGE"
 }
 
 // MARK: - Network
@@ -99,7 +108,7 @@ struct Network {
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
             data.append(imageData, withName: "file", fileName: "file", mimeType: "multipart/form-data")
         }, with: RequestPurpose.signUp).response { response in
-
+            
             guard let httpResponse = response.response,
                   let data = response.data else { completion(.failure(.serverError)); return }
             
@@ -249,7 +258,8 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+//        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+        let imageData = Data()
         
         AF.upload(multipartFormData: { data in
             
@@ -399,7 +409,6 @@ struct Network {
         AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
-//            print(String(describing: response.data?.toDictionary()))
             switch httpResponse.statusCode {
             case 200:
                 
@@ -550,20 +559,93 @@ struct Network {
         }
     }
     
-    func getAllMembers(studyID: Int, completion: @escaping (Result<Members, PeoplesError>) -> Void) {
+    func getAllMembers(studyID: Int, completion: @escaping (Result<MemberListResponse, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            print(String(describing: response.request))
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
             
             switch httpResponse.statusCode {
             case 200:
-
-                guard let data = response.data, let members = jsonDecode(type: Members.self, data: data) else {
+                guard let data = response.data, let response = jsonDecode(type: MemberListResponse.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(response))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func excommunicateMember(_ memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.deleteMember(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSucceed))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                 switch errorCode {
+                case ErrorCode.unauthorizedMember:  completion(.failure(.unauthorizedMember))
+                case ErrorCode.cantExpelOwner: completion(.failure(.cantExpelOwner))
+                case ErrorCode.cantExpelSelf: completion(.failure(.cantExpelSelf))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func toggleMangerAuth(memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.toggleManagerAuth(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSucceed))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func updateUserRole(memberID: ID, role: String, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateUserRole(memberID, role), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response, let data = response.data else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(isSucceed))
+                
+            case 400:
+                guard let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(members))
+                switch errorCode {
+                case ErrorCode.cantChangeOwnerRole:  completion(.failure(.cantChangeOwnerRole))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }

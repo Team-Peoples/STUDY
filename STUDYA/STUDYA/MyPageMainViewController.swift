@@ -35,7 +35,7 @@ final class MyPageMainViewController: UIViewController {
     }()
     private let profileImageView = ProfileImageView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
-    private lazy var myMailLabel = CustomLabel(title: myMail ?? "peoples.noreply@gmail.com" , tintColor: .ppsGray1, size: 12)
+    private lazy var myMailLabel = CustomLabel(title: myMail ?? "이메일 정보를 불러오지 못했습니다." , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
     private let separatorView: RoundableView = {
        
@@ -82,6 +82,7 @@ final class MyPageMainViewController: UIViewController {
         navigationItem.title = "마이페이지"
         getUserInfo { user in
             self.user = user
+            print(user.imageURL)
         }
     }
     
@@ -103,6 +104,7 @@ final class MyPageMainViewController: UIViewController {
                 switch error {
                 case .unauthorizedUser:
                     AppController.shared.deleteUserInformationAndLogout()
+                    
                 default:
                     print(error)
                 }

@@ -78,7 +78,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
 //    navigatable & switch상태 알수있able로 바꿔서 아래에 있는 isSwitchOn 컨트롤하기
-    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusObservable)?
+    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     
     internal var attendable = true
     internal var didAttend = false
@@ -122,6 +122,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     @objc private func mainButtonTapped() {
         guard let delegate = navigatableSwitchObservableDelegate else { return }
+        
+//        switchStatus 도 가져오고 ismanager값이 true인지도 가져올까?
         if delegate.getSwtichStatus() { getCertificationCodeAndShowNextVC() } else { showValidationNumberFillingInVC() }
     }
     
