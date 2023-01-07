@@ -104,7 +104,6 @@ final class MyPageMainViewController: UIViewController {
                 switch error {
                 case .unauthorizedUser:
                     AppController.shared.deleteUserInformationAndLogout()
-                    
                 default:
                     print(error)
                 }
