@@ -212,7 +212,7 @@ struct StudyOverall: Codable {
     let announcement: Announcement?
     let study: Study
     let isManager: Bool
-    let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
+    let totalFine, attendedCount, absentCount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
     let isOwner: Bool
     
@@ -222,7 +222,7 @@ struct StudyOverall: Codable {
         case attendedCount = "attendanceCnt"
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
-        case absentcount = "absentCnt"
+        case absentCount = "absentCnt"
         case totalStudyHeldCount = "dayCnt"
         case isOwner = "master"
         case study, studySchedule, totalFine
@@ -380,9 +380,34 @@ struct ScheduleAttendanceInformation: Codable {
     }
 }
 
+struct AttendanceOverall: Codable {
+    let totalFine, attendedCount, lateCount, allowedCount, absentCount: Int
+    let oneTimeAttendanceInformation: [OneTimeAttendanceInformation]
+    
+    enum CodingKeys: String, CodingKey {
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
+        case totalFine, oneTimeAttendanceInformation
+    }
+}
+
+struct OneTimeAttendanceInformation: Codable {
+    let studyScheduleDate, attendanceStatus: String
+    let fine: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case studyScheduleDate = "studyScheduleDateTime"
+        case attendanceStatus = "attendStatus"
+        case fine
+    }
+}
+
 typealias UserID = String //사용자의 아이디
 typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
 typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias dashedDate = String

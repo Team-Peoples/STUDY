@@ -407,16 +407,18 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
-            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
-            cell.studyAttendance = [
-                .attended: currentStudyOverall.attendedCount,
-                .late: currentStudyOverall.lateCount,
-                .absent: currentStudyOverall.absentcount,
-                .allowed: currentStudyOverall.allowedCount
-            ]
+//            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
+//            cell.studyAttendance = [
+//                .attended: currentStudyOverall.attendedCount,
+//                .late: currentStudyOverall.lateCount,
+//                .absent: currentStudyOverall.absentCount,
+//                .allowed: currentStudyOverall.allowedCount
+//            ]
+//            cell.penalty = currentStudyOverall.totalFine
+//            cell.studyID = currentStudyOverall.study.id
+            cell.currentStudyOverall = currentStudyOverall
             
-            cell.penalty = currentStudyOverall.totalFine
-            cell.navigatableSwitchSyncableDelegate = self
+            cell.delegate = self
             
             return cell
             

@@ -937,6 +937,43 @@ struct Network {
             }
         }
     }
+    
+    func getMyAttendanceBetween(start: dashedDate, end: dashedDate, studyID: ID, completion: @escaping (Result<AttendanceOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getMyAttendanceBetween(start, end, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceOverall = jsonDecode(type: AttendanceOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(attendanceOverall))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.studyNotFound:  completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Helpers

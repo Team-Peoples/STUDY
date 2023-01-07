@@ -8,9 +8,11 @@
 import UIKit
 import SnapKit
 
-class StudyInfoViewController: SwitchableViewController {
+final class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
+    
+    static let identifier = "StudyInfoViewController"
     
     var studyID: ID?
     

@@ -39,6 +39,15 @@ extension DateFormatter {
         
         return dateFormatter
     }()
+    
+    static let dashedDateFormatter: DateFormatter = {
+       
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateFormatter
+    }()
 
 //    let dateFormatter = DateFormatter()
 //    dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -83,6 +92,15 @@ extension Date {
                 dateFormatter.dateFormat = "YYYY.MM.dd"
                 return dateFormatter.string(from: self)
         }
+    }
+    
+    func formatToDashedStringDate() -> String {
+        
+         let dateFormatter = DateFormatter()
+         
+         dateFormatter.dateFormat = "yyyy-MM-dd"
+         
+        return self.formatted(<#T##format: FormatStyle##FormatStyle#>)
     }
 }
 
