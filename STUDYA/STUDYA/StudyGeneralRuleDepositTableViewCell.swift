@@ -1,5 +1,5 @@
 //
-//  EditingStudyGeneralRuleDepositTableViewCell.swift
+//  StudyGeneralRuleDepositTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class EditingStudyGeneralRuleDepositTableViewCell: UITableViewCell {
+final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "EditingStudyGeneralRuleDepositTableViewCell"
+    static let identifier = "StudyGeneralRuleDepositTableViewCell"
     
     let depositTitleLabel = CustomLabel(title: "보증금", tintColor: .ppsBlack, size: 16, isBold: true)
     let depositBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)

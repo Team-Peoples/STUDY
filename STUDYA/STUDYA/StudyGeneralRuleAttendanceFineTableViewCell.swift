@@ -1,5 +1,5 @@
 //
-//  EditingStudyGeneralRuleAttendanceFineTableViewCell.swift
+//  StudyGeneralRuleAttendanceFineTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
+final class StudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "EditingStudyGeneralRuleAttendanceFineTableViewCell"
+    static let identifier = "StudyGeneralRuleAttendanceFineTableViewCell"
     
     let fineTitleLabel = CustomLabel(title: "벌금 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
     let fineDescriptionLabel = CustomLabel(title: "* 출석체크 시, 입력하신 규칙에 따라 벌금이 자동으로 계산돼요.", tintColor: .ppsGray1, size: 12)
@@ -23,9 +23,9 @@ final class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell 
     let absenceFineFieldBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
     
     /// 벌금규칙
-    let perLateMinuteField = RoundedNumberField(numPlaceholder: nil, centerAlign: true)
-    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
-    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
+    let perLateMinuteField = RoundedNumberField(numPlaceholder: nil, centerAlign: true, isNecessary: true)
+    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
     
     var perLateMinuteFieldAction: (Int?) -> Void = { perLateMinute in }
     var latenessFineFieldAction: (Int?) -> Void = { latenessFine in }
@@ -163,7 +163,7 @@ final class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell 
     }
 }
 
-extension EditingStudyGeneralRuleAttendanceFineTableViewCell: UITextFieldDelegate {
+extension StudyGeneralRuleAttendanceFineTableViewCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == perLateMinuteField {
             perLateMinuteFieldAction(textField.text?.toInt())

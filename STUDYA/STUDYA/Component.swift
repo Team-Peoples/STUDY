@@ -934,7 +934,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     private lazy var picker = UIPickerView()
     
-    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
+    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false) {
         super.init(frame: .zero)
         
         delegate = self
@@ -1030,7 +1030,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !isNecessaryField {
+        if isNecessaryField {
             let currentText = NSString(string: textField.text ?? "")
             let finalText = currentText.replacingCharacters(in: range, with: string)
             

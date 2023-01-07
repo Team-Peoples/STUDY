@@ -258,7 +258,7 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+        let imageData = Data()
         
         AF.upload(multipartFormData: { data in
             
@@ -349,7 +349,7 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
                 
-                guard let data = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: data) else {
+                guard let data = response.data, let responseResult = jsonDecode(type: ResponseResult<Bool>.self, data: data), let isSuccessed = responseResult.result else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -364,6 +364,8 @@ struct Network {
                     
                     KeyChain.create(key: Const.accessToken, value: accesToken)
                     KeyChain.create(key: Const.refreshToken, value: refreshToken)
+                    print("리프레시 토큰 저장 성공")
+                    completion(.success(isSuccessed))
                 } else {
                     completion(.failure(.loginInformationSavingError))
                 }
@@ -383,7 +385,6 @@ struct Network {
     
     // MARK: - Study
     
-    // domb: study가 없을수도 있다고 생각하는데 Result<[Study?]>처럼 optional을 사용 안해도 되는건가요?
     func getAllStudies(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
@@ -408,6 +409,7 @@ struct Network {
         AF.request(RequestPurpose.getStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+
             switch httpResponse.statusCode {
             case 200:
                 

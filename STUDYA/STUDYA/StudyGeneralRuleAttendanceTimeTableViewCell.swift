@@ -1,5 +1,5 @@
 //
-//  EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift
+//  StudyGeneralRuleAttendanceTimeTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
+final class StudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "EditingStudyGeneralRuleAttendanceTimeTableViewCell"
+    static let identifier = "StudyGeneralRuleAttendanceTimeTableViewCell"
     
     let attendanceTitleLabel = CustomLabel(title: "출결 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
     let attendanceDescriptionLabel = CustomLabel(title: "* 결석 시간을 입력하지 않으면 스터디가 끝나는 시간으로 설정돼요.", tintColor: .ppsGray1, size: 12)
@@ -21,8 +21,8 @@ final class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell 
     let absenceRuleTimeFieldBehindLabel = CustomLabel(title: "분 부터 결석", boldPart: "결석")
 
     
-    let latenessRuleTimeField = RoundedNumberField(numPlaceholder: nil, centerAlign: true)
-    let absenceRuleTimeField = RoundedNumberField(numPlaceholder: nil, centerAlign: true)
+    let latenessRuleTimeField = RoundedNumberField(numPlaceholder: nil, centerAlign: true, isNecessary: true)
+    let absenceRuleTimeField = RoundedNumberField(numPlaceholder: nil, centerAlign: true, isNecessary: true)
     
     var latenessRuleTimeFieldAction: (Int?) -> Void = { latenessRuleTime in }
     var absenceRuleTimeFieldAction: (Int?) -> Void = { absenceRuleTime in }
@@ -46,7 +46,7 @@ final class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell 
     // MARK: - Actions
     
     @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
-       print(sender, "🫣")
+      
         switch sender {
         case latenessRuleTimeField:
             latenessRuleTimeFieldAction(sender.text?.toInt())
@@ -132,7 +132,7 @@ final class EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITableViewCell 
     }
 }
 
-extension EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegate {
+extension StudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
         switch textField {
@@ -143,8 +143,6 @@ extension EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegat
             absenceRuleTimeFieldAction(absenceRuleTimeField.text?.toInt())
         case absenceRuleTimeField:
             
-            absenceRuleTimeField.pickerSelectRowMatchedTextIn(absenceRuleTimeField)
-            
             let latenessRuleTimeSelectedTimeindex = latenessRuleTimeField.strArray.firstIndex(of: latenessRuleTimeField.text ?? "--") ?? 0
             var array = (latenessRuleTimeSelectedTimeindex...99).map{ String($0) }
             if latenessRuleTimeSelectedTimeindex == 0 {
@@ -152,8 +150,8 @@ extension EditingStudyGeneralRuleAttendanceTimeTableViewCell: UITextFieldDelegat
             } else {
                 array.insert("--", at: 0)
             }
-            
             absenceRuleTimeField.strArray = array
+            absenceRuleTimeField.pickerSelectRowMatchedTextIn(absenceRuleTimeField)
         default:
             return
         }

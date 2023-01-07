@@ -61,7 +61,7 @@ class CreatingStudyRuleViewController: UIViewController {
     }()
     private let descriptionLabel: CustomLabel = {
         
-        let label = CustomLabel(title: "", tintColor: .keyColor2, size: 14)
+        let label = CustomLabel(title: "", tintColor: .ppsGray1, size: 12, isBold: true)
         let attributedString = NSMutableAttributedString.init(string: "나중에 결정하시겠어요?")
         
         attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
@@ -72,7 +72,7 @@ class CreatingStudyRuleViewController: UIViewController {
     }()
     private lazy var doneButton: BrandButton = {
        
-        let button = BrandButton(title: "다음", isBold: true, isFill: false)
+        let button = BrandButton(title: "만들기", isBold: true, isFill: false)
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         
         return button
@@ -82,9 +82,18 @@ class CreatingStudyRuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        creatingStudyRuleViewModel.bind { study in
-            self.configure(self.settingStudyGeneralRuleView, label: self.descriptionLabel, button: self.doneButton, isFormFilled: study.isGeneralFormFilled)
-            self.configure(self.settingStudyFreeRuleView, label: self.descriptionLabel, button: self.doneButton, isFormFilled: study.isFreeFormFilled)
+        creatingStudyRuleViewModel.bind { [self] study in
+            configure(settingStudyGeneralRuleView, isFormFilled: study.isGeneralFormFilled)
+            configure(settingStudyFreeRuleView, isFormFilled: study.isFreeFormFilled)
+            if study.isGeneralFormFilled || study.isFreeFormFilled {
+                doneButton.fillIn(title: "만들기")
+                doneButton.isEnabled = true
+                descriptionLabel.isHidden = true
+            } else {
+                doneButton.fillOut(title: "만들기")
+                doneButton.isEnabled = false
+                descriptionLabel.isHidden = false
+            }
         }
         
         view.backgroundColor = .systemBackground
@@ -104,9 +113,9 @@ class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studyGeneralRuleVC  = storyboard.instantiateViewController(withIdentifier: "CreatingStudyGeneralRuleViewController") as! CreatingStudyGeneralRuleViewController
+        let studyGeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "CreatingStudyGeneralRuleViewController") as! CreatingStudyGeneralRuleViewController
 
-        studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule(lateness: Lateness(), absence: Absence(), deposit: nil, excommunication: Excommunication())
+        studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule()
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
             self.creatingStudyRuleViewModel.study.generalRule = rule
         }
@@ -187,13 +196,11 @@ class CreatingStudyRuleViewController: UIViewController {
         doneButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 40, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor)
     }
     
-    func configure(_ view: UIView, label: CustomLabel, button: BrandButton, isFormFilled: Bool) {
+    func configure(_ view: UIView, isFormFilled: Bool) {
         if isFormFilled {
             view.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         } else {
             view.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         }
-        label.textColor = isFormFilled ? UIColor.appColor(.keyColor2) : .systemBackground
-        if isFormFilled { button.fillIn(title: "다음") } else { button.fillOut(title: "다음") }
     }
 }

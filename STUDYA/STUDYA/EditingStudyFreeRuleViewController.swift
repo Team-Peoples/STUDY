@@ -22,10 +22,10 @@ final class EditingStudyFreeRuleViewController: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         studyViewModel.bind { study in
             self.freeRuletextView.text = study.freeRule
-            self.placeholderLabel.isHidden = study.freeRule == nil ? false : true
+            self.placeholderLabel.isHidden = study.freeRule == nil || study.freeRule == "" ? false : true
         }
         
         freeRuletextView.delegate = self
@@ -63,6 +63,7 @@ final class EditingStudyFreeRuleViewController: UIViewController {
 extension EditingStudyFreeRuleViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
+        print(textView.text)
         studyViewModel.study.freeRule = textView.text
     }
     
