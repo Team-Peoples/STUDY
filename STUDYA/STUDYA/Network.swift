@@ -938,8 +938,8 @@ struct Network {
         }
     }
     
-    func getMyAttendanceBetween(start: dashedDate, end: dashedDate, studyID: ID, completion: @escaping (Result<AttendanceOverall, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getMyAttendanceBetween(start, end, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+    func getSingleUserAttendanceBetween(start: dashedDate, end: dashedDate, studyID: ID, completion: @escaping (Result<AttendanceOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getSingleUserAttendanceBetween(start, end, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))

@@ -83,7 +83,7 @@ enum RequestPurpose: Requestable {
     case checkEmailCertificated
     case getAllStudyMembers(ID)
     case getAttendanceCertificactionCode(ID)
-    case getMyAttendanceBetween(dashedDate, dashedDate, ID)
+    case getSingleUserAttendanceBetween(dashedDate, dashedDate, ID)
 }
 
 extension RequestPurpose {
@@ -94,7 +94,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getSingleUserAttendanceBetween:
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
@@ -189,7 +189,7 @@ extension RequestPurpose {
             return "/studyMember/\(studyID)"
         case .getAttendanceCertificactionCode:
             return "/attendance/checkNumber"
-        case .getMyAttendanceBetween:
+        case .getSingleUserAttendanceBetween:
             return "/attendance"
         }
     }
@@ -202,7 +202,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getSingleUserAttendanceBetween : return .get
         }
     }
     
@@ -246,7 +246,7 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 ///    HTTPMethod: GET
-        case .getMyAttendanceBetween(let beginningDate, let endDate, let studyID):
+        case .getSingleUserAttendanceBetween(let beginningDate, let endDate, let studyID):
             return .body(["studyId": studyID,
                           "searchDateStart": beginningDate,
                           "searchDateEnd": endDate])

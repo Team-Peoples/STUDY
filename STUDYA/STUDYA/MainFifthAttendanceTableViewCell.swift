@@ -147,7 +147,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
-        if delegate.getSwtichStatus() {
+        if !delegate.getSwtichStatus() {
             
             let formatter = DateFormatter.dashedDateFormatter
             let today = Date()
@@ -155,22 +155,23 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             let dashedToday = formatter.string(from: today)
             let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
             
-            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
+            Network.shared.getSingleUserAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
                 switch result {
                 case .success(let attendanceOverall):
-                    break
-//                    nextVC.dailyStudyAttendance = attendanceOverall.oneTimeAttendanceInformation
+                    nextVC.myAttendanceOverall = attendanceOverall
+                    
                 case .failure(let error):
                     switch error {
                     case .studyNotFound:
-                        let alert = SimpleAlert(buttonTitle: Const.OK, message: "스터디를 찾을 수 없습니다.") { finished in
-//                            모든 스터디 정보 다시 받아와서 갱신??
-                        }
+                        let alert = SimpleAlert(message: "스터디를 찾을 수 없습니다.")
+                        delegate.present(alert)
                     default:
                         UIAlertController.handleCommonErros(presenter: delegate, error: error)
                     }
                 }
             }
+        } else {
+//            전체멤버 출석현황 조회
         }
         
         delegate.syncSwitchWith(nextVC: nextVC)

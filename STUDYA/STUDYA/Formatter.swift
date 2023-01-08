@@ -93,15 +93,6 @@ extension Date {
                 return dateFormatter.string(from: self)
         }
     }
-    
-    func formatToDashedStringDate() -> String {
-        
-         let dateFormatter = DateFormatter()
-         
-         dateFormatter.dateFormat = "yyyy-MM-dd"
-         
-        return self.formatted(<#T##format: FormatStyle##FormatStyle#>)
-    }
 }
 
 struct TimeFormatter {

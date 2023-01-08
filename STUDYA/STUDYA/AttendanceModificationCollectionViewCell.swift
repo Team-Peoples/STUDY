@@ -9,10 +9,10 @@ import UIKit
 
 final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
-    internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)! {
+    internal var delegate: (BottomSheetAddable & Navigatable)! {
         didSet {
             print("델리게이트")
-            headerView.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
+            headerView.navigatableBottomSheetableDelegate = delegate
         }
     }
     
@@ -85,6 +85,6 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
         
         bottomVC.viewType = .individualUpdate
         
-        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
 }

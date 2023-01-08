@@ -9,8 +9,7 @@ import UIKit
 
 final class AttendanceManagerModeView: UIView {
     
-    var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
-    weak var navigatiableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)?
+    weak var delegate: (Navigatable & SwitchSyncable & BottomSheetAddable)?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -73,14 +72,13 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as! AttendanceModificationCollectionViewCell
             
-            cell.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
+            cell.delegate = delegate
             
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as! AttendanceOverallCheckCollectionViewCell
             
-            cell.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
-            cell.navigatiableSwitchSyncableDelegate = navigatiableSwitchSyncableDelegate
+            cell.delegate = delegate
             
             return cell
             

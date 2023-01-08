@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AttendanceView: UIView {
+class AttendancBasicModeeView: UIView {
     
     var viewer: Viewer
     
@@ -56,10 +56,10 @@ class AttendanceView: UIView {
     // MARK: - Configure
     
     private func register() {
-        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: ReusableView.reusableDetailsCell.identifier)
-        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: ReusableView.reusableDayCell.identifier)
-        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: ReusableView.reusableMonthlyHeaderView.identifier)
-        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: ReusableView.reusableMonthlyFooterView.identifier)
+        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
+        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
+        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
+        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
     }
     
     // MARK: - Setting Constraints
@@ -78,7 +78,7 @@ class AttendanceView: UIView {
 
 // MARK: UITableViewDataSource
 
-extension AttendanceView: UITableViewDataSource {
+extension AttendancBasicModeeView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
@@ -107,7 +107,7 @@ extension AttendanceView: UITableViewDataSource {
                 headerView.backgroundColor = .appColor(.background)
                 return headerView
             default:
-                let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReusableView.reusableMonthlyHeaderView.identifier) as! MonthlyHeaderView
+                let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as! MonthlyHeaderView
                 return headerView
         }
     }
@@ -118,7 +118,7 @@ extension AttendanceView: UITableViewDataSource {
             case 0:
                 return nil
             default:
-                let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReusableView.reusableMonthlyFooterView.identifier) as! MonthlyFooterView
+                let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier) as! MonthlyFooterView
                 return footerView
         }
     }
@@ -138,7 +138,7 @@ extension AttendanceView: UITableViewDataSource {
         
         switch indexPath.section {
             case 0:
-                let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: ReusableView.reusableDetailsCell.identifier, for: indexPath)
+                let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
                 as! AttendanceDetailsCell
                 
                 if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
@@ -147,7 +147,7 @@ extension AttendanceView: UITableViewDataSource {
                 
                 return attendanceTableViewDetailsCell
             default:
-                let dayCell = tableView.dequeueReusableCell(withIdentifier: ReusableView.reusableDayCell.identifier, for: indexPath)
+                let dayCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDayCell.identifier, for: indexPath)
                 as! AttendanceTableViewDayCell
                 
                 dayCell.attendance = "출석"
@@ -155,7 +155,7 @@ extension AttendanceView: UITableViewDataSource {
         }
     }
 }
-extension AttendanceView: UITableViewDelegate {
+extension AttendancBasicModeeView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
@@ -163,8 +163,7 @@ extension AttendanceView: UITableViewDelegate {
     }
 }
 
-
-enum ReusableView {
+enum AttendanceReusableView {
     case reusableDetailsCell
     case reusableDayCell
     case reusableMonthlyHeaderView

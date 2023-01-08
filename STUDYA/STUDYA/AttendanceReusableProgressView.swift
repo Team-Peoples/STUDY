@@ -20,7 +20,7 @@ private class AttendanceReusableProgressView: UIView {
         didSet {
         }
     }
-    var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.ppsGray2)]
+    var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.allowedMain)]
     
     private let attendanceProportionLabel: UILabel = {
         let lbl = UILabel()
