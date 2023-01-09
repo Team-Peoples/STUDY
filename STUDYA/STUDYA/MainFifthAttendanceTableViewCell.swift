@@ -34,7 +34,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 noAttendanceDataLabel.isHidden = false
                 progressView.isHidden = true
                 stackView.isHidden = true
-                hoveringButton.isHidden = true
+                hoveringButton.isHidden = false
             }
         }
     }

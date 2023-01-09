@@ -10,6 +10,9 @@ import MultiProgressView
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
     internal var myAttendanceOverall: MyAttendanceOverall?
+    internal var allUserAttendancePerday: AllUsersAttendacneForADay?
+    
+    private lazy var switchViewModel = SwitchObservableViewModel(switchStatus: isSwitchOn)
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -27,13 +30,13 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
             managerView.delegate = self
         }
         userView.bottomSheetAddableDelegate = self
+        setUpBinding()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        view = isSwitchOn ? managerView : userView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,6 +46,42 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }
     
     override func extraWorkWhenSwitchToggled() {
+        switchViewModel.isSwitchOn.value.toggle()
         view = isSwitchOn ? managerView : userView
+    }
+    
+    private func setUpBinding() {
+        switchViewModel.isSwitchOn.bind { [weak self] isSwitchOn in
+            guard let weakSelf = self else { return }
+            weakSelf.view = isSwitchOn ? weakSelf.managerView : weakSelf.userView
+        }
+    }
+}
+
+struct Observable<T> {
+    private var listener: ((T) -> Void)?
+    
+    var value: T {
+        didSet {
+            listener?(value)
+        }
+    }
+    
+    init(_ value: T) {
+        self.value = value
+    }
+    
+    mutating func bind(_ closure: @escaping (T) -> Void) {
+        closure(value)
+        listener = closure
+    }
+}
+
+struct SwitchObservableViewModel {
+    
+    var isSwitchOn: Observable<Bool>
+    
+    init(switchStatus: Bool) {
+        isSwitchOn = Observable(switchStatus)
     }
 }
