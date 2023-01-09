@@ -16,7 +16,7 @@ class AttendancePersonalViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view = AttendancBasicModeeView(viewer: .manager)
+        view = AttendancBasicModeView(viewer: .manager)
         title = "스터디이름"
         navigationController?.setBrandNavigation()
         configureNavigationBar()

@@ -380,7 +380,7 @@ struct ScheduleAttendanceInformation: Codable {
     }
 }
 
-struct AttendanceOverall: Codable {
+struct MyAttendanceOverall: Codable {
     let totalFine, attendedCount, lateCount, allowedCount, absentCount: Int
     let oneTimeAttendanceInformation: [OneTimeAttendanceInformation]
     
@@ -394,15 +394,33 @@ struct AttendanceOverall: Codable {
 }
 
 struct OneTimeAttendanceInformation: Codable {
-    let studyScheduleDate, attendanceStatus: String
-    let fine: Int
+    let fine, attendanceID: Int
+    let studyScheduleDate, attendanceStatus, userID: String
     
     enum CodingKeys: String, CodingKey {
         case studyScheduleDate = "studyScheduleDateTime"
         case attendanceStatus = "attendStatus"
+        
+        case attendanceID = "attendanceId"
+        case userID = "userId"
         case fine
     }
 }
+
+struct SingleUserAnAttendanceInformation: Codable {
+    let fine: Int
+    let attendanceStatus, userID: String
+    let attendanceID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case fine
+        case attendanceStatus = "attendance"
+        case userID = "userId"
+        case attendanceID = "attendanceId"
+    }
+}
+
+typealias AllUsersAttendacneForADay = [Time: [SingleUserAnAttendanceInformation]]
 
 typealias UserID = String //사용자의 아이디
 typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
@@ -411,3 +429,4 @@ typealias Content = String
 typealias Password = String
 typealias SNSToken = String
 typealias dashedDate = String
+typealias Time = String

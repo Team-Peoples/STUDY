@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AttendancBasicModeeView: UIView {
+class AttendancBasicModeView: UIView {
     
     var viewer: Viewer
     
@@ -78,7 +78,7 @@ class AttendancBasicModeeView: UIView {
 
 // MARK: UITableViewDataSource
 
-extension AttendancBasicModeeView: UITableViewDataSource {
+extension AttendancBasicModeView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
@@ -155,7 +155,7 @@ extension AttendancBasicModeeView: UITableViewDataSource {
         }
     }
 }
-extension AttendancBasicModeeView: UITableViewDelegate {
+extension AttendancBasicModeView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 

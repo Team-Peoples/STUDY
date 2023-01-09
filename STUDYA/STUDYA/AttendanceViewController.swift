@@ -9,7 +9,7 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var myAttendanceOverall: AttendanceOverall?
+    internal var myAttendanceOverall: MyAttendanceOverall?
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -18,7 +18,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         return v
     }()
-    let userView = AttendancBasicModeeView(viewer: .user)
+    let userView = AttendancBasicModeView(viewer: .user)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +33,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        view = switchStatusWhenWillAppear ? managerView : userView
+        view = isSwitchOn ? managerView : userView
     }
     
     override func viewWillDisappear(_ animated: Bool) {

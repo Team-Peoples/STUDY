@@ -784,8 +784,7 @@ final class BrandSwitch: UIControl {
                     
                     NSLayoutConstraint.activate(self.circleViewConstraints)
                     self.layoutIfNeeded()
-                },
-                completion: nil
+                }
             )
         }
     }

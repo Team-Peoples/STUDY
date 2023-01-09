@@ -145,17 +145,18 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             return
         }
         
+        let formatter = DateFormatter.dashedDateFormatter
+        let today = Date()
+        let dashedToday = formatter.string(from: today)
+        
         let nextVC = AttendanceViewController()
         
         if !delegate.getSwtichStatus() {
             
-            let formatter = DateFormatter.dashedDateFormatter
-            let today = Date()
             let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-            let dashedToday = formatter.string(from: today)
             let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
             
-            Network.shared.getSingleUserAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
+            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
                 switch result {
                 case .success(let attendanceOverall):
                     nextVC.myAttendanceOverall = attendanceOverall
@@ -163,7 +164,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 case .failure(let error):
                     switch error {
                     case .studyNotFound:
-                        let alert = SimpleAlert(message: "스터디를 찾을 수 없습니다.")
+                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
+                            delegate.pop()
+                        }
                         delegate.present(alert)
                     default:
                         UIAlertController.handleCommonErros(presenter: delegate, error: error)
@@ -171,7 +174,26 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 }
             }
         } else {
-//            전체멤버 출석현황 조회
+            guard let studyID = currentStudyOverall.study.id else { return }
+            
+            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+                switch result {
+                case .success(let allUserAttendanceInfo):
+                    break
+//                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
+                    
+                case .failure(let error):
+                    switch error {
+                    case .studyNotFound:
+                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
+                            delegate.pop()
+                        }
+                        delegate.present(alert)
+                    default:
+                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
+                    }
+                }
+            }
         }
         
         delegate.syncSwitchWith(nextVC: nextVC)

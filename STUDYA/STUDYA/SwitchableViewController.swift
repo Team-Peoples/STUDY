@@ -23,7 +23,7 @@ class SwitchableViewController: UIViewController, Navigatable {
             extraWorkWhenSwitchToggled()
         }
     }
-    var switchStatusWhenWillAppear = false
+    private var switchStatusWhenWillAppear = false
     
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
