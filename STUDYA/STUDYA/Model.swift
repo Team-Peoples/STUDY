@@ -395,7 +395,8 @@ struct MyAttendanceOverall: Codable {
 
 struct OneTimeAttendanceInformation: Codable {
     let fine, attendanceID: Int
-    let studyScheduleDate, attendanceStatus, userID: String
+    let attendanceStatus, userID: String
+    let studyScheduleDate: Date
     
     enum CodingKeys: String, CodingKey {
         case studyScheduleDate = "studyScheduleDateTime"

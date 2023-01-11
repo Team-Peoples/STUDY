@@ -7,9 +7,10 @@
 
 import UIKit
 
-class AttendanceBasicModeView: UIView {
+class OneMemberAttendanceView: UIView {
     
     var viewer: Viewer
+    var viewModel: attendanceViewModel?
     
     // MARK: - Properties
     
@@ -52,6 +53,12 @@ class AttendanceBasicModeView: UIView {
     
     // MARK: - Actions
 
+    private func setBinding() {
+        viewModel?.myAttendanceOverall.bind({ myAttendanceOverall in
+            self.viewModel?.seperateAllDaysByMonth()
+            self.attendanceDetailsTableView.reloadData()
+        })
+    }
     
     // MARK: - Configure
     
@@ -78,10 +85,14 @@ class AttendanceBasicModeView: UIView {
 
 // MARK: UITableViewDataSource
 
-extension AttendanceBasicModeView: UITableViewDataSource {
+extension OneMemberAttendanceView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        guard let viewModel = viewModel else { return 0 }
+        
+        let headerCount = 1
+        
+        return viewModel.monthlyGroupedDates.keys.count + headerCount
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -124,38 +135,39 @@ extension AttendanceBasicModeView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         switch section {
             case 0:
                 return 1
             default:
-                return 10
+            guard let viewModel = viewModel else { return 0 }
+            
+            let numberOfDatesInAMonth = viewModel.monthlyGroupedDates.values.map { $0.count }
+            
+            return numberOfDatesInAMonth[section - 1]
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch indexPath.section {
-            case 0:
-                let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
-                as! AttendanceDetailsCell
-                
-                if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-                    attendanceTableViewDetailsCell.bottomSheetAddableDelegate = bottomSheetAddableDelegate
-                }
-                
-                return attendanceTableViewDetailsCell
-            default:
-                let dayCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDayCell.identifier, for: indexPath)
-                as! AttendanceTableViewDayCell
-                
-                dayCell.attendance = "출석"
-                return dayCell
+        case 0:
+            guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
+                    as? AttendanceDetailsCell else { return  AttendanceDetailsCell() }
+            
+            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
+                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+            }
+            
+            return attendanceTableViewDetailsCell
+        default:
+            guard let dayCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDayCell.identifier, for: indexPath)
+                    as? AttendanceTableViewDayCell else { return AttendanceTableViewDayCell() }
+            
+            return dayCell
         }
     }
 }
-extension AttendanceBasicModeView: UITableViewDelegate {
+extension OneMemberAttendanceView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 

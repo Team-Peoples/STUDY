@@ -9,7 +9,14 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var viewModel: attendanceViewModel?
+    internal var viewModel: attendanceViewModel? {
+        didSet {
+            userView.viewModel = viewModel
+            if isManager{
+//                managerView.viewModel = viewModel
+            }
+        }
+    }
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -18,7 +25,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         return v
     }()
-    let userView = AttendanceBasicModeView(viewer: .user)
+    let userView = OneMemberAttendanceView(viewer: .user)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +54,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }
     
     private func setUpBinding() {
-
+        
     }
 }
 
@@ -73,9 +80,12 @@ struct Observable<T> {
 class attendanceViewModel {
     
     let studyID: ID
+    
     var myAttendanceOverall: Observable<MyAttendanceOverall>
     var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
     var error: Observable<PeoplesError>?
+    
+    var monthlyGroupedDates: [String: [Date]] = [:]
     
     init(studyID: ID, myAttendanceOverall: MyAttendanceOverall, allUsersAttendacneForADay: AllUsersAttendacneForADay?) {
         self.studyID = studyID
@@ -91,15 +101,52 @@ class attendanceViewModel {
         let formatter = DateFormatter.dashedDateFormatter
         let today = Date()
         let dashedToday = formatter.string(from: today)
-    
-        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+        let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+
+        Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
             switch result {
-            case .success(let allUsersAttendacneForADay):
-                self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
-                
+            case .success(let attendanceOverall):
+                self.myAttendanceOverall = Observable(attendanceOverall)
             case .failure(let error):
                 self.error = Observable(error)
             }
+        }
+    }
+    
+//    func getAllMembersAttendances() {
+//        let formatter = DateFormatter.dashedDateFormatter
+//        let today = Date()
+//        let dashedToday = formatter.string(from: today)
+//
+//        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+//            switch result {
+//            case .success(let allUsersAttendacneForADay):
+//                self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+//                self.seperateAllDaysByMonth()
+//            case .failure(let error):
+//                self.error = Observable(error)
+//            }
+//        }
+//    }
+    
+    func seperateAllDaysByMonth() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        
+        let datas: [OneTimeAttendanceInformation] = myAttendanceOverall.value.oneTimeAttendanceInformation
+        var dates: [Date] = []
+        
+        datas.forEach { oneTimeAttendanceInfo in
+            dates.append(oneTimeAttendanceInfo.studyScheduleDate)
+        }
+        
+        dates.forEach { date in
+            let monthAndYear = dateFormatter.string(from: date)
+            if monthlyGroupedDates[monthAndYear] == nil {
+                monthlyGroupedDates[monthAndYear] = []
+            }
+            monthlyGroupedDates[monthAndYear]?.append(date)
         }
     }
 }

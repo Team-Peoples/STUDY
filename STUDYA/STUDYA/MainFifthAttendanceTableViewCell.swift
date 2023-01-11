@@ -34,7 +34,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 noAttendanceDataLabel.isHidden = false
                 progressView.isHidden = true
                 stackView.isHidden = true
-                hoveringButton.isHidden = true
+                hoveringButton.isHidden = false
             }
         }
     }
@@ -138,67 +138,67 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     }
     
     @objc private func buttonTapped() {
-        guard let delegate = delegate,
-              let currentStudyOverall = currentStudyOverall,
-              let studyID = currentStudyOverall.study.id,
-              currentStudyOverall.totalStudyHeldCount != 0 else {
-            return
-        }
-        
-        let formatter = DateFormatter.dashedDateFormatter
-        let today = Date()
-        let dashedToday = formatter.string(from: today)
-        
+//        guard let delegate = delegate,
+//              let currentStudyOverall = currentStudyOverall,
+//              let studyID = currentStudyOverall.study.id,
+//              currentStudyOverall.totalStudyHeldCount != 0 else {
+//            return
+//        }
+//
+//        let formatter = DateFormatter.dashedDateFormatter
+//        let today = Date()
+//        let dashedToday = formatter.string(from: today)
+//
         let nextVC = AttendanceViewController()
+//
+//        if delegate.getSwtichStatus() {
+//
+//            guard let studyID = currentStudyOverall.study.id else { return }
+//
+//            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+//                switch result {
+//                case .success(let allUserAttendanceInfo):
+//                    break
+////                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
+//
+//                case .failure(let error):
+//                    switch error {
+//                    case .studyNotFound:
+//                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
+//                            delegate.pop()
+//                        }
+//                        delegate.present(alert)
+//                    default:
+//                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
+//                    }
+//                }
+//            }
+//        } else {
+//
+//            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+//            let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+//
+//            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
+//                switch result {
+//                case .success(let attendanceOverall):
+//                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendacneForADay: nil)
+//
+//                case .failure(let error):
+//                    switch error {
+//                    case .studyNotFound:
+//                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
+//                            delegate.pop()
+//                        }
+//                        delegate.present(alert)
+//                    default:
+//                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
+//                    }
+//                }
+//            }
+//        }
         
-        if delegate.getSwtichStatus() {
-            
-            guard let studyID = currentStudyOverall.study.id else { return }
-            
-            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
-                switch result {
-                case .success(let allUserAttendanceInfo):
-                    break
-//                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
-                    
-                case .failure(let error):
-                    switch error {
-                    case .studyNotFound:
-                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
-                            delegate.pop()
-                        }
-                        delegate.present(alert)
-                    default:
-                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
-                    }
-                }
-            }
-        } else {
-            
-            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-            let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
-            
-            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
-                switch result {
-                case .success(let attendanceOverall):
-                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendacneForADay: nil)
-                    
-                case .failure(let error):
-                    switch error {
-                    case .studyNotFound:
-                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
-                            delegate.pop()
-                        }
-                        delegate.present(alert)
-                    default:
-                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
-                    }
-                }
-            }
-        }
-        
-        delegate.syncSwitchWith(nextVC: nextVC)
-        delegate.push(vc: nextVC)
+        delegate!.syncSwitchWith(nextVC: nextVC)
+        delegate!.push(vc: nextVC)
     }
     
     private func setupProgress() {
