@@ -9,10 +9,7 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var myAttendanceOverall: MyAttendanceOverall?
-    internal var allUserAttendancePerday: AllUsersAttendacneForADay?
-    
-    private lazy var switchViewModel = SwitchObservableViewModel(switchStatus: isSwitchOn)
+    internal var viewModel: attendanceViewModel?
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -21,7 +18,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         return v
     }()
-    let userView = AttendancBasicModeView(viewer: .user)
+    let userView = AttendanceBasicModeView(viewer: .user)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,15 +43,11 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }
     
     override func extraWorkWhenSwitchToggled() {
-        switchViewModel.isSwitchOn.value.toggle()
         view = isSwitchOn ? managerView : userView
     }
     
     private func setUpBinding() {
-        switchViewModel.isSwitchOn.bind { [weak self] isSwitchOn in
-            guard let weakSelf = self else { return }
-            weakSelf.view = isSwitchOn ? weakSelf.managerView : weakSelf.userView
-        }
+
     }
 }
 
@@ -77,11 +70,36 @@ struct Observable<T> {
     }
 }
 
-struct SwitchObservableViewModel {
+class attendanceViewModel {
     
-    var isSwitchOn: Observable<Bool>
+    let studyID: ID
+    var myAttendanceOverall: Observable<MyAttendanceOverall>
+    var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
+    var error: Observable<PeoplesError>?
     
-    init(switchStatus: Bool) {
-        isSwitchOn = Observable(switchStatus)
+    init(studyID: ID, myAttendanceOverall: MyAttendanceOverall, allUsersAttendacneForADay: AllUsersAttendacneForADay?) {
+        self.studyID = studyID
+        self.myAttendanceOverall = Observable(myAttendanceOverall)
+        
+        if let allUsersAttendacneForADay = allUsersAttendacneForADay {
+            self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+        }
+    }
+    
+    func getMyAttendanceOverall() {
+    
+        let formatter = DateFormatter.dashedDateFormatter
+        let today = Date()
+        let dashedToday = formatter.string(from: today)
+    
+        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+            switch result {
+            case .success(let allUsersAttendacneForADay):
+                self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+                
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
     }
 }

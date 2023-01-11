@@ -34,7 +34,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 noAttendanceDataLabel.isHidden = false
                 progressView.isHidden = true
                 stackView.isHidden = true
-                hoveringButton.isHidden = false
+                hoveringButton.isHidden = true
             }
         }
     }
@@ -151,15 +151,15 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
-        if !delegate.getSwtichStatus() {
+        if delegate.getSwtichStatus() {
             
-            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-            let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+            guard let studyID = currentStudyOverall.study.id else { return }
             
-            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
+            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
                 switch result {
-                case .success(let attendanceOverall):
-                    nextVC.myAttendanceOverall = attendanceOverall
+                case .success(let allUserAttendanceInfo):
+                    break
+//                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
                     
                 case .failure(let error):
                     switch error {
@@ -174,13 +174,14 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 }
             }
         } else {
-            guard let studyID = currentStudyOverall.study.id else { return }
             
-            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+            let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+            
+            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
                 switch result {
-                case .success(let allUserAttendanceInfo):
-                    break
-//                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
+                case .success(let attendanceOverall):
+                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendacneForADay: nil)
                     
                 case .failure(let error):
                     switch error {

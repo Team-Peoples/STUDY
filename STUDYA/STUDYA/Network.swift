@@ -984,12 +984,12 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let allUsersAttendanceInformation = jsonDecode(type: AllUsersAttendacneForADay.self, data: data) else {
+                guard let data = response.data, let allUsersAttendacneForADay = jsonDecode(type: AllUsersAttendacneForADay.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
                 
-                completion(.success(allUsersAttendanceInformation))
+                completion(.success(allUsersAttendacneForADay))
             case 400:
                 guard let data = response.data,
                       let errorBody = jsonDecode(type: ErrorResult.self, data: data),
