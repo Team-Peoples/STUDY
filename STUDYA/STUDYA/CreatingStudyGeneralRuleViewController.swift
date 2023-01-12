@@ -71,14 +71,16 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
+        // domb: 두 개의 컬렉션뷰셀을 전환할 때 하나의 셀은 nil이 되어 doneButtonDidTapped Action에서 다른 하나의 셀에 담긴 generalRule을 밖에 가져가지 못한다.
+        if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? CreatingAttendanceRuleCollectionViewCell {
+            generalRuleViewModel.generalRule.lateness = cell.lateness ?? Lateness()
+            generalRuleViewModel.generalRule.absence = cell.absence ?? Absence()
+            generalRuleViewModel.generalRule.deposit = cell.deposit
+        }
         
-        let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? CreatingAttendanceRuleCollectionViewCell
-        let excommunicationCell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? CreatingExcommunicationRuleCollectionViewCell
-        generalRuleViewModel.generalRule.lateness = cell?.lateness ?? Lateness()
-        generalRuleViewModel.generalRule.absence = cell?.absence ?? Absence()
-        generalRuleViewModel.generalRule.deposit = cell?.deposit
-        generalRuleViewModel.generalRule.excommunication = Excommunication(lateness: excommunicationCell?.lateNumberField.text?.toInt(), absence: excommunicationCell?.absenceNumberField.text?.toInt())
-       
+        if let excommunicationCell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? CreatingExcommunicationRuleCollectionViewCell {
+            generalRuleViewModel.generalRule.excommunication = Excommunication(lateness: excommunicationCell.lateNumberField.text?.toInt(), absence: excommunicationCell.absenceNumberField.text?.toInt())
+        }
         doneButtonDidTapped(generalRuleViewModel.generalRule)
         dismiss(animated: true)
     }
