@@ -65,6 +65,8 @@ final class StudyInfoViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        studyViewModel.study.id = studyID
+        
         studyViewModel.bind { [self] study in
             configureViews(study)
         }
@@ -77,9 +79,8 @@ final class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        guard let studyID = studyID else { return }
         
-        getStudyInfo(studyID)
+        getStudyInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -212,15 +213,9 @@ final class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Networking
     
-    private func getStudyInfo(_ studyID: ID) {
-        Network.shared.getStudy(studyID: studyID) { result in
-            switch result {
-            case .success(let studyOverall):
-                self.studyViewModel.study = studyOverall.study
-            case .failure(let failure):
-                print(failure)
-            }
-        }
+    private func getStudyInfo() {
+        
+        studyViewModel.getStudyInfo()
     }
     
     // MARK: - Configure Views
