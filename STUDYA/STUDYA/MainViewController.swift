@@ -267,7 +267,6 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
                     self.configureViewWhenYesStudy()
                 }
             case .failure(let error):
-                print(#function,2)
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }

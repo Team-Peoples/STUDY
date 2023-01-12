@@ -10,16 +10,19 @@ import UIKit
 class OneMemberAttendanceView: UIView {
     
     var viewer: Viewer
-    var viewModel: attendanceViewModel?
+    var viewModel: AttendanceViewModel?
     
     // MARK: - Properties
     
     weak var bottomSheetAddableDelegate: BottomSheetAddable?
     
-    lazy var attendanceStatusView: UIView = {
+    lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
-            return AttendanceStatusView()
+            let headerView = AttendanceStatusView()
+            headerView.attendanceOverall = viewModel?.myAttendanceOverall
+            
+            return headerView
         case .manager:
             return AttendanceStatusWithProfileView()
         }
@@ -35,7 +38,7 @@ class OneMemberAttendanceView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.addSubview(attendanceStatusView)
+        self.addSubview(oneMemberAttendanceHeaderView)
         self.addSubview(attendanceDetailsTableView)
         
         attendanceDetailsTableView.separatorStyle = .none
@@ -72,11 +75,11 @@ class OneMemberAttendanceView: UIView {
     // MARK: - Setting Constraints
     
     private func setConstraints() {
-        attendanceStatusView.snp.makeConstraints { make in
+        oneMemberAttendanceHeaderView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
         attendanceDetailsTableView.snp.makeConstraints { make in
-            make.top.equalTo(attendanceStatusView.snp.bottom)
+            make.top.equalTo(oneMemberAttendanceHeaderView.snp.bottom)
             make.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
@@ -141,9 +144,9 @@ extension OneMemberAttendanceView: UITableViewDataSource {
             default:
             guard let viewModel = viewModel else { return 0 }
             
-            let numberOfDatesInAMonth = viewModel.monthlyGroupedDates.values.map { $0.count }
+            let numberOfStudyDatesInAMonth = viewModel.monthlyGroupedDates.values.map { $0.count }
             
-            return numberOfDatesInAMonth[section - 1]
+            return numberOfStudyDatesInAMonth[section - 1]
         }
     }
     

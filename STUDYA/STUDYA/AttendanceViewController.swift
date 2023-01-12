@@ -9,7 +9,7 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var viewModel: attendanceViewModel? {
+    internal var viewModel: AttendanceViewModel? {
         didSet {
             userView.viewModel = viewModel
             if isManager{
@@ -58,26 +58,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }
 }
 
-struct Observable<T> {
-    private var listener: ((T) -> Void)?
-    
-    var value: T {
-        didSet {
-            listener?(value)
-        }
-    }
-    
-    init(_ value: T) {
-        self.value = value
-    }
-    
-    mutating func bind(_ closure: @escaping (T) -> Void) {
-        closure(value)
-        listener = closure
-    }
-}
-
-class attendanceViewModel {
+class AttendanceViewModel {
     
     let studyID: ID
     

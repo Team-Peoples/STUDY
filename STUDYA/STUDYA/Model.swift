@@ -9,6 +9,25 @@ import Foundation
 
 // MARK: - Model
 
+struct Observable<T> {
+    private var listener: ((T) -> Void)?
+    
+    var value: T {
+        didSet {
+            listener?(value)
+        }
+    }
+    
+    init(_ value: T) {
+        self.value = value
+    }
+    
+    mutating func bind(_ closure: @escaping (T) -> Void) {
+        closure(value)
+        listener = closure
+    }
+}
+
 struct User: Codable {
     var id: String?
     let oldPassword: String?
