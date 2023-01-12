@@ -11,15 +11,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studySchedule: StudySchedule? {
-        didSet {
-            
-            guard let studySchedule = studySchedule else  { return }
-            
-            configureUI(studySchedule)
-            checkNextButtonIsEnabled(studySchedule)
-        }
-    }
+    var studyScheduleViewModel = StudyScheduleViewModel()
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -37,10 +29,10 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     private let repeatOptionTitle = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
     private lazy var repeatOptionStackView: UIStackView = {
         
-        let everyDay = CheckBoxButton(title: RepeatOption.everyDay.kor)
-        let everyWeek = CheckBoxButton(title: RepeatOption.everyWeek.kor)
-        let everyTwoWeeks = CheckBoxButton(title: RepeatOption.everyTwoWeeks.kor)
-        let everyMonth = CheckBoxButton(title: RepeatOption.everyMonth.kor)
+        let everyDay = CheckBoxButton(title: "매일")
+        let everyWeek = CheckBoxButton(title: "매주")
+        let everyTwoWeeks = CheckBoxButton(title: "2주 마다")
+        let everyMonth = CheckBoxButton(title: "매달")
         
         [everyDay, everyWeek, everyTwoWeeks, everyMonth].forEach { $0.addTarget(self, action: #selector(checkboxDidTapped), for: .touchUpInside)
         }
@@ -62,13 +54,21 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        studyScheduleViewModel.bind { [self] studySchedule in
+            configureUI(studySchedule)
+            
+            nextButton.isEnabled = studySchedule.periodFormIsFilled
+            nextButton.isEnabled ? nextButton.fillIn(title: "다음") : nextButton.fillOut(title: "다음")
+            
+            deadlineDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != ""
+            deadlineDateSelectableView.alpha = studySchedule.repeatOption != "" ? 1 : 0.5
+        }
+        
         setNavigation()
         
         configureViews()
         addActionsAtButtons()
         setConstraints()
-        
-//        studySchedule = StudySchedule(openDate: Date(), deadlineDate: Date())
         
         nextButton.isEnabled = false
     }
@@ -79,7 +79,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let periodFormVC = CreatingStudyScheduleContentViewController()
         
-        periodFormVC.studySchedule = studySchedule
+        periodFormVC.studyScheduleViewModel = self.studyScheduleViewModel
         navigationController?.pushViewController(periodFormVC, animated: true)
     }
     
@@ -89,35 +89,50 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     @objc private func openDateSelectableViewTapped() {
         
-//        guard let openDate = studySchedule?.openDate else { return }
-//        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
-//
-//        popUpCalendarVC.presentingVC = self
-//
-//        present(popUpCalendarVC, animated: true)
+        guard let openDate = studyScheduleViewModel.studySchedule.openDate?.formatToDate() else { fatalError() }
+        let popUpCalendarVC = PopUpCalendarViewController(type: .open, selectedDate: openDate)
+
+        popUpCalendarVC.presentingVC = self
+
+        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func deadlineDateSelectableViewTapped() {
-//        guard let deadlineDate = studySchedule?.deadlineDate else { return }
-//        let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
-//
-//        popUpCalendarVC.presentingVC = self
-//
-//        present(popUpCalendarVC, animated: true)
+        if let deadlineDate = studyScheduleViewModel.studySchedule.deadlineDate?.formatToDate() {
+            
+            guard let openDate = studyScheduleViewModel.studySchedule.openDate?.formatToDate() else { return }
+            let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: deadlineDate)
+            
+            popUpCalendarVC.openDate = openDate
+            popUpCalendarVC.presentingVC = self
+
+            present(popUpCalendarVC, animated: true)
+        } else {
+            
+            guard let openDate = studyScheduleViewModel.studySchedule.openDate?.formatToDate() else { return }
+            let popUpCalendarVC = PopUpCalendarViewController(type: .deadline, selectedDate: openDate)
+            
+            popUpCalendarVC.openDate = openDate
+            popUpCalendarVC.presentingVC = self
+            
+            present(popUpCalendarVC, animated: true)
+        }
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
 
         if selectedRepeatOptionCheckBox == sender {
             
-            studySchedule?.repeatOption = nil
+            studyScheduleViewModel.studySchedule.repeatOption = ""
+            // 반복일정 끝나는 날짜 초기화
+            studyScheduleViewModel.studySchedule.deadlineDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
             guard let title = sender.currentTitle else { return }
-            guard let repeatOption = RepeatOption(rawValue: title) else { return }
+            let repeatOption = title.convertedEnglish()
             
-            studySchedule?.repeatOption = repeatOption
+            studyScheduleViewModel.studySchedule.repeatOption = repeatOption
             selectedRepeatOptionCheckBox = sender
         }
     }
@@ -127,14 +142,25 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
         
+        datePicker.calendar = Calendar.current
         datePicker.datePickerMode = .time
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "en_gb")
-        datePicker.minuteInterval = 5
+        
+        
+        if let endTime = studyScheduleViewModel.studySchedule.endTime {
+            guard let hour = endTime.components(separatedBy: ":").first?.toInt(),
+                  let minute = endTime.components(separatedBy: ":").last?.toInt() else { return }
+            datePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
+        }
         
         let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+            let calendar = Calendar.current
+            let dateComponents = calendar.dateComponents([.hour, .minute], from: datePicker.date)
             
-//            self.studySchedule?.startTime = datePicker.date
+            guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
+            
+            self.studyScheduleViewModel.studySchedule.startTime = "\(String(format: "%02d", minute)):\(String(format: "%02d", minute))"
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
@@ -148,7 +174,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         datePicker.snp.makeConstraints { make in
             make.height.equalTo(150)
-            make.centerX.equalTo(alert.view)
+            make.centerX.equalTo(alert.view.safeAreaLayoutGuide)
             make.top.equalTo(alert.view).offset(50)
         }
         
@@ -163,14 +189,24 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let datePicker = UIDatePicker()
         
+        datePicker.calendar = Calendar.current
         datePicker.datePickerMode = .time
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "en_gb")
-        datePicker.minuteInterval = 5
         
+        if let startTime = studyScheduleViewModel.studySchedule.startTime {
+            guard let hour = startTime.components(separatedBy: ":").first?.toInt(),
+                  let minute = startTime.components(separatedBy: ":").last?.toInt() else { return }
+            datePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
+        }
+
         let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+            let calendar = Calendar.current
+            let dateComponents = calendar.dateComponents([.hour, .minute], from: datePicker.date)
             
-//            self.studySchedule?.endTime = datePicker.date
+            guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
+           
+            self.studyScheduleViewModel.studySchedule.endTime = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
@@ -204,42 +240,37 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
     }
     
-    private func configureUI(_ studySchedule: StudySchedule) {
+    private func configureUI(_ studySchedule: StudyScheduleGoing) {
         
         print(studySchedule)
         
-//        openDateSelectableView.calendarLinkedDateLabel.text =
-//        studySchedule.openDate?.formatToString(language: .kor)
-//        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
+        if let openDate = studySchedule.openDate?.formatToDate() {
+            setupDate(openDate, in: openDateSelectableView)
+        } else {
+            setupDate(Date(), in: openDateSelectableView)
+        }
+        
+        if let deadlineDate = studySchedule.deadlineDate?.formatToDate() {
+           setupDate(deadlineDate, in: deadlineDateSelectableView)
+        } else {
+            deadlineDateSelectableView.calendarLinkedDateLabel.text = ""
+        }
+        
         if let startTime = studySchedule.startTime {
-//            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
+            startTimeSelectButton.setTitle(startTime, for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             startTimeSelectButton.setTitle("--:--", for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         }
-        
+
         if let endTime = studySchedule.endTime {
-//            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
+            endTimeSelectButton.setTitle(endTime, for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             endTimeSelectButton.setTitle("--:--", for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         }
-    }
-    
-    private func checkNextButtonIsEnabled(_ studySchedule: StudySchedule) {
-//        let opendate = studySchedule.openDate
-        let startTime = studySchedule.startTime
-        let endTime = studySchedule.endTime
-        
-//        if opendate != nil && startTime != nil && endTime != nil && startTime! < endTime! {
-//            nextButton.isEnabled = true
-//            nextButton.fillIn(title: "다음")
-//        } else {
-//            nextButton.isEnabled = false
-//            nextButton.fillOut(title: "다음")
-//        }
     }
     
     // MARK: - Configure
@@ -248,7 +279,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         view.addSubview(openDateSelectableView)
-        view.addSubview(    timeLabel)
+        view.addSubview(timeLabel)
         view.addSubview(startTimeSelectButton)
         view.addSubview(startTimeSuffixLabel)
         view.addSubview(endTimeSelectButton)
@@ -316,6 +347,19 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
         }
     }
+    
+    // MARK: - Helpers
+    
+    func setupDate(_ date: Date, in view: DateSelectableRoundedView) {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .weekday], from: date)
+        guard let year = dateComponents.year,
+              let month = dateComponents.month,
+              let day = dateComponents.day,
+              let weekday = dateComponents.weekday else { return }
+        
+        view.calendarLinkedDateLabel.text = "\(year)년 \(month)월 \(day)일 \(calendar.weekday(weekday))요일"
+    }
 }
 
 // MARK: - DateSelectableRoundedView
@@ -328,7 +372,7 @@ final class DateSelectableRoundedView: UIView {
     private let isNecessary: Bool
     
     private lazy var titleLabel = CustomLabel(title: self.title, tintColor: .ppsBlack, size: 16, isNecessaryTitle: self.isNecessary)
-    let calendarLinkedDateLabel = CustomLabel(title: "\(Date().formatToString(language: .kor))", tintColor: .ppsBlack, size: 16, isBold: true)
+    let calendarLinkedDateLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true)
     let calendarIcon = UIImageView(image: UIImage(named: "calendar"))
     
     // MARK: - Initialization

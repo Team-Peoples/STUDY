@@ -75,13 +75,15 @@ class ScheduleTableViewCell: UITableViewCell {
     
     func configure(schedule: StudySchedule, kind: CalendarKind) {
         
-        guard let startTime = schedule.startTime else { return }
-        guard let endTime = schedule.endTime else { return }
+        if let dateComponents = schedule.startDate?.convertToDateComponents(), let hour = dateComponents.hour, let minute = dateComponents.minute {
+            startTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
+        }
         
+        if  let dateComponents = schedule.endDate?.convertToDateComponents(), let hour = dateComponents.hour, let minute = dateComponents.minute {
+            endTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
+        }
         bookmarkColorView.backgroundColor = UIColor.orange
-        
-        startTimeLabel.text = String(describing: startTime)
-        endTimeLabel.text = String(describing: endTime)
+    
         topicLabel.text = schedule.topic
         placeLabel.text = schedule.place
         
@@ -90,7 +92,9 @@ class ScheduleTableViewCell: UITableViewCell {
             optionalLabel.text = schedule.studyName
             optionalLabel.change(textColor: .appColor(.keyColor1))
         case .study:
-            optionalLabel.text = schedule.repeatOption?.kor
+            break
+            //매일, 매주 인지 알려줄것.
+//            optionalLabel.text =
         }
     }
     

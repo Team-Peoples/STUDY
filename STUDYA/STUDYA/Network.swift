@@ -16,6 +16,7 @@ enum PeoplesError: Error {
     case decodingError
     case unknownError(Int?)
     case tokenExpired
+    case internalServerError
     
     case duplicatedEmail
     case alreadySNSSignUp
@@ -655,8 +656,8 @@ struct Network {
     
     // MARK: - Study Schedule
     
-    func getAllStudySchedule(completion: @escaping (Result<StudySchedule, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getAllStudySchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
+    func getStudyAllSchedule(completion: @escaping (Result<StudyAllSchedule, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudyAllSchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -665,8 +666,8 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data else { return }
-                print(String(data: data, encoding: .utf8))
+                guard let data = response.data, let studyAllSchedule = jsonDecode(type: StudyAllSchedule.self, data: data) else { return }
+                completion(.success(studyAllSchedule))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
@@ -676,7 +677,7 @@ struct Network {
     }
     
     func createStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        
+        print(schedule,"🔥")
         AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
@@ -1013,10 +1014,10 @@ extension Network {
     func seperateCommonErrors<T: Decodable>(statusCode: Int?, completionType: T.Type = T.self, completion: @escaping (Result<T,PeoplesError>) -> Void) {
 
         guard let statusCode = statusCode else { return }
-
+        print(statusCode,"🔥")
         switch statusCode {
         case 200: completion(.failure(.decodingError))
-        case 500: completion(.failure(.serverError))
+        case 500: completion(.failure(.internalServerError))
         case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
         default: completion(.failure(.unknownError(statusCode)))
@@ -1031,7 +1032,7 @@ extension UIAlertController {
         guard let error = error else { return }
         
         switch error {
-        case .serverError:
+        case .internalServerError:
             alert = SimpleAlert(message: Const.serverErrorMessage)
         case .decodingError:
             alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")

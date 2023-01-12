@@ -15,6 +15,7 @@ class PopUpCalendarViewController: UIViewController {
     lazy var selectedDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: selectedDate)
     var selectedDate: Date
     weak var presentingVC: UIViewController?
+    lazy var openDate: Date = Date()
 
     private let calendarType: PopUpCalendarType
     private let button = UIButton(frame: .zero)
@@ -32,7 +33,7 @@ class PopUpCalendarViewController: UIViewController {
         
         let calendarView = UICalendarView()
         
-        calendarView.calendar = Calendar(identifier: .gregorian)
+        calendarView.calendar = Calendar.current
         calendarView.tintColor = .appColor(.keyColor1)
         
         return calendarView
@@ -57,8 +58,11 @@ class PopUpCalendarViewController: UIViewController {
         super.viewDidLoad()
         
         let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
+        selectionDelegate.selectedDate?.calendar = Calendar.current
         calendarView.selectionBehavior = selectionDelegate
-        selectionDelegate.setSelected(selectedDateComponents, animated: false)
+        if calendarType == .open {
+            selectionDelegate.setSelected(selectedDateComponents, animated: false)
+        }
         
         button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
@@ -96,7 +100,6 @@ class PopUpCalendarViewController: UIViewController {
             make.height.equalTo(400)
             make.width.equalTo(300)
         }
-        
         dismissButton.snp.makeConstraints { make in
             make.top.trailing.equalTo(popUpContainerView).inset(16)
             make.height.width.equalTo(24)
@@ -110,18 +113,41 @@ class PopUpCalendarViewController: UIViewController {
 }
 
 extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
+    
+    func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
+        
+        switch calendarType {
+        case .open:
+            return true
+        case .deadline:
+            guard let day = dateComponents?.day, // 캘린더의 모든 날짜
+                  let openDateDay = Calendar.current.dateComponents([.day], from: openDate).day else { return false
+            }
+
+            if day < openDateDay {
+                return false
+            } else {
+                return true
+            }
+        }
+    }
    
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        
-        
+        print(dateComponents?.day)
+        print(dateComponents?.date,"🔥")
         guard let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController else { return }
     
         switch calendarType {
         case .open:
-//            presentingVC.studySchedule?.openDate = dateComponents?.date
+            presentingVC.studyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+            
+            // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
+            if  presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
+                presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+            }
             self.dismiss(animated: true)
         case .deadline:
-//            presentingVC.studySchedule?.deadlineDate = dateComponents?.date
+            presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
             self.dismiss(animated: true)
         }
     }

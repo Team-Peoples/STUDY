@@ -165,3 +165,90 @@ class GeneralRuleViewModel {
     }
 }
 
+class StudyAllScheduleViewModel: ViewModel {
+    typealias Model = StudyAllSchedule
+    
+    var studyAllSchedule: StudyAllSchedule {
+        didSet {
+            handler?(studyAllSchedule)
+        }
+    }
+    
+    var handler: DataHandler?
+    
+    init(studyAllSchedule: StudyAllSchedule = StudyAllSchedule()) {
+        self.studyAllSchedule = studyAllSchedule
+    }
+    
+    func bind(_ handler: DataHandler?) {
+        self.handler = handler
+        handler?(studyAllSchedule)
+    }
+    
+    func getStudyAllSchedule() {
+        Network.shared.getStudyAllSchedule { result in
+            switch result {
+            case .success(let studyAllSchedule):
+                self.studyAllSchedule = studyAllSchedule
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func studyScheduleDateComponents(of studyID: ID, completion: ([DateComponents]?) -> Void) {
+        
+        let dateComponents = studyAllSchedule["\(studyID)"]?.map { studySchedule in
+            
+            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
+            return dateComponents
+        }
+//        print(dateComponents,"🔥")
+        completion(dateComponents)
+    }
+
+    func studySchedules(of studyID: ID, at calendarSelectedDateComponents: DateComponents?) -> [StudySchedule]? {
+        let studySchedules = studyAllSchedule["\(studyID)"]?.filter({ studySchedule in
+            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
+               let year = dateComponents.year
+               let month = dateComponents.month
+               let day = dateComponents.day
+
+            return calendarSelectedDateComponents?.year == year && calendarSelectedDateComponents?.month == month && calendarSelectedDateComponents?.day == day
+        })
+        return studySchedules
+    }
+}
+
+class StudyScheduleViewModel: ViewModel {
+    
+    typealias Model = StudyScheduleGoing
+    
+    var studySchedule: StudyScheduleGoing {
+        didSet {
+            handler?(studySchedule)
+        }
+    }
+    
+    var handler: DataHandler?
+    
+    init(studySchedule: StudyScheduleGoing = StudyScheduleGoing()) {
+        self.studySchedule = studySchedule
+    }
+    
+    func bind(_ handler: DataHandler?) {
+        self.handler = handler
+        handler?(studySchedule)
+    }
+    
+    func postStudySchedule(successHandler: @escaping () -> Void) {
+        Network.shared.createStudySchedule(studySchedule) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+}

@@ -29,7 +29,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
                 return
             }
             
-            guard let startTime = schedule.startTime, let endTime = schedule.endTime else { return }
+            guard let startTime = schedule.startDate, let endTime = schedule.endDate else { return }
             
             let now = Date()
             let calendar = Calendar.current
