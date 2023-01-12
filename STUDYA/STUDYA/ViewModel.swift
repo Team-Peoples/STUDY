@@ -9,23 +9,23 @@ import Foundation
 
 // MARK: - ViewModel
 
-protocol ViewModel {
+protocol ViewModel: AnyObject {
     associatedtype Model
     typealias DataHandler = (Model) -> Void
 
     var handler: DataHandler? { get set }
     
-    mutating func bind(_ handler: DataHandler?)
+    func bind(_ handler: DataHandler?)
 }
 
 extension ViewModel {
    
-    mutating func bind(_ handler: DataHandler?) {
+    func bind(_ handler: DataHandler?) {
         self.handler = handler
     }
 }
 
-struct SignInViewModel: ViewModel {
+class SignInViewModel: ViewModel {
     
     typealias Model = Credential
     
@@ -56,7 +56,7 @@ struct SignInViewModel: ViewModel {
     }
 }
 
-struct StudyViewModel: ViewModel {
+class StudyViewModel: ViewModel {
     typealias Model = Study
     
     var study: Study {
@@ -71,19 +71,19 @@ struct StudyViewModel: ViewModel {
         self.study = study
     }
     
-    mutating func bind(_ handler: DataHandler?) {
+    func bind(_ handler: DataHandler?) {
         self.handler = handler
         handler?(study)
     }
     
-    func getStudyInfo(_ successHandler: @escaping (Study) -> Void) {
+    func getStudyInfo() {
         
         guard let studyID = study.id else { return }
         
-        Network.shared.getStudy(studyID: studyID) { result in
+        Network.shared.getStudy(studyID: studyID) { [self] result in
             switch result {
             case .success(let studyOverall):
-                successHandler(studyOverall.study)
+                study = studyOverall.study
             case .failure(let failure):
                 print(failure)
             }
@@ -133,8 +133,7 @@ struct StudyViewModel: ViewModel {
     }
 }
 
-struct GeneralRuleViewModel {
-    // model: generalRule
+class GeneralRuleViewModel {
     
     var generalRule: GeneralStudyRule
     var lateness: Lateness {
