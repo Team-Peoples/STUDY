@@ -14,6 +14,7 @@ class AnnouncementViewController: UIViewController {
     // MARK: - Properties
     
     let task: Task
+    let studyID: ID
     
     ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
@@ -39,7 +40,7 @@ class AnnouncementViewController: UIViewController {
             
             titleTextView.text = announcement?.title
             contentTextView.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString(language: .eng)
+            timeLabel.text = announcement?.createdDate?.formatToString(format: .announcementDateFormat)
         }
     }
     
@@ -98,8 +99,10 @@ class AnnouncementViewController: UIViewController {
     
     // MARK: - Initialization
     
-    init(task: Task) {
+    init(task: Task, studyID: ID) {
         self.task = task
+        self.studyID = studyID
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -181,7 +184,6 @@ class AnnouncementViewController: UIViewController {
         
         let title = titleTextView.text ?? ""
         let content = contentTextView.text ?? ""
-        let studyID = 1
         
         Network.shared.createAnnouncement(title: title, content: content, studyID: studyID) { result in
             switch result {

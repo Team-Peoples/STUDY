@@ -549,7 +549,7 @@ class ProfileImageView: UIView {
     private let roleMark = UIButton(frame: .zero)
     private var radius: CGFloat = 0
     private var size: CGFloat = 0
-    // domb: 여기 없애기
+   
     internal var internalImage: UIImage? {
         didSet {
             internalImageView.image = internalImage
@@ -921,7 +921,7 @@ class RoundableView: UIView {
 final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
-    let strArray: [String] = {
+    var strArray: [String] = {
         
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
@@ -934,7 +934,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     private lazy var picker = UIPickerView()
     
-    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
+    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false) {
         super.init(frame: .zero)
         
         delegate = self
@@ -1030,7 +1030,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !isNecessaryField {
+        if isNecessaryField {
             let currentText = NSString(string: textField.text ?? "")
             let finalText = currentText.replacingCharacters(in: range, with: string)
             
@@ -1080,7 +1080,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     // pickerview의 선택지는 데이터의 개수만큼
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        100
+        strArray.count
     }
     
     // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.

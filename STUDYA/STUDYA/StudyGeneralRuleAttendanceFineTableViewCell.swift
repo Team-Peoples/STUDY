@@ -1,5 +1,5 @@
 //
-//  EditingStudyGeneralRuleAttendanceFineTableViewCell.swift
+//  StudyGeneralRuleAttendanceFineTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
+final class StudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "EditingStudyGeneralRuleAttendanceFineTableViewCell"
+    static let identifier = "StudyGeneralRuleAttendanceFineTableViewCell"
     
     let fineTitleLabel = CustomLabel(title: "벌금 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
     let fineDescriptionLabel = CustomLabel(title: "* 출석체크 시, 입력하신 규칙에 따라 벌금이 자동으로 계산돼요.", tintColor: .ppsGray1, size: 12)
@@ -23,16 +23,17 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     let absenceFineFieldBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
     
     /// 벌금규칙
-    let perLateMinuteField = RoundedNumberField(numPlaceholder: nil, centerAlign: true)
-    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
-    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
+    let perLateMinuteField = RoundedNumberField(numPlaceholder: nil, centerAlign: true, isNecessary: true)
+    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
     
     var perLateMinuteFieldAction: (Int?) -> Void = { perLateMinute in }
     var latenessFineFieldAction: (Int?) -> Void = { latenessFine in }
     var absenceFineFieldAction: (Int?) -> Void = { absenceFine in }
     
-    lazy var fineDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
-
+    lazy var perLateMinuteFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
+    lazy var latenessFineFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
+    
     // MARK: - Initialization
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -67,8 +68,8 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
     }
     
     func fineDimmingViewAddTapGesture(target: Any?, action: Selector) {
-        print("초기화","🔥")
-        fineDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
+        perLateMinuteFieldDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
+        latenessFineFieldDimmingView.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
     }
     
     // MARK: - Configure
@@ -87,7 +88,8 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
         contentView.addSubview(absenceFineCountLabel)
         contentView.addSubview(absenceFineField)
         contentView.addSubview(absenceFineFieldBehindLabel)
-        contentView.addSubview(fineDimmingView)
+        contentView.addSubview(perLateMinuteFieldDimmingView)
+        contentView.addSubview(latenessFineFieldDimmingView)
     }
     
     // MARK: - Setting Constraints
@@ -152,13 +154,16 @@ class EditingStudyGeneralRuleAttendanceFineTableViewCell: UITableViewCell {
             make.width.equalTo(20)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(40)
         }
-        fineDimmingView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView.safeAreaLayoutGuide)
+        perLateMinuteFieldDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(perLateMinuteField)
+        }
+        latenessFineFieldDimmingView.snp.makeConstraints { make in
+            make.edges.equalTo(latenessFineField)
         }
     }
 }
 
-extension EditingStudyGeneralRuleAttendanceFineTableViewCell: UITextFieldDelegate {
+extension StudyGeneralRuleAttendanceFineTableViewCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == perLateMinuteField {
             perLateMinuteFieldAction(textField.text?.toInt())

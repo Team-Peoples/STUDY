@@ -24,6 +24,11 @@ final class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        signInViewModel.bind { [self] credential in
+            completeButton.isEnabled = credential.formIsValid
+            completeButton.isEnabled ? completeButton.fillIn(title: Const.done) : completeButton.fillOut(title: Const.done)
+        }
+        
         configureViews()
         configureCompleteButton()
         configureFindPasswordButton()
@@ -116,14 +121,12 @@ final class SignInViewController: UIViewController {
         
         switch sender.superview {
             case emailInputView:
-                signInViewModel.email = emailInputView.getInputField().text
+            signInViewModel.credential.email = emailInputView.getInputField().text
             case passwordInputView:
-                signInViewModel.password = passwordInputView.getInputField().text
+            signInViewModel.credential.password = passwordInputView.getInputField().text
             default:
                 break
         }
-        
-        buttonStateUpdate()
     }
     
     @objc private func findPasswordButtonDidTapped() {
@@ -134,64 +137,50 @@ final class SignInViewController: UIViewController {
     }
     
     @objc private func completeButtonDidTapped() {
-        
-        guard let id = emailInputView.getInputField().text else { return }
-        guard let pw = passwordInputView.getInputField().text else { return }
-        
-        Network.shared.signIn(id: id, pw: pw) { result in
-            switch result {
-            case .success(let user):
-               
-                guard let userID = user.id else { fatalError("사용자 아이디 없음") }
-                guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음")}
-                
-                KeyChain.create(key: Const.tempUserId, value: userID)
-                KeyChain.create(key: Const.tempNickname, value: nickname)
-                print("키체인에 저장")
-                
-                if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
-                    NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-                } else {
-                    self.navigationController?.pushViewController(MailCheckViewController(), animated: true)
-                }
-            case .failure(let error):
-                print(String(describing: error))
-                var alert = SimpleAlert(message: "")
-                
-                switch error {
-                case .serverError:
-                    alert = SimpleAlert(message: Const.serverErrorMessage)
-                case .decodingError:
-                    alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
-                case .unauthorizedUser:
-                    alert = SimpleAlert(buttonTitle: Const.OK, message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
-                        AppController.shared.deleteUserInformation()
-                    })
-                case .tokenExpired:
-                    alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
-                        AppController.shared.deleteUserInformation()
-                    })
-                case .unknownError(let errorCode):
-                    guard let errorCode = errorCode else { return }
-                    alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
-                default:
-                    print(#function)
-                    alert = SimpleAlert(message: Const.unknownErrorMessage)
-                }
-                
-                self.present(alert, animated: true)
+        signInViewModel.singIn { user in
+            guard let userID = user.id else { fatalError("사용자 아이디 없음") }
+            guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음")}
+            
+            KeyChain.create(key: Const.tempUserId, value: userID)
+            KeyChain.create(key: Const.tempNickname, value: nickname)
+            print("키체인에 저장")
+            
+            if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
+                NotificationCenter.default.post(name: .authStateDidChange, object: nil)
+            } else {
+                self.navigationController?.pushViewController(MailCheckViewController(), animated: true)
             }
+        } _: { error in
+            var alert = SimpleAlert(message: "")
+            
+            switch error {
+            case .serverError:
+                alert = SimpleAlert(message: Const.serverErrorMessage)
+            case .decodingError:
+                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+            case .unauthorizedUser:
+                alert = SimpleAlert(buttonTitle: Const.OK, message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
+                    AppController.shared.deleteUserInformation()
+                })
+            case .tokenExpired:
+                alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                    AppController.shared.deleteUserInformation()
+                })
+            case .unknownError(let errorCode):
+                guard let errorCode = errorCode else { return }
+                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+            default:
+                print(#function)
+                alert = SimpleAlert(message: Const.unknownErrorMessage)
+            }
+            
+            self.present(alert, animated: true)
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
-    }
-    
-    private func buttonStateUpdate() {
-        completeButton.isEnabled = signInViewModel.formIsValid
-        completeButton.isEnabled ? completeButton.fillIn(title: Const.done) : completeButton.fillOut(title: Const.done)
     }
     
     // MARK: - Setting Constraints

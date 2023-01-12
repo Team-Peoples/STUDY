@@ -61,7 +61,6 @@ final class MyPageMainViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        title = "마이페이지"
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -79,6 +78,8 @@ final class MyPageMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // AccountManagerment에서 로그아웃하면서 이 VC가 한번 보여지고 사라지는지 이함수가 호출됨.
+        
+        navigationItem.title = "마이페이지"
         getUserInfo { user in
             self.user = user
             print(user.imageURL)
@@ -103,7 +104,6 @@ final class MyPageMainViewController: UIViewController {
                 switch error {
                 case .unauthorizedUser:
                     AppController.shared.deleteUserInformationAndLogout()
-                    
                 default:
                     print(error)
                 }

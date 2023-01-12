@@ -77,7 +77,7 @@ enum RequestPurpose: Requestable {
     case getAllStudy    //12
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
-    case getAllStudySchedule ////19
+    case getStudyAllSchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
     case checkEmailCertificated
@@ -93,7 +93,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyAllSchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode:
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
@@ -176,7 +176,7 @@ extension RequestPurpose {
             return "/study/\(id)"
         case .getAllAnnouncements(let id):
             return "/noti/\(id)"
-        case .getAllStudySchedule:
+        case .getStudyAllSchedule:
             return "/study/schedule"
         case .getUserSchedule:
             return "/user/schedule"
@@ -199,7 +199,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyAllSchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode : return .get
         }
     }
     

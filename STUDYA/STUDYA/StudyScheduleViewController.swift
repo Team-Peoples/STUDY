@@ -11,15 +11,13 @@ class StudyScheduleViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    var studySchedules: [StudySchedule] = [
-//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 높아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay)
-    ]
+    let studyID: ID
     
-    let calendarView: UICalendarView = {
+    var studyAllScheduleViewModel = StudyAllScheduleViewModel()
+    
+    var studyScheduleAtSelectedDate = [StudySchedule]()
+    
+    lazy var calendarView: UICalendarView = {
         let c = UICalendarView()
         
         c.calendar = Calendar(identifier: .gregorian)
@@ -30,34 +28,63 @@ class StudyScheduleViewController: SwitchableViewController {
     
     let scheduleTableView = ScheduleTableView()
     
-    lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+    lazy var floatingButtonView: PlusButtonWithLabelContainerView = {
+        let buttonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+        
+        buttonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
+        
+        return buttonView
+    }()
       
 
     // MARK: - Life Cycle
-   
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-        
-        view.addSubview(calendarView)
-        view.addSubview(scheduleTableView)
-        view.addSubview(floatingButtonView)
-        
-        calendarView.selectionBehavior = UICalendarSelectionSingleDate(delegate: self)
-        
-        scheduleTableView.dataSource = self
-        scheduleTableView.delegate = self
-        scheduleTableView.backgroundColor = .appColor(.background)
-        
-        tabBarController?.tabBar.isHidden = true
-        
-        floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
-        
-        setConstraints()
-        
-        configureNavigationBar()
+    
+    init(studyID: ID) {
+        self.studyID = studyID
+        super.init(nibName: nil, bundle: nil)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
+        selectionDelegate.selectedDate?.calendar = Calendar.current
+        selectionDelegate.setSelected(Date().convertToDateComponents(), animated: false)
+        
+        calendarView.delegate = self
+        calendarView.selectionBehavior = selectionDelegate
+        
+        confifureViews()
+        configureTableView()
+        setConstraints()
+        configureNavigationBar()
+        
+        //domb: 스터디 시간과 날짜 분리해서 작성
+        
+        studyAllScheduleViewModel.bind { [self] studyAllSchedule in
+            let dateComponents = studyAllSchedule["\(studyID)"]?.compactMap({ studySchedule in
+                let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: studySchedule.startDate!)
+                return dateComponents
+            })
+            
+            guard let dateComponents = dateComponents else { return }
+            let dateComponentsSet = Set(dateComponents)
+            let overlapRemovedDateComponents = Array(dateComponentsSet)
+
+            print(overlapRemovedDateComponents)
+            calendarView.reloadDecorations(forDateComponents: overlapRemovedDateComponents, animated: false)
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        studyAllScheduleViewModel.getStudyAllSchedule()
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -67,8 +94,10 @@ class StudyScheduleViewController: SwitchableViewController {
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
-        
+        let currentStudyID = studyID
         let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+        
+        studySchedulePriodFormVC.studyScheduleViewModel.studySchedule.studyId = currentStudyID
         
         let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
         
@@ -83,12 +112,29 @@ class StudyScheduleViewController: SwitchableViewController {
             let cell = cell as? ScheduleTableViewCell
             return cell
         }
+        
         scheduleTableViewCells.forEach { cell in
             cell.editable = isSwitchOn
         }
     }
     
     // MARK: - Configure
+    
+    private func confifureViews() {
+        view.backgroundColor = .systemBackground
+        
+        view.addSubview(calendarView)
+        view.addSubview(scheduleTableView)
+        view.addSubview(floatingButtonView)
+    }
+    
+    private func configureTableView() {
+        scheduleTableView.dataSource = self
+        scheduleTableView.delegate = self
+        scheduleTableView.backgroundColor = .appColor(.background)
+        
+        tabBarController?.tabBar.isHidden = true
+    }
 
     // MARK: - Setting Constraints
     
@@ -96,7 +142,7 @@ class StudyScheduleViewController: SwitchableViewController {
         
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(view.frame.height / 2)
+            make.height.equalTo(500)
         }
         
         scheduleTableView.snp.makeConstraints { make in
@@ -111,27 +157,39 @@ class StudyScheduleViewController: SwitchableViewController {
     }
 }
 
+// MARK: - UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate
+
 extension StudyScheduleViewController: UICalendarViewDelegate {
     
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
-        return.default()
+        if let studyScheduleIsEmpty = studyAllScheduleViewModel.studySchedules(of: studyID, at: dateComponents)?.isEmpty, !studyScheduleIsEmpty {
+            return .image(UIImage(systemName: "circle.fill")?.resize(newWidth: 8).withRenderingMode(.alwaysTemplate), color: .appColor(.keyColor1))
+        } else {
+            return nil
+        }
     }
 }
 extension StudyScheduleViewController: UICalendarSelectionSingleDateDelegate {
     
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+        guard let studySchedule = studyAllScheduleViewModel.studySchedules(of: studyID, at: dateComponents) else { return }
+        
+        self.studyScheduleAtSelectedDate = studySchedule
+        self.scheduleTableView.reloadData()
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension StudyScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        studySchedules.count
+        studyScheduleAtSelectedDate.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
         
-        let schedule = studySchedules[indexPath.row]
+        let schedule = studyScheduleAtSelectedDate[indexPath.row]
         
         cell.configure(schedule: schedule, kind: .study)
         cell.editable = self.isSwitchOn
@@ -149,7 +207,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
           
             let editingStudyScheduleVC = EditingStudySchduleViewController()
-            editingStudyScheduleVC.studySchedule = studySchedules[indexPath.row]
+//            editingStudyScheduleVC.studySchedule = studySchedules[indexPath.row]
             
             let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
             navigationVC.modalPresentationStyle = .fullScreen
@@ -163,7 +221,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
             let okAction = UIAlertAction(title: "삭제", style: .destructive) {
                 _ in
 
-                self.studySchedules.remove(at: indexPath.row)
+//                self.studySchedules.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
                 tableView.reloadData()
             }
@@ -185,6 +243,8 @@ extension StudyScheduleViewController: UITableViewDataSource {
         present(actionSheet, animated: true)
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension StudyScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

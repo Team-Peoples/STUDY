@@ -11,7 +11,6 @@ import Alamofire
 struct TokenAuthenticationCredential: AuthenticationCredential {
     let accessToken: String
     let refreshToken: String
-    let expiredAt: Date
 
     // refresh가 필요하다고 true를 리턴 (false를 리턴하면 refresh 필요x)
     var requiresRefresh: Bool { return false }
@@ -42,8 +41,11 @@ class TokenAuthenticator: Authenticator {
         print("토큰 리프레시 요청")
         Network.shared.refreshToken { result in
             switch result {
-            case .success(_):
-                completion(.success(credential))
+            case .success:
+                let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
+                let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
+                print("리프레시 성공 후 api 재요청 시작","🔥")
+                completion(.success(TokenAuthenticationCredential(accessToken: accessToken, refreshToken: refreshToken)))
             case .failure(let failure):
                 completion(.failure(failure))
             }
@@ -55,7 +57,7 @@ extension AuthenticationInterceptor<TokenAuthenticator> {
     
     convenience init() {
         let authenticator = TokenAuthenticator()
-        let credential = TokenAuthenticationCredential(accessToken: KeyChain.read(key: Const.accessToken) ?? "", refreshToken: KeyChain.read(key: Const.refreshToken) ?? "", expiredAt: Date(timeIntervalSinceNow: 60 * 120))
+        let credential = TokenAuthenticationCredential(accessToken: KeyChain.read(key: Const.accessToken) ?? "", refreshToken: KeyChain.read(key: Const.refreshToken) ?? "")
         
         self.init(authenticator: authenticator, credential: credential)
     }

@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class CreatingStudyFreeRuleViewController: UIViewController {
+final class CreatingStudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     

@@ -11,14 +11,8 @@ final class EditingStudyFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyViewModel: StudyViewModel? {
-        didSet {
-            guard let studyViewModel = studyViewModel else { return }
-            bind(studyViewModel.study)
-            doneButton.isEnabled = studyViewModel.formIsValid
-        }
-    }
-   
+    var studyViewModel = StudyViewModel()
+
     var categoryChoice: StudyCategory? {
         willSet(value) {
             if categoryChoice == nil {
@@ -28,7 +22,7 @@ final class EditingStudyFormViewController: UIViewController {
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
             }
-            studyViewModel?.study.category = value?.rawValue
+            studyViewModel.study.category = value?.rawValue
         }
     }
     private var token: NSObjectProtocol?
@@ -72,7 +66,10 @@ final class EditingStudyFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        /// 스터디 불러와서 스터디 뷰모델을 생성해줌.
+        studyViewModel.bind { [self] study in
+            configureViews(study)
+            doneButton.isEnabled = study.formIsFilled
+        }
         
         configureViews()
         setDelegate()
@@ -127,7 +124,7 @@ final class EditingStudyFormViewController: UIViewController {
         containerView.addSubview(studyIntroductionTextView)
     }
     
-    func bind(_ study: Study) {
+    func configureViews(_ study: Study) {
         
         studyNameTextView.text = study.studyName
         studyIntroductionTextView.text = study.studyIntroduction
@@ -154,9 +151,9 @@ final class EditingStudyFormViewController: UIViewController {
         
         switch sender {
         case onlineButton:
-            studyViewModel?.study.studyOn = sender.isSelected ? true : false
+            studyViewModel.study.studyOn = sender.isSelected ? true : false
         case offlineButton:
-            studyViewModel?.study.studyOff = sender.isSelected ? true : false
+            studyViewModel.study.studyOff = sender.isSelected ? true : false
         default:
             return
         }
@@ -166,14 +163,9 @@ final class EditingStudyFormViewController: UIViewController {
         
         switch sender {
             case doneButton:
-            guard let study = studyViewModel?.study, let studyID = study.id else { return }
-            Network.shared.updateStudy(study, id: studyID) { result in
-                switch result {
-                case .success(let _):
-                    self.dismiss(animated: true)
-                case .failure(let failure):
-                    print(failure)
-                }
+            
+            studyViewModel.updateStudy {
+                self.dismiss(animated: true)
             }
             case  cancelButton:
                 print("수정 취소")
@@ -384,12 +376,12 @@ extension EditingStudyFormViewController: UITextViewDelegate {
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyName = studyNameTextView.text
+                studyViewModel.study.studyName = studyNameTextView.text
             case studyIntroductionTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyIntroduction = studyIntroductionTextView.text
+                studyViewModel.study.studyIntroduction = studyIntroductionTextView.text
             default:
                 break
         }
@@ -409,7 +401,7 @@ extension EditingStudyFormViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
         cell.title = StudyCategory.allCases[indexPath.row].rawValueWithKorean
     
-        if let rawValue = studyViewModel?.study.category, let category = StudyCategory(rawValue: rawValue)?.rawValueWithKorean, category == cell.title {
+        if let rawValue = studyViewModel.study.category, let category = StudyCategory(rawValue: rawValue)?.rawValueWithKorean, category == cell.title {
             cell.isSameTitle = true
         }
         

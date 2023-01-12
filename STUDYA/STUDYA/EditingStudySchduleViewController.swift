@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditingStudySchduleViewController: UIViewController {
+final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -17,7 +17,6 @@ class EditingStudySchduleViewController: UIViewController {
             guard let studySchedule = studySchedule else  { return }
             
             configureUI(studySchedule)
-            print(studySchedule.repeatOption)
         }
     }
     
@@ -58,10 +57,10 @@ class EditingStudySchduleViewController: UIViewController {
     private let repeatOptionTitle = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
     private lazy var repeatOptionStackView: UIStackView = {
         
-        let everyDay = CheckBoxButton(title: RepeatOption.everyDay.kor)
-        let everyWeek = CheckBoxButton(title: RepeatOption.everyWeek.kor)
-        let everyTwoWeeks = CheckBoxButton(title: RepeatOption.everyTwoWeeks.kor)
-        let everyMonth = CheckBoxButton(title: RepeatOption.everyMonth.kor)
+        let everyDay = CheckBoxButton(title: "매일")
+        let everyWeek = CheckBoxButton(title: "매주")
+        let everyTwoWeeks = CheckBoxButton(title: "2주 마다")
+        let everyMonth = CheckBoxButton(title: "매일")
         
         [everyDay, everyWeek, everyTwoWeeks, everyMonth].forEach { $0.addTarget(self, action: #selector(checkboxDidTapped), for: .touchUpInside)
         }
@@ -138,14 +137,14 @@ class EditingStudySchduleViewController: UIViewController {
         
         if selectedRepeatOptionCheckBox == sender {
             
-            studySchedule?.repeatOption = nil
+//            studySchedule?.repeatOption = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
             guard let title = sender.currentTitle else { return }
-            guard let repeatOption = RepeatOption(rawValue: title) else { return }
+            let repeatOption = title.convertedEnglish()
             
-            studySchedule?.repeatOption = repeatOption
+//            studySchedule?.repeatOption = repeatOption
             selectedRepeatOptionCheckBox = sender
         }
     }
@@ -162,7 +161,7 @@ class EditingStudySchduleViewController: UIViewController {
         
         let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
             
-//            self.studySchedule?.startTime = datePicker.date
+//            self.studySchedule?.startDate = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
@@ -198,7 +197,7 @@ class EditingStudySchduleViewController: UIViewController {
         
         let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
             
-//            self.studySchedule?.endTime = datePicker.date
+//            self.studySchedule?.endDate = datePicker.date
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
@@ -282,9 +281,9 @@ class EditingStudySchduleViewController: UIViewController {
 //        studySchedule.openDate?.formatToString(language: .kor)
 //        deadlineDateSelectableView.calendarLinkedDateLabel.text = studySchedule.deadlineDate?.formatToString(language: .kor)
         
-        if let startTime = studySchedule.startTime {
+        if let startTime = studySchedule.startDate {
             
-//            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startTime), for: .normal)
+//            startTimeSelectButton.setTitle(TimeFormatter.shared.string(from: startDate), for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             
@@ -292,9 +291,9 @@ class EditingStudySchduleViewController: UIViewController {
             startTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         }
         
-        if let endTime = studySchedule.endTime {
+        if let endTime = studySchedule.endDate {
             
-//            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endTime), for: .normal)
+//            endTimeSelectButton.setTitle(TimeFormatter.shared.string(from: endDate), for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
         } else {
             
@@ -307,10 +306,10 @@ class EditingStudySchduleViewController: UIViewController {
             return checkBoxButton
         }
 
-        let checkboxButton = checkBoxButtons.filter { $0.titleLabel?.text == studySchedule.repeatOption?.kor
-        }.first
-
-        selectedRepeatOptionCheckBox = checkboxButton
+//        let checkboxButton = checkBoxButtons.filter { $0.titleLabel?.text == studySchedule.repeatOption
+//        }.first
+//
+//        selectedRepeatOptionCheckBox = checkboxButton
         
         if let place = studySchedule.place, !place.isEmpty {
             placeTextView.text = studySchedule.place

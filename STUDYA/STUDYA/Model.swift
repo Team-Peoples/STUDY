@@ -56,8 +56,13 @@ struct User: Codable {
 }
 
 struct Credential: Encodable {
-    let userID: String
-    let password: String?
+    var email: String?
+    var password: String?
+    
+    var formIsValid: Bool {
+        let range = email?.range(of: "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$", options: .regularExpression)
+        return email?.isEmpty == false && password?.isEmpty == false && range != nil
+    }
 }
 
 enum SNS: String {
@@ -71,11 +76,23 @@ struct SNSInfo {
 }
 
 struct Study: Codable, Equatable {
-    let id: Int?
+    var id: ID?
     var studyOn, studyOff: Bool
     var studyName, category, studyIntroduction, freeRule: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
+    
+    var formIsFilled: Bool {
+        return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
+    }
+    
+    var isGeneralFormFilled: Bool {
+        // domb: 스터디 규칙쪽 필수 입력 값 시나리오 수정되면 이부분도 수정해야함.
+        return generalRule?.absence.time != nil || generalRule?.lateness.time != nil || generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil || generalRule?.deposit != nil
+    }
+    var isFreeFormFilled: Bool {
+        return freeRule != "" && freeRule != nil
+    }
 
     enum CodingKeys: String, CodingKey {
 
@@ -90,7 +107,7 @@ struct Study: Codable, Equatable {
         case studyOn, studyOff
     }
 
-    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
+    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: nil, excommunication: Excommunication(lateness: nil, absence: nil))) {
         self.id = id
         self.studyName = studyName
         self.studyOn = studyOn
@@ -181,13 +198,20 @@ struct GeneralStudyRule: Codable, Equatable {
     
     var lateness: Lateness
     var absence: Absence
-    var deposit: Int?
+    var deposit: Deposit?
     var excommunication: Excommunication
 
     enum CodingKeys: String, CodingKey {
         case lateness, deposit
         case absence = "absent"
         case excommunication = "out"
+    }
+    
+    init(lateness: Lateness = Lateness(), absence: Absence = Absence(), deposit: Deposit? = nil, excommunication: Excommunication = Excommunication()) {
+        self.lateness = lateness
+        self.absence = absence
+        self.deposit = deposit
+        self.excommunication = excommunication
     }
 }
 
@@ -231,7 +255,7 @@ struct StudyOverall: Codable {
 
 struct Announcement: Codable {
 
-    let id: Int?
+    let id: ID?
     let title: String?
     let content: String?
     let createdDate: Date?
@@ -269,91 +293,79 @@ struct Schedule: Codable {
     }
 }
 
+typealias StudyAllSchedule = [String: [StudySchedule]]
+
 struct StudySchedule: Codable {
-    
-    let studyID: Int?
     let studyName: String?
     
     let studyScheduleID: Int?
     
-    var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
+    var topic: String?
     var place: String?
     
-    var startTime: Date?
-    var endTime: Date?
-    var repeatOption: RepeatOption?
+    var startDate: Date?
+    var endDate: Date?
+    var repeatOption: String? = ""
+    // domb: repeatOption을 받아야 스케쥴셀의 상단부 "매달", "매일"과 같은 요소를 보여줄 수 있음. 현재는 옵션으로 표시 
     
     enum CodingKeys: String, CodingKey {
-        
-        case studyID = "studyId"
-        case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
-        
         case studyScheduleID = "studyScheduleId"
-        
+        case startDate = "studyScheduleStartDateTime"
+        case endDate = "studyScheduleEndDateTime"
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"
-        
-        case startTime = "studyScheduleStartDateTime"
-        case endTime = "studyScheduleEndDateTime"
-        case repeatOption = "repeatDay"
+        case studyName
     }
 }
 
 struct StudyScheduleGoing: Codable {
+    var studyId: Int?
     
-    let studyId: Int?
-    let studyName: String?
-    
-    let studyScheduleID: Int?
-    
-    var topic: String? // domb: gitbook에는 studyScheduleName: 모임이름이라고 되어있어 수정요청.
+    var topic: String?
     var place: String?
     
-    var openDate: String?
-    var deadlineDate: String?
+    var openDate: String? = Date().formatToString(format: .studyScheduleFormat)
+    var deadlineDate: String? = ""
+    
     var startTime: String?
     var endTime: String?
-    var repeatOption: RepeatOption?
+    var repeatOption: String? = ""
+    
+    var periodFormIsFilled: Bool {
+        if repeatOption == "" {
+            return startTime != nil && startTime != "" && endTime != "" && endTime != nil
+        } else {
+            return startTime != nil && startTime != "" && endTime != "" && endTime != nil && deadlineDate != ""
+        }
+    }
+    
+    var contentFormIsFilled: Bool {
+        return topic != nil && topic != "" && place != nil && place != ""
+    }
     
     enum CodingKeys: String, CodingKey {
-        
         case studyId
-        case studyName // domb: 전체 스터디 일정조회에는 어떤 스터디인지 알려주는 기능이 있기때문에 스터디 이름도 받아야함.
-        
-        case studyScheduleID = "studyScheduleId"
         
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"
-        
-        case openDate = "studyScheduleDate"
-        case deadlineDate = "targetDate"
         case startTime = "studyScheduleStart"
         case endTime = "studyScheduleEnd"
         case repeatOption = "repeatDay"
+        case openDate = "studyScheduleDate"
+        case deadlineDate = "targetDate"
     }
 }
 
-enum RepeatOption: String, Codable {
-    case everyDay
-    case everyWeek
-    case everyTwoWeeks // domb: git book에는 everyTwoWeek으로 되어있어 수정요청
-    case everyMonth
-    case noRepeat
-    
-    var kor: String {
-        switch self {
-        case .everyDay:
-            return "매일"
-        case .everyWeek:
-            return "매주"
-        case .everyTwoWeeks:
-            return "2주 마다"
-        case .everyMonth:
-            return "매달"
-        case .noRepeat:
-            return ""
-        }
-    }
+//enum RepeatOption: String, Codable {
+//    case everyDay = "매일"
+//    case everyWeek = "매주"
+//    case everyTwoWeeks = "2주 마다"// domb: git book에는 everyTwoWeek으로 되어있어 수정요청
+//    case everyMonth = "매달"
+//
+//    enum CodingKeys: String, CodingKey {
+//        case everyDay, everyMonth, everyWeek
+//        case everyTwoWeeks = "everyTwoWeek"
+//    }
     
 //    public init(from decoder: Decoder) throws {
 //        self = try RepeatOption(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
@@ -366,7 +378,7 @@ enum RepeatOption: String, Codable {
 ////            try container.encode(birth, forKey: .birth)
 ////            try container.encode(phoneNum, forKey: .phoneNum)
 //        }
-}
+//}
 
 struct ScheduleAttendanceInformation: Codable {
     let userID: UserID
@@ -386,3 +398,4 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias Deposit = Int

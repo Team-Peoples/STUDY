@@ -9,7 +9,7 @@ import UIKit
 
 final class MyPageSettingAlertTableViewController: UIViewController {
     
-    private let data = ["10분 전", "3시간 전", "1일 전"]
+    private let data = ["출석체크 시작 알림", "스터디 일정 임박 알림", "스터디 일정 예정 알림"]
     
     private let titleLabel = CustomLabel(title: "스터디 시간 알림", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private let tableView: UITableView = {
@@ -18,7 +18,6 @@ final class MyPageSettingAlertTableViewController: UIViewController {
         
         tableView.register(SettingAlertTableViewCell.self, forCellReuseIdentifier: SettingAlertTableViewCell.identifier)
         tableView.separatorStyle = .none
-        tableView.rowHeight = 70
         
         return tableView
     }()
@@ -32,16 +31,17 @@ final class MyPageSettingAlertTableViewController: UIViewController {
         navigationController?.setBrandNavigation()
         
         tableView.dataSource = self
+        tableView.delegate = self
         
         view.addSubview(titleLabel)
         view.addSubview(tableView)
         
         titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, topConstant: 12, leading: view.leadingAnchor, leadingConstant: 20)
-        tableView.anchor(top: titleLabel.bottomAnchor, topConstant: 12, leading: view.leadingAnchor, trailing: view.trailingAnchor, height: 70 * 3)
+        tableView.anchor(top: titleLabel.bottomAnchor, topConstant: 12, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor)
     }
 }
 
-extension MyPageSettingAlertTableViewController: UITableViewDataSource {
+extension MyPageSettingAlertTableViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingAlertTableViewCell.identifier, for: indexPath) as? SettingAlertTableViewCell else { return SettingAlertTableViewCell() }
         
@@ -52,5 +52,7 @@ extension MyPageSettingAlertTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         data.count
     }
-    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
+    }
 }
