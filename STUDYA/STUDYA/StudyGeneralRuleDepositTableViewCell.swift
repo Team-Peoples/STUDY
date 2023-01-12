@@ -17,7 +17,7 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     let depositBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
   
     /// 보증금
-    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, isNecessary: true)
+    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
     
     var depositTextFieldAction: (Int?) -> Void = { deposit in }
     
