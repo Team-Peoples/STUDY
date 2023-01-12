@@ -44,7 +44,7 @@ class TokenAuthenticator: Authenticator {
             case .success:
                 let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
                 let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
-                print("리프레시 성공","🔥")
+                print("리프레시 성공 후 api 재요청 시작","🔥")
                 completion(.success(TokenAuthenticationCredential(accessToken: accessToken, refreshToken: refreshToken)))
             case .failure(let failure):
                 completion(.failure(failure))
