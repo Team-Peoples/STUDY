@@ -125,8 +125,7 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     }
    
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        print(dateComponents?.day)
-        print(dateComponents?.date,"🔥")
+       
         guard let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController else { return }
     
         switch calendarType {

@@ -242,8 +242,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     private func configureUI(_ studySchedule: StudyScheduleGoing) {
         
-        print(studySchedule)
-        
         if let openDate = studySchedule.openDate?.formatToDate() {
             setupDate(openDate, in: openDateSelectableView)
         } else {

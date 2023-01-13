@@ -65,10 +65,8 @@ class StudyScheduleViewController: SwitchableViewController {
             })
             
             guard let dateComponents = dateComponents else { return }
-            let dateComponentsSet = Set(dateComponents)
-            let overlapRemovedDateComponents = Array(dateComponentsSet)
+            let overlapRemovedDateComponents = Array(Set(dateComponents))
 
-            print(overlapRemovedDateComponents)
             calendarView.reloadDecorations(forDateComponents: overlapRemovedDateComponents, animated: false)
         }
     }

@@ -204,7 +204,6 @@ class StudyAllScheduleViewModel: ViewModel {
             guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
             return dateComponents
         }
-//        print(dateComponents,"🔥")
         completion(dateComponents)
     }
 
