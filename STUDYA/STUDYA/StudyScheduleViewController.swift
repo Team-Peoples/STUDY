@@ -17,14 +17,7 @@ class StudyScheduleViewController: SwitchableViewController {
     
     var studyScheduleAtSelectedDate = [StudySchedule]()
     
-    lazy var calendarView: UICalendarView = {
-        let c = UICalendarView()
-        
-        c.calendar = Calendar(identifier: .gregorian)
-        c.tintColor = .appColor(.keyColor1)
-        
-        return c
-    }()
+    lazy var calendarView = PeoplesCalendarView()
     
     let scheduleTableView = ScheduleTableView()
     

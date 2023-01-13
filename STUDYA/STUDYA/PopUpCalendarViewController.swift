@@ -29,15 +29,7 @@ class PopUpCalendarViewController: UIViewController {
         
         return button
     }()
-    private let calendarView: UICalendarView = {
-        
-        let calendarView = UICalendarView()
-        
-        calendarView.calendar = Calendar.current
-        calendarView.tintColor = .appColor(.keyColor1)
-        
-        return calendarView
-    }()
+    private let calendarView = PeoplesCalendarView()
     
     // MARK: - Life Cycle
     

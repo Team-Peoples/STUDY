@@ -14,14 +14,7 @@ class CalendarViewController: UIViewController {
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
     
-    let calendarView: UICalendarView = {
-        let c = UICalendarView()
-        
-        c.calendar = Calendar(identifier: .gregorian)
-        c.tintColor = .appColor(.keyColor1)
-        
-        return c
-    }()
+    let calendarView = PeoplesCalendarView()
     
     // MARK: - Life Cycle
     

@@ -68,16 +68,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         
         return s
     }()
-    private lazy var calendarView: UICalendarView = {
-        
-        let calendarView = UICalendarView()
-        
-        calendarView.calendar = Calendar(identifier: .gregorian)
-        calendarView.tintColor = .appColor(.keyColor1)
-        calendarView.fontDesign = .rounded
-        
-        return calendarView
-    }()
+    private lazy var calendarView = PeoplesCalendarView()
     private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
     private let doneButton = BrandButton(title: Const.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
