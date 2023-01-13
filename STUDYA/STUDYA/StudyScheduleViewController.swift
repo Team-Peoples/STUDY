@@ -83,7 +83,11 @@ class StudyScheduleViewController: SwitchableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        studyAllScheduleViewModel.getStudyAllSchedule()
+        studyAllScheduleViewModel.getStudyAllSchedule { [self] in
+            guard let studySchedule = studyAllScheduleViewModel.studySchedules(of: studyID, at: Date().convertToDateComponents()) else { fatalError() }
+            self.studyScheduleAtSelectedDate = studySchedule
+            self.scheduleTableView.reloadData()
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

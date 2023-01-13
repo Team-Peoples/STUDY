@@ -185,11 +185,12 @@ class StudyAllScheduleViewModel: ViewModel {
         handler?(studyAllSchedule)
     }
     
-    func getStudyAllSchedule() {
+    func getStudyAllSchedule(completion: (() -> Void)? = nil) {
         Network.shared.getStudyAllSchedule { result in
             switch result {
             case .success(let studyAllSchedule):
                 self.studyAllSchedule = studyAllSchedule
+                completion?()
             case .failure(let error):
                 print(error)
             }
