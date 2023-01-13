@@ -218,6 +218,17 @@ class StudyAllScheduleViewModel: ViewModel {
         })
         return studySchedules
     }
+
+    func deleteStudySchedule(id studyScheduleID: ID, deleteRepeatedSchedule: Bool, successHandler: @escaping () -> Void) {
+        Network.shared.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule: deleteRepeatedSchedule) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 class StudyScheduleViewModel: ViewModel {

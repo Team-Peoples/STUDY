@@ -18,7 +18,7 @@ extension UIView {
 
 final class BrandButton: UIButton {
     
-    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat) {
+    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat, borderColor: AssetColor? = nil) {
         super.init(frame: .zero)
         
         setTitle(title, for: .normal)
@@ -27,6 +27,10 @@ final class BrandButton: UIButton {
         
         setHeight(42)
         layer.cornerRadius = radius
+        if let borderColor = borderColor {
+            layer.borderColor = UIColor.appColor(borderColor).cgColor
+            layer.borderWidth = 1
+        }
     }
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {

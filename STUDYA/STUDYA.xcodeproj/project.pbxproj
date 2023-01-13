@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
+		721482B2297125E100A903FF /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* PopUpViewController.swift */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */; };
@@ -139,6 +140,7 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		721482B1297125E100A903FF /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */,
 				D309A3CA293CA061007BD2FF /* NotificationViewController.swift */,
 				72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */,
+				721482B1297125E100A903FF /* PopUpViewController.swift */,
 				7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */,
 				726FA4622901A352004E49A9 /* ScheduleTableView.swift */,
 				726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */,
@@ -696,6 +699,7 @@
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,
+				721482B2297125E100A903FF /* PopUpViewController.swift in Sources */,
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
 				D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
