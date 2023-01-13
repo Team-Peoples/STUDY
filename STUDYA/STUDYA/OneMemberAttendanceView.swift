@@ -19,7 +19,7 @@ class OneMemberAttendanceView: UIView {
     lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
-            let headerView = AttendanceStatusView()
+            let headerView = MyAttendanceStatusView()
             headerView.attendanceOverall = viewModel?.myAttendanceOverall
             
             return headerView

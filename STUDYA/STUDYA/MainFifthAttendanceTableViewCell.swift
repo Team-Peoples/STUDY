@@ -19,12 +19,15 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
                 return
             }
-
-            penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
             
             if currentStudyOverall.totalStudyHeldCount != 0 {
                 setupProgress()
-
+                
+                let totalCount = currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount + currentStudyOverall.absentCount
+                attendanceRatioLabel.text = "\((currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount) / totalCount)%"
+                
+                penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
+                
                 noAttendanceDataLabel.isHidden = true
                 progressView.isHidden = false
                 stackView.isHidden = false
@@ -85,9 +88,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         return MPV
     }()
     private lazy var attendanceRatioTitleLabel = CustomLabel(title: "출석률", tintColor: .ppsGray1, size: 12)
-    private lazy var attendanceRatioLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
+    private lazy var attendanceRatioLabel = CustomLabel(title: "정보를 불러오지 못했습니다.", tintColor: .keyColor1, size: 12, isBold: true)
     private lazy var penaltyTitleLabel = CustomLabel(title: "| 벌금", tintColor: .ppsGray1, size: 12)
-    private lazy var penaltyLabel = CustomLabel(title: "", tintColor: .keyColor1, size: 12, isBold: true)
+    private lazy var penaltyLabel = CustomLabel(title: "정보를 불러오지 못했습니다.", tintColor: .keyColor1, size: 12, isBold: true)
     private lazy var stackView: UIStackView = {
        
         let s = UIStackView(arrangedSubviews: [attendanceRatioTitleLabel, attendanceRatioLabel, penaltyTitleLabel, penaltyLabel])

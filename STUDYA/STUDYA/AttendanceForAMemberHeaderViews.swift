@@ -9,11 +9,9 @@ import UIKit
 import SnapKit
 import MultiProgressView
 
-class AttendanceStatusView: UIView {
+class MyAttendanceStatusView: UIView {
     
     // MARK: - Properties
-    
-    internal var totalFine: Int?
     internal var attendanceOverall: Observable<MyAttendanceOverall>?
     
 //    필요정보: 총벌금, 출석지각결석사유 횟수
@@ -44,7 +42,7 @@ class AttendanceStatusView: UIView {
     private func setBinding() {
         attendanceOverall?.bind({ myAttendanceOverall in
             self.fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: myAttendanceOverall.totalFine, valueFontSize: 24, withCurrency: true)
-            
+            self.attendanceProgressView.attendanceOverall = self.attendanceOverall
         })
     }
     
@@ -145,7 +143,7 @@ private class AttendanceReusableProgressView: UIView {
     
     private let attendanceProportionLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "출석률 0%"
+        lbl.text = ""
         lbl.font = UIFont.systemFont(ofSize: 12)
         lbl.textColor = .appColor(.ppsBlack)
         return lbl
@@ -162,10 +160,10 @@ private class AttendanceReusableProgressView: UIView {
     private let absenceLabel = CustomLabel(title: "결석", tintColor: .ppsGray1, size: 14)
     private let allowedLabel = CustomLabel(title: "사유", tintColor: .ppsGray1, size: 14)
     
-    private let attendanceCountLabel = CustomLabel(title: "0", tintColor: .attendedMain, size: 16, isBold: true)
-    private let latenessCountLabel = CustomLabel(title: "0", tintColor: .lateMain, size: 16, isBold: true)
-    private let absenceCountLabel = CustomLabel(title: "0", tintColor: .absentMain, size: 16, isBold: true)
-    private let allowedCountLabel = CustomLabel(title: "0", tintColor: .allowedMain, size: 16, isBold: true)
+    private let attendanceCountLabel = CustomLabel(title: "?", tintColor: .attendedMain, size: 16, isBold: true)
+    private let latenessCountLabel = CustomLabel(title: "?", tintColor: .lateMain, size: 16, isBold: true)
+    private let absenceCountLabel = CustomLabel(title: "?", tintColor: .absentMain, size: 16, isBold: true)
+    private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 16, isBold: true)
     
     private let separater = UIView()
     
@@ -191,19 +189,17 @@ private class AttendanceReusableProgressView: UIView {
     
     func setBinding() {
         attendanceOverall?.bind({ [self] myAttendanceOverall in
+            
+            let totalCount = myAttendanceOverall.attendedCount + myAttendanceOverall.lateCount + myAttendanceOverall.absentCount + myAttendanceOverall.allowedCount
+            attendanceProportionLabel.text = "출석률 \((myAttendanceOverall.attendedCount + myAttendanceOverall.lateCount + myAttendanceOverall.allowedCount) / totalCount)%"
+            
             attendanceCountLabel.text = String(myAttendanceOverall.attendedCount)
             latenessLabel.text = String(myAttendanceOverall.lateCount)
             absenceCountLabel.text = String(myAttendanceOverall.absentCount)
             allowedCountLabel.text = String(myAttendanceOverall.allowedCount)
+            
+            setupProgress()
         })
-    }
-    
-    func configure(_ studyAttendance: [String: Int]) {
-        
-        attendanceCountLabel.text = "\(studyAttendance["출석"]!)"
-        latenessCountLabel.text = "\(studyAttendance["지각"]!)"
-        absenceCountLabel.text = "\(studyAttendance["결석"]!)"
-        allowedCountLabel.text = "\(studyAttendance["사유"]!)"
     }
     
     // MARK: - Configure
