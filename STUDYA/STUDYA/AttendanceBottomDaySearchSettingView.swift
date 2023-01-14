@@ -63,7 +63,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
     override func doneButtonTapped() {
         viewModel?.alignment = Observable(alignment)
-        viewModel?.time = Observable((viewModel?.times?.value[item])!)
+        viewModel?.selectedTime = Observable((viewModel?.times?.value[item])!)
     }
     
     private func configureCollectionView() {

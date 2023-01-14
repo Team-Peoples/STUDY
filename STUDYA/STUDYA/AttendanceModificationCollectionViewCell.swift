@@ -9,8 +9,9 @@ import UIKit
 
 final class AttendancesModificationViewModel {
     var studyID: Int
-    var alignment: Observable<LeftButtonAlignment> = Observable(.name)
-    lazy var time: Observable<Time> = Observable(times?.value.first ?? "??")
+    var alignment = Observable(LeftButtonAlignment.name)
+    lazy var selectedTime = Observable(times?.value.first ?? "??")
+    var selectedDate = Observable(Date().convertToDashedString())
     var times: Observable<[Time]>?
     var attendancesForATime: Observable<[[SingleUserAnAttendanceInformation]]>?
     var error: Observable<PeoplesError>?
@@ -39,7 +40,6 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     internal var viewModel: AttendancesModificationViewModel? {
         didSet {
             headerView.viewModel = viewModel
-            setBinding()
         }
     }
     internal var delegate: (BottomSheetAddable & Navigatable)! {
@@ -83,7 +83,6 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalTo(contentView)
             make.top.equalTo(headerView.snp.bottom)
         }
-        setBinding()
     }
     
     required init?(coder: NSCoder) {
@@ -91,12 +90,9 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        viewModel?.alignment.bind({ leftButtonAlignment in
-            self.headerView.configureAlignment(leftButtonAlignment)
+        viewModel?.selectedDate.bind({ dashedDate in
+            self.viewModel?.getAllMembersAttendanceOn()
         })
-        viewModel?.time.bind { time in
-            self.headerView.configureTime(time)
-        }
     }
 }
 

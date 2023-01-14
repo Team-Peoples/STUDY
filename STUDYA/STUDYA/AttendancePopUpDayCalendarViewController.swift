@@ -11,9 +11,10 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
-    var selectedDate: Date = Date() //임시
-    lazy var selectedDateComponents: DateComponents? = selectedDate.convertToDateComponents()
-
+//    internal var selectedDate: Date?
+    private var selectedDateComponents: DateComponents?
+    
+    weak var viewModel: AttendancesModificationViewModel?
     weak var presentingVC: UIViewController?
     
     private let dimmingViewButton = UIButton(frame: .zero)
@@ -43,11 +44,17 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init() {
+    init(presentingVC: UIViewController, viewModel: AttendancesModificationViewModel) {
         super.init(nibName: nil, bundle: nil)
-        print(#function)
+        
         modalTransitionStyle = .crossDissolve
         modalPresentationStyle = .overFullScreen
+        
+        self.viewModel = viewModel
+        self.presentingVC = presentingVC
+        
+        guard let date = DateFormatter.dashedDateFormatter.date(from: viewModel.selectedDate.value) else { return }
+        selectionSingleDate.setSelected(date.convertToDayDateComponents(), animated: true)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -57,7 +64,6 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectionSingleDate.setSelected(selectedDateComponents, animated: true)
         calendarView.selectionBehavior = selectionSingleDate
         
         dimmingViewButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
@@ -77,6 +83,14 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
+        guard let selectedDateComponents = selectedDateComponents,
+              let year = selectedDateComponents.year,
+              let month = selectedDateComponents.month,
+              let day = selectedDateComponents.day else { return }
+        
+        let dateString = String(format: "%04d-%02d-%02d", year, month, day)
+        viewModel?.selectedDate = Observable(dateString)
+        
         self.dismiss(animated: true)
     }
     
@@ -138,20 +152,20 @@ extension AttendancePopUpDayCalendarViewController: UICalendarSelectionSingleDat
             && dateComponents.month == selectedDateComponents.month
             && dateComponents.day == selectedDateComponents.day {
             
+            self.selectedDateComponents = nil
             selectionSingleDate.setSelected(nil, animated: true)
             
             doneButton.fillOut(title: Const.done)
             doneButton.isEnabled = false
         } else {
-            
+            self.selectedDateComponents = dateComponents
             doneButton.fillIn(title: Const.done)
             doneButton.isEnabled = true
         }
     }
     
     func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
-        let today = Date()  //여기서는 오늘 이후에는 선택해봤자 의미가 없기 땜에 오늘이 맞음.
-//        let todayDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: today)
+        let today = Date()
         
         guard let dateComponents = dateComponents, let selectedDate = dateComponents.convertToDate() else { return false }
         

@@ -449,4 +449,6 @@ typealias Content = String
 typealias Password = String
 typealias SNSToken = String
 typealias dashedDate = String
+typealias dottedDate = String
 typealias Time = String
+

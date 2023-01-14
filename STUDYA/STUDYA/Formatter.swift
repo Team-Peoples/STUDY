@@ -48,6 +48,15 @@ extension DateFormatter {
         
         return dateFormatter
     }()
+    
+    static let dottedDateFormatter: DateFormatter = {
+       
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        
+        return dateFormatter
+    }()
 
 //    let dateFormatter = DateFormatter()
 //    dateFormatter.dateFormat = "yyyy-MM-dd"

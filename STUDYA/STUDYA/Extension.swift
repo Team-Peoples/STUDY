@@ -149,12 +149,20 @@ extension UITableView {
 }
 
 extension Date {
-    func convertToDateComponents() -> DateComponents {
+    func convertToMinuteDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
     }
     
-    func convertToDashedString() -> String {
+    func convertToDayDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day], from: self)
+    }
+    
+    func convertToDashedString() -> dashedDate {
         DateFormatter.dashedDateFormatter.string(from: self)
+    }
+    
+    func convertToDottedString() -> dottedDate {
+        DateFormatter.dottedDateFormatter.string(from: self)
     }
 }
 

@@ -86,6 +86,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="rightButton" destination="XI5-7I-nDK" id="Itt-YC-z71"/>
                 <outlet property="sortingTypeLabel" destination="DmE-2e-4D1" id="CK1-ye-ppe"/>
                 <outlet property="studyTimeLabel" destination="jE4-lV-bbD" id="AtS-6I-wK2"/>
             </connections>
