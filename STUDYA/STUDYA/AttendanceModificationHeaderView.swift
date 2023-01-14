@@ -16,6 +16,8 @@ final class AttendanceModificationHeaderView: UIView {
     internal var leftButtonTapped: (() -> ()) = {}
     internal var rightButtonTapped: (() -> ()) = {}
     
+    internal var viewModel: AttendancesModificationViewModel?
+    
     @IBOutlet weak var sortingTypeLabel: UILabel!
     @IBOutlet weak var studyTimeLabel: UILabel!
     
@@ -23,16 +25,26 @@ final class AttendanceModificationHeaderView: UIView {
         return UINib(nibName: "AttendanceModificationHeaderView", bundle: nil)
     }
     
+    internal func configureAlignment(_ align: LeftButtonAlignment) {
+        sortingTypeLabel.text = align.rawValue
+    }
+    
+    internal func configureTime(_ time: Time) {
+        studyTimeLabel.text = time
+    }
+    
     @IBAction func leftButtonTapped(_ sender: UIButton) {
         let bottomVC = AttendanceBottomViewController()
         
+        bottomVC.viewModel = viewModel
         bottomVC.viewType = .daySearchSetting
+        
         navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
         let vc = AttendancePopUpDayCalendarViewController()
         
-        vc.presentingVC =  navigatableBottomSheetableDelegate
+        vc.presentingVC = navigatableBottomSheetableDelegate
         navigatableBottomSheetableDelegate.present(vc)
     }
 }

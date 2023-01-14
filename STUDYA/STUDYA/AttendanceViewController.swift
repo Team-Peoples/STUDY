@@ -9,19 +9,16 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var viewModel: AttendanceViewModel? {
+    internal var studyID: ID? {
         didSet {
-            userView.viewModel = viewModel
-            if isManager{
-//                managerView.viewModel = viewModel
-            }
+            managerView.studyID = studyID
         }
     }
     
     private lazy var managerView: AttendanceManagerModeView = {
         
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)
-        let v = nib.instantiate(withOwner: AttendanceViewController.self).first as! AttendanceManagerModeView
+        guard let v = nib.instantiate(withOwner: AttendanceViewController.self).first as? AttendanceManagerModeView else { return }
         
         return v
     }()
@@ -34,7 +31,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
             managerView.delegate = self
         }
         userView.bottomSheetAddableDelegate = self
-        setUpBinding()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,10 +47,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     override func extraWorkWhenSwitchToggled() {
         view = isSwitchOn ? managerView : userView
-    }
-    
-    private func setUpBinding() {
-        
     }
 }
 

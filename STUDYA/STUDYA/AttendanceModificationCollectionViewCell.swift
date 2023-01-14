@@ -7,16 +7,47 @@
 
 import UIKit
 
+final class AttendancesModificationViewModel {
+    var studyID: Int
+    var alignment: Observable<LeftButtonAlignment> = Observable(.name)
+    lazy var time: Observable<Time> = Observable(times?.value.first ?? "??")
+    var times: Observable<[Time]>?
+    var attendancesForATime: Observable<[[SingleUserAnAttendanceInformation]]>?
+    var error: Observable<PeoplesError>?
+    
+    init(studyID: Int) {
+        self.studyID = studyID
+    }
+    
+    func getAllMembersAttendanceOn() {
+        Network.shared.getAllMembersAttendanceOn(Date().convertToDashedString(), studyID: studyID) { result in
+            switch result {
+            case .success(let allUserAttendancesForADay):
+                self.times = Observable(allUserAttendancesForADay.map { $0.key })
+                self.attendancesForATime = Observable(allUserAttendancesForADay.map { $0.value })
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+}
+
 final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "AttendanceModificationCollectionViewCell"
+    
+    internal var viewModel: AttendancesModificationViewModel? {
+        didSet {
+            headerView.viewModel = viewModel
+            setBinding()
+        }
+    }
     internal var delegate: (BottomSheetAddable & Navigatable)! {
         didSet {
             print("델리게이트")
             headerView.navigatableBottomSheetableDelegate = delegate
         }
     }
-    
-    static let identifier = "AttendanceModificationCollectionViewCell"
     
     private lazy var tableView: UITableView = {
        
@@ -52,10 +83,20 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalTo(contentView)
             make.top.equalTo(headerView.snp.bottom)
         }
+        setBinding()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setBinding() {
+        viewModel?.alignment.bind({ leftButtonAlignment in
+            self.headerView.configureAlignment(leftButtonAlignment)
+        })
+        viewModel?.time.bind { time in
+            self.headerView.configureTime(time)
+        }
     }
 }
 
@@ -87,4 +128,9 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
         
         delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
+}
+
+enum LeftButtonAlignment: String {
+    case name = "이름순"
+    case attendance = "출석순"
 }

@@ -152,6 +152,10 @@ extension Date {
     func convertToDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
     }
+    
+    func convertToDashedString() -> String {
+        DateFormatter.dashedDateFormatter.string(from: self)
+    }
 }
 
 extension DateComponents {
