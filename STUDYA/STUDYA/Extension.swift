@@ -181,6 +181,22 @@ extension Date {
     func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
         Calendar.current.dateComponents(components, from: self)
     }
+    
+    func getAlldaysComponents() -> [DateComponents] {
+        
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month], from: self)
+        
+        let range = calendar.range(of: .day, in: .month, for: self)!
+
+        var days = [DateComponents]()
+        for i in range {
+            var components = dateComponents
+            components.day = i
+            days.append(components)
+        }
+        return days
+    }
 }
 
 extension DateComponents {

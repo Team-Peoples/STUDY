@@ -58,7 +58,7 @@ enum RequestPurpose: Requestable {
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
-    case updateStudySchedule(StudySchedule)
+    case updateStudySchedule(StudyScheduleGoing)
     case endStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)

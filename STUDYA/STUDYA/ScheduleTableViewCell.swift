@@ -75,11 +75,13 @@ class ScheduleTableViewCell: UITableViewCell {
     
     func configure(schedule: StudySchedule, kind: CalendarKind) {
         
-        if let dateComponents = schedule.startDate?.convertToDateComponents(), let hour = dateComponents.hour, let minute = dateComponents.minute {
+        let startDateComponents = schedule.startDate.convertToDateComponents()
+        if let hour = startDateComponents.hour, let minute = startDateComponents.minute {
             startTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         
-        if  let dateComponents = schedule.endDate?.convertToDateComponents(), let hour = dateComponents.hour, let minute = dateComponents.minute {
+        let endDateComponents = schedule.endDate.convertToDateComponents()
+        if let hour = endDateComponents.hour, let minute = endDateComponents.minute {
             endTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         bookmarkColorView.backgroundColor = UIColor.orange

@@ -29,7 +29,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
                 return
             }
             
-            guard let startTime = schedule.startDate, let endTime = schedule.endDate else { return }
+            let startTime = schedule.startDate
             
             let now = Date()
             let calendar = Calendar.current
@@ -42,7 +42,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             let todayComponents = calendar.dateComponents([.year, .month, .day], from: now)
             
             mainButton.isEnabled = false
-//            🛑위의 스케줄에서 받은 didAttend
+            //            🛑위의 스케줄에서 받은 didAttend
             if didAttend {
 //                출석상태 별 뷰 띄우기 (지금은 attendanceStatus didSet에서 하고 있음.
                 afterStudyView.isHidden = false

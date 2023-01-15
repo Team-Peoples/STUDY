@@ -201,7 +201,7 @@ class StudyAllScheduleViewModel: ViewModel {
         
         let dateComponents = studyAllSchedule["\(studyID)"]?.map { studySchedule in
             
-            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
+            let dateComponents = studySchedule.startDate.convertToDateComponents()
             return dateComponents
         }
         completion(dateComponents)
@@ -209,11 +209,11 @@ class StudyAllScheduleViewModel: ViewModel {
 
     func studySchedules(of studyID: ID, at calendarSelectedDateComponents: DateComponents?) -> [StudySchedule]? {
         let studySchedules = studyAllSchedule["\(studyID)"]?.filter({ studySchedule in
-            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
-               let year = dateComponents.year
-               let month = dateComponents.month
-               let day = dateComponents.day
-
+            let dateComponents = studySchedule.startDate.convertToDateComponents() 
+            let year = dateComponents.year
+            let month = dateComponents.month
+            let day = dateComponents.day
+            
             return calendarSelectedDateComponents?.year == year && calendarSelectedDateComponents?.month == month && calendarSelectedDateComponents?.day == day
         })
         return studySchedules
@@ -254,6 +254,17 @@ class StudyScheduleViewModel: ViewModel {
     
     func postStudySchedule(successHandler: @escaping () -> Void) {
         Network.shared.createStudySchedule(studySchedule) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func updateStudySchedule(successHandler: @escaping () -> Void) {
+        Network.shared.updateStudySchedule(studySchedule) { result in
             switch result {
             case .success:
                 successHandler()

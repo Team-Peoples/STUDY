@@ -702,7 +702,7 @@ struct Network {
         }
     }
     
-    func updateStudySchedule(_ schedule: StudySchedule, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func updateStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
