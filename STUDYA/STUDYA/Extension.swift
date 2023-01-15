@@ -177,6 +177,10 @@ extension Date {
     func convertToDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: self)
     }
+    
+    func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
+        Calendar.current.dateComponents(components, from: self)
+    }
 }
 
 extension DateComponents {

@@ -160,7 +160,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             
             guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
             
-            self.studyScheduleViewModel.studySchedule.startTime = "\(String(format: "%02d", minute)):\(String(format: "%02d", minute))"
+            self.studyScheduleViewModel.studySchedule.startTime = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)

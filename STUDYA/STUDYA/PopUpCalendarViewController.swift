@@ -112,11 +112,9 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
         case .open:
             return true
         case .deadline:
-            guard let day = dateComponents?.day, // 캘린더의 모든 날짜
-                  let openDateDay = Calendar.current.dateComponents([.day], from: openDate).day else { return false
-            }
-
-            if day < openDateDay {
+            guard let date = dateComponents?.date else { fatalError() }
+            
+            if date < openDate {
                 return false
             } else {
                 return true
