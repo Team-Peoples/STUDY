@@ -32,13 +32,6 @@ enum Const {
     static let defaultProfile = "defaultProfile"
 }
 
-enum AttendanceStatus: String {
-    case attended = ""
-    case late = "LATE"
-    case absent = "ABSENT"
-    case allowed = "?????"
-}
-
 enum StudyExitBottomSheetTask {
     case exit
     case close

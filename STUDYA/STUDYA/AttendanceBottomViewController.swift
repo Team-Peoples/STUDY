@@ -41,6 +41,7 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
             case .daySearchSetting:
                 guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
                 bottomView.viewModel = viewModel
+                bottomView.navigatable = self
                 
             case .membersPeriodSearchSetting:
                 guard let bottomView = bottomView as? AttendanceBottomMembersPeriodSearchSettingView else { return }

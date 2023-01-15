@@ -172,11 +172,11 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             case .late:
                 afterStudyView.backgroundColor = UIColor.appColor(.lateMain)
                 symbolView.image = UIImage(named: "attendedSymbol")
-                titleLabel.text = "출석"
+                titleLabel.text = "지각"
             case .absent:
                 afterStudyView.backgroundColor = UIColor.appColor(.absentMain)
                 symbolView.image = UIImage(named: "absentSymbol")
-                titleLabel.text = "지각"
+                titleLabel.text = "결석"
             case .allowed:
                 afterStudyView.backgroundColor = UIColor.appColor(.allowedMain)
                 symbolView.image = UIImage(named: "allowedSymbol")?.withTintColor(.white, renderingMode: .alwaysOriginal)

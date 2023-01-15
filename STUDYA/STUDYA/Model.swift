@@ -5,7 +5,7 @@
 //  Created by 서동운 on 2022/09/08.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Model
 
@@ -389,7 +389,8 @@ enum RepeatOption: String, Codable {
 
 struct ScheduleAttendanceInformation: Codable {
     let userID: UserID
-    let attendanceStatus, reason: String
+    let attendanceStatus: Attendance
+    let reason: String
     let fine: Int
 
     enum CodingKeys: String, CodingKey {
@@ -414,7 +415,8 @@ struct MyAttendanceOverall: Codable {
 
 struct OneTimeAttendanceInformation: Codable {
     let fine, attendanceID: Int
-    let attendanceStatus, userID: String
+    let attendanceStatus: Attendance
+    let userID: String
     let studyScheduleDate: Date
     
     enum CodingKeys: String, CodingKey {
@@ -429,14 +431,57 @@ struct OneTimeAttendanceInformation: Codable {
 
 struct SingleUserAnAttendanceInformation: Codable {
     let fine: Int
-    let attendanceStatus, userID: String
+    let attendanceStatus: Attendance
+    let userID: String
     let attendanceID: Int
+//    let nickName: String
 
     enum CodingKeys: String, CodingKey {
         case fine
         case attendanceStatus = "attendance"
         case userID = "userId"
         case attendanceID = "attendanceId"
+    }
+}
+
+enum Attendance: Codable {
+    case attended
+    case late
+    case absent
+    case allowed
+    
+    enum CodingKEys: String, CodingKey {
+        case attended = "ATTENDANCE"
+        case late = "LATENESS"
+        case absent = "ABSENT"
+        case allowed = "HOLD"
+    }
+    
+    var korean: String {
+        switch self {
+        case .attended:
+            return "출석"
+        case .late:
+            return "지각"
+        case .absent:
+            return "결석"
+        case .allowed:
+            return "사유"
+        default: break
+        }
+    }
+    
+    var color: AssetColor {
+        switch self {
+            case .attended:
+                return .attendedMain
+            case .late:
+                return .lateMain
+            case .absent:
+                return .absentMain
+            case .allowed:
+                return .allowedMain
+        }
     }
 }
 

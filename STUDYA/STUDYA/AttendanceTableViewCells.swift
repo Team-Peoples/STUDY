@@ -177,12 +177,12 @@ class AttendanceTableViewDayCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var attendance: String? {
+    var attendance: Attendance? {
         didSet {
             guard let attendance = attendance else { return }
             
-            attendanceLabel.text = attendance
-            attendanceLabelBackgroundView.backgroundColor = AttendanceColor(rawValue: attendance)?.color
+            attendanceLabel.text = attendance.korean
+            attendanceLabelBackgroundView.backgroundColor = .appColor(attendance.color)
         }
     }
     

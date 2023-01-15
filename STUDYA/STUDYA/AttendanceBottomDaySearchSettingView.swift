@@ -10,10 +10,10 @@ import UIKit
 final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
     internal var viewModel: AttendancesModificationViewModel?
-    private var item = 0
+    private var time: Time?
     private var alignment = LeftButtonAlignment.name
     
-    internal var doneButtonDidTapped: ((LeftButtonAlignment, Time) -> ()) = { alignment, time in }
+    internal var navigatable: Navigatable?
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -62,8 +62,17 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     }
     
     override func doneButtonTapped() {
-        viewModel?.alignment = Observable(alignment)
-        viewModel?.selectedTime = Observable((viewModel?.times?.value[item])!)
+        guard let viewModel = viewModel,
+              let allUsersAttendanceForADay = viewModel.allUsersAttendacneForADay,
+              let time = time,
+              let attendancesForATime = allUsersAttendanceForADay.value[time] else { return }
+        
+        viewModel.alignment = Observable(alignment)
+        viewModel.selectedTime = Observable(time)
+        viewModel.attendancesForATime = Observable(attendancesForATime)
+        
+        
+        navigatable?.dismiss()
     }
     
     private func configureCollectionView() {
@@ -143,7 +152,7 @@ extension AttendanceBottomDaySearchSettingView: UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
-        item = indexPath.item
+        time = viewModel?.times?.value[indexPath.item]
         cell.enableButton()
     }
     

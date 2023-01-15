@@ -18,6 +18,9 @@ extension Navigatable {
     func present(_ vc: UIViewController) {
         present(vc, animated: true)
     }
+    func dismiss() {
+        dismiss(animated: true)
+    }
     func pop() {
         navigationController?.popViewController(animated: true)
     }
