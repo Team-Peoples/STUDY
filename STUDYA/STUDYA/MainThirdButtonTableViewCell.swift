@@ -82,7 +82,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     internal var attendable = true
     internal var didAttend = false
-    internal var attendanceStatus: AttendanceStatus? {
+    internal var attendance: Attendance? {
         didSet {
 //        guard 출석 이미 했을 때 else { return }
             afterStudyView.isHidden = false
@@ -154,7 +154,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     private func decorateAfterCheckView() {
         
-        if attendanceStatus == .attended {
+        if attendance == .attended {
             subTitleLabel.isHidden = false
             
             afterStudyView.backgroundColor = UIColor.appColor(.attendedMain)
@@ -168,7 +168,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             fineLabel.isHidden = false
             wonLabel.isHidden = false
             
-            switch attendanceStatus {
+            switch attendance {
             case .late:
                 afterStudyView.backgroundColor = UIColor.appColor(.lateMain)
                 symbolView.image = UIImage(named: "attendedSymbol")

@@ -65,12 +65,44 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         guard let viewModel = viewModel,
               let allUsersAttendanceForADay = viewModel.allUsersAttendacneForADay,
               let time = time,
-              let attendancesForATime = allUsersAttendanceForADay.value[time] else { return }
+              var attendancesForATime = allUsersAttendanceForADay.value[time] else { return }
         
         viewModel.alignment = Observable(alignment)
         viewModel.selectedTime = Observable(time)
-        viewModel.attendancesForATime = Observable(attendancesForATime)
         
+        if alignment == .name {
+            attendancesForATime.sort { (lhs, rhs) -> Bool in
+                
+                if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임임
+                    
+                    if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+                        return lhs.userID > rhs.userID  //여기는 userID맞음
+                    } else {
+                        return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+                    }
+                    
+                } else {
+                    return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+                }
+            }
+        } else {
+            attendancesForATime.sort { lhs, rhs in
+                
+                if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+                    
+                    if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임
+                        return lhs.userID > rhs.userID  //여기는 맞음
+                    } else {
+                        return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+                    }
+                    
+                } else {
+                    return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+                }
+            }
+        }
+        
+        viewModel.attendancesForATime = Observable(attendancesForATime)
         
         navigatable?.dismiss()
     }

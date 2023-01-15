@@ -467,7 +467,6 @@ enum Attendance: Codable {
             return "결석"
         case .allowed:
             return "사유"
-        default: break
         }
     }
     
@@ -481,6 +480,19 @@ enum Attendance: Codable {
                 return .absentMain
             case .allowed:
                 return .allowedMain
+        }
+    }
+    
+    var priority: Int {
+        switch self {
+        case .attended:
+            return 1
+        case .late:
+            return 2
+        case .absent:
+            return 3
+        case .allowed:
+            return 4
         }
     }
 }
