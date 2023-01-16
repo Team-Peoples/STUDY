@@ -197,14 +197,15 @@ class StudyAllScheduleViewModel: ViewModel {
         }
     }
     
-    func studyScheduleDateComponents(of studyID: ID, completion: ([DateComponents]?) -> Void) {
-        
-        let dateComponents = studyAllSchedule["\(studyID)"]?.map { studySchedule in
-            
-            let dateComponents = studySchedule.startDate.convertToDateComponents()
-            return dateComponents
+    func studySchedule(at selectedDate: DateComponents?) -> [StudySchedule] {
+        let allStudyAllSchedule = studyAllSchedule.values.flatMap { $0 }
+        let studyScheduleAtSelectedDate = allStudyAllSchedule.filter { studySchedule in
+            let studyScheduleDateComponents = studySchedule.startDate.convertedToDateComponents([.year, .month, .day])
+            return studyScheduleDateComponents.year == selectedDate?.year &&
+            studyScheduleDateComponents.month == selectedDate?.month &&
+            studyScheduleDateComponents.day == selectedDate?.day
         }
-        completion(dateComponents)
+        return studyScheduleAtSelectedDate
     }
 
     func studySchedules(of studyID: ID, at calendarSelectedDateComponents: DateComponents?) -> [StudySchedule]? {

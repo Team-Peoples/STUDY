@@ -9,11 +9,25 @@ import UIKit
 
 import SnapKit
 
+protocol ScheduleCoordinator: AnyObject {
+   
+}
+
 class CalendarBottomSheetViewController: UIViewController, Draggable {
     // MARK: - Properties
     
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
     internal weak var dataSource: UBottomSheetCoordinatorDataSource?
+    weak var scheduleCoordinator: ScheduleCoordinator?
+    var studySchedule: [StudySchedule] = [] {
+        didSet {
+            let cell = contentView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+            cell?.studySchedules = studySchedule
+            print(studySchedule, "❤️")
+            cell?.reloadTableView()
+            cell?.checkScheduleIsEmpty()
+        }
+    }
     
     private let style = lineTabStyle()
     
@@ -75,7 +89,8 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                 /// 근데 맨처음에는 실행되지않음.
                 /// cellForRowAt에서 코드 추가해주어서 해결.
                 let cell = contentView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
-                
+                cell?.studySchedules = studySchedule
+                print(studySchedule, "❤️")
                 cell?.reloadTableView()
                 cell?.checkScheduleIsEmpty()
                 
@@ -237,6 +252,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
                 
             case 1:
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
+                cell.studySchedules = studySchedule
                 cell.reloadTableView()
                 cell.checkScheduleIsEmpty()
                 return cell
