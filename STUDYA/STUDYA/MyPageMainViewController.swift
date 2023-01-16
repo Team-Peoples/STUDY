@@ -82,7 +82,6 @@ final class MyPageMainViewController: UIViewController {
         navigationItem.title = "마이페이지"
         getUserInfo { user in
             self.user = user
-            print(user.imageURL)
         }
     }
     

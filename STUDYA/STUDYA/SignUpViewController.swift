@@ -19,8 +19,8 @@ class SignUpViewController: UIViewController {
     private let containerView = UIView()
     private let titleLabel = CustomLabel(title: "회원가입", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = ValidationInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .default, isFieldSecure: false, validationText: "이메일 형식을 올바르게 입력해주세요.", cancelButton: true, target: self, textFieldAction: #selector(clear))
-    private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
-    private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "비밀번호가 맞지 않아요.",target: self, textFieldAction: #selector(toggleIsSecure(sender: )))
+    private lazy var passwordInputView = ValidationInputView(titleText: "비밀번호", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .next, isFieldSecure: true, validationText: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", target: self, textFieldAction: #selector(toggleIsSecureTextEntry))
+    private lazy var passwordCheckInputView = ValidationInputView(titleText: "비밀번호 확인", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, validationText: "비밀번호가 맞지 않아요.",target: self, textFieldAction: #selector(toggleIsSecureTextEntry))
     
     private lazy var emailInputField = emailInputView.getInputField()
     private lazy var emailValidationLabel = emailInputView.getValidationLabel()
@@ -88,7 +88,7 @@ class SignUpViewController: UIViewController {
         emailInputField.text = nil
     }
     
-    @objc private func toggleIsSecure(sender: UIButton) {
+    @objc private func toggleIsSecureTextEntry(_ sender: UIButton) {
         
         if sender.tag == 1 {
             

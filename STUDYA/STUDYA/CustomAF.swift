@@ -43,6 +43,7 @@ enum RequestPurpose: Requestable {
     case signUp   ////1
     case emailCheck(UserID) ////2
     case signIn ////4
+    case checkOldPassword(UserID, Password)
     case refreshToken ////9
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
@@ -112,6 +113,8 @@ extension RequestPurpose {
             return "/signup/verification"
         case .signIn:
             return "/signin"
+        case .checkOldPassword:
+            return "/user/password/confirm"
         case .refreshToken:
             return "/issued"
         case .createStudy:
@@ -193,7 +196,7 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
+        case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
         case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole: return .put
             
@@ -209,8 +212,11 @@ extension RequestPurpose {
 // Body
             
 ///    HTTPMethod: POST
-        case .emailCheck(let id):
-            return .body(["userId": id])
+        case .emailCheck(let userID):
+            return .body(["userId": userID])
+        case  .checkOldPassword(let userID, let password):
+            return .body(["userId": userID,
+                          "password": password])
         case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,

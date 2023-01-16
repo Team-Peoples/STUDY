@@ -306,6 +306,38 @@ struct Network {
         }
     }
     
+    func checkIfCorrectedOldPassword(userID: UserID, password: Password, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.checkOldPassword(userID, password), interceptor: AuthenticationInterceptor()).validate().response {
+            response in
+            
+            guard let httpResponse = response.response else {
+                
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                
+                guard let data = response.data,
+                      let isCorrectOldPassword = jsonDecode(type: Bool.self, data: data) else {
+                    
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isCorrectOldPassword))
+                
+                break
+            default:
+                
+                seperateCommonErrors(statusCode:  httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
     func closeAccount(userID: UserID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.deleteUser(userID), interceptor: AuthenticationInterceptor()).validate().response { response in
             

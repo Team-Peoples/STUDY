@@ -68,6 +68,7 @@ struct Credential: Encodable {
 enum SNS: String {
     case kakao = "kakao"
     case naver = "naver"
+    case none = "justEmailLogin"
 }
 
 struct SNSInfo {
