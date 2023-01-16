@@ -39,7 +39,7 @@ final class AttendanceModificationHeaderView: UIView {
         }
     }
     
-    internal func configureRightButtonTitle(_ date: dashedDate) {
+    internal func configureRightButtonTitle(_ date: DashedDate) {
         rightButton.setTitle(date, for: .normal)
     }
     

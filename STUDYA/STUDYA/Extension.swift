@@ -157,11 +157,11 @@ extension Date {
         Calendar.current.dateComponents([.year, .month, .day], from: self)
     }
     
-    func convertToDashedString() -> dashedDate {
+    func convertToDashedString() -> DashedDate {
         DateFormatter.dashedDateFormatter.string(from: self)
     }
     
-    func convertToDottedString() -> dottedDate {
+    func convertToDottedString() -> DottedDate {
         DateFormatter.dottedDateFormatter.string(from: self)
     }
 }

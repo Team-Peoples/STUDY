@@ -385,11 +385,11 @@ extension MainViewController: UITableViewDataSource {
             
             if flag {
                 cell.didAttend = true
-                cell.attendanceStatus = .attended
+                cell.attendance = .attended
                 
             } else {
                 cell.didAttend = true
-                cell.attendanceStatus = .absent
+                cell.attendance = .absent
             }
             
             return cell

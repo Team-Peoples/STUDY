@@ -14,12 +14,13 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         didSet {
             guard let viewModel = viewModel, let indexPath = indexPath else { return }
             
-            let attendanceInformation = viewModel.attendancesForATime?.value[indexPath.item]
+            let attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
             
-            nicknameLabel.text = attendanceInformation?.userID  //🛑여기 userID아니고 닉네임
+            nicknameLabel.text = attendanceInformation.userID  //🛑여기 userID아니고 닉네임
 //            🛑프로필 이미지 넣기
         }
     }
+    private var attendance: Attendance?
     
     private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -77,8 +78,8 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
 
         penaltyFeeInputField.delegate = self
         
-        doneButton.isSelected = false
-        titleButton.isSelected = false
+        deselectDoneButton()
+        tagButtons()
         
         addSubviews()
         setConstraints()
@@ -90,6 +91,8 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     }
     
     @objc private func buttonTapped(sender: UIButton) {
+        guard let sender = sender as? CustomButton else { return }
+        
         if attendedButton.isSelected {
             attendedButton.isSelected = false
         }
@@ -103,18 +106,52 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
             allowedButton.isSelected = false
         }
         
-        guard let sender = sender as? CustomButton else { return }
         sender.isSelected = true
+        
+        switch sender.tag {
+        case 1: attendance = .allowed
+        case 2: attendance = .late
+        case 3: attendance = .absent
+        case 4: attendance = .allowed
+        default: break
+        }
+        
+        if !isDoneButtonSelected {
+            enableDoneButton()
+            selectDoneButton()
+        }
     }
     
     override func doneButtonTapped() {
+        guard let viewModel = viewModel,
+              let indexPath = indexPath,
+              let text = penaltyFeeInputField.text,
+              let penalty = text.toInt(),
+              let attendance = attendance,
+              absentButton.isSelected || lateButton.isSelected || absentButton.isSelected || allowedButton.isSelected else { return }
         
+        var attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
+        let fine = text.components(separatedBy: ",").joined()
+        
+        attendanceInformation.fine = penalty
+        attendanceInformation.attendanceStatus = attendance
+        
+        viewModel.updateAttendance(attendanceInformation) {
+            self.navigatable?.dismiss()
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
         endEditing(true)
+    }
+    
+    private func tagButtons() {
+        attendedButton.tag = 1
+        lateButton.tag = 2
+        absentButton.tag = 3
+        allowedButton.tag = 4
     }
     
     private func addSubviews() {

@@ -62,9 +62,9 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
     override func doneButtonTapped() {
         guard let viewModel = viewModel,
-              let allUsersAttendanceForADay = viewModel.allUsersAttendacneForADay,
+              let allUsersAttendanceForADay = viewModel.allUsersAttendancesForADay,
               let time = time,
-              var attendancesForATime = allUsersAttendanceForADay.value[time] else { return }
+              var attendancesForATime = allUsersAttendanceForADay[time] else { return }
         
         viewModel.alignment = Observable(alignment)
         viewModel.selectedTime = Observable(time)
@@ -166,14 +166,14 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
 
 extension AttendanceBottomDaySearchSettingView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.times?.value.count ?? 0
+        viewModel?.times.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceTimeCollectionViewCell.identifier, for: indexPath) as! AttendanceTimeCollectionViewCell
         
-        cell.time = viewModel?.times?.value[indexPath.item]
+        cell.time = viewModel?.times[indexPath.item]
         if indexPath.item == 0 {
             cell.enableButton()
         }
@@ -187,7 +187,8 @@ extension AttendanceBottomDaySearchSettingView: UICollectionViewDelegateFlowLayo
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
-        time = viewModel?.times?.value[indexPath.item]
+        
+        time = viewModel?.times[indexPath.item]
         cell.enableButton()
     }
     
@@ -202,7 +203,7 @@ extension AttendanceBottomDaySearchSettingView: UICollectionViewDelegateFlowLayo
         let label = UILabel(frame: CGRect.zero)
         let leftRightInsets:CGFloat = 48
         
-        label.text = viewModel?.times?.value[indexPath.item]
+        label.text = viewModel?.times[indexPath.item]
         label.sizeToFit()
         
         return CGSize(width: label.frame.width + leftRightInsets, height: 32)

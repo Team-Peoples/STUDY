@@ -430,11 +430,12 @@ struct OneTimeAttendanceInformation: Codable {
 }
 
 struct SingleUserAnAttendanceInformation: Codable {
-    let fine: Int
-    let attendanceStatus: Attendance
+    var fine: Int
+    var attendanceStatus: Attendance
     let userID: String
     let attendanceID: Int
-//    let nickName: String
+//    let nickName: String?
+//    let imageURL: String?
 
     enum CodingKeys: String, CodingKey {
         case fine
@@ -505,7 +506,7 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
-typealias dashedDate = String
-typealias dottedDate = String
+typealias DashedDate = String
+typealias DottedDate = String
 typealias Time = String
 

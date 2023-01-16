@@ -85,7 +85,7 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
             
             return cell
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceOverallCheckCollectionViewCell() }
             
             cell.delegate = delegate
             

@@ -10,14 +10,19 @@ import UIKit
 final class AttendancesModificationViewModel {
     var studyID: Int
     
-    var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
+    var allUsersAttendancesForADay: AllUsersAttendacneForADay? {
+        didSet {
+            guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
+            times = allUsersAttendancesForADay.map { $0.key }
+        }
+    }
+    var times: [Time] = []
+    
+    var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]> = Observable([])
     
     var alignment = Observable(LeftButtonAlignment.name)
-    lazy var selectedTime = Observable(times?.value.first ?? "??")
+    lazy var selectedTime = Observable(times.first ?? "")
     var selectedDate = Observable(Date().convertToDashedString())
-    
-    var times: Observable<[Time]>?
-    var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]>?
     
     var error: Observable<PeoplesError>?
     
@@ -25,18 +30,62 @@ final class AttendancesModificationViewModel {
         self.studyID = studyID
     }
     
-    func getAllMembersAttendanceOn(date: dashedDate) {
-        Network.shared.getAllMembersAttendanceOn(date, studyID: studyID) { result in
+    func getAllMembersAttendanceOn(date: DashedDate) {
+        Network.shared.getAllMembersAttendanceOn(date, studyID: studyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
             switch result {
-            case .success(let allUserAttendancesForADay):
-                guard let firstTime = self.times?.value.first, let attendancesForATime = allUserAttendancesForADay[firstTime] else { return }
+            case .success(let allUsersAttendancesForADay):
+                weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
                 
-                self.times = Observable(allUserAttendancesForADay.map { $0.key })
-                self.selectedTime = Observable(firstTime)
-                self.attendancesForATime = Observable(attendancesForATime)
+                if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
+                    weakSelf.selectedTime = Observable(firstTime)
+                    weakSelf.attendancesForATime = Observable(attendancesForATime)
+                } else {
+                    weakSelf.selectedTime = Observable("")
+                    weakSelf.attendancesForATime = Observable([])
+                }
                 
             case .failure(let error):
-                self.error = Observable(error)
+                weakSelf.error = Observable(error)
+            }
+        }
+    }
+    
+    func updateAllMembersAttendance() {
+        Network.shared.getAllMembersAttendanceOn(selectedDate.value, studyID: studyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
+            switch result {
+            case .success(let allUsersAttendancesForADay):
+                weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                
+                if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
+                    weakSelf.attendancesForATime = Observable(allUsersAttendancesForADay[weakSelf.selectedTime.value]!)
+                } else {
+                    weakSelf.selectedTime = Observable("")
+                    weakSelf.attendancesForATime = Observable([])
+                }
+                
+            case .failure(let error):
+                weakSelf.error = Observable(error)
+            }
+        }
+    }
+    
+    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformation, completion: @escaping () -> Void) {
+        Network.shared.updateAttendanceInformation(attendanceInfo) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
+            switch result {
+            case .success(let isSuccess):
+                guard isSuccess else { return }
+                
+                weakSelf.updateAllMembersAttendance()
+                completion()
+                
+            case .failure(let error):
+                weakSelf.error = Observable(error)
             }
         }
     }
@@ -48,6 +97,8 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     internal var viewModel: AttendancesModificationViewModel? {
         didSet {
+            setBinding()
+            viewModel?.getAllMembersAttendanceOn(date: Date().convertToDashedString())
             headerView.viewModel = viewModel
         }
     }
@@ -98,14 +149,12 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        viewModel?.selectedDate.bind({ dashedDate in
-            self.viewModel?.getAllMembersAttendanceOn(date: dashedDate)
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.selectedDate.bind({ dashedDate in
             self.headerView.configureRightButtonTitle(dashedDate)
-//            self.viewModel?.info?.bind({ allUsersAttendacneForADay in
-//                allUsersAttendacneForADay[dashedDate]
-//            })
         })
-        viewModel?.attendancesForATime?.bind({ allUsersAnAttendanceInformationArray in
+        viewModel.attendancesForATime.bind({ allUsersAnAttendanceInformationArray in
             self.tableView.reloadData()
         })
     }
@@ -121,7 +170,7 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell else {
             return AttendanceIndividualInfoTableViewCell()
         }
-        cell.anUserAttendanceInformation = viewModel?.attendancesForATime?.value[indexPath.row]
+        cell.anUserAttendanceInformation = viewModel?.attendancesForATime.value[indexPath.row]
         return cell
     }
     

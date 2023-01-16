@@ -90,6 +90,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         
         let dateString = String(format: "%04d-%02d-%02d", year, month, day)
         viewModel?.selectedDate = Observable(dateString)
+        viewModel?.getAllMembersAttendanceOn(date: dateString)
         
         self.dismiss(animated: true)
     }

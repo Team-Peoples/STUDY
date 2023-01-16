@@ -60,7 +60,7 @@ final class ValidationNumberCheckingPopViewController: UIViewController {
                 self.didAttend = true
             case .failure(let error):
                 switch error {
-                case .unknownMember:
+                case .userNotFound:
                     DispatchQueue.main.async {
                         let alert = SimpleAlert(buttonTitle: "확인", message: "더이상 이 스터디의 멤버가 아닙니다.") { finished in
 //                            🛑completion에 메인화면 리로드 넣기

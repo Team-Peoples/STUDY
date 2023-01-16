@@ -184,7 +184,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
 //            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
 //                switch result {
 //                case .success(let attendanceOverall):
-//                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendacneForADay: nil)
+//                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendancesForADay: nil)
 //
 //                case .failure(let error):
 //                    switch error {
@@ -209,7 +209,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         guard let currentStudyOverall = currentStudyOverall else { return }
         
         let totalStudyHeldCount = currentStudyOverall.totalFine
-        let studyAttendance: [AttendanceStatus : Int] = [
+        let studyAttendance: [Attendance : Int] = [
             .attended: currentStudyOverall.attendedCount,
             .late: currentStudyOverall.lateCount,
             .absent: currentStudyOverall.absentCount,

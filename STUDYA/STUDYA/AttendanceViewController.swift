@@ -94,8 +94,8 @@ class AttendanceViewModel {
 //
 //        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
 //            switch result {
-//            case .success(let allUsersAttendacneForADay):
-//                self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+//            case .success(let allUsersAttendancesForADay):
+//                self.allUsersAttendancesForADay = Observable(allUsersAttendancesForADay)
 //                self.seperateAllDaysByMonth()
 //            case .failure(let error):
 //                self.error = Observable(error)
