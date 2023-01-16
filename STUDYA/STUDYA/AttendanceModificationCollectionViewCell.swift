@@ -11,11 +11,14 @@ final class AttendancesModificationViewModel {
     var studyID: Int
     
     var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
+    
     var alignment = Observable(LeftButtonAlignment.name)
     lazy var selectedTime = Observable(times?.value.first ?? "??")
     var selectedDate = Observable(Date().convertToDashedString())
+    
     var times: Observable<[Time]>?
     var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]>?
+    
     var error: Observable<PeoplesError>?
     
     init(studyID: Int) {
@@ -135,7 +138,8 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let bottomVC = AttendanceBottomViewController()
         
-//        bottomVC에 데이터 넣어주기
+        bottomVC.viewModel = viewModel
+        bottomVC.indexPath = indexPath
         bottomVC.viewType = .individualUpdate
         
         delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)

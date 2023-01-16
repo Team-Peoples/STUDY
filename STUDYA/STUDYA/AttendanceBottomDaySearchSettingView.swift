@@ -13,8 +13,6 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     private var time: Time?
     private var alignment = LeftButtonAlignment.name
     
-    internal var navigatable: Navigatable?
-    
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
         
@@ -48,7 +46,6 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         addSubViews()
         setConstraints()
         configureDoneButton(on: self, under: collectionView, constant: 16)
-        
     }
 
     required init?(coder: NSCoder) {
@@ -61,6 +58,8 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         attendanceInOrderButton.toggle()
     }
     
+    
+    
     override func doneButtonTapped() {
         guard let viewModel = viewModel,
               let allUsersAttendanceForADay = viewModel.allUsersAttendacneForADay,
@@ -70,6 +69,14 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         viewModel.alignment = Observable(alignment)
         viewModel.selectedTime = Observable(time)
         
+        align(&attendancesForATime)
+        
+        viewModel.attendancesForATime = Observable(attendancesForATime)
+        
+        navigatable?.dismiss()
+    }
+    
+    private func align(_ attendancesForATime: inout [SingleUserAnAttendanceInformation]) {
         if alignment == .name {
             attendancesForATime.sort { (lhs, rhs) -> Bool in
                 
@@ -101,10 +108,6 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
                 }
             }
         }
-        
-        viewModel.attendancesForATime = Observable(attendancesForATime)
-        
-        navigatable?.dismiss()
     }
     
     private func configureCollectionView() {

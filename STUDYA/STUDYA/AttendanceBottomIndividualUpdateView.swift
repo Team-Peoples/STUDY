@@ -9,6 +9,18 @@ import UIKit
 
 final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     
+    internal var viewModel: AttendancesModificationViewModel?
+    internal var indexPath: IndexPath? {
+        didSet {
+            guard let viewModel = viewModel, let indexPath = indexPath else { return }
+            
+            let attendanceInformation = viewModel.attendancesForATime?.value[indexPath.item]
+            
+            nicknameLabel.text = attendanceInformation?.userID  //🛑여기 userID아니고 닉네임
+//            🛑프로필 이미지 넣기
+        }
+    }
+    
     private let profileImageView = ProfileImageView(size: 40)
     private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -78,11 +90,25 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     }
     
     @objc private func buttonTapped(sender: UIButton) {
-        attendedButton.isSelected = false
-        lateButton.isSelected = false
-        absentButton.isSelected = false
-        allowedButton.isSelected = false
-        (sender as! CustomButton).isSelected = true
+        if attendedButton.isSelected {
+            attendedButton.isSelected = false
+        }
+        if lateButton.isSelected {
+            lateButton.isSelected = false
+        }
+        if absentButton.isSelected {
+            absentButton.isSelected = false
+        }
+        if allowedButton.isSelected {
+            allowedButton.isSelected = false
+        }
+        
+        guard let sender = sender as? CustomButton else { return }
+        sender.isSelected = true
+    }
+    
+    override func doneButtonTapped() {
+        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
