@@ -226,6 +226,7 @@ struct Network {
     
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getMyInfo, interceptor: AuthenticationInterceptor()).validate().response { response in
+            
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -415,7 +416,6 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                
                 completion(.success(studyOverall))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)

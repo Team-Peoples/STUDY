@@ -61,18 +61,20 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
     
     override func doneButtonTapped() {
-        guard let viewModel = viewModel,
-              let allUsersAttendanceForADay = viewModel.allUsersAttendancesForADay,
-              let time = time,
-              var attendancesForATime = allUsersAttendanceForADay[time] else { return }
+        guard let viewModel = viewModel else { return }
+        
+        if let allUsersAttendanceForADay = viewModel.allUsersAttendancesForADay,
+           let time = time,
+           var attendancesForATime = allUsersAttendanceForADay[time] {
+            
+            viewModel.selectedTime = Observable(time)
+            
+            align(&attendancesForATime)
+            
+            viewModel.attendancesForATime = Observable(attendancesForATime)
+        }
         
         viewModel.alignment = Observable(alignment)
-        viewModel.selectedTime = Observable(time)
-        
-        align(&attendancesForATime)
-        
-        viewModel.attendancesForATime = Observable(attendancesForATime)
-        
         navigatable?.dismiss()
     }
     

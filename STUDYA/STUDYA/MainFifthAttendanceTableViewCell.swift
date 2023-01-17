@@ -141,6 +141,11 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     }
     
     @objc private func buttonTapped() {
+        guard let delegate = delegate,
+              let currentStudyOverall = currentStudyOverall,
+              let studyID = currentStudyOverall.study.id else {
+            return
+        }
 //        guard let delegate = delegate,
 //              let currentStudyOverall = currentStudyOverall,
 //              let studyID = currentStudyOverall.study.id,
@@ -200,8 +205,8 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
 //            }
 //        }
         
-        delegate!.syncSwitchWith(nextVC: nextVC)
-        delegate!.push(vc: nextVC)
+        delegate.syncSwitchWith(nextVC: nextVC)
+        delegate.push(vc: nextVC)
     }
     
     private func setupProgress() {

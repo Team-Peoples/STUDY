@@ -186,3 +186,12 @@ extension UINavigationController {
         navigationBar.backIndicatorTransitionMaskImage = backButtonImage
     }
 }
+
+extension URLRequest {
+    func debug() {
+        print("\(self.httpMethod ?? "") \(self.url)")
+        let str = String(decoding: self.httpBody ?? Data(), as: UTF8.self)
+        print("BODY \n \(str)")
+        print("HEADERS \n \(self.allHTTPHeaderFields)")
+    }
+}
