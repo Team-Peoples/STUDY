@@ -70,9 +70,6 @@ extension UIImage {
         let renderImage = render.image { context in
             self.draw(in: CGRect(origin: .zero, size: size))
         }
-        
-//        print("화면 배율: \(UIScreen.main.scale)")// 배수
-//        print("origin: \(self), resize: \(renderImage)")
         return renderImage
     }
 }
@@ -130,6 +127,16 @@ extension String {
     func toInt() -> Int? {
         return Int(self)
     }
+    
+    func convertedEnglish() -> String {
+        switch self {
+        case "매일": return "everyDay"
+        case "매주": return "everyWeek"
+        case "2주 마다": return "everyTwoWeek"
+        case "매달": return "everyMonth"
+        default: return ""
+        }
+    }
 }
 
 extension UITableView {
@@ -148,9 +155,34 @@ extension UITableView {
     }
 }
 
+extension Calendar {
+    
+    static let shared = Self.current
+    
+    func weekday(_ weekday: Int?) -> String {
+        switch weekday {
+        case 1: return "일"
+        case 2: return "월"
+        case 3: return "화"
+        case 4: return "수"
+        case 5: return "목"
+        case 6: return "금"
+        case 7: return "토"
+        default: return ""
+        }
+    }
+}
+
 extension Date {
     func convertToMinuteDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
+
+    func convertToDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: self)
+    }
+    
+    func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
+        Calendar.current.dateComponents(components, from: self)
     }
     
     func convertToDayDateComponents() -> DateComponents {
@@ -169,6 +201,21 @@ extension Date {
 extension DateComponents {
     func convertToDate() -> Date? {
         Calendar.current.date(from: self)
+    }
+    
+    func getAlldaysDateComponents() -> [DateComponents] {
+        let calendar = Calendar.current
+        let range = calendar.maximumRange(of: .day)!
+        let yearComponents = self.year
+        let monthComponents = self.month
+    
+        var days = [DateComponents]()
+        for i in range {
+            var dateComponents = DateComponents(year: yearComponents, month: monthComponents)
+            dateComponents.day = i
+            days.append(dateComponents)
+        }
+        return days
     }
 }
 

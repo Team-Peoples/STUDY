@@ -88,6 +88,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         
         view.backgroundColor = .systemBackground
         
+        print("origin accessToken: ",KeyChain.read(key: Const.accessToken)!)
+        print("origin refreshToken: ",KeyChain.read(key: Const.refreshToken)!)
+        
         configureTabBarSeparator()
         configureNavigationBar()
     }
@@ -114,34 +117,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         flag.toggle()
-        
-//        Network.shared.createStudySchedule(StudyScheduleGoing(studyId: 3, studyName: nil, studyScheduleID: 3, topic: "묘오오오오오픽", place: "ㅏㅏㅏ앙소", openDate: "2023-01-01", deadlineDate: "2023-01-01", startTime: "16:30", endTime: "17:00", repeatOption: .noRepeat)) { result in
-//            switch result {
-//            case .success:
-//                print("s")
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//        Network.shared.getAllStudySchedule { result in
-//            switch result {
-//            case .success(let schedules):
-//                print(schedules)
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//        Network.shared.deleteStudySchedule(48, deleteRepeatSchedule: false) { result in
-//            switch result {
-//            case .success:
-//                print("S")
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-        
-//        let nextVC = NotificationViewController()
-//        push(vc: nextVC)
+    
+        let nextVC = NotificationViewController()
+        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
@@ -177,8 +155,8 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     
     @objc private func floatingButtonDidTapped() {
         floatingButton.isSelected = true
-        
-        let dimmingVC = MainSpreadUpDimmingViewController()
+        guard let studyID = currentStudyOverall?.study.id else { return }
+        let dimmingVC = MainSpreadUpDimmingViewController(studyID: studyID)
         
         dimmingVC.modalTransitionStyle = .crossDissolve
         dimmingVC.modalPresentationStyle = .overFullScreen
@@ -214,8 +192,6 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
             switch result {
                 
             case .success(let user):
-                print(KeyChain.read(key: Const.accessToken))
-                print(KeyChain.read(key: Const.refreshToken))
                 self.nickName = user.nickName
                 self.getAllStudies()
             case .failure(let error):
@@ -379,8 +355,7 @@ extension MainViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
             
-//            cell.schedule = currentStudyOverall?.studySchedule
-            cell.schedule = StudySchedule(studyID: nil, studyName: nil, studyScheduleID: nil, topic: nil, place: nil, startTime: Date(timeIntervalSinceNow: -300), endTime: Date(timeIntervalSinceNow: 3600), repeatOption: nil)
+            cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchObservableDelegate = self
             
             if flag {
@@ -440,9 +415,18 @@ extension MainViewController: UITableViewDelegate {
         switch tableView {
         case mainTableView:
             if indexPath.row == 3 {
-                let announcementBoardVC = AnnouncementBoardViewController()
+                guard let studyID = currentStudyOverall?.study.id else { return }
+                print(studyID,"🔥")
+                let announcementBoardVC = AnnouncementBoardViewController(studyID: studyID)
                 self.syncSwitchWith(nextVC: announcementBoardVC)
                 self.push(vc: announcementBoardVC)
+            }
+            if indexPath.row == 1 {
+                guard let studyID = currentStudyOverall?.study.id else { return }
+                let studyScheduleVC = StudyScheduleViewController(studyID: studyID)
+                
+                self.syncSwitchWith(nextVC: studyScheduleVC)
+                self.push(vc: studyScheduleVC)
             }
         default: break
         }

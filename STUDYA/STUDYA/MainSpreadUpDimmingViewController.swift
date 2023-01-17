@@ -9,6 +9,8 @@ import UIKit
 
 final class MainSpreadUpDimmingViewController: UIViewController {
     
+    
+    let studyID: ID
     private var willSpreadUp = false
     
     internal var dimmingViewTappedAction: () -> () = {}
@@ -33,6 +35,15 @@ final class MainSpreadUpDimmingViewController: UIViewController {
     
     internal var tabBarHeight: CGFloat?
     private let interTabBarSpaceHeight: CGFloat = 84
+    
+    init(studyID: ID) {
+        self.studyID = studyID
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +113,7 @@ extension MainSpreadUpDimmingViewController: UITableViewDelegate {
         if indexPath.row == 0 {
             dismiss(animated: true) {
                 
-                let creatingAnnouncementVC = AnnouncementViewController(task: .creating)
+                let creatingAnnouncementVC = AnnouncementViewController(task: .creating, studyID: self.studyID)
                 creatingAnnouncementVC.isMaster = true
                 
                 let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
@@ -112,8 +123,10 @@ extension MainSpreadUpDimmingViewController: UITableViewDelegate {
             }
         } else {
             dismiss(animated: true) {
-                
                 let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+                
+                studySchedulePriodFormVC.studyScheduleViewModel.studySchedule.studyID = self.studyID
+                
                 let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
                 
                 navigation.modalPresentationStyle = .fullScreen

@@ -7,22 +7,26 @@
 
 import UIKit
 
-class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
+
+final class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    
     static let identifier = "EditingExcommunicationRuleCollectionViewCell"
+    
+    typealias LatenessCount = Int
+    typealias AbsenceCount = Int
+    var latenessCountFieldAction: (LatenessCount?) -> Void = { LatenessCount in }
+    var absenceCountFieldAction: (AbsenceCount?) -> Void = { AbsenceCount in }
     
     private let excommunicationTitleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true)
     private let excommunicationDescriptionLabel = CustomLabel(title: "* 멤버가 강퇴 조건에 도달하면 관리자에게 알림이 전송돼요.\n* 지각과 결석 조건을 모두 입력하면, 둘 중 하나만 만족해도 강퇴 조건에 도달해요.", tintColor: .ppsGray1, size: 12)
-    internal let latenessCountField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let latenessCountField = RoundedNumberField(numPlaceholder: nil, centerAlign: false, isPicker: true, isNecessary: true)
     private let latenessCountFieldBehindLabel = CustomLabel(title: "번 지각 시", boldPart: "지각")
-    internal let absenceCountField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let absenceCountField = RoundedNumberField(numPlaceholder: nil, centerAlign: false, isPicker: true, isNecessary: true)
     private let absenceCountFieldBehindLabel = CustomLabel(title: "번 결석 시", boldPart: "결석")
-    
-    var latenessCountFieldAction: (Int?) -> Void = { latenessCount in }
-    var absenceCountFieldAction: (Int?) -> Void = { absenceCount in }
-    
+
     // MARK: - Initialization
 
     override init(frame: CGRect) {

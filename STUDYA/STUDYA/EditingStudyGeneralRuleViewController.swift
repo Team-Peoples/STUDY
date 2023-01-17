@@ -11,17 +11,7 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
 
     // MARK: - Model
     
-    var study: Study? {
-        didSet {
-            if oldValue == nil {
-                doneButtonItem.isEnabled = false
-            } else if study == oldValue {
-                doneButtonItem.isEnabled = false
-            } else {
-                doneButtonItem.isEnabled = true
-            }
-        }
-    }
+    var studyViewModel = StudyViewModel()
     
     // MARK: - UI Properties
     
@@ -95,16 +85,9 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     
     @objc func ruleEditDone() {
         
-        guard let study = study else { return }
-        guard let studyID = study.id else { return }
-        Network.shared.updateStudy(study, id: studyID) { result in
-            switch result {
-            case .success(let success):
-                print(success)
-                self.dismiss(animated: true)
-            case .failure(let failure):
-                print(failure)
-            }
+        studyViewModel.updateStudy {
+            print("업데이트 성공")
+            self.dismiss(animated: true)
         }
     }
     
@@ -264,14 +247,14 @@ extension EditingStudyGeneralRuleViewController: UICollectionViewDataSource {
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingExcommunicationRuleCollectionViewCell else { return UICollectionViewCell() }
             
-            cell.latenessCountField.text = study?.generalRule?.excommunication.lateness?.toString()
-            cell.absenceCountField.text = study?.generalRule?.excommunication.absence?.toString()
+            cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString()
+            cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString()
             
             cell.latenessCountFieldAction = { [self] latenessCount in
-                study?.generalRule?.excommunication.lateness = latenessCount
+                studyViewModel.study.generalRule?.excommunication.lateness = latenessCount
             }
             cell.absenceCountFieldAction = { [self] absenceCount in
-                study?.generalRule?.excommunication.absence = absenceCount
+                studyViewModel.study.generalRule?.excommunication.absence = absenceCount
             }
             
             return cell

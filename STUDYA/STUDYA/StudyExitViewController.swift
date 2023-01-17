@@ -123,16 +123,17 @@ class StudyExitViewController: UIViewController {
                     }
                 
             case .close:
-                guard let studyID = studyID else { return }
-                Network.shared.deleteStudy(studyID) { result in
-                    switch result {
-                    case .success(_):
-                        print("스터디 탈퇴 성공")
-                        self.dismiss(animated: true)
-                    case .failure(let error):
-                        print(error)
-                    }
-                }
+                break
+//                guard let studyID = studyID else { return }
+//                Network.shared.deleteStudy(studyID) { result in
+//                    switch result {
+//                    case .success(_):
+//                        print("스터디 탈퇴 성공")
+//                        self.dismiss(animated: true)
+//                    case .failure(let error):
+//                        print(error)
+//                    }
+//                }
             case.resignMaster:
                 self.dismiss(animated: true)
             }

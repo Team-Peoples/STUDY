@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
+		721482B2297125E100A903FF /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* PopUpViewController.swift */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */; };
 		721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4C28A4EA0100829A2B /* CategoryCell.swift */; };
 		724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */; };
@@ -21,10 +22,9 @@
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
 		72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */; };
 		72758D2B295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */; };
-		72758D2D295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */; };
-		72758D2F295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */; };
-		72758D31295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */; };
-		72758D33295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */; };
+		72758D2D295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2C295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeTableViewCell.swift */; };
+		72758D2F295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D2E295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineTableViewCell.swift */; };
+		72758D31295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D30295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift */; };
 		727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */; };
 		7282F18228FFE7D2003EF100 /* ToDoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */; };
 		7282F18428FFE7DC003EF100 /* ScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */; };
@@ -34,7 +34,6 @@
 		7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968328B09B110008A1C1 /* AnnouncementViewController.swift */; };
 		7299968828BE44090008A1C1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968728BE44090008A1C1 /* MainViewController.swift */; };
 		7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */; };
-		7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */; };
 		72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */; };
 		72AAC6E8295A129100FAD71D /* EditingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */; };
 		72AAC6EA295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */; };
@@ -54,7 +53,7 @@
 		72ED25BE289778CB00031AD1 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25BD289778CB00031AD1 /* Color.swift */; };
 		72ED25C128978AA400031AD1 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 72ED25C028978AA400031AD1 /* SnapKit */; };
 		72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C228978EBE00031AD1 /* SignInViewController.swift */; };
-		72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* FormViewModel.swift */; };
+		72ED25C52897FCFC00031AD1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C42897FCFC00031AD1 /* ViewModel.swift */; };
 		72ED25C72898B1E700031AD1 /* FindPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */; };
 		72ED89A42943A2CD0072227C /* LinkShareMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED89A32943A2CD0072227C /* LinkShareMessageView.swift */; };
 		72ED89A82943B6C10072227C /* AttendancePersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED89A72943B6C10072227C /* AttendancePersonalViewController.swift */; };
@@ -106,7 +105,7 @@
 		D3BF053628BF901700AF7D3B /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF053528BF901700AF7D3B /* Formatter.swift */; };
 		D3BF054328C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */; };
 		D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */; };
-		D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */; };
+		D3BF054828C116FD00AF7D3B /* CreatingAttendanceRuleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054728C116FD00AF7D3B /* CreatingAttendanceRuleCollectionViewCell.swift */; };
 		D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF054B28C3C36700AF7D3B /* Notification.swift */; };
 		D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5D28EDE685009B53B4 /* KeyChain.swift */; };
 		D3C23A6028EDE7A1009B53B4 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C23A5F28EDE7A1009B53B4 /* Enum.swift */; };
@@ -141,6 +140,7 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		721482B1297125E100A903FF /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
 		721D8A4C28A4EA0100829A2B /* CategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
@@ -154,10 +154,9 @@
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
 		72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceCollectionViewCell.swift; sourceTree = "<group>"; };
 		72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingExcommunicationRuleCollectionViewCell.swift; sourceTree = "<group>"; };
-		72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift; sourceTree = "<group>"; };
-		72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceFineTableViewCell.swift; sourceTree = "<group>"; };
-		72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleDepositTableViewCell.swift; sourceTree = "<group>"; };
-		72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralRuleAttendanceTableView.swift; sourceTree = "<group>"; };
+		72758D2C295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTimeTableViewCell.swift; sourceTree = "<group>"; };
+		72758D2E295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceFineTableViewCell.swift; sourceTree = "<group>"; };
+		72758D30295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleDepositTableViewCell.swift; sourceTree = "<group>"; };
 		727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyCompleteViewController.swift; sourceTree = "<group>"; };
 		7282F18128FFE7D2003EF100 /* ToDoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCollectionViewCell.swift; sourceTree = "<group>"; };
 		7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -167,7 +166,6 @@
 		7299968328B09B110008A1C1 /* AnnouncementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementViewController.swift; sourceTree = "<group>"; };
 		7299968728BE44090008A1C1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
-		7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceTableViewController.swift; sourceTree = "<group>"; };
 		72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAuthenticator.swift; sourceTree = "<group>"; };
 		72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
@@ -188,7 +186,7 @@
 		72ED25BB289778A200031AD1 /* Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
 		72ED25BD289778CB00031AD1 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		72ED25C228978EBE00031AD1 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
-		72ED25C42897FCFC00031AD1 /* FormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewModel.swift; sourceTree = "<group>"; };
+		72ED25C42897FCFC00031AD1 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		72ED25C62898B1E700031AD1 /* FindPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindPasswordViewController.swift; sourceTree = "<group>"; };
 		72ED89A32943A2CD0072227C /* LinkShareMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkShareMessageView.swift; sourceTree = "<group>"; };
 		72ED89A72943B6C10072227C /* AttendancePersonalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendancePersonalViewController.swift; sourceTree = "<group>"; };
@@ -241,7 +239,7 @@
 		D3BF053528BF901700AF7D3B /* Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
 		D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
 		D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleExcommunicationCollectionViewCell.swift; sourceTree = "<group>"; };
-		D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyGeneralRuleAttendanceCollectionViewCell.swift; sourceTree = "<group>"; };
+		D3BF054728C116FD00AF7D3B /* CreatingAttendanceRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingAttendanceRuleCollectionViewCell.swift; sourceTree = "<group>"; };
 		D3BF054B28C3C36700AF7D3B /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D3C23A5D28EDE685009B53B4 /* KeyChain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChain.swift; sourceTree = "<group>"; };
 		D3C23A5F28EDE7A1009B53B4 /* Enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
@@ -314,7 +312,7 @@
 				D33439A5294D6F23000875C7 /* AppController.swift */,
 				72ED25AB2897788900031AD1 /* ViewController.swift */,
 				72EECECA28C9A56500A23C27 /* Model.swift */,
-				72ED25C42897FCFC00031AD1 /* FormViewModel.swift */,
+				72ED25C42897FCFC00031AD1 /* ViewModel.swift */,
 				D3F0983D2914E25100D1E55F /* UBottomSheet.swift */,
 				72F7CFAE28F83D0400E0D0C0 /* BottomSheetDataSource.swift */,
 				D3BF053528BF901700AF7D3B /* Formatter.swift */,
@@ -342,11 +340,11 @@
 				D381A96A291EA72C008A2102 /* InviteMemberCollectionViewCell.swift */,
 				D3F2C6EC28B1207700CEC549 /* MailCheckViewController.swift */,
 				D394146028FDBAA7006E75C3 /* MainDropDownTableViewCell.swift */,
-				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
-				D38FA4D42936559000A9B0DF /* MainFifthAttendanceTableViewCell.swift */,
 				D3C23A7228F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift */,
-				D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */,
 				D3C23A7028F9A6C9009B53B4 /* MainSecondScheduleTableViewCell.swift */,
+				D3C23A7428F9B418009B53B4 /* MainThirdButtonTableViewCell.swift */,
+				D3C23A7628FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift */,
+				D38FA4D42936559000A9B0DF /* MainFifthAttendanceTableViewCell.swift */,
 				D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */,
 				D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */,
 				7299968728BE44090008A1C1 /* MainViewController.swift */,
@@ -369,6 +367,7 @@
 				D309A3CC293CE494007BD2FF /* NotificationTableViewCell.swift */,
 				D309A3CA293CA061007BD2FF /* NotificationViewController.swift */,
 				72512AFC2938BD6D0003F431 /* PopUpCalendarViewController.swift */,
+				721482B1297125E100A903FF /* PopUpViewController.swift */,
 				7282F18328FFE7DC003EF100 /* ScheduleCollectionViewCell.swift */,
 				726FA4622901A352004E49A9 /* ScheduleTableView.swift */,
 				726FA4642901A496004E49A9 /* ScheduleTableViewCell.swift */,
@@ -378,8 +377,7 @@
 				72E2BEDA2921AE66009BCCB7 /* StudyExitViewController.swift */,
 				D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */,
 				D3BF054128C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift */,
-				D3BF054728C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift */,
-				7299968F28C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift */,
+				D3BF054728C116FD00AF7D3B /* CreatingAttendanceRuleCollectionViewCell.swift */,
 				D3BF054528C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift */,
 				7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */,
 				D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */,
@@ -387,10 +385,9 @@
 				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
 				72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */,
 				72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift */,
-				72758D32295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift */,
-				72758D2C295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift */,
-				72758D2E295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift */,
-				72758D30295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift */,
+				72758D2C295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeTableViewCell.swift */,
+				72758D2E295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineTableViewCell.swift */,
+				72758D30295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift */,
 				72758D2A295ACF5600BDFF9C /* EditingExcommunicationRuleCollectionViewCell.swift */,
 				72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */,
 				72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */,
@@ -593,17 +590,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72758D31295ACFC000BDFF9C /* EditingStudyGeneralRuleDepositTableViewCell.swift in Sources */,
+				72758D31295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift in Sources */,
 				7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */,
 				D398B46A28B4C23A00598B03 /* MyPageStudyHistoryViewController.swift in Sources */,
 				721D8A4D28A4EA0100829A2B /* CategoryCell.swift in Sources */,
 				D3BF053028BDF2B400AF7D3B /* AccountManagementViewController.swift in Sources */,
 				D3EC2F402899211200D4DA18 /* Constraint.swift in Sources */,
 				D37C0CB92939BD1000702177 /* SwitchableViewController.swift in Sources */,
-				72ED25C52897FCFC00031AD1 /* FormViewModel.swift in Sources */,
+				72ED25C52897FCFC00031AD1 /* ViewModel.swift in Sources */,
 				D309A3D1293F1E3A007BD2FF /* AttendancePopUpPeriodCalendarViewController.swift in Sources */,
 				D398B46C28B4C29000598B03 /* StudyHistoryTableViewCell.swift in Sources */,
-				D3BF054828C116FD00AF7D3B /* StudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
+				D3BF054828C116FD00AF7D3B /* CreatingAttendanceRuleCollectionViewCell.swift in Sources */,
 				D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */,
 				72512A7E292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift in Sources */,
 				D35D6F7F292E581000514980 /* AttendanceBottomIndividualUpdateView.swift in Sources */,
@@ -622,7 +619,6 @@
 				726FA4652901A496004E49A9 /* ScheduleTableViewCell.swift in Sources */,
 				D3C23A5E28EDE685009B53B4 /* KeyChain.swift in Sources */,
 				72ED89A82943B6C10072227C /* AttendancePersonalViewController.swift in Sources */,
-				72758D33295B0D3900BDFF9C /* GeneralRuleAttendanceTableView.swift in Sources */,
 				72ED25AC2897788900031AD1 /* ViewController.swift in Sources */,
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */,
@@ -642,7 +638,7 @@
 				D3BF054628C116DB00AF7D3B /* StudyGeneralRuleExcommunicationCollectionViewCell.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				D371D2172923D5A000E28231 /* Protocol.swift in Sources */,
-				72758D2D295ACF9D00BDFF9C /* EditingStudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */,
+				72758D2D295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeTableViewCell.swift in Sources */,
 				72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */,
 				72512A80292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift in Sources */,
 				72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */,
@@ -664,13 +660,12 @@
 				D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* CalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
-				7299969028C5BA510008A1C1 /* StudyGeneralRuleAttendanceTableViewController.swift in Sources */,
 				72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceCollectionViewCell.swift in Sources */,
 				D3DD808B29268A8F001250CF /* ValidationNumberCheckingPopViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
 				D3BF053428BE39CA00AF7D3B /* ByeViewController.swift in Sources */,
 				724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */,
-				72758D2F295ACFB000BDFF9C /* EditingStudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */,
+				72758D2F295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineTableViewCell.swift in Sources */,
 				D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */,
 				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
@@ -704,6 +699,7 @@
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Model.swift in Sources */,
+				721482B2297125E100A903FF /* PopUpViewController.swift in Sources */,
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
 				D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,

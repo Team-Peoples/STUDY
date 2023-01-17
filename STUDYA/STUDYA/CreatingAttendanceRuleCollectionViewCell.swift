@@ -1,102 +1,102 @@
 //
-//  EditingStudyGeneralRuleAttendanceCollectionViewCell.swift
+//  StudyGeneralRuleAttendanceCollectionViewCell.swift
 //  STUDYA
 //
-//  Created by 서동운 on 12/27/22.
+//  Created by 신동훈 on 2022/09/02.
 //
 
 import UIKit
 
-final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
+final class CreatingAttendanceRuleCollectionViewCell: UICollectionViewCell {
 
-    // MARK: - Properties
+    static let identifier = "CreatingAttendanceRuleCollectionViewCell"
 
-    static let identifier = "EditingStudyGeneralRuleAttendanceCollectionViewCell"
-
-    weak var delegate: EditingStudyGeneralRuleViewController?
-
+    var lateness: Lateness?
+    var absence: Absence?
+    var deposit: Deposit?
+    
     private lazy var generalRuleAttendanceTableView: UITableView = {
-
+        
         let tableView = UITableView()
-
+        
         tableView.backgroundColor = .appColor(.background)
         tableView.separatorStyle = .none
         tableView.alwaysBounceVertical = false
-
+        
         tableView.register(StudyGeneralRuleAttendanceTimeTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceTimeTableViewCell.identifier)
         tableView.register(StudyGeneralRuleAttendanceFineTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier)
         tableView.register(StudyGeneralRuleDepositTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleDepositTableViewCell.identifier)
-
+        
         return tableView
     }()
-
+    
     lazy var latenessRuleTimeIsNil: Bool = false {
         didSet {
             let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? StudyGeneralRuleAttendanceFineTableViewCell
-
+            
             cell?.perLateMinuteFieldDimmingView.isHidden = !latenessRuleTimeIsNil
             cell?.latenessFineFieldDimmingView.isHidden = !latenessRuleTimeIsNil
-
+            
             latenessRuleTimeIsNil ? resetData(in: cell) : ()
         }
     }
-
+    
     lazy var toastMessage = ToastMessage(message: "먼저 지각 시간을 입력해주세요.", messageColor: .whiteLabel, messageSize: 12, image: "alert")
-
+    
     private var keyboardHeight: CGFloat = 0
     // MARK: - Initialization
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         setNotification()
         enableTapGesture()
-
+        
         generalRuleAttendanceTableView.dataSource = self
         generalRuleAttendanceTableView.delegate = self
         configureViews()
         setConstaints()
-
+        
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     // MARK: - Actions
-
+    
     @objc func keyboardAppear(_ notification: NSNotification) {
-
+        
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-
+        
         let keyboardSize = keyboardFrame.cgRectValue
         keyboardHeight = keyboardSize.height
-
+        
         let inset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight, right: 0)
 
         generalRuleAttendanceTableView.contentInset = inset
     }
-
+    
     @objc func keyboardDisappear(_ notification: NSNotification) {
         keyboardHeight = 0
         generalRuleAttendanceTableView.endEditing(true)
         generalRuleAttendanceTableView.contentInset = .zero
     }
-
+    
     @objc func dimmingViewDidTapped() {
-
+        
         generalRuleAttendanceTableView.isUserInteractionEnabled = false
-
+        
         UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut) { [self] in
             toastMessage.snp.updateConstraints { make in
-                make.bottom.equalTo(contentView).offset(-keyboardHeight-60)
+                make.bottom.equalTo(contentView).offset(-keyboardHeight-100)
             }
             contentView.layoutIfNeeded()
-
+            
         } completion: { _ in
             UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
                 self.toastMessage.alpha = 0
@@ -109,15 +109,15 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
             }
         }
     }
-
+    
     private func enableTapGesture() {
-
+        
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
-
+        
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
         singleTapGestureRecognizer.cancelsTouchesInView = false
-
+        
         contentView.addGestureRecognizer(singleTapGestureRecognizer)
     }
 
@@ -125,22 +125,32 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    fileprivate func resetData(in cell: StudyGeneralRuleAttendanceFineTableViewCell?) {
+        cell?.perLateMinuteField.text = "--"
+        cell?.latenessFineField.text = "0"
+        cell?.absenceFineField.text = "0"
+        
+        lateness?.count = nil
+        lateness?.fine = nil
+        absence?.fine = nil
+    }
 
     // MARK: - Configure
-
+    
     private func configureViews() {
         contentView.addSubview(generalRuleAttendanceTableView)
         contentView.addSubview(toastMessage)
     }
     // MARK: - Setting Constraints
-
+    
     private func setConstaints() {
-
+        
         generalRuleAttendanceTableView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(contentView.safeAreaLayoutGuide)
             make.bottom.equalTo(contentView)
         }
-
+        
         toastMessage.snp.makeConstraints { make in
             make.centerX.equalTo(contentView)
             make.width.equalTo(contentView.frame.width - 14)
@@ -150,26 +160,15 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
     }
 }
 
-extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSource, UITableViewDelegate {
-
+extension CreatingAttendanceRuleCollectionViewCell: UITableViewDataSource, UITableViewDelegate {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-
-    fileprivate func resetData(in cell: StudyGeneralRuleAttendanceFineTableViewCell?) {
-        cell?.perLateMinuteField.text = "--"
-        cell?.latenessFineField.text = "0"
-        cell?.absenceFineField.text = "0"
-
-        delegate?.studyViewModel.study.generalRule?.lateness.count = nil
-        delegate?.studyViewModel.study.generalRule?.lateness.fine = nil
-        delegate?.studyViewModel.study.generalRule?.absence.fine = nil
-    }
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
@@ -177,35 +176,35 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceTimeTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceTimeTableViewCell else { return UITableViewCell() }
             
         
-            cell.latenessRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.lateness.time?.toString() ?? "--"
-            cell.absenceRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.absence.time?.toString() ?? "--"
+            cell.latenessRuleTimeField.text = lateness?.time?.toString() ?? "--"
+            cell.absenceRuleTimeField.text = absence?.time?.toString() ?? "--"
             cell.latenessRuleTimeFieldAction = { [self] latenessRuleTime in
-                delegate?.studyViewModel.study.generalRule?.lateness.time = latenessRuleTime
+                lateness?.time = latenessRuleTime
                 latenessRuleTimeIsNil = latenessRuleTime == nil
             }
             cell.absenceRuleTimeFieldAction = { [self] absenceRuleTime in
-                delegate?.studyViewModel.study.generalRule?.absence.time = absenceRuleTime
+                absence?.time = absenceRuleTime
             }
             
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceFineTableViewCell else { return UITableViewCell() }
             
-            cell.perLateMinuteField.text = delegate?.studyViewModel.study.generalRule?.lateness.count?.toString() ?? "--"
-            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.lateness.fine ?? 0)
-            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.absence.fine ?? 0)
+            cell.perLateMinuteField.text = lateness?.count?.toString() ?? "--"
+            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: lateness?.fine ?? 0)
+            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: absence?.fine ?? 0)
             
             cell.perLateMinuteFieldAction = { [self] perLateMinute in
-                delegate?.studyViewModel.study.generalRule?.lateness.count = perLateMinute
+                lateness?.count = perLateMinute
             }
             cell.latenessFineFieldAction = { [self] latenessFine in
-                delegate?.studyViewModel.study.generalRule?.lateness.fine = latenessFine
+                lateness?.fine = latenessFine
             }
             cell.absenceFineFieldAction = { [self] absenceFine in
-                delegate?.studyViewModel.study.generalRule?.absence.fine = absenceFine
+                absence?.fine = absenceFine
             }
             
-            if delegate?.studyViewModel.study.generalRule?.lateness.time == nil {
+            if lateness?.time == nil {
                 cell.perLateMinuteFieldDimmingView.isHidden = false
                 cell.latenessFineFieldDimmingView.isHidden = false
             } else {
@@ -220,10 +219,10 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
             
-            cell.depositTextField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.deposit ?? 0)
+            cell.depositTextField.text = Formatter.formatIntoDecimal(number: deposit ?? 0)
             
-            cell.depositTextFieldAction = { [self] deposit in
-                delegate?.studyViewModel.study.generalRule?.deposit = deposit
+            cell.depositTextFieldAction = { deposit in
+                self.deposit = deposit
             }
             return cell
         default:

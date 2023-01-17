@@ -82,25 +82,30 @@ extension DateFormatter {
 // MARK: - Date Format
 
 extension Date {
-    enum Language {
-        case kor
-        case eng
+    enum Format: String {
+        case announcementDateFormat = "MMM dd월 EEEE"
+        case AttendanceDateFormat = "YYYY.MM.dd"
+        case studyScheduleFormat = "yyyy-MM-dd"
     }
     
-    func formatToString(language: Language) -> String {
-        switch language {
-            case .kor:
-                
-                let dateformatter = DateFormatter()
-                dateformatter.locale = Locale(identifier: "ko_KR")
-                dateformatter.dateFormat = "MMM dd월 EEEE "
-                return dateformatter.string(from: self)
-            case .eng:
-                
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "YYYY.MM.dd"
-                return dateFormatter.string(from: self)
-        }
+    func formatToString(format: Format) -> String {
+        
+        let dateformatter = DateFormatter()
+        dateformatter.calendar = Calendar.current
+        dateformatter.dateFormat = format.rawValue
+        
+        return dateformatter.string(from: self)
+    }
+}
+
+extension String {
+    func formatToDate() -> Date? {
+        
+        let dateformatter = DateFormatter()
+        dateformatter.calendar = Calendar.current
+        dateformatter.dateFormat = "yyyy-MM-dd"
+        
+        return dateformatter.date(from: self)
     }
 }
 
@@ -108,10 +113,7 @@ struct TimeFormatter {
     static let shared: DateFormatter = {
         let dateFormatter = DateFormatter()
         
-        dateFormatter.dateStyle = .none
-        dateFormatter.timeStyle = .short
-        dateFormatter.locale = Locale(identifier: "en_gb")
-
+        dateFormatter.dateFormat = "HH:mm"
         return dateFormatter
     }()
     

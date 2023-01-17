@@ -12,14 +12,8 @@ final class CreatingStudyFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyViewModel: StudyViewModel? {
-        didSet {
-            guard let studyViewModel = studyViewModel else { return }
-           
-            doneButton.isEnabled = studyViewModel.formIsValid
-            doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
-        }
-    }
+    var studyViewModel = StudyViewModel()
+    
     var categoryChoice: StudyCategory? {
         willSet(newCategory) {
             if categoryChoice == nil {
@@ -29,7 +23,7 @@ final class CreatingStudyFormViewController: UIViewController {
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
             }
-            studyViewModel?.study.category = newCategory?.rawValue
+            studyViewModel.study.category = newCategory?.rawValue
         }
     }
     private var token: NSObjectProtocol?
@@ -83,8 +77,11 @@ final class CreatingStudyFormViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
-        studyViewModel = StudyViewModel()
+        
+        studyViewModel.bind { [self] study in
+            doneButton.isEnabled = study.formIsFilled
+            doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
+        }
         
         configureViews()
         setDelegate()
@@ -156,9 +153,9 @@ final class CreatingStudyFormViewController: UIViewController {
         
         switch sender {
         case onlineButton:
-            studyViewModel?.study.studyOn = sender.isSelected ? true : false
+            studyViewModel.study.studyOn = sender.isSelected ? true : false
         case offlineButton:
-            studyViewModel?.study.studyOff = sender.isSelected ? true : false
+            studyViewModel.study.studyOff = sender.isSelected ? true : false
         default:
             return
         }
@@ -204,7 +201,6 @@ final class CreatingStudyFormViewController: UIViewController {
     @objc func doneButtonDidTapped() {
 
         let vc = CreatingStudyRuleViewController()
-        guard let studyViewModel = studyViewModel else { return }
         
         vc.creatingStudyRuleViewModel.study = studyViewModel.study
         
@@ -389,18 +385,18 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         
-        ///엔터 입력할때 안되도록...막아야함
+        ///domb: 엔터 입력할때 안되도록...막아야함
         switch textView {
             case studyNameTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyName = studyNameTextView.text
+                studyViewModel.study.studyName = studyNameTextView.text
             case studyIntroductionTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
                     textView.text = textView.text.replacingOccurrences(of: "\n", with: "")
                 }
-                studyViewModel?.study.studyIntroduction = studyIntroductionTextView.text
+                studyViewModel.study.studyIntroduction = studyIntroductionTextView.text
             default:
                 break
         }

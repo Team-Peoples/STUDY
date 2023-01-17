@@ -7,11 +7,11 @@
 
 import UIKit
 
-class CreatingStudyScheduleContentViewController: UIViewController {
+final class CreatingStudyScheduleContentViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studySchedule: StudySchedule?
+    var studyScheduleViewModel = StudyScheduleViewModel()
     
     private let topicTitleLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let topicTextView: BaseTextView = {
@@ -43,6 +43,14 @@ class CreatingStudyScheduleContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        studyScheduleViewModel.bind { [self] studySchedule in
+            topicTextView.text = studySchedule.topic
+            placeTextView.text = studySchedule.place
+            
+            creatingScheduleButton.isEnabled = studySchedule.contentFormIsFilled
+            creatingScheduleButton.isEnabled ? creatingScheduleButton.fillIn(title: "일정 만들기") : creatingScheduleButton.fillOut(title: "일정 만들기")
+        }
+        
         configureViews()
         setNavigation()
         
@@ -71,7 +79,10 @@ class CreatingStudyScheduleContentViewController: UIViewController {
     }
     
     @objc private func creatingScheduleButtonDidTapped() {
-        self.dismiss(animated: true)
+        
+        studyScheduleViewModel.postStudySchedule() {
+            self.dismiss(animated: true)
+        }
     }
     
     @objc private func onKeyboardAppear(_ notification: NSNotification) {
@@ -226,22 +237,14 @@ extension CreatingStudyScheduleContentViewController: UITextViewDelegate {
             if topicTextView.text.contains(where: { $0 == "\n" }) {
                 topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
             }
-            studySchedule?.topic = topicTextView.text
+            studyScheduleViewModel.studySchedule.topic = topicTextView.text
         case placeTextView:
             if placeTextView.text.contains(where: { $0 == "\n" }) {
                 placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
             }
-            studySchedule?.place = placeTextView.text
+            studyScheduleViewModel.studySchedule.place = placeTextView.text
         default:
             break
-        }
-        
-        if !topicTextView.text.isEmpty && !placeTextView.text.isEmpty {
-            creatingScheduleButton.isEnabled = true
-            creatingScheduleButton.fillIn(title: "일정 만들기")
-        } else {
-            creatingScheduleButton.isEnabled = false
-            creatingScheduleButton.fillOut(title: "일정 만들기")
         }
     }
 }

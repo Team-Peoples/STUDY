@@ -12,6 +12,8 @@ import SnapKit
 final class AnnouncementBoardViewController: SwitchableViewController {
     // MARK: - Properties
     
+    let studyID: ID
+    
     var announcements: [Announcement] = [] {
         didSet {
             self.announcementBoardTableView.reloadData()
@@ -44,6 +46,15 @@ final class AnnouncementBoardViewController: SwitchableViewController {
     
     // MARK: - Life Cycle
     
+    init(studyID: ID) {
+        self.studyID = studyID
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -66,8 +77,6 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        
-        let studyID: ID = 1
         
         Network.shared.getAllAnnouncement(studyID: studyID) { result in
             switch result {
@@ -133,6 +142,8 @@ final class AnnouncementBoardViewController: SwitchableViewController {
             make.width.equalTo(102)
             make.height.equalTo(50)
         }
+        
+        floatingButtonView.isHidden = isSwitchOn ? false : true
     }
     
     // MARK: - Actions
@@ -142,7 +153,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
         titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
 
-        floatingButtonView.isHidden.toggle()
+        floatingButtonView.isHidden = isSwitchOn ? false : true
         
         if announcements.count >= 1 {
             let cells = announcementBoardTableView.cellsForRows(at: 0)
@@ -158,7 +169,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
     
     @objc func floatingButtonDidTapped() {
     
-        let creatingAnnouncementVC = AnnouncementViewController(task: .creating)
+        let creatingAnnouncementVC = AnnouncementViewController(task: .creating, studyID: studyID)
         creatingAnnouncementVC.isMaster = true
         
         let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
@@ -214,7 +225,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
         }
 
         cell.cellAction = { [unowned self] in
-            let vc = AnnouncementViewController(task: .viewing)
+            let vc = AnnouncementViewController(task: .viewing, studyID: studyID)
             vc.announcement = announcements[indexPath.row]
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -249,7 +260,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
         
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
           
-            let editingAnnouncementVC = AnnouncementViewController(task: .editing)
+            let editingAnnouncementVC = AnnouncementViewController(task: .editing, studyID: studyID)
             editingAnnouncementVC.isMaster = true
             editingAnnouncementVC.announcement = announcements[indexPath.row]
             

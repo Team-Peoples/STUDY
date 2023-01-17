@@ -175,7 +175,7 @@ final class WelcomViewController: UIViewController {
             underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
         }
     
-    private func socialSignIn(SNSToken: String,service: SNS) {
+    private func socialSignIn(SNSToken: String, service: SNS) {
         Network.shared.SNSSignIn(token: SNSToken, sns: service) { result in
             switch result {
             case .success(let user):

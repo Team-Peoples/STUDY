@@ -71,11 +71,11 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
     }
     
     internal func setPrecedingDateLabel(with date: Date) {
-        precedingDayLabel.text = date.formatToString(language: .eng)
+        precedingDayLabel.text = date.formatToString(format: .AttendanceDateFormat)
     }
     
     internal func setFollowingDateLabel(with date: Date) {
-        followingDayLabel.text = date.formatToString(language: .eng)
+        followingDayLabel.text = date.formatToString(format: .AttendanceDateFormat)
     }
     
     private func addSubviews() {

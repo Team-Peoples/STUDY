@@ -18,7 +18,7 @@ extension UIView {
 
 final class BrandButton: UIButton {
     
-    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat) {
+    init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat, borderColor: AssetColor? = nil) {
         super.init(frame: .zero)
         
         setTitle(title, for: .normal)
@@ -27,6 +27,10 @@ final class BrandButton: UIButton {
         
         setHeight(42)
         layer.cornerRadius = radius
+        if let borderColor = borderColor {
+            layer.borderColor = UIColor.appColor(borderColor).cgColor
+            layer.borderWidth = 1
+        }
     }
     
     init(title: String, isBold: Bool = true, isFill: Bool = false, fontSize: CGFloat = 18, height: CGFloat = 50) {
@@ -370,7 +374,7 @@ class BasicInputView: UIView {
     init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, isCancel: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
         super.init(frame: .zero)
         
-        inputField = CustomTextField(placeholder: placeholder, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
+        inputField = CustomTextField(placeholder: placeholder, fontSize: fontSize, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
         
         addSubview(nameLabel)
         addSubview(underline)
@@ -448,18 +452,18 @@ class BasicInputView: UIView {
 class CustomTextField: UITextField {
     // MARK: - Initialization
     
-    init(placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool? = nil) {
+    init(placeholder: String, fontSize: CGFloat, isBold: Bool = false, keyBoardType: UIKeyboardType = .default, returnType: UIReturnKeyType = .default, isFieldSecure: Bool = false) {
         super.init(frame: .zero)
         
         autocorrectionType = .no
         autocapitalizationType = .none
-        font = UIFont.systemFont(ofSize: 18)
-        
+        font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
+
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
-        isSecureTextEntry = isFieldSecure ?? false
-        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.systemFont(ofSize: 18)])
+        isSecureTextEntry = isFieldSecure
+        attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.systemFont(ofSize: fontSize)])
     }
     
     required init?(coder: NSCoder) {
@@ -549,7 +553,7 @@ class ProfileImageView: UIView {
     private let roleMark = UIButton(frame: .zero)
     private var radius: CGFloat = 0
     private var size: CGFloat = 0
-    // domb: 여기 없애기
+   
     internal var internalImage: UIImage? {
         didSet {
             internalImageView.image = internalImage
@@ -645,6 +649,7 @@ class ProfileImageView: UIView {
         if let imageURL = imageURL {
             let url = URL(string: imageURL)
             internalImageView.kf.setImage(with: url)
+            // domb: 이렇게 하면 profileImageView의 internalImageView의 image는 바뀌지만, internalImage나 AccountManagementVC의 profileImage는 nil이 되어 외부에서 문제가 생겨요.(예를 들어 image가 nil가 nil이라 picker에서 기본이미지로 변경 액션을 사용할 수 없음)  이래서 제가 kingFisher를 지우고 internalImage: UIImage 를 사용하는 것으로 했던거에요. 그대로 사용하신다면 로직의 수정이 필요합니다.
         } else {
             internalImageView.image = UIImage(named: Const.defaultProfile)
         }
@@ -920,7 +925,7 @@ class RoundableView: UIView {
 final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     
-    let strArray: [String] = {
+    var strArray: [String] = {
         
         var array = (1...99).map{ String($0) }
         array.insert("--", at: 0)
@@ -933,7 +938,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     private lazy var picker = UIPickerView()
     
-    init(numPlaceholder: Int?, centerAlign: Bool, enable: Bool = true, isPicker: Bool = true, isNecessary: Bool = false) {
+    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false) {
         super.init(frame: .zero)
         
         delegate = self
@@ -1029,7 +1034,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if !isNecessaryField {
+        if isNecessaryField {
             let currentText = NSString(string: textField.text ?? "")
             let finalText = currentText.replacingCharacters(in: range, with: string)
             
@@ -1079,7 +1084,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     }
     // pickerview의 선택지는 데이터의 개수만큼
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        100
+        strArray.count
     }
     
     // pickerview 내 선택지의 값들을 원하는 데이터로 채워준다.
@@ -1394,6 +1399,22 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
         
         return attributes
+    }
+}
+
+class PeoplesCalendarView: UICalendarView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        self.locale = Locale(identifier: "ko_kr")
+        self.calendar = Calendar(identifier: .gregorian)
+        self.tintColor = .appColor(.keyColor1)
+        self.fontDesign = .rounded
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

@@ -42,6 +42,7 @@ enum RequestPurpose: Requestable {
     case signUp   ////1
     case emailCheck(UserID) ////2
     case signIn ////4
+    case checkOldPassword(UserID, Password)
     case refreshToken ////9
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
@@ -57,7 +58,7 @@ enum RequestPurpose: Requestable {
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
-    case updateStudySchedule(StudySchedule)
+    case updateStudySchedule(StudyScheduleGoing)
     case endStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
@@ -77,7 +78,7 @@ enum RequestPurpose: Requestable {
     case getAllStudy    //12
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
-    case getAllStudySchedule ////19
+    case getStudyAllSchedule ////19
     case getUserSchedule    ////20
     case getStudyLog    //24
     case checkEmailCertificated
@@ -114,6 +115,8 @@ extension RequestPurpose {
             return "/signup/verification"
         case .signIn:
             return "/signin"
+        case .checkOldPassword:
+            return "/user/password/confirm"
         case .refreshToken:
             return "/issued"
         case .createStudy:
@@ -179,7 +182,7 @@ extension RequestPurpose {
             return "/study/\(id)"
         case .getAllAnnouncements(let id):
             return "/noti/\(id)"
-        case .getAllStudySchedule:
+        case .getStudyAllSchedule:
             return "/study/schedule"
         case .getUserSchedule:
             return "/user/schedule"
@@ -200,7 +203,7 @@ extension RequestPurpose {
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
+        case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
             
         case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update: return .put
             
@@ -216,8 +219,11 @@ extension RequestPurpose {
 // Body
             
 ///    HTTPMethod: POST
-        case .emailCheck(let id):
-            return .body(["userId": id])
+        case .emailCheck(let userID):
+            return .body(["userId": userID])
+        case  .checkOldPassword(let userID, let password):
+            return .body(["userId": userID,
+                          "password": password])
         case .createAnnouncement(let title, let content, let id):
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
