@@ -187,6 +187,7 @@ final class StudyInfoViewController: SwitchableViewController {
     }
     
     override func extraWorkWhenSwitchToggled() {
+        
         print("isSwitchOn: ", isSwitchOn)
         print("isManager: ", isManager)
         studyformEditButton.isHidden = !isSwitchOn

@@ -68,6 +68,7 @@ struct Credential: Encodable {
 enum SNS: String {
     case kakao = "kakao"
     case naver = "naver"
+    case none = "justEmailLogin"
 }
 
 struct SNSInfo {
@@ -303,8 +304,8 @@ struct StudySchedule: Codable {
     var topic: String?
     var place: String?
     
-    var startDate: Date?
-    var endDate: Date?
+    var startDate: Date
+    var endDate: Date
     var repeatOption: String? = ""
     // domb: repeatOption을 받아야 스케쥴셀의 상단부 "매달", "매일"과 같은 요소를 보여줄 수 있음. 현재는 옵션으로 표시 
     
@@ -319,8 +320,8 @@ struct StudySchedule: Codable {
 }
 
 struct StudyScheduleGoing: Codable {
-    var studyId: Int?
-    
+    var studyID: Int?
+    var studyScheduleID: Int?
     var topic: String?
     var place: String?
     
@@ -329,7 +330,7 @@ struct StudyScheduleGoing: Codable {
     
     var startTime: String?
     var endTime: String?
-    var repeatOption: String? = ""
+    var repeatOption: String = ""
     
     var periodFormIsFilled: Bool {
         if repeatOption == "" {
@@ -339,12 +340,21 @@ struct StudyScheduleGoing: Codable {
         }
     }
     
+    var deadlineFormIsFilled: Bool {
+        if repeatOption != "" {
+            return deadlineDate != "" && deadlineDate != nil
+        } else {
+            return true
+        }
+    }
+    
     var contentFormIsFilled: Bool {
         return topic != nil && topic != "" && place != nil && place != ""
     }
     
     enum CodingKeys: String, CodingKey {
-        case studyId
+        case studyID = "studyId"
+        case studyScheduleID = "studyScheduleId"
         
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"

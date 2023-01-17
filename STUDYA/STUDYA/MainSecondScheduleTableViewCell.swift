@@ -33,9 +33,18 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     private var isScheduleExist: Bool? {
         didSet {
-            constrainLine()
-            addSubviews()
-            setConstraints()
+            guard let isScheduleExist = isScheduleExist else { return }
+            if isScheduleExist {
+                noScheudleLabel.isHidden = true
+                date.isHidden = false
+                place.isHidden = false
+                todayContent.isHidden = false
+            } else {
+                noScheudleLabel.isHidden = false
+                date.isHidden = true
+                place.isHidden = true
+                todayContent.isHidden = true
+            }
         }
     }
     
@@ -57,8 +66,6 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         return v
     }()
     
-//    private lazy var scheduleButton = UIButton()
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -66,7 +73,9 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = .systemBackground
         
-//        scheduleButton.addTarget(self, action: #selector(scheduleTapped), for: .touchUpInside)
+        addSubviews()
+        constrainLine()
+        setConstraints()
     }
     
     private func configureDateInformation(_ startTime: Date?) {
@@ -89,13 +98,10 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     }
     
     private func constrainLine() {
-        if let isScheduleExist = isScheduleExist, isScheduleExist {
-            
             title.numberOfLines = 1
             date.numberOfLines = 1
             place.numberOfLines = 1
             todayContent.numberOfLines = 1
-        }
     }
     
     private func addSubviews() {
@@ -103,19 +109,11 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         scheduleBackView.addSubview(title)
         scheduleBackView.addSubview(disclosureIndicatorView)
         
-        guard let isScheduleExist = isScheduleExist else { return }
+        scheduleBackView.addSubview(date)
+        scheduleBackView.addSubview(place)
+        scheduleBackView.addSubview(todayContent)
         
-        if isScheduleExist {
-            scheduleBackView.addSubview(date)
-            scheduleBackView.addSubview(place)
-            scheduleBackView.addSubview(todayContent)
-            
-        } else {
-            scheduleBackView.addSubview(noScheudleLabel)
-//            scheduleBackView.addSubview(scheduleButton)
-        }
-//        scheduleBackView.addSubview(scheduleButton)
-        // domb: 중복 코드 인가요??
+        scheduleBackView.addSubview(noScheudleLabel)
     }
     
     private func setConstraints() {
@@ -130,16 +128,15 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             make.width.height.equalTo(28)
         }
         
-        if isScheduleExist! {
-            date.anchor(top: title.bottomAnchor, topConstant: 30, leading: title.leadingAnchor)
-            place.anchor(top: date.bottomAnchor, topConstant: 2, leading: date.leadingAnchor)
-            todayContent.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)
-        } else {
-            noScheudleLabel.snp.makeConstraints { make in
-                make.centerX.equalTo(scheduleBackView)
-                make.top.equalTo(title.snp.bottom).offset(50)
-            }
+        date.anchor(top: title.bottomAnchor, topConstant: 30, leading: title.leadingAnchor)
+        place.anchor(top: date.bottomAnchor, topConstant: 2, leading: date.leadingAnchor)
+        todayContent.anchor(top: place.bottomAnchor, topConstant: 13, leading: place.leadingAnchor, trailing: place.trailingAnchor)
+        
+        noScheudleLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(scheduleBackView)
+            make.top.equalTo(title.snp.bottom).offset(50)
         }
+        
         
 //        scheduleButton.snp.makeConstraints { make in
 //            make.edges.equalTo(scheduleBackView)

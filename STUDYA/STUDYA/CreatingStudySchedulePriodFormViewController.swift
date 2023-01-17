@@ -57,7 +57,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         studyScheduleViewModel.bind { [self] studySchedule in
             configureUI(studySchedule)
             
-            nextButton.isEnabled = studySchedule.periodFormIsFilled
+            nextButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.deadlineFormIsFilled
             nextButton.isEnabled ? nextButton.fillIn(title: "다음") : nextButton.fillOut(title: "다음")
             
             deadlineDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != ""
@@ -160,7 +160,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             
             guard let hour = dateComponents.hour, let minute = dateComponents.minute else { return }
             
-            self.studyScheduleViewModel.studySchedule.startTime = "\(String(format: "%02d", minute)):\(String(format: "%02d", minute))"
+            self.studyScheduleViewModel.studySchedule.startTime = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         
         let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
@@ -242,16 +242,14 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     private func configureUI(_ studySchedule: StudyScheduleGoing) {
         
-        print(studySchedule)
-        
         if let openDate = studySchedule.openDate?.formatToDate() {
-            setupDate(openDate, in: openDateSelectableView)
+            openDateSelectableView.setUpCalendarLinkedDateLabel(at: openDate)
         } else {
-            setupDate(Date(), in: openDateSelectableView)
+            openDateSelectableView.setUpCalendarLinkedDateLabel(at: Date())
         }
         
         if let deadlineDate = studySchedule.deadlineDate?.formatToDate() {
-           setupDate(deadlineDate, in: deadlineDateSelectableView)
+            deadlineDateSelectableView.setUpCalendarLinkedDateLabel(at: deadlineDate)
         } else {
             deadlineDateSelectableView.calendarLinkedDateLabel.text = ""
         }
@@ -347,19 +345,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
         }
     }
-    
-    // MARK: - Helpers
-    
-    func setupDate(_ date: Date, in view: DateSelectableRoundedView) {
-        let calendar = Calendar.current
-        let dateComponents = calendar.dateComponents([.year, .month, .day, .weekday], from: date)
-        guard let year = dateComponents.year,
-              let month = dateComponents.month,
-              let day = dateComponents.day,
-              let weekday = dateComponents.weekday else { return }
-        
-        view.calendarLinkedDateLabel.text = "\(year)년 \(month)월 \(day)일 \(calendar.weekday(weekday))요일"
-    }
 }
 
 // MARK: - DateSelectableRoundedView
@@ -400,6 +385,17 @@ final class DateSelectableRoundedView: UIView {
             $0.isUserInteractionEnabled = true
             $0.addGestureRecognizer(UITapGestureRecognizer(target: target, action: action))
         }
+    }
+    
+    func setUpCalendarLinkedDateLabel(at date: Date) {
+        let calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([.year, .month, .day, .weekday], from: date)
+        guard let year = dateComponents.year,
+              let month = dateComponents.month,
+              let day = dateComponents.day,
+              let weekday = dateComponents.weekday else { return }
+        
+        calendarLinkedDateLabel.text = "\(year)년 \(month)월 \(day)일 \(calendar.weekday(weekday))요일"
     }
     
     // MARK: - Configure

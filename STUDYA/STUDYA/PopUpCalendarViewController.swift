@@ -29,15 +29,7 @@ class PopUpCalendarViewController: UIViewController {
         
         return button
     }()
-    private let calendarView: UICalendarView = {
-        
-        let calendarView = UICalendarView()
-        
-        calendarView.calendar = Calendar.current
-        calendarView.tintColor = .appColor(.keyColor1)
-        
-        return calendarView
-    }()
+    private let calendarView = PeoplesCalendarView()
     
     // MARK: - Life Cycle
     
@@ -120,11 +112,9 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
         case .open:
             return true
         case .deadline:
-            guard let day = dateComponents?.day, // 캘린더의 모든 날짜
-                  let openDateDay = Calendar.current.dateComponents([.day], from: openDate).day else { return false
-            }
-
-            if day < openDateDay {
+            guard let date = dateComponents?.date else { fatalError() }
+            
+            if date < openDate {
                 return false
             } else {
                 return true
@@ -133,22 +123,36 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     }
    
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        print(dateComponents?.day)
-        print(dateComponents?.date,"🔥")
-        guard let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController else { return }
-    
-        switch calendarType {
-        case .open:
-            presentingVC.studyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+       
+        if let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController {
             
-            // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-            if  presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
+            switch calendarType {
+            case .open:
+                presentingVC.studyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                
+                // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
+                if  presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
+                    presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                }
+                self.dismiss(animated: true)
+            case .deadline:
                 presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                self.dismiss(animated: true)
             }
-            self.dismiss(animated: true)
-        case .deadline:
-            presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
-            self.dismiss(animated: true)
+        } else if let presentingVC = presentingVC as? EditingStudySchduleViewController {
+            switch calendarType {
+            case .open:
+                presentingVC.editingStudyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                
+                // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
+                if  presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != "" {
+                    presentingVC.editingStudyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                }
+                self.dismiss(animated: true)
+            case .deadline:
+                presentingVC.editingStudyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .studyScheduleFormat)
+                self.dismiss(animated: true)
+            }
         }
     }
 }

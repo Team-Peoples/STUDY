@@ -8,31 +8,52 @@
 import UIKit
 
 @available(iOS 16.0, *)
-class CalendarViewController: UIViewController {
+class CalendarViewController: UIViewController, ScheduleCoordinator {
+    
     // MARK: - Properties
+    
+    let studyAllScheduleViewModel = StudyAllScheduleViewModel()
     
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
     
-    let calendarView: UICalendarView = {
-        let c = UICalendarView()
-        
-        c.calendar = Calendar(identifier: .gregorian)
-        c.tintColor = .appColor(.keyColor1)
-        
-        return c
-    }()
+    let calendarView = PeoplesCalendarView()
+    let calendarBottomSheetVC = CalendarBottomSheetViewController()
+    lazy var selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        studyAllScheduleViewModel.getStudyAllSchedule()
+        
+        calendarView.delegate = self
+        calendarView.selectionBehavior = selectionDelegate
+        
+        selectionDelegate.selectedDate?.calendar = Calendar.current
+        selectionDelegate.setSelected(Date().convertToDateComponents(), animated: true)
+        
+        
+        studyAllScheduleViewModel.bind { [self] studyAllSchedule in
+            let visibleDateComponents = calendarView.visibleDateComponents
+            calendarView.reloadDecorations(forDateComponents: visibleDateComponents.getAlldaysDateComponents(), animated: true)
+        }
         
         dataSource = CalendarBottomSheetDatasource()
         title = "나의 캘린더"
         
         configureViews()
         setConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        studyAllScheduleViewModel.getStudyAllSchedule { [self] in
+            let selectedDay = selectionDelegate.selectedDate
+            let studySchedule = studyAllScheduleViewModel.studySchedule(at: selectedDay)
+            calendarBottomSheetVC.studySchedule = studySchedule
+        }
     }
     
     override func viewWillLayoutSubviews() {
@@ -42,13 +63,12 @@ class CalendarViewController: UIViewController {
         
         sheetCoordinator = UBottomSheetCoordinator(parent: self, delegate: self)
         
-        if dataSource != nil { sheetCoordinator.dataSource = dataSource! }
+        if dataSource != nil { sheetCoordinator.dataSource = dataSource }
         
-        let vc = CalendarBottomSheetViewController()
+        calendarBottomSheetVC.sheetCoordinator = sheetCoordinator
+        calendarBottomSheetVC.scheduleCoordinator = self
         
-        vc.sheetCoordinator = sheetCoordinator
-        
-        sheetCoordinator.addSheet(vc, to: self, didContainerCreate: { container in
+        sheetCoordinator.addSheet(calendarBottomSheetVC, to: self, didContainerCreate: { container in
             let frame = self.view.frame
             let rect = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
             
@@ -80,9 +100,32 @@ class CalendarViewController: UIViewController {
     }
 }
 
+// MARK: - UBottomSheetCoordinatorDelegate
+
 extension CalendarViewController: UBottomSheetCoordinatorDelegate {
     
     func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
         self.sheetCoordinator.addDropShadowIfNotExist()
+    }
+}
+
+// MARK: - UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate
+
+extension CalendarViewController: UICalendarViewDelegate {
+    
+    func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
+        
+        if !studyAllScheduleViewModel.studySchedule(at: dateComponents).isEmpty {
+            return .image(UIImage(systemName: "circle.fill")?.resize(newWidth: 8).withRenderingMode(.alwaysTemplate), color: .appColor(.keyColor1))
+        } else {
+            return nil
+        }
+    }
+}
+
+extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
+    func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+        let studySchedule = studyAllScheduleViewModel.studySchedule(at: dateComponents)
+        calendarBottomSheetVC.studySchedule = studySchedule
     }
 }

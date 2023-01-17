@@ -9,14 +9,7 @@ import UIKit
 
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    let studySchedules: [StudySchedule] = [
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay),
-//        StudySchedule(studyName: "피플즈", topic: "HIG 톺아보기", place: "강남구", openDate: Date().toString(), deadlineDate: Date().toString(), startTime: Date().toString(), endTime: Date().toString(), repeatOption: RepeatOption.everyDay)
-    ]
+    var studySchedules: [StudySchedule] = []
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"

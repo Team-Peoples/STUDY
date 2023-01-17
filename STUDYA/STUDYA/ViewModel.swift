@@ -185,38 +185,50 @@ class StudyAllScheduleViewModel: ViewModel {
         handler?(studyAllSchedule)
     }
     
-    func getStudyAllSchedule() {
+    func getStudyAllSchedule(completion: (() -> Void)? = nil) {
         Network.shared.getStudyAllSchedule { result in
             switch result {
             case .success(let studyAllSchedule):
                 self.studyAllSchedule = studyAllSchedule
+                completion?()
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func studyScheduleDateComponents(of studyID: ID, completion: ([DateComponents]?) -> Void) {
-        
-        let dateComponents = studyAllSchedule["\(studyID)"]?.map { studySchedule in
-            
-            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
-            return dateComponents
+    func studySchedule(at selectedDate: DateComponents?) -> [StudySchedule] {
+        let allStudyAllSchedule = studyAllSchedule.values.flatMap { $0 }
+        let studyScheduleAtSelectedDate = allStudyAllSchedule.filter { studySchedule in
+            let studyScheduleDateComponents = studySchedule.startDate.convertedToDateComponents([.year, .month, .day])
+            return studyScheduleDateComponents.year == selectedDate?.year &&
+            studyScheduleDateComponents.month == selectedDate?.month &&
+            studyScheduleDateComponents.day == selectedDate?.day
         }
-//        print(dateComponents,"🔥")
-        completion(dateComponents)
+        return studyScheduleAtSelectedDate
     }
 
     func studySchedules(of studyID: ID, at calendarSelectedDateComponents: DateComponents?) -> [StudySchedule]? {
         let studySchedules = studyAllSchedule["\(studyID)"]?.filter({ studySchedule in
-            guard let dateComponents = studySchedule.startDate?.convertToDateComponents() else { fatalError() }
-               let year = dateComponents.year
-               let month = dateComponents.month
-               let day = dateComponents.day
-
+            let dateComponents = studySchedule.startDate.convertToDateComponents() 
+            let year = dateComponents.year
+            let month = dateComponents.month
+            let day = dateComponents.day
+            
             return calendarSelectedDateComponents?.year == year && calendarSelectedDateComponents?.month == month && calendarSelectedDateComponents?.day == day
         })
         return studySchedules
+    }
+
+    func deleteStudySchedule(id studyScheduleID: ID, deleteRepeatedSchedule: Bool, successHandler: @escaping () -> Void) {
+        Network.shared.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule: deleteRepeatedSchedule) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
 
@@ -243,6 +255,17 @@ class StudyScheduleViewModel: ViewModel {
     
     func postStudySchedule(successHandler: @escaping () -> Void) {
         Network.shared.createStudySchedule(studySchedule) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func updateStudySchedule(successHandler: @escaping () -> Void) {
+        Network.shared.updateStudySchedule(studySchedule) { result in
             switch result {
             case .success:
                 successHandler()

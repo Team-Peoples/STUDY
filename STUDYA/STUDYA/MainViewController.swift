@@ -88,6 +88,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         
         view.backgroundColor = .systemBackground
         
+        print("origin accessToken: ",KeyChain.read(key: Const.accessToken)!)
+        print("origin refreshToken: ",KeyChain.read(key: Const.refreshToken)!)
+        
         configureTabBarSeparator()
         configureNavigationBar()
     }
@@ -114,28 +117,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
         flag.toggle()
-        
-//        Network.shared.createStudySchedule(StudyScheduleGoing(studyId: 3, studyName: nil, studyScheduleID: 3, topic: "묘오오오오오픽", place: "ㅏㅏㅏ앙소", openDate: "2023-01-01", deadlineDate: "2023-01-01", startDate: "16:30", endDate: "17:00", repeatOption: .noRepeat)) { result in
-//            switch result {
-//            case .success:
-//                print("s")
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//
-        
-//        Network.shared.deleteStudySchedule(48, deleteRepeatSchedule: false) { result in
-//            switch result {
-//            case .success:
-//                print("S")
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-        
-//        let nextVC = NotificationViewController()
-//        push(vc: nextVC)
+    
+        let nextVC = NotificationViewController()
+        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
@@ -208,8 +192,6 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
             switch result {
                 
             case .success(let user):
-                print(KeyChain.read(key: Const.accessToken))
-                print(KeyChain.read(key: Const.refreshToken))
                 self.nickName = user.nickName
                 self.getAllStudies()
             case .failure(let error):

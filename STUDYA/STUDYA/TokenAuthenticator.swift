@@ -29,6 +29,7 @@ class TokenAuthenticator: Authenticator {
     func isRequest(_ urlRequest: URLRequest, authenticatedWith credential: Credential) -> Bool {
        
         let bearerAccessToken = HTTPHeader.bearerAccessToken(credential.accessToken).value
+        print(#function, bearerAccessToken, "😲Bearer: sfeseff 형식이면 맞는것")
         let bearerRefreshToken = HTTPHeader.bearerRefreshToken(credential.refreshToken).value
         return urlRequest.headers["AccessToken"] == bearerAccessToken && urlRequest.headers["RefreshToken"] == bearerRefreshToken
     }

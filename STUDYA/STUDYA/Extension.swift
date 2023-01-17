@@ -70,9 +70,6 @@ extension UIImage {
         let renderImage = render.image { context in
             self.draw(in: CGRect(origin: .zero, size: size))
         }
-        
-//        print("화면 배율: \(UIScreen.main.scale)")// 배수
-//        print("origin: \(self), resize: \(renderImage)")
         return renderImage
     }
 }
@@ -180,11 +177,30 @@ extension Date {
     func convertToDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: self)
     }
+    
+    func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
+        Calendar.current.dateComponents(components, from: self)
+    }
 }
 
 extension DateComponents {
     func convertToDate() -> Date? {
         Calendar.current.date(from: self)
+    }
+    
+    func getAlldaysDateComponents() -> [DateComponents] {
+        let calendar = Calendar.current
+        let range = calendar.maximumRange(of: .day)!
+        let yearComponents = self.year
+        let monthComponents = self.month
+    
+        var days = [DateComponents]()
+        for i in range {
+            var dateComponents = DateComponents(year: yearComponents, month: monthComponents)
+            dateComponents.day = i
+            days.append(dateComponents)
+        }
+        return days
     }
 }
 

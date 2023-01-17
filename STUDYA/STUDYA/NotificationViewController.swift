@@ -44,6 +44,7 @@ final class NotificationViewController: UIViewController {
         view.addSubview(noNotiLabel)
         
         noNotiImageView.centerXY(inView: view)
+        noNotiImageView.anchor(width: 120, height: 180)
         noNotiLabel.centerX(inView: view)
         noNotiLabel.anchor(top: noNotiImageView.bottomAnchor, topConstant: 20)
     }
