@@ -18,7 +18,9 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     private lazy var managerView: AttendanceManagerModeView = {
         
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)
-        guard let v = nib.instantiate(withOwner: AttendanceViewController.self).first as? AttendanceManagerModeView else { return }
+        guard let v = nib.instantiate(withOwner: AttendanceViewController.self).first as? AttendanceManagerModeView else {
+            return AttendanceManagerModeView()
+        }
         
         return v
     }()
