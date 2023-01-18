@@ -22,7 +22,7 @@ final class AttendancesModificationViewModel {
     
     var alignment = Observable(LeftButtonAlignment.name)
     lazy var selectedTime = Observable(times.first ?? "")
-    var selectedDate = Observable(Date().convertToDashedString())
+    var selectedDate = Observable(Date().formatToString(format: .dashedFormat))
     
     var error: Observable<PeoplesError>?
     
@@ -98,7 +98,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     internal var viewModel: AttendancesModificationViewModel? {
         didSet {
             setBinding()
-            viewModel?.getAllMembersAttendanceOn(date: Date().convertToDashedString())
+            viewModel?.getAllMembersAttendanceOn(date: Date().formatToString(format: .dashedFormat))
             headerView.viewModel = viewModel
         }
     }

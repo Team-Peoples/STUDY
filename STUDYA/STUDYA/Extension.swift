@@ -174,27 +174,8 @@ extension Calendar {
 }
 
 extension Date {
-    func convertToMinuteDateComponents() -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
-
-    func convertToDateComponents() -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: self)
-    }
-    
-    func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
+    func convertToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
         Calendar.current.dateComponents(components, from: self)
-    }
-    
-    func convertToDayDateComponents() -> DateComponents {
-        Calendar.current.dateComponents([.year, .month, .day], from: self)
-    }
-    
-    func convertToDashedString() -> DashedDate {
-        DateFormatter.dashedDateFormatter.string(from: self)
-    }
-    
-    func convertToDottedString() -> DottedDate {
-        DateFormatter.dottedDateFormatter.string(from: self)
     }
 }
 

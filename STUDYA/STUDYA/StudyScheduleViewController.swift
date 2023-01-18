@@ -47,7 +47,7 @@ class StudyScheduleViewController: SwitchableViewController {
         calendarView.selectionBehavior = selectionDelegate
         
         selectionDelegate.selectedDate?.calendar = Calendar.current
-        selectionDelegate.setSelected(Date().convertToDateComponents(), animated: true)
+        selectionDelegate.setSelected(Date().convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday]), animated: true)
         
         confifureViews()
         configureTableView()

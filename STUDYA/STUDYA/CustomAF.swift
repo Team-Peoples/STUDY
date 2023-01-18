@@ -96,7 +96,7 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .update:
+        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .update:
             return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
@@ -209,7 +209,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getAllStudySchedule, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule : return .get
         }
     }
     

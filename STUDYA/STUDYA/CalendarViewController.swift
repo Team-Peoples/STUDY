@@ -31,7 +31,7 @@ class CalendarViewController: UIViewController, ScheduleCoordinator {
         calendarView.selectionBehavior = selectionDelegate
         
         selectionDelegate.selectedDate?.calendar = Calendar.current
-        selectionDelegate.setSelected(Date().convertToDateComponents(), animated: true)
+        selectionDelegate.setSelected(Date().convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday]), animated: true)
         
         
         studyAllScheduleViewModel.bind { [self] studyAllSchedule in

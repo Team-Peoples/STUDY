@@ -45,7 +45,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         self.presentingVC = presentingVC
         
         guard let date = DateFormatter.dashedDateFormatter.date(from: viewModel.selectedDate.value) else { return }
-        selectionSingleDate.setSelected(date.convertToDayDateComponents(), animated: true)
+        selectionSingleDate.setSelected(date.convertToDateComponents([.year, .month, .day]), animated: true)
     }
     
     required init(coder aDecoder: NSCoder) {

@@ -334,10 +334,10 @@ final class EditingStudySchduleViewController: UIViewController {
         let studyScheduleID = studySchedule.studyScheduleID
         let topic = studySchedule.topic
         let place = studySchedule.place
-        let opendate = studySchedule.startDate.formatToString(format: .studyScheduleFormat)
-        let startTime = studySchedule.startDate.convertedToDateComponents([.hour, .minute])
+        let opendate = studySchedule.startDate.formatToString(format: .dashedFormat)
+        let startTime = studySchedule.startDate.convertToDateComponents([.hour, .minute])
         let startTimeString =  "\(String(format: "%02d", startTime.hour!)):\(String(format: "%02d", startTime.minute!))"
-        let endTime = studySchedule.endDate.convertedToDateComponents([.hour, .minute])
+        let endTime = studySchedule.endDate.convertToDateComponents([.hour, .minute])
         let endTimeString = "\(String(format: "%02d", endTime.hour!)):\(String(format: "%02d", endTime.minute!))"
         
         // domb: 서버에서 보내주는 deadlineDate는 당일 끝나는 시간이고, 반복일정 끝나는 날짜를 알려주는게 아니기 때문에 deadlineDate를 입력할 수 없다.

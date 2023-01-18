@@ -13,7 +13,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     
     var precedingDate = Date() - 2000000 //임시
     var followingDate = Date()
-    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToMinuteDateComponents() {
+    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToDateComponents([.year, .month, .day, .hour, .minute]) {
         didSet {
             
             guard let precedingDateComponents = precedingDateComponents,
@@ -24,7 +24,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             precedingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    lazy var followingDateComponents: DateComponents? = followingDate.convertToMinuteDateComponents() {
+    lazy var followingDateComponents: DateComponents? = followingDate.convertToDateComponents([.year, .month, .day, .hour, .minute]) {
         didSet {
             
             guard let followingDateComponents = followingDateComponents,

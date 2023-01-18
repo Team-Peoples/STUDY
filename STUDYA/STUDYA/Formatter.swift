@@ -84,8 +84,8 @@ extension DateFormatter {
 extension Date {
     enum Format: String {
         case announcementDateFormat = "MMM dd월 EEEE"
-        case AttendanceDateFormat = "YYYY.MM.dd"
-        case studyScheduleFormat = "yyyy-MM-dd"
+        case dottedFormat = "YYYY.MM.dd"
+        case dashedFormat = "yyyy-MM-dd"
     }
     
     func formatToString(format: Format) -> String {

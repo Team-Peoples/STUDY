@@ -80,7 +80,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     private func configureDateInformation(_ startTime: Date?) {
         guard let startTime = startTime else { return }
-        let dateComponents = startTime.convertToMinuteDateComponents()
+        let dateComponents = startTime.convertToDateComponents([.year, .month, .day, .hour, .minute])
         guard let month = dateComponents.month,
               let day = dateComponents.day,
               let unformattedHour = dateComponents.hour,

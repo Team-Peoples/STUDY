@@ -344,7 +344,7 @@ struct StudyScheduleGoing: Codable {
     var topic: String?
     var place: String?
     
-    var openDate: String? = Date().formatToString(format: .studyScheduleFormat)
+    var openDate: String? = Date().formatToString(format: .dashedFormat)
     var deadlineDate: String? = ""
     
     var startTime: String?

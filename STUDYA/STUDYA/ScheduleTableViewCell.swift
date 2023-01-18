@@ -75,12 +75,12 @@ class ScheduleTableViewCell: UITableViewCell {
     
     func configure(schedule: StudySchedule, kind: CalendarKind) {
         
-        let startDateComponents = schedule.startDate.convertToDateComponents()
+        let startDateComponents = schedule.startDate.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
         if let hour = startDateComponents.hour, let minute = startDateComponents.minute {
             startTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
         
-        let endDateComponents = schedule.endDate.convertToDateComponents()
+        let endDateComponents = schedule.endDate.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
         if let hour = endDateComponents.hour, let minute = endDateComponents.minute {
             endTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
         }
