@@ -7,18 +7,22 @@
 
 import UIKit
 
-class AttendanceView: UIView {
+class OneMemberAttendanceView: UIView {
     
     var viewer: Viewer
+    var viewModel: AttendanceViewModel?
     
     // MARK: - Properties
     
     weak var bottomSheetAddableDelegate: BottomSheetAddable?
     
-    lazy var attendanceStatusView: UIView = {
+    lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
-            return AttendanceStatusView()
+            let headerView = MyAttendanceStatusView()
+            headerView.attendanceOverall = viewModel?.myAttendanceOverall
+            
+            return headerView
         case .manager:
             return AttendanceStatusWithProfileView()
         }
@@ -34,7 +38,7 @@ class AttendanceView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.addSubview(attendanceStatusView)
+        self.addSubview(oneMemberAttendanceHeaderView)
         self.addSubview(attendanceDetailsTableView)
         
         attendanceDetailsTableView.separatorStyle = .none
@@ -52,24 +56,30 @@ class AttendanceView: UIView {
     
     // MARK: - Actions
 
+    private func setBinding() {
+        viewModel?.myAttendanceOverall.bind({ myAttendanceOverall in
+            self.viewModel?.seperateAllDaysByMonth()
+            self.attendanceDetailsTableView.reloadData()
+        })
+    }
     
     // MARK: - Configure
     
     private func register() {
-        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: ReusableView.reusableDetailsCell.identifier)
-        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: ReusableView.reusableDayCell.identifier)
-        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: ReusableView.reusableMonthlyHeaderView.identifier)
-        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: ReusableView.reusableMonthlyFooterView.identifier)
+        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
+        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
+        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
+        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
     }
     
     // MARK: - Setting Constraints
     
     private func setConstraints() {
-        attendanceStatusView.snp.makeConstraints { make in
+        oneMemberAttendanceHeaderView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
         attendanceDetailsTableView.snp.makeConstraints { make in
-            make.top.equalTo(attendanceStatusView.snp.bottom)
+            make.top.equalTo(oneMemberAttendanceHeaderView.snp.bottom)
             make.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
@@ -78,10 +88,14 @@ class AttendanceView: UIView {
 
 // MARK: UITableViewDataSource
 
-extension AttendanceView: UITableViewDataSource {
+extension OneMemberAttendanceView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        guard let viewModel = viewModel else { return 0 }
+        
+        let headerCount = 1
+        
+        return viewModel.monthlyGroupedDates.keys.count + headerCount
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -107,7 +121,7 @@ extension AttendanceView: UITableViewDataSource {
                 headerView.backgroundColor = .appColor(.background)
                 return headerView
             default:
-                let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReusableView.reusableMonthlyHeaderView.identifier) as! MonthlyHeaderView
+                let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as! MonthlyHeaderView
                 return headerView
         }
     }
@@ -118,44 +132,45 @@ extension AttendanceView: UITableViewDataSource {
             case 0:
                 return nil
             default:
-                let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReusableView.reusableMonthlyFooterView.identifier) as! MonthlyFooterView
+                let footerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier) as! MonthlyFooterView
                 return footerView
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         switch section {
             case 0:
                 return 1
             default:
-                return 10
+            guard let viewModel = viewModel else { return 0 }
+            
+            let numberOfStudyDatesInAMonth = viewModel.monthlyGroupedDates.values.map { $0.count }
+            
+            return numberOfStudyDatesInAMonth[section - 1]
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch indexPath.section {
-            case 0:
-                let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: ReusableView.reusableDetailsCell.identifier, for: indexPath)
-                as! AttendanceDetailsCell
-                
-                if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-                    attendanceTableViewDetailsCell.bottomSheetAddableDelegate = bottomSheetAddableDelegate
-                }
-                
-                return attendanceTableViewDetailsCell
-            default:
-                let dayCell = tableView.dequeueReusableCell(withIdentifier: ReusableView.reusableDayCell.identifier, for: indexPath)
-                as! AttendanceTableViewDayCell
-                
-                dayCell.attendance = "출석"
-                return dayCell
+        case 0:
+            guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
+                    as? AttendanceDetailsCell else { return  AttendanceDetailsCell() }
+            
+            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
+                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+            }
+            
+            return attendanceTableViewDetailsCell
+        default:
+            guard let dayCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDayCell.identifier, for: indexPath)
+                    as? AttendanceTableViewDayCell else { return AttendanceTableViewDayCell() }
+            
+            return dayCell
         }
     }
 }
-extension AttendanceView: UITableViewDelegate {
+extension OneMemberAttendanceView: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
@@ -163,8 +178,7 @@ extension AttendanceView: UITableViewDelegate {
     }
 }
 
-
-enum ReusableView {
+enum AttendanceReusableView {
     case reusableDetailsCell
     case reusableDayCell
     case reusableMonthlyHeaderView

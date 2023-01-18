@@ -9,28 +9,28 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var dailyStudyAttendance: [String: Int] = ["출석": 60, "지각": 15, "결석": 3, "사유": 5] {
+    internal var studyID: ID? {
         didSet {
-            
+            managerView.studyID = studyID
         }
     }
     
     private lazy var managerView: AttendanceManagerModeView = {
         
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)
-        let v = nib.instantiate(withOwner: AttendanceViewController.self).first as! AttendanceManagerModeView
+        guard let v = nib.instantiate(withOwner: AttendanceViewController.self).first as? AttendanceManagerModeView else {
+            return AttendanceManagerModeView()
+        }
         
         return v
     }()
-    
-    let userView = AttendanceView(viewer: .user)
+    let userView = OneMemberAttendanceView(viewer: .user)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if isManager {
-            managerView.navigatableBottomSheetableDelegate = self
-            managerView.navigatiableSwitchSyncableDelegate = self
+            managerView.delegate = self
         }
         userView.bottomSheetAddableDelegate = self
     }
@@ -39,7 +39,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        view = switchStatusWhenWillAppear ? managerView : userView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -50,5 +49,79 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     override func extraWorkWhenSwitchToggled() {
         view = isSwitchOn ? managerView : userView
+    }
+}
+
+class AttendanceViewModel {
+    
+    let studyID: ID
+    
+    var myAttendanceOverall: Observable<MyAttendanceOverall>
+    var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
+    var error: Observable<PeoplesError>?
+    
+    var monthlyGroupedDates: [String: [Date]] = [:]
+    
+    init(studyID: ID, myAttendanceOverall: MyAttendanceOverall, allUsersAttendacneForADay: AllUsersAttendacneForADay?) {
+        self.studyID = studyID
+        self.myAttendanceOverall = Observable(myAttendanceOverall)
+        
+        if let allUsersAttendacneForADay = allUsersAttendacneForADay {
+            self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+        }
+    }
+    
+    func getMyAttendanceOverall() {
+    
+        let formatter = DateFormatter.dashedDateFormatter
+        let today = Date()
+        let dashedToday = formatter.string(from: today)
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+        let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+
+        Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
+            switch result {
+            case .success(let attendanceOverall):
+                self.myAttendanceOverall = Observable(attendanceOverall)
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+//    func getAllMembersAttendances() {
+//        let formatter = DateFormatter.dashedDateFormatter
+//        let today = Date()
+//        let dashedToday = formatter.string(from: today)
+//
+//        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+//            switch result {
+//            case .success(let allUsersAttendancesForADay):
+//                self.allUsersAttendancesForADay = Observable(allUsersAttendancesForADay)
+//                self.seperateAllDaysByMonth()
+//            case .failure(let error):
+//                self.error = Observable(error)
+//            }
+//        }
+//    }
+    
+    func seperateAllDaysByMonth() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+        
+        let datas: [OneTimeAttendanceInformation] = myAttendanceOverall.value.oneTimeAttendanceInformation
+        var dates: [Date] = []
+        
+        datas.forEach { oneTimeAttendanceInfo in
+            dates.append(oneTimeAttendanceInfo.studyScheduleDate)
+        }
+        
+        dates.forEach { date in
+            let monthAndYear = dateFormatter.string(from: date)
+            if monthlyGroupedDates[monthAndYear] == nil {
+                monthlyGroupedDates[monthAndYear] = []
+            }
+            monthlyGroupedDates[monthAndYear]?.append(date)
+        }
     }
 }

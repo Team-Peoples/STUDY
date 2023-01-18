@@ -174,12 +174,27 @@ extension Calendar {
 }
 
 extension Date {
+    func convertToMinuteDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: self)
+
     func convertToDateComponents() -> DateComponents {
         Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .weekday], from: self)
     }
     
     func convertedToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
         Calendar.current.dateComponents(components, from: self)
+    }
+    
+    func convertToDayDateComponents() -> DateComponents {
+        Calendar.current.dateComponents([.year, .month, .day], from: self)
+    }
+    
+    func convertToDashedString() -> DashedDate {
+        DateFormatter.dashedDateFormatter.string(from: self)
+    }
+    
+    func convertToDottedString() -> DottedDate {
+        DateFormatter.dottedDateFormatter.string(from: self)
     }
 }
 
@@ -216,5 +231,14 @@ extension UINavigationController {
         
         navigationBar.backIndicatorImage = backButtonImage
         navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    }
+}
+
+extension URLRequest {
+    func debug() {
+        print("\(self.httpMethod ?? "") \(self.url)")
+        let str = String(decoding: self.httpBody ?? Data(), as: UTF8.self)
+        print("BODY \n \(str)")
+        print("HEADERS \n \(self.allHTTPHeaderFields)")
     }
 }

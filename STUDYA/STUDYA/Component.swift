@@ -789,8 +789,7 @@ final class BrandSwitch: UIControl {
                     
                     NSLayoutConstraint.activate(self.circleViewConstraints)
                     self.layoutIfNeeded()
-                },
-                completion: nil
+                }
             )
         }
     }
@@ -1254,8 +1253,13 @@ final class AttendanceStatusCapsuleView: RoundableView {
 
 class FullDoneButtonButtomView: UIView {
     
-    internal lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    internal lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Const.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    internal var navigatable: Navigatable?
+    
+    private lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    private lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Const.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    internal var isDoneButtonSelected: Bool {
+        doneButton.isSelected
+    }
     
     init(doneButtonTitle: String) {
         super.init(frame: .zero)
@@ -1272,6 +1276,26 @@ class FullDoneButtonButtomView: UIView {
     
     @objc func doneButtonTapped() {
 //        need override
+    }
+    
+    func selectDoneButton() {
+        doneButton.isSelected = true
+        titleButton.isSelected = true
+    }
+    
+    func deselectDoneButton() {
+        doneButton.isSelected = false
+        titleButton.isSelected = false
+    }
+    
+    func enableDoneButton() {
+        doneButton.isEnabled = true
+        titleButton.isEnabled = true
+    }
+    
+    func disableDoneButton() {
+        doneButton.isEnabled = false
+        titleButton.isEnabled = false
     }
     
     func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int) {

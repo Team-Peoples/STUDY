@@ -5,9 +5,28 @@
 //  Created by 서동운 on 2022/09/08.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - Model
+
+struct Observable<T> {
+    private var listener: ((T) -> Void)?
+    
+    var value: T {
+        didSet {
+            listener?(value)
+        }
+    }
+    
+    init(_ value: T) {
+        self.value = value
+    }
+    
+    mutating func bind(_ closure: @escaping (T) -> Void) {
+        closure(value)
+        listener = closure
+    }
+}
 
 struct User: Codable {
     var id: String?
@@ -237,7 +256,7 @@ struct StudyOverall: Codable {
     let announcement: Announcement?
     let study: Study
     let isManager: Bool
-    let totalFine, attendedCount, absentcount, totalStudyHeldCount, lateCount, allowedCount: Int
+    let totalFine, attendedCount, absentCount, totalStudyHeldCount, lateCount, allowedCount: Int
     let studySchedule: StudySchedule?
     let isOwner: Bool
     
@@ -247,7 +266,7 @@ struct StudyOverall: Codable {
         case attendedCount = "attendanceCnt"
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
-        case absentcount = "absentCnt"
+        case absentCount = "absentCnt"
         case totalStudyHeldCount = "dayCnt"
         case isOwner = "master"
         case study, studySchedule, totalFine
@@ -392,7 +411,8 @@ struct StudyScheduleGoing: Codable {
 
 struct ScheduleAttendanceInformation: Codable {
     let userID: UserID
-    let attendanceStatus, reason: String
+    let attendanceStatus: Attendance
+    let reason: String
     let fine: Int
 
     enum CodingKeys: String, CodingKey {
@@ -402,10 +422,113 @@ struct ScheduleAttendanceInformation: Codable {
     }
 }
 
+struct MyAttendanceOverall: Codable {
+    let totalFine, attendedCount, lateCount, allowedCount, absentCount: Int
+    let oneTimeAttendanceInformation: [OneTimeAttendanceInformation]
+    
+    enum CodingKeys: String, CodingKey {
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
+        case totalFine, oneTimeAttendanceInformation
+    }
+}
+
+struct OneTimeAttendanceInformation: Codable {
+    let fine, attendanceID: Int
+    let attendanceStatus: Attendance
+    let userID: String
+    let studyScheduleDate: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case studyScheduleDate = "studyScheduleDateTime"
+        case attendanceStatus = "attendStatus"
+        
+        case attendanceID = "attendanceId"
+        case userID = "userId"
+        case fine
+    }
+}
+
+struct SingleUserAnAttendanceInformation: Codable {
+    var fine: Int
+    var attendanceStatus: Attendance
+    let userID: String
+    let attendanceID: Int
+//    let nickName: String?
+//    let imageURL: String?
+
+    enum CodingKeys: String, CodingKey {
+        case fine
+        case attendanceStatus = "attendance"
+        case userID = "userId"
+        case attendanceID = "attendanceId"
+    }
+}
+
+enum Attendance: Codable {
+    case attended
+    case late
+    case absent
+    case allowed
+    
+    enum CodingKEys: String, CodingKey {
+        case attended = "ATTENDANCE"
+        case late = "LATENESS"
+        case absent = "ABSENT"
+        case allowed = "HOLD"
+    }
+    
+    var korean: String {
+        switch self {
+        case .attended:
+            return "출석"
+        case .late:
+            return "지각"
+        case .absent:
+            return "결석"
+        case .allowed:
+            return "사유"
+        }
+    }
+    
+    var color: AssetColor {
+        switch self {
+            case .attended:
+                return .attendedMain
+            case .late:
+                return .lateMain
+            case .absent:
+                return .absentMain
+            case .allowed:
+                return .allowedMain
+        }
+    }
+    
+    var priority: Int {
+        switch self {
+        case .attended:
+            return 1
+        case .late:
+            return 2
+        case .absent:
+            return 3
+        case .allowed:
+            return 4
+        }
+    }
+}
+
+typealias AllUsersAttendacneForADay = [Time: [SingleUserAnAttendanceInformation]]
+
 typealias UserID = String //사용자의 아이디
 typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
 typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias DashedDate = String
+typealias DottedDate = String
+typealias Time = String
 typealias Deposit = Int

@@ -10,7 +10,6 @@ import UIKit
 final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonButtomView {
     
     internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
-    internal weak var navigatableDelegate: Navigatable?
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -68,7 +67,7 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
         print(#function)
         let vc = AttendancePopUpPeriodCalendarViewController()
         vc.dateLabelUpdatableDelegate = dateLabelUpdatableDelegate
-        navigatableDelegate?.present(vc)
+        navigatable?.present(vc)
     }
     
     internal func setPrecedingDateLabel(with date: Date) {

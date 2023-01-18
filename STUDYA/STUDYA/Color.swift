@@ -66,23 +66,3 @@ extension UIColor {
         }
     }
 }
-
-enum AttendanceColor: String {
-    case attendance = "출석"
-    case lateness = "지각"
-    case absence = "결석"
-    case allow = "사유"
-    
-    var color: UIColor {
-        switch self {
-            case .attendance:
-                return .appColor(.attendedMain)
-            case .lateness:
-                return .appColor(.lateMain)
-            case .absence:
-                return .appColor(.absentMain)
-            case .allow:
-                return .appColor(.allowedMain)
-        }
-    }
-}

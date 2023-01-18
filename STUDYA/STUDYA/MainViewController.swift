@@ -243,7 +243,6 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
                     self.configureViewWhenYesStudy()
                 }
             case .failure(let error):
-                print(#function,2)
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
@@ -361,11 +360,11 @@ extension MainViewController: UITableViewDataSource {
             
             if flag {
                 cell.didAttend = true
-                cell.attendanceStatus = .attended
+                cell.attendance = .attended
                 
             } else {
                 cell.didAttend = true
-                cell.attendanceStatus = .absent
+                cell.attendance = .absent
             }
             
             return cell
@@ -382,16 +381,18 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
-            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
-            cell.studyAttendance = [
-                .attended: currentStudyOverall.attendedCount,
-                .late: currentStudyOverall.lateCount,
-                .absent: currentStudyOverall.absentcount,
-                .allowed: currentStudyOverall.allowedCount
-            ]
+//            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
+//            cell.studyAttendance = [
+//                .attended: currentStudyOverall.attendedCount,
+//                .late: currentStudyOverall.lateCount,
+//                .absent: currentStudyOverall.absentCount,
+//                .allowed: currentStudyOverall.allowedCount
+//            ]
+//            cell.penalty = currentStudyOverall.totalFine
+//            cell.studyID = currentStudyOverall.study.id
+            cell.currentStudyOverall = currentStudyOverall
             
-            cell.penalty = currentStudyOverall.totalFine
-            cell.navigatableSwitchSyncableDelegate = self
+            cell.delegate = self
             
             return cell
             

@@ -7,17 +7,114 @@
 
 import UIKit
 
-final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
+final class AttendancesModificationViewModel {
+    var studyID: Int
     
-    internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)! {
+    var allUsersAttendancesForADay: AllUsersAttendacneForADay? {
         didSet {
-            print("델리게이트")
-            headerView.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
+            guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
+            times = allUsersAttendancesForADay.map { $0.key }
+        }
+    }
+    var times: [Time] = []
+    
+    var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]> = Observable([])
+    
+    var alignment = Observable(LeftButtonAlignment.name)
+    lazy var selectedTime = Observable(times.first ?? "")
+    var selectedDate = Observable(Date().convertToDashedString())
+    
+    var error: Observable<PeoplesError>?
+    
+    init(studyID: Int) {
+        self.studyID = studyID
+    }
+    
+    func getAllMembersAttendanceOn(date: DashedDate) {
+        Network.shared.getAllMembersAttendanceOn(date, studyID: studyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
+            switch result {
+            case .success(let allUsersAttendancesForADay):
+                weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                
+                if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
+                    weakSelf.selectedTime = Observable(firstTime)
+                    weakSelf.attendancesForATime = Observable(attendancesForATime)
+                } else {
+                    weakSelf.selectedTime = Observable("")
+                    weakSelf.attendancesForATime = Observable([])
+                }
+                
+            case .failure(let error):
+                weakSelf.error = Observable(error)
+            }
         }
     }
     
+    func updateAllMembersAttendance() {
+        Network.shared.getAllMembersAttendanceOn(selectedDate.value, studyID: studyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
+            switch result {
+            case .success(let allUsersAttendancesForADay):
+                weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                
+                if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
+                    weakSelf.attendancesForATime = Observable(allUsersAttendancesForADay[weakSelf.selectedTime.value]!)
+                } else {
+                    weakSelf.selectedTime = Observable("")
+                    weakSelf.attendancesForATime = Observable([])
+                }
+                
+            case .failure(let error):
+                weakSelf.error = Observable(error)
+            }
+        }
+    }
+    
+    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformation, completion: @escaping () -> Void) {
+        Network.shared.updateAttendanceInformation(attendanceInfo) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
+            switch result {
+            case .success(let isSuccess):
+                guard isSuccess else { return }
+                
+                weakSelf.updateAllMembersAttendance()
+                completion()
+                
+            case .failure(let error):
+                weakSelf.error = Observable(error)
+            }
+        }
+    }
+}
+
+final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
+    
     static let identifier = "AttendanceModificationCollectionViewCell"
     
+    internal var viewModel: AttendancesModificationViewModel? {
+        didSet {
+            setBinding()
+            viewModel?.getAllMembersAttendanceOn(date: Date().convertToDashedString())
+            headerView.viewModel = viewModel
+        }
+    }
+    internal var delegate: (BottomSheetAddable & Navigatable)! {
+        didSet {
+            print("델리게이트")
+            headerView.navigatableBottomSheetableDelegate = delegate
+        }
+    }
+    private lazy var headerView: AttendanceModificationHeaderView = {
+        
+        let nib = UINib(nibName: AttendanceModificationHeaderView.identifier, bundle: nil)
+        let v = nib.instantiate(withOwner: self).first as! AttendanceModificationHeaderView
+        
+        return v
+    }()
     private lazy var tableView: UITableView = {
        
         let t = UITableView(frame: .zero)
@@ -29,13 +126,6 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         t.separatorStyle = .none
         
         return t
-    }()
-    private lazy var headerView: AttendanceModificationHeaderView = {
-        
-        let nib = UINib(nibName: AttendanceModificationHeaderView.identifier, bundle: nil)
-        let v = nib.instantiate(withOwner: self).first as! AttendanceModificationHeaderView
-        
-        return v
     }()
     
     override init(frame: CGRect) {
@@ -57,16 +147,30 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func setBinding() {
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.selectedDate.bind({ dashedDate in
+            self.headerView.configureRightButtonTitle(dashedDate)
+        })
+        viewModel.attendancesForATime.bind({ allUsersAnAttendanceInformationArray in
+            self.tableView.reloadData()
+        })
+    }
 }
 
 extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        guard let attendancesForATime = viewModel?.attendancesForATime else { return 0 }
+        return attendancesForATime.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath)
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell else {
+            return AttendanceIndividualInfoTableViewCell()
+        }
+        cell.anUserAttendanceInformation = viewModel?.attendancesForATime.value[indexPath.row]
         return cell
     }
     
@@ -83,8 +187,15 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let bottomVC = AttendanceBottomViewController()
         
+        bottomVC.viewModel = viewModel
+        bottomVC.indexPath = indexPath
         bottomVC.viewType = .individualUpdate
         
-        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
+}
+
+enum LeftButtonAlignment: String {
+    case name = "이름순"
+    case attendance = "출석순"
 }

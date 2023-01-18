@@ -9,8 +9,13 @@ import UIKit
 
 final class AttendanceManagerModeView: UIView {
     
-    var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
-    weak var navigatiableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)?
+    internal var studyID: Int? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
+    weak var delegate: (Navigatable & SwitchSyncable & BottomSheetAddable)?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -71,16 +76,18 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
         switch indexPath.item {
         case 0:
             
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as! AttendanceModificationCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as? AttendanceModificationCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
             
-            cell.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
+            cell.delegate = delegate
+            if let studyID = studyID {
+                cell.viewModel = AttendancesModificationViewModel(studyID: studyID)
+            }
             
             return cell
         case 1:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as! AttendanceOverallCheckCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceOverallCheckCollectionViewCell() }
             
-            cell.navigatableBottomSheetableDelegate = navigatableBottomSheetableDelegate
-            cell.navigatiableSwitchSyncableDelegate = navigatiableSwitchSyncableDelegate
+            cell.delegate = delegate
             
             return cell
             

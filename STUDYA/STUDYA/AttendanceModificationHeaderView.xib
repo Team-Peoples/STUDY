@@ -27,14 +27,14 @@
                     <color key="textColor" name="ppsGray1"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jE4-lV-bbD">
-                    <rect key="frame" x="74" y="19.666666666666668" width="43" height="17.000000000000004"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jE4-lV-bbD">
+                    <rect key="frame" x="74" y="28" width="0.0" height="0.0"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                     <color key="textColor" name="ppsGray1"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="downDisclousureIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="oEu-0I-Bh4">
-                    <rect key="frame" x="125" y="24.333333333333332" width="12" height="7.3333333333333321"/>
+                    <rect key="frame" x="82" y="24.333333333333332" width="12" height="7.3333333333333321"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XI5-7I-nDK" userLabel="rightButton">
                     <rect key="frame" x="282" y="13" width="101" height="30"/>
@@ -56,7 +56,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ney-4z-5EV" userLabel="leftButton">
-                    <rect key="frame" x="20" y="20.666666666666668" width="117" height="15.000000000000004"/>
+                    <rect key="frame" x="20" y="20.666666666666668" width="74" height="15.000000000000004"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="TFE-HB-EjE"/>
                     </constraints>
@@ -86,6 +86,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="rightButton" destination="XI5-7I-nDK" id="Itt-YC-z71"/>
                 <outlet property="sortingTypeLabel" destination="DmE-2e-4D1" id="CK1-ye-ppe"/>
                 <outlet property="studyTimeLabel" destination="jE4-lV-bbD" id="AtS-6I-wK2"/>
             </connections>

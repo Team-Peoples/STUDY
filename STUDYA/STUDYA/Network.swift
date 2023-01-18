@@ -26,7 +26,6 @@ enum PeoplesError: Error {
     case userNotFound
     case studyNotFound
     case imageNotFound
-    case unknownMember
     case wrongAttendanceCode
     case unauthorizedMember
     case cantExpelOwner
@@ -228,6 +227,7 @@ struct Network {
     
     func getUserInfo(completion: @escaping (Result<User, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getMyInfo, interceptor: AuthenticationInterceptor()).validate().response { response in
+            
             guard let httpResponse = response.response else {
                 
                 completion(.failure(.serverError))
@@ -450,7 +450,6 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                
                 completion(.success(studyOverall))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
@@ -959,7 +958,7 @@ struct Network {
                 }
                 
                 switch errorCode {
-                case ErrorCode.unknownMember:  completion(.failure(.unknownMember))
+                case ErrorCode.unknownMember:  completion(.failure(.userNotFound))
                 case ErrorCode.wrongAttendnaceCode: completion(.failure(.wrongAttendanceCode))
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
@@ -968,6 +967,102 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
+            }
+        }
+    }
+    
+    func getMyAttendanceBetween(start: DashedDate, end: DashedDate, studyID: ID, completion: @escaping (Result<MyAttendanceOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getMyAttendanceBetween(start, end, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceOverall = jsonDecode(type: MyAttendanceOverall.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(attendanceOverall))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.studyNotFound:  completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func getAllMembersAttendanceOn(_ date: DashedDate, studyID: ID, completion: @escaping (Result<AllUsersAttendacneForADay, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllMembersAttendanceOn(date, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let allUsersAttendacneForADay = jsonDecode(type: AllUsersAttendacneForADay.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(allUsersAttendacneForADay))
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResult.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                switch errorCode {
+                case ErrorCode.studyNotFound:  completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func updateAttendanceInformation(_ info: SingleUserAnAttendanceInformation, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.update(info), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSucceed = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSucceed))
+            case 400:
+                completion(.failure(.userNotFound))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }

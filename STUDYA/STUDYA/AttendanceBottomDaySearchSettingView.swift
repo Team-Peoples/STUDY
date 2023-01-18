@@ -9,11 +9,9 @@ import UIKit
 
 final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     
-    internal var delegate: AttendanceBottomViewController? {
-        didSet {
-            configureCollectionView()
-        }
-    }
+    internal var viewModel: AttendancesModificationViewModel?
+    private var time: Time?
+    private var alignment = LeftButtonAlignment.name
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -45,7 +43,6 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         
         nameInOrderButton.isSelected = true
         
-        
         addSubViews()
         setConstraints()
         configureDoneButton(on: self, under: collectionView, constant: 16)
@@ -55,14 +52,69 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     @objc private func changeOrderType() {
         nameInOrderButton.toggle()
         attendanceInOrderButton.toggle()
     }
     
+    
+    
+    override func doneButtonTapped() {
+        guard let viewModel = viewModel else { return }
+        
+        if let allUsersAttendanceForADay = viewModel.allUsersAttendancesForADay,
+           let time = time,
+           var attendancesForATime = allUsersAttendanceForADay[time] {
+            
+            viewModel.selectedTime = Observable(time)
+            
+            align(&attendancesForATime)
+            
+            viewModel.attendancesForATime = Observable(attendancesForATime)
+        }
+        
+        viewModel.alignment = Observable(alignment)
+        navigatable?.dismiss()
+    }
+    
+    private func align(_ attendancesForATime: inout [SingleUserAnAttendanceInformation]) {
+        if alignment == .name {
+            attendancesForATime.sort { (lhs, rhs) -> Bool in
+                
+                if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임임
+                    
+                    if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+                        return lhs.userID > rhs.userID  //여기는 userID맞음
+                    } else {
+                        return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+                    }
+                    
+                } else {
+                    return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+                }
+            }
+        } else {
+            attendancesForATime.sort { lhs, rhs in
+                
+                if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+                    
+                    if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임
+                        return lhs.userID > rhs.userID  //여기는 맞음
+                    } else {
+                        return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+                    }
+                    
+                } else {
+                    return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+                }
+            }
+        }
+    }
+    
     private func configureCollectionView() {
-        collectionView.delegate = delegate
-        collectionView.dataSource = delegate
+        collectionView.delegate = self
+        collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.allowsMultipleSelection = false
         collectionView.register(AttendanceTimeCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceTimeCollectionViewCell.identifier)
@@ -111,5 +163,51 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
             make.top.equalTo(timeTitleLabel.snp.bottom).offset(12)
             make.height.equalTo(40)
         }
+    }
+}
+
+extension AttendanceBottomDaySearchSettingView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel?.times.count ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceTimeCollectionViewCell.identifier, for: indexPath) as! AttendanceTimeCollectionViewCell
+        
+        cell.time = viewModel?.times[indexPath.item]
+        if indexPath.item == 0 {
+            cell.enableButton()
+        }
+        
+        return cell
+    }
+}
+
+extension AttendanceBottomDaySearchSettingView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        
+        time = viewModel?.times[indexPath.item]
+        cell.enableButton()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        cell.disableButton()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let label = UILabel(frame: CGRect.zero)
+        let leftRightInsets:CGFloat = 48
+        
+        label.text = viewModel?.times[indexPath.item]
+        label.sizeToFit()
+        
+        return CGSize(width: label.frame.width + leftRightInsets, height: 32)
     }
 }
