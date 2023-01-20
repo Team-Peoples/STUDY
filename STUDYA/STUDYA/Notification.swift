@@ -18,4 +18,5 @@ extension Notification.Name {
     static let authStateDidChange = Notification.Name(rawValue: "authStateDidChange")
     static let tokenExpired = Notification.Name(rawValue: "tokenExpired")
     static let unauthorizedUser = Notification.Name(rawValue: "unauthorizedUser")
+    static let mainCalenderDateTapped = Notification.Name(rawValue: "mainCalenderDateTapped")
 }

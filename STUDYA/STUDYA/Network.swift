@@ -1068,7 +1068,7 @@ struct Network {
     }
     
     // MARK: - User
-    func getAllMySchedules(completion: @escaping (Result<[Schedules],PeoplesError>) -> Void) {
+    func getAllMySchedules(completion: @escaping (Result<[Schedule],PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMySchedules, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
