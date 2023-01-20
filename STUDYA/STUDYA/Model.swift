@@ -301,7 +301,7 @@ struct Announcement: Codable {
 struct Schedule: Codable {
     let id: Int?
     let name: String?
-    let date: Date?
+    let date: String?
     let status: String?
     
     enum CodingKeys: String, CodingKey {
@@ -562,4 +562,3 @@ typealias DashedDate = String
 typealias DottedDate = String
 typealias Time = String
 typealias Deposit = Int
-typealias Schedules = [Schedule]

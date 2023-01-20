@@ -8,10 +8,29 @@
 import UIKit
 import SnapKit
 
+final class ToDoViewModel {
+    var allMySchedules = [Schedule]() {
+        didSet {
+            filterSchedules(on: selectedDate.value)
+        }
+    }
+    var selectedDate = Observable(Date().formatToString(format: .dashedFormat))
+    var selectedDateSchedules = Observable([Schedule]())
+    
+    func filterSchedules(on date: DashedDate) {
+        let newlySelectedDateSchedules = allMySchedules.filter { schedule in
+            return schedule.date == selectedDate.value
+        }
+        selectedDateSchedules = Observable(newlySelectedDateSchedules)
+    }
+}
+
 class ToDoCollectionViewCell: UICollectionViewCell {
 //    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
     var todo = ["할일","할일2","할일3","할일4","할일5","할일6","할일7","할일8"]
     var isdone = [false,true,false,true,false,true,false,true]
+    
+    private let viewModel = ToDoViewModel()
     
     weak var heightCoordinator: UBottomSheetCoordinator?
     
@@ -68,6 +87,10 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     @objc func onKeyboardDisappear(_ notification: NSNotification) {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    private func setBinding() {
+        viewModel.selectedDateSchedules.bind { _ in self.tableView.reloadData() }
     }
 }
 

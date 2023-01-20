@@ -1068,7 +1068,7 @@ struct Network {
     }
     
     // MARK: - User
-    func getAllMySchedules(completion: @escaping (Result<Schedules,PeoplesError>) -> Void) {
+    func getAllMySchedules(completion: @escaping (Result<[Schedules],PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMySchedules, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1077,7 +1077,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let schdules = jsonDecode(type: Schedules.self, data: data) else {
+                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }

@@ -8,6 +8,7 @@
 import UIKit
 
 @available(iOS 16.0, *)
+
 final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
     
     // MARK: - Properties
@@ -124,6 +125,9 @@ extension MainCalendarViewController: UICalendarViewDelegate {
 
 extension MainCalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
+        DispatchQueue.global().async {
+            NotificationCenter.default.post(<#T##notification: Notification##Notification#>)
+        }
         let studySchedule = studyAllScheduleViewModel.studySchedule(at: dateComponents)
         calendarBottomSheetVC.studySchedule = studySchedule
     }
