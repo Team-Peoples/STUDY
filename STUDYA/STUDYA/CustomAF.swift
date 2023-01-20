@@ -86,6 +86,7 @@ enum RequestPurpose: Requestable {
     case getAttendanceCertificactionCode(ID)
     case getMyAttendanceBetween(DashedDate, DashedDate, ID)
     case getAllMembersAttendanceOn(DashedDate, ID)
+    case getAllMySchedules
 }
 
 extension RequestPurpose {
@@ -198,6 +199,8 @@ extension RequestPurpose {
             return "/attendance"
         case .getAllMembersAttendanceOn:
             return "/attendance/master"
+        case .getAllMySchedules:
+            return "/user/schedule"
         }
     }
     
@@ -209,7 +212,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
         }
     }
     

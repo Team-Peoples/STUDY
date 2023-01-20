@@ -1,5 +1,5 @@
 //
-//  CalendarViewController.swift
+//  MainCalendarViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/10/13.
@@ -8,7 +8,7 @@
 import UIKit
 
 @available(iOS 16.0, *)
-class CalendarViewController: UIViewController, ScheduleCoordinator {
+final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
     
     // MARK: - Properties
     
@@ -32,7 +32,6 @@ class CalendarViewController: UIViewController, ScheduleCoordinator {
         
         selectionDelegate.selectedDate?.calendar = Calendar.current
         selectionDelegate.setSelected(Date().convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday]), animated: true)
-        
         
         studyAllScheduleViewModel.bind { [self] studyAllSchedule in
             let visibleDateComponents = calendarView.visibleDateComponents
@@ -102,7 +101,7 @@ class CalendarViewController: UIViewController, ScheduleCoordinator {
 
 // MARK: - UBottomSheetCoordinatorDelegate
 
-extension CalendarViewController: UBottomSheetCoordinatorDelegate {
+extension MainCalendarViewController: UBottomSheetCoordinatorDelegate {
     
     func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
         self.sheetCoordinator.addDropShadowIfNotExist()
@@ -111,7 +110,7 @@ extension CalendarViewController: UBottomSheetCoordinatorDelegate {
 
 // MARK: - UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate
 
-extension CalendarViewController: UICalendarViewDelegate {
+extension MainCalendarViewController: UICalendarViewDelegate {
     
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
         
@@ -123,7 +122,7 @@ extension CalendarViewController: UICalendarViewDelegate {
     }
 }
 
-extension CalendarViewController: UICalendarSelectionSingleDateDelegate {
+extension MainCalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
         let studySchedule = studyAllScheduleViewModel.studySchedule(at: dateComponents)
         calendarBottomSheetVC.studySchedule = studySchedule
