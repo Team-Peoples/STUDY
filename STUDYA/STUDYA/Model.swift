@@ -300,14 +300,14 @@ struct Announcement: Codable {
 
 struct Schedule: Codable {
     let id: Int?
-    let name: String?
+    let content: String?
     let date: String?
     let status: String?
     
     enum CodingKeys: String, CodingKey {
         case status
         case id = "scheduleId"
-        case name = "scheduleName"
+        case content = "scheduleName"
         case date = "scheduleDate"
     }
 }

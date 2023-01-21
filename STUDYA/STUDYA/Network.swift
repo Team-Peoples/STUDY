@@ -1067,9 +1067,72 @@ struct Network {
         }
     }
     
-    // MARK: - User
+    // MARK: - My Schedule
     func getAllMySchedules(completion: @escaping (Result<[Schedule],PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMySchedules, interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(schdules))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func createMySchedule(content: String, date: DashedDate,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.createMySchedule(content, date), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(schdules))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func toggleMyScheduleStatus(scheduleID: ID,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.toggleMyScheduleStatus(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(schdules))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func updateMySchedule(scheduleID: ID, content: String,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.updateMySchedule(scheduleID, content), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return

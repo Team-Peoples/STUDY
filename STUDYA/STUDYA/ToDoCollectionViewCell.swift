@@ -39,6 +39,39 @@ final class ToDoViewModel {
             }
         }
     }
+    
+    func createMySchedule(content: String) {
+        Network.shared.createMySchedule(content: content, date: selectedDate) { result in
+            switch result {
+            case .success(let schedules):
+                self.allMySchedules = schedules
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func toggleMyScheduleStatus(scheduleID: ID) {
+        Network.shared.toggleMyScheduleStatus(scheduleID: scheduleID) { result in
+            switch result {
+            case .success(let schedules):
+                self.allMySchedules = schedules
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func updateMySchedule(scheduleID: Int, content: String) {
+        Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
+            switch result {
+            case .success(let schedules):
+                self.allMySchedules = schedules
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
 }
 
 class ToDoCollectionViewCell: UICollectionViewCell {
@@ -142,7 +175,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         
         if indexPath.row <= latestOldCellRow {
             let scheudule = viewModel.selectedDateSchedules.value[indexPath.row]
-            cell.todo = scheudule.name
+            cell.todo = scheudule.content
             cell.isDone = scheudule.status == "STOP" ? true : false
         } else {
             cell.todo = nil
