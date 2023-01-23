@@ -11,6 +11,7 @@ import SnapKit
 final class ToDoViewModel {
     var allMySchedules = [Schedule]() {
         didSet {
+            print("allmyschedules didset")
             filterSchedules(on: selectedDate)
         }
     }
@@ -27,7 +28,8 @@ final class ToDoViewModel {
         let newlySelectedDateSchedules = allMySchedules.filter { schedule in
             return schedule.date == selectedDate
         }
-        selectedDateSchedules = Observable(newlySelectedDateSchedules)
+        
+        self.selectedDateSchedules.value = newlySelectedDateSchedules
     }
     
     func getAllMySchedules() {
@@ -47,6 +49,7 @@ final class ToDoViewModel {
         Network.shared.createMySchedule(content: content, date: selectedDate) { result in
             switch result {
             case .success(let schedules):
+                print("제바아알!!")
                 self.allMySchedules = schedules
             case .failure(let error):
                 self.error = Observable(error)
@@ -142,9 +145,13 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        viewModel?.selectedDateSchedules.bind { selectedDateSchedules in
-            self.viewModel?.numberOfRows = selectedDateSchedules.count
-            self.tableView.reloadData()
+        guard let viewModel = viewModel else { return }
+        viewModel.selectedDateSchedules.bind { [weak self] selectedDateSchedules in
+            guard let weakSelf = self else { return }
+            print("setbinding")
+            print(weakSelf.viewModel, "📕")
+            weakSelf.viewModel?.numberOfRows = selectedDateSchedules.count
+            weakSelf.tableView.reloadData()
         }
     }
     
@@ -161,7 +168,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
 
 extension ToDoCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+        print(#function)
         guard let viewModel = viewModel else { return 0 }
         let newlyCreatedCellNumber = 1
         print("🥹🥹")
@@ -175,7 +182,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         cell.cellDelegate = self
         
         configureCell(indexPath, cell)
-        defineActionWhenTextfieldEditDone(for: cell)
+        defineActionWhenTextfieldEditDone(for: cell, at: indexPath)
         
         return cell
     }
@@ -194,31 +201,35 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         }
     }
     
-    private func defineActionWhenTextfieldEditDone(for cell: ToDoItemTableViewCell) {
+    private func defineActionWhenTextfieldEditDone(for cell: ToDoItemTableViewCell, at indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
-        guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
         
-//        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
-        cell.textViewDidEndEditingWithLetter = { cell in
-            
-            if updateIndexPath.row == viewModel.selectedDateSchedules.value.count {
-                self.tableView.insertRows(at: [IndexPath(row: updateIndexPath.row + 1, section: 0)], with: .automatic)
-            } else {
-                print("데이터 수정 후 업로드")
-            }
-        }
+        cell.viewModel = viewModel
+//        guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
+////        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
+//        cell.textViewDidEndEditingWithLetter = { cell in
+//
+//            if indexPath.row == viewModel.selectedDateSchedules.value.count {
+//                viewModel.createMySchedule(content: "아이아이아이")
+////                self.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: 0)], with: .automatic)
+//            } else {
+////                viewModel.updateMySchedule(scheduleID: <#T##Int#>, content: <#T##String#>)
+//                print("데이터 수정 후 업로드")
+//            }
+//        }
+//
+////        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
+//        cell.textViewDidEndEditingWithNoLetter = { cell in
+//
+//            if indexPath.row == viewModel.selectedDateSchedules.value.count {
+//                print("아무것도 안함")
+//            } else {
+////                🛑삭제 api 요청
+////                self.todo.remove(at: updateIndexPath.row)
+//                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+//            }
+//        }
         
-//        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
-        cell.textViewDidEndEditingWithNoLetter = { cell in
-            
-            if updateIndexPath.row == viewModel.selectedDateSchedules.value.count {
-                print("아무것도 안함")
-            } else {
-//                🛑삭제 api 요청
-//                self.todo.remove(at: updateIndexPath.row)
-                self.tableView.deleteRows(at: [updateIndexPath], with: .automatic)
-            }
-        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

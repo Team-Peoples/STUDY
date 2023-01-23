@@ -12,6 +12,7 @@ class ToDoItemTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
     
+    weak var viewModel: ToDoViewModel?
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
     
@@ -77,6 +78,7 @@ class ToDoItemTableViewCell: UITableViewCell {
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
+        print(getIndexPath(), "🤟")
     }
     
     required init?(coder: NSCoder) {
@@ -86,6 +88,15 @@ class ToDoItemTableViewCell: UITableViewCell {
     @objc private func checkButtonTapped() {
         checkButton.isSelected.toggle()
         endEditing(true)
+    }
+    
+    func getIndexPath() -> IndexPath? {
+        guard let superView = self.superview as? UITableView else {
+            print("superview is not a UITableView - getIndexPath")
+            return nil
+        }
+        
+        return superView.indexPath(for: self)
     }
 }
 
@@ -112,21 +123,16 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        print(#function, 1)
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            print(#function, 2)
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
-            textViewDidEndEditingWithNoLetter(self)
         } else {
-            print(#function, 3)
-            textViewDidEndEditingWithLetter(self)
+            viewModel?.createMySchedule(content: textView.text)
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
         if let delegate = cellDelegate {
-            print(#function)
             delegate.updateHeightOfRow(self, textView)
         }
     }
