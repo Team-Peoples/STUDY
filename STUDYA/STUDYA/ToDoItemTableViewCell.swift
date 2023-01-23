@@ -65,6 +65,8 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         backgroundColor = .appColor(.background)
         todoTextView.font = .systemFont(ofSize: 14) //만약 더 큰 크기로 바꾸게 되면 글자수 제한이나 줄 수 등도 바꿔야.
+        
+        selectionStyle = .none
         todoTextView.delegate = self
         
         contentView.addSubview(checkButton)
@@ -110,11 +112,14 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        print(#function, 1)
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            print(#function, 2)
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
             textViewDidEndEditingWithNoLetter(self)
         } else {
+            print(#function, 3)
             textViewDidEndEditingWithLetter(self)
         }
     }

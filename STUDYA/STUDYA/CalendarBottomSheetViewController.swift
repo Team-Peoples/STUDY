@@ -243,22 +243,24 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
-            case 0:
+        case 0:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as? ToDoCollectionViewCell else { return ToDoCollectionViewCell() }
-                
-                cell.heightCoordinator = sheetCoordinator
-                
-                return cell
-                
-            case 1:
+            
+            cell.heightCoordinator = sheetCoordinator
+            cell.viewModel = ToDoViewModel()
+            cell.viewModel?.getAllMySchedules()
+            
+            return cell
+            
+        case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as? ScheduleCollectionViewCell else { return ScheduleCollectionViewCell() }
             
-                cell.studySchedules = studySchedule
-                cell.reloadTableView()
-                cell.checkScheduleIsEmpty()
+            cell.studySchedules = studySchedule
+            cell.reloadTableView()
+            cell.checkScheduleIsEmpty()
             
-                return cell
-            default: break
+            return cell
+        default: break
         }
         
         return UICollectionViewCell()

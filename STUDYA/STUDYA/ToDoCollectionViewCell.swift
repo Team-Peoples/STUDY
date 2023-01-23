@@ -20,6 +20,7 @@ final class ToDoViewModel {
         }
     }
     var selectedDateSchedules = Observable([Schedule]())
+    var numberOfRows = 0
     var error: Observable<PeoplesError>?
     
     func filterSchedules(on date: DashedDate) {
@@ -33,8 +34,10 @@ final class ToDoViewModel {
         Network.shared.getAllMySchedules { result in
             switch result {
             case .success(let schedules):
+                print("SUCCESS")
                 self.allMySchedules = schedules
             case .failure(let error):
+                print("fail")
                 self.error = Observable(error)
             }
         }
@@ -77,8 +80,11 @@ final class ToDoViewModel {
 class ToDoCollectionViewCell: UICollectionViewCell {
 //    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
     
-    private let viewModel = ToDoViewModel()
-    
+    internal var viewModel: ToDoViewModel? {
+        didSet {
+            setBinding()
+        }
+    }
     weak var heightCoordinator: UBottomSheetCoordinator?
     
     let tableView: UITableView = {
@@ -99,9 +105,8 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        viewModel.getAllMySchedules()
-        
         tableView.dataSource = self
+        
         addObservers()
         
         self.backgroundColor = .appColor(.background)
@@ -137,14 +142,17 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        viewModel.selectedDateSchedules.bind { _ in self.tableView.reloadData() }
+        viewModel?.selectedDateSchedules.bind { selectedDateSchedules in
+            self.viewModel?.numberOfRows = selectedDateSchedules.count
+            self.tableView.reloadData()
+        }
     }
     
     private func addObservers() {
         NotificationCenter.default.addObserver(forName: .mainCalenderDateTapped, object: nil, queue: nil) { noti in
             guard let dateComponents = noti.object as? DateComponents, let date = dateComponents.convertToDate()?.formatToString(format: .dashedFormat) else { return }
             
-            self.viewModel.selectedDate = date
+            self.viewModel?.selectedDate = date
         }
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -153,8 +161,11 @@ class ToDoCollectionViewCell: UICollectionViewCell {
 
 extension ToDoCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        guard let viewModel = viewModel else { return 0 }
         let newlyCreatedCellNumber = 1
-        return viewModel.selectedDateSchedules.value.count + newlyCreatedCellNumber
+        print("🥹🥹")
+        return viewModel.numberOfRows + newlyCreatedCellNumber
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -171,8 +182,8 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     
     private func configureCell(_ indexPath: IndexPath, _ cell: ToDoItemTableViewCell) {
 //        구셀/신셀의 최초 설정 분기처리
+        guard let viewModel = viewModel else { return }
         let latestOldCellRow = viewModel.selectedDateSchedules.value.count - 1
-        
         if indexPath.row <= latestOldCellRow {
             let scheudule = viewModel.selectedDateSchedules.value[indexPath.row]
             cell.todo = scheudule.content
@@ -184,13 +195,13 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     }
     
     private func defineActionWhenTextfieldEditDone(for cell: ToDoItemTableViewCell) {
-        
+        guard let viewModel = viewModel else { return }
         guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
         
 //        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
         cell.textViewDidEndEditingWithLetter = { cell in
             
-            if updateIndexPath.row == self.viewModel.selectedDateSchedules.value.count {
+            if updateIndexPath.row == viewModel.selectedDateSchedules.value.count {
                 self.tableView.insertRows(at: [IndexPath(row: updateIndexPath.row + 1, section: 0)], with: .automatic)
             } else {
                 print("데이터 수정 후 업로드")
@@ -200,7 +211,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
 //        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
         cell.textViewDidEndEditingWithNoLetter = { cell in
             
-            if updateIndexPath.row == self.viewModel.selectedDateSchedules.value.count {
+            if updateIndexPath.row == viewModel.selectedDateSchedules.value.count {
                 print("아무것도 안함")
             } else {
 //                🛑삭제 api 요청
