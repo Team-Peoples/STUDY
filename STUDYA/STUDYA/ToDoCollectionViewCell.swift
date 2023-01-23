@@ -9,10 +9,11 @@ import UIKit
 import SnapKit
 
 final class ToDoViewModel {
+    
     var allMySchedules = [Schedule]() {
         didSet {
             print("allmyschedules didset")
-            filterSchedules(on: selectedDate)
+            self.filterSchedules(on: self.selectedDate)
         }
     }
     var selectedDate = Date().formatToString(format: .dashedFormat) {
@@ -148,8 +149,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
         guard let viewModel = viewModel else { return }
         viewModel.selectedDateSchedules.bind { [weak self] selectedDateSchedules in
             guard let weakSelf = self else { return }
-            print("setbinding")
-            print(weakSelf.viewModel, "📕")
+            
             weakSelf.viewModel?.numberOfRows = selectedDateSchedules.count
             weakSelf.tableView.reloadData()
         }
@@ -204,7 +204,18 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     private func defineActionWhenTextfieldEditDone(for cell: ToDoItemTableViewCell, at indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         
-        cell.viewModel = viewModel
+        if indexPath.row < viewModel.numberOfRows {
+            cell.numberOfRows = viewModel.numberOfRows
+            cell.schedule = viewModel.selectedDateSchedules.value[indexPath.row]
+            cell.updateSchedule = { (id, content) in
+                viewModel.updateMySchedule(scheduleID: id, content: content)
+            }
+        } else {
+            cell.createSchedule = { content in
+                viewModel.createMySchedule(content: content)
+            }
+        }
+        
 //        guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
 ////        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
 //        cell.textViewDidEndEditingWithLetter = { cell in

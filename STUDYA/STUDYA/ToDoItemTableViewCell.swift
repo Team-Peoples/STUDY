@@ -12,7 +12,12 @@ class ToDoItemTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
     
-    weak var viewModel: ToDoViewModel?
+    internal var numberOfRows: Int?
+    internal var schedule: Schedule?
+    internal var createSchedule: (String) -> Void = { sender in }
+    internal var updateSchedule: (ID, String) -> Void = { (id, content) in }
+//    internal var removeSchedule
+    
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
     
@@ -78,7 +83,6 @@ class ToDoItemTableViewCell: UITableViewCell {
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
-        print(getIndexPath(), "🤟")
     }
     
     required init?(coder: NSCoder) {
@@ -123,11 +127,19 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
         } else {
-            viewModel?.createMySchedule(content: textView.text)
+            guard let indexPathOfThisCell = getIndexPath() else { return }
+            
+            if indexPathOfThisCell.row == numberOfRows {
+                createSchedule(textView.text)
+            } else {
+                guard let schedule = schedule, let id = schedule.id else { return }
+                updateSchedule(id, textView.text)
+            }
         }
     }
     
