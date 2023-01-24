@@ -20,7 +20,7 @@ class ToDoItemTableViewCell: UITableViewCell {
         }
     }
     internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
-    internal var updateSchedule: (ID, String) -> Void = { (id, content) in }
+    internal var updateSchedule: (ID, String, IndexPath) -> Void = { (id, content, indexPath) in }
 //    internal var removeSchedule
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
@@ -134,16 +134,19 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
+            
         } else {
             guard let indexPathOfThisCell = getIndexPath() else { return }
             
             if indexPathOfThisCell.row == numberOfRows {
                 createSchedule(indexPathOfThisCell, textView.text)
+                
             } else {
                 guard let schedule = schedule, let id = schedule.id else { return }
-                updateSchedule(id, textView.text)
+                updateSchedule(id, textView.text, indexPathOfThisCell)
             }
         }
     }

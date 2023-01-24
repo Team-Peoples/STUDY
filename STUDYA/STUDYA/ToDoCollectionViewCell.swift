@@ -15,6 +15,7 @@ final class ToDoViewModel {
     var selectedDate = Date().formatToString(format: .dashedFormat) {
         didSet {
             filterSchedules(on: selectedDate)
+            doTableViewReload.value = true
         }
     }
     var selectedDateSchedules = [Schedule]()
@@ -26,7 +27,6 @@ final class ToDoViewModel {
         }
         
         self.selectedDateSchedules = newlySelectedDateSchedules
-        doTableViewReload.value = true
     }
     
     func getAllMySchedules() {
@@ -35,6 +35,7 @@ final class ToDoViewModel {
             case .success(let schedules):
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                self.doTableViewReload.value = true
             case .failure(let error):
                 print("fail")
                 self.error = Observable(error)
@@ -47,6 +48,7 @@ final class ToDoViewModel {
             switch result {
             case .success(let schedules):
                 self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
                 completion()
             case .failure(let error):
                 self.error = Observable(error)
@@ -65,11 +67,13 @@ final class ToDoViewModel {
         }
     }
     
-    func updateMySchedule(scheduleID: Int, content: String) {
+    func updateMySchedule(scheduleID: Int, content: String, completion: @escaping () -> Void) {
         Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
             switch result {
             case .success(let schedules):
                 self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                completion()
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -173,9 +177,9 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoItemTableViewCell.identifier) as? ToDoItemTableViewCell,
               let viewModel = viewModel else { return ToDoItemTableViewCell() }
-        
         let latestOldCellRow = viewModel.selectedDateSchedules.count - 1
 
         configureCommon(cell, viewModel)
@@ -184,7 +188,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         if indexPath.row <= latestOldCellRow {
             configureOld(cell, with: viewModel, at: indexPath)
         } else {
-            configureNew(cell)
+            configureNew(cell, with: viewModel)
         }
         
         return cell
@@ -215,27 +219,31 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     }
     
     private func configureCommon(_ cell: ToDoItemTableViewCell, _ viewModel: ToDoViewModel) {
+        
         cell.heightCoordinator = heightCoordinator
         cell.cellDelegate = self
-        cell.updateSchedule = { (id, content) in
-            viewModel.updateMySchedule(scheduleID: id, content: content)
+        
+        cell.updateSchedule = { [weak self] (id, content, indexPath) in
+            viewModel.updateMySchedule(scheduleID: id, content: content) {
+                self?.configureOld(cell, with: viewModel, at: indexPath)
+            }
         }
         cell.createSchedule = { [weak self] (indexPath, content) in
             
             viewModel.createMySchedule(content: content) {
-                cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
+                self?.configureOld(cell, with: viewModel, at: indexPath)
                 self?.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: indexPath.section)], with: .automatic)
             }
         }
     }
     
     private func configureOld(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel, at indexPath: IndexPath) {
-        
-        cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
         cell.numberOfRows = viewModel.selectedDateSchedules.count
+        cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
     }
     
-    private func configureNew(_ cell: ToDoItemTableViewCell) {
+    private func configureNew(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
+        cell.numberOfRows = viewModel.selectedDateSchedules.count
         cell.schedule = nil
     }
     
