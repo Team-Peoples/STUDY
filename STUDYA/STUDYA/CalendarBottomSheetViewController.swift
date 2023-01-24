@@ -23,7 +23,6 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
         didSet {
             let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
             cell?.studySchedules = studySchedule
-            print(studySchedule, "❤️")
             cell?.reloadTableView()
             cell?.checkScheduleIsEmpty()
         }
@@ -90,7 +89,6 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                 /// cellForRowAt에서 코드 추가해주어서 해결.
                 let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
                 cell?.studySchedules = studySchedule
-                print(studySchedule, "❤️")
                 cell?.reloadTableView()
                 cell?.checkScheduleIsEmpty()
                 

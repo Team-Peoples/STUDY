@@ -13,25 +13,30 @@ class ToDoItemTableViewCell: UITableViewCell {
     static let identifier = "ToDoItemTableViewCell"
     
     internal var numberOfRows: Int?
-    internal var schedule: Schedule?
-    internal var createSchedule: (String) -> Void = { sender in }
+    internal var schedule: Schedule? {
+        didSet {
+            todoTextView.text = schedule == nil ? placeholder : schedule?.content
+            todoTextView.textColor = schedule == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
+        }
+    }
+    internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
     internal var updateSchedule: (ID, String) -> Void = { (id, content) in }
 //    internal var removeSchedule
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
     
-    internal var todo: String? {
-        didSet {
-            todoTextView.text = todo == nil ? placeholder : todo
-            todoTextView.textColor = todo == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
-        }
-    }
-    internal var isDone = false {
-        didSet {
-            checkButton.isSelected = isDone ? true : false
-        }
-    }
+//    internal var todo: String? {
+//        didSet {
+//            todoTextView.text = todo == nil ? placeholder : todo
+//            todoTextView.textColor = todo == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
+//        }
+//    }
+//    internal var isDone = false {
+//        didSet {
+//            checkButton.isSelected = isDone ? true : false
+//        }
+//    }
     internal var textViewDidEndEditingWithNoLetter: (ToDoItemTableViewCell) -> () = { sender in }
     internal var textViewDidEndEditingWithLetter: (ToDoItemTableViewCell) -> () = { sender in }
     private let placeholder = "이곳을 눌러 할 일을 추가해보세요."
@@ -42,7 +47,7 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         b.setImage(UIImage(named: "off"), for: .normal)
         b.setImage(UIImage(named: "on"), for: .selected)
-        b.isSelected = isDone ? true : false
+        b.isSelected = schedule?.status == "STOP" ? true : false
         b.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
         return b
@@ -135,7 +140,7 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
             guard let indexPathOfThisCell = getIndexPath() else { return }
             
             if indexPathOfThisCell.row == numberOfRows {
-                createSchedule(textView.text)
+                createSchedule(indexPathOfThisCell, textView.text)
             } else {
                 guard let schedule = schedule, let id = schedule.id else { return }
                 updateSchedule(id, textView.text)
