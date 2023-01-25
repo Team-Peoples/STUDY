@@ -37,7 +37,6 @@ final class ToDoViewModel {
                 self.filterSchedules(on: self.selectedDate)
                 self.doTableViewReload.value = true
             case .failure(let error):
-                print("fail")
                 self.error = Observable(error)
             }
         }
@@ -91,6 +90,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
         }
     }
     weak var heightCoordinator: UBottomSheetCoordinator?
+    weak var navigatable: Navigatable?
     
     let tableView: UITableView = {
        
@@ -154,6 +154,11 @@ class ToDoCollectionViewCell: UICollectionViewCell {
 
             weakSelf.tableView.reloadData()
         }
+        viewModel.error?.bind({ [weak self] error in
+            guard let weakSelf = self, let navigatable = weakSelf.navigatable else { return }
+            
+            UIAlertController.handleCommonErros(presenter: navigatable, error: error)
+        })
     }
     
     private func addObservers() {

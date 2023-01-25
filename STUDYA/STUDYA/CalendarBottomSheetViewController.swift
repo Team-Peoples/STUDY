@@ -245,6 +245,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as? ToDoCollectionViewCell else { return ToDoCollectionViewCell() }
             
             cell.heightCoordinator = sheetCoordinator
+            cell.navigatable = self
             cell.viewModel = ToDoViewModel()
             cell.viewModel?.getAllMySchedules()
             
