@@ -17,10 +17,12 @@ class ToDoItemTableViewCell: UITableViewCell {
         didSet {
             todoTextView.text = schedule == nil ? placeholder : schedule?.content
             todoTextView.textColor = schedule == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
+            checkButton.isSelected = schedule?.status == "STOP" ? true : false
         }
     }
     internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
     internal var updateSchedule: (ID, String, IndexPath) -> Void = { (id, content, indexPath) in }
+    internal var toggleScheduleStatus: (IndexPath, ID) -> Void = { (indexPath, id) in }
 //    internal var removeSchedule
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
@@ -47,7 +49,6 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         b.setImage(UIImage(named: "off"), for: .normal)
         b.setImage(UIImage(named: "on"), for: .selected)
-        b.isSelected = schedule?.status == "STOP" ? true : false
         b.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
         return b
@@ -95,8 +96,8 @@ class ToDoItemTableViewCell: UITableViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        checkButton.isSelected.toggle()
-        endEditing(true)
+        guard let indexPath = getIndexPath(), let schedule = schedule, let id = schedule.id else { return }
+        toggleScheduleStatus(indexPath, id)
     }
     
     func getIndexPath() -> IndexPath? {
@@ -132,20 +133,24 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        
+        print(#function, 1)
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            
+            print(#function, 2)
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
             
         } else {
+            print(#function, 3)
             guard let indexPathOfThisCell = getIndexPath() else { return }
             
             if indexPathOfThisCell.row == numberOfRows {
+                print(#function, 4)
                 createSchedule(indexPathOfThisCell, textView.text)
                 
             } else {
+                print(#function, 5)
                 guard let schedule = schedule, let id = schedule.id else { return }
+                print(#function, 6, textView.text)
                 updateSchedule(id, textView.text, indexPathOfThisCell)
             }
         }

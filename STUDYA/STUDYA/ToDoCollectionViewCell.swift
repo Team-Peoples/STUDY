@@ -55,11 +55,14 @@ final class ToDoViewModel {
         }
     }
     
-    func toggleMyScheduleStatus(scheduleID: ID) {
+    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping () -> Void) {
         Network.shared.toggleMyScheduleStatus(scheduleID: scheduleID) { result in
             switch result {
             case .success(let schedules):
+                print("🔥")
                 self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                completion()
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -70,6 +73,7 @@ final class ToDoViewModel {
         Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
             switch result {
             case .success(let schedules):
+                print("🥶")
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
                 completion()
@@ -187,13 +191,13 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
               let viewModel = viewModel else { return ToDoItemTableViewCell() }
         let latestOldCellRow = viewModel.selectedDateSchedules.count - 1
 
-        configureCommon(cell, viewModel)
+        configureCommon(cell, with: viewModel)
         
 //        구셀/신셀의 최초 설정 분기처리
         if indexPath.row <= latestOldCellRow {
-            configureOld(cell, with: viewModel, at: indexPath)
+            insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
         } else {
-            configureNew(cell, with: viewModel)
+            insertScheduleDataToNew(cell, with: viewModel)
         }
         
         return cell
@@ -223,31 +227,36 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
 //                }
     }
     
-    private func configureCommon(_ cell: ToDoItemTableViewCell, _ viewModel: ToDoViewModel) {
+    private func configureCommon(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
         
         cell.heightCoordinator = heightCoordinator
         cell.cellDelegate = self
         
-        cell.updateSchedule = { [weak self] (id, content, indexPath) in
-            viewModel.updateMySchedule(scheduleID: id, content: content) {
-                self?.configureOld(cell, with: viewModel, at: indexPath)
-            }
-        }
         cell.createSchedule = { [weak self] (indexPath, content) in
             
             viewModel.createMySchedule(content: content) {
-                self?.configureOld(cell, with: viewModel, at: indexPath)
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
                 self?.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: indexPath.section)], with: .automatic)
+            }
+        }
+        cell.updateSchedule = { [weak self] (id, content, indexPath) in
+            viewModel.updateMySchedule(scheduleID: id, content: content) {
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+            }
+        }
+        cell.toggleScheduleStatus = { [weak self] (indexPath, id) in
+            viewModel.toggleMyScheduleStatus(scheduleID: id) {
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
             }
         }
     }
     
-    private func configureOld(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel, at indexPath: IndexPath) {
+    private func insertSchdueleDataToOld(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel, at indexPath: IndexPath) {
         cell.numberOfRows = viewModel.selectedDateSchedules.count
         cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
     }
     
-    private func configureNew(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
+    private func insertScheduleDataToNew(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
         cell.numberOfRows = viewModel.selectedDateSchedules.count
         cell.schedule = nil
     }

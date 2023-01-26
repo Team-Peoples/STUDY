@@ -13,7 +13,7 @@ protocol ScheduleCoordinator: AnyObject {
    
 }
 
-class CalendarBottomSheetViewController: UIViewController, Draggable {
+class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatable {
     // MARK: - Properties
     
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
