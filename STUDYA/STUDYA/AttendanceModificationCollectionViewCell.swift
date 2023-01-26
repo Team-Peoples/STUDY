@@ -148,6 +148,10 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    internal func tableViewReload() {
+        tableView.reloadData()
+    }
+    
     private func setBinding() {
         guard let viewModel = viewModel else { return }
         
@@ -162,8 +166,15 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
 
 extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let attendancesForATime = viewModel?.attendancesForATime else { return 0 }
-        return attendancesForATime.value.count
+
+        guard let attendancesForATime = viewModel?.attendancesForATime else {
+            return 0
+        }
+        
+        let numberOfMembers = attendancesForATime.value.count
+        NotificationCenter.default.post(name: .attendanceManagerTableViewsReloaded, object: delegate, userInfo: ["numberOfMembers" : numberOfMembers])
+        
+        return numberOfMembers
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

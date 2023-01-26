@@ -56,6 +56,10 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    internal func tableViewReload() {
+        tableView.reloadData()
+    }
 }
 
 extension AttendanceOverallCheckCollectionViewCell: UITableViewDataSource {

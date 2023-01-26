@@ -19,8 +19,24 @@ final class AttendanceManagerModeView: UIView {
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
-    
     @IBOutlet private weak var collectionView: UICollectionView!
+    private lazy var leftCell: AttendanceModificationCollectionViewCell = {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: IndexPath(item: 0, section: 0)) as? AttendanceModificationCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
+        
+        cell.delegate = delegate
+        if let studyID = studyID {
+            cell.viewModel = AttendancesModificationViewModel(studyID: studyID)
+        }
+        
+        return cell
+    }()
+    private lazy var rightCell: AttendanceOverallCheckCollectionViewCell = {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceOverallCheckCollectionViewCell() }
+        
+        cell.delegate = delegate
+        
+        return cell
+    }()
     
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
@@ -43,7 +59,8 @@ final class AttendanceManagerModeView: UIView {
         leftCenterXConstraint.priority = .required
         rightCenterXConstraint.priority = .defaultHigh
         
-        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: [.centeredHorizontally], animated: true)
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [.centeredHorizontally], animated: true)
+        leftCell.tableViewReload()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -56,7 +73,8 @@ final class AttendanceManagerModeView: UIView {
         leftCenterXConstraint.priority = .defaultHigh
         rightCenterXConstraint.priority = .required
         
-        collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: [.centeredHorizontally], animated: true)
+        collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: [.centeredHorizontally], animated: true)
+        rightCell.tableViewReload()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -74,23 +92,8 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
-        case 0:
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: indexPath) as? AttendanceModificationCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
-            
-            cell.delegate = delegate
-            if let studyID = studyID {
-                cell.viewModel = AttendancesModificationViewModel(studyID: studyID)
-            }
-            
-            return cell
-        case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: indexPath) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceOverallCheckCollectionViewCell() }
-            
-            cell.delegate = delegate
-            
-            return cell
-            
+        case 0: return leftCell
+        case 1: return rightCell
         default: break
         }
         

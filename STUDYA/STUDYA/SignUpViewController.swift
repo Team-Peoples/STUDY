@@ -62,7 +62,6 @@ class SignUpViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(alert), name: .unknownError, object: nil)
         
         doneButton.isEnabled = false
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
@@ -137,10 +136,6 @@ class SignUpViewController: UIViewController {
         //                scrollView.setContentOffset(scrollPoint, animated: true)
         //            }
         //        }
-    }
-    @objc func alert() {
-        let alert = SimpleAlert(message: "dksldk")
-        present(alert, animated: true)
     }
     @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero

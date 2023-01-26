@@ -25,6 +25,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         return v
     }()
     let userView = OneMemberAttendanceView(viewer: .user)
+    let noResultLabel = CustomLabel(title: "출결이 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,16 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
             managerView.delegate = self
         }
         userView.bottomSheetAddableDelegate = self
+        
+        NotificationCenter.default.addObserver(forName: .attendanceManagerTableViewsReloaded, object: self, queue: nil) { [weak self] noti in
+            if let userinfo = noti.userInfo, let numOfMembers = userinfo["numberOfMembers"] as? Int {
+                self?.noResultLabel.isHidden = numOfMembers == 0 ? false : true
+            }
+        }
+        
+        view.addSubview(noResultLabel)
+        noResultLabel.centerXY(inView: view)
+        noResultLabel.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
