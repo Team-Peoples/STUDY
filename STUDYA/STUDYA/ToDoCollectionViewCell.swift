@@ -8,12 +8,93 @@
 import UIKit
 import SnapKit
 
+final class ToDoViewModel {
+    
+    var doTableViewReload = Observable(false)
+    var allMySchedules = [Schedule]()
+    var selectedDate = Date().formatToString(format: .dashedFormat) {
+        didSet {
+            filterSchedules(on: selectedDate)
+            doTableViewReload.value = true
+        }
+    }
+    var selectedDateSchedules = [Schedule]()
+    var error: Observable<PeoplesError>?
+    
+    func filterSchedules(on date: DashedDate) {
+        let newlySelectedDateSchedules = allMySchedules.filter { schedule in
+            return schedule.date == selectedDate
+        }
+        
+        self.selectedDateSchedules = newlySelectedDateSchedules
+    }
+    
+    func getAllMySchedules() {
+        Network.shared.getAllMySchedules { result in
+            switch result {
+            case .success(let schedules):
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                self.doTableViewReload.value = true
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func createMySchedule(content: String, completion: @escaping () -> Void) {
+        Network.shared.createMySchedule(content: content, date: selectedDate) { result in
+            switch result {
+            case .success(let schedules):
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                completion()
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping () -> Void) {
+        Network.shared.toggleMyScheduleStatus(scheduleID: scheduleID) { result in
+            switch result {
+            case .success(let schedules):
+                print("🔥")
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                completion()
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func updateMySchedule(scheduleID: Int, content: String, completion: @escaping () -> Void) {
+        Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
+            switch result {
+            case .success(let schedules):
+                print("🥶")
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                completion()
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+}
+
 class ToDoCollectionViewCell: UICollectionViewCell {
 //    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
-    var todo = ["할일","할일2","할일3","할일4","할일5","할일6","할일7","할일8"]
-    var isdone = [false,true,false,true,false,true,false,true]
     
+    internal var viewModel: ToDoViewModel? {
+        didSet {
+            setBinding()
+            viewModel?.selectedDate = Date().formatToString(format: .dashedFormat)
+        }
+    }
     weak var heightCoordinator: UBottomSheetCoordinator?
+    weak var navigatable: Navigatable?
     
     let tableView: UITableView = {
        
@@ -35,8 +116,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
         
         tableView.dataSource = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        addObservers()
         
         self.backgroundColor = .appColor(.background)
         
@@ -69,52 +149,116 @@ class ToDoCollectionViewCell: UICollectionViewCell {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
+    
+    private func setBinding() {
+        guard let viewModel = viewModel else { return }
+
+        viewModel.doTableViewReload.bind { [weak self] doTableViewReload in
+            guard let weakSelf = self else { return }
+
+            weakSelf.tableView.reloadData()
+        }
+        viewModel.error?.bind({ [weak self] error in
+            guard let weakSelf = self, let navigatable = weakSelf.navigatable else { return }
+            
+            UIAlertController.handleCommonErros(presenter: navigatable, error: error)
+        })
+    }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(forName: .mainCalenderDateTapped, object: nil, queue: nil) { noti in
+            guard let dateComponents = noti.object as? DateComponents, let date = dateComponents.convertToDate()?.formatToString(format: .dashedFormat) else { return }
+            
+            self.viewModel?.selectedDate = date
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
 }
 
 extension ToDoCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        todo.count + 1
+        
+        guard let viewModel = viewModel else { return 0 }
+        let newlyCreatedCellNumber = 1
+        
+        return viewModel.selectedDateSchedules.count + newlyCreatedCellNumber
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ToDoItemTableViewCell.identifier) as! ToDoItemTableViewCell
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoItemTableViewCell.identifier) as? ToDoItemTableViewCell,
+              let viewModel = viewModel else { return ToDoItemTableViewCell() }
+        let latestOldCellRow = viewModel.selectedDateSchedules.count - 1
+
+        configureCommon(cell, with: viewModel)
+        
+//        구셀/신셀의 최초 설정 분기처리
+        if indexPath.row <= latestOldCellRow {
+            insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+        } else {
+            insertScheduleDataToNew(cell, with: viewModel)
+        }
+        
+        return cell
+//                guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
+//        //        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
+//                cell.textViewDidEndEditingWithLetter = { cell in
+//
+//                    if indexPath.row == viewModel.selectedDateSchedules.value.count {
+//                        viewModel.createMySchedule(content: "아이아이아이")
+//        //                self.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: 0)], with: .automatic)
+//                    } else {
+//        //                viewModel.updateMySchedule(scheduleID: <#T##Int#>, content: <#T##String#>)
+//                        print("데이터 수정 후 업로드")
+//                    }
+//                }
+//
+//        //        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
+//                cell.textViewDidEndEditingWithNoLetter = { cell in
+//
+//                    if indexPath.row == viewModel.selectedDateSchedules.value.count {
+//                        print("아무것도 안함")
+//                    } else {
+//        //                🛑삭제 api 요청
+//        //                self.todo.remove(at: updateIndexPath.row)
+//                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+//                    }
+//                }
+    }
+    
+    private func configureCommon(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
         
         cell.heightCoordinator = heightCoordinator
-        
         cell.cellDelegate = self
-//        구셀/신셀의 최초 설정 분기처리
-        if indexPath.row <= todo.count - 1 {
-            cell.todo = todo[indexPath.row]
-            cell.isDone = isdone[indexPath.row]
-        } else {
-            cell.todo = nil
-            cell.isDone = false
-        }
         
-//        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
-        cell.textViewDidEndEditingWithLetter = { cell in
-            guard let actualIndexPath = tableView.indexPath(for: cell) else { return }
+        cell.createSchedule = { [weak self] (indexPath, content) in
             
-            if actualIndexPath.row == self.todo.count {
-                self.isdone.append(cell.checkButton.isSelected)
-                self.todo.append(cell.todoTextView.text!)
-                self.tableView.insertRows(at: [IndexPath(row: actualIndexPath.row + 1, section: 0)], with: .automatic)
-            } else {
-                print("데이터 수정 후 업로드")
+            viewModel.createMySchedule(content: content) {
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+                self?.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: indexPath.section)], with: .automatic)
             }
         }
-//        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
-        cell.textViewDidEndEditingWithNoLetter = { cell in
-            let actualIndexPath = tableView.indexPath(for: cell)!
-            
-            if actualIndexPath.row == self.todo.count {
-                print("아무것도 안함")
-            } else {
-                self.todo.remove(at: actualIndexPath.row)
-                tableView.deleteRows(at: [actualIndexPath], with: .automatic)
+        cell.updateSchedule = { [weak self] (id, content, indexPath) in
+            viewModel.updateMySchedule(scheduleID: id, content: content) {
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
             }
         }
-        return cell
+        cell.toggleScheduleStatus = { [weak self] (indexPath, id) in
+            viewModel.toggleMyScheduleStatus(scheduleID: id) {
+                self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+            }
+        }
+    }
+    
+    private func insertSchdueleDataToOld(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel, at indexPath: IndexPath) {
+        cell.numberOfRows = viewModel.selectedDateSchedules.count
+        cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
+    }
+    
+    private func insertScheduleDataToNew(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
+        cell.numberOfRows = viewModel.selectedDateSchedules.count
+        cell.schedule = nil
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

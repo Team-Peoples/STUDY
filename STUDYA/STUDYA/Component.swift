@@ -649,6 +649,7 @@ class ProfileImageView: UIView {
         if let imageURL = imageURL {
             let url = URL(string: imageURL)
             internalImageView.kf.setImage(with: url)
+//            🛑수정필요
             // domb: 이렇게 하면 profileImageView의 internalImageView의 image는 바뀌지만, internalImage나 AccountManagementVC의 profileImage는 nil이 되어 외부에서 문제가 생겨요.(예를 들어 image가 nil가 nil이라 picker에서 기본이미지로 변경 액션을 사용할 수 없음)  이래서 제가 kingFisher를 지우고 internalImage: UIImage 를 사용하는 것으로 했던거에요. 그대로 사용하신다면 로직의 수정이 필요합니다.
         } else {
             internalImageView.image = UIImage(named: Const.defaultProfile)

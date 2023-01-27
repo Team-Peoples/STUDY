@@ -299,16 +299,15 @@ struct Announcement: Codable {
 }
 
 struct Schedule: Codable {
-    
     let id: Int?
-    let name: String?
-    let date: Date?
+    let content: String?
+    let date: String?
     let status: String?
     
     enum CodingKeys: String, CodingKey {
         case status
         case id = "scheduleId"
-        case name = "scheduleName"
+        case content = "scheduleName"
         case date = "scheduleDate"
     }
 }
@@ -431,7 +430,8 @@ struct MyAttendanceOverall: Codable {
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
         case absentCount = "absentCnt"
-        case totalFine, oneTimeAttendanceInformation
+        case oneTimeAttendanceInformation = "attendanceDetail"
+        case totalFine
     }
 }
 
@@ -520,6 +520,35 @@ enum Attendance: Codable {
     }
 }
 
+struct MemberListResponse: Codable {
+    let memberList: [Member]
+    let isUserManager: Bool
+    let isUserOwner: Bool
+    
+    enum CodingKeys: String, CodingKey {
+        case memberList
+        case isUserManager = "manager"
+        case isUserOwner = "master"
+    }
+}
+
+struct Member: Codable {
+    let memberID, deposit: Int
+    let nickName, profileImageURL, role: String?
+    let isManager: Bool
+//    let isOwner: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case memberID = "studyMemberId"
+        case nickName = "userNickname"
+        case profileImageURL = "img"
+        case isManager = "userManager"
+//        case isOwner = "userMaster"
+        case role = "userRole"
+        case deposit
+    }
+}
+
 typealias AllUsersAttendacneForADay = [Time: [SingleUserAnAttendanceInformation]]
 
 typealias UserID = String //사용자의 아이디
@@ -528,6 +557,7 @@ typealias Title = String
 typealias Content = String
 typealias Password = String
 typealias SNSToken = String
+typealias Members = [Member]
 typealias DashedDate = String
 typealias DottedDate = String
 typealias Time = String

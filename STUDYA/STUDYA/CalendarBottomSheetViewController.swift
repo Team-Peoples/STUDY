@@ -13,7 +13,7 @@ protocol ScheduleCoordinator: AnyObject {
    
 }
 
-class CalendarBottomSheetViewController: UIViewController, Draggable {
+class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatable {
     // MARK: - Properties
     
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
@@ -21,9 +21,8 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     weak var scheduleCoordinator: ScheduleCoordinator?
     var studySchedule: [StudySchedule] = [] {
         didSet {
-            let cell = contentView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+            let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
             cell?.studySchedules = studySchedule
-            print(studySchedule, "❤️")
             cell?.reloadTableView()
             cell?.checkScheduleIsEmpty()
         }
@@ -33,7 +32,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     
     private let bar = UIView()
     private let topScrollView = UIScrollView()
-    private let contentView: UICollectionView = {
+    private let collectionView: UICollectionView = {
         
         let flowLayout = UICollectionViewFlowLayout()
         
@@ -75,7 +74,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                     make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
                     make.centerX.equalTo(leftTabButton)
                 }
-                contentView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
+                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
             case rightTabButton:
                 underLine.snp.remakeConstraints { make in
                     make.height.equalTo(style.heightOfUnderLine)
@@ -83,14 +82,13 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
                     make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
                     make.centerX.equalTo(rightTabButton)
                 }
-                contentView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
+                collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
                 
                 /// 탭을 눌렀을떄 스터디일정이 몇개 있는지 확인하고 화면구성
                 /// 근데 맨처음에는 실행되지않음.
                 /// cellForRowAt에서 코드 추가해주어서 해결.
-                let cell = contentView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+                let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
                 cell?.studySchedules = studySchedule
-                print(studySchedule, "❤️")
                 cell?.reloadTableView()
                 cell?.checkScheduleIsEmpty()
                 
@@ -157,22 +155,22 @@ class CalendarBottomSheetViewController: UIViewController, Draggable {
     
     private func addContentView() {
         
-        view.addSubview(contentView)
+        view.addSubview(collectionView)
         
-        contentView.isPagingEnabled = true
+        collectionView.isPagingEnabled = true
         
-        contentView.delegate = self
-        contentView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
-        contentView.showsHorizontalScrollIndicator = false
-        contentView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
         
-        contentView.bounces = false
+        collectionView.bounces = false
         
-        contentView.register(ToDoCollectionViewCell.self, forCellWithReuseIdentifier: "ToDoCollectionViewCell")
-        contentView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
+        collectionView.register(ToDoCollectionViewCell.self, forCellWithReuseIdentifier: "ToDoCollectionViewCell")
+        collectionView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
         
-        contentView.snp.makeConstraints { make in
+        collectionView.snp.makeConstraints { make in
             make.top.equalTo(topScrollView.snp.bottom)
             make.leading.trailing.bottom.equalTo(view)
         }
@@ -243,20 +241,25 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
-            case 0:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as! ToDoCollectionViewCell
-                
-                cell.heightCoordinator = sheetCoordinator
-                
-                return cell
-                
-            case 1:
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as! ScheduleCollectionViewCell
-                cell.studySchedules = studySchedule
-                cell.reloadTableView()
-                cell.checkScheduleIsEmpty()
-                return cell
-            default: break
+        case 0:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as? ToDoCollectionViewCell else { return ToDoCollectionViewCell() }
+            
+            cell.heightCoordinator = sheetCoordinator
+            cell.navigatable = self
+            cell.viewModel = ToDoViewModel()
+            cell.viewModel?.getAllMySchedules()
+            
+            return cell
+            
+        case 1:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as? ScheduleCollectionViewCell else { return ScheduleCollectionViewCell() }
+            
+            cell.studySchedules = studySchedule
+            cell.reloadTableView()
+            cell.checkScheduleIsEmpty()
+            
+            return cell
+        default: break
         }
         
         return UICollectionViewCell()
