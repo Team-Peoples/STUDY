@@ -50,6 +50,7 @@ enum RequestPurpose: Requestable {
     case createStudySchedule(StudyScheduleGoing)
     case joinStudy(ID)
     case attend(ID, Int)
+    case createMySchedule(String, DashedDate)
     
     //    HTTPMethod: PUT
     case updateUser(User)//6
@@ -63,6 +64,8 @@ enum RequestPurpose: Requestable {
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
     case update(SingleUserAnAttendanceInformation)
+    case toggleMyScheduleStatus(ID)
+    case updateMySchedule(ID, String)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
@@ -86,6 +89,7 @@ enum RequestPurpose: Requestable {
     case getAttendanceCertificactionCode(ID)
     case getMyAttendanceBetween(DashedDate, DashedDate, ID)
     case getAllMembersAttendanceOn(DashedDate, ID)
+    case getAllMySchedules
 }
 
 extension RequestPurpose {
@@ -96,8 +100,6 @@ extension RequestPurpose {
     var header: RequestHeaders {
         
         switch self {
-        case .getNewPassord, .getJWTToken, .deleteUser, .getMyInfo, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .updateScheduleStatus, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .update:
-            return .none
         case .signUp, .updateUser, .signIn:
             return .multipart
         default:
@@ -131,6 +133,8 @@ extension RequestPurpose {
             return "/join/\(id)"
         case .attend:
             return "/attendance"
+        case .createMySchedule:
+            return "/user/schedule"
             
             //    HTTPMethod: PUT
         case .updateUser:
@@ -156,6 +160,10 @@ extension RequestPurpose {
             return "/studyMember/manager"
         case .update:
             return "/attendance/master"
+        case .toggleMyScheduleStatus(let scheduleID):
+            return "/user/schedule/\(scheduleID)"
+        case .updateMySchedule:
+            return "/user/schedule"
             
             //    HTTPMethod: DEL
         case .deleteUser(let id):
@@ -198,18 +206,20 @@ extension RequestPurpose {
             return "/attendance"
         case .getAllMembersAttendanceOn:
             return "/attendance/master"
+        case .getAllMySchedules:
+            return "/user/schedule"
         }
     }
     
     var method: HTTPMethod {
         switch self {
-        case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend: return .post
+        case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getUserSchedule, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
         }
     }
     
@@ -233,6 +243,9 @@ extension RequestPurpose {
         case .attend(let scheduleID, let checkCode):
             return .body(["studyScheduleId" : scheduleID,
                           "checkNumber" : checkCode])
+        case .createMySchedule(let content, let date):
+            return .body(["scheduleName": content,
+                          "scheduleDate": date])
             
 ///    HTTPMethod: PUT
         case .updateAnnouncement(let title, let content, let id):
@@ -249,6 +262,9 @@ extension RequestPurpose {
         case .updateUserRole(let memberID, let role):
             return .body(["studyMemberId": memberID,
                           "userRole": role])
+        case .updateMySchedule(let scheduleID, let content):
+            return .body(["scheduleId": scheduleID,
+                          "scheduleName": content])
             
 ///    HTTPMethod: DELETE
         case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):

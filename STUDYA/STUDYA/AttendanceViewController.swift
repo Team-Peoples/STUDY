@@ -11,9 +11,12 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     internal var studyID: ID? {
         didSet {
+            guard let studyID = studyID else { return }
             managerView.studyID = studyID
+            viewModel = AttendancesModificationViewModel(studyID: studyID)
         }
     }
+    internal var viewModel: AttendancesModificationViewModel?
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -72,12 +75,11 @@ class AttendanceViewModel {
     }
     
     func getMyAttendanceOverall() {
-    
-        let formatter = DateFormatter.dashedDateFormatter
+        
         let today = Date()
-        let dashedToday = formatter.string(from: today)
+        let dashedToday = today.formatToString(format: .dashedFormat)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-        let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
+        let dashedThirtyDaysAgo = thirtyDaysAgo?.formatToString(format: .dashedFormat) ?? dashedToday
 
         Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
             switch result {

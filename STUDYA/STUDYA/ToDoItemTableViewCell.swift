@@ -12,20 +12,33 @@ class ToDoItemTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
     
+    internal var numberOfRows: Int?
+    internal var schedule: Schedule? {
+        didSet {
+            todoTextView.text = schedule == nil ? placeholder : schedule?.content
+            todoTextView.textColor = schedule == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
+            checkButton.isSelected = schedule?.status == "STOP" ? true : false
+        }
+    }
+    internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
+    internal var updateSchedule: (ID, String, IndexPath) -> Void = { (id, content, indexPath) in }
+    internal var toggleScheduleStatus: (IndexPath, ID) -> Void = { (indexPath, id) in }
+//    internal var removeSchedule
+    
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
     
-    internal var todo: String? {
-        didSet {
-            todoTextView.text = todo == nil ? placeholder : todo
-            todoTextView.textColor = todo == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
-        }
-    }
-    internal var isDone = false {
-        didSet {
-            checkButton.isSelected = isDone ? true : false
-        }
-    }
+//    internal var todo: String? {
+//        didSet {
+//            todoTextView.text = todo == nil ? placeholder : todo
+//            todoTextView.textColor = todo == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)
+//        }
+//    }
+//    internal var isDone = false {
+//        didSet {
+//            checkButton.isSelected = isDone ? true : false
+//        }
+//    }
     internal var textViewDidEndEditingWithNoLetter: (ToDoItemTableViewCell) -> () = { sender in }
     internal var textViewDidEndEditingWithLetter: (ToDoItemTableViewCell) -> () = { sender in }
     private let placeholder = "이곳을 눌러 할 일을 추가해보세요."
@@ -36,7 +49,6 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         b.setImage(UIImage(named: "off"), for: .normal)
         b.setImage(UIImage(named: "on"), for: .selected)
-        b.isSelected = isDone ? true : false
         b.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
         return b
@@ -65,6 +77,8 @@ class ToDoItemTableViewCell: UITableViewCell {
         
         backgroundColor = .appColor(.background)
         todoTextView.font = .systemFont(ofSize: 14) //만약 더 큰 크기로 바꾸게 되면 글자수 제한이나 줄 수 등도 바꿔야.
+        
+        selectionStyle = .none
         todoTextView.delegate = self
         
         contentView.addSubview(checkButton)
@@ -82,8 +96,17 @@ class ToDoItemTableViewCell: UITableViewCell {
     }
     
     @objc private func checkButtonTapped() {
-        checkButton.isSelected.toggle()
-        endEditing(true)
+        guard let indexPath = getIndexPath(), let schedule = schedule, let id = schedule.id else { return }
+        toggleScheduleStatus(indexPath, id)
+    }
+    
+    func getIndexPath() -> IndexPath? {
+        guard let superView = self.superview as? UITableView else {
+            print("superview is not a UITableView - getIndexPath")
+            return nil
+        }
+        
+        return superView.indexPath(for: self)
     }
 }
 
@@ -110,18 +133,31 @@ extension ToDoItemTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        print(#function, 1)
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            print(#function, 2)
             textView.text = placeholder
             textView.textColor = .appColor(.ppsGray1)
-            textViewDidEndEditingWithNoLetter(self)
+            
         } else {
-            textViewDidEndEditingWithLetter(self)
+            print(#function, 3)
+            guard let indexPathOfThisCell = getIndexPath() else { return }
+            
+            if indexPathOfThisCell.row == numberOfRows {
+                print(#function, 4)
+                createSchedule(indexPathOfThisCell, textView.text)
+                
+            } else {
+                print(#function, 5)
+                guard let schedule = schedule, let id = schedule.id else { return }
+                print(#function, 6, textView.text)
+                updateSchedule(id, textView.text, indexPathOfThisCell)
+            }
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
         if let delegate = cellDelegate {
-            print(#function)
             delegate.updateHeightOfRow(self, textView)
         }
     }

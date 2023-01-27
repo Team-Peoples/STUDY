@@ -14,7 +14,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     internal var schedule: StudySchedule? {
         didSet {
-            willHideViews.forEach { view in
+            labelsInView.forEach { view in
                 view.isHidden = true
             }
             
@@ -44,7 +44,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             mainButton.isEnabled = false
             //            🛑위의 스케줄에서 받은 didAttend
             if didAttend {
-//                출석상태 별 뷰 띄우기 (지금은 attendanceStatus didSet에서 하고 있음.
+//                출석상태 별 뷰 띄우기 (지금은 attendanceStatus didSet에서 하고 있음.)
                 afterStudyView.isHidden = false
             } else {
                 mainButton.isHidden = false
@@ -101,7 +101,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     private let fineLabel = CustomLabel(title: "00,000", tintColor: .whiteLabel, size: 20, isBold: true)
     private let wonLabel = CustomLabel(title: "원", tintColor: .whiteLabel, size: 14, isBold: true)
     
-    private lazy var willHideViews = [subTitleLabel, penaltyLabel, fineLabel, wonLabel]
+    private lazy var labelsInView = [subTitleLabel, penaltyLabel, fineLabel, wonLabel]
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -238,7 +238,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         afterStudyView.addSubview(titleLabel)
         afterStudyView.addSubview(innerView)
         
-        willHideViews.forEach { view in
+        labelsInView.forEach { view in
             afterStudyView.addSubview(view)
         }
 
