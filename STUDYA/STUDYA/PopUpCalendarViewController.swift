@@ -12,10 +12,10 @@ class PopUpCalendarViewController: UIViewController {
     
     // MARK: - Properties
 
-    lazy var selectedDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: selectedDate)
+    lazy var selectedDateComponents = selectedDate.convertToDateComponents([.year, .month, .day])
     var selectedDate: Date
     weak var presentingVC: UIViewController?
-    lazy var openDate: Date = Date()
+    lazy var startDate: Date = Date()
 
     private let calendarType: PopUpCalendarType
     private let button = UIButton(frame: .zero)
@@ -51,8 +51,10 @@ class PopUpCalendarViewController: UIViewController {
         
         let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
         selectionDelegate.selectedDate?.calendar = Calendar.current
+        
         calendarView.selectionBehavior = selectionDelegate
-        if calendarType == .open {
+        
+        if calendarType == .start {
             selectionDelegate.setSelected(selectedDateComponents, animated: false)
         }
         
@@ -109,12 +111,13 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
         
         switch calendarType {
-        case .open:
+        case .start:
             return true
-        case .deadline:
+        case .end:
+            
             guard let date = dateComponents?.date else { fatalError() }
             
-            if date < openDate {
+            if date < startDate {
                 return false
             } else {
                 return true
@@ -123,34 +126,42 @@ extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     }
    
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-       
+        guard let date = dateComponents?.date else { fatalError() }
+        
         if let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController {
             
             switch calendarType {
-            case .open:
-                presentingVC.studyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+            case .start:
+
+                presentingVC.studyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
                 
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if  presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
-                    presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+                if presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
+                    presentingVC.studyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
+                
                 self.dismiss(animated: true)
-            case .deadline:
-                presentingVC.studyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+            case .end:
+                
+                presentingVC.studyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+                
                 self.dismiss(animated: true)
             }
         } else if let presentingVC = presentingVC as? EditingStudySchduleViewController {
             switch calendarType {
-            case .open:
-                presentingVC.editingStudyScheduleViewModel.studySchedule.openDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+            case .start:
+                presentingVC.editingStudyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
                 
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
                 if  presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != "" {
-                    presentingVC.editingStudyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+                    presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
+                
                 self.dismiss(animated: true)
-            case .deadline:
-                presentingVC.editingStudyScheduleViewModel.studySchedule.deadlineDate = dateComponents?.date?.formatToString(format: .dashedFormat)
+            case .end:
+                
+                presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+                
                 self.dismiss(animated: true)
             }
         }

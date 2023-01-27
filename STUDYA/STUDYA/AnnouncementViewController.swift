@@ -19,7 +19,6 @@ class AnnouncementViewController: UIViewController {
     ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
         didSet {
-            
             if isMaster == true {
                 titleTextView.isUserInteractionEnabled = true
                 titleTextView.isEditable = true
@@ -37,10 +36,12 @@ class AnnouncementViewController: UIViewController {
     }
     var announcement: Announcement? {
         didSet {
-            
             titleTextView.text = announcement?.title
             contentTextView.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString(format: .announcementDateFormat)
+            
+            if let createdDate = announcement?.createdDate {
+                timeLabel.text = DateFormatter.dottedDateFormatter.string(from: createdDate)
+            }
         }
     }
     

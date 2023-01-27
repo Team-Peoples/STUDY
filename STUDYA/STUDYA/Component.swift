@@ -947,7 +947,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         isNecessaryField = isNecessary
         
         if let placeholder = numPlaceholder {
-            text = Formatter.formatIntoDecimal(number: placeholder)
+            text = NumberFormatter.decimalNumberFormatter.string(from: placeholder)
         } else {
             text = "--"
         }
@@ -1056,7 +1056,8 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
             let row = strArray.firstIndex(of: textField.text ?? "--") ?? 0
             picker.selectRow(row, inComponent: 0, animated: false)
         } else {
-            self.text = Formatter.formatIntoNoneDecimal(textField.text)?.toString()
+            let decimalNumber = NumberFormatter.decimalNumberFormatter.number(from: textField.text)
+            self.text = decimalNumber?.toString()
         }
     }
     
@@ -1067,7 +1068,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if let text = textField.text, let intText = Int(text) {
-            self.text = Formatter.formatIntoDecimal(number: intText)
+            self.text = NumberFormatter.decimalNumberFormatter.string(from: intText)
         } else if let text = textField.text, text != "", text != "0", text != "--" {
             return
         } else {

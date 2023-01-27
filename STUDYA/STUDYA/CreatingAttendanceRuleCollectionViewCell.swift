@@ -190,9 +190,16 @@ extension CreatingAttendanceRuleCollectionViewCell: UITableViewDataSource, UITab
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceFineTableViewCell else { return UITableViewCell() }
             
-            cell.perLateMinuteField.text = lateness?.count?.toString() ?? "--"
-            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: lateness?.fine ?? 0)
-            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: absence?.fine ?? 0)
+            let latenessCount = lateness?.count
+            
+            cell.perLateMinuteField.text = latenessCount?.toString() ?? "--"
+            
+            let latenessFine = lateness?.fine
+            
+            cell.latenessFineField.text = NumberFormatter.decimalNumberFormatter.string(from: latenessFine ?? 0)
+            
+            let absenceFine = absence?.fine
+            cell.absenceFineField.text = NumberFormatter.decimalNumberFormatter.string(from: absenceFine ?? 0)
             
             cell.perLateMinuteFieldAction = { [self] perLateMinute in
                 lateness?.count = perLateMinute
@@ -219,11 +226,12 @@ extension CreatingAttendanceRuleCollectionViewCell: UITableViewDataSource, UITab
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
             
-            cell.depositTextField.text = Formatter.formatIntoDecimal(number: deposit ?? 0)
+            cell.depositTextField.text = NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)
             
             cell.depositTextFieldAction = { deposit in
                 self.deposit = deposit
             }
+            
             return cell
         default:
             return UITableViewCell()

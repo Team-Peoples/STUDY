@@ -290,17 +290,16 @@ final class StudyInfoViewController: SwitchableViewController {
         }
         
         check(deposit, AndSetupHeightOf: depositView)
-        
         check(excommunicationRule?.lateness, AndSetupHeightOf: latenessCountView)
         check(excommunicationRule?.absence, AndSetupHeightOf: absenceCountView)
         
         latenessTimeRuleLabel.text = "스터디 시작후 \(generalRuleLateness?.time ?? 0)분 부터 지각"
         absenceTimeRuleLabel.text = generalRuleAbsence?.time != nil ? "스터디 시작후 \(generalRuleAbsence?.time ?? 0)분 부터 결석" : "스터디에 출석하지않으면 결석"
         
-        latenessFineRuleLabel.text = generalRuleLateness?.count != nil ? "지각 \(generalRuleLateness?.count ?? 0)분당 \(generalRuleLateness?.fine ?? 0)원" : "지각당 \(Formatter.formatIntoDecimal(number: generalRuleLateness?.fine ?? 0) ?? "0")원"
-        absenceFineRuleLabel.text = "결석 1회당 \(Formatter.formatIntoDecimal(number: generalRuleAbsence?.fine ?? 0) ?? "0")원"
+        latenessFineRuleLabel.text = generalRuleLateness?.count != nil ? "지각 \(generalRuleLateness?.count ?? 0)분당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleAbsence?.fine ?? 0)!)원" : "지각당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleLateness?.fine ?? 0)!)원"
+        absenceFineRuleLabel.text = "결석 1회당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleAbsence?.fine ?? 0)!)원"
         
-        depositLabel.text = "보증금 \(Formatter.formatIntoDecimal(number: deposit ?? 0) ?? "0")원"
+        depositLabel.text = "보증금 \(NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)!)원"
         
         latenessCountLabel.text = "\(excommunicationRule?.lateness ?? 0)번 지각 시 강퇴"
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"

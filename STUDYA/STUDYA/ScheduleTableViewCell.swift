@@ -73,18 +73,15 @@ class ScheduleTableViewCell: UITableViewCell {
         etcButtonAction()
     }
     
-    func configure(schedule: StudySchedule, kind: CalendarKind) {
+    func configure(schedule: StudyScheduleComing, kind: CalendarKind) {
         
-        let startDateComponents = schedule.startDate.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
-        if let hour = startDateComponents.hour, let minute = startDateComponents.minute {
-            startTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
-        }
+        let startTime = DateFormatter.timeFormatter.string(from: schedule.startDateAndTime)
+        startTimeLabel.text = startTime
         
-        let endDateComponents = schedule.endDate.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
-        if let hour = endDateComponents.hour, let minute = endDateComponents.minute {
-            endTimeLabel.text = "\(String(format: "%02d", hour)):\(String(format: "%02d", minute))"
-        }
-        bookmarkColorView.backgroundColor = UIColor.orange
+        let endTime = DateFormatter.timeFormatter.string(from: schedule.endDateAndTime)
+        endTimeLabel.text = endTime
+        
+        bookmarkColorView.backgroundColor = schedule.bookMarkColor
     
         topicLabel.text = schedule.topic
         placeLabel.text = schedule.place

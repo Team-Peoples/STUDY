@@ -113,7 +113,8 @@ class AttendanceViewModel {
         var dates: [Date] = []
         
         datas.forEach { oneTimeAttendanceInfo in
-            dates.append(oneTimeAttendanceInfo.studyScheduleDate)
+            let studyScheduleDate = oneTimeAttendanceInfo.studyScheduleDateAndTime
+            dates.append(studyScheduleDate)
         }
         
         dates.forEach { date in

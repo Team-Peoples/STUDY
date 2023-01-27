@@ -14,7 +14,10 @@ final class AnnouncementBoardTableViewCell: UITableViewCell {
         didSet {
             titleLabel.text = announcement?.title
             contentLabel.text = announcement?.content
-            timeLabel.text = announcement?.createdDate?.formatToString(format: .announcementDateFormat)
+            
+            if let createdDate = announcement?.createdDate {
+                timeLabel.text = DateFormatter.dashedDateFormatter.string(from: createdDate)
+            }
             isPinned = announcement?.isPinned
         }
     }

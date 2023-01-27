@@ -172,13 +172,17 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let generalRule = delegate?.studyViewModel.study.generalRule
+        let lateness = generalRule?.lateness
+        let absence = generalRule?.absence
+        let deposit = generalRule?.deposit
+        
         switch indexPath.section {
         case 0:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceTimeTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceTimeTableViewCell else { return UITableViewCell() }
-            
         
-            cell.latenessRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.lateness.time?.toString() ?? "--"
-            cell.absenceRuleTimeField.text = delegate?.studyViewModel.study.generalRule?.absence.time?.toString() ?? "--"
+            cell.latenessRuleTimeField.text = lateness?.time?.toString() ?? "--"
+            cell.absenceRuleTimeField.text = absence?.time?.toString() ?? "--"
             cell.latenessRuleTimeFieldAction = { [self] latenessRuleTime in
                 delegate?.studyViewModel.study.generalRule?.lateness.time = latenessRuleTime
                 latenessRuleTimeIsNil = latenessRuleTime == nil
@@ -191,10 +195,9 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceFineTableViewCell else { return UITableViewCell() }
             
-            cell.perLateMinuteField.text = delegate?.studyViewModel.study.generalRule?.lateness.count?.toString() ?? "--"
-            cell.latenessFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.lateness.fine ?? 0)
-            cell.absenceFineField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.absence.fine ?? 0)
-            
+            cell.perLateMinuteField.text = lateness?.count?.toString() ?? "--"
+            cell.latenessFineField.text = NumberFormatter.decimalNumberFormatter.string(from: lateness?.fine ?? 0)
+            cell.absenceFineField.text = NumberFormatter.decimalNumberFormatter.string(from: absence?.fine ?? 0)
             cell.perLateMinuteFieldAction = { [self] perLateMinute in
                 delegate?.studyViewModel.study.generalRule?.lateness.count = perLateMinute
             }
@@ -220,8 +223,7 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
             
-            cell.depositTextField.text = Formatter.formatIntoDecimal(number: delegate?.studyViewModel.study.generalRule?.deposit ?? 0)
-            
+            cell.depositTextField.text = NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)
             cell.depositTextFieldAction = { [self] deposit in
                 delegate?.studyViewModel.study.generalRule?.deposit = deposit
             }
