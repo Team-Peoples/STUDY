@@ -667,7 +667,7 @@ class PlusCircleFillView: UIImageView {
     init(size: CGFloat) {
         super.init(frame: .zero)
         
-        image = UIImage(named: "plusCircleFill")
+        image = UIImage(named: "plus.circle.fill.purple")
         layer.cornerRadius = size / 2
         
         clipsToBounds = true
@@ -1186,8 +1186,6 @@ final class PurpleRoundedInputField: UITextField {
 //
 //        }
 //    }
-//
-//
 //}
 //
 //struct MainVCSwitchableViewModel: SwitchableViewModelProtocol {

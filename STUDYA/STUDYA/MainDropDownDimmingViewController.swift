@@ -51,7 +51,7 @@ final class MainDropDownDimmingViewController: UIViewController {
         let b = UIButton()
         
         b.backgroundColor = UIColor.appColor(.brandMilky)
-        b.setImage(UIImage(named: "plusCircleFill"), for: .normal)
+        b.setImage(UIImage(named: "plus.circle.fill.purple"), for: .normal)
         b.setTitle("   스터디 만들기", for: .normal)
         b.titleLabel?.font = .boldSystemFont(ofSize: 16)
         b.setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
