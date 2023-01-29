@@ -24,7 +24,12 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
                 setupProgress()
                 
                 let totalCount = currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount + currentStudyOverall.absentCount
-                attendanceRatioLabel.text = "\((currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount) / totalCount)%"
+                
+                if totalCount != 0 {
+                    attendanceRatioLabel.text = "\((currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount) / totalCount)%"
+                } else {
+                    attendanceRatioLabel.text = "0%"
+                }
                 
                 penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
                 
@@ -214,13 +219,15 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         guard let currentStudyOverall = currentStudyOverall else { return }
         
-        let totalStudyHeldCount = currentStudyOverall.totalFine
+        // domb: totalStudyHeldCount == 0 이라면 Fatal error: Division by zero
+        let totalStudyHeldCount = currentStudyOverall.totalFine != 0 ? currentStudyOverall.totalFine : 10000
         let studyAttendance: [Attendance : Int] = [
             .attended: currentStudyOverall.attendedCount,
             .late: currentStudyOverall.lateCount,
             .absent: currentStudyOverall.absentCount,
             .allowed: currentStudyOverall.allowedCount
         ]
+        
         let attendanceRatio = Float(studyAttendance[.attended]! * 100 / totalStudyHeldCount) / 100
         let latendssRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
         let absenceRatio = Float(studyAttendance[.absent]! * 100 / totalStudyHeldCount) / 100

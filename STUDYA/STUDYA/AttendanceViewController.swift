@@ -77,9 +77,9 @@ class AttendanceViewModel {
     func getMyAttendanceOverall() {
         
         let today = Date()
-        let dashedToday = today.formatToString(format: .dashedFormat)
+        let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-        let dashedThirtyDaysAgo = thirtyDaysAgo?.formatToString(format: .dashedFormat) ?? dashedToday
+        let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
 
         Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
             switch result {

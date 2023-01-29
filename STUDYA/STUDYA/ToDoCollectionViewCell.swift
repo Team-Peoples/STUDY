@@ -12,7 +12,7 @@ final class ToDoViewModel {
     
     var doTableViewReload = Observable(false)
     var allMySchedules = [Schedule]()
-    var selectedDate = Date().formatToString(format: .dashedFormat) {
+    var selectedDate = DateFormatter.dashedDateFormatter.string(from: Date()) {
         didSet {
             filterSchedules(on: selectedDate)
             doTableViewReload.value = true
@@ -90,7 +90,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     internal var viewModel: ToDoViewModel? {
         didSet {
             setBinding()
-            viewModel?.selectedDate = Date().formatToString(format: .dashedFormat)
+            viewModel?.selectedDate = DateFormatter.dashedDateFormatter.string(from: Date())
         }
     }
     weak var heightCoordinator: UBottomSheetCoordinator?
@@ -167,9 +167,13 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     
     private func addObservers() {
         NotificationCenter.default.addObserver(forName: .mainCalenderDateTapped, object: nil, queue: nil) { noti in
-            guard let dateComponents = noti.object as? DateComponents, let date = dateComponents.convertToDate()?.formatToString(format: .dashedFormat) else { return }
+            guard let dateComponents = noti.object as? DateComponents,
+                  let date = dateComponents.convertToDate()
+            else  { return }
             
-            self.viewModel?.selectedDate = date
+            let dashedDate = DateFormatter.dashedDateFormatter.string(from: date)
+
+            self.viewModel?.selectedDate = dashedDate
         }
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)

@@ -687,7 +687,7 @@ struct Network {
     
     // MARK: - Study Schedule
     
-    func getStudyAllSchedule(completion: @escaping (Result<StudyAllSchedule, PeoplesError>) -> Void) {
+    func getAllStudyAllSchedule(completion: @escaping (Result<AllStudyAllSchedule, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getStudyAllSchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
@@ -697,7 +697,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let studyAllSchedule = jsonDecode(type: StudyAllSchedule.self, data: data) else { return }
+                guard let data = response.data, let studyAllSchedule = jsonDecode(type: AllStudyAllSchedule.self, data: data) else { return }
                 completion(.success(studyAllSchedule))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
@@ -1157,8 +1157,6 @@ struct Network {
 
 extension Network {
     
-    // MARK: - Image Download
-    
     func setImage(stringURL: String, completion: @escaping (Result<UIImage?, PeoplesError>) -> Void) {
 
         AF.request(stringURL).response { response in
@@ -1208,10 +1206,10 @@ extension Network {
         let jsonDecoder = JSONDecoder()
         let result: Codable?
 
-        jsonDecoder.dateDecodingStrategy = .formatted(DateFormatter.myDateFormatter)
+        jsonDecoder.dateDecodingStrategy = .formatted(DateFormatter.fullDateFormatter)
         
         do {
-
+            
             result = try jsonDecoder.decode(type, from: data)
 
             return result as? T

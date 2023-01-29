@@ -57,7 +57,6 @@ struct User: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-
         case password, pushStart, pushImminent, pushDayAgo
         case id = "userId"
         case oldPassword = "old_password"
@@ -84,16 +83,10 @@ struct Credential: Encodable {
     }
 }
 
-enum SNS: String {
-    case kakao = "kakao"
-    case naver = "naver"
-    case none = "justEmailLogin"
-}
-
-struct SNSInfo {
-    let token: String
-    let provider: String
-}
+//struct SNSInfo {
+//    let token: String
+//    let provider: String
+//}
 
 struct Study: Codable, Equatable {
     var id: ID?
@@ -105,7 +98,6 @@ struct Study: Codable, Equatable {
     var formIsFilled: Bool {
         return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
     }
-    
     var isGeneralFormFilled: Bool {
         // domb: 스터디 규칙쪽 필수 입력 값 시나리오 수정되면 이부분도 수정해야함.
         return generalRule?.absence.time != nil || generalRule?.lateness.time != nil || generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil || generalRule?.deposit != nil
@@ -145,77 +137,7 @@ struct Study: Codable, Equatable {
     }
 }
 
-enum StudyCategory: String, CaseIterable {
-    case language = "LANGUAGE"
-    case dev_prod_design = "DEVELOPED"
-    case project = "PROJECT"
-    case getJob = "EMPLOYMENT"
-    case certificate = "CERTIFICATE"
-    case pastime = "HOBBY"
-    case etc = "ETC"
-    
-    var rawValueWithKorean: String {
-        switch self {
-        case .language:
-            return "어학"
-        case .dev_prod_design:
-            return "개발/기획/디자인"
-        case .project:
-            return "프로젝트"
-        case .getJob:
-            return "취업"
-        case .certificate:
-            return "자격시험/자격증"
-        case .pastime:
-            return "자기계발/취미"
-        case .etc:
-            return "그 외"
-        }
-    }
-    
-    var indexPath: IndexPath {
-        switch self {
-            case .language:
-                return IndexPath(item: 0, section: 0)
-            case .dev_prod_design:
-                return IndexPath(item: 1, section: 0)
-            case .project:
-                return IndexPath(item: 2, section: 0)
-            case .getJob:
-                return IndexPath(item: 3, section: 0)
-            case .certificate:
-                return IndexPath(item: 4, section: 0)
-            case .pastime:
-                return IndexPath(item: 5, section: 0)
-            case .etc:
-                return IndexPath(item: 6, section: 0)
-        }
-    }
-}
-
-enum OnOff: String {
-    case on
-    case off
-    case onoff
-    
-    var eng: String {
-        return self.rawValue
-    }
-    
-    var kor: String {
-        switch self {
-            case .on:
-                return "온라인"
-            case .off:
-                return "오프라인"
-            case .onoff:
-                return "온라인/오프라인"
-        }
-    }
-}
-
 struct GeneralStudyRule: Codable, Equatable {
-    
     var lateness: Lateness
     var absence: Absence
     var deposit: Deposit?
@@ -257,7 +179,7 @@ struct StudyOverall: Codable {
     let study: Study
     let isManager: Bool
     let totalFine, attendedCount, absentCount, totalStudyHeldCount, lateCount, allowedCount: Int
-    let studySchedule: StudySchedule?
+    let studySchedule: StudyScheduleComing?
     let isOwner: Bool
     
     enum CodingKeys: String, CodingKey {
@@ -274,7 +196,6 @@ struct StudyOverall: Codable {
 }
 
 struct Announcement: Codable {
-
     let id: ID?
     let title: String?
     let content: String?
@@ -312,28 +233,37 @@ struct Schedule: Codable {
     }
 }
 
-typealias StudyAllSchedule = [String: [StudySchedule]]
+typealias StudyID = String
+typealias AllStudyAllSchedule = [StudyID: [StudyScheduleComing]]
 
-struct StudySchedule: Codable {
+struct StudyScheduleComing: Codable {
     let studyName: String?
-    
     let studyScheduleID: Int?
+    var studyID: StudyID?
     
     var topic: String?
     var place: String?
     
-    var startDate: Date
-    var endDate: Date
-    var repeatOption: String? = ""
-    // domb: repeatOption을 받아야 스케쥴셀의 상단부 "매달", "매일"과 같은 요소를 보여줄 수 있음. 현재는 옵션으로 표시 
+    var startDateAndTime: Date
+    var endDateAndTime: Date
+    
+    var repeatOption: String? = "" // domb: repeatOption을 받아야 스케쥴셀의 상단부 "매달", "매일"과 같은 요소를 보여줄 수 있음. 현재는 옵션으로 표시
+    var bookMarkColor: UIColor? {
+        guard let studyID = studyID else { return nil }
+        switch Int(studyID)! % 10 {
+        case (let number):
+            return UIColor(named: "randomColor\(number)")
+        }
+    }
     
     enum CodingKeys: String, CodingKey {
         case studyScheduleID = "studyScheduleId"
-        case startDate = "studyScheduleStartDateTime"
-        case endDate = "studyScheduleEndDateTime"
+        case startDateAndTime = "studyScheduleStartDateTime"
+        case endDateAndTime = "studyScheduleEndDateTime"
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"
         case studyName
+        case studyID
     }
 }
 
@@ -343,29 +273,28 @@ struct StudyScheduleGoing: Codable {
     var topic: String?
     var place: String?
     
-    var openDate: String? = Date().formatToString(format: .dashedFormat)
-    var deadlineDate: String? = ""
+    var startDate: String = DateFormatter.dashedDateFormatter.string(from: Date())
+    var repeatEndDate: String = ""
     
     var startTime: String?
     var endTime: String?
+    
     var repeatOption: String = ""
     
     var periodFormIsFilled: Bool {
         if repeatOption == "" {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil
         } else {
-            return startTime != nil && startTime != "" && endTime != "" && endTime != nil && deadlineDate != ""
+            return startTime != nil && startTime != "" && endTime != "" && endTime != nil && repeatEndDate != ""
         }
     }
-    
-    var deadlineFormIsFilled: Bool {
+    var repeatOptionFormIsFilled: Bool {
         if repeatOption != "" {
-            return deadlineDate != "" && deadlineDate != nil
+            return repeatEndDate != ""
         } else {
             return true
         }
     }
-    
     var contentFormIsFilled: Bool {
         return topic != nil && topic != "" && place != nil && place != ""
     }
@@ -379,34 +308,10 @@ struct StudyScheduleGoing: Codable {
         case startTime = "studyScheduleStart"
         case endTime = "studyScheduleEnd"
         case repeatOption = "repeatDay"
-        case openDate = "studyScheduleDate"
-        case deadlineDate = "targetDate"
+        case startDate = "studyScheduleDate"
+        case repeatEndDate = "targetDate"
     }
 }
-
-//enum RepeatOption: String, Codable {
-//    case everyDay = "매일"
-//    case everyWeek = "매주"
-//    case everyTwoWeeks = "2주 마다"// domb: git book에는 everyTwoWeek으로 되어있어 수정요청
-//    case everyMonth = "매달"
-//
-//    enum CodingKeys: String, CodingKey {
-//        case everyDay, everyMonth, everyWeek
-//        case everyTwoWeeks = "everyTwoWeek"
-//    }
-    
-//    public init(from decoder: Decoder) throws {
-//        self = try RepeatOption(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
-//    }
-//
-//    public init(to encoder: Encoder) throws {
-//        var container = encoder.container(keyedBy: )
-////            try container.encode(id, forKey: .id)
-////            try container.encode(name, forKey: .name)
-////            try container.encode(birth, forKey: .birth)
-////            try container.encode(phoneNum, forKey: .phoneNum)
-//        }
-//}
 
 struct ScheduleAttendanceInformation: Codable {
     let userID: UserID
@@ -439,10 +344,10 @@ struct OneTimeAttendanceInformation: Codable {
     let fine, attendanceID: Int
     let attendanceStatus: Attendance
     let userID: String
-    let studyScheduleDate: Date
+    let studyScheduleDateAndTime: Date
     
     enum CodingKeys: String, CodingKey {
-        case studyScheduleDate = "studyScheduleDateTime"
+        case studyScheduleDateAndTime = "studyScheduleDateTime"
         case attendanceStatus = "attendStatus"
         
         case attendanceID = "attendanceId"
@@ -552,7 +457,7 @@ struct Member: Codable {
 typealias AllUsersAttendacneForADay = [Time: [SingleUserAnAttendanceInformation]]
 
 typealias UserID = String //사용자의 아이디
-typealias ID = Int // 사용자 이외에 id가 있는 것들의 id
+typealias ID = Int // 사용자 id 이외의 id
 typealias Title = String
 typealias Content = String
 typealias Password = String
