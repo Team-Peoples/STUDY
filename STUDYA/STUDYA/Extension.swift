@@ -31,16 +31,22 @@ extension CALayer {
 }
 
 extension AttributedString {
+    
     static func custom(frontLabel: String, labelFontSize: CGFloat, labelColor: AssetColor = .ppsBlack, value: Int, valueFontSize: CGFloat, valueTextColor: AssetColor = .keyColor1, withCurrency: Bool = false) -> NSAttributedString {
         
-        let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(string: frontLabel, attributes: [.font: UIFont.systemFont(ofSize: labelFontSize), .foregroundColor: UIColor.appColor(labelColor)])
+        let labelAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: labelFontSize), .foregroundColor: UIColor.appColor(labelColor)]
+        let valueAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: valueFontSize), .foregroundColor: UIColor.appColor(valueTextColor)]
+        let currencyAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.appColor(.ppsGray1)]
         
-        let fineAttrString = NSAttributedString(string: Formatter.formatIntoDecimal(number: value) ?? "", attributes: [.font: UIFont.boldSystemFont(ofSize: valueFontSize), .foregroundColor: UIColor.appColor(valueTextColor)])
+        let numberString = NumberFormatter.decimalNumberFormatter.string(from: value) ?? ""
+        
+        let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(string: frontLabel, attributes: labelAttributes)
+        let fineAttrString = NSAttributedString(string: numberString, attributes: valueAttributes)
         
         mutableAttributedText.append(fineAttrString)
         
         if withCurrency {
-            let wonAttrString = NSAttributedString(string: " 원", attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.appColor(.ppsGray1)])
+            let wonAttrString = NSAttributedString(string: " 원", attributes: currencyAttributes)
             mutableAttributedText.append(wonAttrString)
         }
         
@@ -52,15 +58,17 @@ extension AttributedString {
         let attachment = NSTextAttachment(image: resizedImage)
         let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(attachment: attachment)
         
-        let fineAttrString = NSAttributedString(string: text, attributes: [.font: UIFont.boldSystemFont(ofSize: 19), .foregroundColor: UIColor.appColor(.ppsBlack)])
         
-        mutableAttributedText.append(fineAttrString)
+        let fineAttrbutedString = NSAttributedString(string: text, attributes: [.font: UIFont.boldSystemFont(ofSize: 19), .foregroundColor: UIColor.appColor(.ppsBlack)])
+        
+        mutableAttributedText.append(fineAttrbutedString)
         
         return mutableAttributedText
     }
 }
 
 extension UIImage {
+    
     func resize(newWidth: CGFloat) -> UIImage {
         let scale = newWidth / self.size.width
         let newHeight = self.size.height * scale
@@ -75,6 +83,7 @@ extension UIImage {
 }
 
 extension UIView {
+    
     func addDashedBorder(color: UIColor, cornerRadius: CGFloat?) {
         
         let shapeLayer:CAShapeLayer = CAShapeLayer()
@@ -92,9 +101,7 @@ extension UIView {
         
         self.layer.addSublayer(shapeLayer)
     }
-}
-
-extension UIView {
+    
     convenience init(backgroundColor: UIColor, alpha: CGFloat = 1) {
         self.init(frame: .zero)
         
@@ -157,7 +164,7 @@ extension UITableView {
 
 extension Calendar {
     
-    static let shared = Self.current
+    static let current = Self.current
     
     func weekday(_ weekday: Int?) -> String {
         switch weekday {
