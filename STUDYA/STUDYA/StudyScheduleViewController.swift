@@ -14,7 +14,7 @@ class StudyScheduleViewController: SwitchableViewController {
     let studyID: ID
     
     let studyAllScheduleViewModel = StudyAllScheduleViewModel()
-    var studyScheduleAtSelectedDate = [StudySchedule]()
+    var studyScheduleAtSelectedDate = [StudyScheduleComing]()
     
     let calendarView = PeoplesCalendarView()
     let scheduleTableView = ScheduleTableView()
@@ -32,7 +32,7 @@ class StudyScheduleViewController: SwitchableViewController {
     
     init(studyID: ID) {
         self.studyID = studyID
-        studyAllScheduleViewModel.getStudyAllSchedule()
+        studyAllScheduleViewModel.getAllStudyAllSchedule()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -64,12 +64,12 @@ class StudyScheduleViewController: SwitchableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        studyAllScheduleViewModel.getStudyAllSchedule { [self] in
-            let selectedDay = selectionDelegate.selectedDate
-            guard let studySchedule = studyAllScheduleViewModel.studySchedules(of: studyID, at: selectedDay) else { fatalError() }
-            studyScheduleAtSelectedDate = studySchedule
-            scheduleTableView.reloadData()
-        }
+        studyAllScheduleViewModel.getAllStudyAllSchedule()
+        
+        let selectedDay = selectionDelegate.selectedDate
+        guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: selectedDay) else { fatalError() }
+        studyScheduleAtSelectedDate = studySchedule
+        scheduleTableView.reloadData()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -148,7 +148,7 @@ class StudyScheduleViewController: SwitchableViewController {
 extension StudyScheduleViewController: UICalendarViewDelegate {
     
     func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
-        if let studyScheduleIsEmpty = studyAllScheduleViewModel.studySchedules(of: studyID, at: dateComponents)?.isEmpty, !studyScheduleIsEmpty {
+        if let studyScheduleIsEmpty = studyAllScheduleViewModel.studySchedule(of: studyID, at: dateComponents)?.isEmpty, !studyScheduleIsEmpty {
             return .image(UIImage(systemName: "circle.fill")?.resize(newWidth: 8).withRenderingMode(.alwaysTemplate), color: .appColor(.keyColor1))
         } else {
             return nil
@@ -158,7 +158,7 @@ extension StudyScheduleViewController: UICalendarViewDelegate {
 extension StudyScheduleViewController: UICalendarSelectionSingleDateDelegate {
     
     func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        guard let studySchedule = studyAllScheduleViewModel.studySchedules(of: studyID, at: dateComponents) else { return }
+        guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: dateComponents) else { return }
         self.studyScheduleAtSelectedDate = studySchedule
         self.scheduleTableView.reloadData()
     }
@@ -203,18 +203,19 @@ extension StudyScheduleViewController: UITableViewDataSource {
             
             let popupVC = PopUpViewController(type: "삭제")
             popupVC.firstButtonAction = { [self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) {
-                    self.studyAllScheduleViewModel.getStudyAllSchedule() { [self] in
-                        guard let studySchedule = studyAllScheduleViewModel.studySchedules(of: studyID, at: selectionDelegate.selectedDate) else { return }
-                        studyScheduleAtSelectedDate = studySchedule
-                        scheduleTableView.reloadData()
-                        dismiss(animated: true)
-                    }
+                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [self] in
+                    studyAllScheduleViewModel.getAllStudyAllSchedule()
+                    
+                    guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: selectionDelegate.selectedDate) else { return }
+                    studyScheduleAtSelectedDate = studySchedule
+                    scheduleTableView.reloadData()
+                    
+                    dismiss(animated: true)
                 }
             }
             popupVC.secondButtonAction = { [self] in
                 studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: true) {
-                    self.studyAllScheduleViewModel.getStudyAllSchedule()
+                    self.studyAllScheduleViewModel.getAllStudyAllSchedule()
                     self.dismiss(animated: true)
                     self.scheduleTableView.reloadData()
                 }

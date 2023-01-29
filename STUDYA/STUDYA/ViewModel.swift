@@ -25,8 +25,9 @@ extension ViewModel {
     }
 }
 
+// MARK: - SignInViewModel
+
 class SignInViewModel: ViewModel {
-    
     typealias Model = Credential
     
     var credential: Credential {
@@ -56,6 +57,8 @@ class SignInViewModel: ViewModel {
     }
 }
 
+// MARK: - StudyViewModel
+
 class StudyViewModel: ViewModel {
     typealias Model = Study
     
@@ -77,7 +80,6 @@ class StudyViewModel: ViewModel {
     }
     
     func getStudyInfo() {
-        
         guard let studyID = study.id else { return }
         
         Network.shared.getStudy(studyID: studyID) { [self] result in
@@ -91,9 +93,6 @@ class StudyViewModel: ViewModel {
     }
     
     func postNewStudy(_ successHandler: @escaping () -> Void) {
-        
-        let study = study
-        
         Network.shared.createStudy(study) { result in
             switch result {
             case .success:
@@ -105,7 +104,6 @@ class StudyViewModel: ViewModel {
     }
     
     func updateStudy(successHandler: @escaping () -> Void) {
-        let study = study
         guard let studyID = study.id else { return }
         
         Network.shared.updateStudy(study, id: studyID) { result in
@@ -119,7 +117,6 @@ class StudyViewModel: ViewModel {
     }
     
     func deleteStudy(successHandler: @escaping () -> Void) {
-        
         guard let studyID = study.id else { return }
         
         Network.shared.deleteStudy(studyID) { result in
@@ -134,7 +131,6 @@ class StudyViewModel: ViewModel {
 }
 
 class GeneralRuleViewModel {
-    
     var generalRule: GeneralStudyRule
     var lateness: Lateness {
         return generalRule.lateness
@@ -165,59 +161,66 @@ class GeneralRuleViewModel {
     }
 }
 
+// MARK: - StudyAllScheduleViewModel
+
 class StudyAllScheduleViewModel: ViewModel {
-    typealias Model = StudyAllSchedule
+    typealias Model = [StudyScheduleComing]
     
-    var studyAllSchedule: StudyAllSchedule {
+    var allStudyAllSchedule: AllStudyAllSchedule {
         didSet {
-            handler?(studyAllSchedule)
+            var studyScheduleList = [StudyScheduleComing]()
+            
+            allStudyAllSchedule.forEach { (studyID, studySchedules) in
+                studySchedules.forEach({ studySchedule in
+                    var studySchedule = studySchedule
+                    studySchedule.studyID = studyID
+                    
+                    studyScheduleList.append(studySchedule)
+                })
+            }
+            studySchedules = studyScheduleList
+        }
+    }
+    
+    var studySchedules: [StudyScheduleComing] = [] {
+        didSet {
+            handler?(studySchedules)
         }
     }
     
     var handler: DataHandler?
     
-    init(studyAllSchedule: StudyAllSchedule = StudyAllSchedule()) {
-        self.studyAllSchedule = studyAllSchedule
+    init(allStudyAllSchedule: AllStudyAllSchedule = AllStudyAllSchedule()) {
+        self.allStudyAllSchedule = allStudyAllSchedule
     }
     
     func bind(_ handler: DataHandler?) {
         self.handler = handler
-        handler?(studyAllSchedule)
+        handler?(studySchedules)
     }
     
-    func getStudyAllSchedule(completion: (() -> Void)? = nil) {
-        Network.shared.getStudyAllSchedule { result in
+    func getAllStudyAllSchedule() {
+        Network.shared.getAllStudyAllSchedule { result in
             switch result {
-            case .success(let studyAllSchedule):
-                self.studyAllSchedule = studyAllSchedule
-                completion?()
+            case .success(let allStudyAllSchedule):
+                self.allStudyAllSchedule = allStudyAllSchedule
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func studySchedule(at selectedDate: DateComponents?) -> [StudySchedule] {
-        let allStudyAllSchedule = studyAllSchedule.values.flatMap { $0 }
-        let studyScheduleAtSelectedDate = allStudyAllSchedule.filter { studySchedule in
-            let studyScheduleDateComponents = studySchedule.startDate.convertToDateComponents([.year, .month, .day])
-            return studyScheduleDateComponents.year == selectedDate?.year &&
-            studyScheduleDateComponents.month == selectedDate?.month &&
-            studyScheduleDateComponents.day == selectedDate?.day
-        }
+    func studySchedule(at selectedDateComponents: DateComponents?) -> [StudyScheduleComing] {
+        let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDateComponents)
+        
         return studyScheduleAtSelectedDate
     }
 
-    func studySchedules(of studyID: ID, at calendarSelectedDateComponents: DateComponents?) -> [StudySchedule]? {
-        let studySchedules = studyAllSchedule["\(studyID)"]?.filter({ studySchedule in
-            let dateComponents = studySchedule.startDate.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
-            let year = dateComponents.year
-            let month = dateComponents.month
-            let day = dateComponents.day
-            
-            return calendarSelectedDateComponents?.year == year && calendarSelectedDateComponents?.month == month && calendarSelectedDateComponents?.day == day
-        })
-        return studySchedules
+    func studySchedule(of studyID: ID, at selectedDateComponents: DateComponents?) -> [StudyScheduleComing]? {
+        let studySchedule = studySchedules.filter { $0.studyID == "\(studyID)"}
+        let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDateComponents)
+
+        return studyScheduleAtSelectedDate
     }
 
     func deleteStudySchedule(id studyScheduleID: ID, deleteRepeatedSchedule: Bool, successHandler: @escaping () -> Void) {
@@ -230,10 +233,25 @@ class StudyAllScheduleViewModel: ViewModel {
             }
         }
     }
+    
+    // MARK: - Helper
+    
+    private func filtering(_ studySchedule: [StudyScheduleComing], at selectedDateComponents: DateComponents?) -> [StudyScheduleComing] {
+        return studySchedule.filter { studySchedule in
+           
+            let startDate = studySchedule.startDateAndTime
+            let startDateComponents = startDate.convertToDateComponents([.year, .month, .day])
+            
+            let isSameDate = selectedDateComponents?.year == startDateComponents.year && selectedDateComponents?.month == startDateComponents.month && selectedDateComponents?.day == startDateComponents.day
+            
+            return isSameDate
+        }
+    }
 }
 
+// MARK: - StudyScheduleViewModel
+
 class StudyScheduleViewModel: ViewModel {
-    
     typealias Model = StudyScheduleGoing
     
     var studySchedule: StudyScheduleGoing {

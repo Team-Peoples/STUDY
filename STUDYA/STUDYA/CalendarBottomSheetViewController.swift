@@ -6,29 +6,24 @@
 //
 
 import UIKit
-
 import SnapKit
-
-protocol ScheduleCoordinator: AnyObject {
-   
-}
 
 class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatable {
     // MARK: - Properties
     
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
     internal weak var dataSource: UBottomSheetCoordinatorDataSource?
-    weak var scheduleCoordinator: ScheduleCoordinator?
-    var studySchedule: [StudySchedule] = [] {
+    
+    var studySchedule: [StudyScheduleComing] = [] {
         didSet {
+            
             let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+            
             cell?.studySchedules = studySchedule
             cell?.reloadTableView()
             cell?.checkScheduleIsEmpty()
         }
     }
-    
-    private let style = lineTabStyle()
     
     private let bar = UIView()
     private let topScrollView = UIScrollView()
@@ -69,25 +64,23 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         switch sender {
             case leftTabButton:
                 underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(style.heightOfUnderLine)
+                    make.height.equalTo(6)
                     make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
+                    make.bottom.equalTo(topScrollView).inset( -(6 / 2))
                     make.centerX.equalTo(leftTabButton)
                 }
-                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
+            collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
             case rightTabButton:
                 underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(style.heightOfUnderLine)
+                    make.height.equalTo(6)
                     make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
+                    make.bottom.equalTo(topScrollView).inset( -(6 / 2))
                     make.centerX.equalTo(rightTabButton)
                 }
-                collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
-                
-                /// 탭을 눌렀을떄 스터디일정이 몇개 있는지 확인하고 화면구성
-                /// 근데 맨처음에는 실행되지않음.
-                /// cellForRowAt에서 코드 추가해주어서 해결.
+            collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
+            
                 let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+            
                 cell?.studySchedules = studySchedule
                 cell?.reloadTableView()
                 cell?.checkScheduleIsEmpty()
@@ -141,7 +134,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         
         view.addSubview(topScrollView)
         
-        topScrollView.backgroundColor = style.topScrollViewBackgroundColor
+        topScrollView.backgroundColor = .white
         
         topScrollView.showsHorizontalScrollIndicator = false
         topScrollView.showsVerticalScrollIndicator = false
@@ -149,7 +142,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         topScrollView.snp.makeConstraints { make in
             make.top.equalTo(view).inset(18)
             make.leading.trailing.equalTo(view)
-            make.height.equalTo(style.heightOfTopScrollView)
+            make.height.equalTo(35)
         }
     }
     
@@ -181,13 +174,12 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         view.addSubview(underLine)
         
         underLine.clipsToBounds = true
-        underLine.layer.cornerRadius = style.heightOfUnderLine / 2
-        underLine.backgroundColor = style.underLineColor
-        
+        underLine.layer.cornerRadius = 6 / 2
+        underLine.backgroundColor = .appColor(.ppsGray3)
         underLine.snp.makeConstraints { make in
-            make.height.equalTo(style.heightOfUnderLine)
+            make.height.equalTo(6)
             make.width.equalTo(86)
-            make.bottom.equalTo(topScrollView).inset( -(style.heightOfUnderLine / 2))
+            make.bottom.equalTo(topScrollView).inset( -(6 / 2))
             make.centerX.equalTo(leftTabButton)
         }
     }
@@ -203,29 +195,24 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         leftTabButton.snp.makeConstraints { make in
             make.top.leading.bottom.equalTo(topScrollView)
             make.width.equalTo(view.frame.width / 2)
-            make.height.equalTo(style.heightOfTopScrollView)
+            make.height.equalTo(35)
         }
-        
         rightTabButton.snp.makeConstraints { make in
             make.leading.equalTo(leftTabButton.snp.trailing)
             make.top.trailing.bottom.equalTo(topScrollView)
             make.width.equalTo(view.frame.width / 2)
-            make.height.equalTo(style.heightOfTopScrollView)
+            make.height.equalTo(35)
         }
     }
     
     private func tabButton(title: String) -> UIButton {
-        
         let button = UIButton()
         
         button.setTitle(title, for: .normal)
         button.setTitle(title, for: .selected)
-        
-        button.titleLabel?.font = style.tabButtonFont
-        
-        button.setTitleColor(style.tabItemDefaultColor, for: .normal)
-        button.setTitleColor(style.tabItemSelectedColor, for: .selected)
-        
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(.appColor(.ppsGray2), for: .normal)
+        button.setTitleColor(.appColor(.ppsBlack), for: .selected)
         button.addTarget(self, action: #selector(tabButtonTapped), for: .touchUpInside)
         
         return button
@@ -261,7 +248,6 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
             return cell
         default: break
         }
-        
         return UICollectionViewCell()
     }
 }
@@ -271,18 +257,4 @@ extension CalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size
     }
-}
-
-struct lineTabStyle {
-    
-    var heightOfTopScrollView: CGFloat = 35
-    var heightOfUnderLine: CGFloat = 6
-    
-    var tabButtonFont = UIFont.boldSystemFont(ofSize: 16)
-    
-    var tabItemDefaultColor: UIColor = .gray
-    var tabItemSelectedColor: UIColor = .black
-    var underLineColor: UIColor = .appColor(.keyColor3)
-    
-    var topScrollViewBackgroundColor: UIColor = .white
 }

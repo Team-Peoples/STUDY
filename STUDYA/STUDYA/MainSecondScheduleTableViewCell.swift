@@ -17,7 +17,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         }
     }
     
-    internal var schedule: StudySchedule? {
+    internal var schedule: StudyScheduleComing? {
         didSet {
             guard let schedule = schedule else { isScheduleExist = false; return }
             
@@ -25,7 +25,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             
             place.text = schedule.place
             todayContent.text = schedule.topic
-            configureDateInformation(schedule.startDate)
+            configureDateInformation(schedule.startDateAndTime)
         }
     }
     
@@ -80,7 +80,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     private func configureDateInformation(_ startTime: Date?) {
         guard let startTime = startTime else { return }
-        let dateComponents = startTime.convertToDateComponents([.year, .month, .day, .hour, .minute])
+        let dateComponents = startTime.convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday])
         guard let month = dateComponents.month,
               let day = dateComponents.day,
               let unformattedHour = dateComponents.hour,
@@ -91,8 +91,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         let hour = String(format: "%02d", unformattedHour12)
         let minute = String(format: "%02d", unformattedminute)
         
-        let calendar = Calendar.current
-        let weekday = calendar.weekday(dateComponents.weekday)
+        let weekday = Calendar.current.weekday(dateComponents.weekday)
         
         date.text = "\(month)월 \(day)일 (\(weekday))  |  \(amPm) \(hour):\(minute)"
     }

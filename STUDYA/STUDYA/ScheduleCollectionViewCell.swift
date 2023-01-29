@@ -9,7 +9,7 @@ import UIKit
 
 class ScheduleCollectionViewCell: UICollectionViewCell {
     
-    var studySchedules: [StudySchedule] = []
+    var studySchedules: [StudyScheduleComing] = []
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"

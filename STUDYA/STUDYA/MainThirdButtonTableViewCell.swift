@@ -12,7 +12,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
 
     static let identifier = "MainThirdButtonTableViewCell"
     
-    internal var schedule: StudySchedule? {
+    internal var schedule: StudyScheduleComing? {
         didSet {
             labelsInView.forEach { view in
                 view.isHidden = true
@@ -29,17 +29,15 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
                 return
             }
             
-            let startTime = schedule.startDate
-            
+            let startDateAndTime = schedule.startDateAndTime
             let now = Date()
             let calendar = Calendar.current
             
-            let timeBetweenTimes = startTime.timeIntervalSince(now)
+            let timeBetweenTimes = startDateAndTime.timeIntervalSince(now)
             let oneHourInSeconds: TimeInterval = 3600
             let oneMinuteInSeconds: TimeInterval = 60
-            
-            let startDateComponents = calendar.dateComponents([.year, .month, .day], from: startTime)
-            let todayComponents = calendar.dateComponents([.year, .month, .day], from: now)
+            let startDateComponents =  startDateAndTime.convertToDateComponents([.year, .month, .day])
+            let todayComponents = now.convertToDateComponents([.year, .month, .day])
             
             mainButton.isEnabled = false
             //            🛑위의 스케줄에서 받은 didAttend
@@ -58,7 +56,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
                     mainButton.setTitle("일정이 \(dayDifference)일 남았어요", for: .normal)
                     
                 } else if timeBetweenTimes > oneHourInSeconds * 3 {
-                    guard let hourDifference = calendar.dateComponents([.hour], from: now, to: startTime).hour else { return }
+                    guard let hourDifference = calendar.dateComponents([.hour], from: now, to: startDateAndTime).hour else { return }
                     
                     mainButton.setImage(nil, for: .normal)
                     mainButton.setTitle("일정이 \(hourDifference)시간 남았어요", for: .normal)
