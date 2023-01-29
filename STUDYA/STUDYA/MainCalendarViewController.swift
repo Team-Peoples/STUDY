@@ -9,7 +9,7 @@ import UIKit
 
 @available(iOS 16.0, *)
 
-final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
+final class MainCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
@@ -20,13 +20,14 @@ final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
     
     let calendarView = PeoplesCalendarView()
     let calendarBottomSheetVC = CalendarBottomSheetViewController()
+    
     lazy var selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        studyAllScheduleViewModel.getStudyAllSchedule()
+        studyAllScheduleViewModel.getAllStudyAllSchedule()
         
         calendarView.delegate = self
         calendarView.selectionBehavior = selectionDelegate
@@ -34,7 +35,7 @@ final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
         selectionDelegate.selectedDate?.calendar = Calendar.current
         selectionDelegate.setSelected(Date().convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday]), animated: true)
         
-        studyAllScheduleViewModel.bind { [self] studyAllSchedule in
+        studyAllScheduleViewModel.bind { [self] _ in
             let visibleDateComponents = calendarView.visibleDateComponents
             calendarView.reloadDecorations(forDateComponents: visibleDateComponents.getAlldaysDateComponents(), animated: true)
         }
@@ -49,11 +50,11 @@ final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        studyAllScheduleViewModel.getStudyAllSchedule { [self] in
-            let selectedDay = selectionDelegate.selectedDate
-            let studySchedule = studyAllScheduleViewModel.studySchedule(at: selectedDay)
-            calendarBottomSheetVC.studySchedule = studySchedule
-        }
+        studyAllScheduleViewModel.getAllStudyAllSchedule()
+        
+        let selectedDay = selectionDelegate.selectedDate
+        let studySchedule = studyAllScheduleViewModel.studySchedule(at: selectedDay)
+        calendarBottomSheetVC.studySchedule = studySchedule
     }
     
     override func viewWillLayoutSubviews() {
@@ -66,7 +67,6 @@ final class MainCalendarViewController: UIViewController, ScheduleCoordinator {
         if dataSource != nil { sheetCoordinator.dataSource = dataSource }
         
         calendarBottomSheetVC.sheetCoordinator = sheetCoordinator
-        calendarBottomSheetVC.scheduleCoordinator = self
         
         sheetCoordinator.addSheet(calendarBottomSheetVC, to: self, didContainerCreate: { container in
             let frame = self.view.frame

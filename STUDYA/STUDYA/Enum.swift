@@ -32,6 +32,13 @@ enum Const {
     static let defaultProfile = "defaultProfile"
 }
 
+
+enum SNS: String {
+    case kakao = "kakao"
+    case naver = "naver"
+    case none = "justEmailLogin"
+}
+
 enum StudyExitBottomSheetTask {
     case exit
     case close
@@ -74,12 +81,81 @@ enum AttendanceBottomViewType {
     }
 }
 
+enum StudyCategory: String, CaseIterable {
+    case language = "LANGUAGE"
+    case dev_prod_design = "DEVELOPED"
+    case project = "PROJECT"
+    case getJob = "EMPLOYMENT"
+    case certificate = "CERTIFICATE"
+    case pastime = "HOBBY"
+    case etc = "ETC"
+    
+    var rawValueWithKorean: String {
+        switch self {
+        case .language:
+            return "어학"
+        case .dev_prod_design:
+            return "개발/기획/디자인"
+        case .project:
+            return "프로젝트"
+        case .getJob:
+            return "취업"
+        case .certificate:
+            return "자격시험/자격증"
+        case .pastime:
+            return "자기계발/취미"
+        case .etc:
+            return "그 외"
+        }
+    }
+    
+    var indexPath: IndexPath {
+        switch self {
+            case .language:
+                return IndexPath(item: 0, section: 0)
+            case .dev_prod_design:
+                return IndexPath(item: 1, section: 0)
+            case .project:
+                return IndexPath(item: 2, section: 0)
+            case .getJob:
+                return IndexPath(item: 3, section: 0)
+            case .certificate:
+                return IndexPath(item: 4, section: 0)
+            case .pastime:
+                return IndexPath(item: 5, section: 0)
+            case .etc:
+                return IndexPath(item: 6, section: 0)
+        }
+    }
+}
+
+enum OnOff: String {
+    case on
+    case off
+    case onoff
+    
+    var eng: String {
+        return self.rawValue
+    }
+    
+    var kor: String {
+        switch self {
+            case .on:
+                return "온라인"
+            case .off:
+                return "오프라인"
+            case .onoff:
+                return "온라인/오프라인"
+        }
+    }
+}
+
 enum CalendarKind {
     case study
     case personal
 }
 
 enum PopUpCalendarType {
-    case open
-    case deadline
+    case start
+    case end
 }
