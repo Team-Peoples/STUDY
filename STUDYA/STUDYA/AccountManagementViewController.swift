@@ -15,13 +15,11 @@ import Kingfisher
 
 final class AccountManagementViewController: UIViewController {
     
-    // domb: 중복된 기능의 코드들 삭제.
     private var profileImage: UIImage? { willSet { profileImageView.setImageWith(newValue) } }
     private var nickName: String? { didSet { nickNameField.text = nickName } }
     private var email: String? { didSet { emailLabel.text = email } }
     private var sns: SNS = .none { didSet { snsImageView.image = UIImage(named: sns.rawValue + "Small") } }
     
-    // domb: isAuthForAlbum 은 항상 Nil아니면 false인데 그러면 없어도 되는거 아닌가.
     private var isAuthForAlbum: Bool?
     private var profileImageChangeOkay = false
     private var passwordChangeStarted = false

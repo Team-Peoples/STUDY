@@ -43,7 +43,6 @@ final class WelcomViewController: UIViewController {
         configureButtons()
         configureStackView()
         
-        
         underBar.backgroundColor = UIColor.appColor(.keyColor3)
         
         addSubviews()
@@ -70,51 +69,7 @@ final class WelcomViewController: UIViewController {
             naverLogin?.delegate = self
             naverLogin?.requestThirdPartyLogin()
         }
-    
-//    @objc private func naverLoginButtonTapped() {
-//            let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-//            let cancelAction = UIAlertAction(title: "취소", style: .cancel)
-//            let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
-//                _ in
-//
-//                self.closeAccount()
-//            }
-//
-//            alertController.addAction(closeAccountAction)
-//            alertController.addAction(cancelAction)
-//            present(alertController, animated: true)
-//    }
-    
-    
-//    private func closeAccount() {
-//        guard let userId = KeyChain.read(key: Const.userId) else { return }
-//
-//        Network.shared.closeAccount(userID: userId) { result in
-//            switch result {
-//            case .success(let isNotManager):
-//                switch isNotManager {
-//                case true:
-//                    print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
-//                    KeyChain.delete(key: Const.accessToken)
-//                    KeyChain.delete(key: Const.refreshToken)
-//                    KeyChain.delete(key: Const.userId)
-//                    KeyChain.delete(key: Const.isEmailCertificated)
-//                    UserDefaults.standard.set(false, forKey: Const.isLoggedin)
-//                    DispatchQueue.main.async {
-//                        let vc = ByeViewController()
-//                        vc.modalPresentationStyle = .fullScreen
-//                        self.present(vc, animated: true)
-//                    }
-//
-//                case false:
-//                    print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
-//                }
-//
-//            case .failure(let error):
-//                print(error)
-//            }
-//        }
-//    }
+
         @objc private func emailLoginButtonDidTapped() {
             let signInVC = SignInViewController()
             navigationController?.pushViewController(signInVC, animated: true)
@@ -167,7 +122,6 @@ final class WelcomViewController: UIViewController {
             welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
             
             buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
-    //        buttonsStackView.setHeight(150 + 28)
             
             signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
             signUpView.centerX(inView: view)

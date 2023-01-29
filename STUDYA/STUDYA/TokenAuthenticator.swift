@@ -9,11 +9,10 @@ import Foundation
 import Alamofire
 
 struct TokenAuthenticationCredential: AuthenticationCredential {
+    var requiresRefresh: Bool = false
+    
     let accessToken: String
     let refreshToken: String
-
-    // refresh가 필요하다고 true를 리턴 (false를 리턴하면 refresh 필요x)
-    var requiresRefresh: Bool { return false }
 }
 
 class TokenAuthenticator: Authenticator {
@@ -29,7 +28,6 @@ class TokenAuthenticator: Authenticator {
     func isRequest(_ urlRequest: URLRequest, authenticatedWith credential: Credential) -> Bool {
        
         let bearerAccessToken = HTTPHeader.bearerAccessToken(credential.accessToken).value
-        print(#function, bearerAccessToken, "😲Bearer: sfeseff 형식이면 맞는것")
         let bearerRefreshToken = HTTPHeader.bearerRefreshToken(credential.refreshToken).value
         return urlRequest.headers["AccessToken"] == bearerAccessToken && urlRequest.headers["RefreshToken"] == bearerRefreshToken
     }
