@@ -75,6 +75,11 @@ class MyScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        NotificationCenter.default.addObserver(forName: Notification.Name.userScheduleCellRemoved, object: nil, queue: nil) { noti in
+            guard let userinfo = noti.userInfo as? [String: Int], let numberOfRows = userinfo["selectedDateSchedulesCount"] else { return }
+            self.numberOfRows = numberOfRows
+        }
+        
         backgroundColor = .appColor(.background)
         todoTextView.font = .systemFont(ofSize: 14) //만약 더 큰 크기로 바꾸게 되면 글자수 제한이나 줄 수 등도 바꿔야.
         
@@ -89,6 +94,10 @@ class MyScheduleTableViewCell: UITableViewCell {
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder: NSCoder) {
@@ -134,7 +143,6 @@ extension MyScheduleTableViewCell: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         guard let indexPathOfThisCell = getIndexPath() else { return }
-        
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             
             if indexPathOfThisCell.row == numberOfRows {
