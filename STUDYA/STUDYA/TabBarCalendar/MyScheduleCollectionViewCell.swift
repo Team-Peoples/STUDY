@@ -32,9 +32,11 @@ final class MyScheduleViewModel {
         Network.shared.getAllMySchedules { result in
             switch result {
             case .success(let schedules):
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
                 self.doTableViewReload.value = true
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -45,9 +47,12 @@ final class MyScheduleViewModel {
         Network.shared.createMySchedule(content: content, date: selectedDate) { result in
             switch result {
             case .success(let schedules):
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -58,10 +63,12 @@ final class MyScheduleViewModel {
         Network.shared.toggleMyScheduleStatus(scheduleID: scheduleID) { result in
             switch result {
             case .success(let schedules):
-                print("🔥")
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -72,10 +79,28 @@ final class MyScheduleViewModel {
         Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
             switch result {
             case .success(let schedules):
-                print("🥶")
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func removeMySchedule(scheduleID: Int, completion: @escaping () -> Void) {
+        Network.shared.updateMySchedule(scheduleID: scheduleID, content: "") { result in
+            switch result {
+            case .success(let schedules):
+                
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                
+                completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -250,6 +275,11 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         cell.toggleScheduleStatus = { [weak self] (indexPath, id) in
             viewModel.toggleMyScheduleStatus(scheduleID: id) {
                 self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+            }
+        }
+        cell.removeSchedule = { [weak self] (indexpath, id) in
+            viewModel.removeMySchedule(scheduleID: id) {
+                self?.tableView.deleteRows(at: [indexpath], with: .top)
             }
         }
     }

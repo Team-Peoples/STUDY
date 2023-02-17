@@ -23,7 +23,7 @@ class MyScheduleTableViewCell: UITableViewCell {
     internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
     internal var updateSchedule: (ID, String, IndexPath) -> Void = { (id, content, indexPath) in }
     internal var toggleScheduleStatus: (IndexPath, ID) -> Void = { (indexPath, id) in }
-//    internal var removeSchedule
+    internal var removeSchedule: (IndexPath, ID) -> Void = { (indexPath, id) in }
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
@@ -133,24 +133,25 @@ extension MyScheduleTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        print(#function, 1)
+        guard let indexPathOfThisCell = getIndexPath() else { return }
+        
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            print(#function, 2)
-            textView.text = placeholder
-            textView.textColor = .appColor(.ppsGray1)
-            
-        } else {
-            print(#function, 3)
-            guard let indexPathOfThisCell = getIndexPath() else { return }
             
             if indexPathOfThisCell.row == numberOfRows {
-                print(#function, 4)
+                textView.text = placeholder
+                textView.textColor = .appColor(.ppsGray1)
+                
+            } else {
+                guard let schedule = schedule, let id = schedule.id else { return }
+                removeSchedule(indexPathOfThisCell, id)
+            }
+            
+        } else {
+            if indexPathOfThisCell.row == numberOfRows {
                 createSchedule(indexPathOfThisCell, textView.text)
                 
             } else {
-                print(#function, 5)
                 guard let schedule = schedule, let id = schedule.id else { return }
-                print(#function, 6, textView.text)
                 updateSchedule(id, textView.text, indexPathOfThisCell)
             }
         }
