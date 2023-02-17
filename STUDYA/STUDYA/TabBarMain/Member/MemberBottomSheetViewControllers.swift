@@ -80,7 +80,7 @@ final class MemberBottomSheetViewController: UIViewController {
         b.backgroundColor = UIColor.appColor(.keyColor1)
         b.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
 
-        let c = BrandButton(title: Const.done, isBold: true, isFill: true, fontSize: 20, height: 30)
+        let c = BrandButton(title: Constant.done, isBold: true, isFill: true, fontSize: 20, height: 30)
         c.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
 
         b.addSubview(c)
@@ -132,7 +132,7 @@ final class MemberBottomSheetViewController: UIViewController {
                     self.managerButton.toggle()
                     
                 } else {
-                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 2")
+                    let alert = SimpleAlert(message: Constant.unknownErrorMessage + "code = 2")
                     self.present(alert, animated: true)
                 }
             case .failure(let error):
@@ -155,7 +155,7 @@ final class MemberBottomSheetViewController: UIViewController {
                     self.dismiss(animated: true)
                     
                 } else {
-                    let alert = SimpleAlert(message: Const.unknownErrorMessage + "code = 3")
+                    let alert = SimpleAlert(message: Constant.unknownErrorMessage + "code = 3")
                     self.present(alert, animated: true)
                 }
                 
@@ -251,7 +251,7 @@ final class AskChangingOwnerViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: Const.OK)
+        configureButton(button: confirmButton, title: Constant.OK)
         
         backButton.addTarget(self, action: #selector(ownerViewBackButtonTapped), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(ownerViewConfirmButtonTapped), for: .touchUpInside)
@@ -274,14 +274,14 @@ final class AskChangingOwnerViewController: UIViewController {
         backButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(20)
             make.top.equalTo(descLabel.snp.bottom).offset(69)
-            make.width.equalTo(Const.screenWidth * 8/9)
+            make.width.equalTo(Constant.screenWidth * 8/9)
             make.height.equalTo(40)
         }
         
         confirmButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(backButton)
             make.top.equalTo(backButton.snp.bottom).offset(14)
-            make.width.equalTo(Const.screenWidth * 8/9)
+            make.width.equalTo(Constant.screenWidth * 8/9)
             make.height.equalTo(40)
         }
     }
@@ -322,7 +322,7 @@ final class AskExcommunicationViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         configureButton(button: backButton, title: "돌아가기")
-        configureButton(button: confirmButton, title: Const.OK)
+        configureButton(button: confirmButton, title: Constant.OK)
         
         backButton.addTarget(self, action: #selector(excommuViewBackButtonTapped), for: .touchUpInside)
         confirmButton.addTarget(self, action: #selector(excommuViewConfirmButtonTapped), for: .touchUpInside)
@@ -345,14 +345,14 @@ final class AskExcommunicationViewController: UIViewController {
         backButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(20)
             make.top.equalTo(descLabel.snp.bottom).offset(69)
-            make.width.equalTo(Const.screenWidth * 8/9)
+            make.width.equalTo(Constant.screenWidth * 8/9)
             make.height.equalTo(40)
         }
         
         confirmButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(backButton)
             make.top.equalTo(backButton.snp.bottom).offset(14)
-            make.width.equalTo(Const.screenWidth * 8/9)
+            make.width.equalTo(Constant.screenWidth * 8/9)
             make.height.equalTo(40)
         }
     }
@@ -372,7 +372,7 @@ final class AskExcommunicationViewController: UIViewController {
             case .failure(let error):
                 switch error {
                 case .unauthorizedMember:
-                    let alert = SimpleAlert(buttonTitle: Const.OK, message: "강퇴 권한이 없습니다.") { finished in
+                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "강퇴 권한이 없습니다.") { finished in
                         self.dismiss(animated: true) {
                             self.navigatableDelegate?.pop()
                         }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Const {
+enum Constant {
     static let screenHeight = UIScreen.main.bounds.height
     static let screenWidth = UIScreen.main.bounds.width
     static let userId = "userId"

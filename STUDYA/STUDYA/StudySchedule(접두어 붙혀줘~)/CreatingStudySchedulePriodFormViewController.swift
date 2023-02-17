@@ -92,7 +92,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         let studySchedule = studyScheduleViewModel.studySchedule
 
         guard let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .start, selectedDate: startDate)
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate)
 
         popUpCalendarVC.presentingVC = self
 
@@ -106,7 +106,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
             
             guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = PopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
+            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
             
             popUpCalendarVC.startDate = startDate
             popUpCalendarVC.presentingVC = self
@@ -115,7 +115,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         } else {
             
             guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = PopUpCalendarViewController(type: .end, selectedDate: startDate)
+            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: startDate)
             
             popUpCalendarVC.startDate = startDate
             popUpCalendarVC.presentingVC = self
@@ -158,12 +158,12 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             datePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
         }
         
-        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let startTime = DateFormatter.timeFormatter.string(from: datePicker.date)
             self.studyScheduleViewModel.studySchedule.startTime = startTime
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -200,12 +200,12 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             datePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
         }
 
-        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let endTime = DateFormatter.timeFormatter.string(from: datePicker.date)
             self.studyScheduleViewModel.studySchedule.endTime = endTime
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)

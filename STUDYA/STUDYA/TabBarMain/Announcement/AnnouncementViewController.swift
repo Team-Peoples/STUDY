@@ -8,21 +8,16 @@
 import UIKit
 import SnapKit
 
-// to be fixed:  textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
+// to be fixed: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
 
-enum Task {
-    case creating
-    case editing
-    case viewing
-}
-
-enum Viewer {
-    case manager
-    case user
-}
-
-class AnnouncementViewController: UIViewController {
+final class AnnouncementViewController: UIViewController {
     // MARK: - Properties
+    
+    enum Task {
+        case creating
+        case editing
+        case viewing
+    }
     
     let task: Task
     let studyID: ID
@@ -57,7 +52,7 @@ class AnnouncementViewController: UIViewController {
     }
     
     private let headerView: UIView = {
-        let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Const.screenWidth, height: 48)))
+        let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Constant.screenWidth, height: 48)))
         let titleLabel = CustomLabel(title: "공지사항", tintColor: .ppsBlack, size: 16, isBold: true)
         
         headerView.addSubview(titleLabel)
@@ -249,7 +244,7 @@ class AnnouncementViewController: UIViewController {
         switch task {
         case .creating:
             navigationItem.title = "공지사항 만들기"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
         case .editing:
             navigationItem.title = "공지사항 수정"
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
@@ -259,7 +254,7 @@ class AnnouncementViewController: UIViewController {
         
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }

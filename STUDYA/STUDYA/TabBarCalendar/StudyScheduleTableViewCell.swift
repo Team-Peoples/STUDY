@@ -1,5 +1,5 @@
 //
-//  ScheduleTableViewCell.swift
+//  StudyScheduleTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/10/21.
@@ -7,9 +7,11 @@
 
 import UIKit
 
-class ScheduleTableViewCell: UITableViewCell {
+class StudyScheduleTableViewCell: UITableViewCell {
     
     // MARK: - Properties
+    
+    static let identifier = "StudyScheduleTableViewCell"
     
     enum CalendarKind {
         case study

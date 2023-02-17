@@ -9,6 +9,11 @@ import UIKit
 
 class AttendanceForAMemberView: UIView {
     
+    enum Viewer {
+        case manager
+        case user
+    }
+    
     var viewer: Viewer
     var viewModel: AttendanceViewModel?
     

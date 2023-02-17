@@ -31,7 +31,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     }()
     private lazy var calendarView = PeoplesCalendarView()
     private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
-    private let doneButton = BrandButton(title: Const.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
+    private let doneButton = BrandButton(title: Constant.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
     // MARK: - Life Cycle
     
@@ -112,7 +112,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         popUpContainerView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(450)
-            make.width.equalTo(Const.screenWidth * 0.94)
+            make.width.equalTo(Constant.screenWidth * 0.94)
         }
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(popUpContainerView.snp.leading).inset(28)
@@ -147,11 +147,11 @@ extension AttendancePopUpDayCalendarViewController: UICalendarSelectionSingleDat
             self.selectedDateComponents = nil
             selectionSingleDate.setSelected(nil, animated: true)
             
-            doneButton.fillOut(title: Const.done)
+            doneButton.fillOut(title: Constant.done)
             doneButton.isEnabled = false
         } else {
             self.selectedDateComponents = dateComponents
-            doneButton.fillIn(title: Const.done)
+            doneButton.fillIn(title: Constant.done)
             doneButton.isEnabled = true
         }
     }

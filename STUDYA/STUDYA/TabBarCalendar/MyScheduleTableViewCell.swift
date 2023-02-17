@@ -1,5 +1,5 @@
 //
-//  ToDoItemTableViewCell.swift
+//  MyScheduleTableViewCell.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/10/21.
@@ -8,7 +8,7 @@
 import UIKit
 
 //🛑to be fixed: 이미 풀모달로 올라와있을 때는 올라오지 않게 할 수 있다면 setPosition 과 관련해서 기능추가해보기. 시스템 자원 절약 위해.
-class ToDoItemTableViewCell: UITableViewCell {
+class MyScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "ToDoItemTableViewCell"
     
@@ -39,8 +39,8 @@ class ToDoItemTableViewCell: UITableViewCell {
 //            checkButton.isSelected = isDone ? true : false
 //        }
 //    }
-    internal var textViewDidEndEditingWithNoLetter: (ToDoItemTableViewCell) -> () = { sender in }
-    internal var textViewDidEndEditingWithLetter: (ToDoItemTableViewCell) -> () = { sender in }
+    internal var textViewDidEndEditingWithNoLetter: (MyScheduleTableViewCell) -> () = { sender in }
+    internal var textViewDidEndEditingWithLetter: (MyScheduleTableViewCell) -> () = { sender in }
     private let placeholder = "이곳을 눌러 할 일을 추가해보세요."
     
     lazy var checkButton: UIButton = {
@@ -110,7 +110,7 @@ class ToDoItemTableViewCell: UITableViewCell {
     }
 }
 
-extension ToDoItemTableViewCell: UITextViewDelegate {
+extension MyScheduleTableViewCell: UITextViewDelegate {
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {

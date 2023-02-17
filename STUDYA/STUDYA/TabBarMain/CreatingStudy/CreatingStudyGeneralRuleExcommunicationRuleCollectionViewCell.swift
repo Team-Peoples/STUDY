@@ -1,5 +1,5 @@
 //
-//  CreatingExcommunicationRuleCollectionViewCell.swift
+//  CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/09/02.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-final class CreatingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
+final class CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UICollectionViewCell {
 
     private var validationCheck1 = false
     private var validationCheck2 = false
     
-    static let identifier = "CreatingExcommunicationRuleCollectionViewCell"
+    static let identifier = "CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell"
     private let titleLabel = CustomLabel(title: "강퇴 조건", tintColor: .ppsBlack, size: 16, isBold: true)
     private let descriptionLabel = CustomLabel(title: "* 멤버가 강퇴 조건에 도달하면 관리자에게 알림이 전송돼요.\n* 지각과 결석 조건을 모두 입력하면, 둘 중 하나만 만족해도\n강퇴 조건에 도달해요.", tintColor: .ppsGray1, size: 12)
     internal let lateNumberField = RoundedNumberField(numPlaceholder: nil, centerAlign: false, isPicker: true, isNecessary: true)

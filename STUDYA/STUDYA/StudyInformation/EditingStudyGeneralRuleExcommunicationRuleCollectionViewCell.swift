@@ -1,5 +1,5 @@
 //
-//  EditingExcommunicationRuleCollectionViewCell.swift
+//  EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,13 +7,12 @@
 
 import UIKit
 
-
-final class EditingExcommunicationRuleCollectionViewCell: UICollectionViewCell {
+final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
     
-    static let identifier = "EditingExcommunicationRuleCollectionViewCell"
+    static let identifier = "EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell"
     
     typealias LatenessCount = Int
     typealias AbsenceCount = Int

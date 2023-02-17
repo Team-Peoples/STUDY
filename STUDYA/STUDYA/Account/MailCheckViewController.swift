@@ -10,8 +10,8 @@ import SnapKit
 
 final class MailCheckViewController: UIViewController {
  
-    private var nickName = KeyChain.read(key: Const.tempNickname)
-    private var email = KeyChain.read(key: Const.tempUserId)
+    private var nickName = KeyChain.read(key: Constant.tempNickname)
+    private var email = KeyChain.read(key: Constant.tempUserId)
     
     private lazy var helloLabel = CustomLabel(title: "반가워요\n\(nickName ?? "회원")님!😀", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var announceLabel1 = CustomLabel(title: "\(email ?? "메일")로\n인증 안내를 보내드렸어요.", tintColor: .ppsBlack, size: 18)
@@ -50,18 +50,18 @@ final class MailCheckViewController: UIViewController {
                 
                 if isCertificated {
                     
-                    if let _ = KeyChain.read(key: Const.tempNickname),
-                       let _ = KeyChain.read(key: Const.userId),
-                       let _ = KeyChain.read(key: Const.tempPassword),
-                       let _ = KeyChain.read(key: Const.tempPasswordCheck) {
-                        KeyChain.delete(key: Const.tempNickname)
-                        KeyChain.delete(key: Const.tempUserId)
-                        KeyChain.delete(key: Const.tempPassword)
-                        KeyChain.delete(key: Const.tempPasswordCheck)
+                    if let _ = KeyChain.read(key: Constant.tempNickname),
+                       let _ = KeyChain.read(key: Constant.userId),
+                       let _ = KeyChain.read(key: Constant.tempPassword),
+                       let _ = KeyChain.read(key: Constant.tempPasswordCheck) {
+                        KeyChain.delete(key: Constant.tempNickname)
+                        KeyChain.delete(key: Constant.tempUserId)
+                        KeyChain.delete(key: Constant.tempPassword)
+                        KeyChain.delete(key: Constant.tempPasswordCheck)
                     }
                     
-                    UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-                    KeyChain.create(key: Const.isEmailCertificated, value: "1")
+                    UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
+                    KeyChain.create(key: Constant.isEmailCertificated, value: "1")
                     NotificationCenter.default.post(name: .authStateDidChange, object: nil)
                 } else {
                     DispatchQueue.main.async {
@@ -94,20 +94,20 @@ final class MailCheckViewController: UIViewController {
                         alert = SimpleAlert(message: "인증 메일 발송 실패. 관리자에게 문의하세요.")
                         self.present(alert, animated: true)
                     case .decodingError:
-                        alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+                        alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 1")
                     case .unauthorizedUser:
-                        alert = SimpleAlert(buttonTitle: Const.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
                             AppController.shared.deleteUserInformationAndLogout()
                         })
                     case .tokenExpired:
-                        alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                             AppController.shared.deleteUserInformationAndLogout()
                         })
                     case .unknownError(let errorCode):
                         guard let errorCode = errorCode else { return }
-                        alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+                        alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = \(errorCode)")
                     default:
-                        alert = SimpleAlert(message: Const.unknownErrorMessage)
+                        alert = SimpleAlert(message: Constant.unknownErrorMessage)
                     
                         self.present(alert, animated: true)
                     }

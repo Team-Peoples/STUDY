@@ -70,7 +70,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     }()
     private lazy var calendarView = PeoplesCalendarView()
     private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
-    private let doneButton = BrandButton(title: Const.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
+    private let doneButton = BrandButton(title: Constant.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
     // MARK: - Life Cycle
     
@@ -162,7 +162,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         popUpContainerView.snp.makeConstraints { make in
             make.center.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(530)
-            make.width.equalTo(Const.screenWidth * 0.94)
+            make.width.equalTo(Constant.screenWidth * 0.94)
         }
         upperContainerView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -198,7 +198,7 @@ extension AttendancePopUpPeriodCalendarViewController: UICalendarSelectionSingle
         if isPrecedingDateTurn {
             precedingDateComponents = dateComponents
             enableFollowingButton()
-            doneButton.fillOut(title: Const.OK)
+            doneButton.fillOut(title: Constant.OK)
             doneButton.isEnabled = false
             isPrecedingDateTurn = false
         } else {
@@ -206,11 +206,11 @@ extension AttendancePopUpPeriodCalendarViewController: UICalendarSelectionSingle
                let precedingDate = precedingDateComponents?.convertToDate(),
                date < precedingDate {
                    precedingDateComponents = dateComponents
-                doneButton.fillOut(title: Const.OK)
+                doneButton.fillOut(title: Constant.OK)
                 doneButton.isEnabled = false
             } else {
                 followingDateComponents = dateComponents
-                doneButton.fillIn(title: Const.OK)
+                doneButton.fillIn(title: Constant.OK)
                 doneButton.isEnabled = true
             }
         }

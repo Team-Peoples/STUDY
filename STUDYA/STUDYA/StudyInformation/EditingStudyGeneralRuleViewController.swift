@@ -141,8 +141,8 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
         
         contentView.bounces = false
         
-        contentView.register(EditingStudyGeneralRuleAttendanceCollectionViewCell.self, forCellWithReuseIdentifier: EditingStudyGeneralRuleAttendanceCollectionViewCell.identifier)
-        contentView.register(EditingExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: EditingExcommunicationRuleCollectionViewCell.identifier)
+        contentView.register(EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.self, forCellWithReuseIdentifier: EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.identifier)
+        contentView.register(EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier)
     }
     
     private func addTabButtonAtTopScrollView(){
@@ -239,13 +239,13 @@ extension EditingStudyGeneralRuleViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleAttendanceCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleAttendanceCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleAttendanceRuleCollectionViewCell else { return UICollectionViewCell() }
             
             cell.delegate = self
             
             return cell
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingExcommunicationRuleCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell else { return UICollectionViewCell() }
             
             cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString()
             cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString()

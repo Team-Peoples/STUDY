@@ -7,7 +7,6 @@
 // 스터디 만들기 - 스터디 진행방식
 
 import UIKit
-import SnapKit
 
 final class EditingStudyFreeRuleViewController: UIViewController {
 

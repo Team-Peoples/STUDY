@@ -59,8 +59,8 @@ final class AccountManagementViewController: UIViewController {
     private let containerView = UIView()
     
     private let naviBar = UINavigationBar(frame: .zero)
-    private lazy var leftButton = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancel))
-    private lazy var rightButton = UIBarButtonItem(title: Const.OK, style: .plain, target: self, action: #selector(save))
+    private lazy var leftButton = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
+    private lazy var rightButton = UIBarButtonItem(title: Constant.OK, style: .plain, target: self, action: #selector(save))
     private let profileImageView = ProfileImageView(size: 80)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let nickNameField = CustomTextField(placeholder: "닉네임", fontSize: 16)
@@ -235,7 +235,7 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func leaveApp() {
         let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
             _ in
             
@@ -519,7 +519,7 @@ final class AccountManagementViewController: UIViewController {
     
     private func closeAccount() {
         
-        guard let userId = KeyChain.read(key: Const.userId) else { return }
+        guard let userId = KeyChain.read(key: Constant.userId) else { return }
         
         Network.shared.closeAccount(userID: userId) { result in
             switch result {
@@ -580,7 +580,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
     private func AuthSettingOpen() {
         
         let alert = UIAlertController(title: "", message: "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .default)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .default)
         let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }
@@ -637,7 +637,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
             self.openAlbum()
         }
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         if profileImage != nil {
             let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in

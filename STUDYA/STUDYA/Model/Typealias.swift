@@ -1,8 +1,8 @@
 //
-//  typealias.swift
+//  Typealias.swift
 //  STUDYA
 //
-//  Created by 서동운 on 2022/09/08.
+//  Created by EHDDOMB on 2022/09/08.
 //
 
 import UIKit

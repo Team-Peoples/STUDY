@@ -11,13 +11,25 @@ class StudyScheduleViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    let studyID: ID
-    
     let studyAllScheduleViewModel = StudyAllScheduleViewModel()
-    var studyScheduleAtSelectedDate = [StudyScheduleComing]()
     
-    let calendarView = PeoplesCalendarView()
-    let scheduleTableView = ScheduleTableView()
+    private let studyID: ID
+    private var studyScheduleAtSelectedDate = [StudyScheduleComing]()
+    private let calendarView = PeoplesCalendarView()
+    private let scheduleTableView: UITableView = {
+        
+        let tableView = UITableView()
+        
+        tableView.backgroundColor = .systemBackground
+        tableView.alwaysBounceVertical = true
+        tableView.keyboardDismissMode = .interactive
+        tableView.separatorStyle = .none
+        
+        tableView.register(StudyScheduleTableViewCell.self, forCellReuseIdentifier: StudyScheduleTableViewCell.identifier)
+        
+        return tableView
+    }()
+    
     lazy var selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
     lazy var floatingButtonView: PlusButtonWithLabelContainerView = {
         let buttonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
@@ -27,7 +39,6 @@ class StudyScheduleViewController: SwitchableViewController {
         return buttonView
     }()
       
-
     // MARK: - Life Cycle
     
     init(studyID: ID) {
@@ -95,7 +106,7 @@ class StudyScheduleViewController: SwitchableViewController {
         floatingButtonView.isHidden = !isSwitchOn
         let cells = scheduleTableView.cellsForRows(at: 0)
         let scheduleTableViewCells = cells.compactMap { cell in
-            let cell = cell as? ScheduleTableViewCell
+            let cell = cell as? StudyScheduleTableViewCell
             return cell
         }
         
@@ -172,7 +183,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? ScheduleTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as? StudyScheduleTableViewCell else { return UITableViewCell() }
         
         let schedule = studyScheduleAtSelectedDate[indexPath.row]
         
@@ -186,7 +197,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         return cell
     }
     
-    func presentActionSheet(selected cell: ScheduleTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
+    func presentActionSheet(selected cell: StudyScheduleTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
@@ -201,7 +212,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
             
-            let popupVC = PopUpViewController(type: "삭제")
+            let popupVC = StudySchedulePopUpAlertViewController(type: "삭제")
             popupVC.firstButtonAction = { [self] in
                 studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [self] in
                     studyAllScheduleViewModel.getAllStudyAllSchedule()
@@ -224,7 +235,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
             self.present(popupVC, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
 
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)

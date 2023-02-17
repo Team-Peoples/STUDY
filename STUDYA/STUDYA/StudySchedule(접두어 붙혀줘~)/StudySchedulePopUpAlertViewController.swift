@@ -1,5 +1,5 @@
 //
-//  PopUpViewController.swift
+//  StudySchedulePopUpAlertViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 1/13/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PopUpViewController: UIViewController {
+class StudySchedulePopUpAlertViewController: UIViewController {
     
     // MARK: - Properties
     

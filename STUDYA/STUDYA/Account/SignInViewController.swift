@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 final class SignInViewController: UIViewController {
     // MARK: - Properties
@@ -17,7 +16,7 @@ final class SignInViewController: UIViewController {
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
     private let findPasswordButton = UIButton(type: .custom)
-    private let completeButton = BrandButton(title: Const.done)
+    private let completeButton = BrandButton(title: Constant.done)
     
     // MARK: - Life Cycle
     
@@ -26,7 +25,7 @@ final class SignInViewController: UIViewController {
         
         signInViewModel.bind { [self] credential in
             completeButton.isEnabled = credential.formIsValid
-            completeButton.isEnabled ? completeButton.fillIn(title: Const.done) : completeButton.fillOut(title: Const.done)
+            completeButton.isEnabled ? completeButton.fillIn(title: Constant.done) : completeButton.fillOut(title: Constant.done)
         }
         
         configureViews()
@@ -141,8 +140,8 @@ final class SignInViewController: UIViewController {
             guard let userID = user.id else { fatalError("사용자 아이디 없음") }
             guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음")}
             
-            KeyChain.create(key: Const.tempUserId, value: userID)
-            KeyChain.create(key: Const.tempNickname, value: nickname)
+            KeyChain.create(key: Constant.tempUserId, value: userID)
+            KeyChain.create(key: Constant.tempNickname, value: nickname)
             print("키체인에 저장")
             
             if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
@@ -155,23 +154,23 @@ final class SignInViewController: UIViewController {
             
             switch error {
             case .serverError:
-                alert = SimpleAlert(message: Const.serverErrorMessage)
+                alert = SimpleAlert(message: Constant.serverErrorMessage)
             case .decodingError:
-                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+                alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 1")
             case .unauthorizedUser:
-                alert = SimpleAlert(buttonTitle: Const.OK, message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
+                alert = SimpleAlert(buttonTitle: Constant.OK, message: "이메일 또는 비밀번호를 확인해주세요 😮", completion: { finished in
                     AppController.shared.deleteUserInformation()
                 })
             case .tokenExpired:
-                alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+                alert = SimpleAlert(buttonTitle: Constant.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                     AppController.shared.deleteUserInformation()
                 })
             case .unknownError(let errorCode):
                 guard let errorCode = errorCode else { return }
-                alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+                alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = \(errorCode)")
             default:
                 print(#function)
-                alert = SimpleAlert(message: Const.unknownErrorMessage)
+                alert = SimpleAlert(message: Constant.unknownErrorMessage)
             }
             
             self.present(alert, animated: true)

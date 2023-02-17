@@ -149,13 +149,13 @@ class GeneralRuleViewModel {
         generalRule = GeneralStudyRule()
     }
     
-    func configure(_ cell: CreatingAttendanceRuleCollectionViewCell) {
+    func configure(_ cell: CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell) {
         cell.lateness = lateness
         cell.absence = absence
         cell.deposit = deposit
     }
     
-    func configure(cell: CreatingExcommunicationRuleCollectionViewCell) {
+    func configure(cell: CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell) {
         cell.lateNumberField.text = excommunication.lateness == nil ? "--" : String(excommunication.lateness!)
         cell.absenceNumberField.text = excommunication.absence == nil ? "--" : String(excommunication.absence!)
     }

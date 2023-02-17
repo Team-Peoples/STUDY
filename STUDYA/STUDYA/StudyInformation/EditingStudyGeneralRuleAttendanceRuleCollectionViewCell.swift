@@ -1,5 +1,5 @@
 //
-//  EditingStudyGeneralRuleAttendanceCollectionViewCell.swift
+//  EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/27/22.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionViewCell {
+final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
 
-    static let identifier = "EditingStudyGeneralRuleAttendanceCollectionViewCell"
+    static let identifier = "EditingStudyGeneralRuleAttendanceRuleCollectionViewCell"
 
     weak var delegate: EditingStudyGeneralRuleViewController?
 
@@ -23,8 +23,8 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
         tableView.separatorStyle = .none
         tableView.alwaysBounceVertical = false
 
-        tableView.register(StudyGeneralRuleAttendanceTimeTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceTimeTableViewCell.identifier)
-        tableView.register(StudyGeneralRuleAttendanceFineTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier)
+        tableView.register(StudyGeneralRuleAttendanceTimeRuleTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceTimeRuleTableViewCell.identifier)
+        tableView.register(StudyGeneralRuleAttendanceFineRuleTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleAttendanceFineRuleTableViewCell.identifier)
         tableView.register(StudyGeneralRuleDepositTableViewCell.self, forCellReuseIdentifier: StudyGeneralRuleDepositTableViewCell.identifier)
 
         return tableView
@@ -32,7 +32,7 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
 
     lazy var latenessRuleTimeIsNil: Bool = false {
         didSet {
-            let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? StudyGeneralRuleAttendanceFineTableViewCell
+            let cell = generalRuleAttendanceTableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? StudyGeneralRuleAttendanceFineRuleTableViewCell
 
             cell?.perLateMinuteFieldDimmingView.isHidden = !latenessRuleTimeIsNil
             cell?.latenessFineFieldDimmingView.isHidden = !latenessRuleTimeIsNil
@@ -150,7 +150,7 @@ final class EditingStudyGeneralRuleAttendanceCollectionViewCell: UICollectionVie
     }
 }
 
-extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSource, UITableViewDelegate {
+extension EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 3
@@ -160,7 +160,7 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         return 1
     }
 
-    fileprivate func resetData(in cell: StudyGeneralRuleAttendanceFineTableViewCell?) {
+    fileprivate func resetData(in cell: StudyGeneralRuleAttendanceFineRuleTableViewCell?) {
         cell?.perLateMinuteField.text = "--"
         cell?.latenessFineField.text = "0"
         cell?.absenceFineField.text = "0"
@@ -179,7 +179,7 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
         
         switch indexPath.section {
         case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceTimeTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceTimeTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceTimeRuleTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceTimeRuleTableViewCell else { return UITableViewCell() }
         
             cell.latenessRuleTimeField.text = lateness?.time?.toString() ?? "--"
             cell.absenceRuleTimeField.text = absence?.time?.toString() ?? "--"
@@ -193,7 +193,7 @@ extension EditingStudyGeneralRuleAttendanceCollectionViewCell: UITableViewDataSo
             
             return cell
         case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceFineTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceFineTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleAttendanceFineRuleTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleAttendanceFineRuleTableViewCell else { return UITableViewCell() }
             
             cell.perLateMinuteField.text = lateness?.count?.toString() ?? "--"
             cell.latenessFineField.text = NumberFormatter.decimalNumberFormatter.string(from: lateness?.fine ?? 0)

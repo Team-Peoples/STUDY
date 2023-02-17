@@ -1,14 +1,13 @@
 //
-//  ToDoCollectionViewCell.swift
+//  MyScheduleCollectionViewCell.swift
 //  STUDYA
 //
-//  Created by 서동운 on 2022/10/19.
+//  Created by 신동훈 on 2022/10/19.
 //
 
 import UIKit
-import SnapKit
 
-final class ToDoViewModel {
+final class MyScheduleViewModel {
     
     var doTableViewReload = Observable(false)
     var allMySchedules = [Schedule]()
@@ -87,7 +86,7 @@ final class ToDoViewModel {
 class ToDoCollectionViewCell: UICollectionViewCell {
 //    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
     
-    internal var viewModel: ToDoViewModel? {
+    internal var viewModel: MyScheduleViewModel? {
         didSet {
             setBinding()
             viewModel?.selectedDate = DateFormatter.dashedDateFormatter.string(from: Date())
@@ -100,7 +99,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
        
         let t = UITableView()
         
-        t.register(ToDoItemTableViewCell.self, forCellReuseIdentifier: ToDoItemTableViewCell.identifier)
+        t.register(MyScheduleTableViewCell.self, forCellReuseIdentifier: MyScheduleTableViewCell.identifier)
         t.allowsSelection = false
         t.separatorStyle = .none
         t.backgroundColor = .appColor(.background)
@@ -191,8 +190,8 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ToDoItemTableViewCell.identifier) as? ToDoItemTableViewCell,
-              let viewModel = viewModel else { return ToDoItemTableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: MyScheduleTableViewCell.identifier) as? MyScheduleTableViewCell,
+              let viewModel = viewModel else { return MyScheduleTableViewCell() }
         let latestOldCellRow = viewModel.selectedDateSchedules.count - 1
 
         configureCommon(cell, with: viewModel)
@@ -231,7 +230,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
 //                }
     }
     
-    private func configureCommon(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
+    private func configureCommon(_ cell: MyScheduleTableViewCell, with viewModel: MyScheduleViewModel) {
         
         cell.heightCoordinator = heightCoordinator
         cell.cellDelegate = self
@@ -255,12 +254,12 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         }
     }
     
-    private func insertSchdueleDataToOld(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel, at indexPath: IndexPath) {
+    private func insertSchdueleDataToOld(_ cell: MyScheduleTableViewCell, with viewModel: MyScheduleViewModel, at indexPath: IndexPath) {
         cell.numberOfRows = viewModel.selectedDateSchedules.count
         cell.schedule = viewModel.selectedDateSchedules[indexPath.row]
     }
     
-    private func insertScheduleDataToNew(_ cell: ToDoItemTableViewCell, with viewModel: ToDoViewModel) {
+    private func insertScheduleDataToNew(_ cell: MyScheduleTableViewCell, with viewModel: MyScheduleViewModel) {
         cell.numberOfRows = viewModel.selectedDateSchedules.count
         cell.schedule = nil
     }
@@ -276,7 +275,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
 
 extension ToDoCollectionViewCell: GrowingCellProtocol {
 
-    func updateHeightOfRow(_ cell: ToDoItemTableViewCell, _ textView: UITextView) {
+    func updateHeightOfRow(_ cell: MyScheduleTableViewCell, _ textView: UITextView) {
         let size = textView.bounds.size
         let newSize = tableView.sizeThatFits(CGSize(width: size.width,
                                                         height: CGFloat.greatestFiniteMagnitude))

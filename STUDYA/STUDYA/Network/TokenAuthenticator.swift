@@ -2,7 +2,7 @@
 //  TokenAuthenticator.swift
 //  STUDYA
 //
-//  Created by EHDOMB on 12/25/22.
+//  Created by 서동운 on 12/25/22.
 //
 
 import Foundation
@@ -41,8 +41,8 @@ class TokenAuthenticator: Authenticator {
         Network.shared.refreshToken { result in
             switch result {
             case .success:
-                let accessToken = KeyChain.read(key: Const.accessToken) ?? ""
-                let refreshToken = KeyChain.read(key: Const.refreshToken) ?? ""
+                let accessToken = KeyChain.read(key: Constant.accessToken) ?? ""
+                let refreshToken = KeyChain.read(key: Constant.refreshToken) ?? ""
                 print("리프레시 성공 후 api 재요청 시작","🔥")
                 completion(.success(TokenAuthenticationCredential(accessToken: accessToken, refreshToken: refreshToken)))
             case .failure(let failure):
@@ -56,7 +56,7 @@ extension AuthenticationInterceptor<TokenAuthenticator> {
     
     convenience init() {
         let authenticator = TokenAuthenticator()
-        let credential = TokenAuthenticationCredential(accessToken: KeyChain.read(key: Const.accessToken) ?? "", refreshToken: KeyChain.read(key: Const.refreshToken) ?? "")
+        let credential = TokenAuthenticationCredential(accessToken: KeyChain.read(key: Constant.accessToken) ?? "", refreshToken: KeyChain.read(key: Constant.refreshToken) ?? "")
         
         self.init(authenticator: authenticator, credential: credential)
     }

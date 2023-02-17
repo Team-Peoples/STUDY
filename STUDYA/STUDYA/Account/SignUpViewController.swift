@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Alamofire
 
 class SignUpViewController: UIViewController {
     
@@ -43,7 +42,7 @@ class SignUpViewController: UIViewController {
         
         return stackView
     }()
-    private let doneButton = BrandButton(title: Const.done, isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: Constant.done, isBold: true, isFill: false)
     
     private var bottomConstraint: NSLayoutConstraint!
     
@@ -148,9 +147,9 @@ class SignUpViewController: UIViewController {
     }
     
     private func saveUserInformation(email: String, password: String, passwordCheck: String) {
-        KeyChain.create(key: Const.tempUserId, value: email)
-        KeyChain.create(key: Const.tempPassword, value: password)
-        KeyChain.create(key: Const.tempPasswordCheck, value: passwordCheck)
+        KeyChain.create(key: Constant.tempUserId, value: email)
+        KeyChain.create(key: Constant.tempPassword, value: password)
+        KeyChain.create(key: Constant.tempPasswordCheck, value: passwordCheck)
     }
     
     private func checkDoneButtonPossible() {
@@ -159,11 +158,11 @@ class SignUpViewController: UIViewController {
             passwordCheckOkay {
             
             doneButton.isEnabled = true
-            doneButton.fillIn(title: Const.done)
+            doneButton.fillIn(title: Constant.done)
         } else {
             if doneButton.isEnabled {
                 doneButton.isEnabled = false
-                doneButton.fillOut(title: Const.done)
+                doneButton.fillOut(title: Constant.done)
             }
         }
     }

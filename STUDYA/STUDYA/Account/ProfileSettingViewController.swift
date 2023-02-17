@@ -23,7 +23,7 @@ class ProfileSettingViewController: UIViewController {
     private let descriptionLabel = CustomLabel(title: "등록하지 않으면 기본 이미지로 시작돼요", tintColor: .ppsGray1, size: 12, isBold: false)
     private let profileImageSelectorView = ProfileImageView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
-    private let doneButton = BrandButton(title: Const.done, isBold: true, isFill: false)
+    private let doneButton = BrandButton(title: Constant.done, isBold: true, isFill: false)
     
     
     override func viewDidLoad() {
@@ -80,11 +80,11 @@ class ProfileSettingViewController: UIViewController {
             if nickName.count > 0 {
                 
                 doneButton.isEnabled = true
-                doneButton.fillIn(title: Const.done)
+                doneButton.fillIn(title: Constant.done)
             } else {
                 
                 doneButton.isEnabled = false
-                doneButton.fillOut(title: Const.done)
+                doneButton.fillOut(title: Constant.done)
             }
         }
     }
@@ -92,7 +92,7 @@ class ProfileSettingViewController: UIViewController {
     @objc private func doneButtonDidTapped() {
         view.endEditing(true)
         
-        if let isSNSFirstLogin = KeyChain.read(key: Const.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
+        if let isSNSFirstLogin = KeyChain.read(key: Constant.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
             setProfileWhenSNSSignUp()
         } else {
             signUp()
@@ -100,11 +100,11 @@ class ProfileSettingViewController: UIViewController {
     }
     
     private func signUp() {
-        guard let email = KeyChain.read(key: Const.tempUserId),
-              let password = KeyChain.read(key: Const.tempPassword),
-              let passwordCheck = KeyChain.read(key: Const.tempPasswordCheck) else {
+        guard let email = KeyChain.read(key: Constant.tempUserId),
+              let password = KeyChain.read(key: Constant.tempPassword),
+              let passwordCheck = KeyChain.read(key: Constant.tempPasswordCheck) else {
             
-            let alert = SimpleAlert(message: Const.unknownErrorMessage)
+            let alert = SimpleAlert(message: Constant.unknownErrorMessage)
             present(alert, animated: true)
             return
         }
@@ -116,7 +116,7 @@ class ProfileSettingViewController: UIViewController {
                 DispatchQueue.main.async {
                     if let nickName = user.nickName {
                         
-                        KeyChain.create(key: Const.tempNickname, value: nickName)
+                        KeyChain.create(key: Constant.tempNickname, value: nickName)
                         
                         let vc = MailCheckViewController()
                         vc.modalPresentationStyle = .fullScreen
@@ -124,7 +124,7 @@ class ProfileSettingViewController: UIViewController {
                         self.present(vc, animated: true)
                     } else {
                         
-                        let alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 2")
+                        let alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 2")
                         
                         self.present(alert, animated: true)
                     }
@@ -136,11 +136,11 @@ class ProfileSettingViewController: UIViewController {
                 DispatchQueue.main.async {
                     switch error {
                     case .duplicatedEmail:
-                        alert = SimpleAlert(buttonTitle: Const.OK, message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
+                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
                     case .wrongPassword:
-                        alert = SimpleAlert(buttonTitle: Const.OK, message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
+                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
                             self.navigationController?.popViewController(animated: true)
                         })
                     default:
@@ -157,8 +157,8 @@ class ProfileSettingViewController: UIViewController {
         Network.shared.updateUserInfo(oldPassword: "", password: "", passwordCheck: "", nickname: nickName, image: profileImage) { result in
             switch result {
             case .success:
-                KeyChain.delete(key: Const.tempIsFirstSNSLogin)
-                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
+                KeyChain.delete(key: Constant.tempIsFirstSNSLogin)
+                UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)
             case .failure(let error):
 
@@ -194,7 +194,7 @@ class ProfileSettingViewController: UIViewController {
 
         let message = "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다"
         let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .default)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .default)
         let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }

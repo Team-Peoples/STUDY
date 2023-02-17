@@ -7,7 +7,6 @@
 // 스터디 만들기 - 스터디 진행방식
 
 import UIKit
-import SnapKit
 
 final class CreatingStudyFreeRuleViewController: UIViewController {
 
@@ -19,7 +18,7 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
     @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
     
-    private let completeButton = BrandButton(title: Const.done, isBold: true, isFill: true, fontSize: 18, height: 50)
+    private let completeButton = BrandButton(title: Constant.done, isBold: true, isFill: true, fontSize: 18, height: 50)
     
     // MARK: - Life Cycle
   

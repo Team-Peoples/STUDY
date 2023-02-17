@@ -6,15 +6,14 @@
 //
 
 import UIKit
-import SnapKit
 
-enum StudyExitBottomSheetTask {
-    case exit
-    case close
-    case resignMaster
-}
-
-class StudyExitViewController: UIViewController {
+final class StudyExitSheetViewController: UIViewController {
+    
+    enum StudyExitBottomSheetTask {
+        case exit
+        case close
+        case resignMaster
+    }
     
     var studyName: String?
     var studyID: ID?
@@ -24,7 +23,7 @@ class StudyExitViewController: UIViewController {
     
     private var titleLabel: CustomLabel?
     private var subtitleLabel: CustomLabel?
-    private let okButton = BrandButton(title: Const.OK, isFill: true)
+    private let okButton = BrandButton(title: Constant.OK, isFill: true)
     private lazy var backButton = BrandButton(title: "돌아가기", isFill: true)
     private lazy var goToResignAdminButton: UIButton = {
         let btn = UIButton()
@@ -109,13 +108,13 @@ class StudyExitViewController: UIViewController {
     
     
     @objc func buttonDidTapped(_ sender: BrandButton) {
-        if sender.titleLabel?.text == Const.OK {
+        if sender.titleLabel?.text == Constant.OK {
             switch task {
                 case .exit:
                     
                     self.dismiss(animated: true) { [self] in
                         
-                        let vcToPresent = StudyExitViewController(task: .resignMaster)
+                        let vcToPresent = StudyExitSheetViewController(task: .resignMaster)
 
                         vcToPresent.presentingVC = presentingVC
                         

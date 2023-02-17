@@ -16,7 +16,7 @@ enum AttendanceBottomViewType {
     var view: FullDoneButtonButtomView {
         switch self {
             case .daySearchSetting: return AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
-            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: Const.done)
+            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: Constant.done)
             case .membersPeriodSearchSetting: return AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
             case .individualPeriodSearchSetting: return AttendanceBottomIndividualPeriodSearchSettingView(doneButtonTitle: "조회")
         }

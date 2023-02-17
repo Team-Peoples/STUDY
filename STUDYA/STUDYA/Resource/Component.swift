@@ -50,7 +50,7 @@ final class BrandButton: UIButton {
     required init?(coder: NSCoder) {
         super.init(frame: .zero)
         
-        configure(title: Const.done, isBold: true, isFill: true, fontSize: 18, height: 50)
+        configure(title: Constant.done, isBold: true, isFill: true, fontSize: 18, height: 50)
         configureBorder(color: .keyColor1, width: 1, radius: 50 / 2)
     }
     
@@ -531,7 +531,7 @@ class SimpleAlert: UIAlertController {
     convenience init(message: String?) {
         self.init(title: nil, message: message, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: Const.OK, style: .default, handler: nil)
+        let okAction = UIAlertAction(title: Constant.OK, style: .default, handler: nil)
         
         self.addAction(okAction)
     }
@@ -652,12 +652,12 @@ class ProfileImageView: UIView {
 //            🛑수정필요
             // domb: 이렇게 하면 profileImageView의 internalImageView의 image는 바뀌지만, internalImage나 AccountManagementVC의 profileImage는 nil이 되어 외부에서 문제가 생겨요.(예를 들어 image가 nil가 nil이라 picker에서 기본이미지로 변경 액션을 사용할 수 없음)  이래서 제가 kingFisher를 지우고 internalImage: UIImage 를 사용하는 것으로 했던거에요. 그대로 사용하신다면 로직의 수정이 필요합니다.
         } else {
-            internalImageView.image = UIImage(named: Const.defaultProfile)
+            internalImageView.image = UIImage(named: Constant.defaultProfile)
         }
     }
     
     internal func setImageWith(_ image: UIImage? = nil) {
-        internalImageView.image = image == nil ? UIImage(named: Const.defaultProfile) : image
+        internalImageView.image = image == nil ? UIImage(named: Constant.defaultProfile) : image
     }
 }
 
@@ -1009,9 +1009,9 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         // 만들어줄 버튼
         // flexibleSpace는 취소~완료 간의 거리를 만들어준다.
-        let doneBT = UIBarButtonItem(title: Const.done, style: .plain, target: self, action: #selector(self.donePicker))
+        let doneBT = UIBarButtonItem(title: Constant.done, style: .plain, target: self, action: #selector(self.donePicker))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let cancelBT = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(self.cancelPicker))
+        let cancelBT = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(self.cancelPicker))
         
         // 만든 아이템들을 세팅해주고
         toolBar.setItems([cancelBT,flexibleSpace,doneBT], animated: false)
@@ -1256,7 +1256,7 @@ class FullDoneButtonButtomView: UIView {
     internal var navigatable: Navigatable?
     
     private lazy var doneButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    private lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Const.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    private lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Constant.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
     internal var isDoneButtonSelected: Bool {
         doneButton.isSelected
     }

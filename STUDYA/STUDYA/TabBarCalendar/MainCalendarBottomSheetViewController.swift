@@ -1,5 +1,5 @@
 //
-//  CalendarBottomSheetViewController.swift
+//  MainCalendarBottomSheetViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/10/13.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatable {
+class MainCalendarBottomSheetViewController: UIViewController, Draggable, Navigatable {
     // MARK: - Properties
     
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
@@ -17,7 +17,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
     var studySchedule: [StudyScheduleComing] = [] {
         didSet {
             
-            let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+            let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? StudyScheduleCollectionViewCell
             
             cell?.studySchedules = studySchedule
             cell?.reloadTableView()
@@ -79,7 +79,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
                 }
             collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
             
-                let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? ScheduleCollectionViewCell
+                let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? StudyScheduleCollectionViewCell
             
                 cell?.studySchedules = studySchedule
                 cell?.reloadTableView()
@@ -161,7 +161,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
         collectionView.bounces = false
         
         collectionView.register(ToDoCollectionViewCell.self, forCellWithReuseIdentifier: "ToDoCollectionViewCell")
-        collectionView.register(ScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
+        collectionView.register(StudyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(topScrollView.snp.bottom)
@@ -221,7 +221,7 @@ class CalendarBottomSheetViewController: UIViewController, Draggable, Navigatabl
     // MARK: - Setting Constraints
 }
 
-extension CalendarBottomSheetViewController: UICollectionViewDataSource {
+extension MainCalendarBottomSheetViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         2
     }
@@ -233,13 +233,13 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
             
             cell.heightCoordinator = sheetCoordinator
             cell.navigatable = self
-            cell.viewModel = ToDoViewModel()
+            cell.viewModel = MyScheduleViewModel()
             cell.viewModel?.getAllMySchedules()
             
             return cell
             
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as? ScheduleCollectionViewCell else { return ScheduleCollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as? StudyScheduleCollectionViewCell else { return StudyScheduleCollectionViewCell() }
             
             cell.studySchedules = studySchedule
             cell.reloadTableView()
@@ -252,7 +252,7 @@ extension CalendarBottomSheetViewController: UICollectionViewDataSource {
     }
 }
 
-extension CalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout {
+extension MainCalendarBottomSheetViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return collectionView.frame.size

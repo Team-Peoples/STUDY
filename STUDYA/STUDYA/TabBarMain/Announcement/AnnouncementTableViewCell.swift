@@ -1,5 +1,5 @@
 //
-//  AnnouncementBoardTableViewCell.swift
+//  AnnouncementTableViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AnnouncementBoardTableViewCell: UITableViewCell {
+final class AnnouncementTableViewCell: UITableViewCell {
     // MARK: - Properties
     
     var announcement: Announcement? {

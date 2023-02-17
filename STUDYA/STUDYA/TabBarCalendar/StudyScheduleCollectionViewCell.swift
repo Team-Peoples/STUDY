@@ -1,5 +1,5 @@
 //
-//  MyScheduleCollectionViewCell.swift
+//  StudyScheduleCollectionViewCell.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/10/19.
@@ -7,16 +7,29 @@
 
 import UIKit
 
-class ScheduleCollectionViewCell: UICollectionViewCell {
+class StudyScheduleCollectionViewCell: UICollectionViewCell {
     
     var studySchedules: [StudyScheduleComing] = []
+    
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"
         return lbl
     }()
     
-    private let scheduleTableView = ScheduleTableView()
+    private let scheduleTableView: UITableView = {
+        
+        let tableView = UITableView()
+        
+        tableView.backgroundColor = .systemBackground
+        tableView.alwaysBounceVertical = true
+        tableView.keyboardDismissMode = .interactive
+        tableView.separatorStyle = .none
+        
+        tableView.register(StudyScheduleTableViewCell.self, forCellReuseIdentifier: StudyScheduleTableViewCell.identifier)
+        
+        return tableView
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,13 +68,13 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension ScheduleCollectionViewCell: UITableViewDataSource {
+extension StudyScheduleCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         studySchedules.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! ScheduleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! StudyScheduleTableViewCell
         
         let schedule = studySchedules[indexPath.row]
         
@@ -71,7 +84,7 @@ extension ScheduleCollectionViewCell: UITableViewDataSource {
     }
 }
 
-extension ScheduleCollectionViewCell: UITableViewDelegate {
+extension StudyScheduleCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }

@@ -19,7 +19,7 @@ final class MainCalendarViewController: UIViewController {
     var dataSource: UBottomSheetCoordinatorDataSource?
     
     let calendarView = PeoplesCalendarView()
-    let calendarBottomSheetVC = CalendarBottomSheetViewController()
+    let calendarBottomSheetVC = MainCalendarBottomSheetViewController()
     
     lazy var selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
     

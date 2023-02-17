@@ -58,8 +58,8 @@ final class EditingStudyFormViewController: UIViewController {
     /// 스터디 한줄 소개
     private let studyIntroductionLabel = CustomLabel(title: "한 줄 소개", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     let studyIntroductionTextView = CharactersNumberLimitedTextView(placeholder: "시작 계기, 목적, 목표 등을 적어주세요.", maxCharactersNumber: 50, radius: 24, position: .bottom, fontSize: 12, topInset: 19, leadingInset: 30)
-    private lazy var doneButton = UIBarButtonItem(title: Const.OK, style: .plain, target: self, action: #selector(barButtonDidTapped))
-    private lazy var cancelButton = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(barButtonDidTapped))
+    private lazy var doneButton = UIBarButtonItem(title: Constant.OK, style: .plain, target: self, action: #selector(barButtonDidTapped))
+    private lazy var cancelButton = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(barButtonDidTapped))
     
     // MARK: - Life Cycle
     

@@ -68,7 +68,7 @@ final class EditingStudySchduleViewController: UIViewController {
     }()
     private let repeatEndDateSelectableView = DateSelectableRoundedView(title: "이날까지", isNecessary: false)
     
-    private lazy var doneButton = UIBarButtonItem(title: Const.OK, style: .done, target: self, action: #selector(doneButtonDidTapped))
+    private lazy var doneButton = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(doneButtonDidTapped))
     
     // MARK: - Life Cycle
     
@@ -135,7 +135,7 @@ final class EditingStudySchduleViewController: UIViewController {
         let studySchedule = editingStudyScheduleViewModel.studySchedule
         
         guard let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-        let popUpCalendarVC = PopUpCalendarViewController(type: .start, selectedDate: startDate)
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate)
         
         popUpCalendarVC.presentingVC = self
 
@@ -149,7 +149,7 @@ final class EditingStudySchduleViewController: UIViewController {
         if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
             
             guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = PopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
+            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
             
             popUpCalendarVC.startDate = startDate
             popUpCalendarVC.presentingVC = self
@@ -158,7 +158,7 @@ final class EditingStudySchduleViewController: UIViewController {
         } else {
             
             guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = PopUpCalendarViewController(type: .end, selectedDate: startDate)
+            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: startDate)
             
             popUpCalendarVC.startDate = startDate
             popUpCalendarVC.presentingVC = self
@@ -200,12 +200,12 @@ final class EditingStudySchduleViewController: UIViewController {
             datePicker.maximumDate = DateFormatter.timeFormatter.date(from: endTime)
         }
         
-        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let startTime = DateFormatter.timeFormatter.string(from: datePicker.date)
             self.editingStudyScheduleViewModel.studySchedule.startTime = startTime
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -240,12 +240,12 @@ final class EditingStudySchduleViewController: UIViewController {
             datePicker.minimumDate = DateFormatter.timeFormatter.date(from: startTime)
         }
 
-        let okAction = UIAlertAction(title: Const.OK, style: .default) { _ in
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let endTime = DateFormatter.timeFormatter.string(from: datePicker.date)
             self.editingStudyScheduleViewModel.studySchedule.endTime = endTime
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
         alert.view.addSubview(datePicker)
@@ -399,7 +399,7 @@ final class EditingStudySchduleViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Const.cancel, style: .plain, target: self, action: #selector(cancelButtonDidTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancelButtonDidTapped))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
     }
     

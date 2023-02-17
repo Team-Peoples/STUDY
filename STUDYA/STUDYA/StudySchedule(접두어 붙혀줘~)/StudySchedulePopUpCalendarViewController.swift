@@ -1,5 +1,5 @@
 //
-//  PopUpCalendarViewController.swift
+//  StudySchedulePopUpCalendarViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/1/22.
@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class PopUpCalendarViewController: UIViewController {
+class StudySchedulePopUpCalendarViewController: UIViewController {
     
     // MARK: - Properties
 
@@ -111,7 +111,7 @@ class PopUpCalendarViewController: UIViewController {
     }
 }
 
-extension PopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
+extension StudySchedulePopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
     
     func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
         

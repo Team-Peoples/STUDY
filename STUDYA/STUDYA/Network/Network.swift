@@ -392,11 +392,11 @@ struct Network {
                     return
                 }
                 
-                if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
-                   let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String {
+                if let accesToken = httpResponse.allHeaderFields[Constant.accessToken] as? String,
+                   let refreshToken = httpResponse.allHeaderFields[Constant.refreshToken] as? String {
                     
-                    KeyChain.create(key: Const.accessToken, value: accesToken)
-                    KeyChain.create(key: Const.refreshToken, value: refreshToken)
+                    KeyChain.create(key: Constant.accessToken, value: accesToken)
+                    KeyChain.create(key: Constant.refreshToken, value: refreshToken)
                     print("리프레시 토큰 저장 성공")
                     completion(.success(isSuccessed))
                 } else {
@@ -1177,21 +1177,21 @@ extension Network {
     }
 
     func saveLoginformation(httpResponse: HTTPURLResponse, user: User, completion: (Result<User, PeoplesError>) -> Void) {
-        if let accesToken = httpResponse.allHeaderFields[Const.accessToken] as? String,
-           let refreshToken = httpResponse.allHeaderFields[Const.refreshToken] as? String,
+        if let accesToken = httpResponse.allHeaderFields[Constant.accessToken] as? String,
+           let refreshToken = httpResponse.allHeaderFields[Constant.refreshToken] as? String,
            let userID = user.id,
            let isEmailCertificated = user.isEmailCertificated {
             
-            KeyChain.create(key: Const.accessToken, value: accesToken)
-            KeyChain.create(key: Const.refreshToken, value: refreshToken)
-            KeyChain.create(key: Const.userId, value: userID)
+            KeyChain.create(key: Constant.accessToken, value: accesToken)
+            KeyChain.create(key: Constant.refreshToken, value: refreshToken)
+            KeyChain.create(key: Constant.userId, value: userID)
             
             if isEmailCertificated {
                 
-                UserDefaults.standard.set(true, forKey: Const.isLoggedin)
-                KeyChain.create(key: Const.isEmailCertificated, value: "1")
+                UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
+                KeyChain.create(key: Constant.isEmailCertificated, value: "1")
             } else {
-                KeyChain.create(key: Const.isEmailCertificated, value: "0")
+                KeyChain.create(key: Constant.isEmailCertificated, value: "0")
             }
             
             completion(.success(user))
@@ -1243,29 +1243,29 @@ extension UIAlertController {
         
         switch error {
         case .internalServerError:
-            alert = SimpleAlert(message: Const.serverErrorMessage)
+            alert = SimpleAlert(message: Constant.serverErrorMessage)
         case .decodingError:
-            alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+            alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 1")
         case .unauthorizedUser:
-            alert = SimpleAlert(buttonTitle: Const.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Constant.OK, message: "인증되지 않은 사용자입니다. 로그인 후 사용해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .tokenExpired:
-            alert = SimpleAlert(buttonTitle: Const.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
+            alert = SimpleAlert(buttonTitle: Constant.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
         case .unknownError(let errorCode):
             guard let errorCode = errorCode else { return }
-            alert = SimpleAlert(message: Const.unknownErrorMessage + " code = \(errorCode)")
+            alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = \(errorCode)")
         default:
-            alert = SimpleAlert(message: Const.unknownErrorMessage)
+            alert = SimpleAlert(message: Constant.unknownErrorMessage)
         }
         
         presenter.present(alert, animated: true)
     }
     
     static func showDecodingError(presenter: UIViewController) {
-        let alert = SimpleAlert(message: Const.unknownErrorMessage + " code = 1")
+        let alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 1")
         presenter.present(alert, animated: true)
     }
 }

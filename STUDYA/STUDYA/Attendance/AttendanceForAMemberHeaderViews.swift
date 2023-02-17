@@ -212,7 +212,7 @@ private class AttendanceReusableProgressView: UIView {
             make.top.equalTo(self.safeAreaLayoutGuide).offset(30)
             make.centerX.equalTo(self)
             make.height.equalTo(10)
-            make.width.equalTo(Const.screenWidth - 60)
+            make.width.equalTo(Constant.screenWidth - 60)
         }
         
         progressView.dataSource = self

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SnapKit
 
 final class StudyInfoViewController: SwitchableViewController {
     
@@ -161,7 +160,7 @@ final class StudyInfoViewController: SwitchableViewController {
     @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
         switch sender.title(for: .normal) {
         case "스터디 탈퇴":
-            let vcToPresent = StudyExitViewController(task: .exit)
+            let vcToPresent = StudyExitSheetViewController(task: .exit)
 
             vcToPresent.presentingVC = self
             if let sheet = vcToPresent.sheetPresentationController {
@@ -172,7 +171,7 @@ final class StudyInfoViewController: SwitchableViewController {
             }
             present(vcToPresent, animated: true, completion: nil)
         case "스터디 종료":
-            let vcToPresent = StudyExitViewController(task: .close)
+            let vcToPresent = StudyExitSheetViewController(task: .close)
             vcToPresent.studyID = studyID
             vcToPresent.studyName = studyViewModel.study.studyName
             vcToPresent.presentingVC = self

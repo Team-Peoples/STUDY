@@ -1,5 +1,5 @@
 //
-//  AnnouncementBoardViewController.swift
+//  AnnouncementTableViewController.swift
 //  STUDYA
 //
 //  Created by 서동운 on 2022/08/19.
@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 
-final class AnnouncementBoardViewController: SwitchableViewController {
+final class AnnouncementTableViewController: SwitchableViewController {
     // MARK: - Properties
     
     let studyID: ID
@@ -38,7 +38,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         return view
     }()
     
-    private let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Const.screenWidth, height: 48)))
+    private let headerView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: Constant.screenWidth, height: 48)))
     private let titleLabel = CustomLabel(title: "공지사항", tintColor: .ppsBlack, size: 16, isBold: true)
     
     private let announcementBoardTableView = UITableView()
@@ -112,7 +112,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         announcementBoardTableView.dataSource = self
         announcementBoardTableView.delegate = self
         
-        announcementBoardTableView.register(AnnouncementBoardTableViewCell.self, forCellReuseIdentifier: "AnnouncementBoardTableViewCell")
+        announcementBoardTableView.register(AnnouncementTableViewCell.self, forCellReuseIdentifier: "AnnouncementTableViewCell")
         
         announcementBoardTableView.separatorStyle = .none
         announcementBoardTableView.backgroundColor = .systemBackground
@@ -158,7 +158,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
         if announcements.count >= 1 {
             let cells = announcementBoardTableView.cellsForRows(at: 0)
             let announcementBoardTableViewCells = cells.compactMap { cell in
-                let cell = cell as? AnnouncementBoardTableViewCell
+                let cell = cell as? AnnouncementTableViewCell
                 return cell
             }
             announcementBoardTableViewCells.forEach { cell in
@@ -206,7 +206,7 @@ final class AnnouncementBoardViewController: SwitchableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension AnnouncementBoardViewController: UITableViewDataSource {
+extension AnnouncementTableViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return announcements.count
@@ -214,7 +214,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AnnouncementBoardTableViewCell", for: indexPath) as? AnnouncementBoardTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AnnouncementBoardTableViewCell", for: indexPath) as? AnnouncementTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
         
         //자사용 이슈 떄문에 설정해줌.
@@ -234,11 +234,11 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
         return cell
     }
     
-    func presentActionSheet(selected cell: AnnouncementBoardTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
+    func presentActionSheet(selected cell: AnnouncementTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { _ in
-            guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementBoardTableViewCell] else { return }
+            guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementTableViewCell] else { return }
             let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
             pinnedCell?.announcement?.isPinned = false
             
@@ -296,7 +296,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
             self.present(alertController, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: Const.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
 
         actionSheet.addAction(pinAction)
         actionSheet.addAction(editAction)
@@ -307,7 +307,7 @@ extension AnnouncementBoardViewController: UITableViewDataSource {
     }
 }
 
-extension AnnouncementBoardViewController: UITableViewDelegate {
+extension AnnouncementTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 48
     }

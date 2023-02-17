@@ -36,44 +36,44 @@ final class AppController {
     }
     
     func deleteUserInformation() {
-        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+        UserDefaults.standard.set(false, forKey: Constant.isLoggedin)
         
-        if KeyChain.read(key: Const.accessToken) != nil {
-            KeyChain.delete(key: Const.accessToken)
+        if KeyChain.read(key: Constant.accessToken) != nil {
+            KeyChain.delete(key: Constant.accessToken)
         }
         
-        if KeyChain.read(key: Const.refreshToken) != nil {
-            KeyChain.delete(key: Const.refreshToken)
+        if KeyChain.read(key: Constant.refreshToken) != nil {
+            KeyChain.delete(key: Constant.refreshToken)
         }
         
-        if KeyChain.read(key: Const.userId) != nil {
-            KeyChain.delete(key: Const.userId)
+        if KeyChain.read(key: Constant.userId) != nil {
+            KeyChain.delete(key: Constant.userId)
         }
     }
     
     func deleteUserInformationAndLogout() {
         
-        UserDefaults.standard.set(false, forKey: Const.isLoggedin)
+        UserDefaults.standard.set(false, forKey: Constant.isLoggedin)
         NotificationCenter.default.post(name: .authStateDidChange, object: nil)
         
-        if KeyChain.read(key: Const.accessToken) != nil {
-            KeyChain.delete(key: Const.accessToken)
+        if KeyChain.read(key: Constant.accessToken) != nil {
+            KeyChain.delete(key: Constant.accessToken)
         }
         
-        if KeyChain.read(key: Const.refreshToken) != nil {
-            KeyChain.delete(key: Const.refreshToken)
+        if KeyChain.read(key: Constant.refreshToken) != nil {
+            KeyChain.delete(key: Constant.refreshToken)
         }
         
-        if KeyChain.read(key: Const.userId) != nil {
-            KeyChain.delete(key: Const.userId)
+        if KeyChain.read(key: Constant.userId) != nil {
+            KeyChain.delete(key: Constant.userId)
         }
         
-        if KeyChain.read(key: Const.isEmailCertificated) != nil {
-            KeyChain.delete(key: Const.isEmailCertificated)
+        if KeyChain.read(key: Constant.isEmailCertificated) != nil {
+            KeyChain.delete(key: Constant.isEmailCertificated)
         }
     
-        if let _ = KeyChain.read(key: Const.tempIsFirstSNSLogin) {
-            KeyChain.delete(key: Const.tempIsFirstSNSLogin)
+        if let _ = KeyChain.read(key: Constant.tempIsFirstSNSLogin) {
+            KeyChain.delete(key: Constant.tempIsFirstSNSLogin)
         }
     }
     
@@ -86,11 +86,11 @@ final class AppController {
         
     @objc private func checkLoginIn() {
         
-        if let _ = KeyChain.read(key: Const.accessToken),
-           let _ = KeyChain.read(key: Const.refreshToken),
-           let isEmailCertificated = KeyChain.read(key: Const.isEmailCertificated),
+        if let _ = KeyChain.read(key: Constant.accessToken),
+           let _ = KeyChain.read(key: Constant.refreshToken),
+           let isEmailCertificated = KeyChain.read(key: Constant.isEmailCertificated),
            isEmailCertificated == "1",
-           UserDefaults.standard.bool(forKey: Const.isLoggedin) == true {
+           UserDefaults.standard.bool(forKey: Constant.isLoggedin) == true {
             setHome()
         } else {
             routeToLogin()

@@ -48,5 +48,5 @@ protocol SwitchSyncable {
 }
 
 protocol GrowingCellProtocol: AnyObject {
-    func updateHeightOfRow(_ cell: ToDoItemTableViewCell, _ textView: UITextView)
+    func updateHeightOfRow(_ cell: MyScheduleTableViewCell, _ textView: UITextView)
 }

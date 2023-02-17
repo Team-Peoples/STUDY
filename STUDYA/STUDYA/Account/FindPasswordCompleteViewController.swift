@@ -20,7 +20,7 @@ class FindPasswordCompleteViewController: UIViewController {
     private let titleLabel = CustomLabel(title: "이메일울\n확인해주세요", tintColor: .ppsBlack, size: 30, isBold: true)
     private var nickNameLabel = CustomLabel(title: "사용자님,", tintColor: .ppsBlack, size: 20, isBold: true)
     private let descriptionLabel = CustomLabel(title: "가입하신 이메일로 임시 비밀번호를\n보내드렸어요!😊", tintColor: .ppsBlack, size: 20)
-    private let completeButton = BrandButton(title: Const.OK, isFill: true)
+    private let completeButton = BrandButton(title: Constant.OK, isFill: true)
     
     // MARK: - Actions
     

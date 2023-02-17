@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CreatingStudyRuleViewController: UIViewController {
+final class CreatingStudyRuleViewController: UIViewController {
     
     internal var creatingStudyRuleViewModel = StudyViewModel()
     private let titleLabel = CustomLabel(title: "스터디를 어떻게\n운영하시겠어요?", tintColor: .ppsBlack, size: 24, isBold: true)

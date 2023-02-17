@@ -88,8 +88,8 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         
         view.backgroundColor = .systemBackground
         
-        print("origin accessToken: ",KeyChain.read(key: Const.accessToken)!)
-        print("origin refreshToken: ",KeyChain.read(key: Const.refreshToken)!)
+        print("origin accessToken: ",KeyChain.read(key: Constant.accessToken)!)
+        print("origin refreshToken: ",KeyChain.read(key: Constant.refreshToken)!)
         
         configureTabBarSeparator()
         configureNavigationBar()
@@ -200,7 +200,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
                 case .userNotFound:
                     
                     DispatchQueue.main.async {
-                        let alert = SimpleAlert(buttonTitle: Const.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
+                        let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
                             AppController.shared.deleteUserInformationAndLogout()
                         }
                         self.present(alert, animated: true)
@@ -271,7 +271,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         view.addSubview(studyEmptyLabel)
         view.addSubview(createStudyButton)
         
-        studyEmptyImageView.centerXY(inView: view, yConstant: -Const.screenHeight * 0.06)
+        studyEmptyImageView.centerXY(inView: view, yConstant: -Constant.screenHeight * 0.06)
         
         studyEmptyLabel.snp.makeConstraints { make in
             make.centerX.equalTo(studyEmptyImageView)
@@ -417,9 +417,9 @@ extension MainViewController: UITableViewDelegate {
             if indexPath.row == 3 {
                 guard let studyID = currentStudyOverall?.study.id else { return }
                 print(studyID,"🔥")
-                let announcementBoardVC = AnnouncementBoardViewController(studyID: studyID)
-                self.syncSwitchWith(nextVC: announcementBoardVC)
-                self.push(vc: announcementBoardVC)
+                let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
+                self.syncSwitchWith(nextVC: announcementTableVC)
+                self.push(vc: announcementTableVC)
             }
             if indexPath.row == 1 {
                 guard let studyID = currentStudyOverall?.study.id else { return }

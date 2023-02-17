@@ -137,8 +137,8 @@ final class WelcomViewController: UIViewController {
                 if let isFirstLogin = user.isFirstLogin {
                     
                     if isFirstLogin {
-                        KeyChain.create(key: Const.tempIsFirstSNSLogin, value: "1")
-                        KeyChain.create(key: Const.isEmailCertificated, value: "1")
+                        KeyChain.create(key: Constant.tempIsFirstSNSLogin, value: "1")
+                        KeyChain.create(key: Constant.isEmailCertificated, value: "1")
                         DispatchQueue.main.async {
                             let nextVC = ProfileSettingViewController()
                             self.navigationController?.pushViewController(nextVC, animated: true)
@@ -152,7 +152,7 @@ final class WelcomViewController: UIViewController {
                     
                 } else {
                     DispatchQueue.main.async {
-                        let alert = SimpleAlert(message: Const.serverErrorMessage)
+                        let alert = SimpleAlert(message: Constant.serverErrorMessage)
                         self.present(alert, animated: true)
                     }
                 }
