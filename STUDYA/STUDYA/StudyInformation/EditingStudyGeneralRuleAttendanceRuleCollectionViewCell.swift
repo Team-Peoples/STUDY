@@ -166,8 +166,8 @@ extension EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UITableViewDa
         cell?.absenceFineField.text = "0"
 
         delegate?.studyViewModel.study.generalRule?.lateness.count = nil
-        delegate?.studyViewModel.study.generalRule?.lateness.fine = nil
-        delegate?.studyViewModel.study.generalRule?.absence.fine = nil
+        delegate?.studyViewModel.study.generalRule?.lateness.fine = 0
+        delegate?.studyViewModel.study.generalRule?.absence.fine = 0
     }
 
     

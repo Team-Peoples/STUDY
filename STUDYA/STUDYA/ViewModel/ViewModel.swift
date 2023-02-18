@@ -138,7 +138,7 @@ class GeneralRuleViewModel {
     var absence: Absence {
         return generalRule.absence
     }
-    var deposit: Int? {
+    var deposit: Int {
         return generalRule.deposit
     }
     var excommunication: Excommunication {

@@ -13,7 +13,7 @@ final class CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollecti
 
     var lateness: Lateness?
     var absence: Absence?
-    var deposit: Deposit?
+    var deposit: Deposit = 0
     
     private lazy var generalRuleAttendanceTableView: UITableView = {
         
@@ -132,8 +132,8 @@ final class CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollecti
         cell?.absenceFineField.text = "0"
         
         lateness?.count = nil
-        lateness?.fine = nil
-        absence?.fine = nil
+        lateness?.fine = 0
+        absence?.fine = 0
     }
 
     // MARK: - Configure
@@ -226,7 +226,7 @@ extension CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell: UITableViewD
             
             guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
             
-            cell.depositTextField.text = NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)
+            cell.depositTextField.text = NumberFormatter.decimalNumberFormatter.string(from: deposit)
             
             cell.depositTextFieldAction = { deposit in
                 self.deposit = deposit

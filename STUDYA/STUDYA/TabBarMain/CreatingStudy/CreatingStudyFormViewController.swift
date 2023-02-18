@@ -314,7 +314,7 @@ final class CreatingStudyFormViewController: UIViewController {
             let title = cellInfo["title"] as! String
             
             let selectedCategory = StudyCategory.allCases.filter { category in
-                category.rawValueWithKorean == title
+                category.translatedKorean == title
             }.first
             
             categoryChoice = selectedCategory

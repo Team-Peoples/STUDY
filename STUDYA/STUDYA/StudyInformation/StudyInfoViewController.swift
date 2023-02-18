@@ -59,6 +59,9 @@ final class StudyInfoViewController: SwitchableViewController {
     
     @IBOutlet weak var studyExitButton: UIButton!
     
+    private lazy var separateLineBetweenTimeAndFineSection = UIView(backgroundColor: .appColor(.ppsGray2))
+    private lazy var separateLineBetweenFineAndDepositSection = UIView(backgroundColor: .appColor(.ppsGray2))
+    
     private lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
     
     // MARK: - Life Cycle
@@ -198,17 +201,17 @@ final class StudyInfoViewController: SwitchableViewController {
         isSwitchOn ? studyExitButton.setTitle("스터디 종료", for: .normal) : studyExitButton.setTitle("스터디 탈퇴", for: .normal)
     }
 
-    private func check(_ value: Int?, AndSetupHeightOf view: UIView) {
+    private func adjustHeight(of view: UIView, accordingTo value: Int?) {
         
-        if value != nil {
-            view.isHidden = false
-            view.snp.remakeConstraints { make in
-                make.height.equalTo(16)
-            }
-        } else {
+        if value == nil || value == 0 {
             view.isHidden = true
             view.snp.remakeConstraints { make in
                 make.height.equalTo(0)
+            }
+        } else {
+            view.isHidden = false
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(16)
             }
         }
     }
@@ -224,26 +227,15 @@ final class StudyInfoViewController: SwitchableViewController {
     
     private func configureViews(_ study: Study) {
         
-        //스터디 필수입력 정보들은 바로 label의 text로 입력해줌.
-        if let rawValue = study.category {
-            studyCategoryLabel.text = StudyCategory(rawValue: rawValue)?.rawValueWithKorean
+        if let studyCategory = study.category {
+            let studyCategoryTranslatedKorean = StudyCategory(rawValue: studyCategory)?.translatedKorean
+            studyCategoryLabel.text = studyCategoryTranslatedKorean
         }
+        
         studyNameLabel.text = study.studyName
         studyIntroductionLabel.text = study.studyIntroduction
         
-        let studyOn = study.studyOn
-        let studyOff = study.studyOff
-        
-        switch (studyOn, studyOff) {
-        case (true, true):
-            studyTypeLabel.text = OnOff.onoff.kor
-        case (false, true):
-            studyTypeLabel.text = OnOff.off.kor
-        case (true, false):
-            studyTypeLabel.text = OnOff.on.kor
-        case (false, false):
-            studyTypeLabel.text = nil
-        }
+        setupStudyOnOffLabel(study)
         
         if let freeRule = study.freeRule {
             
@@ -260,46 +252,53 @@ final class StudyInfoViewController: SwitchableViewController {
         let deposit = study.generalRule?.deposit
         let excommunicationRule = study.generalRule?.excommunication
         
-        check(generalRuleLateness?.time, AndSetupHeightOf: latenessTimeRuleView)
-        check(generalRuleAbsence?.time, AndSetupHeightOf: absenceTimeRuleView)
+        adjustHeight(of: latenessTimeRuleView, accordingTo: generalRuleLateness?.time)
+        adjustHeight(of: absenceTimeRuleView, accordingTo: generalRuleAbsence?.time)
+        adjustHeight(of: latenessFineRuleView, accordingTo: generalRuleLateness?.fine)
+        adjustHeight(of: absenceFineRuleView, accordingTo: generalRuleAbsence?.fine)
+        adjustHeight(of: depositView, accordingTo: deposit)
+        adjustHeight(of: latenessCountView, accordingTo: excommunicationRule?.lateness)
+        adjustHeight(of: absenceCountView, accordingTo: excommunicationRule?.absence)
         
-        if (generalRuleLateness?.time != nil || generalRuleAbsence?.time != nil) && (generalRuleLateness?.fine != nil || generalRuleAbsence?.fine != nil) {
-            let separateLine = UIView(backgroundColor: .appColor(.ppsGray2))
-            studyGeneralRuleBackgroundView.addSubview(separateLine)
-            
-            separateLine.snp.makeConstraints { make in
-                make.top.equalTo(absenceTimeRuleView.snp.bottom).offset(10)
-                make.height.equalTo(1)
-                make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
-            }
-        }
+        separateLineBetweenTimeAndFineSection.isHidden = study.timeSectionIsFilled && study.fineSectionIsFilled ? false : true
+        separateLineBetweenFineAndDepositSection.isHidden = study.fineSectionIsFilled && study.depositSectionIsFilled ? false: true
         
-        check(generalRuleLateness?.fine, AndSetupHeightOf: latenessFineRuleView)
-        check(generalRuleAbsence?.fine, AndSetupHeightOf: absenceFineRuleView)
-        
-        if (generalRuleLateness?.fine != nil || generalRuleAbsence?.fine != nil) && deposit != nil {
-            let separateLine = UIView(backgroundColor: .appColor(.ppsGray2))
-            studyGeneralRuleBackgroundView.addSubview(separateLine)
-            
-            separateLine.snp.makeConstraints { make in
-                make.top.equalTo(absenceFineRuleView.snp.bottom).offset(10)
-                make.height.equalTo(1)
-                make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
-            }
-        }
-        
-        check(deposit, AndSetupHeightOf: depositView)
-        check(excommunicationRule?.lateness, AndSetupHeightOf: latenessCountView)
-        check(excommunicationRule?.absence, AndSetupHeightOf: absenceCountView)
-        
+        /// Time
         latenessTimeRuleLabel.text = "스터디 시작후 \(generalRuleLateness?.time ?? 0)분 부터 지각"
         absenceTimeRuleLabel.text = generalRuleAbsence?.time != nil ? "스터디 시작후 \(generalRuleAbsence?.time ?? 0)분 부터 결석" : "스터디에 출석하지않으면 결석"
         
-        latenessFineRuleLabel.text = generalRuleLateness?.count != nil ? "지각 \(generalRuleLateness?.count ?? 0)분당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleAbsence?.fine ?? 0)!)원" : "지각당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleLateness?.fine ?? 0)!)원"
-        absenceFineRuleLabel.text = "결석 1회당 \(NumberFormatter.decimalNumberFormatter.string(from: generalRuleAbsence?.fine ?? 0)!)원"
+        /// Fine
+        let perLateMinute = generalRuleLateness?.count
+        let latenessFine = generalRuleLateness?.fine
+        let absenceFine = generalRuleAbsence?.fine
         
-        depositLabel.text = "보증금 \(NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)!)원"
+        if latenessFine == 0 {
+            latenessFineRuleLabel.text = nil
+        } else {
+            let latenessFineFormattedDecimal = NumberFormatter.decimalNumberFormatter.string(from: latenessFine ?? 0)
+            
+            if let perLateMinute {
+                latenessFineRuleLabel.text = "지각 \(perLateMinute)분당 \(latenessFineFormattedDecimal!)원 "
+            } else {
+                latenessFineRuleLabel.text = "지각당 \(latenessFineFormattedDecimal!)원"
+            }
+        }
         
+        if absenceFine == 0 {
+            absenceFineRuleLabel.text = nil
+        } else {
+            let absenceFineFormattedDecimal = NumberFormatter.decimalNumberFormatter.string(from: generalRuleAbsence?.fine ?? 0)
+            absenceFineRuleLabel.text = "결석 1회당 \(absenceFineFormattedDecimal!)원"
+        }
+        
+        /// Deposit
+        if let deposit = deposit, deposit == 0 {
+            depositLabel.text = nil
+        } else {
+            depositLabel.text = "보증금 \(NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)!)원"
+        }
+        
+        /// excommunicationRule
         latenessCountLabel.text = "\(excommunicationRule?.lateness ?? 0)번 지각 시 강퇴"
         absenceCountLabel.text  = "\(excommunicationRule?.absence ?? 0)번 결석 시 강퇴"
     }
@@ -308,12 +307,40 @@ final class StudyInfoViewController: SwitchableViewController {
         studyInfoBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .keyColor3, width: 1, radius: self.studyCategoryBackgroundView.frame.height / 2)
         
+        studyGeneralRuleBackgroundView.addSubview(separateLineBetweenTimeAndFineSection)
+        studyGeneralRuleBackgroundView.addSubview(separateLineBetweenFineAndDepositSection)
         view.addSubview(toastMessage)
+    }
+    
+    private func setupStudyOnOffLabel(_ study: Study) {
+        let studyOn = study.studyOn
+        let studyOff = study.studyOff
+        
+        switch (studyOn, studyOff) {
+        case (true, true):
+            studyTypeLabel.text = OnOff.onoff.translatedKorean
+        case (false, true):
+            studyTypeLabel.text = OnOff.off.translatedKorean
+        case (true, false):
+            studyTypeLabel.text = OnOff.on.translatedKorean
+        case (false, false):
+            studyTypeLabel.text = nil
+        }
     }
     
     // MARK: - Setting Constraints
     
     private func setConstraints() {
+        separateLineBetweenTimeAndFineSection.snp.makeConstraints { make in
+            make.top.equalTo(absenceTimeRuleView.snp.bottom).offset(10)
+            make.height.equalTo(1)
+            make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
+        }
+        separateLineBetweenFineAndDepositSection.snp.makeConstraints { make in
+            make.top.equalTo(absenceFineRuleView.snp.bottom).offset(10)
+            make.height.equalTo(1)
+            make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
+        }
         toastMessage.snp.makeConstraints { make in
             make.centerX.equalTo(view)
             make.width.equalTo(view.frame.width - 14)
