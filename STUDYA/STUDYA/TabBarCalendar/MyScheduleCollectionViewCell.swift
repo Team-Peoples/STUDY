@@ -32,9 +32,11 @@ final class MyScheduleViewModel {
         Network.shared.getAllMySchedules { result in
             switch result {
             case .success(let schedules):
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
                 self.doTableViewReload.value = true
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -45,9 +47,12 @@ final class MyScheduleViewModel {
         Network.shared.createMySchedule(content: content, date: selectedDate) { result in
             switch result {
             case .success(let schedules):
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -58,10 +63,12 @@ final class MyScheduleViewModel {
         Network.shared.toggleMyScheduleStatus(scheduleID: scheduleID) { result in
             switch result {
             case .success(let schedules):
-                print("🔥")
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -72,10 +79,28 @@ final class MyScheduleViewModel {
         Network.shared.updateMySchedule(scheduleID: scheduleID, content: content) { result in
             switch result {
             case .success(let schedules):
-                print("🥶")
+                
                 self.allMySchedules = schedules
                 self.filterSchedules(on: self.selectedDate)
+                
                 completion()
+                
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func removeMySchedule(scheduleID: Int, completion: @escaping () -> Void) {
+        Network.shared.updateMySchedule(scheduleID: scheduleID, content: "") { result in
+            switch result {
+            case .success(let schedules):
+                
+                self.allMySchedules = schedules
+                self.filterSchedules(on: self.selectedDate)
+                
+                completion()
+                
             case .failure(let error):
                 self.error = Observable(error)
             }
@@ -204,30 +229,6 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         }
         
         return cell
-//                guard let updateIndexPath = tableView.indexPath(for: cell) else { return }
-//        //        셀의 텍스트필드에 문자가 있을 때 실행할 액션 정의
-//                cell.textViewDidEndEditingWithLetter = { cell in
-//
-//                    if indexPath.row == viewModel.selectedDateSchedules.value.count {
-//                        viewModel.createMySchedule(content: "아이아이아이")
-//        //                self.tableView.insertRows(at: [IndexPath(row: indexPath.row + 1, section: 0)], with: .automatic)
-//                    } else {
-//        //                viewModel.updateMySchedule(scheduleID: <#T##Int#>, content: <#T##String#>)
-//                        print("데이터 수정 후 업로드")
-//                    }
-//                }
-//
-//        //        셀의 텍스트필드에 문자가 없을 때 실행할 액션 정의
-//                cell.textViewDidEndEditingWithNoLetter = { cell in
-//
-//                    if indexPath.row == viewModel.selectedDateSchedules.value.count {
-//                        print("아무것도 안함")
-//                    } else {
-//        //                🛑삭제 api 요청
-//        //                self.todo.remove(at: updateIndexPath.row)
-//                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
-//                    }
-//                }
     }
     
     private func configureCommon(_ cell: MyScheduleTableViewCell, with viewModel: MyScheduleViewModel) {
@@ -250,6 +251,12 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         cell.toggleScheduleStatus = { [weak self] (indexPath, id) in
             viewModel.toggleMyScheduleStatus(scheduleID: id) {
                 self?.insertSchdueleDataToOld(cell, with: viewModel, at: indexPath)
+            }
+        }
+        cell.removeSchedule = { [weak self] (indexpath, id) in
+            viewModel.removeMySchedule(scheduleID: id) {
+                self?.tableView.deleteRows(at: [indexpath], with: .top)
+                NotificationCenter.default.post(name: Notification.Name.myScheduleCellRemoved, object: nil, userInfo: ["selectedDateSchedulesCount": viewModel.selectedDateSchedules.count])
             }
         }
     }

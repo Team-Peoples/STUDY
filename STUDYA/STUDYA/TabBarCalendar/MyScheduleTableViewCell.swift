@@ -23,7 +23,7 @@ class MyScheduleTableViewCell: UITableViewCell {
     internal var createSchedule: (IndexPath, String) -> Void = { (indexPath, content) in }
     internal var updateSchedule: (ID, String, IndexPath) -> Void = { (id, content, indexPath) in }
     internal var toggleScheduleStatus: (IndexPath, ID) -> Void = { (indexPath, id) in }
-//    internal var removeSchedule
+    internal var removeSchedule: (IndexPath, ID) -> Void = { (indexPath, id) in }
     
     weak var cellDelegate: GrowingCellProtocol? //🛑weak 왜??
     weak var heightCoordinator: UBottomSheetCoordinator?
@@ -75,6 +75,11 @@ class MyScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        NotificationCenter.default.addObserver(forName: Notification.Name.myScheduleCellRemoved, object: nil, queue: nil) { noti in
+            guard let userinfo = noti.userInfo as? [String: Int], let numberOfRows = userinfo["selectedDateSchedulesCount"] else { return }
+            self.numberOfRows = numberOfRows
+        }
+        
         backgroundColor = .appColor(.background)
         todoTextView.font = .systemFont(ofSize: 14) //만약 더 큰 크기로 바꾸게 되면 글자수 제한이나 줄 수 등도 바꿔야.
         
@@ -89,6 +94,10 @@ class MyScheduleTableViewCell: UITableViewCell {
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     required init?(coder: NSCoder) {
@@ -133,24 +142,24 @@ extension MyScheduleTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        print(#function, 1)
+        guard let indexPathOfThisCell = getIndexPath() else { return }
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            print(#function, 2)
-            textView.text = placeholder
-            textView.textColor = .appColor(.ppsGray1)
-            
-        } else {
-            print(#function, 3)
-            guard let indexPathOfThisCell = getIndexPath() else { return }
             
             if indexPathOfThisCell.row == numberOfRows {
-                print(#function, 4)
+                textView.text = placeholder
+                textView.textColor = .appColor(.ppsGray1)
+                
+            } else {
+                guard let schedule = schedule, let id = schedule.id else { return }
+                removeSchedule(indexPathOfThisCell, id)
+            }
+            
+        } else {
+            if indexPathOfThisCell.row == numberOfRows {
                 createSchedule(indexPathOfThisCell, textView.text)
                 
             } else {
-                print(#function, 5)
                 guard let schedule = schedule, let id = schedule.id else { return }
-                print(#function, 6, textView.text)
                 updateSchedule(id, textView.text, indexPathOfThisCell)
             }
         }
