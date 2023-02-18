@@ -256,7 +256,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
         cell.removeSchedule = { [weak self] (indexpath, id) in
             viewModel.removeMySchedule(scheduleID: id) {
                 self?.tableView.deleteRows(at: [indexpath], with: .top)
-                NotificationCenter.default.post(name: Notification.Name.userScheduleCellRemoved, object: nil, userInfo: ["selectedDateSchedulesCount": viewModel.selectedDateSchedules.count])
+                NotificationCenter.default.post(name: Notification.Name.myScheduleCellRemoved, object: nil, userInfo: ["selectedDateSchedulesCount": viewModel.selectedDateSchedules.count])
             }
         }
     }

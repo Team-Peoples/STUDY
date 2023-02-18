@@ -75,7 +75,7 @@ class MyScheduleTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.userScheduleCellRemoved, object: nil, queue: nil) { noti in
+        NotificationCenter.default.addObserver(forName: Notification.Name.myScheduleCellRemoved, object: nil, queue: nil) { noti in
             guard let userinfo = noti.userInfo as? [String: Int], let numberOfRows = userinfo["selectedDateSchedulesCount"] else { return }
             self.numberOfRows = numberOfRows
         }
