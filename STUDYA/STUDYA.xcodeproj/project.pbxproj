@@ -571,8 +571,7 @@
 				72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */,
 				724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */,
 			);
-			name = StudySchedule;
-			path = "StudySchedule(접두어 붙혀줘~)";
+			path = StudySchedule;
 			sourceTree = "<group>";
 		};
 		D3582047299E27AD0070F7FE /* StudyInformation */ = {
