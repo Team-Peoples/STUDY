@@ -11,8 +11,6 @@ final class StudyInfoViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    static let identifier = "StudyInfoViewController"
-    
     var studyID: ID?
     
     private var studyViewModel = StudyViewModel()

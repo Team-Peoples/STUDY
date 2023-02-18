@@ -11,8 +11,6 @@ final class StudyGeneralRuleAttendanceTimeRuleTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
-    static let identifier = "StudyGeneralRuleAttendanceTimeRuleTableViewCell"
-    
     let attendanceTitleLabel = CustomLabel(title: "출결 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
     let attendanceDescriptionLabel = CustomLabel(title: "* 결석 시간을 입력하지 않으면 스터디가 끝나는 시간으로 설정돼요.", tintColor: .ppsGray1, size: 12)
     let latenessRuleTimeFieldFrontLabel = CustomLabel(title: "스터디 시작 후", tintColor: .ppsBlack, size: 16)

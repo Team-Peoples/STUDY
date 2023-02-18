@@ -23,8 +23,7 @@ class MainSpreadUpTableViewCell: UITableViewCell {
             }
         }
     }
-    
-    static let identifier = "MainSpreadUpTableViewCell"
+
     private let containerView: RoundableView = {
        
         let v = RoundableView(cornerRadius: 25)

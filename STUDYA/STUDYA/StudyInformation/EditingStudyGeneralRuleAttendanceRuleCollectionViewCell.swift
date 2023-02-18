@@ -10,9 +10,6 @@ import UIKit
 final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
-
-    static let identifier = "EditingStudyGeneralRuleAttendanceRuleCollectionViewCell"
-
     weak var delegate: EditingStudyGeneralRuleViewController?
 
     private lazy var generalRuleAttendanceTableView: UITableView = {

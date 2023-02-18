@@ -9,8 +9,6 @@ import UIKit
 
 final class MyPageTableViewCell: UITableViewCell {
     
-    static let identifier = "MyPageTableViewCell"
-    
     private let titles = ["참여한 스터디", "푸시알림 설정", "앱 정보"]
     internal var row: Int? {
         didSet {

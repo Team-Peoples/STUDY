@@ -9,8 +9,6 @@ import UIKit
 
 final class MainValidationNumberCheckingPopViewController: UIViewController {
     
-    static let identifier = "MainValidationNumberCheckingPopViewController"
-    
     internal var didAttend: Bool? {
         didSet {
 //            thirdCEll에서 넘어올 때 네트워킹에서 받기도 하고 여기서 출석버튼 눌러서 받기도함.

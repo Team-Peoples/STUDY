@@ -74,7 +74,7 @@ extension StudyScheduleCollectionViewCell: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ScheduleTableViewCell", for: indexPath) as! StudyScheduleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: StudyScheduleTableViewCell.identifier, for: indexPath) as! StudyScheduleTableViewCell
         
         let schedule = studySchedules[indexPath.row]
         

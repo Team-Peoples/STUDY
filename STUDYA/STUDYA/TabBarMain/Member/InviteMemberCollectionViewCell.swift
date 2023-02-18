@@ -9,8 +9,6 @@ import UIKit
 
 final class InviteMemberCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "InviteMemberCollectionViewCell"
-    
     let buttonBackgroundView = UIImageView(image: UIImage(named: "inviteButton"))
     let button = UIButton(frame: .zero)
     let buttonTitleLabel = CustomLabel(title: "멤버 초대", tintColor: .ppsGray1, size: 12, isBold: true)

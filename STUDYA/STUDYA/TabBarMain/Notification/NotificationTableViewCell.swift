@@ -8,8 +8,6 @@
 import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
-
-    static let identifier = "NotificationTableViewCell"
     
     private let backView = UIView(frame: .zero)
     private let titleLabel = CustomLabel(title: "아리가또", tintColor: .ppsGray1, size: 18)

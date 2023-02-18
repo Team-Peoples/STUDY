@@ -9,8 +9,6 @@ import UIKit
 
 class MainSixthETCTableViewCell: UITableViewCell {
     
-    static let identifier = "MainSixthETCTableViewCell"
-    
     internal var currentStudyID: Int?
     
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!

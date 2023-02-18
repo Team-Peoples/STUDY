@@ -93,8 +93,6 @@ final class AttendancesModificationViewModel {
 
 final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "AttendanceModificationCollectionViewCell"
-    
     internal var viewModel: AttendancesModificationViewModel? {
         didSet {
             setBinding()

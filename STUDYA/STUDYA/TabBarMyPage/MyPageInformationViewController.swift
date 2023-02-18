@@ -68,7 +68,7 @@ final class MyPageInformationViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
         
         return cv
     }
@@ -116,7 +116,7 @@ extension MyPageInformationViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! RoundedPurpleCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoundedPurpleCell.identifier, for: indexPath) as! RoundedPurpleCell
         cell.title = contributors[indexPath.row]
         return cell
     }
@@ -125,8 +125,6 @@ extension MyPageInformationViewController: UICollectionViewDataSource {
 
 // MARK: - InformationVersionTableViewCell
 final class InformationVersionTableViewCell: UITableViewCell {
-    
-    static let identifier = "InformationVersionTableViewCell"
     
     private let titleLabel = CustomLabel(title: "버전 정보", tintColor: .ppsBlack, size: 16)
     private let versionValueLabel = CustomLabel(title: "1.1.0(최신)", tintColor: .ppsBlack, size: 16)
@@ -153,8 +151,6 @@ final class InformationVersionTableViewCell: UITableViewCell {
 
 // MARK: - InformationTableViewCell
 final class InformationTableViewCell: UITableViewCell {
-    
-    static let identifier = "InformationTableViewCell"
     
     internal var title: String? {
         didSet {

@@ -9,8 +9,6 @@ import UIKit
 
 final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "AttendanceOverallCheckCollectionViewCell"
-    
     weak var delegate: (BottomSheetAddable & Navigatable & SwitchSyncable)? {
         didSet {
             headerView.navigatableBottomSheetableDelegate = delegate

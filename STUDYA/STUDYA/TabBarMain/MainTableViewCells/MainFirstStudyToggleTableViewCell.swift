@@ -9,8 +9,6 @@ import UIKit
 
 class MainFirstStudyToggleTableViewCell: UITableViewCell {
     
-    static let identifier = "MainFirstStudyToggleTableViewCell"
-    
     internal var studyTitle: String! {
         didSet {
             guard let studyTitle = studyTitle else { return }

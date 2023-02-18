@@ -11,9 +11,6 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     
     // MARK: - Properties
     
-    
-    static let identifier = "EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell"
-    
     typealias LatenessCount = Int
     typealias AbsenceCount = Int
     var latenessCountFieldAction: (LatenessCount?) -> Void = { LatenessCount in }

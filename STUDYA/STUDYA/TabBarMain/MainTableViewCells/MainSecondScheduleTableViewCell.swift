@@ -9,8 +9,6 @@ import UIKit
 
 class MainSecondScheduleTableViewCell: UITableViewCell {
     
-    static let identifier = "MainSecondScheduleTableViewCell"
-    
     internal var nickName: String? {
         didSet {
             title.text = "\(nickName ?? "회원")님의 일정"

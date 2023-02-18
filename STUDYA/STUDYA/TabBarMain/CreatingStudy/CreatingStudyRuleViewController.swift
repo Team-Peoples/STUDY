@@ -117,7 +117,7 @@ final class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studyGeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "CreatingStudyGeneralRuleViewController") as! CreatingStudyGeneralRuleViewController
+        let studyGeneralRuleVC = storyboard.instantiateViewController(withIdentifier: CreatingStudyGeneralRuleViewController.identifier) as! CreatingStudyGeneralRuleViewController
 
         studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule()
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
@@ -136,7 +136,7 @@ final class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func freeRuleViewTapped() {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreatingStudyFreeRuleViewController") as! CreatingStudyFreeRuleViewController
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: CreatingStudyFreeRuleViewController.identifier) as! CreatingStudyFreeRuleViewController
         
         studyFreeRuleVC.viewDidUpdated = { textView in
             textView.text = self.creatingStudyRuleViewModel.study.freeRule

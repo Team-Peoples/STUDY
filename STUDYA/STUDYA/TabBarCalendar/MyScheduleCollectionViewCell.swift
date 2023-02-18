@@ -83,7 +83,7 @@ final class MyScheduleViewModel {
     }
 }
 
-class ToDoCollectionViewCell: UICollectionViewCell {
+class MyScheduleCollectionViewCell: UICollectionViewCell {
 //    🛑to be fixed: 바텀시트가 접힌 상태에서 테이블뷰를 맨아래까지 스크롤할 수 없음. 할일을 많이 작성해서 뷰를 꽉채울 때까지 내려가면 아래에 추가입력 셀이 자동으로 보이지 않아서 스크롤을 해서 아래로 조금 내려줘야 보임
     
     internal var viewModel: MyScheduleViewModel? {
@@ -179,7 +179,7 @@ class ToDoCollectionViewCell: UICollectionViewCell {
     }
 }
 
-extension ToDoCollectionViewCell: UITableViewDataSource {
+extension MyScheduleCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         guard let viewModel = viewModel else { return 0 }
@@ -273,7 +273,7 @@ extension ToDoCollectionViewCell: UITableViewDataSource {
     }
 }
 
-extension ToDoCollectionViewCell: GrowingCellProtocol {
+extension MyScheduleCollectionViewCell: GrowingCellProtocol {
 
     func updateHeightOfRow(_ cell: MyScheduleTableViewCell, _ textView: UITextView) {
         let size = textView.bounds.size

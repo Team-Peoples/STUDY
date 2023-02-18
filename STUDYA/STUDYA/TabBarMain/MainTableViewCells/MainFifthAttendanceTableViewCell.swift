@@ -10,8 +10,6 @@ import MultiProgressView
 
 class MainFifthAttendanceTableViewCell: UITableViewCell {
     
-    static let identifier = "MainFifthAttendanceTableViewCell"
-    
     internal var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else {

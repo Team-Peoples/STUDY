@@ -9,8 +9,6 @@ import UIKit
 
 final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     
-    static let identifier = "AttendanceInfoTableViewCell"
-    
     internal var anUserAttendanceInformation: SingleUserAnAttendanceInformation? {
         didSet {
             guard let anUserAttendanceInformation = anUserAttendanceInformation else { return }

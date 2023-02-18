@@ -9,8 +9,6 @@ import UIKit
 
 final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
     
-    static let identifier = "AttendanceIndividualOverallInfoTableViewCell"
-    
     private let view: RoundableView = {
         
         let v = RoundableView(cornerRadius: 24)
