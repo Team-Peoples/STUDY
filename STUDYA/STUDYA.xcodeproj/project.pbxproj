@@ -10,7 +10,6 @@
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
 		721482B2297125E100A903FF /* StudySchedulePopUpAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */; };
-		722B771B29A0E1880080C205 /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722B771A29A0E1880080C205 /* Identifier.swift */; };
 		724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
 		72512A7C292CDE7C0003F431 /* StudyScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */; };
@@ -149,7 +148,6 @@
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
 		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpAlertViewController.swift; path = ../StudySchedule/StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
-		722B771A29A0E1880080C205 /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditingStudySchduleViewController.swift; path = ../StudySchedule/EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
 		72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudyScheduleViewController.swift; path = ../StudySchedule/StudyScheduleViewController.swift; sourceTree = "<group>"; };
@@ -400,7 +398,6 @@
 				D3C23A5D28EDE685009B53B4 /* KeyChain.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
-				722B771A29A0E1880080C205 /* Identifier.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -847,7 +844,6 @@
 				D3F2C6F728B282E900CEC549 /* MyPageTableViewCell.swift in Sources */,
 				D309A3CB293CA061007BD2FF /* NotificationViewController.swift in Sources */,
 				D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */,
-				722B771B29A0E1880080C205 /* Identifier.swift in Sources */,
 				D306E6CD292A682000F9BE5C /* AttendanceOverallCheckHeaderView.swift in Sources */,
 				D3F0983E2914E25100D1E55F /* UBottomSheet.swift in Sources */,
 				D33DA9F0299DE59D003DD5A9 /* Observable.swift in Sources */,

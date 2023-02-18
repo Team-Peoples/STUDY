@@ -42,7 +42,7 @@ final class CreatingStudyFormViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
         
         return cv
     }()
@@ -412,7 +412,7 @@ extension CreatingStudyFormViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.identifier, for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else { return CategoryCell() }
         cell.title = StudyCategory.allCases[indexPath.row].translatedKorean
         return cell
     }

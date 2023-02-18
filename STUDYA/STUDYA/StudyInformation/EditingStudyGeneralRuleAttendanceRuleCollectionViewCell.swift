@@ -10,6 +10,9 @@ import UIKit
 final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectionViewCell {
 
     // MARK: - Properties
+    
+    static let identifier = "EditingStudyGeneralRuleAttendanceRuleCollectionViewCell"
+    
     weak var delegate: EditingStudyGeneralRuleViewController?
 
     private lazy var generalRuleAttendanceTableView: UITableView = {
@@ -218,7 +221,7 @@ extension EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UITableViewDa
             return cell
         case 2:
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyGeneralRuleDepositTableViewCell.identifier, for: indexPath) as? StudyGeneralRuleDepositTableViewCell else { return StudyGeneralRuleDepositTableViewCell() }
             
             cell.depositTextField.text = NumberFormatter.decimalNumberFormatter.string(from: deposit ?? 0)
             cell.depositTextFieldAction = { [self] deposit in

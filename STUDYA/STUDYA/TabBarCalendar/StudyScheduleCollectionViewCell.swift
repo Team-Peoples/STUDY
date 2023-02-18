@@ -9,6 +9,8 @@ import UIKit
 
 class StudyScheduleCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "StudyScheduleCollectionViewCell"
+    
     var studySchedules: [StudyScheduleComing] = []
     
     lazy var studyScheduleEmptyLabel: UILabel = {

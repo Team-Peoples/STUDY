@@ -9,6 +9,8 @@ import UIKit
 
 final class AttendanceModificationHeaderView: UIView {
     
+    static let identifier = "AttendanceModificationHeaderView"
+    
     internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
     
     internal var leftButtonTapped: (() -> ()) = {}

@@ -9,6 +9,8 @@ import UIKit
 
 final class CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell"
+    
     var lateness: Lateness?
     var absence: Absence?
     var deposit: Deposit = 0

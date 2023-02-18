@@ -10,6 +10,8 @@ import SnapKit
 
 final class MainThirdButtonTableViewCell: UITableViewCell {
     
+    static let identifier = "MainThirdButtonTableViewCell"
+    
     internal var schedule: StudyScheduleComing? {
         didSet {
             labelsInView.forEach { view in

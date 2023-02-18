@@ -9,6 +9,8 @@ import UIKit
 
 final class AttendanceTimeCollectionViewCell: UICollectionViewCell {
     
+    static let identifier = "AttendanceTimeCollectionViewCell"
+    
     internal var time: String? {
         didSet {
             button.setTitle(time, for: .normal)

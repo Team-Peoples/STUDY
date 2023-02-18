@@ -10,6 +10,8 @@ import SnapKit
 
 class MainFourthAnnouncementTableViewCell: UITableViewCell {
     
+    static let identifier = "MainFourthAnnouncementTableViewCell"
+    
     internal var announcement: Announcement? {
         didSet {
             print(#function)

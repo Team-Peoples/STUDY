@@ -8,6 +8,8 @@
 import UIKit
 
 class MainSpreadUpTableViewCell: UITableViewCell {
+    
+    static let identifier = "MainSpreadUpTableViewCell"
 
     internal var row = 0 {
         didSet {

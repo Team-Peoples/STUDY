@@ -11,6 +11,8 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
+    static let identifier = "StudyGeneralRuleDepositTableViewCell"
+    
     let depositTitleLabel = CustomLabel(title: "보증금", tintColor: .ppsBlack, size: 16, isBold: true)
     let depositBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
   

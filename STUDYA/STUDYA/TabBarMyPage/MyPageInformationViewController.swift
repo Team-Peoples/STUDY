@@ -68,7 +68,7 @@ final class MyPageInformationViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.identifier)
+        cv.register(RoundedPurpleCell.self, forCellWithReuseIdentifier: RoundedPurpleCell.identifier)
         
         return cv
     }
@@ -126,6 +126,8 @@ extension MyPageInformationViewController: UICollectionViewDataSource {
 // MARK: - InformationVersionTableViewCell
 final class InformationVersionTableViewCell: UITableViewCell {
     
+    static let identifier = "InformationVersionTableViewCell"
+    
     private let titleLabel = CustomLabel(title: "버전 정보", tintColor: .ppsBlack, size: 16)
     private let versionValueLabel = CustomLabel(title: "1.1.0(최신)", tintColor: .ppsBlack, size: 16)
     
@@ -151,6 +153,8 @@ final class InformationVersionTableViewCell: UITableViewCell {
 
 // MARK: - InformationTableViewCell
 final class InformationTableViewCell: UITableViewCell {
+    
+    static let identifier = "InformationTableViewCell"
     
     internal var title: String? {
         didSet {

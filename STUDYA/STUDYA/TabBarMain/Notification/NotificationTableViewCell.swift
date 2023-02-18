@@ -9,6 +9,8 @@ import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
     
+    static let identifier = "NotificationTableViewCell"
+    
     private let backView = UIView(frame: .zero)
     private let titleLabel = CustomLabel(title: "아리가또", tintColor: .ppsGray1, size: 18)
     private let dateLabel = CustomLabel(title: "2022.06.01", tintColor: .ppsGray1, size: 12)

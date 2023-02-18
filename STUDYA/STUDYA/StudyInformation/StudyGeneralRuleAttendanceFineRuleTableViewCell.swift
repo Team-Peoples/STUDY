@@ -11,6 +11,8 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     
+    static let identifier = "StudyGeneralRuleAttendanceFineRuleTableViewCell"
+    
     let fineTitleLabel = CustomLabel(title: "벌금 규칙", tintColor: .ppsBlack, size: 16, isBold: true)
     let fineDescriptionLabel = CustomLabel(title: "* 출석체크 시, 입력하신 규칙에 따라 벌금이 자동으로 계산돼요.", tintColor: .ppsGray1, size: 12)
     

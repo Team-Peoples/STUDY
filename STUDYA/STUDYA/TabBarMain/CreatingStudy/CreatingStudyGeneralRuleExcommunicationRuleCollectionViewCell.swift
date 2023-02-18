@@ -8,6 +8,8 @@
 import UIKit
 
 final class CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UICollectionViewCell {
+    
+    static let identifier = "CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell"
 
     private var validationCheck1 = false
     private var validationCheck2 = false

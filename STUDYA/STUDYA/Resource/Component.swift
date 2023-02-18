@@ -1421,6 +1421,8 @@ class PeoplesCalendarView: UICalendarView {
 class RoundedPurpleCell: UICollectionViewCell {
     // MARK: - Properties
     
+    static var identifier = "RoundedPurpleCell"
+    
     let button = BrandButton(title: "", isBold: false, fontSize: 16, height: 28)
     var title: String? {
         didSet {

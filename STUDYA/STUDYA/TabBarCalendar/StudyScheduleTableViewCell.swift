@@ -10,6 +10,8 @@ import UIKit
 class StudyScheduleTableViewCell: UITableViewCell {
     
     // MARK: - Properties
+    
+    static let identifier = "StudyScheduleTableViewCell"
 
     enum CalendarKind {
         case study

@@ -9,6 +9,8 @@ import UIKit
 
 final class CreatingStudyGeneralRuleViewController: UIViewController {
     
+    static let identifier = "CreatingStudyGeneralRuleViewController"
+    
     var doneButtonDidTapped: (GeneralStudyRule) -> () = { generalRule in }
     var generalRuleViewModel = GeneralRuleViewModel()
     

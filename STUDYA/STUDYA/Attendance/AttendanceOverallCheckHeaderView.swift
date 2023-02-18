@@ -9,6 +9,8 @@ import UIKit
 
 final class AttendanceOverallCheckHeaderView: UIView {
     
+    static let identifier = "AttendanceOverallCheckHeaderView"
+    
     internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
     
     @IBOutlet private weak var sortyingTypeLabel: UILabel!
