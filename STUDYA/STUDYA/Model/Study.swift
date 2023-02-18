@@ -17,12 +17,28 @@ struct Study: Codable, Equatable {
     var formIsFilled: Bool {
         return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
     }
-    var isGeneralFormFilled: Bool {
-        // domb: 스터디 규칙쪽 필수 입력 값 시나리오 수정되면 이부분도 수정해야함.
-        return generalRule?.absence.time != nil || generalRule?.lateness.time != nil || generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil || generalRule?.deposit != nil
+    var generalRuleIsEmpty: Bool {
+        return !timeSectionIsFilled || !fineSectionIsFilled || !excommunicationSectionIsFilled
     }
-    var isFreeFormFilled: Bool {
-        return freeRule != "" && freeRule != nil
+    
+    var timeSectionIsFilled: Bool {
+        return generalRule?.lateness != nil || generalRule?.absence.time != nil
+    }
+    
+    var fineSectionIsFilled: Bool {
+        return generalRule?.lateness.count != nil || generalRule?.lateness.fine != 0 || generalRule?.absence.fine != 0
+    }
+    
+    var depositSectionIsFilled: Bool {
+        return generalRule?.deposit != 0
+    }
+    
+    var excommunicationSectionIsFilled: Bool {
+        return generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil
+    }
+    
+    var freeRuleIsEmpty: Bool {
+        return freeRule == "" || freeRule == nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -38,7 +54,7 @@ struct Study: Codable, Equatable {
         case studyOn, studyOff
     }
 
-    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: nil), absence: Absence(time: nil, fine: nil), deposit: nil, excommunication: Excommunication(lateness: nil, absence: nil))) {
+    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: 0), absence: Absence(time: nil, fine: 0), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
         self.id = id
         self.studyName = studyName
         self.studyOn = studyOn
@@ -59,7 +75,7 @@ struct Study: Codable, Equatable {
 struct GeneralStudyRule: Codable, Equatable {
     var lateness: Lateness
     var absence: Absence
-    var deposit: Deposit?
+    var deposit: Deposit
     var excommunication: Excommunication
 
     enum CodingKeys: String, CodingKey {
@@ -68,7 +84,7 @@ struct GeneralStudyRule: Codable, Equatable {
         case excommunication = "out"
     }
     
-    init(lateness: Lateness = Lateness(), absence: Absence = Absence(), deposit: Deposit? = nil, excommunication: Excommunication = Excommunication()) {
+    init(lateness: Lateness = Lateness(), absence: Absence = Absence(), deposit: Deposit = 0, excommunication: Excommunication = Excommunication()) {
         self.lateness = lateness
         self.absence = absence
         self.deposit = deposit
@@ -77,11 +93,13 @@ struct GeneralStudyRule: Codable, Equatable {
 }
 
 struct Absence: Codable, Equatable {
-    var time, fine: Int?
+    var time: Int?
+    var fine: Int = 0
 }
 
 struct Lateness: Codable, Equatable {
-    var time, count, fine: Int?
+    var time, count: Int?
+    var fine: Int = 0
 }
 
 struct Excommunication: Codable, Equatable {
@@ -123,7 +141,7 @@ enum StudyCategory: String, CaseIterable {
     case pastime = "HOBBY"
     case etc = "ETC"
     
-    var rawValueWithKorean: String {
+    var translatedKorean: String {
         switch self {
         case .language:
             return "어학"
@@ -167,11 +185,7 @@ enum OnOff: String {
     case off
     case onoff
     
-    var eng: String {
-        return self.rawValue
-    }
-    
-    var kor: String {
+    var translatedKorean: String {
         switch self {
             case .on:
                 return "온라인"
