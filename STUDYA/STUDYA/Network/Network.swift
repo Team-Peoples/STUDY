@@ -31,6 +31,8 @@ enum PeoplesError: Error {
     case cantExpelOwner
     case cantExpelSelf
     case cantChangeOwnerRole
+    case youAreNotOwner
+    case ownerCantLeave
 }
 
 enum ErrorCode {
@@ -567,9 +569,9 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else { return }
+                guard let body = response.data, let isSuccess = jsonDecode(type: Bool.self, data: body) else { return }
                 
-                completion(.success(isSuccessed))
+                completion(.success(isSuccess))
                 
             case 404:
                 guard let data = response.data,
@@ -1089,7 +1091,7 @@ struct Network {
         }
     }
     
-    func createMySchedule(content: String, date: DashedDate,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func createMySchedule(content: String, date: DashedDate, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createMySchedule(content, date), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1110,7 +1112,7 @@ struct Network {
         }
     }
     
-    func toggleMyScheduleStatus(scheduleID: ID,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.toggleMyScheduleStatus(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1131,7 +1133,7 @@ struct Network {
         }
     }
     
-    func updateMySchedule(scheduleID: ID, content: String,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func updateMySchedule(scheduleID: ID, content: String, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateMySchedule(scheduleID, content), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1146,6 +1148,54 @@ struct Network {
                 }
                 
                 completion(.success(schdules))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func turnOverStudyOwnerTo(memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.turnOverStudyOwnerTo(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSuccess))
+            case 403:
+                completion(.failure(.youAreNotOwner))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func leaveFromStudy(id: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.leaveStudy(id), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSuccess))
+            case 400:
+                completion(.failure(.ownerCantLeave))
+                
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
