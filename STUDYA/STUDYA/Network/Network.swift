@@ -635,6 +635,10 @@ struct Network {
                 case ErrorCode.cantExpelSelf: completion(.failure(.cantExpelSelf))
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
+                
+            case 404:
+                completion(.failure(.unauthorizedMember))
+                
             default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
