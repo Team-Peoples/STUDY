@@ -8,7 +8,7 @@
 import UIKit
 
 class MainDropDownTableViewCell: UITableViewCell {
-
+    
     static let identifier = "MainDropDownTableViewCell"
     
     internal var studyName: String? {

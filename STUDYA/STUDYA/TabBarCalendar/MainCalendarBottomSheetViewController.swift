@@ -160,8 +160,8 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
         
         collectionView.bounces = false
         
-        collectionView.register(ToDoCollectionViewCell.self, forCellWithReuseIdentifier: "ToDoCollectionViewCell")
-        collectionView.register(StudyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: "MyScheduleCollectionViewCell")
+        collectionView.register(MyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: MyScheduleCollectionViewCell.identifier)
+        collectionView.register(StudyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: StudyScheduleCollectionViewCell.identifier)
         
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(topScrollView.snp.bottom)
@@ -229,7 +229,7 @@ extension MainCalendarBottomSheetViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.item {
         case 0:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ToDoCollectionViewCell", for: indexPath) as? ToDoCollectionViewCell else { return ToDoCollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyScheduleCollectionViewCell.identifier, for: indexPath) as? MyScheduleCollectionViewCell else { return MyScheduleCollectionViewCell() }
             
             cell.heightCoordinator = sheetCoordinator
             cell.navigatable = self
@@ -239,7 +239,7 @@ extension MainCalendarBottomSheetViewController: UICollectionViewDataSource {
             return cell
             
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyScheduleCollectionViewCell", for: indexPath) as? StudyScheduleCollectionViewCell else { return StudyScheduleCollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StudyScheduleCollectionViewCell.identifier, for: indexPath) as? StudyScheduleCollectionViewCell else { return StudyScheduleCollectionViewCell() }
             
             cell.studySchedules = studySchedule
             cell.reloadTableView()

@@ -10,6 +10,7 @@ import UIKit
 final class StudyHistoryTableViewCell: UITableViewCell {
     
     static let identifier = "StudyHistoryTableViewCell"
+    
     internal var studyHistory: StudyHistory? {
         didSet {
             titleLabel.text = studyHistory?.name

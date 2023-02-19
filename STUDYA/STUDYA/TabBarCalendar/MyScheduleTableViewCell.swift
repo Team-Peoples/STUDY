@@ -10,8 +10,7 @@ import UIKit
 //🛑to be fixed: 이미 풀모달로 올라와있을 때는 올라오지 않게 할 수 있다면 setPosition 과 관련해서 기능추가해보기. 시스템 자원 절약 위해.
 class MyScheduleTableViewCell: UITableViewCell {
     
-    static let identifier = "ToDoItemTableViewCell"
-    
+    static let identifier = "MyScheduleTableViewCell"
     internal var numberOfRows: Int?
     internal var schedule: Schedule? {
         didSet {
