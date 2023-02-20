@@ -196,3 +196,14 @@ enum OnOff: String {
         }
     }
 }
+
+enum UserTaskInStudyInfo: String {
+    
+    case leave = "스터디 탈퇴" // 스터디 탈퇴(나가기) - 재가입 가능
+    case ownerClose = "스터디 종료"// 스터디 종료 - 재가입 불가능
+    case resignMaster = "스터디 양도"
+    
+    var translatedKorean: String {
+        return self.rawValue
+    }
+}

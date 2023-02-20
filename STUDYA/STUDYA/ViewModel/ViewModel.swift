@@ -119,7 +119,7 @@ class StudyViewModel: ViewModel {
     func deleteStudy(successHandler: @escaping () -> Void) {
         guard let studyID = study.id else { return }
         
-        Network.shared.deleteStudy(studyID) { result in
+        Network.shared.closeStudy(studyID) { result in
             switch result {
             case .success:
                 successHandler()
