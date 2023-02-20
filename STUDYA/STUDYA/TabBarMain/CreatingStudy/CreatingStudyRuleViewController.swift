@@ -59,16 +59,20 @@ final class CreatingStudyRuleViewController: UIViewController {
         
         return v
     }()
-    private let descriptionLabel: CustomLabel = {
+    private lazy var creatingStudyRuleSkipButton: UIButton = {
         
-        let label = CustomLabel(title: "", tintColor: .ppsGray1, size: 12, isBold: true)
+        let button = UIButton()
         let attributedString = NSMutableAttributedString.init(string: "나중에 결정하시겠어요?")
+        let attributes: [NSAttributedString.Key : Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
+                                                          .font: UIFont.boldSystemFont(ofSize: 12)]
+        let range = NSRange(location: 0, length: attributedString.length)
         
-        attributedString.addAttribute(NSAttributedString.Key.underlineStyle, value: 1, range:
-            NSRange.init(location: 0, length: attributedString.length))
-        label.attributedText = attributedString
+        attributedString.addAttributes(attributes, range: range)
+        button.setAttributedTitle(attributedString, for: .normal)
+        button.setTitleColor(.appColor(.ppsGray1), for: .normal)
+        button.addTarget(self, action: #selector(skipButtonDidTapped), for: .touchUpInside)
         
-        return label
+        return button
     }()
     private lazy var doneButton: BrandButton = {
        
@@ -83,16 +87,16 @@ final class CreatingStudyRuleViewController: UIViewController {
         super.viewDidLoad()
         
         creatingStudyRuleViewModel.bind { [self] study in
-            configure(settingStudyGeneralRuleView, isFormFilled: study.isGeneralFormFilled)
-            configure(settingStudyFreeRuleView, isFormFilled: study.isFreeFormFilled)
-            if study.isGeneralFormFilled || study.isFreeFormFilled {
+            changeBorderColor(of: settingStudyGeneralRuleView, when: study.generalRuleIsEmpty)
+            changeBorderColor(of: settingStudyFreeRuleView, when: study.freeRuleIsEmpty)
+            if !study.generalRuleIsEmpty || !study.freeRuleIsEmpty {
                 doneButton.fillIn(title: "만들기")
                 doneButton.isEnabled = true
-                descriptionLabel.isHidden = true
+                creatingStudyRuleSkipButton.isHidden = true
             } else {
                 doneButton.fillOut(title: "만들기")
                 doneButton.isEnabled = false
-                descriptionLabel.isHidden = false
+                creatingStudyRuleSkipButton.isHidden = false
             }
         }
         
@@ -113,7 +117,7 @@ final class CreatingStudyRuleViewController: UIViewController {
     @objc private func generalRuleViewTapped() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let studyGeneralRuleVC = storyboard.instantiateViewController(withIdentifier: "CreatingStudyGeneralRuleViewController") as! CreatingStudyGeneralRuleViewController
+        let studyGeneralRuleVC = storyboard.instantiateViewController(withIdentifier: CreatingStudyGeneralRuleViewController.identifier) as! CreatingStudyGeneralRuleViewController
 
         studyGeneralRuleVC.generalRuleViewModel.generalRule = creatingStudyRuleViewModel.study.generalRule ?? GeneralStudyRule()
         studyGeneralRuleVC.doneButtonDidTapped = { rule in
@@ -132,7 +136,7 @@ final class CreatingStudyRuleViewController: UIViewController {
     
     @objc private func freeRuleViewTapped() {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreatingStudyFreeRuleViewController") as! CreatingStudyFreeRuleViewController
+        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: CreatingStudyFreeRuleViewController.identifier) as! CreatingStudyFreeRuleViewController
         
         studyFreeRuleVC.viewDidUpdated = { textView in
             textView.text = self.creatingStudyRuleViewModel.study.freeRule
@@ -150,6 +154,13 @@ final class CreatingStudyRuleViewController: UIViewController {
         vc.modalPresentationStyle = .fullScreen
         
         present(vc, animated: true)
+    }
+    
+    @objc private func skipButtonDidTapped() {
+        creatingStudyRuleViewModel.postNewStudy {
+            let nextVC = CreatingStudyCompleteViewController()
+            self.navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     @objc private func doneButtonTapped() {
@@ -182,7 +193,7 @@ final class CreatingStudyRuleViewController: UIViewController {
         view.addSubview(subTitleLabel)
         view.addSubview(settingStudyGeneralRuleView)
         view.addSubview(settingStudyFreeRuleView)
-        view.addSubview(descriptionLabel)
+        view.addSubview(creatingStudyRuleSkipButton)
         view.addSubview(doneButton)
     }
     
@@ -191,16 +202,16 @@ final class CreatingStudyRuleViewController: UIViewController {
         subTitleLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 30, leading: titleLabel.leadingAnchor)
         settingStudyGeneralRuleView.anchor(top: subTitleLabel.bottomAnchor, topConstant: 25, leading: titleLabel.leadingAnchor, trailing: view.trailingAnchor, trailingConstant: 20, height: 88)
         settingStudyFreeRuleView.anchor(top: settingStudyGeneralRuleView.bottomAnchor, topConstant: 20, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor, height: 88)
-        descriptionLabel.anchor(bottom: doneButton.topAnchor, bottomConstant: 21)
-        descriptionLabel.centerX(inView: view)
+        creatingStudyRuleSkipButton.anchor(bottom: doneButton.topAnchor, bottomConstant: 21)
+        creatingStudyRuleSkipButton.centerX(inView: view)
         doneButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 40, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor)
     }
     
-    func configure(_ view: UIView, isFormFilled: Bool) {
-        if isFormFilled {
-            view.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
-        } else {
+    func changeBorderColor(of view: UIView, when ruleIsEmpty: Bool) {
+        if ruleIsEmpty {
             view.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
+        } else {
+            view.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         }
     }
 }

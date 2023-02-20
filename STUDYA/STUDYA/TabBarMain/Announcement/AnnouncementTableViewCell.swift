@@ -10,6 +10,8 @@ import UIKit
 final class AnnouncementTableViewCell: UITableViewCell {
     // MARK: - Properties
     
+    static let identifier = "AnnouncementTableViewCell"
+    
     var announcement: Announcement? {
         didSet {
             titleLabel.text = announcement?.title

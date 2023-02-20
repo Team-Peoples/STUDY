@@ -40,7 +40,7 @@ final class EditingStudyFormViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
         
         return cv
     }()
@@ -300,7 +300,7 @@ final class EditingStudyFormViewController: UIViewController {
             guard let cellInfo = noti.object as? [String: Any] else { return }
             let title = cellInfo["title"] as! String
             let selectedCategory = StudyCategory.allCases.filter { category in
-                category.rawValueWithKorean == title
+                category.translatedKorean == title
             }.first
             
             categoryChoice = selectedCategory
@@ -398,10 +398,10 @@ extension EditingStudyFormViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as? CategoryCell else { return UICollectionViewCell() }
-        cell.title = StudyCategory.allCases[indexPath.row].rawValueWithKorean
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCell", for: indexPath) as? CategoryCell else { return CategoryCell() }
+        cell.title = StudyCategory.allCases[indexPath.row].translatedKorean
     
-        if let rawValue = studyViewModel.study.category, let category = StudyCategory(rawValue: rawValue)?.rawValueWithKorean, category == cell.title {
+        if let rawValue = studyViewModel.study.category, let category = StudyCategory(rawValue: rawValue)?.translatedKorean, category == cell.title {
             cell.isSameTitle = true
         }
         

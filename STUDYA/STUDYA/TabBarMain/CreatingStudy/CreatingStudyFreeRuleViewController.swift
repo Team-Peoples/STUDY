@@ -12,6 +12,8 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
+    static let identifier = "CreatingStudyFreeRuleViewController"
+    
     var completeButtonTapped: (String) -> () = { freeRule in }
     var viewDidUpdated: (UITextView) -> () = { view in }
     

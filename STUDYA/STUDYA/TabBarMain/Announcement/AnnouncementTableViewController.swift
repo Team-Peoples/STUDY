@@ -112,7 +112,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         announcementBoardTableView.dataSource = self
         announcementBoardTableView.delegate = self
         
-        announcementBoardTableView.register(AnnouncementTableViewCell.self, forCellReuseIdentifier: "AnnouncementTableViewCell")
+        announcementBoardTableView.register(AnnouncementTableViewCell.self, forCellReuseIdentifier: AnnouncementTableViewCell.identifier)
         
         announcementBoardTableView.separatorStyle = .none
         announcementBoardTableView.backgroundColor = .systemBackground
@@ -214,7 +214,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AnnouncementBoardTableViewCell", for: indexPath) as? AnnouncementTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AnnouncementTableViewCell.identifier, for: indexPath) as? AnnouncementTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
         
         //자사용 이슈 떄문에 설정해줌.

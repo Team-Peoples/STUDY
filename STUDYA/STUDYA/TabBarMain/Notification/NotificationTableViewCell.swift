@@ -8,7 +8,7 @@
 import UIKit
 
 class NotificationTableViewCell: UITableViewCell {
-
+    
     static let identifier = "NotificationTableViewCell"
     
     private let backView = UIView(frame: .zero)

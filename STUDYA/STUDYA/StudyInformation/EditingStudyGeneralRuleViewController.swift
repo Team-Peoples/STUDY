@@ -245,7 +245,7 @@ extension EditingStudyGeneralRuleViewController: UICollectionViewDataSource {
             
             return cell
         case 1:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell else { return EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell() }
             
             cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString()
             cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString()

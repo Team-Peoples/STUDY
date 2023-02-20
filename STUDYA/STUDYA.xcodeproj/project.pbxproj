@@ -146,14 +146,14 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
-		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
+		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpAlertViewController.swift; path = ../StudySchedule/StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
-		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
+		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditingStudySchduleViewController.swift; path = ../StudySchedule/EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
-		72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleViewController.swift; sourceTree = "<group>"; };
-		72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudySchedulePriodFormViewController.swift; sourceTree = "<group>"; };
-		72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyScheduleContentViewController.swift; sourceTree = "<group>"; };
-		72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySchedulePopUpCalendarViewController.swift; sourceTree = "<group>"; };
+		72512A7B292CDE7C0003F431 /* StudyScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudyScheduleViewController.swift; path = ../StudySchedule/StudyScheduleViewController.swift; sourceTree = "<group>"; };
+		72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudySchedulePriodFormViewController.swift; path = ../StudySchedule/CreatingStudySchedulePriodFormViewController.swift; sourceTree = "<group>"; };
+		72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudyScheduleContentViewController.swift; path = ../StudySchedule/CreatingStudyScheduleContentViewController.swift; sourceTree = "<group>"; };
+		72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpCalendarViewController.swift; path = ../StudySchedule/StudySchedulePopUpCalendarViewController.swift; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* StudyScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
 		72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -326,12 +326,12 @@
 				D33DA9EE299DE4FF003DD5A9 /* Model */,
 				D33DA9FF299DE8AE003DD5A9 /* ViewModel */,
 				D33DAA0C299E21CC003DD5A9 /* TabBarMain */,
+				D33DAA0D299E238E003DD5A9 /* TabBarCalendar */,
+				D3582043299E25830070F7FE /* TabBarMyPage */,
 				D33DAA01299DEAA7003DD5A9 /* Resource */,
 				D33DAA09299E16A0003DD5A9 /* Network */,
 				D33DAA06299DED7C003DD5A9 /* AttendanceBottomView */,
 				D33DAA0A299E2075003DD5A9 /* Account */,
-				D33DAA0D299E238E003DD5A9 /* TabBarCalendar */,
-				D3582043299E25830070F7FE /* TabBarMyPage */,
 				D3582045299E26120070F7FE /* Attendance */,
 				D3582046299E268A0070F7FE /* StudySchedule */,
 				D3582047299E27AD0070F7FE /* StudyInformation */,
@@ -568,8 +568,7 @@
 				72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */,
 				724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */,
 			);
-			name = StudySchedule;
-			path = "StudySchedule(접두어 붙혀줘~)";
+			path = StudySchedule;
 			sourceTree = "<group>";
 		};
 		D3582047299E27AD0070F7FE /* StudyInformation */ = {
