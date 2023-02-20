@@ -60,7 +60,7 @@ enum RequestPurpose: Requestable {
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudyScheduleGoing)
-    case endStudy(ID)
+    case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
     case update(SingleUserAnAttendanceInformation)
@@ -72,6 +72,7 @@ enum RequestPurpose: Requestable {
     case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
     case deleteMember(ID)
+    case leaveStudy(ID)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -153,7 +154,7 @@ extension RequestPurpose {
             return "/user/schedule"
         case  .updateStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
-        case .endStudy(let studyID):
+        case .closeStudy(let studyID):
             return "/study/end/\(studyID)"
         case .toggleManagerAuth:
             return "/studyMember/manager"
@@ -170,7 +171,9 @@ extension RequestPurpose {
         case .deleteAnnouncement(let id):
             return "/noti/\(id)"
         case .deleteStudySchedule:
-            return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+            return "/study/schedule"
+        case .leaveStudy(let studyID):
+            return "/studyMember/leave/\(studyID)"
         case .deleteMember(let id):
             return "/studyMember/\(id)"
             
@@ -212,9 +215,9 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule: return .put
             
-        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveStudy: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
         }

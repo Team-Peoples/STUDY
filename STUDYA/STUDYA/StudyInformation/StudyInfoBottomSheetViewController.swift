@@ -106,14 +106,23 @@ final class StudyInfoBottomSheetViewController: UIViewController {
             switch task {
             case .leave:
                 guard let studyID = studyID else { return }
-                Network.shared.excommunicateMember(studyID, completion: <#T##(Result<Bool, PeoplesError>) -> Void#>)
+                Network.shared.leaveStudy(id: studyID) { result in
+                    switch result {
+                    case .success:
+                        print("스터디 탈퇴 성공")
+                        self.dismiss(animated: true)
+                    case .failure(let error):
+                        print("스터디장은 탈퇴할 수 없어요.")
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                    }
+                }
                 
             case .ownerClose:
                 guard let studyID = studyID else { return }
                 Network.shared.closeStudy(studyID) { result in
                     switch result {
-                    case .success(_):
-                        print("스터디장이스터디 종료 성공")
+                    case .success:
+                        print("스터디장이 스터디 종료 성공")
                         self.dismiss(animated: true)
                     case .failure(let error):
                         print(error)

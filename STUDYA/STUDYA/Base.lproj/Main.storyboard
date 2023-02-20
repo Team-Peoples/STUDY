@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -782,7 +782,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="studyExitButtonDidTapped:" destination="de7-nk-qxo" eventType="touchUpInside" id="l0d-ZJ-ihM"/>
+                                                    <action selector="studyLeaveOrCloseButtonDidTapped:" destination="de7-nk-qxo" eventType="touchUpInside" id="vQn-Ei-a2o"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -851,10 +851,10 @@
                         <outlet property="nicknameLabel" destination="n2t-Vr-tx8" id="gp4-S7-fV2"/>
                         <outlet property="studyCategoryBackgroundView" destination="IpP-ze-5Dr" id="lOj-cA-KvN"/>
                         <outlet property="studyCategoryLabel" destination="80m-4k-0rj" id="5Kh-Ws-4el"/>
-                        <outlet property="studyExitButton" destination="ZI6-tY-Jf4" id="dHb-p1-Rw9"/>
                         <outlet property="studyGeneralRuleBackgroundView" destination="qF8-Jp-ZZN" id="q3v-vG-vab"/>
                         <outlet property="studyInfoBackgroundView" destination="6nj-Mo-asz" id="DJ9-8h-HML"/>
                         <outlet property="studyIntroductionLabel" destination="2la-1O-YGC" id="Z9J-lr-1Vd"/>
+                        <outlet property="studyLeaveOrCloseButton" destination="ZI6-tY-Jf4" id="pRS-T6-i01"/>
                         <outlet property="studyNameLabel" destination="NB9-Dx-EeZ" id="af3-Nl-J0J"/>
                         <outlet property="studyTypeLabel" destination="lwl-yR-yli" id="mLz-mc-9xs"/>
                         <outlet property="studyformEditButton" destination="3dC-ks-Zdr" id="kcS-VS-vFx"/>

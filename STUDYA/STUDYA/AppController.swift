@@ -102,6 +102,8 @@ final class AppController {
     }
 
     private func routeToLogin() {
-        rootViewController = UINavigationController(rootViewController: WelcomViewController())
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let nextVC  = storyboard.instantiateViewController(withIdentifier: StudyInfoViewController.identifier) as! StudyInfoViewController
+        rootViewController = UINavigationController(rootViewController: nextVC)
     }
 }
