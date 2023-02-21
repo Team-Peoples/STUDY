@@ -36,11 +36,16 @@
 		72AAC6E8295A129100FAD71D /* EditingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */; };
 		72AAC6EA295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */; };
 		72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */; };
-		72E2BEDB2921AE66009BCCB7 /* StudyExitSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyExitSheetViewController.swift */; };
+		72E2BEDB2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift */; };
 		72E2BEDD29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDC29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift */; };
 		72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */; };
 		72E2BF09292769DE009BCCB7 /* AttendanceTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BF08292769DE009BCCB7 /* AttendanceTableViewCells.swift */; };
 		72E2BF0B292B7428009BCCB7 /* AttendanceForAMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BF0A292B7427009BCCB7 /* AttendanceForAMemberView.swift */; };
+		72E5574429A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E5574329A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard */; };
+		72E5574629A4666A007A2CC0 /* StudyInfoViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E5574529A4666A007A2CC0 /* StudyInfoViewController.storyboard */; };
+		72E5574829A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E5574729A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard */; };
+		72E5574A29A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E5574929A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard */; };
+		72E5574E29A46CCE007A2CC0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5574D29A46CCE007A2CC0 /* ViewController.swift */; };
 		72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A72897788900031AD1 /* AppDelegate.swift */; };
 		72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED25A92897788900031AD1 /* SceneDelegate.swift */; };
 		72ED25AF2897788900031AD1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72ED25AD2897788900031AD1 /* Main.storyboard */; };
@@ -174,11 +179,16 @@
 		72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
 		72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFormViewController.swift; sourceTree = "<group>"; };
-		72E2BEDA2921AE66009BCCB7 /* StudyExitSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyExitSheetViewController.swift; sourceTree = "<group>"; };
+		72E2BEDA2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72E2BEDC29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceForAMemberHeaderViews.swift; sourceTree = "<group>"; };
 		72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceViewController.swift; sourceTree = "<group>"; };
 		72E2BF08292769DE009BCCB7 /* AttendanceTableViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceTableViewCells.swift; sourceTree = "<group>"; };
 		72E2BF0A292B7427009BCCB7 /* AttendanceForAMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceForAMemberView.swift; sourceTree = "<group>"; };
+		72E5574329A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreatingStudyGeneralRuleViewController.storyboard; sourceTree = "<group>"; };
+		72E5574529A4666A007A2CC0 /* StudyInfoViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = StudyInfoViewController.storyboard; sourceTree = "<group>"; };
+		72E5574729A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CreatingStudyFreeRuleViewController.storyboard; sourceTree = "<group>"; };
+		72E5574929A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditingStudyFreeRuleViewController.storyboard; sourceTree = "<group>"; };
+		72E5574D29A46CCE007A2CC0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		72ED25A42897788900031AD1 /* STUDYA.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STUDYA.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72ED25A72897788900031AD1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72ED25A92897788900031AD1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -321,6 +331,7 @@
 			children = (
 				72ED25A72897788900031AD1 /* AppDelegate.swift */,
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
+				72E5574D29A46CCE007A2CC0 /* ViewController.swift */,
 				D33439A5294D6F23000875C7 /* AppController.swift */,
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				D33DA9EE299DE4FF003DD5A9 /* Model */,
@@ -492,6 +503,8 @@
 				D3BF054528C116DB00AF7D3B /* CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.swift */,
 				7299968D28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift */,
 				727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */,
+				72E5574329A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard */,
+				72E5574729A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard */,
 			);
 			path = CreatingStudy;
 			sourceTree = "<group>";
@@ -575,7 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */,
-				72E2BEDA2921AE66009BCCB7 /* StudyExitSheetViewController.swift */,
+				72E2BEDA2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift */,
 				72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */,
 				72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */,
 				72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */,
@@ -584,6 +597,8 @@
 				72758D30295ACFC000BDFF9C /* StudyGeneralRuleDepositTableViewCell.swift */,
 				72758D2A295ACF5600BDFF9C /* EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.swift */,
 				72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */,
+				72E5574929A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard */,
+				72E5574529A4666A007A2CC0 /* StudyInfoViewController.storyboard */,
 			);
 			path = StudyInformation;
 			sourceTree = "<group>";
@@ -696,7 +711,11 @@
 				72ED25B42897788A00031AD1 /* LaunchScreen.storyboard in Resources */,
 				D306E6CF292A683600F9BE5C /* AttendanceOverallCheckHeaderView.xib in Resources */,
 				72ED25B12897788A00031AD1 /* Assets.xcassets in Resources */,
+				72E5574A29A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard in Resources */,
+				72E5574429A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard in Resources */,
+				72E5574829A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard in Resources */,
 				D3DD808D29278854001250CF /* AttendanceManagerModeView.xib in Resources */,
+				72E5574629A4666A007A2CC0 /* StudyInfoViewController.storyboard in Resources */,
 				D3D8D1BC29291FC400B9D6B6 /* AttendanceModificationHeaderView.xib in Resources */,
 				D3DD8089292687F2001250CF /* MainPopOverViewControllers.storyboard in Resources */,
 				72ED25AF2897788900031AD1 /* Main.storyboard in Resources */,
@@ -811,6 +830,7 @@
 				D309A3CF293F1DC1007BD2FF /* AttendancePopUpDayCalendarViewController.swift in Sources */,
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
+				72E5574E29A46CCE007A2CC0 /* ViewController.swift in Sources */,
 				72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */,
 				D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */,
 				D3C23A7728FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift in Sources */,
@@ -862,7 +882,7 @@
 				727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */,
 				D35D6F812930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift in Sources */,
 				72F7CFAF28F83D0500E0D0C0 /* BottomSheetDataSource.swift in Sources */,
-				72E2BEDB2921AE66009BCCB7 /* StudyExitSheetViewController.swift in Sources */,
+				72E2BEDB2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift in Sources */,
 				D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */,
 				D381A96D291EA744008A2102 /* MemberCollectionViewCell.swift in Sources */,
 				72EECECB28C9A56500A23C27 /* Typealias.swift in Sources */,

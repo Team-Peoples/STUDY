@@ -31,6 +31,7 @@ enum PeoplesError: Error {
     case cantExpelOwner
     case cantExpelSelf
     case cantChangeOwnerRole
+    case needToResignMaster
 }
 
 enum ErrorCode {
@@ -45,6 +46,7 @@ enum ErrorCode {
     static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
     static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
     static let cantChangeOwnerRole = "MASTER_DO_NOT_CHANGE"
+    static let needToResignMaster = "MASTER_DO_NOT_LEAVE"
 }
 
 // MARK: - Network
@@ -520,9 +522,9 @@ struct Network {
     }
     
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func deleteStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func closeStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
        
-        AF.request(RequestPurpose.endStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.closeStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -567,7 +569,10 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else { return }
+                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
                 
                 completion(.success(isSuccessed))
                 
@@ -578,10 +583,47 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                 switch errorCode {
+                switch errorCode {
                 case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
                 case ErrorCode.userNotFound: completion(.failure(.userNotFound))
                 case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
+                default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func leaveStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.leaveStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                    completion(.failure(.decodingError))
+                    return }
+                
+                completion(.success(isSuccessed))
+                
+            case 400:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data),
+                      let errorCode = errorBody.code else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                switch errorCode {
+                case ErrorCode.unauthorizedMember:  completion(.failure(.unauthorizedMember))
+                case ErrorCode.cantExpelOwner: completion(.failure(.cantExpelOwner))
+                case ErrorCode.cantExpelSelf: completion(.failure(.cantExpelSelf))
+                case ErrorCode.needToResignMaster: completion(.failure(.needToResignMaster))
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             default:

@@ -85,7 +85,7 @@ class MainSixthETCTableViewCell: UITableViewCell {
     }
     
     @objc private func informationButtonTapped() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: StudyInfoViewController.identifier, bundle: nil)
         let nextVC  = storyboard.instantiateViewController(withIdentifier: StudyInfoViewController.identifier) as! StudyInfoViewController
         guard let currentStudyID = currentStudyID else { return }
         

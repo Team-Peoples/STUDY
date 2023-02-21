@@ -10,6 +10,7 @@ import Foundation
 struct Study: Codable, Equatable {
     var id: ID?
     var studyOn, studyOff: Bool
+    var ownerNickname: String?
     var studyName, category, studyIntroduction, freeRule: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
@@ -113,6 +114,7 @@ struct Excommunication: Codable, Equatable {
 
 struct StudyOverall: Codable {
     let announcement: Announcement?
+    let ownerNickname: String
     let study: Study
     let isManager: Bool
     let totalFine, attendedCount, absentCount, totalStudyHeldCount, lateCount, allowedCount: Int
@@ -122,6 +124,7 @@ struct StudyOverall: Codable {
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
         case isManager = "manager"
+        case ownerNickname = "masterNickname"
         case attendedCount = "attendanceCnt"
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
@@ -194,5 +197,16 @@ enum OnOff: String {
             case .onoff:
                 return "온라인/오프라인"
         }
+    }
+}
+
+enum UserTaskInStudyInfo: String {
+    
+    case leave = "스터디 탈퇴" // 스터디 탈퇴(나가기) - 재가입 가능
+    case ownerClose = "스터디 종료"// 스터디 종료 - 재가입 불가능
+    case resignMaster = "스터디 양도"
+    
+    var translatedKorean: String {
+        return self.rawValue
     }
 }
