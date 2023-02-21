@@ -152,16 +152,6 @@ extension String {
     func toInt() -> Int? {
         return Int(self)
     }
-    
-    func convertedEnglish() -> String {
-        switch self {
-        case "매일": return "everyDay"
-        case "매주": return "everyWeek"
-        case "2주 마다": return "everyTwoWeek"
-        case "매달": return "everyMonth"
-        default: return ""
-        }
-    }
 }
 
 extension UITableView {

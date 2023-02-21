@@ -141,7 +141,7 @@ extension StudySchedulePopUpCalendarViewController: UICalendarSelectionSingleDat
                 presentingVC.studyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
                 
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if presentingVC.studyScheduleViewModel.studySchedule.repeatOption != "" {
+                if presentingVC.studyScheduleViewModel.studySchedule.repeatOption != nil {
                     presentingVC.studyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
                 
@@ -158,7 +158,7 @@ extension StudySchedulePopUpCalendarViewController: UICalendarSelectionSingleDat
                 presentingVC.editingStudyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
                 
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if  presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != "" {
+                if presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != nil {
                     presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
                 
