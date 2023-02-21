@@ -28,7 +28,7 @@ class StudyScheduleTableViewCell: UITableViewCell {
     
     let roundedBackgroundView = RoundableView(cornerRadius: 24)
     private let bookmarkColorView = UIView()
-    private lazy var optionalLabel = RoundedCustomLabel(text: "옵션", fontSize: 10, radius: 6, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray1))
+    private lazy var repeatOptionLabel = RoundedCustomLabel(text: "옵션", fontSize: 10, radius: 6, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray1))
     private let startTimeLabel = CustomLabel(title: "00:00", tintColor: .ppsGray1, size: 12)
     private let endTimeLabel = CustomLabel(title: "00:00", tintColor: .ppsGray1, size: 12)
     private let topicLabel = CustomLabel(title: "일정주제", tintColor: .ppsBlack, size: 14)
@@ -95,12 +95,10 @@ class StudyScheduleTableViewCell: UITableViewCell {
         
         switch kind {
         case .personal:
-            optionalLabel.text = schedule.studyName
-            optionalLabel.change(textColor: .appColor(.keyColor1))
+            repeatOptionLabel.text = schedule.studyName
+            repeatOptionLabel.change(textColor: .appColor(.keyColor1))
         case .study:
-            break
-            //매일, 매주 인지 알려줄것.
-//            optionalLabel.text =
+            repeatOptionLabel.text = schedule.repeatOption?.translatedKorean
         }
     }
     
@@ -113,7 +111,7 @@ class StudyScheduleTableViewCell: UITableViewCell {
         roundedBackgroundView.addSubview(locationIcon)
         roundedBackgroundView.addSubview(placeLabel)
         roundedBackgroundView.addSubview(etcButton)
-        roundedBackgroundView.addSubview(optionalLabel)
+        roundedBackgroundView.addSubview(repeatOptionLabel)
     }
     
     private func setupRoundedBackgroundView() {
@@ -161,7 +159,7 @@ class StudyScheduleTableViewCell: UITableViewCell {
             make.centerY.equalTo(roundedBackgroundView)
             make.trailing.equalTo(roundedBackgroundView).inset(12)
         }
-        optionalLabel.snp.makeConstraints { make in
+        repeatOptionLabel.snp.makeConstraints { make in
             make.top.equalTo(roundedBackgroundView).offset(8)
             make.bottom.equalTo(topicLabel.snp.top).offset(-6)
             make.leading.equalTo(topicLabel).offset(2)

@@ -21,6 +21,19 @@ struct Schedule: Codable {
     }
 }
 
+struct ScheduleAttendanceInformation: Codable {
+    let userID: UserID
+    let attendanceStatus: Attendance
+    let reason: String
+    let fine: Int
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case attendanceStatus = "attendStatus"
+        case reason, fine
+    }
+}
+
 struct StudyScheduleComing: Codable {
     let studyName: String?
     let studyScheduleID: Int?
@@ -32,7 +45,7 @@ struct StudyScheduleComing: Codable {
     var startDateAndTime: Date
     var endDateAndTime: Date
     
-    var repeatOption: String? = "" // domb: repeatOption을 받아야 스케쥴셀의 상단부 "매달", "매일"과 같은 요소를 보여줄 수 있음. 현재는 옵션으로 표시
+    var repeatOption: RepeatOption?
     var bookMarkColor: UIColor? {
         guard let studyID = studyID else { return nil }
         switch Int(studyID)! % 10 {
@@ -47,6 +60,7 @@ struct StudyScheduleComing: Codable {
         case endDateAndTime = "studyScheduleEndDateTime"
         case topic = "studyScheduleName"
         case place = "studySchedulePlace"
+        case repeatOption = "repeatType"
         case studyName
         case studyID
     }
@@ -64,17 +78,17 @@ struct StudyScheduleGoing: Codable {
     var startTime: String?
     var endTime: String?
     
-    var repeatOption: String = ""
+    var repeatOption: RepeatOption?
     
     var periodFormIsFilled: Bool {
-        if repeatOption == "" {
+        if repeatOption == nil {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil
         } else {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil && repeatEndDate != ""
         }
     }
     var repeatOptionFormIsFilled: Bool {
-        if repeatOption != "" {
+        if repeatOption != nil {
             return repeatEndDate != ""
         } else {
             return true
@@ -98,15 +112,25 @@ struct StudyScheduleGoing: Codable {
     }
 }
 
-struct ScheduleAttendanceInformation: Codable {
-    let userID: UserID
-    let attendanceStatus: Attendance
-    let reason: String
-    let fine: Int
-
+enum RepeatOption: String, Codable {
+    case everyDay = "매일"
+    case everyWeek = "매주"
+    case everyTwoWeeks = "2주 마다"
+    case everyMonth = "매달"
+    
     enum CodingKeys: String, CodingKey {
-        case userID = "userId"
-        case attendanceStatus = "attendStatus"
-        case reason, fine
+        case everyDay
+        case everyWeek
+        case everyTwoWeeks = "everyTwoWeek"
+        case everyMonth
+    }
+    
+    var translatedKorean: String {
+        switch self {
+        case .everyDay: return "매일"
+        case .everyWeek: return "매주"
+        case .everyTwoWeeks: return "2주 마다"
+        case .everyMonth: return "매달"
+        }
     }
 }

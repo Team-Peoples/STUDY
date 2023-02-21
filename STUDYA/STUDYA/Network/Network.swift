@@ -571,7 +571,7 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
 
-                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                guard let body = response.data, let isSuccess = jsonDecode(type: Bool.self, data: body) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -600,7 +600,7 @@ struct Network {
     }
     
     func leaveFromStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.leaveStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.leaveFromStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
