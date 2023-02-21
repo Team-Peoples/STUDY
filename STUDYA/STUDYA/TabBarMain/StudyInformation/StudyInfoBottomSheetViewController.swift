@@ -106,7 +106,7 @@ final class StudyInfoBottomSheetViewController: UIViewController {
             switch task {
             case .leave:
                 guard let studyID = studyID else { return }
-                Network.shared.leaveStudy(id: studyID) { result in
+                Network.shared.leaveFromStudy(id: studyID) { result in
                     switch result {
                     case .success:
                         print("스터디 탈퇴 성공")

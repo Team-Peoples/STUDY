@@ -62,6 +62,7 @@
                                                             <constraint firstItem="tIT-xS-8aY" firstAttribute="top" secondItem="ofg-6o-FAX" secondAttribute="top" constant="3" id="3XJ-PS-EcN"/>
                                                             <constraint firstItem="tIT-xS-8aY" firstAttribute="leading" secondItem="ofg-6o-FAX" secondAttribute="leading" constant="4" id="ADc-o8-NEB"/>
                                                             <constraint firstAttribute="bottom" secondItem="tIT-xS-8aY" secondAttribute="bottom" constant="3" id="HkQ-qQ-szP"/>
+                                                            <constraint firstAttribute="width" constant="43" id="wZN-KV-wOm"/>
                                                             <constraint firstAttribute="trailing" secondItem="tIT-xS-8aY" secondAttribute="trailing" constant="4" id="znq-1w-S5D"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
@@ -617,7 +618,6 @@
                         <outlet property="latenessFineRuleView" destination="q0r-Uf-1bU" id="VKU-ex-hjk"/>
                         <outlet property="latenessTimeRuleLabel" destination="ay6-LL-xzZ" id="gNF-Yg-Li7"/>
                         <outlet property="latenessTimeRuleView" destination="rNF-qp-jl5" id="0Wp-Cy-ecr"/>
-                        <outlet property="nicknameLabel" destination="MEW-f7-RVn" id="rC2-hv-pZb"/>
                         <outlet property="studyCategoryBackgroundView" destination="dL3-yv-iGo" id="SOi-qN-K9h"/>
                         <outlet property="studyCategoryLabel" destination="0JZ-uf-sfY" id="S4d-R5-KTd"/>
                         <outlet property="studyGeneralRuleBackgroundView" destination="PHs-Hr-3lX" id="htl-4v-jaV"/>
@@ -625,6 +625,7 @@
                         <outlet property="studyIntroductionLabel" destination="6fc-ev-xwi" id="Tc0-0J-AIO"/>
                         <outlet property="studyLeaveOrCloseButton" destination="q2E-FJ-kTN" id="WeD-R2-8YY"/>
                         <outlet property="studyNameLabel" destination="CRB-SO-DFj" id="gek-Zt-tab"/>
+                        <outlet property="studyOwnerNicknameLabel" destination="MEW-f7-RVn" id="ym3-Hx-IC1"/>
                         <outlet property="studyTypeLabel" destination="UB3-9O-Wn5" id="I21-dL-56E"/>
                         <outlet property="studyformEditButton" destination="8ay-eo-HQo" id="4eo-kd-DYw"/>
                     </connections>

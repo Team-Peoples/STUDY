@@ -124,7 +124,7 @@ struct StudyOverall: Codable {
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
         case isManager = "manager"
-        case ownerNickname = "masterNickname"
+        case ownerNickname = "masterNickName"
         case attendedCount = "attendanceCnt"
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"

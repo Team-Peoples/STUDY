@@ -571,7 +571,7 @@ struct Network {
             switch httpResponse.statusCode {
             case 200:
 
-                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                guard let body = response.data, let isSuccess = jsonDecode(type: Bool.self, data: body) else {
                     completion(.failure(.decodingError))
                     return
                 }
