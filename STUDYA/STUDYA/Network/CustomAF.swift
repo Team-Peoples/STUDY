@@ -73,7 +73,7 @@ enum RequestPurpose: Requestable {
     case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
     case deleteMember(ID)
-    case leaveStudy(ID)
+    case leaveFromStudy(ID)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -176,11 +176,9 @@ extension RequestPurpose {
             return "/noti/\(id)"
         case .deleteStudySchedule:
             return "/study/schedule"
-        case .leaveStudy(let studyID):
-            return "/studyMember/leave/\(studyID)"
         case .deleteMember(let id):
             return "/studyMember/\(id)"
-        case .leaveStudy(let id):
+        case .leaveFromStudy(let id):
             return "/studyMember/leave/\(id)"
             
             //    HTTPMethod: GET
@@ -221,9 +219,9 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
             
-        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveStudy: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
         }
