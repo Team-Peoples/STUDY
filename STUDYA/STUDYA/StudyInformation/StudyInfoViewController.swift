@@ -148,7 +148,8 @@ final class StudyInfoViewController: SwitchableViewController {
     
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
+        let storyboard = UIStoryboard(name: EditingStudyFreeRuleViewController.identifier, bundle: nil)
+        let studyFreeRuleVC = storyboard.instantiateViewController(withIdentifier: EditingStudyFreeRuleViewController.identifier) as! EditingStudyFreeRuleViewController
         studyFreeRuleVC.studyViewModel = studyViewModel
 
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
