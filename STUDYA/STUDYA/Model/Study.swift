@@ -18,12 +18,12 @@ struct Study: Codable, Equatable {
     var formIsFilled: Bool {
         return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
     }
-    var generalRuleIsEmpty: Bool {
-        return !timeSectionIsFilled || !fineSectionIsFilled || !excommunicationSectionIsFilled
+    var generalRuleIsFilled: Bool {
+        return timeSectionIsFilled || fineSectionIsFilled || excommunicationSectionIsFilled
     }
     
     var timeSectionIsFilled: Bool {
-        return generalRule?.lateness != nil || generalRule?.absence.time != nil
+        return generalRule?.lateness.time != nil || generalRule?.absence.time != nil
     }
     
     var fineSectionIsFilled: Bool {
@@ -38,8 +38,8 @@ struct Study: Codable, Equatable {
         return generalRule?.excommunication.lateness != nil || generalRule?.excommunication.absence != nil
     }
     
-    var freeRuleIsEmpty: Bool {
-        return freeRule == "" || freeRule == nil
+    var freeRuleIsFilled: Bool {
+        return freeRule != "" && freeRule != nil
     }
 
     enum CodingKeys: String, CodingKey {

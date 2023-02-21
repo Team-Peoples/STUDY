@@ -87,9 +87,10 @@ final class CreatingStudyRuleViewController: UIViewController {
         super.viewDidLoad()
         
         creatingStudyRuleViewModel.bind { [self] study in
-            changeBorderColor(of: settingStudyGeneralRuleView, when: study.generalRuleIsEmpty)
-            changeBorderColor(of: settingStudyFreeRuleView, when: study.freeRuleIsEmpty)
-            if !study.generalRuleIsEmpty || !study.freeRuleIsEmpty {
+
+            changeBorderColor(of: settingStudyGeneralRuleView, when: study.generalRuleIsFilled)
+            changeBorderColor(of: settingStudyFreeRuleView, when: study.freeRuleIsFilled)
+            if study.generalRuleIsFilled || study.freeRuleIsFilled {
                 doneButton.fillIn(title: "만들기")
                 doneButton.isEnabled = true
                 creatingStudyRuleSkipButton.isHidden = true
@@ -208,11 +209,11 @@ final class CreatingStudyRuleViewController: UIViewController {
         doneButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, bottomConstant: 40, leading: titleLabel.leadingAnchor, trailing: settingStudyGeneralRuleView.trailingAnchor)
     }
     
-    func changeBorderColor(of view: UIView, when ruleIsEmpty: Bool) {
-        if ruleIsEmpty {
-            view.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
-        } else {
+    func changeBorderColor(of view: UIView, when ruleIsFilled: Bool) {
+        if ruleIsFilled {
             view.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
+        } else {
+            view.layer.borderColor = UIColor.appColor(.ppsGray2).cgColor
         }
     }
 }
