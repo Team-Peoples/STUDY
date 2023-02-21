@@ -28,7 +28,6 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable,
         vc.isOwner = isOwner
         vc.askExcommunicateMember = {
             vc.dismiss(animated: true) { [self] in
-                askExcommunicationVC.excommunicatedMemberID = nowLookingMemberID
                 presentBottomSheet(vc: askExcommunicationVC, detent: 300, prefersGrabberVisible: false)
             }
         }
@@ -54,8 +53,38 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable,
                 presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
-        vc.getMemberListAgainAndReload = {
-            self.getMemberListAndReload()
+
+        vc.excommunicateMember = { [self] in
+            guard let nowLookingMemberID = nowLookingMemberID else { return }
+            Network.shared.excommunicateMember(nowLookingMemberID) { result in
+                
+                switch result {
+                case .success(let isSuccess):
+                    if isSuccess {
+                        vc.dismiss(animated: true) {
+                            self.getMemberListAndReload()
+                        }
+                        
+                    } else {
+                        let alert = SimpleAlert(message: Constant.serverErrorMessage)
+                        self.present(alert, animated: true)
+                    }
+                    
+                    
+                case .failure(let error):
+                    var alert = SimpleAlert(message: "")
+                    switch error {
+                    case .cantExpelOwner:
+                        alert = SimpleAlert(message: "스터디장은 강퇴할 수 없습니다.")
+                    case .cantExpelSelf:
+                        alert = SimpleAlert(message: "스스로를 강퇴할 수 없습니다.\n'스터디정보 - 회원탈퇴'를 통해 탈퇴해주세요.")
+                    case .unauthorizedMember:
+                        alert = SimpleAlert(message: "강퇴 권한이 없는 멤버입니다.")
+                    default:
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                    }
+                }
+            }
         }
         
         return vc
@@ -69,8 +98,37 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable,
                 presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
-        vc.getMemberListAgainAndReload = {
-            self.getMemberListAndReload()
+        vc.turnOverStudyOwnerAndReload = { [self] in
+            guard let nowLookingMemberID = nowLookingMemberID else { return }
+            
+            Network.shared.turnOverStudyOwnerTo(memberID: nowLookingMemberID) { result in
+                
+                switch result {
+                case .success(let isSuccess):
+                    
+                    if isSuccess {
+                        vc.dismiss(animated: true) {
+                            self.getMemberListAndReload()
+                        }
+                        
+                    } else {
+                        let alert = SimpleAlert(message: Constant.serverErrorMessage)
+                        self.present(alert, animated: true)
+                    }
+                    
+                case .failure(let error):
+                    
+                    switch error {
+                        
+                    case .youAreNotOwner:
+                        let alert = SimpleAlert(message: "스터디장이 아니어서 스터디권한을 넘길 수 없습니다.")
+                        self.present(alert, animated: true)
+                        
+                    default:
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                    }
+                }
+            }
         }
         
         return vc
@@ -101,11 +159,6 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        members = [Member(memberID: 0, deposit: 0, nickName: "쥔", profileImageURL: nil, role: "쥔장", isManager: true, isOwner: true),
-//                   Member(memberID: 0, deposit: 0, nickName: "매님", profileImageURL: nil, role: "매님", isManager: true, isOwner: false),
-//                   Member(memberID: 0, deposit: 0, nickName: "평", profileImageURL: nil, role: "평민", isManager: false, isOwner: false),
-//                   Member(memberID: 0, deposit: 0, nickName: "쩌리", profileImageURL: nil, role: nil, isManager: false, isOwner: false)]
-        
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -127,7 +180,6 @@ final class MemberViewController: SwitchableViewController, SwitchStatusGivable,
             case .success(let response):
                 self.members = response.memberList
             case .failure(let error):
-                print(#function)
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
@@ -171,7 +223,7 @@ extension MemberViewController: UICollectionViewDataSource {
             cell.member = members[indexPath.item - 1]
             cell.switchObservableDelegate = self
             
-            if isManager {
+            if isSwitchOn { //🛑여기 isManager 아니겠지?
                 cell.profileViewTapped = { [self] member in
                     
                     self.nowLookingMemberID = member.memberID

@@ -60,18 +60,20 @@ enum RequestPurpose: Requestable {
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudyScheduleGoing)
-    case endStudy(ID)
+    case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
     case update(SingleUserAnAttendanceInformation)
     case toggleMyScheduleStatus(ID)
     case updateMySchedule(ID, String)
+    case turnOverStudyOwnerTo(ID)
     
     //    HTTPMethod: DELETE
     case deleteUser(UserID) ////10
     case deleteAnnouncement(ID)  //18
     case deleteStudySchedule(ID, Bool)
     case deleteMember(ID)
+    case leaveStudy(ID)
     
     //    HTTPMethod: GET
     case getNewPassord(UserID)  //3
@@ -93,7 +95,7 @@ enum RequestPurpose: Requestable {
 
 extension RequestPurpose {
     var baseURL: String {
-        return "http://13.209.99.229:8082/api/v1"
+        return "http://43.201.36.197:8082/api/v1"
     }
     
     var header: RequestHeaders {
@@ -129,7 +131,7 @@ extension RequestPurpose {
         case .createStudySchedule:
             return "/study/schedule"
         case .joinStudy(let id):
-            return "/join/\(id)"
+            return "/study/join/\(id)"
         case .attend:
             return "/attendance"
         case .createMySchedule:
@@ -143,6 +145,7 @@ extension RequestPurpose {
         case .updateUserRole:
             return "/studyMember/memberRole"
             
+            
         case .updateAnnouncement:
             return "/noti"
         case .updatePinnedAnnouncement:
@@ -153,7 +156,7 @@ extension RequestPurpose {
             return "/user/schedule"
         case  .updateStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
-        case .endStudy(let studyID):
+        case .closeStudy(let studyID):
             return "/study/end/\(studyID)"
         case .toggleManagerAuth:
             return "/studyMember/manager"
@@ -163,6 +166,8 @@ extension RequestPurpose {
             return "/user/schedule/\(scheduleID)"
         case .updateMySchedule:
             return "/user/schedule"
+        case .turnOverStudyOwnerTo:
+            return "/studyMember/master"
             
             //    HTTPMethod: DEL
         case .deleteUser(let id):
@@ -170,9 +175,13 @@ extension RequestPurpose {
         case .deleteAnnouncement(let id):
             return "/noti/\(id)"
         case .deleteStudySchedule:
-            return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+            return "/study/schedule"
+        case .leaveStudy(let studyID):
+            return "/studyMember/leave/\(studyID)"
         case .deleteMember(let id):
             return "/studyMember/\(id)"
+        case .leaveStudy(let id):
+            return "/studyMember/leave/\(id)"
             
             //    HTTPMethod: GET
         case .getNewPassord:
@@ -212,9 +221,9 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .endStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
             
-        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember: return .delete
+        case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveStudy: return .delete
             
         case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
         }
@@ -262,6 +271,8 @@ extension RequestPurpose {
         case .updateMySchedule(let scheduleID, let content):
             return .body(["scheduleId": scheduleID,
                           "scheduleName": content])
+        case .turnOverStudyOwnerTo(let memberID):
+            return .body(["studyMemberId": memberID])
             
 ///    HTTPMethod: DELETE
         case .deleteStudySchedule(let studyScheduleID, let deleteRepeatSchedule):

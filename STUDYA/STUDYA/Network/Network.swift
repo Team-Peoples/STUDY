@@ -31,6 +31,8 @@ enum PeoplesError: Error {
     case cantExpelOwner
     case cantExpelSelf
     case cantChangeOwnerRole
+    case youAreNotOwner
+    case ownerCantLeave
 }
 
 enum ErrorCode {
@@ -45,6 +47,7 @@ enum ErrorCode {
     static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
     static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
     static let cantChangeOwnerRole = "MASTER_DO_NOT_CHANGE"
+    static let needToResignMaster = "MASTER_DO_NOT_LEAVE"
 }
 
 // MARK: - Network
@@ -520,9 +523,9 @@ struct Network {
     }
     
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func deleteStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func closeStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
        
-        AF.request(RequestPurpose.endStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.closeStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -567,9 +570,13 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else { return }
+
+                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
                 
-                completion(.success(isSuccessed))
+                completion(.success(isSuccess))
                 
             case 404:
                 guard let data = response.data,
@@ -578,7 +585,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                 switch errorCode {
+                switch errorCode {
                 case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
                 case ErrorCode.userNotFound: completion(.failure(.userNotFound))
                 case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
@@ -588,6 +595,30 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
+            }
+        }
+    }
+    
+    func leaveFromStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.leaveStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSuccess))
+            case 400:
+                completion(.failure(.ownerCantLeave))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -633,6 +664,10 @@ struct Network {
                 case ErrorCode.cantExpelSelf: completion(.failure(.cantExpelSelf))
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
+                
+            case 404:
+                completion(.failure(.unauthorizedMember))
+                
             default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1089,7 +1124,7 @@ struct Network {
         }
     }
     
-    func createMySchedule(content: String, date: DashedDate,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func createMySchedule(content: String, date: DashedDate, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createMySchedule(content, date), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1110,7 +1145,7 @@ struct Network {
         }
     }
     
-    func toggleMyScheduleStatus(scheduleID: ID,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.toggleMyScheduleStatus(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1131,7 +1166,7 @@ struct Network {
         }
     }
     
-    func updateMySchedule(scheduleID: ID, content: String,completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func updateMySchedule(scheduleID: ID, content: String, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateMySchedule(scheduleID, content), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1146,6 +1181,30 @@ struct Network {
                 }
                 
                 completion(.success(schdules))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func turnOverStudyOwnerTo(memberID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.turnOverStudyOwnerTo(memberID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSuccess))
+            case 403:
+                completion(.failure(.youAreNotOwner))
+                
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }

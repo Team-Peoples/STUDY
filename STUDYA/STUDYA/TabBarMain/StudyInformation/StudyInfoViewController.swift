@@ -22,7 +22,7 @@ final class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var studyCategoryLabel: UILabel!
     @IBOutlet weak var studyInfoBackgroundView: UIView!
     @IBOutlet weak var studyNameLabel: UILabel!
-    @IBOutlet weak var nicknameLabel: UILabel!
+    @IBOutlet weak var studyOwnerNicknameLabel: UILabel!
     @IBOutlet weak var studyTypeLabel: UILabel!
     @IBOutlet weak var studyIntroductionLabel: UILabel!
     @IBOutlet weak var studyformEditButton: UIButton!
@@ -57,7 +57,7 @@ final class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var freeRuleTextView: UITextView!
     @IBOutlet weak var freeRuleEditButton: UIButton!
     
-    @IBOutlet weak var studyExitButton: UIButton!
+    @IBOutlet weak var studyLeaveOrCloseButton: UIButton!
     
     private lazy var separateLineBetweenTimeAndFineSection = UIView(backgroundColor: .appColor(.ppsGray2))
     private lazy var separateLineBetweenFineAndDepositSection = UIView(backgroundColor: .appColor(.ppsGray2))
@@ -148,7 +148,8 @@ final class StudyInfoViewController: SwitchableViewController {
     
     @IBAction func freeRuleEditButtonEditButtonDidTapped(_ sender: Any) {
         
-        let studyFreeRuleVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EditingStudyFreeRuleViewController") as! EditingStudyFreeRuleViewController
+        let storyboard = UIStoryboard(name: EditingStudyFreeRuleViewController.identifier, bundle: nil)
+        let studyFreeRuleVC = storyboard.instantiateViewController(withIdentifier: EditingStudyFreeRuleViewController.identifier) as! EditingStudyFreeRuleViewController
         studyFreeRuleVC.studyViewModel = studyViewModel
 
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
@@ -160,21 +161,34 @@ final class StudyInfoViewController: SwitchableViewController {
         present(vc, animated: true)
     }
     
-    @IBAction func studyExitButtonDidTapped(_ sender: UIButton) {
+    @IBAction func studyLeaveOrCloseButtonDidTapped(_ sender: UIButton) {
         switch sender.title(for: .normal) {
-        case "스터디 탈퇴":
-            let vcToPresent = StudyExitSheetViewController(task: .exit)
-
-            vcToPresent.presentingVC = self
-            if let sheet = vcToPresent.sheetPresentationController {
+        case UserTaskInStudyInfo.leave.translatedKorean:
+            if isManager {
+                let vcToPresent = StudyInfoBottomSheetViewController(task: .resignMaster)
                 
-                sheet.detents = [ .custom { _ in return 300 } ]
+                vcToPresent.presentingVC = self
+                if let sheet = vcToPresent.sheetPresentationController {
+                    
+                    sheet.detents = [ .custom { _ in return 300 } ]
+                    
+                    sheet.preferredCornerRadius = 24
+                }
+                present(vcToPresent, animated: true, completion: nil)
+            } else {
+                let vcToPresent = StudyInfoBottomSheetViewController(task: .leave)
                 
-                sheet.preferredCornerRadius = 24
+                vcToPresent.presentingVC = self
+                if let sheet = vcToPresent.sheetPresentationController {
+                    
+                    sheet.detents = [ .custom { _ in return 300 } ]
+                    
+                    sheet.preferredCornerRadius = 24
+                }
+                present(vcToPresent, animated: true, completion: nil)
             }
-            present(vcToPresent, animated: true, completion: nil)
-        case "스터디 종료":
-            let vcToPresent = StudyExitSheetViewController(task: .close)
+        case UserTaskInStudyInfo.ownerClose.translatedKorean:
+            let vcToPresent = StudyInfoBottomSheetViewController(task: .ownerClose)
             vcToPresent.studyID = studyID
             vcToPresent.studyName = studyViewModel.study.studyName
             vcToPresent.presentingVC = self
@@ -198,7 +212,7 @@ final class StudyInfoViewController: SwitchableViewController {
         generalRuleEditButton.isHidden = !isSwitchOn
         freeRuleEditButton.isHidden = !isSwitchOn
         
-        isSwitchOn ? studyExitButton.setTitle("스터디 종료", for: .normal) : studyExitButton.setTitle("스터디 탈퇴", for: .normal)
+        isSwitchOn ? studyLeaveOrCloseButton.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
     }
 
     private func adjustHeight(of view: UIView, accordingTo value: Int?) {
@@ -227,6 +241,8 @@ final class StudyInfoViewController: SwitchableViewController {
     
     private func configureViews(_ study: Study) {
         
+        let study = Study(studyOn: true, studyOff: false, category: .certificate, studyIntroduction: "ss", freeRule: "ss", generalRule: GeneralStudyRule())
+        
         if let studyCategory = study.category {
             let studyCategoryTranslatedKorean = StudyCategory(rawValue: studyCategory)?.translatedKorean
             studyCategoryLabel.text = studyCategoryTranslatedKorean
@@ -234,6 +250,7 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyNameLabel.text = study.studyName
         studyIntroductionLabel.text = study.studyIntroduction
+        studyOwnerNicknameLabel.text = study.ownerNickname
         
         setupStudyOnOffLabel(study)
         

@@ -83,8 +83,8 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        📣네트워킹으로 myStudyList 넣어주기
-//        getUserInformationAndStudies()
+
+        getUserInformationAndStudies()
         
         view.backgroundColor = .systemBackground
         
@@ -97,7 +97,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getUserInformationAndStudies()
+        
         tabBarController?.tabBar.isHidden = false
         
 //        let appearance = UINavigationBarAppearance()
