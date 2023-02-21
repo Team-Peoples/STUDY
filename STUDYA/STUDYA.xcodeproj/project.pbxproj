@@ -342,9 +342,6 @@
 				D33DAA01299DEAA7003DD5A9 /* Resource */,
 				D33DAA09299E16A0003DD5A9 /* Network */,
 				D33DAA0A299E2075003DD5A9 /* Account */,
-				D3582045299E26120070F7FE /* Attendance */,
-				D3582046299E268A0070F7FE /* StudySchedule */,
-				D3582047299E27AD0070F7FE /* StudyInformation */,
 				D33DAA00299DE9DE003DD5A9 /* UBottomSheet */,
 				72ED25AD2897788900031AD1 /* Main.storyboard */,
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
@@ -474,6 +471,9 @@
 				D3582044299E25F40070F7FE /* Notification */,
 				D33DAA0B299E20C2003DD5A9 /* Announcement */,
 				D33DAA0E299E23CE003DD5A9 /* CreatingStudy */,
+				D3582046299E268A0070F7FE /* StudySchedule */,
+				D3582045299E26120070F7FE /* Attendance */,
+				D3582047299E27AD0070F7FE /* StudyInformation */,
 				D3582041299E251D0070F7FE /* Member */,
 			);
 			path = TabBarMain;

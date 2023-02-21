@@ -95,7 +95,7 @@ enum RequestPurpose: Requestable {
 
 extension RequestPurpose {
     var baseURL: String {
-        return "http://13.209.99.229:8082/api/v1"
+        return "http://43.201.36.197:8082/api/v1"
     }
     
     var header: RequestHeaders {
