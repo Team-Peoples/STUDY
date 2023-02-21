@@ -26,15 +26,16 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     private let startTimeSuffixLabel = CustomLabel(title: "부터", tintColor: .ppsBlack, size: 16)
     private let endTimeSelectButton = BrandButton(title: "--:--", fontSize: 20, backgroundColor: .appColor(.background), textColor: .appColor(.ppsGray2), radius: 21)
     private let endTimeSuffixLabel = CustomLabel(title: "까지", tintColor: .ppsBlack, size: 16)
-    private let repeatOptionTitle = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
+    private let repeatOptionTitleLabel = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
     private lazy var repeatOptionStackView: UIStackView = {
         
-        let everyDay = CheckBoxButton(title: "매일")
-        let everyWeek = CheckBoxButton(title: "매주")
-        let everyTwoWeeks = CheckBoxButton(title: "2주 마다")
-        let everyMonth = CheckBoxButton(title: "매달")
+        let everyDay = CheckBoxButton(title: RepeatOption.everyDay.translatedKorean)
+        let everyWeek = CheckBoxButton(title: RepeatOption.everyWeek.translatedKorean)
+        let everyTwoWeeks = CheckBoxButton(title: RepeatOption.everyTwoWeeks.translatedKorean)
+        let everyMonth = CheckBoxButton(title: RepeatOption.everyMonth.translatedKorean)
         
-        [everyDay, everyWeek, everyTwoWeeks, everyMonth].forEach { $0.addTarget(self, action: #selector(checkboxDidTapped), for: .touchUpInside)
+        [everyDay, everyWeek, everyTwoWeeks, everyMonth].forEach {
+            $0.addTarget(self, action: #selector(checkboxDidTapped), for: .touchUpInside)
         }
         
         let sv = UIStackView(arrangedSubviews: [everyDay, everyWeek, everyTwoWeeks, everyMonth])
@@ -60,8 +61,8 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             nextButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.repeatOptionFormIsFilled
             nextButton.isEnabled ? nextButton.fillIn(title: "다음") : nextButton.fillOut(title: "다음")
             
-            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != ""
-            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != "" ? 1 : 0.5
+            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != nil
+            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != nil ? 1 : 0.5
         }
         
         setNavigation()
@@ -128,14 +129,15 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
 
         if selectedRepeatOptionCheckBox == sender {
             
-            studyScheduleViewModel.studySchedule.repeatOption = ""
+            studyScheduleViewModel.studySchedule.repeatOption = nil
             // 반복일정 끝나는 날짜 초기화
             studyScheduleViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
             guard let title = sender.currentTitle else { return }
-            let repeatOption = title.convertedEnglish()
+            
+            let repeatOption = RepeatOption(rawValue: title)
             
             studyScheduleViewModel.studySchedule.repeatOption = repeatOption
             selectedRepeatOptionCheckBox = sender
@@ -278,7 +280,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         view.addSubview(startTimeSuffixLabel)
         view.addSubview(endTimeSelectButton)
         view.addSubview(endTimeSuffixLabel)
-        view.addSubview(repeatOptionTitle)
+        view.addSubview(repeatOptionTitleLabel)
         view.addSubview(repeatOptionStackView)
         view.addSubview(repeatEndDateSelectableView)
         view.addSubview(nextButton)
@@ -322,12 +324,12 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(20)
             make.centerY.equalTo(endTimeSelectButton)
         }
-        repeatOptionTitle.snp.makeConstraints { make in
+        repeatOptionTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(startTimeSelectButton.snp.bottom).offset(40)
             make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(20)
         }
         repeatOptionStackView.snp.makeConstraints { make in
-            make.top.equalTo(repeatOptionTitle.snp.bottom).offset(20)
+            make.top.equalTo(repeatOptionTitleLabel.snp.bottom).offset(20)
             make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         

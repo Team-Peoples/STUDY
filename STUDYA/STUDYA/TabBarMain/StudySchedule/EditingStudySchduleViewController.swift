@@ -50,10 +50,10 @@ final class EditingStudySchduleViewController: UIViewController {
     private let repeatOptionTitle = CustomLabel(title: "이 일정을 반복할래요!", tintColor: .ppsBlack, size: 16)
     private lazy var repeatOptionStackView: UIStackView = {
         
-        let everyDay = CheckBoxButton(title: "매일")
-        let everyWeek = CheckBoxButton(title: "매주")
-        let everyTwoWeeks = CheckBoxButton(title: "2주 마다")
-        let everyMonth = CheckBoxButton(title: "매일")
+        let everyDay = CheckBoxButton(title: RepeatOption.everyDay.translatedKorean)
+        let everyWeek = CheckBoxButton(title: RepeatOption.everyWeek.translatedKorean)
+        let everyTwoWeeks = CheckBoxButton(title: RepeatOption.everyTwoWeeks.translatedKorean)
+        let everyMonth = CheckBoxButton(title: RepeatOption.everyMonth.translatedKorean)
         
         [everyDay, everyWeek, everyTwoWeeks, everyMonth].forEach { $0.addTarget(self, action: #selector(checkboxDidTapped), for: .touchUpInside)
         }
@@ -91,8 +91,8 @@ final class EditingStudySchduleViewController: UIViewController {
             
             doneButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.contentFormIsFilled && studySchedule.repeatOptionFormIsFilled
             
-            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != ""
-            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != "" ? 1 : 0.5
+            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != nil
+            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != nil ? 1 : 0.5
         }
         
         configureViews()
@@ -171,14 +171,15 @@ final class EditingStudySchduleViewController: UIViewController {
        
         if selectedRepeatOptionCheckBox == sender {
             
-            editingStudyScheduleViewModel.studySchedule.repeatOption = ""
+            editingStudyScheduleViewModel.studySchedule.repeatOption = nil
             // 반복일정 끝나는 날짜 초기화
             editingStudyScheduleViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
             guard let title = sender.currentTitle else { return }
-            let repeatOption = title.convertedEnglish()
+            
+            let repeatOption = RepeatOption(rawValue: title)
             
             editingStudyScheduleViewModel.studySchedule.repeatOption = repeatOption
             selectedRepeatOptionCheckBox = sender

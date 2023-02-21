@@ -600,7 +600,7 @@ struct Network {
     }
     
     func leaveFromStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.leaveStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.leaveFromStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return

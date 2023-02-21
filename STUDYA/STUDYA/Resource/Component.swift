@@ -702,11 +702,18 @@ class CheckBoxButton: UIButton {
     private func configure(title: String) {
         titleLabel?.font = .systemFont(ofSize: 16)
         
-        titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
-        contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        if #available(iOS 15.0, *) {
+            let insets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
+            self.configuration?.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: insets.left, bottom: insets.bottom, trailing: insets.right)
+        } else {
+        
+            self.titleEdgeInsets =  UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
+            self.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        }
         
         setTitle(title, for: .normal)
         [.normal, .selected].forEach { setTitleColor(.appColor(.ppsBlack), for: $0) }
+        
         setImage(UIImage(named: "off"), for: .normal)
         setImage(UIImage(named: "on"), for: .selected)
     }
