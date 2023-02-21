@@ -113,7 +113,7 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                         self.dismiss(animated: true)
                     case .failure(let error):
                         print("스터디장은 탈퇴할 수 없어요.")
-                        self.dismiss(animated: true)
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
                     }
                 }
                 

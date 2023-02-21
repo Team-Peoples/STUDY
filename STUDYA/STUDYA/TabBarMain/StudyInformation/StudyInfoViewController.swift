@@ -241,8 +241,6 @@ final class StudyInfoViewController: SwitchableViewController {
     
     private func configureViews(_ study: Study) {
         
-        let study = Study(studyOn: true, studyOff: false, category: .certificate, studyIntroduction: "ss", freeRule: "ss", generalRule: GeneralStudyRule())
-        
         if let studyCategory = study.category {
             let studyCategoryTranslatedKorean = StudyCategory(rawValue: studyCategory)?.translatedKorean
             studyCategoryLabel.text = studyCategoryTranslatedKorean
