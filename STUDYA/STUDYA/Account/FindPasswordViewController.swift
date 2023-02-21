@@ -95,7 +95,6 @@ final class FindPasswordViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(emailInputView)
-
         view.addSubview(completeButton)
     }
     
