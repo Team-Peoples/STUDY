@@ -59,6 +59,8 @@ class SignInViewModel: ViewModel {
 
 // MARK: - StudyViewModel
 
+// MARK: - StudyViewModel
+
 class StudyViewModel: ViewModel {
     typealias Model = Study
     
@@ -86,6 +88,7 @@ class StudyViewModel: ViewModel {
             switch result {
             case .success(let studyOverall):
                 study = studyOverall.study
+                study.ownerNickname = studyOverall.ownerNickname
             case .failure(let failure):
                 print(failure)
             }

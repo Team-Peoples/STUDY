@@ -22,7 +22,7 @@ final class StudyInfoViewController: SwitchableViewController {
     @IBOutlet weak var studyCategoryLabel: UILabel!
     @IBOutlet weak var studyInfoBackgroundView: UIView!
     @IBOutlet weak var studyNameLabel: UILabel!
-    @IBOutlet weak var nicknameLabel: UILabel!
+    @IBOutlet weak var studyOwnerNicknameLabel: UILabel!
     @IBOutlet weak var studyTypeLabel: UILabel!
     @IBOutlet weak var studyIntroductionLabel: UILabel!
     @IBOutlet weak var studyformEditButton: UIButton!
@@ -250,6 +250,7 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyNameLabel.text = study.studyName
         studyIntroductionLabel.text = study.studyIntroduction
+        studyOwnerNicknameLabel.text = study.ownerNickname
         
         setupStudyOnOffLabel(study)
         
