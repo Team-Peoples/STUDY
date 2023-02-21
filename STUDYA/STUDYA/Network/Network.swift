@@ -47,6 +47,7 @@ enum ErrorCode {
     static let cantExpelOwner = "MASTER_DO_NOT_EXPIRE"
     static let cantExpelSelf = "DO_NOT_SELF_EXPIRE"
     static let cantChangeOwnerRole = "MASTER_DO_NOT_CHANGE"
+    static let needToResignMaster = "MASTER_DO_NOT_LEAVE"
 }
 
 // MARK: - Network
@@ -522,9 +523,9 @@ struct Network {
     }
     
     // domb: 스터디 종료인지 삭제인지 확인하고 구현하기 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-    func deleteStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func closeStudy(_ studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
        
-        AF.request(RequestPurpose.endStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+        AF.request(RequestPurpose.closeStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -569,7 +570,11 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let body = response.data, let isSuccess = jsonDecode(type: Bool.self, data: body) else { return }
+
+                guard let body = response.data, let isSuccessed = jsonDecode(type: Bool.self, data: body) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
                 
                 completion(.success(isSuccess))
                 
@@ -580,7 +585,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                 switch errorCode {
+                switch errorCode {
                 case ErrorCode.imageNotFound:  completion(.failure(.imageNotFound))
                 case ErrorCode.userNotFound: completion(.failure(.userNotFound))
                 case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
@@ -590,6 +595,30 @@ struct Network {
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
+            }
+        }
+    }
+    
+    func leaveFromStudy(id studyID: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.leaveStudy(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(isSuccess))
+            case 400:
+                completion(.failure(.ownerCantLeave))
+                
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -1175,30 +1204,6 @@ struct Network {
                 completion(.success(isSuccess))
             case 403:
                 completion(.failure(.youAreNotOwner))
-                
-            default:
-                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
-            }
-        }
-    }
-    
-    func leaveFromStudy(id: ID, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.leaveStudy(id), interceptor: AuthenticationInterceptor()).validate().response { response in
-            guard let httpResponse = response.response else {
-                completion(.failure(.serverError))
-                return
-            }
-            
-            switch httpResponse.statusCode {
-            case 200:
-                guard let data = response.data, let isSuccess = jsonDecode(type: Bool.self, data: data) else {
-                    completion(.failure(.decodingError))
-                    return
-                }
-                
-                completion(.success(isSuccess))
-            case 400:
-                completion(.failure(.ownerCantLeave))
                 
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)

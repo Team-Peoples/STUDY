@@ -19,7 +19,7 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     /// 보증금
     let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
     
-    var depositTextFieldAction: (Int?) -> Void = { deposit in }
+    var depositTextFieldAction: (Deposit) -> Void = { deposit in }
     
     lazy var depositDimmingView = UIView()
 
@@ -43,7 +43,7 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
 
         switch sender {
         case depositTextField:
-            depositTextFieldAction(depositTextField.text?.toInt() == 0 ? nil : depositTextField.text?.toInt())
+            depositTextFieldAction(depositTextField.text?.toInt() ?? 0)
         default:
             return
         }

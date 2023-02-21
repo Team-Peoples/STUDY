@@ -28,8 +28,8 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
     
     var perLateMinuteFieldAction: (Int?) -> Void = { perLateMinute in }
-    var latenessFineFieldAction: (Int?) -> Void = { latenessFine in }
-    var absenceFineFieldAction: (Int?) -> Void = { absenceFine in }
+    var latenessFineFieldAction: (Int) -> Void = { latenessFine in }
+    var absenceFineFieldAction: (Int) -> Void = { absenceFine in }
     
     lazy var perLateMinuteFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
     lazy var latenessFineFieldDimmingView = UIView(backgroundColor: .white, alpha: 0.5)
@@ -59,9 +59,9 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
         case perLateMinuteField:
             perLateMinuteFieldAction(perLateMinuteField.text?.toInt())
         case latenessFineField:
-            latenessFineFieldAction(latenessFineField.text?.toInt() == 0 ? nil : latenessFineField.text?.toInt())
+            latenessFineFieldAction(latenessFineField.text?.toInt() ?? 0)
         case absenceFineField:
-            absenceFineFieldAction(absenceFineField.text?.toInt() == 0 ? nil : absenceFineField.text?.toInt())
+            absenceFineFieldAction(absenceFineField.text?.toInt() ?? 0)
         default:
             return
         }

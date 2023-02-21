@@ -68,7 +68,7 @@ final class MyPageInformationViewController: UIViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.showsHorizontalScrollIndicator = false
-        cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
+        cv.register(RoundedPurpleCell.self, forCellWithReuseIdentifier: RoundedPurpleCell.identifier)
         
         return cv
     }
@@ -116,7 +116,7 @@ extension MyPageInformationViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! RoundedPurpleCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoundedPurpleCell.identifier, for: indexPath) as! RoundedPurpleCell
         cell.title = contributors[indexPath.row]
         return cell
     }

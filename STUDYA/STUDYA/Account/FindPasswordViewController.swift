@@ -65,8 +65,7 @@ final class FindPasswordViewController: UIViewController {
             switch result {
                 case .success(let isSuccessed):
                     if isSuccessed {
-                        //domb: 이때 사용자의 닉네임을 받아와야하는데 true값만 보내줌.
-                        let nextVC = FindPasswordCompleteViewController()
+                        let nextVC = FindPasswordCompleteViewController(email: email)
                         self.navigationController?.pushViewController(nextVC, animated: true)
                     } else {
                         let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
@@ -96,7 +95,6 @@ final class FindPasswordViewController: UIViewController {
         view.backgroundColor = .systemBackground
         view.addSubview(titleLabel)
         view.addSubview(emailInputView)
-
         view.addSubview(completeButton)
     }
     

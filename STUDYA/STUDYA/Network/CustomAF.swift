@@ -60,7 +60,7 @@ enum RequestPurpose: Requestable {
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudyScheduleGoing)
-    case endStudy(ID)
+    case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
     case update(SingleUserAnAttendanceInformation)
@@ -156,7 +156,7 @@ extension RequestPurpose {
             return "/user/schedule"
         case  .updateStudySchedule:
             return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
-        case .endStudy(let studyID):
+        case .closeStudy(let studyID):
             return "/study/end/\(studyID)"
         case .toggleManagerAuth:
             return "/studyMember/manager"
@@ -175,7 +175,9 @@ extension RequestPurpose {
         case .deleteAnnouncement(let id):
             return "/noti/\(id)"
         case .deleteStudySchedule:
-            return "/study/schedule" //domb: gitbook에서 studyschedule id를 바디로 줄게 아니라 path에 넣어주어야하는건 아닌지.
+            return "/study/schedule"
+        case .leaveStudy(let studyID):
+            return "/studyMember/leave/\(studyID)"
         case .deleteMember(let id):
             return "/studyMember/\(id)"
         case .leaveStudy(let id):

@@ -8,6 +8,8 @@
 import UIKit
 
 class MainSpreadUpTableViewCell: UITableViewCell {
+    
+    static let identifier = "MainSpreadUpTableViewCell"
 
     internal var row = 0 {
         didSet {
@@ -23,8 +25,7 @@ class MainSpreadUpTableViewCell: UITableViewCell {
             }
         }
     }
-    
-    static let identifier = "MainSpreadUpTableViewCell"
+
     private let containerView: RoundableView = {
        
         let v = RoundableView(cornerRadius: 25)

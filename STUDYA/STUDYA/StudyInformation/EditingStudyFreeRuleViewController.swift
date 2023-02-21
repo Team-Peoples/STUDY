@@ -12,6 +12,8 @@ final class EditingStudyFreeRuleViewController: UIViewController {
 
     // MARK: - Properties
     
+    static let identifier = "EditingStudyFreeRuleViewController"
+    
     var studyViewModel = StudyViewModel()
     
     @IBOutlet weak var freeRuletextView: UITextView!

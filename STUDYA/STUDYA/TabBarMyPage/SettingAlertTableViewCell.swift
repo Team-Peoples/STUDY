@@ -10,6 +10,7 @@ import UIKit
 final class SettingAlertTableViewCell: UITableViewCell {
     
     static let identifier = "SettingAlertTableViewCell"
+    
     internal var titleText: String? {
         didSet {
             titleLabel.text = titleText

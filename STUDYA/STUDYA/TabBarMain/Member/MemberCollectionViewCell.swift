@@ -10,7 +10,7 @@ import UIKit
 final class MemberCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "MemberCollectionViewCell"
-
+    
     internal var member: Member? {
         didSet {
             guard let member = member else { return }

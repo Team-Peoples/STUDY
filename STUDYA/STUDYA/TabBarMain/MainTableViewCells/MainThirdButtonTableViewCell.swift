@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class MainThirdButtonTableViewCell: UITableViewCell {
-
+    
     static let identifier = "MainThirdButtonTableViewCell"
     
     internal var schedule: StudyScheduleComing? {
