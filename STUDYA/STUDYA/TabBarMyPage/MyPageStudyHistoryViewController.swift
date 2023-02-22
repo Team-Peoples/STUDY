@@ -9,8 +9,7 @@ import UIKit
 
 final class MyPageStudyHistoryViewController: UIViewController {
     
-    internal var studyHistoryList: [StudyHistory]?
-    
+    private var studyListIParticipatedIn: [Study] = []
     private let tableView: UITableView = {
        
         let tableView = UITableView(frame: .zero)
@@ -25,8 +24,10 @@ final class MyPageStudyHistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        studyHistoryList = [StudyHistory(name: "토익 영단어1", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어2", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어3", start: "2022.01.01", end: "2022.03.01", auth: "어")]
-                
+        getStudyIParticipatedIn { studyList in
+            self.studyListIParticipatedIn = studyList
+        }
+        
         view.backgroundColor = .systemBackground
         
         title = "참여한 스터디"
@@ -37,17 +38,28 @@ final class MyPageStudyHistoryViewController: UIViewController {
         view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, bottom: view.bottomAnchor, leading: view.leadingAnchor, trailing: view.trailingAnchor)
     }
+    
+    private func getStudyIParticipatedIn(_ successHandler: @escaping ([Study]) -> Void) {
+        Network.shared.getStudyIParticipatedIn { result in
+            switch result {
+            case .success(let StudyParticipatedIn):
+                successHandler(StudyParticipatedIn)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
 
 extension MyPageStudyHistoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        studyHistoryList!.count
+        studyListIParticipatedIn.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyHistoryTableViewCell.identifier, for: indexPath) as? StudyHistoryTableViewCell else { return StudyHistoryTableViewCell() }
         
-        cell.studyHistory = studyHistoryList?[indexPath.row]
+        cell.studyIParticipatedIn = studyListIParticipatedIn[indexPath.row]
         
         return cell
     }

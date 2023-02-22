@@ -91,6 +91,7 @@ enum RequestPurpose: Requestable {
     case getMyAttendanceBetween(DashedDate, DashedDate, ID)
     case getAllMembersAttendanceOn(DashedDate, ID)
     case getAllMySchedules
+    case getStudyParticipatedIn
 }
 
 extension RequestPurpose {
@@ -144,8 +145,6 @@ extension RequestPurpose {
             return "/study/\(studyID)"
         case .updateUserRole:
             return "/studyMember/memberRole"
-            
-            
         case .updateAnnouncement:
             return "/noti"
         case .updatePinnedAnnouncement:
@@ -212,6 +211,8 @@ extension RequestPurpose {
             return "/attendance/master"
         case .getAllMySchedules:
             return "/user/schedule"
+        case .getStudyParticipatedIn:
+            return "study/participation"
         }
     }
     
@@ -223,7 +224,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules, .getStudyParticipatedIn : return .get
         }
     }
     

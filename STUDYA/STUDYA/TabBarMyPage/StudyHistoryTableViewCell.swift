@@ -11,15 +11,15 @@ final class StudyHistoryTableViewCell: UITableViewCell {
     
     static let identifier = "StudyHistoryTableViewCell"
     
-    internal var studyHistory: StudyHistory? {
-        didSet {
-            titleLabel.text = studyHistory?.name
-            durationLabel.text = "\(studyHistory?.start ?? "")~\(studyHistory?.end ?? "")"
+    internal var studyIParticipatedIn: Study? {
+        didSet(study) {
+            titleLabel.text = study?.studyName
+            durationLabel.text = "\(study?.createdAt ?? "")~\(study?.closedAt ?? "진행중")"
         }
     }
     
-    private let titleLabel = CustomLabel(title: "스터디", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
-    private let durationLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 12)
+    private let titleLabel = CustomLabel(title: String(), tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
+    private let durationLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,17 +33,5 @@ final class StudyHistoryTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-struct StudyHistory {
-    let name: String
-    let start: String
-    let end: String?
-    let auth: String
-    
-    enum CodingKeys: String, CodingKey {
-        case name, start, end
-        case auth = "po"
     }
 }

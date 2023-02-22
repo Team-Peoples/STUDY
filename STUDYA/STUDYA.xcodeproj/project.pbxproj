@@ -524,11 +524,11 @@
 			children = (
 				D3F2C6F428B27DA700CEC549 /* MyPageMainViewController.swift */,
 				D398B46F28B5F20700598B03 /* MyPageSettingAlertTableViewController.swift */,
-				D398B46928B4C23A00598B03 /* MyPageStudyHistoryViewController.swift */,
+				D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */,
 				D3F2C6F628B282E900CEC549 /* MyPageTableViewCell.swift */,
 				D398B47128B7617F00598B03 /* MyPageInformationViewController.swift */,
 				D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */,
-				D398B46D28B5E14E00598B03 /* SettingAlertTableViewCell.swift */,
+				D398B46928B4C23A00598B03 /* MyPageStudyHistoryViewController.swift */,
 				D398B46B28B4C29000598B03 /* StudyHistoryTableViewCell.swift */,
 				D398B47328B7AEAF00598B03 /* TreatingPersonalDataViewController.swift */,
 			);

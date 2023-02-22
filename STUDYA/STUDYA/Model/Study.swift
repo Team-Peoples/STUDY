@@ -9,11 +9,13 @@ import Foundation
 
 struct Study: Codable, Equatable {
     var id: ID?
-    var studyOn, studyOff: Bool
+    var studyOn, studyOff: Bool?
     var ownerNickname: String?
     var studyName, category, studyIntroduction, freeRule: String?
     let isBlocked, isPaused: Bool?
     var generalRule: GeneralStudyRule?
+    var createdAt: String?
+    var closedAt: String?
     
     var formIsFilled: Bool {
         return category != nil && studyName != nil && studyName != "" && (studyOn != false || studyOff != false) && studyIntroduction != nil && studyIntroduction != ""
@@ -53,6 +55,8 @@ struct Study: Codable, Equatable {
         case isPaused = "studyPause"
         case generalRule = "studyRule"
         case studyOn, studyOff
+        case createdAt = "createdAt"
+        case closedAt = "finishAt"
     }
 
     init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: 0), absence: Absence(time: nil, fine: 0), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
@@ -78,7 +82,7 @@ struct GeneralStudyRule: Codable, Equatable {
     var absence: Absence
     var deposit: Deposit
     var excommunication: Excommunication
-
+    
     enum CodingKeys: String, CodingKey {
         case lateness, deposit
         case absence = "absent"
@@ -105,7 +109,7 @@ struct Lateness: Codable, Equatable {
 
 struct Excommunication: Codable, Equatable {
     var lateness, absence: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case lateness
         case absence = "absent"
@@ -165,20 +169,20 @@ enum StudyCategory: String, CaseIterable {
     
     var indexPath: IndexPath {
         switch self {
-            case .language:
-                return IndexPath(item: 0, section: 0)
-            case .dev_prod_design:
-                return IndexPath(item: 1, section: 0)
-            case .project:
-                return IndexPath(item: 2, section: 0)
-            case .getJob:
-                return IndexPath(item: 3, section: 0)
-            case .certificate:
-                return IndexPath(item: 4, section: 0)
-            case .pastime:
-                return IndexPath(item: 5, section: 0)
-            case .etc:
-                return IndexPath(item: 6, section: 0)
+        case .language:
+            return IndexPath(item: 0, section: 0)
+        case .dev_prod_design:
+            return IndexPath(item: 1, section: 0)
+        case .project:
+            return IndexPath(item: 2, section: 0)
+        case .getJob:
+            return IndexPath(item: 3, section: 0)
+        case .certificate:
+            return IndexPath(item: 4, section: 0)
+        case .pastime:
+            return IndexPath(item: 5, section: 0)
+        case .etc:
+            return IndexPath(item: 6, section: 0)
         }
     }
 }
@@ -190,12 +194,12 @@ enum OnOff: String {
     
     var translatedKorean: String {
         switch self {
-            case .on:
-                return "온라인"
-            case .off:
-                return "오프라인"
-            case .onoff:
-                return "온라인/오프라인"
+        case .on:
+            return "온라인"
+        case .off:
+            return "오프라인"
+        case .onoff:
+            return "온라인/오프라인"
         }
     }
 }

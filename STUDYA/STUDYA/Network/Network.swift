@@ -417,8 +417,6 @@ struct Network {
         }
     }
     
-    // MARK: - User Schedule
-    
     // MARK: - Study
     
     func getAllStudies(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
@@ -622,6 +620,30 @@ struct Network {
             }
         }
     }
+    
+    func getStudyIParticipatedIn(completion: @escaping (Result<[Study], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getStudyParticipatedIn, interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studyIParticipatedIn = jsonDecode(type: [Study].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    print(response.data?.toDictionary())
+                    return
+                }
+                
+                completion(.success(studyIParticipatedIn))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    // MARK: - Member
     
     func getAllMembers(studyID: Int, completion: @escaping (Result<MemberListResponse, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
@@ -1103,6 +1125,7 @@ struct Network {
     }
     
     // MARK: - My Schedule
+    
     func getAllMySchedules(completion: @escaping (Result<[Schedule],PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMySchedules, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {

@@ -129,8 +129,8 @@ final class EditingStudyFormViewController: UIViewController {
         studyNameTextView.text = study.studyName
         studyIntroductionTextView.text = study.studyIntroduction
         
-        onlineButton.isSelected = study.studyOn ? true : false
-        offlineButton.isSelected = study.studyOff ? true : false
+        onlineButton.isSelected = study.studyOn! ? true : false
+        offlineButton.isSelected = study.studyOff! ? true : false
         
         if studyNameTextView.text != "" {
             studyNameTextView.hidePlaceholder(true)

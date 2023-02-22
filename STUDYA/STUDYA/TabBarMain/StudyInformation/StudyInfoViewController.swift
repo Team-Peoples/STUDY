@@ -340,6 +340,8 @@ final class StudyInfoViewController: SwitchableViewController {
             studyTypeLabel.text = OnOff.on.translatedKorean
         case (false, false):
             studyTypeLabel.text = nil
+        default:
+            return
         }
     }
     

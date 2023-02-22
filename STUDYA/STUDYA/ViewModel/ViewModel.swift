@@ -59,8 +59,6 @@ class SignInViewModel: ViewModel {
 
 // MARK: - StudyViewModel
 
-// MARK: - StudyViewModel
-
 class StudyViewModel: ViewModel {
     typealias Model = Study
     
