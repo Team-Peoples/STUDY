@@ -21,19 +21,6 @@ struct Schedule: Codable {
     }
 }
 
-struct ScheduleAttendanceInformation: Codable {
-    let userID: UserID
-    let attendanceStatus: Attendance
-    let reason: String
-    let fine: Int
-
-    enum CodingKeys: String, CodingKey {
-        case userID = "userId"
-        case attendanceStatus = "attendStatus"
-        case reason, fine
-    }
-}
-
 struct StudyScheduleComing: Codable {
     let studyName: String?
     let studyScheduleID: Int?
@@ -117,12 +104,14 @@ enum RepeatOption: String, Codable {
     case everyWeek = "매주"
     case everyTwoWeeks = "2주 마다"
     case everyMonth = "매달"
+    case norepeat = ""
     
     enum CodingKeys: String, CodingKey {
         case everyDay
         case everyWeek
         case everyTwoWeeks = "everyTwoWeek"
         case everyMonth
+        case norepeat
     }
     
     var translatedKorean: String {
@@ -131,6 +120,7 @@ enum RepeatOption: String, Codable {
         case .everyWeek: return "매주"
         case .everyTwoWeeks: return "2주 마다"
         case .everyMonth: return "매달"
+        case .norepeat: return ""
         }
     }
 }

@@ -105,3 +105,14 @@ struct SingleUserAnAttendanceInformation: Codable {
         case attendanceID = "attendanceId"
     }
 }
+
+struct AttendanceInformation: Codable {
+    let userID, attendanceStatus, reason: String?
+    let fine: Int
+
+    enum CodingKeys: String, CodingKey {
+        case userID = "userId"
+        case attendanceStatus = "attendStatus"
+        case reason, fine
+    }
+}

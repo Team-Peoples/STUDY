@@ -16,9 +16,10 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
             isManager = currentStudyOverall.isManager
-            mainTableView.reloadData()
         }
     }
+    private var imminentAttendanceInformation: AttendanceInformation?
+    
     private var notification: String? {
         didSet {
             if notification != nil {
@@ -84,6 +85,25 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        Network.shared.createStudySchedule(StudyScheduleGoing(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-22", repeatEndDate: "", startTime: "22:14", endTime: "22:16", repeatOption: .norepeat)) { result in
+//            switch result {
+//            case .success:
+//                print("suc")
+//            case .failure:
+//                print("fa")
+//            }
+//        }
+//
+//        Network.shared.joinStudy(id: 110) { result in
+//            switch result {
+//            case .success(let suc):
+//                print(suc)
+//            case .failure(let err):
+//                print(err)
+//            }
+//        }
+        
+        
         getUserInformationAndStudies()
         
         view.backgroundColor = .systemBackground
@@ -216,10 +236,11 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         Network.shared.getAllStudies { result in
             switch result {
             case .success(let studies):
-                if let firstStudy = studies.first {
+                
+                if let firstStudy = studies.first, let studyID = firstStudy.id {
                     
                     self.myStudyList = studies
-                    self.getCurrentStudyOverall(study: firstStudy)
+                    self.getCurrentStudyOverall(with: studyID)
                     
                 } else {
                     self.configureViewWhenNoStudy()
@@ -230,21 +251,91 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         }
     }
     
-    private func getCurrentStudyOverall(study: Study) {
-        guard let studyID = study.id else { return }
+    private func getCurrentStudyOverall(with studyID: ID) {
         Network.shared.getStudy(studyID: studyID) { result in
             
             switch result {
             case .success(let studyOverall):
-                self.isManager = studyOverall.isManager
                 
+                self.isManager = studyOverall.isManager
                 self.currentStudyOverall = studyOverall
-                DispatchQueue.main.async {
-                    self.configureViewWhenYesStudy()
-                }
+                
+                self.configureViewWhenYesStudy()
+                self.reloadTableView(with: studyOverall)
+                
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
+        }
+    }
+    
+    private func configureViewWhenYesStudy() {
+        DispatchQueue.main.async { [self] in
+            configureTableView()
+            configureFloatingButtonIfManagerMode()
+        }
+    }
+    
+    private func configureTableView() {
+        view.addSubview(mainTableView)
+        mainTableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func configureFloatingButtonIfManagerMode() {
+        guard isManager else { return }
+        
+        configureFloatingButton()
+    }
+    
+    private func reloadTableView(with studyOverall: StudyOverall) {
+        if let id = studyOverall.studySchedule?.studyScheduleID {
+            reloadTableViewAfterGettingAttendanceInformation(by: id)
+        } else {
+            reloadTableViewWithNoSchedule()
+        }
+    }
+    
+    private func reloadTableViewAfterGettingAttendanceInformation(by scheduleID: ID) {
+        guard let thirdCell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
+        
+        getImminentScheudleAttendanceInformation(with: scheduleID) {
+            self.insertScheduleAndAttendanceInformation(to: thirdCell)
+            self.mainTableView.reloadData()
+        }
+    }
+    
+    private func reloadTableViewWithNoSchedule() {
+        guard let thirdCell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
+        
+        self.imminentAttendanceInformation = nil
+        self.insertScheduleAndAttendanceInformation(to: thirdCell)
+        self.mainTableView.reloadData()
+    }
+    
+    private func getImminentScheudleAttendanceInformation(with id: ID, completion: @escaping () -> ()) {
+        Network.shared.getImminentScheduleAttendance(scheduleID: id) { result in
+            switch result {
+            case .success(let attendanceInfo):
+                self.save(attendanceInfo)
+                completion()
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
+    private func insertScheduleAndAttendanceInformation(to cell: MainThirdButtonTableViewCell) {
+        cell.attendanceInformation = self.imminentAttendanceInformation
+        cell.schedule = self.currentStudyOverall?.studySchedule
+    }
+    
+    private func save(_ attendanceInfo: AttendanceInformation) {
+        if attendanceInfo.attendanceStatus != nil {
+            self.imminentAttendanceInformation = attendanceInfo
+        } else {
+            self.imminentAttendanceInformation = nil
         }
     }
     
@@ -285,16 +376,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         }
     }
     
-    private func configureViewWhenYesStudy() {
-        view.addSubview(mainTableView)
-        mainTableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        guard isManager else { return }
-        
-        configureFloatingButton()
-    }
+    
     
     private func configureFloatingButton() {
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true

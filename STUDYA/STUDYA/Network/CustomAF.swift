@@ -91,6 +91,7 @@ enum RequestPurpose: Requestable {
     case getMyAttendanceBetween(DashedDate, DashedDate, ID)
     case getAllMembersAttendanceOn(DashedDate, ID)
     case getAllMySchedules
+    case getImminentScheduleAttendnace(ID)
 }
 
 extension RequestPurpose {
@@ -136,6 +137,8 @@ extension RequestPurpose {
             return "/attendance"
         case .createMySchedule:
             return "/user/schedule"
+        case .getImminentScheduleAttendnace(let id):
+            return "/study/schedule/\(id)"
             
             //    HTTPMethod: PUT
         case .updateUser:
@@ -204,8 +207,8 @@ extension RequestPurpose {
             return "/signup/email/auth"
         case .getAllStudyMembers(let studyID):
             return "/studyMember/\(studyID)"
-        case .getAttendanceCertificactionCode:
-            return "/attendance/checkNumber"
+        case .getAttendanceCertificactionCode(let scheduleID):
+            return "/attendance/checkNumber/\(scheduleID)"
         case .getMyAttendanceBetween:
             return "/attendance"
         case .getAllMembersAttendanceOn:
@@ -223,7 +226,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules, .getImminentScheduleAttendnace : return .get
         }
     }
     
@@ -242,8 +245,6 @@ extension RequestPurpose {
             return .body(["notificationSubject" : title,
                           "notificationContents" : content,
                           "studyId" : id])
-        case .getAttendanceCertificactionCode(let id):
-            return .body(["studyScheduleId" : id])
         case .attend(let scheduleID, let checkCode):
             return .body(["studyScheduleId" : scheduleID,
                           "checkNumber" : checkCode])
@@ -304,7 +305,6 @@ extension RequestPurpose {
             return .queryString(["userId": id])
         case .getJWTToken(let SNSToken, _):
             return .queryString(["token": SNSToken])
-            
 // None
         default:
             return .none

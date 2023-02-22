@@ -945,7 +945,7 @@ struct Network {
     
     func getAttendanceCertificationCode(scheduleID: ID, completion: @escaping (Result<Int, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAttendanceCertificactionCode(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
+            print("⚡️", response.response?.statusCode)
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -967,7 +967,7 @@ struct Network {
         }
     }
     
-    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<ScheduleAttendanceInformation, PeoplesError>) -> Void) {
+    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<AttendanceInformation, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.attend(scheduleID, code), interceptor: AuthenticationInterceptor()).validate().response {
             response in
             
@@ -978,7 +978,8 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let attendanceInformation = jsonDecode(type: ScheduleAttendanceInformation.self, data: data) else {
+                guard let data = response.data, let attendanceInformation = jsonDecode(type: AttendanceInformation.self, data: data) else {
+                    
                     completion(.failure(.decodingError))
                     return
                 }
@@ -1205,6 +1206,28 @@ struct Network {
             case 403:
                 completion(.failure(.youAreNotOwner))
                 
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func getImminentScheduleAttendance(scheduleID: ID, completion: @escaping (Result<AttendanceInformation, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getImminentScheduleAttendnace(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceInfo = jsonDecode(type: AttendanceInformation.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    print(String(data: response.data!, encoding: .utf8), "❌")
+                    return
+                }
+                
+                completion(.success(attendanceInfo))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
