@@ -7,7 +7,7 @@
 
 import UIKit
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
-final class MainViewController: SwitchableViewController, SwitchStatusGivable {
+final class MainViewController: SwitchableViewController {
     // MARK: - Properties
     
     internal var nickName: String?
@@ -85,7 +85,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        Network.shared.createStudySchedule(StudyScheduleGoing(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-22", repeatEndDate: "", startTime: "22:14", endTime: "22:16", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-22", repeatEndDate: "", startTime: "22:14", endTime: "22:16", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -298,19 +298,15 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     }
     
     private func reloadTableViewAfterGettingAttendanceInformation(by scheduleID: ID) {
-        guard let thirdCell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
-        
         getImminentScheudleAttendanceInformation(with: scheduleID) {
-            self.insertScheduleAndAttendanceInformation(to: thirdCell)
+            self.insertScheduleAndAttendanceInformationIntoThirdCell()
             self.mainTableView.reloadData()
         }
     }
     
     private func reloadTableViewWithNoSchedule() {
-        guard let thirdCell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
-        
         self.imminentAttendanceInformation = nil
-        self.insertScheduleAndAttendanceInformation(to: thirdCell)
+        self.insertScheduleAndAttendanceInformationIntoThirdCell()
         self.mainTableView.reloadData()
     }
     
@@ -326,7 +322,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         }
     }
     
-    private func insertScheduleAndAttendanceInformation(to cell: MainThirdButtonTableViewCell) {
+    private func insertScheduleAndAttendanceInformationIntoThirdCell() {
+        guard let cell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
+        
         cell.attendanceInformation = self.imminentAttendanceInformation
         cell.schedule = self.currentStudyOverall?.studySchedule
     }
@@ -440,15 +438,6 @@ extension MainViewController: UITableViewDataSource {
             cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchObservableDelegate = self
             
-            if flag {
-                cell.didAttend = true
-                cell.attendance = .attended
-                
-            } else {
-                cell.didAttend = true
-                cell.attendance = .absent
-            }
-            
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
@@ -553,7 +542,9 @@ extension MainViewController: UITableViewDelegate {
 //        }
 //}
 
-protocol SwitchStatusGivable: SwitchableViewController {
+protocol SwitchStatusGivable {
+    var isSwitchOn: Bool { get set }
+    
     func getSwtichStatus() -> Bool
 }
 

@@ -17,7 +17,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         }
     }
     
-    internal var schedule: StudyScheduleComing? {
+    internal var schedule: StudySchedule? {
         didSet {
             guard let schedule = schedule else { isScheduleExist = false; return }
             

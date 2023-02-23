@@ -12,7 +12,7 @@ class MyScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MyScheduleTableViewCell"
     internal var numberOfRows: Int?
-    internal var schedule: Schedule? {
+    internal var schedule: MySchedule? {
         didSet {
             todoTextView.text = schedule == nil ? placeholder : schedule?.content
             todoTextView.textColor = schedule == nil ? UIColor.appColor(.ppsGray1) : .appColor(.ppsBlack)

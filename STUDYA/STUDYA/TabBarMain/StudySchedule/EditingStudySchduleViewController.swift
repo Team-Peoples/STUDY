@@ -72,9 +72,9 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(studySchedule: StudyScheduleComing) {
+    init(studySchedule: StudySchedule) {
         
-        editingStudyScheduleViewModel.studySchedule = EditingStudySchduleViewController.studyScheduleGoingConverted(from: studySchedule)
+        editingStudyScheduleViewModel.studySchedule = EditingStudySchduleViewController.studySchedulePostingConverted(from: studySchedule)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -321,7 +321,7 @@ final class EditingStudySchduleViewController: UIViewController {
         containerView.addSubview(repeatEndDateSelectableView)
     }
     
-    private static func studyScheduleGoingConverted(from studySchedule: StudyScheduleComing) -> StudyScheduleGoing {
+    private static func studySchedulePostingConverted(from studySchedule: StudySchedule) -> StudySchedulePosting {
         
         let studyScheduleID = studySchedule.studyScheduleID
         let topic = studySchedule.topic
@@ -331,10 +331,10 @@ final class EditingStudySchduleViewController: UIViewController {
         let startTime = DateFormatter.timeFormatter.string(from: studySchedule.startDateAndTime)
         let endTime = DateFormatter.timeFormatter.string(from: studySchedule.endDateAndTime)
 
-        return StudyScheduleGoing(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: "", startTime: startTime, endTime: endTime)
+        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: "", startTime: startTime, endTime: endTime)
     }
     
-    private func configureUI(_ studySchedule: StudyScheduleGoing) {
+    private func configureUI(_ studySchedule: StudySchedulePosting) {
         
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)

@@ -118,7 +118,7 @@ struct StudyOverall: Codable {
     let study: Study
     let isManager: Bool
     let totalFine, attendedCount, absentCount, totalStudyHeldCount, lateCount, allowedCount: Int
-    let studySchedule: StudyScheduleComing?
+    let studySchedule: StudySchedule?
     let isOwner: Bool
     
     enum CodingKeys: String, CodingKey {

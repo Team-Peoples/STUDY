@@ -167,11 +167,11 @@ class GeneralRuleViewModel {
 // MARK: - StudyAllScheduleViewModel
 
 class StudyAllScheduleViewModel: ViewModel {
-    typealias Model = [StudyScheduleComing]
+    typealias Model = [StudySchedule]
     
     var allStudyAllSchedule: AllStudyAllSchedule {
         didSet {
-            var studyScheduleList = [StudyScheduleComing]()
+            var studyScheduleList = [StudySchedule]()
             
             allStudyAllSchedule.forEach { (studyID, studySchedules) in
                 studySchedules.forEach({ studySchedule in
@@ -185,7 +185,7 @@ class StudyAllScheduleViewModel: ViewModel {
         }
     }
     
-    var studySchedules: [StudyScheduleComing] = [] {
+    var studySchedules: [StudySchedule] = [] {
         didSet {
             handler?(studySchedules)
         }
@@ -213,13 +213,13 @@ class StudyAllScheduleViewModel: ViewModel {
         }
     }
     
-    func studySchedule(at selectedDateComponents: DateComponents?) -> [StudyScheduleComing] {
+    func studySchedule(at selectedDateComponents: DateComponents?) -> [StudySchedule] {
         let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDateComponents)
         
         return studyScheduleAtSelectedDate
     }
 
-    func studySchedule(of studyID: ID, at selectedDateComponents: DateComponents?) -> [StudyScheduleComing]? {
+    func studySchedule(of studyID: ID, at selectedDateComponents: DateComponents?) -> [StudySchedule]? {
         let studySchedule = studySchedules.filter { $0.studyID == "\(studyID)"}
         let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDateComponents)
 
@@ -239,7 +239,7 @@ class StudyAllScheduleViewModel: ViewModel {
     
     // MARK: - Helper
     
-    private func filtering(_ studySchedule: [StudyScheduleComing], at selectedDateComponents: DateComponents?) -> [StudyScheduleComing] {
+    private func filtering(_ studySchedule: [StudySchedule], at selectedDateComponents: DateComponents?) -> [StudySchedule] {
         return studySchedule.filter { studySchedule in
            
             let startDate = studySchedule.startDateAndTime
@@ -255,9 +255,9 @@ class StudyAllScheduleViewModel: ViewModel {
 // MARK: - StudyScheduleViewModel
 
 class StudyScheduleViewModel: ViewModel {
-    typealias Model = StudyScheduleGoing
+    typealias Model = StudySchedulePosting
     
-    var studySchedule: StudyScheduleGoing {
+    var studySchedule: StudySchedulePosting {
         didSet {
             handler?(studySchedule)
         }
@@ -265,7 +265,7 @@ class StudyScheduleViewModel: ViewModel {
     
     var handler: DataHandler?
     
-    init(studySchedule: StudyScheduleGoing = StudyScheduleGoing()) {
+    init(studySchedule: StudySchedulePosting = StudySchedulePosting()) {
         self.studySchedule = studySchedule
     }
     

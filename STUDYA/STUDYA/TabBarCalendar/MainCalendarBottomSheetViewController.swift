@@ -14,7 +14,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
     internal weak var dataSource: UBottomSheetCoordinatorDataSource?
     
-    var studySchedule: [StudyScheduleComing] = [] {
+    var studySchedule: [StudySchedule] = [] {
         didSet {
             
             let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? StudyScheduleCollectionViewCell

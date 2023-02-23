@@ -46,8 +46,8 @@ enum RequestPurpose: Requestable {
     case refreshToken ////9
     case createStudy(Study) //11
     case createAnnouncement(Title, Content, ID) //15
-    case createSchedule(Schedule) //21
-    case createStudySchedule(StudyScheduleGoing)
+    case createSchedule(MySchedule) //21
+    case createStudySchedule(StudySchedulePosting)
     case joinStudy(ID)
     case attend(ID, Int)
     case createMySchedule(String, DashedDate)
@@ -59,7 +59,7 @@ enum RequestPurpose: Requestable {
     case updatePinnedAnnouncement(ID, Bool)   //17
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
-    case updateStudySchedule(StudyScheduleGoing)
+    case updateStudySchedule(StudySchedulePosting)
     case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)

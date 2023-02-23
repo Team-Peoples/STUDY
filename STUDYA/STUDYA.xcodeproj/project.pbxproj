@@ -76,6 +76,7 @@
 		D314A1DB2905190100093C0E /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DA2905190100093C0E /* Extension.swift */; };
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
 		D314D2D929374F2F0018062F /* MainSixthETCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */; };
+		D31C529E29A6745C005933E7 /* MySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31C529D29A6745C005933E7 /* MySchedule.swift */; };
 		D33439A6294D6F23000875C7 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33439A5294D6F23000875C7 /* AppController.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
 		D33DA9F0299DE59D003DD5A9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33DA9EF299DE59D003DD5A9 /* Observable.swift */; };
@@ -221,6 +222,7 @@
 		D314A1DA2905190100093C0E /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
 		D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSixthETCTableViewCell.swift; sourceTree = "<group>"; };
+		D31C529D29A6745C005933E7 /* MySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySchedule.swift; sourceTree = "<group>"; };
 		D33439A5294D6F23000875C7 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
 		D33DA9EF299DE59D003DD5A9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				D33DA9F1299DE5B6003DD5A9 /* User.swift */,
 				D33DA9F5299DE645003DD5A9 /* Announcement.swift */,
 				D33DA9F7299DE6AC003DD5A9 /* StudySchedule.swift */,
+				D31C529D29A6745C005933E7 /* MySchedule.swift */,
 				D33DA9F9299DE6EA003DD5A9 /* Attendance.swift */,
 				D33DA9FB299DE82A003DD5A9 /* Member.swift */,
 				D33DA9EF299DE59D003DD5A9 /* Observable.swift */,
@@ -831,6 +834,7 @@
 				72ED25A82897788900031AD1 /* AppDelegate.swift in Sources */,
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
 				72E5574E29A46CCE007A2CC0 /* ViewController.swift in Sources */,
+				D31C529E29A6745C005933E7 /* MySchedule.swift in Sources */,
 				72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */,
 				D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */,
 				D3C23A7728FA84DF009B53B4 /* MainFourthAnnouncementTableViewCell.swift in Sources */,

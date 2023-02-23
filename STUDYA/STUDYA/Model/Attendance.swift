@@ -42,14 +42,14 @@ enum Attendance: Codable {
     case late
     case absent
     case allowed
-    
+
     enum CodingKEys: String, CodingKey {
         case attended = "ATTENDANCE"
         case late = "LATENESS"
         case absent = "ABSENT"
         case allowed = "HOLD"
     }
-    
+
     var korean: String {
         switch self {
         case .attended:
@@ -65,14 +65,14 @@ enum Attendance: Codable {
     
     var color: AssetColor {
         switch self {
-            case .attended:
-                return .attendedMain
-            case .late:
-                return .lateMain
-            case .absent:
-                return .absentMain
-            case .allowed:
-                return .allowedMain
+        case .attended:
+            return .attendedMain
+        case .late:
+            return .lateMain
+        case .absent:
+            return .absentMain
+        case .allowed:
+            return .allowedMain
         }
     }
     
@@ -107,7 +107,8 @@ struct SingleUserAnAttendanceInformation: Codable {
 }
 
 struct AttendanceInformation: Codable {
-    let userID, attendanceStatus, reason: String?
+    let userID, reason: String?
+    let attendanceStatus: Attendance?
     let fine: Int
 
     enum CodingKeys: String, CodingKey {

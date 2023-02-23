@@ -7,21 +7,7 @@
 
 import UIKit
 
-struct Schedule: Codable {
-    let id: Int?
-    let content: String?
-    let date: String?
-    let status: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case status
-        case id = "scheduleId"
-        case content = "scheduleName"
-        case date = "scheduleDate"
-    }
-}
-
-struct StudyScheduleComing: Codable {
+struct StudySchedule: Codable {
     let studyName: String?
     let studyScheduleID: Int?
     var studyID: StudyID?
@@ -53,7 +39,7 @@ struct StudyScheduleComing: Codable {
     }
 }
 
-struct StudyScheduleGoing: Codable {
+struct StudySchedulePosting: Codable {
     var studyID: Int?
     var studyScheduleID: Int?
     var topic: String?
