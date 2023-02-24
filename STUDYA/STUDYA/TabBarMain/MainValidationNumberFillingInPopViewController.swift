@@ -85,8 +85,12 @@ final class MainValidationNumberFillingInPopViewController: UIViewController {
         case .userNotFound:
             let alert = SimpleAlert(message: "스터디 멤버만 출석체크 할 수 있습니다.")
             self.present(alert, animated: true)
+            
         case .wrongAttendanceCode:
+            HapticManager.shared.hapticNotification(type: .error)
+            
             validationLabel.isHidden = false
+            
             firstField.text = ""
             secondField.text = ""
             thirdField.text = ""

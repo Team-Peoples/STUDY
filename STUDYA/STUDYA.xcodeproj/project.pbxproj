@@ -77,6 +77,7 @@
 		D314A1DD29053FDC00093C0E /* MainSpreadUpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */; };
 		D314D2D929374F2F0018062F /* MainSixthETCTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */; };
 		D31C529E29A6745C005933E7 /* MySchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31C529D29A6745C005933E7 /* MySchedule.swift */; };
+		D3245C1229A8F46400703847 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3245C1129A8F46400703847 /* HapticManager.swift */; };
 		D33439A6294D6F23000875C7 /* AppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33439A5294D6F23000875C7 /* AppController.swift */; };
 		D335C67228A39E2600EEDD79 /* CreatingStudyRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */; };
 		D33DA9F0299DE59D003DD5A9 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33DA9EF299DE59D003DD5A9 /* Observable.swift */; };
@@ -223,6 +224,7 @@
 		D314A1DC29053FDC00093C0E /* MainSpreadUpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainSpreadUpTableViewCell.swift; sourceTree = "<group>"; };
 		D314D2D829374F2F0018062F /* MainSixthETCTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainSixthETCTableViewCell.swift; sourceTree = "<group>"; };
 		D31C529D29A6745C005933E7 /* MySchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySchedule.swift; sourceTree = "<group>"; };
+		D3245C1129A8F46400703847 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		D33439A5294D6F23000875C7 /* AppController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppController.swift; sourceTree = "<group>"; };
 		D335C67128A39E2600EEDD79 /* CreatingStudyRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyRuleViewController.swift; sourceTree = "<group>"; };
 		D33DA9EF299DE59D003DD5A9 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -408,6 +410,7 @@
 				D3C23A5D28EDE685009B53B4 /* KeyChain.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
+				D3245C1129A8F46400703847 /* HapticManager.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -895,6 +898,7 @@
 				D3BF054C28C3C36700AF7D3B /* Notification.swift in Sources */,
 				D3FA79D62944C3BC001F6E5D /* MainSpreadUpDimmingViewController.swift in Sources */,
 				7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */,
+				D3245C1229A8F46400703847 /* HapticManager.swift in Sources */,
 				D398B47228B7617F00598B03 /* MyPageInformationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
