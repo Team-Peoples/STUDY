@@ -24,6 +24,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     private var divider: ButtonStatusDivder?
     
+    internal var attendButtonTapped: ((AttendanceInformation) -> Void) = { info in }
+    
     let allowedSymbol = "allowedSymbol"
     
     private let mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
@@ -67,6 +69,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         vc.getDidAttend = {
             vc.didAttend = self.attendanceInformation == nil ? false : true
         }
+        vc.attendButtonTapped = attendButtonTapped
+        
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
         self.navigatableSwitchObservableDelegate?.present(vc)
@@ -76,7 +80,9 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberFillingInPopViewController.identifier) as! MainValidationNumberFillingInPopViewController
         
+        vc.scheduleID = schedule?.studyScheduleID
         vc.preferredContentSize = CGSize(width: 286, height: 247)
+        vc.attendButtonTapped = attendButtonTapped
         
         navigatableSwitchObservableDelegate?.present(vc)
     }

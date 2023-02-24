@@ -36,6 +36,8 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     }
     
     private var customTransitioningDelegate = TransitioningDelegate()
+    
+    internal var attendButtonTapped: ((AttendanceInformation) -> Void) = { info in }
     internal var getDidAttend = {}
         
     @IBOutlet weak var validationNumberLabel: UILabel!
