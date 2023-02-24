@@ -52,7 +52,7 @@ class StudyScheduleViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.selectionAction = { [self] (date) in
+        calendarView.dateSelectAction = { [self] (date) in
            
             guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: date) else { return }
             self.studyScheduleAtSelectedDate = studySchedule

@@ -92,7 +92,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         let today = Date()
         calendarView.maximumDate = today
         
-        calendarView.selectionAction = { [self] (date) in
+        calendarView.dateSelectAction = { [self] (date) in
             let dateComponents = date.convertToDateComponents([.year, .month, .day])
             if isPrecedingDateTurn {
                 precedingDateComponents = dateComponents

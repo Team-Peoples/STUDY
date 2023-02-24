@@ -35,7 +35,7 @@ final class MainCalendarViewController: UIViewController {
         }
         
         calendarView.select(date: Date())
-        calendarView.selectionAction = { (date) in
+        calendarView.dateSelectAction = { (date) in
             NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
         }
         

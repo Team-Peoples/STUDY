@@ -48,7 +48,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         let today = Date()
         calendarView.maximumDate = today
         
-        calendarView.selectionAction = { [self] (date) in
+        calendarView.dateSelectAction = { [self] (date) in
             guard let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day]) else { return }
             let dateComponents = date.convertToDateComponents([.year, .month, .day])
             

@@ -53,7 +53,7 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.selectionAction = { (date) in
+        calendarView.dateSelectAction = { (date) in
             self.calendarIsSelected(date: date)
         }
         calendarView.select(date: selectedDate)

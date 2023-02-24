@@ -9,22 +9,17 @@ import UIKit
 import SnapKit
 import FSCalendar
 
-class CustomCalendarView: UIView {
+final class CustomCalendarView: UIView {
     
     // MARK: - Properties
    
-    var 날짜별_갯수별_스터디아이디컬러: [DateComponents: ID]?
+//    var 날짜별_갯수별_스터디아이디컬러: [DateComponents: ID]?
     var minimumDate: Date?
     var maximumDate: Date?
-    var notificationName: Notification.Name?
-    var selectionAction: ((Date) -> Void) = {(Date) in }
+    
+    var dateSelectAction: ((Date) -> Void) = {(Date) in }
+    
     private(set) lazy var selectedDate: Date? = calendar.selectedDate
-    
-    private let datesWithMultipleEvents = [String]()
-    
-    weak var CalendarDelegate: FSCalendarDelegate!
-    weak var CalendarDataSource: FSCalendarDataSource!
-    
     private let calendar = FSCalendar()
     
     /// CalendarHeaderView
@@ -41,7 +36,7 @@ class CustomCalendarView: UIView {
         
         return titleLabel
     }()
-    lazy var leftButton: UIButton = {
+    private lazy var leftButton: UIButton = {
         
         let button = UIButton(type: .custom)
         
@@ -52,7 +47,7 @@ class CustomCalendarView: UIView {
         
         return button
     }()
-    lazy var rightButton: UIButton = {
+    private lazy var rightButton: UIButton = {
         
         let button = UIButton(type: .custom)
         
@@ -63,8 +58,6 @@ class CustomCalendarView: UIView {
         
         return button
     }()
-    
-    
     private let weekdaySeparater = UIView(backgroundColor: .appColor(.keyColor3))
     
     // MARK: - Life Cycle
@@ -101,6 +94,7 @@ class CustomCalendarView: UIView {
         calendar.setCurrentPage(previousPage, animated: true)
     }
     
+    // 해당날짜를 선택된 것으로 표시해주는 메소드
     func select(date: Date) {
         calendar.select(date)
     }
@@ -229,11 +223,12 @@ extension CustomCalendarView: FSCalendarDataSource {
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
         let eventDay = date.convertToDateComponents([.year, .month, .day])
         // 헤당 날짜의 일정 갯수
-        let studySchedules = 날짜별_갯수별_스터디아이디컬러?.filter { (date, id) in
-            date == eventDay
-        }
-        let studySchedulesCount = studySchedules?.count
-        return studySchedulesCount ?? 0
+//        let studySchedules = 날짜별_갯수별_스터디아이디컬러?.filter { (date, id) in
+//            date == eventDay
+//        }
+//        let studySchedulesCount = studySchedules?.count
+//        return studySchedulesCount ?? 0
+        return 0
     }
 }
 
@@ -248,13 +243,15 @@ extension CustomCalendarView: FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
-        selectionAction(date)
+        dateSelectAction(date)
         
+        // 현재 캘린더에서 보이는 이전달 또는 다음달의 날짜를 누르면 해당 달로 이동하도록 하는 부분
         if monthPosition == .previous || monthPosition == .next {
             calendar.setCurrentPage(date, animated: true)
         }
     }
     
+    // 캘린더의 오늘을 표시하는 부분
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
         
         let dateComponents = date.convertToDateComponents([.year, .month, .day])
@@ -272,13 +269,8 @@ extension CustomCalendarView: FSCalendarDelegate {
 extension CustomCalendarView: FSCalendarDelegateAppearance {
 
     // 스터디 스케쥴 북마크컬러에따라 컬러 지정
-    
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-        let key = DateFormatter().string(from: date)
-        if self.datesWithMultipleEvents.contains(key) {
-            // domb: 스케쥴의 bookmark컬러 가져와서 리턴
-            return [UIColor.magenta, UIColor.black]
-        }
+
         return nil
     }
     
@@ -294,7 +286,7 @@ extension CustomCalendarView: FSCalendarDelegateAppearance {
 
 // MARK: - CustomCalendarCell
 
-class CustomCalendarCell: FSCalendarCell {
+final class CustomCalendarCell: FSCalendarCell {
     
     // MARK: - Properties
     
