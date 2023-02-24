@@ -13,7 +13,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     
     var precedingDate = Date() - 2000000 //임시
     var followingDate = Date()
-    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToDateComponents([.year, .month, .day, .hour, .minute]) {
+    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let precedingDateComponents = precedingDateComponents,
@@ -24,7 +24,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             precedingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    lazy var followingDateComponents: DateComponents? = followingDate.convertToDateComponents([.year, .month, .day, .hour, .minute]) {
+    lazy var followingDateComponents: DateComponents? = followingDate.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let followingDateComponents = followingDateComponents,
@@ -68,8 +68,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         
         return s
     }()
-    private lazy var calendarView = PeoplesCalendarView()
-    private lazy var selectionSingleDate = UICalendarSelectionSingleDate(delegate: self)
+    private lazy var calendarView = CustomCalendarView()
     private let doneButton = BrandButton(title: Constant.OK, isBold: true, isFill: false, fontSize: 16, height: 40)
     
     // MARK: - Life Cycle
@@ -88,9 +87,33 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectionSingleDate.setSelected(precedingDateComponents, animated: true)
-        calendarView.selectionBehavior = selectionSingleDate
+        calendarView.select(date: precedingDate)
         
+        let today = Date()
+        calendarView.maximumDate = today
+        
+        calendarView.selectionAction = { [self] (date) in
+            let dateComponents = date.convertToDateComponents([.year, .month, .day])
+            if isPrecedingDateTurn {
+                precedingDateComponents = dateComponents
+                enableFollowingButton()
+                doneButton.fillOut(title: Constant.OK)
+                doneButton.isEnabled = false
+                isPrecedingDateTurn = false
+            } else {
+                if date < precedingDate {
+                    precedingDateComponents = dateComponents
+                    doneButton.fillOut(title: Constant.OK)
+                    doneButton.isEnabled = false
+                } else {
+                    followingDateComponents = dateComponents
+                    doneButton.fillIn(title: Constant.OK)
+                    doneButton.isEnabled = true
+                }
+            }
+        }
+        
+
         dimmingViewButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
@@ -188,41 +211,5 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             make.leading.trailing.bottom.equalTo(popUpContainerView).inset(20)
             make.top.greaterThanOrEqualTo(calendarView.snp.bottom).offset(20)
         }
-    }
-}
-
-extension AttendancePopUpPeriodCalendarViewController: UICalendarSelectionSingleDateDelegate {
-    
-    func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-
-        if isPrecedingDateTurn {
-            precedingDateComponents = dateComponents
-            enableFollowingButton()
-            doneButton.fillOut(title: Constant.OK)
-            doneButton.isEnabled = false
-            isPrecedingDateTurn = false
-        } else {
-            if let date = dateComponents?.convertToDate(),
-               let precedingDate = precedingDateComponents?.convertToDate(),
-               date < precedingDate {
-                   precedingDateComponents = dateComponents
-                doneButton.fillOut(title: Constant.OK)
-                doneButton.isEnabled = false
-            } else {
-                followingDateComponents = dateComponents
-                doneButton.fillIn(title: Constant.OK)
-                doneButton.isEnabled = true
-            }
-        }
-        
-    }
-    
-    func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
-        let today = Date()  //여기서는 오늘 이후에는 선택해봤자 의미가 없기 땜에 오늘이 맞음.
-//        let todayDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: today)
-        
-        guard let dateComponents = dateComponents, let selectedDate = dateComponents.convertToDate() else { return false }
-        
-        if today < selectedDate { return false } else { return true }
     }
 }

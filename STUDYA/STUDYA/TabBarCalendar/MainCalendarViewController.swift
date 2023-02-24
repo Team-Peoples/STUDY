@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FSCalendar
 
 @available(iOS 16.0, *)
 
@@ -13,31 +14,29 @@ final class MainCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let datesWithMultipleEvents = [String]()
+    
     let studyAllScheduleViewModel = StudyAllScheduleViewModel()
     
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
     
-    let calendarView = PeoplesCalendarView()
+    let calendarView = CustomCalendarView()
     let calendarBottomSheetVC = MainCalendarBottomSheetViewController()
-    
-    lazy var selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         studyAllScheduleViewModel.getAllStudyAllSchedule()
-        
-        calendarView.delegate = self
-        calendarView.selectionBehavior = selectionDelegate
-        
-        selectionDelegate.selectedDate?.calendar = Calendar.current
-        selectionDelegate.setSelected(Date().convertToDateComponents([.year, .month, .day, .hour, .minute, .weekday]), animated: true)
-        
         studyAllScheduleViewModel.bind { [self] _ in
-            let visibleDateComponents = calendarView.visibleDateComponents
-            calendarView.reloadDecorations(forDateComponents: visibleDateComponents.getAlldaysDateComponents(), animated: true)
+            // 데이터를 가져와서 달력의 해당 날짜에 스터디 스케쥴이 있으면 점 개수, 북마크컬러로 보여주기
+            // 캘린더 날을 선택하면 노티로 각 테이블 뷰에 전달하기
+        }
+        
+        calendarView.select(date: Date())
+        calendarView.selectionAction = { (date) in
+            NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
         }
         
         dataSource = CalendarBottomSheetDatasource()
@@ -51,10 +50,6 @@ final class MainCalendarViewController: UIViewController {
         super.viewWillAppear(animated)
         
         studyAllScheduleViewModel.getAllStudyAllSchedule()
-        
-        let selectedDay = selectionDelegate.selectedDate
-        let studySchedule = studyAllScheduleViewModel.studySchedule(at: selectedDay)
-        calendarBottomSheetVC.studySchedule = studySchedule
     }
     
     override func viewWillLayoutSubviews() {
@@ -106,27 +101,5 @@ extension MainCalendarViewController: UBottomSheetCoordinatorDelegate {
     
     func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
         self.sheetCoordinator.addDropShadowIfNotExist()
-    }
-}
-
-// MARK: - UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate
-
-extension MainCalendarViewController: UICalendarViewDelegate {
-    
-    func calendarView(_ calendarView: UICalendarView, decorationFor dateComponents: DateComponents) -> UICalendarView.Decoration? {
-        
-        if !studyAllScheduleViewModel.studySchedule(at: dateComponents).isEmpty {
-            return .image(UIImage(systemName: "circle.fill")?.resize(newWidth: 8).withRenderingMode(.alwaysTemplate), color: .appColor(.keyColor1))
-        } else {
-            return nil
-        }
-    }
-}
-
-extension MainCalendarViewController: UICalendarSelectionSingleDateDelegate {
-    func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        NotificationCenter.default.post(name: .mainCalenderDateTapped, object: dateComponents)
-        let studySchedule = studyAllScheduleViewModel.studySchedule(at: dateComponents)
-        calendarBottomSheetVC.studySchedule = studySchedule
     }
 }

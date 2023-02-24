@@ -8,14 +8,6 @@
 import UIKit
 import SnapKit
 
-extension UIView {
-    func configureBorder(color: AssetColor, width: CGFloat, radius: CGFloat) {
-        layer.borderColor = UIColor.appColor(color).cgColor
-        layer.borderWidth = width
-        layer.cornerRadius = radius
-    }
-}
-
 final class BrandButton: UIButton {
     
     init(title: String, isBold: Bool = true, fontSize: CGFloat, backgroundColor: UIColor, textColor: UIColor, radius: CGFloat, borderColor: AssetColor? = nil) {
@@ -1406,22 +1398,6 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         }
         
         return attributes
-    }
-}
-
-class PeoplesCalendarView: UICalendarView {
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.locale = Locale(identifier: "ko_kr")
-        self.calendar = Calendar(identifier: .gregorian)
-        self.tintColor = .appColor(.keyColor1)
-        self.fontDesign = .rounded
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

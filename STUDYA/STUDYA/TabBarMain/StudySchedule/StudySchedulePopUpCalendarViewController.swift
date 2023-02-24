@@ -17,7 +17,6 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         case end
     }
     
-    lazy var selectedDateComponents = selectedDate.convertToDateComponents([.year, .month, .day])
     var selectedDate: Date
     weak var presentingVC: UIViewController?
     lazy var startDate: Date = Date()
@@ -34,7 +33,7 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         
         return button
     }()
-    private let calendarView = PeoplesCalendarView()
+    private let calendarView = CustomCalendarView()
     
     // MARK: - Life Cycle
     
@@ -54,13 +53,13 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let selectionDelegate = UICalendarSelectionSingleDate(delegate: self)
-        selectionDelegate.selectedDate?.calendar = Calendar.current
+        calendarView.selectionAction = { (date) in
+            self.calendarIsSelected(date: date)
+        }
+        calendarView.select(date: selectedDate)
         
-        calendarView.selectionBehavior = selectionDelegate
-        
-        if calendarType == .start {
-            selectionDelegate.setSelected(selectedDateComponents, animated: false)
+        if calendarType == .end {
+            calendarView.minimumDate = startDate
         }
         
         button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
@@ -111,28 +110,9 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
     }
 }
 
-extension StudySchedulePopUpCalendarViewController: UICalendarSelectionSingleDateDelegate {
+extension StudySchedulePopUpCalendarViewController {
     
-    func dateSelection(_ selection: UICalendarSelectionSingleDate, canSelectDate dateComponents: DateComponents?) -> Bool {
-        
-        switch calendarType {
-        case .start:
-            return true
-        case .end:
-            
-            guard let date = dateComponents?.date else { fatalError() }
-            
-            if date < startDate {
-                return false
-            } else {
-                return true
-            }
-        }
-    }
-   
-    func dateSelection(_ selection: UICalendarSelectionSingleDate, didSelectDate dateComponents: DateComponents?) {
-        guard let date = dateComponents?.date else { fatalError() }
-        
+    func calendarIsSelected(date: Date) {
         if let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController {
             
             switch calendarType {
