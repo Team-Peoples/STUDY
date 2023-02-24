@@ -524,19 +524,15 @@ final class AccountManagementViewController: UIViewController {
         Network.shared.closeAccount(userID: userId) { result in
             switch result {
             case .success(let isNotManager):
-                switch isNotManager {
-                case true:
+                if isNotManager {
                     print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
                     
                     AppController.shared.deleteUserInformation()
                     
-                    DispatchQueue.main.async {
-                        let vc = ByeViewController()
-                        vc.modalPresentationStyle = .fullScreen
-                        self.present(vc, animated: true)
-                    }
+                    self.deleteAllUserDefaults()
+                    self.presentByeViewController()
                     
-                case false:
+                } else {
                     print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
                 }
                 
@@ -544,6 +540,18 @@ final class AccountManagementViewController: UIViewController {
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
+    }
+    
+    private func deleteAllUserDefaults() {
+        if let bundleID = Bundle.main.bundleIdentifier {
+           UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
+    }
+    
+    private func presentByeViewController() {
+        let vc = ByeViewController()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
     }
     
     private func checkOldPassword(_ password: String, completion: @escaping (Bool) -> Void) {

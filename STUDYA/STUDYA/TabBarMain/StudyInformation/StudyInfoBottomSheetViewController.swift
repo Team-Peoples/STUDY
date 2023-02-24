@@ -110,6 +110,8 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                     switch result {
                     case .success:
                         print("스터디 탈퇴 성공")
+                        
+                        UserDefaults.standard.removeObject(forKey: "checkedAnnouncementIDOfStudy\(studyID)")
                         self.dismiss(animated: true)
                     case .failure(let error):
                         print("스터디장은 탈퇴할 수 없어요.")

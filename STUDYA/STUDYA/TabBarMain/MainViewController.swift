@@ -92,7 +92,7 @@ final class MainViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-24", repeatEndDate: "", startTime: "22:23", endTime: "22:29", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-24", repeatEndDate: "", startTime: "23:03", endTime: "23:13", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -213,6 +213,7 @@ final class MainViewController: SwitchableViewController {
         floatingButton.isSelected = false
     }
     
+//    MARK: - initializing Data
     private func getUserInformationAndStudies() {
         Network.shared.getUserInfo { result in
             switch result {
@@ -221,7 +222,7 @@ final class MainViewController: SwitchableViewController {
                 self.nickName = user.nickName
                 self.getAllStudies()
             case .failure(let error):
-                print(#function,1)
+                
                 switch error {
                 case .userNotFound:
                     
@@ -320,17 +321,6 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    override func configureNavigationBar() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-        guard !myStudyList.isEmpty else { return }
-        
-        super.configureNavigationBar()
-    }
-    
-    private func configureNavigationBarNotiBtn() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-    }
-    
     private func configureViewWhenNoStudy() {
         let studyEmptyImageView = UIImageView(image: UIImage(named: "emptyViewImage"))
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
@@ -357,8 +347,17 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
+    override func configureNavigationBar() {
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+        guard !myStudyList.isEmpty else { return }
+        
+        super.configureNavigationBar()
+    }
     
-    
+    private func configureNavigationBarNotiBtn() {
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+    }
+
     private func configureFloatingButton() {
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         view.addSubview(floatingButtonContainerView)
@@ -429,6 +428,8 @@ extension MainViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
             
             cell.navigatable = self
+            
+            cell.studyID = currentStudyOverall?.study.id
             cell.announcement = currentStudyOverall?.announcement
 
             return cell
@@ -473,8 +474,11 @@ extension MainViewController: UITableViewDelegate {
         case mainTableView:
             if indexPath.row == 3 {
                 guard let studyID = currentStudyOverall?.study.id else { return }
-                print(studyID,"🔥")
+                
+                saveAnnouncementIDUserAlreadyCheckedInStudy(studyID)
+                
                 let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
+                
                 self.syncSwitchWith(nextVC: announcementTableVC)
                 self.push(vc: announcementTableVC)
             }
@@ -487,6 +491,11 @@ extension MainViewController: UITableViewDelegate {
             }
         default: break
         }
+    }
+    
+    private func saveAnnouncementIDUserAlreadyCheckedInStudy(_ studyID: ID) {
+        guard let announcementID = currentStudyOverall?.announcement?.id else { return }
+        UserDefaults.standard.setValue(announcementID, forKey: "checkedAnnouncementIDOfStudy\(studyID)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
