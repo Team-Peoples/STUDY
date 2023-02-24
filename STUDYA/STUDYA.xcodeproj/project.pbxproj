@@ -35,6 +35,7 @@
 		72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */; };
 		72AAC6E8295A129100FAD71D /* EditingStudyFreeRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */; };
 		72AAC6EA295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */; };
+		72B44AAF29A753110088F678 /* CustomCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B44AAE29A753110088F678 /* CustomCalendar.swift */; };
 		72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */; };
 		72E2BEDB2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDA2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift */; };
 		72E2BEDD29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E2BEDC29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift */; };
@@ -178,6 +179,7 @@
 		72AAC6E529574D4300FAD71D /* TokenAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAuthenticator.swift; sourceTree = "<group>"; };
 		72AAC6E7295A129100FAD71D /* EditingStudyFreeRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFreeRuleViewController.swift; sourceTree = "<group>"; };
 		72AAC6E9295A12C500FAD71D /* EditingStudyGeneralRuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleViewController.swift; sourceTree = "<group>"; };
+		72B44AAE29A753110088F678 /* CustomCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendar.swift; sourceTree = "<group>"; };
 		72E2BED4291CD50C009BCCB7 /* EditingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyFormViewController.swift; sourceTree = "<group>"; };
 		72E2BEDA2921AE66009BCCB7 /* StudyInfoBottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoBottomSheetViewController.swift; sourceTree = "<group>"; };
 		72E2BEDC29264B9D009BCCB7 /* AttendanceForAMemberHeaderViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttendanceForAMemberHeaderViews.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				D3C23A5D28EDE685009B53B4 /* KeyChain.swift */,
 				D3EC2F3F2899211200D4DA18 /* Constraint.swift */,
 				72ED25BB289778A200031AD1 /* Component.swift */,
+				72B44AAE29A753110088F678 /* CustomCalendar.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -805,6 +808,7 @@
 				D3F2C6FA28B2879F00CEC549 /* SignUpViewController.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */,
 				7282F18428FFE7DC003EF100 /* StudyScheduleCollectionViewCell.swift in Sources */,
+				72B44AAF29A753110088F678 /* CustomCalendar.swift in Sources */,
 				D3C23A7328F9A7CD009B53B4 /* MainFirstStudyToggleTableViewCell.swift in Sources */,
 				7299968E28C1EEC00008A1C1 /* CreatingStudyFreeRuleViewController.swift in Sources */,
 				D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */,

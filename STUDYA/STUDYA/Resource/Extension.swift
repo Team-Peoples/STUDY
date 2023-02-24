@@ -102,6 +102,12 @@ extension UIImage {
 
 extension UIView {
     
+    func configureBorder(color: AssetColor, width: CGFloat, radius: CGFloat) {
+        layer.borderColor = UIColor.appColor(color).cgColor
+        layer.borderWidth = width
+        layer.cornerRadius = radius
+    }
+    
     func addDashedBorder(color: UIColor, cornerRadius: CGFloat?) {
         
         let shapeLayer:CAShapeLayer = CAShapeLayer()
@@ -120,12 +126,12 @@ extension UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
-    convenience init(backgroundColor: UIColor, alpha: CGFloat = 1) {
+    convenience init(backgroundColor: UIColor, alpha: CGFloat = 1, cornerRadius: CGFloat = 0) {
         self.init(frame: .zero)
         
         self.backgroundColor = backgroundColor
         self.alpha = alpha
-        
+        self.layer.cornerRadius = cornerRadius
     }
 }
 

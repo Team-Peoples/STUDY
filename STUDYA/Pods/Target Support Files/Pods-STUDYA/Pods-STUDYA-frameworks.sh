@@ -176,11 +176,13 @@ code_sign_if_enabled() {
 }
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MultiProgressView/MultiProgressView.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/naveridlogin-sdk-ios/NaverThirdPartyLogin.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "${BUILT_PRODUCTS_DIR}/FSCalendar/FSCalendar.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/MultiProgressView/MultiProgressView.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/naveridlogin-sdk-ios/NaverThirdPartyLogin.framework"
