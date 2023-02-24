@@ -107,8 +107,7 @@ struct SingleUserAnAttendanceInformation: Codable {
 }
 
 struct AttendanceInformation: Codable {
-    let userID, reason: String?
-    let attendanceStatus: Attendance?
+    let userID, attendanceStatus, reason: String?
     let fine: Int
 
     enum CodingKeys: String, CodingKey {

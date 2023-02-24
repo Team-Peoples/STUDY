@@ -23,15 +23,21 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
             }
         }
     }
-    internal var certificationCode: Int? {
+    internal var checkCode: Int? {
         didSet {
-            guard let checkCode = certificationCode else { return }
+            guard let checkCode = checkCode else { return }
             validationNumberLabel.text = String(checkCode)
+        }
+    }
+    internal var scheduleID: Int? {
+        didSet {
+            getCertificationCode()
         }
     }
     
     private var customTransitioningDelegate = TransitioningDelegate()
-    
+    internal var getDidAttend = {}
+        
     @IBOutlet weak var validationNumberLabel: UILabel!
     @IBOutlet weak var attendButton: UIButton!
     
@@ -41,10 +47,10 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
         configure()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        validationNumberLabel.text = "7395"
+        getDidAttend()
     }
     
     @IBAction func closeButtonTapped(_ sender: Any) {
@@ -52,34 +58,45 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     }
     
     @IBAction func attendButtonTapped(_ sender: Any) {
-//        🛑in에 scheduleID 받아와야
-        guard let certificationCode = certificationCode else { return }
-        Network.shared.attend(in: 1, with: certificationCode) { result in
+        attend()
+    }
+    
+    private func getCertificationCode() {
+        guard let scheduleID = scheduleID else { return }
+        Network.shared.getAttendanceCertificationCode(scheduleID: scheduleID) { result in
+            switch result {
+            case .success(let code):
+                self.checkCode = code
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
+    private func attend() {
+        guard let scheduleID = scheduleID, let checkCode = checkCode else { return }
+        
+        Network.shared.attend(in: scheduleID, with: checkCode) { result in
             switch result {
             case .success:
                 self.didAttend = true
+                NotificationCenter.default.post(name: .attendanceInformationChanged, object: nil)
             case .failure(let error):
                 switch error {
+                    
                 case .userNotFound:
-                    DispatchQueue.main.async {
-                        let alert = SimpleAlert(buttonTitle: "확인", message: "더이상 이 스터디의 멤버가 아닙니다.") { finished in
-//                            🛑completion에 메인화면 리로드 넣기
-                            self.dismiss(animated: true, completion: nil)
-                        }
-                        self.present(alert, animated: true)
-                    }
+                    let alert = SimpleAlert(message: "잘못된 접근입니다. 다시 시도해주세요.")
+                    self.present(alert, animated: true)
+                    
                 case .wrongAttendanceCode:
-                    DispatchQueue.main.async {
-                        let alert = SimpleAlert(message: "오류가 발생했습니다. 다시 시도해주세요.")
-                        self.present(alert, animated: true)
-                    }
+                    let alert = SimpleAlert(message: "서버 에러. 인증코드 불일치")
+                    self.present(alert, animated: true)
+                    
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
             }
         }
-        
-        didAttend = true
     }
     
     private func configure() {

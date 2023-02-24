@@ -20,7 +20,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             configureButton()
         }
     }
-//    navigatable & switch상태 알수있able로 바꿔서 아래에 있는 isSwitchOn 컨트롤하기
+
     internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     private var divider: ButtonStatusDivder?
     
@@ -42,12 +42,9 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        contentView.isUserInteractionEnabled = false
         selectionStyle = .none
         backgroundColor = .systemBackground
-        
-        mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
-        
+//        hideEverythingForReload()
         configureMainButton()
         configureAfterCheckView()
     }
@@ -58,9 +55,30 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     @objc private func mainButtonTapped() {
         guard let delegate = navigatableSwitchObservableDelegate else { return }
-        
 //        switchStatus 도 가져오고 ismanager값이 true인지도 가져올까?
-        if delegate.getSwtichStatus() { getCertificationCodeAndShowNextVC() } else { showValidationNumberFillingInVC() }
+        if delegate.getSwtichStatus() { showValidationNumberCheckingVC() } else { showValidationNumberFillingInVC() }
+    }
+    
+    private func showValidationNumberCheckingVC() {
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberCheckingPopViewController.identifier) as! MainValidationNumberCheckingPopViewController
+        
+        vc.scheduleID = schedule?.studyScheduleID
+        vc.getDidAttend = {
+            vc.didAttend = self.attendanceInformation == nil ? false : true
+        }
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+        self.navigatableSwitchObservableDelegate?.present(vc)
+    }
+    
+    private func showValidationNumberFillingInVC() {
+        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
+        let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberFillingInPopViewController.identifier) as! MainValidationNumberFillingInPopViewController
+        
+        vc.preferredContentSize = CGSize(width: 286, height: 247)
+        
+        navigatableSwitchObservableDelegate?.present(vc)
     }
     
     private func configureButton() {
@@ -113,7 +131,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             
             disableMainButton()
             
-            mainButton.setTitle("일정이 \(hours)일 남았어요", for: .normal)
+            mainButton.setTitle("일정이 \(hours)시간 남았어요", for: .normal)
             
         case .userModeScheudleQuiteFewLeft:
             mainButton.isHidden = false
@@ -217,44 +235,11 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         }
     }
     
-    private func getCertificationCodeAndShowNextVC() {
-        guard let scheduleID = schedule?.studyScheduleID else { return }
-        Network.shared.getAttendanceCertificationCode(scheduleID: scheduleID) { result in
-            switch result {
-            case .success(let code):
-                DispatchQueue.main.async {
-                    self.showValidationNumberCheckingVC(code: code)
-                }
-            case .failure(let error):
-//                ehd: 이렇게 presenter에 프로토콜로 받아온 VC를 넣어도 되긴 하는데 이래도 되나?
-                guard let vc = self.navigatableSwitchObservableDelegate else { return }
-                UIAlertController.handleCommonErros(presenter: vc, error: error)
-            }
-        }
-    }
-    
-    private func showValidationNumberCheckingVC(code: Int) {
-        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberCheckingPopViewController.identifier) as! MainValidationNumberCheckingPopViewController
-        
-        vc.certificationCode = code
-        vc.preferredContentSize = CGSize(width: 286, height: 247)
-        
-        self.navigatableSwitchObservableDelegate?.present(vc)
-    }
-    
-    private func showValidationNumberFillingInVC() {
-        let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
-        let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberFillingInPopViewController.identifier) as! MainValidationNumberFillingInPopViewController
-        
-        vc.preferredContentSize = CGSize(width: 286, height: 247)
-        
-        navigatableSwitchObservableDelegate?.present(vc)
-    }
-    
     private func configureMainButton() {
+        mainButton.addTarget(self, action: #selector(mainButtonTapped), for: .touchUpInside)
         contentView.addSubview(mainButton)
         mainButton.anchor(top: topAnchor, topConstant: 20, bottom: bottomAnchor, bottomConstant: 20, leading: leadingAnchor, leadingConstant: 20, trailing: trailingAnchor, trailingConstant: 20)
+        mainButton.layer.applySketchShadow(color: .appColor(.ppsGray2), alpha: 0.7, x: 0, y: 0, blur: 10, spread: 0)
     }
     
     private func configureAfterCheckView() {
@@ -277,7 +262,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         }
         innerView.snp.makeConstraints { make in
             make.top.bottom.trailing.equalTo(afterStudyView).inset(3)
-            make.leading.equalTo(titleLabel.snp.trailing).offset(50)
+            make.leading.equalTo(afterStudyView).inset(160)
         }
         attendedSubTitleLabel.centerXY(inView: innerView)
         penaltyLabel.snp.makeConstraints { make in
@@ -405,14 +390,16 @@ struct ButtonStatusDivder {
               let attendanceStatus = attendanceInformation.attendanceStatus else { return .userModeAttendable }
         
         switch attendanceStatus {
-        case .attended:
+        case Constant.attendance:
             return .userModeAttended
-        case .late:
+        case Constant.late:
             return .userModelate(attendanceInformation.fine)
-        case .absent:
+        case Constant.absent:
             return .userModeAbsent(attendanceInformation.fine)
-        case .allowed:
+        case Constant.allowed:
             return .userModeAllowed(attendanceInformation.fine)
+        default:
+            return .userModeNoSchedule
         }
     }
 }

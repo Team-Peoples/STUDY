@@ -85,7 +85,7 @@ final class MainViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-22", repeatEndDate: "", startTime: "22:14", endTime: "22:16", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-24", repeatEndDate: "", startTime: "17:07", endTime: "17:14", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -93,7 +93,7 @@ final class MainViewController: SwitchableViewController {
 //                print("fa")
 //            }
 //        }
-//
+
 //        Network.shared.joinStudy(id: 110) { result in
 //            switch result {
 //            case .success(let suc):
@@ -103,7 +103,7 @@ final class MainViewController: SwitchableViewController {
 //            }
 //        }
         
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadTableViewAfterGettingAttendanceInformation), name: .attendanceInformationChanged, object: nil)
         getUserInformationAndStudies()
         
         view.backgroundColor = .systemBackground
@@ -261,7 +261,7 @@ final class MainViewController: SwitchableViewController {
                 self.currentStudyOverall = studyOverall
                 
                 self.configureViewWhenYesStudy()
-                self.reloadTableView(with: studyOverall)
+                self.reloadTableView()
                 
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
@@ -270,10 +270,8 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func configureViewWhenYesStudy() {
-        DispatchQueue.main.async { [self] in
-            configureTableView()
-            configureFloatingButtonIfManagerMode()
-        }
+        configureTableView()
+        configureFloatingButtonIfManagerMode()
     }
     
     private func configureTableView() {
@@ -289,24 +287,23 @@ final class MainViewController: SwitchableViewController {
         configureFloatingButton()
     }
     
-    private func reloadTableView(with studyOverall: StudyOverall) {
-        if let id = studyOverall.studySchedule?.studyScheduleID {
-            reloadTableViewAfterGettingAttendanceInformation(by: id)
+    private func reloadTableView() {
+        if currentStudyOverall?.studySchedule?.studyScheduleID != nil {
+            reloadTableViewAfterGettingAttendanceInformation()
         } else {
             reloadTableViewWithNoSchedule()
         }
     }
     
-    private func reloadTableViewAfterGettingAttendanceInformation(by scheduleID: ID) {
+    @objc private func reloadTableViewAfterGettingAttendanceInformation() {
+        guard let scheduleID = currentStudyOverall?.studySchedule?.studyScheduleID else { return }
         getImminentScheudleAttendanceInformation(with: scheduleID) {
-            self.insertScheduleAndAttendanceInformationIntoThirdCell()
             self.mainTableView.reloadData()
         }
     }
     
     private func reloadTableViewWithNoSchedule() {
         self.imminentAttendanceInformation = nil
-        self.insertScheduleAndAttendanceInformationIntoThirdCell()
         self.mainTableView.reloadData()
     }
     
@@ -320,13 +317,6 @@ final class MainViewController: SwitchableViewController {
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
-    }
-    
-    private func insertScheduleAndAttendanceInformationIntoThirdCell() {
-        guard let cell = self.mainTableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? MainThirdButtonTableViewCell else { return }
-        
-        cell.attendanceInformation = self.imminentAttendanceInformation
-        cell.schedule = self.currentStudyOverall?.studySchedule
     }
     
     private func save(_ attendanceInfo: AttendanceInformation) {
@@ -437,6 +427,8 @@ extension MainViewController: UITableViewDataSource {
             
             cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchObservableDelegate = self
+            cell.attendanceInformation = self.imminentAttendanceInformation
+            cell.schedule = self.currentStudyOverall?.studySchedule
             
             return cell
         case 3:
