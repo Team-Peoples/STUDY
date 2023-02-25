@@ -11,10 +11,10 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     
     static let identifier = "MainValidationNumberCheckingPopViewController"
     
-    internal var didAttend: Bool? {
+    internal var didAttendForButtonStatus: Bool? {
         didSet {
 //            thirdCEll에서 넘어올 때 네트워킹에서 받기도 하고 여기서 출석버튼 눌러서 받기도함.
-            if let didAttend = didAttend, didAttend {
+            if let didAttend = didAttendForButtonStatus, didAttend {
                 attendButton.setTitle("출석 완료", for: .normal)
                 attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
                 attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
@@ -37,7 +37,7 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     
     private var customTransitioningDelegate = TransitioningDelegate()
     
-    internal var attendButtonTapped: ((AttendanceInformation) -> Void) = { info in }
+    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
     internal var getDidAttend = {}
         
     @IBOutlet weak var validationNumberLabel: UILabel!
@@ -80,9 +80,9 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
         
         Network.shared.attend(in: scheduleID, with: checkCode) { result in
             switch result {
-            case .success:
-                self.didAttend = true
-                NotificationCenter.default.post(name: .attendanceInformationChanged, object: nil)
+            case .success(let attendanceInformation):
+                self.didAttendForButtonStatus = true
+                self.changeImminentStudyScheduleAttendanceInformationTo(attendanceInformation)
             case .failure(let error):
                 switch error {
                     

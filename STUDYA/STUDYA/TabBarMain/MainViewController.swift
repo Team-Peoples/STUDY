@@ -16,6 +16,7 @@ final class MainViewController: SwitchableViewController {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
             isManager = currentStudyOverall.isManager
+            mainTableView.reloadData()
         }
     }
     private var imminentAttendanceInformation: AttendanceInformation? {
@@ -31,7 +32,7 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    private lazy var attendButtonTapped: ((AttendanceInformation) -> Void) = { attendanceInformation in
+    private lazy var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { attendanceInformation in
         self.imminentAttendanceInformation = attendanceInformation
     }
     
@@ -64,6 +65,9 @@ final class MainViewController: SwitchableViewController {
         t.showsVerticalScrollIndicator = false
         t.separatorStyle = .none
         t.backgroundColor = .systemBackground
+        t.refreshControl = UIRefreshControl()
+        
+        t.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         
         return t
     }()
@@ -92,12 +96,20 @@ final class MainViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-24", repeatEndDate: "", startTime: "23:03", endTime: "23:13", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-25", repeatEndDate: "", startTime: "17:58", endTime: "17:59", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
 //            case .failure:
 //                print("fa")
+//            }
+//        }
+//        Network.shared.createAnnouncement(title: "test1", content: "테스트중", studyID: 109) { result in
+//            switch result {
+//            case .success(let announcements):
+//                print(announcements)
+//            case .failure:
+//                print("fail")
 //            }
 //        }
 
@@ -107,6 +119,15 @@ final class MainViewController: SwitchableViewController {
 //                print(suc)
 //            case .failure(let err):
 //                print(err)
+//            }
+//        }
+        
+//        Network.shared.createStudy(Study(id: nil, studyName: "똥싸고 커피마시기", studyOn: true, studyOff: false, category: .certificate, studyIntroduction: "그러면 기분이가 좋지요.", freeRule: "똥은 천천히 싸기", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 5, count: 5, fine: 500), absence: Absence(time: 30, fine: 5000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 4)))) { result in
+//            switch result {
+//            case .success:
+//                print("succ")
+//            case .failure:
+//                print("fail")
 //            }
 //        }
         
@@ -225,13 +246,10 @@ final class MainViewController: SwitchableViewController {
                 
                 switch error {
                 case .userNotFound:
-                    
-                    DispatchQueue.main.async {
-                        let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
-                            AppController.shared.deleteUserInformationAndLogout()
-                        }
-                        self.present(alert, animated: true)
+                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
+                        AppController.shared.deleteUserInformationAndLogout()
                     }
+                    self.present(alert, animated: true)
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
@@ -274,6 +292,11 @@ final class MainViewController: SwitchableViewController {
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
+    }
+    
+    @objc private func refresh() {
+        getUserInformationAndStudies()
+        mainTableView.refreshControl?.endRefreshing()
     }
     
     private func configureViewWhenYesStudy() {
@@ -421,7 +444,7 @@ extension MainViewController: UITableViewDataSource {
             cell.navigatableSwitchObservableDelegate = self
             cell.attendanceInformation = imminentAttendanceInformation
             cell.schedule = currentStudyOverall?.studySchedule
-            cell.attendButtonTapped = attendButtonTapped
+            cell.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
             
             return cell
         case 3:

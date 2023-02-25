@@ -186,9 +186,9 @@ struct Network {
             
             switch statusCode {
             case 200:
-                guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else {
-                    completion(.failure(.decodingError))
-                    return }
+                guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else { completion(.failure(.decodingError))
+                    return
+                }
                 
                 completion(.success(isEmailCertificated))
             default:

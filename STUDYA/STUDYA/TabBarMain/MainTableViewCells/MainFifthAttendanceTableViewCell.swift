@@ -15,12 +15,17 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     internal var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else {
-                configureViewWhenNoData()
-                noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
+                configureErrorSituation()
                 return
             }
             
-            if currentStudyOverall.totalStudyHeldCount != 0 {
+            let totalStudyHeldCount =
+            currentStudyOverall.attendedCount
+            + currentStudyOverall.lateCount
+            + currentStudyOverall.absentCount
+            + currentStudyOverall.allowedCount
+            
+            if totalStudyHeldCount != 0 {
                 setupProgress()
                 
                 let totalCount = currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount + currentStudyOverall.absentCount
@@ -213,6 +218,11 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         delegate.syncSwitchWith(nextVC: nextVC)
         delegate.push(vc: nextVC)
+    }
+    
+    private func configureErrorSituation() {
+        configureViewWhenNoData()
+        noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
     }
     
     private func setupProgress() {

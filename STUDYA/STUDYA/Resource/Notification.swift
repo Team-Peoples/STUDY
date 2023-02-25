@@ -20,5 +20,4 @@ extension Notification.Name {
     static let unauthorizedUser = Notification.Name(rawValue: "unauthorizedUser")
     static let mainCalenderDateTapped = Notification.Name(rawValue: "mainCalenderDateTapped")
     static let myScheduleCellRemoved = Notification.Name(rawValue: "myScheduleCellRemoved")
-    static let attendanceInformationChanged = Notification.Name(rawValue: "attendanceInformationChanged")
 }

@@ -24,9 +24,9 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     private var divider: ButtonStatusDivder?
     
-    internal var attendButtonTapped: ((AttendanceInformation) -> Void) = { info in }
+    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
     
-    let allowedSymbol = "allowedSymbol"
+    private let allowedSymbol = "allowedSymbol"
     
     private let mainButton = BrandButton(title: "", isBold: true, isFill: true, fontSize: 20)
     private let afterStudyView = RoundableView(cornerRadius: 25)
@@ -67,9 +67,9 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.scheduleID = schedule?.studyScheduleID
         vc.getDidAttend = {
-            vc.didAttend = self.attendanceInformation == nil ? false : true
+            vc.didAttendForButtonStatus = self.attendanceInformation == nil ? false : true
         }
-        vc.attendButtonTapped = attendButtonTapped
+        vc.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
@@ -82,7 +82,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.scheduleID = schedule?.studyScheduleID
         vc.preferredContentSize = CGSize(width: 286, height: 247)
-        vc.attendButtonTapped = attendButtonTapped
+        vc.attendButtonTapped = changeImminentStudyScheduleAttendanceInformationTo
         
         navigatableSwitchObservableDelegate?.present(vc)
     }
