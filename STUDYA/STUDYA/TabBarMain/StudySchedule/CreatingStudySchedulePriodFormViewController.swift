@@ -238,7 +238,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
     }
     
-    private func configureUI(_ studySchedule: StudyScheduleGoing) {
+    private func configureUI(_ studySchedule: StudySchedulePosting) {
     
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)

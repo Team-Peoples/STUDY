@@ -11,7 +11,7 @@ class StudyScheduleCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "StudyScheduleCollectionViewCell"
     
-    var studySchedules: [StudyScheduleComing] = []
+    var studySchedules: [StudySchedule] = []
     
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()

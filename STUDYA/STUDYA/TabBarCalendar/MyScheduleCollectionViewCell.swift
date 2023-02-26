@@ -10,14 +10,14 @@ import UIKit
 final class MyScheduleViewModel {
     
     var doTableViewReload = Observable(false)
-    var allMySchedules = [Schedule]()
+    var allMySchedules = [MySchedule]()
     var selectedDate = DateFormatter.dashedDateFormatter.string(from: Date()) {
         didSet {
             filterSchedules(on: selectedDate)
             doTableViewReload.value = true
         }
     }
-    var selectedDateSchedules = [Schedule]()
+    var selectedDateSchedules = [MySchedule]()
     var error: Observable<PeoplesError>?
     
     func filterSchedules(on date: DashedDate) {

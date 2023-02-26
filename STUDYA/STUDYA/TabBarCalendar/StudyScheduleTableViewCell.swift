@@ -80,7 +80,7 @@ class StudyScheduleTableViewCell: UITableViewCell {
         etcButtonAction()
     }
     
-    func configure(schedule: StudyScheduleComing, kind: CalendarKind) {
+    func configure(schedule: StudySchedule, kind: CalendarKind) {
         
         let startTime = DateFormatter.timeFormatter.string(from: schedule.startDateAndTime)
         startTimeLabel.text = startTime

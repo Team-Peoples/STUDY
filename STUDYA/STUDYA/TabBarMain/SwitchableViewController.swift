@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SwitchableViewController: UIViewController, Navigatable {
+class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivable {
     
     var isManager = false {
         didSet {

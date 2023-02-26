@@ -30,4 +30,8 @@ enum Constant {
     static let cancel = "취소"
     static let done = "완료"
     static let defaultProfile = "defaultProfile"
+    static let attendance = "ATTENDANCE"
+    static let late = "LATENESS"
+    static let absent = "ABSENT"
+    static let allowed = "HOLD"
 }

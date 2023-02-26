@@ -186,9 +186,9 @@ struct Network {
             
             switch statusCode {
             case 200:
-                guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else {
-                    completion(.failure(.decodingError))
-                    return }
+                guard let data = response.data, let isEmailCertificated = jsonDecode(type: Bool.self, data: data) else { completion(.failure(.decodingError))
+                    return
+                }
                 
                 completion(.success(isEmailCertificated))
             default:
@@ -742,7 +742,7 @@ struct Network {
         }
     }
     
-    func createStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func createStudySchedule(_ schedule: StudySchedulePosting, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
         AF.request(RequestPurpose.createStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
@@ -768,7 +768,7 @@ struct Network {
         }
     }
     
-    func updateStudySchedule(_ schedule: StudyScheduleGoing, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func updateStudySchedule(_ schedule: StudySchedulePosting, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateStudySchedule(schedule), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
@@ -945,7 +945,7 @@ struct Network {
     
     func getAttendanceCertificationCode(scheduleID: ID, completion: @escaping (Result<Int, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAttendanceCertificactionCode(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
+            print("⚡️", response.response?.statusCode)
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -967,7 +967,7 @@ struct Network {
         }
     }
     
-    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<ScheduleAttendanceInformation, PeoplesError>) -> Void) {
+    func attend(in scheduleID: ID, with code: Int, completion: @escaping (Result<AttendanceInformation, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.attend(scheduleID, code), interceptor: AuthenticationInterceptor()).validate().response {
             response in
             
@@ -978,11 +978,12 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let attendanceInformation = jsonDecode(type: ScheduleAttendanceInformation.self, data: data) else {
+                guard let data = response.data, let attendanceInformation = jsonDecode(type: AttendanceInformation.self, data: data) else {
+                    
                     completion(.failure(.decodingError))
                     return
                 }
-                
+                print(attendanceInformation, "❤️")
                 completion(.success(attendanceInformation))
             case 400:
                 guard let data = response.data,
@@ -1103,7 +1104,7 @@ struct Network {
     }
     
     // MARK: - My Schedule
-    func getAllMySchedules(completion: @escaping (Result<[Schedule],PeoplesError>) -> Void) {
+    func getAllMySchedules(completion: @escaping (Result<[MySchedule],PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMySchedules, interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1112,7 +1113,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                guard let data = response.data, let schdules = jsonDecode(type: [MySchedule].self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -1124,7 +1125,7 @@ struct Network {
         }
     }
     
-    func createMySchedule(content: String, date: DashedDate, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func createMySchedule(content: String, date: DashedDate, completion: @escaping (Result<[MySchedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.createMySchedule(content, date), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1133,7 +1134,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                guard let data = response.data, let schdules = jsonDecode(type: [MySchedule].self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -1145,7 +1146,7 @@ struct Network {
         }
     }
     
-    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func toggleMyScheduleStatus(scheduleID: ID, completion: @escaping (Result<[MySchedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.toggleMyScheduleStatus(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1154,7 +1155,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                guard let data = response.data, let schdules = jsonDecode(type: [MySchedule].self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -1166,7 +1167,7 @@ struct Network {
         }
     }
     
-    func updateMySchedule(scheduleID: ID, content: String, completion: @escaping (Result<[Schedule], PeoplesError>) -> Void) {
+    func updateMySchedule(scheduleID: ID, content: String, completion: @escaping (Result<[MySchedule], PeoplesError>) -> Void) {
         AF.request(RequestPurpose.updateMySchedule(scheduleID, content), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1175,7 +1176,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let schdules = jsonDecode(type: [Schedule].self, data: data) else {
+                guard let data = response.data, let schdules = jsonDecode(type: [MySchedule].self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }
@@ -1205,6 +1206,28 @@ struct Network {
             case 403:
                 completion(.failure(.youAreNotOwner))
                 
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func getImminentScheduleAttendance(scheduleID: ID, completion: @escaping (Result<AttendanceInformation, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getImminentScheduleAttendnace(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let attendanceInfo = jsonDecode(type: AttendanceInformation.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    print(String(data: response.data!, encoding: .utf8), "❌")
+                    return
+                }
+                
+                completion(.success(attendanceInfo))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }

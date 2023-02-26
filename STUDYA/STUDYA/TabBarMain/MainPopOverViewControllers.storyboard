@@ -12,7 +12,7 @@
         <!--Main Validation Number Filling In Pop View Controller-->
         <scene sceneID="g0U-1b-Sbj">
             <objects>
-                <viewController storyboardIdentifier="ValidationNumberFillingInPopViewController" id="Biy-uF-mCF" customClass="MainValidationNumberFillingInPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainValidationNumberFillingInPopViewController" id="Biy-uF-mCF" customClass="MainValidationNumberFillingInPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zId-Wb-7JT" customClass="RoundableView" customModule="STUDYA" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="286" height="247"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -144,7 +144,7 @@
         <!--Main Validation Number Checking Pop View Controller-->
         <scene sceneID="RVh-jq-pfN">
             <objects>
-                <viewController storyboardIdentifier="ValidationNumberCheckingPopViewController" id="1f7-nD-acw" customClass="MainValidationNumberCheckingPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainValidationNumberCheckingPopViewController" id="1f7-nD-acw" customClass="MainValidationNumberCheckingPopViewController" customModule="STUDYA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="u17-Nf-XFz" customClass="RoundableView" customModule="STUDYA" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="286" height="247"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

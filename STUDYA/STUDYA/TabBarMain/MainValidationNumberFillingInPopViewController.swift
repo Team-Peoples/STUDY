@@ -11,7 +11,11 @@ final class MainValidationNumberFillingInPopViewController: UIViewController {
     
     static let identifier = "MainValidationNumberFillingInPopViewController"
     
+    internal var scheduleID: ID?
+    
     private var customTransitioningDelegate = TransitioningDelegate()
+    
+    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
     
     @IBOutlet weak var firstField: RoundedCornersField!
     @IBOutlet weak var secondField: RoundedCornersField!
@@ -53,14 +57,47 @@ final class MainValidationNumberFillingInPopViewController: UIViewController {
         transitioningDelegate = customTransitioningDelegate
     }
     
-    private func checkValidationNumber() {
-//        번호 확인해서 맞으면 자동으로 dismiss하고 메인뷰 새로고침, 틀리면 validation label ishidden 토글
-        guard let t1 = firstField.text, let t2 = secondField.text,
-              let t3 = thirdField.text, let t4 = fourthField.text else { return }
+    private func attendWithCheckNumbers() {
+        guard let scheduleID = scheduleID else { return }
+        let validationNumber = returnEnteredCheckNumbers()
         
-        let validationNumber = Int(t1 + t2 + t3 + t4)
-        print(validationNumber)
-//        api 호출
+        Network.shared.attend(in: scheduleID, with: validationNumber) { result in
+            switch result {
+            case .success(let attendanceInformation):
+                self.changeImminentStudyScheduleAttendanceInformationTo(attendanceInformation)
+                self.dismiss(animated: true)
+            case .failure(let error):
+                self.handle(error: error)
+            }
+        }
+    }
+    
+    private func returnEnteredCheckNumbers() -> Int {
+        guard let t1 = firstField.text, let t2 = secondField.text,
+              let t3 = thirdField.text, let t4 = fourthField.text,
+              let validationNumber = Int(t1 + t2 + t3 + t4) else { return 0 }
+        
+        return validationNumber
+    }
+    
+    private func handle(error: PeoplesError) {
+        switch error {
+        case .userNotFound:
+            let alert = SimpleAlert(message: "스터디 멤버만 출석체크 할 수 있습니다.")
+            self.present(alert, animated: true)
+            
+        case .wrongAttendanceCode:
+            HapticManager.shared.hapticNotification(type: .error)
+            
+            validationLabel.isHidden = false
+            
+            firstField.text = ""
+            secondField.text = ""
+            thirdField.text = ""
+            fourthField.text = ""
+        default:
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
     }
 }
 
@@ -98,7 +135,7 @@ extension MainValidationNumberFillingInPopViewController: UITextFieldDelegate {
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         if firstField.text != "" && secondField.text != "" && thirdField.text != "" && fourthField.text != "" {
-            checkValidationNumber()
+            attendWithCheckNumbers()
         }
     }
 }

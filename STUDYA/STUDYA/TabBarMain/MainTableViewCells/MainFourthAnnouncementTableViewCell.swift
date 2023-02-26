@@ -12,15 +12,50 @@ class MainFourthAnnouncementTableViewCell: UITableViewCell {
     
     static let identifier = "MainFourthAnnouncementTableViewCell"
     
+    internal var studyID: ID?
     internal var announcement: Announcement? {
         didSet {
-            print(#function)
-            if announcement != nil {
-                titleLabel.text = announcement?.title
-                print(#function, 1)
-                subTitleLabel.text = announcement?.content
-            }
+            configureRedDot()
+            
+            guard let announcement = announcement else { return }
+            
+            titleLabel.text = announcement.title
+            subTitleLabel.text = announcement.content
         }
+    }
+    
+    private func configureRedDot() {
+
+        if let _ = studyID, let announcementID = announcement?.id {
+            configureRedDotWhenYesAnnouncement(announcementID: announcementID)
+        } else {
+            hideRedDotWhenNoAnnouncement()
+        }
+    }
+    
+    private func configureRedDotWhenYesAnnouncement(announcementID: ID) {
+        
+        if let preAnnouncementID = UserDefaults.standard.value(forKey: "checkedAnnouncementIDOfStudy\(studyID)") as? ID {
+            configureRedDotWhenUserHaveCheckedAnyAnnouncementOfThisStudy(preAnnouncementID: preAnnouncementID, presentAnnouncementID: announcementID)
+        } else {
+            hideRedDotWhenUserHaveNeverCheckedAnnouncementOfThisStudy()
+        }
+    }
+    
+    private func configureRedDotWhenUserHaveCheckedAnyAnnouncementOfThisStudy(preAnnouncementID: ID, presentAnnouncementID: ID) {
+        if preAnnouncementID >= presentAnnouncementID {
+            redDot.isHidden = true
+        } else {
+            redDot.isHidden = false
+        }
+    }
+    
+    private func hideRedDotWhenUserHaveNeverCheckedAnnouncementOfThisStudy() {
+        redDot.isHidden = false
+    }
+    
+    private func hideRedDotWhenNoAnnouncement() {
+        redDot.isHidden = true
     }
     
     internal var navigatable: Navigatable!
@@ -40,6 +75,12 @@ class MainFourthAnnouncementTableViewCell: UITableViewCell {
         
         return l
     }()
+    private lazy var redDot: CustomLabel = {
+       
+        let i = CustomLabel(title: "·", tintColor: .subColor1, size: 40, isBold: true)
+        
+        return i
+    }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -47,12 +88,18 @@ class MainFourthAnnouncementTableViewCell: UITableViewCell {
         contentView.backgroundColor = .appColor(.background2)
         
         contentView.addSubview(announcementLabel)
+        contentView.addSubview(redDot)
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleLabel)
         
         announcementLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).inset(30)
             make.top.equalTo(contentView.snp.top).inset(14)
+        }
+        redDot.snp.makeConstraints { make in
+            make.centerY.equalTo(announcementLabel).offset(-2)
+            make.trailing.equalTo(announcementLabel.snp.leading).offset(-4)
+//            make.width.height.equalTo(6)
         }
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(announcementLabel.snp.trailing).offset(5)

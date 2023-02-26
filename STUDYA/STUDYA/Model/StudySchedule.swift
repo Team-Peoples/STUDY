@@ -7,34 +7,7 @@
 
 import UIKit
 
-struct Schedule: Codable {
-    let id: Int?
-    let content: String?
-    let date: String?
-    let status: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case status
-        case id = "scheduleId"
-        case content = "scheduleName"
-        case date = "scheduleDate"
-    }
-}
-
-struct ScheduleAttendanceInformation: Codable {
-    let userID: UserID
-    let attendanceStatus: Attendance
-    let reason: String
-    let fine: Int
-
-    enum CodingKeys: String, CodingKey {
-        case userID = "userId"
-        case attendanceStatus = "attendStatus"
-        case reason, fine
-    }
-}
-
-struct StudyScheduleComing: Codable {
+struct StudySchedule: Codable {
     let studyName: String?
     let studyScheduleID: Int?
     var studyID: StudyID?
@@ -66,7 +39,7 @@ struct StudyScheduleComing: Codable {
     }
 }
 
-struct StudyScheduleGoing: Codable {
+struct StudySchedulePosting: Codable {
     var studyID: Int?
     var studyScheduleID: Int?
     var topic: String?
@@ -117,12 +90,14 @@ enum RepeatOption: String, Codable {
     case everyWeek = "매주"
     case everyTwoWeeks = "2주 마다"
     case everyMonth = "매달"
+    case norepeat = ""
     
     enum CodingKeys: String, CodingKey {
         case everyDay
         case everyWeek
         case everyTwoWeeks = "everyTwoWeek"
         case everyMonth
+        case norepeat
     }
     
     var translatedKorean: String {
@@ -131,6 +106,7 @@ enum RepeatOption: String, Codable {
         case .everyWeek: return "매주"
         case .everyTwoWeeks: return "2주 마다"
         case .everyMonth: return "매달"
+        case .norepeat: return ""
         }
     }
 }

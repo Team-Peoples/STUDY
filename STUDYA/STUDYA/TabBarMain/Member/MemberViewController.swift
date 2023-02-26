@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MemberViewController: SwitchableViewController, SwitchStatusGivable, BottomSheetAddable {
+final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     
     internal var members: Members? {
         didSet {

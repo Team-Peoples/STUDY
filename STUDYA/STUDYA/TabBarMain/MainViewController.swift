@@ -7,7 +7,7 @@
 
 import UIKit
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
-final class MainViewController: SwitchableViewController, SwitchStatusGivable {
+final class MainViewController: SwitchableViewController {
     // MARK: - Properties
     
     internal var nickName: String?
@@ -15,8 +15,14 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     private var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
+            print("studyID: \(currentStudyOverall.study.id)")
             isManager = currentStudyOverall.isManager
             mainTableView.reloadData()
+        }
+    }
+    private var imminentAttendanceInformation: AttendanceInformation? {
+        didSet {
+            mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
         }
     }
     private var notification: String? {
@@ -25,6 +31,24 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
                 notificationBtn.setImage(UIImage(named: "noti-new"), for: .normal)
             }
         }
+    }
+    
+    private lazy var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { attendanceInformation in
+        guard let studyID = self.currentStudyOverall?.study.id else { return }  //클로저명 바꿔야함
+        Network.shared.getStudy(studyID: studyID) { result in
+            
+            switch result {
+            case .success(let studyOverall):
+                
+                self.isManager = studyOverall.isManager
+                self.currentStudyOverall = studyOverall
+                
+                self.setImminentStudyScheduleAttendanceImformation()
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+//        self.imminentAttendanceInformation = attendanceInformation
     }
     
     private lazy var notificationBtn: UIButton = {
@@ -56,6 +80,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         t.showsVerticalScrollIndicator = false
         t.separatorStyle = .none
         t.backgroundColor = .systemBackground
+        t.refreshControl = UIRefreshControl()
+        
+        t.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
         
         return t
     }()
@@ -83,7 +110,50 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        Network.shared.attend(in: 289, with: 4561) { result in
+//            switch result {
+//            case .success(let attendanceInformation):
+//                print("success")
+//                
+//            case .failure(let error):
+//                print("fail")
+//            }
+//        }
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 120, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-26", repeatEndDate: "", startTime: "19:30", endTime: "19:32", repeatOption: .norepeat)) { result in
+//            switch result {
+//            case .success:
+//                print("suc")
+//            case .failure:
+//                print("fa")
+//            }
+//        }
+//        Network.shared.createAnnouncement(title: "test1", content: "테스트중", studyID: 109) { result in
+//            switch result {
+//            case .success(let announcements):
+//                print(announcements)
+//            case .failure:
+//                print("fail")
+//            }
+//        }
 
+//        Network.shared.joinStudy(id: 110) { result in
+//            switch result {
+//            case .success(let suc):
+//                print(suc)
+//            case .failure(let err):
+//                print(err)
+//            }
+//        }
+        
+//        Network.shared.createStudy(Study(id: nil, studyName: "똥싸고 커피마시기", studyOn: true, studyOff: false, category: .certificate, studyIntroduction: "그러면 기분이가 좋지요.", freeRule: "똥은 천천히 싸기", isBlocked: nil, isPaused: nil, generalRule: GeneralStudyRule(lateness: Lateness(time: 5, count: 5, fine: 500), absence: Absence(time: 30, fine: 5000), deposit: 10000, excommunication: Excommunication(lateness: 10, absence: 4)))) { result in
+//            switch result {
+//            case .success:
+//                print("succ")
+//            case .failure:
+//                print("fail")
+//            }
+//        }
+        
         getUserInformationAndStudies()
         
         view.backgroundColor = .systemBackground
@@ -116,10 +186,9 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
     var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-        flag.toggle()
     
-        let nextVC = NotificationViewController()
-        push(vc: nextVC)
+//        let nextVC = NotificationViewController()
+//        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
@@ -187,6 +256,7 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         floatingButton.isSelected = false
     }
     
+//    MARK: - initializing Data
     private func getUserInformationAndStudies() {
         Network.shared.getUserInfo { result in
             switch result {
@@ -195,16 +265,13 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
                 self.nickName = user.nickName
                 self.getAllStudies()
             case .failure(let error):
-                print(#function,1)
+                
                 switch error {
                 case .userNotFound:
-                    
-                    DispatchQueue.main.async {
-                        let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
-                            AppController.shared.deleteUserInformationAndLogout()
-                        }
-                        self.present(alert, animated: true)
+                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
+                        AppController.shared.deleteUserInformationAndLogout()
                     }
+                    self.present(alert, animated: true)
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
@@ -216,10 +283,11 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         Network.shared.getAllStudies { result in
             switch result {
             case .success(let studies):
-                if let firstStudy = studies.first {
+                
+                if let firstStudy = studies.first, let studyID = firstStudy.id {
                     
                     self.myStudyList = studies
-                    self.getCurrentStudyOverall(study: firstStudy)
+                    self.getCurrentStudyOverall(with: studyID)
                     
                 } else {
                     self.configureViewWhenNoStudy()
@@ -230,33 +298,72 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         }
     }
     
-    private func getCurrentStudyOverall(study: Study) {
-        guard let studyID = study.id else { return }
+    private func getCurrentStudyOverall(with studyID: ID) {
         Network.shared.getStudy(studyID: studyID) { result in
             
             switch result {
             case .success(let studyOverall):
-                self.isManager = studyOverall.isManager
                 
+                self.isManager = studyOverall.isManager
                 self.currentStudyOverall = studyOverall
-                DispatchQueue.main.async {
-                    self.configureViewWhenYesStudy()
-                }
+                
+                self.configureViewWhenYesStudy()
+                self.setImminentStudyScheduleAttendanceImformation()
+                
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
     
-    override func configureNavigationBar() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-        guard !myStudyList.isEmpty else { return }
-        
-        super.configureNavigationBar()
+    @objc private func refresh() {
+        getUserInformationAndStudies()
+        mainTableView.refreshControl?.endRefreshing()
     }
     
-    private func configureNavigationBarNotiBtn() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+    private func configureViewWhenYesStudy() {
+        configureTableView()
+        configureFloatingButtonIfManagerMode()
+    }
+    
+    private func configureTableView() {
+        view.addSubview(mainTableView)
+        mainTableView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func configureFloatingButtonIfManagerMode() {
+        guard isManager else { return }
+        
+        configureFloatingButton()
+    }
+    
+    private func setImminentStudyScheduleAttendanceImformation() {
+        if let scheduleID = currentStudyOverall?.studySchedule?.studyScheduleID {
+            getImminentScheudleAttendanceInformation(with: scheduleID)
+        } else {
+            self.imminentAttendanceInformation = nil
+        }
+    }
+    
+    private func getImminentScheudleAttendanceInformation(with id: ID) {
+        Network.shared.getImminentScheduleAttendance(scheduleID: id) { result in
+            switch result {
+            case .success(let attendanceInfo):
+                self.save(attendanceInfo)
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
+    private func save(_ attendanceInfo: AttendanceInformation) {
+        if attendanceInfo.attendanceStatus != nil {
+            self.imminentAttendanceInformation = attendanceInfo
+        } else {
+            self.imminentAttendanceInformation = nil
+        }
     }
     
     private func configureViewWhenNoStudy() {
@@ -285,17 +392,17 @@ final class MainViewController: SwitchableViewController, SwitchStatusGivable {
         }
     }
     
-    private func configureViewWhenYesStudy() {
-        view.addSubview(mainTableView)
-        mainTableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
+    override func configureNavigationBar() {
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+        guard !myStudyList.isEmpty else { return }
         
-        guard isManager else { return }
-        
-        configureFloatingButton()
+        super.configureNavigationBar()
     }
     
+    private func configureNavigationBarNotiBtn() {
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+    }
+
     private func configureFloatingButton() {
         floatingButtonContainerView.isHidden = isSwitchOn ? false : true
         view.addSubview(floatingButtonContainerView)
@@ -355,23 +462,20 @@ extension MainViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
             
+            print("currentStudy: \(currentStudyOverall?.study.id), scheduleID: \(currentStudyOverall?.studySchedule?.studyScheduleID)")
             cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchObservableDelegate = self
-            
-            if flag {
-                cell.didAttend = true
-                cell.attendance = .attended
-                
-            } else {
-                cell.didAttend = true
-                cell.attendance = .absent
-            }
+            cell.attendanceInformation = imminentAttendanceInformation
+            cell.schedule = currentStudyOverall?.studySchedule
+            cell.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
             
             return cell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
             
             cell.navigatable = self
+            
+            cell.studyID = currentStudyOverall?.study.id
             cell.announcement = currentStudyOverall?.announcement
 
             return cell
@@ -381,15 +485,6 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
-//            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
-//            cell.studyAttendance = [
-//                .attended: currentStudyOverall.attendedCount,
-//                .late: currentStudyOverall.lateCount,
-//                .absent: currentStudyOverall.absentCount,
-//                .allowed: currentStudyOverall.allowedCount
-//            ]
-//            cell.penalty = currentStudyOverall.totalFine
-//            cell.studyID = currentStudyOverall.study.id
             cell.currentStudyOverall = currentStudyOverall
             
             cell.delegate = self
@@ -416,8 +511,11 @@ extension MainViewController: UITableViewDelegate {
         case mainTableView:
             if indexPath.row == 3 {
                 guard let studyID = currentStudyOverall?.study.id else { return }
-                print(studyID,"🔥")
+                
+                saveAnnouncementIDUserAlreadyCheckedInStudy(studyID)
+                
                 let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
+                
                 self.syncSwitchWith(nextVC: announcementTableVC)
                 self.push(vc: announcementTableVC)
             }
@@ -430,6 +528,11 @@ extension MainViewController: UITableViewDelegate {
             }
         default: break
         }
+    }
+    
+    private func saveAnnouncementIDUserAlreadyCheckedInStudy(_ studyID: ID) {
+        guard let announcementID = currentStudyOverall?.announcement?.id else { return }
+        UserDefaults.standard.setValue(announcementID, forKey: "checkedAnnouncementIDOfStudy\(studyID)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -449,29 +552,10 @@ extension MainViewController: UITableViewDelegate {
         }
     }
 }
-//
-//extension MainViewController: UIPopoverControllerDelegate {
-//    class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
-//
-//        // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
-//        private static let sharedInstance = AlwaysPresentAsPopover()
-//
-//        private override init() {
-//            super.init()
-//        }
-//
-//        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-//            return .none
-//        }
-//
-//        static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
-//            let presentationController = controller.presentationController as! UIPopoverPresentationController
-//            presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
-//            return presentationController
-//        }
-//}
 
-protocol SwitchStatusGivable: SwitchableViewController {
+protocol SwitchStatusGivable {
+    var isSwitchOn: Bool { get set }
+    
     func getSwtichStatus() -> Bool
 }
 
