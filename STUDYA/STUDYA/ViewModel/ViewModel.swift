@@ -213,13 +213,13 @@ class StudyAllScheduleViewModel: ViewModel {
         }
     }
     
-    func studySchedule(at selectedDate: Date) -> [StudyScheduleComing] {
+    func studySchedule(at selectedDate: Date) -> [StudySchedule] {
         let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDate)
         
         return studyScheduleAtSelectedDate
     }
 
-    func studySchedule(of studyID: ID, at selectedDate: Date?) -> [StudyScheduleComing]? {
+    func studySchedule(of studyID: ID, at selectedDate: Date?) -> [StudySchedule]? {
         let studySchedule = studySchedules.filter { $0.studyID == "\(studyID)"}
         let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDate)
 
@@ -238,7 +238,7 @@ class StudyAllScheduleViewModel: ViewModel {
     }
     
     // MARK: - Helper
-    private func filtering(_ studySchedule: [StudyScheduleComing], at selectedDate: Date?) -> [StudyScheduleComing] {
+    private func filtering(_ studySchedule: [StudySchedule], at selectedDate: Date?) -> [StudySchedule] {
         let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day])
         let studySchedules = studySchedule.filter { studySchedule in
            

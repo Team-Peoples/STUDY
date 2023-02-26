@@ -14,7 +14,7 @@ class StudyScheduleViewController: SwitchableViewController {
     let studyAllScheduleViewModel = StudyAllScheduleViewModel()
     
     private let studyID: ID
-    private var studyScheduleAtSelectedDate = [StudyScheduleComing]()
+    private var studyScheduleAtSelectedDate = [StudySchedule]()
     private let calendarView = CustomCalendarView()
     private let scheduleTableView: UITableView = {
         
