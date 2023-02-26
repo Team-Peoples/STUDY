@@ -43,6 +43,14 @@ extension DateFormatter {
         return dateFormatter
     }()
     
+    static let yearMonthDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yyyy.MM"
+        
+        return dateFormatter
+    }()
+    
     static let dashedDateFormatter: DateFormatter = {
        
         let dateFormatter = DateFormatter()

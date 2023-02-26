@@ -213,15 +213,15 @@ class StudyAllScheduleViewModel: ViewModel {
         }
     }
     
-    func studySchedule(at selectedDateComponents: DateComponents?) -> [StudySchedule] {
-        let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDateComponents)
+    func studySchedule(at selectedDate: Date) -> [StudyScheduleComing] {
+        let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDate)
         
         return studyScheduleAtSelectedDate
     }
 
-    func studySchedule(of studyID: ID, at selectedDateComponents: DateComponents?) -> [StudySchedule]? {
+    func studySchedule(of studyID: ID, at selectedDate: Date?) -> [StudyScheduleComing]? {
         let studySchedule = studySchedules.filter { $0.studyID == "\(studyID)"}
-        let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDateComponents)
+        let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDate)
 
         return studyScheduleAtSelectedDate
     }
@@ -238,17 +238,18 @@ class StudyAllScheduleViewModel: ViewModel {
     }
     
     // MARK: - Helper
-    
-    private func filtering(_ studySchedule: [StudySchedule], at selectedDateComponents: DateComponents?) -> [StudySchedule] {
-        return studySchedule.filter { studySchedule in
+    private func filtering(_ studySchedule: [StudyScheduleComing], at selectedDate: Date?) -> [StudyScheduleComing] {
+        let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day])
+        let studySchedules = studySchedule.filter { studySchedule in
            
             let startDate = studySchedule.startDateAndTime
             let startDateComponents = startDate.convertToDateComponents([.year, .month, .day])
-            
-            let isSameDate = selectedDateComponents?.year == startDateComponents.year && selectedDateComponents?.month == startDateComponents.month && selectedDateComponents?.day == startDateComponents.day
+            let isSameDate = selectedDateComponents == startDateComponents
             
             return isSameDate
         }
+        
+        return studySchedules
     }
 }
 

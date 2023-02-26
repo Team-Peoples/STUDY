@@ -193,9 +193,7 @@ class MyScheduleCollectionViewCell: UICollectionViewCell {
     
     private func addObservers() {
         NotificationCenter.default.addObserver(forName: .mainCalenderDateTapped, object: nil, queue: nil) { noti in
-            guard let dateComponents = noti.object as? DateComponents,
-                  let date = dateComponents.convertToDate()
-            else  { return }
+            guard let date = noti.object as? Date else { return }
             
             let dashedDate = DateFormatter.dashedDateFormatter.string(from: date)
 
