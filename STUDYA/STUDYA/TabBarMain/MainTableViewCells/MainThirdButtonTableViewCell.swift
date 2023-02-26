@@ -82,7 +82,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.scheduleID = schedule?.studyScheduleID
         vc.preferredContentSize = CGSize(width: 286, height: 247)
-        vc.attendButtonTapped = changeImminentStudyScheduleAttendanceInformationTo
+        vc.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
         
         navigatableSwitchObservableDelegate?.present(vc)
     }
@@ -165,6 +165,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             blink(innerView, attendedSubTitleLabel)
             
         case .userModelate(let fine):
+            afterStudyView.isHidden = false
             penaltyLabel.isHidden = false
             fineLabel.isHidden = false
             wonLabel.isHidden = false
@@ -177,6 +178,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             blink(innerView, penaltyLabel, fineLabel, wonLabel)
             
         case .userModeAbsent(let fine):
+            afterStudyView.isHidden = false
             penaltyLabel.isHidden = false
             fineLabel.isHidden = false
             wonLabel.isHidden = false
@@ -189,6 +191,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
             blink(innerView, penaltyLabel, fineLabel, wonLabel)
             
         case .userModeAllowed(let fine):
+            afterStudyView.isHidden = false
             penaltyLabel.isHidden = false
             fineLabel.isHidden = false
             wonLabel.isHidden = false

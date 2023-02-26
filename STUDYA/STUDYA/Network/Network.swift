@@ -983,7 +983,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                
+                print(attendanceInformation, "❤️")
                 completion(.success(attendanceInformation))
             case 400:
                 guard let data = response.data,

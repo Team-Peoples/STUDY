@@ -77,7 +77,7 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     
     private func attend() {
         guard let scheduleID = scheduleID, let checkCode = checkCode else { return }
-        
+        print(scheduleID, checkCode, "☺️")
         Network.shared.attend(in: scheduleID, with: checkCode) { result in
             switch result {
             case .success(let attendanceInformation):

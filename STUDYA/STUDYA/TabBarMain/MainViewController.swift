@@ -15,6 +15,7 @@ final class MainViewController: SwitchableViewController {
     private var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
+            print("studyID: \(currentStudyOverall.study.id)")
             isManager = currentStudyOverall.isManager
             mainTableView.reloadData()
         }
@@ -33,7 +34,21 @@ final class MainViewController: SwitchableViewController {
     }
     
     private lazy var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { attendanceInformation in
-        self.imminentAttendanceInformation = attendanceInformation
+        guard let studyID = self.currentStudyOverall?.study.id else { return }  //클로저명 바꿔야함
+        Network.shared.getStudy(studyID: studyID) { result in
+            
+            switch result {
+            case .success(let studyOverall):
+                
+                self.isManager = studyOverall.isManager
+                self.currentStudyOverall = studyOverall
+                
+                self.setImminentStudyScheduleAttendanceImformation()
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+//        self.imminentAttendanceInformation = attendanceInformation
     }
     
     private lazy var notificationBtn: UIButton = {
@@ -95,8 +110,16 @@ final class MainViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 109, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-25", repeatEndDate: "", startTime: "17:58", endTime: "17:59", repeatOption: .norepeat)) { result in
+//        Network.shared.attend(in: 289, with: 4561) { result in
+//            switch result {
+//            case .success(let attendanceInformation):
+//                print("success")
+//                
+//            case .failure(let error):
+//                print("fail")
+//            }
+//        }
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 120, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-26", repeatEndDate: "", startTime: "19:30", endTime: "19:32", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -163,10 +186,9 @@ final class MainViewController: SwitchableViewController {
     var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-        flag.toggle()
     
-        let nextVC = NotificationViewController()
-        push(vc: nextVC)
+//        let nextVC = NotificationViewController()
+//        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
@@ -440,6 +462,7 @@ extension MainViewController: UITableViewDataSource {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
             
+            print("currentStudy: \(currentStudyOverall?.study.id), scheduleID: \(currentStudyOverall?.studySchedule?.studyScheduleID)")
             cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchObservableDelegate = self
             cell.attendanceInformation = imminentAttendanceInformation
@@ -462,15 +485,6 @@ extension MainViewController: UITableViewDataSource {
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
-//            cell.totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount
-//            cell.studyAttendance = [
-//                .attended: currentStudyOverall.attendedCount,
-//                .late: currentStudyOverall.lateCount,
-//                .absent: currentStudyOverall.absentCount,
-//                .allowed: currentStudyOverall.allowedCount
-//            ]
-//            cell.penalty = currentStudyOverall.totalFine
-//            cell.studyID = currentStudyOverall.study.id
             cell.currentStudyOverall = currentStudyOverall
             
             cell.delegate = self
@@ -538,27 +552,6 @@ extension MainViewController: UITableViewDelegate {
         }
     }
 }
-//
-//extension MainViewController: UIPopoverControllerDelegate {
-//    class PresentAsPopover : NSObject, UIPopoverPresentationControllerDelegate {
-//
-//        // 싱글턴 사용, delegate property는 weak 니까 instance를 미리 받아놔야한다.
-//        private static let sharedInstance = AlwaysPresentAsPopover()
-//
-//        private override init() {
-//            super.init()
-//        }
-//
-//        func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-//            return .none
-//        }
-//
-//        static func configurePresentation(forController controller : UIViewController) -> UIPopoverPresentationController {
-//            let presentationController = controller.presentationController as! UIPopoverPresentationController
-//            presentationController.delegate = AlwaysPresentAsPopover.sharedInstance
-//            return presentationController
-//        }
-//}
 
 protocol SwitchStatusGivable {
     var isSwitchOn: Bool { get set }

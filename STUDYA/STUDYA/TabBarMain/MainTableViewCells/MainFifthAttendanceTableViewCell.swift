@@ -14,27 +14,17 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     internal var currentStudyOverall: StudyOverall? {
         didSet {
-            guard let currentStudyOverall = currentStudyOverall else {
+            guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
                 configureErrorSituation()
                 return
             }
             
-            let totalStudyHeldCount =
-            currentStudyOverall.attendedCount
-            + currentStudyOverall.lateCount
-            + currentStudyOverall.absentCount
-            + currentStudyOverall.allowedCount
-            
             if totalStudyHeldCount != 0 {
+                progressView.resetProgress()
                 setupProgress()
                 
-                let totalCount = currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount + currentStudyOverall.absentCount
-                
-                if totalCount != 0 {
-                    attendanceRatioLabel.text = "\((currentStudyOverall.allowedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount) / totalCount)%"
-                } else {
-                    attendanceRatioLabel.text = "0%"
-                }
+                let notAbsentCount = currentStudyOverall.attendedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount
+                attendanceRatioLabel.text = "\(100 * notAbsentCount / totalStudyHeldCount)%"
                 
                 penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
                 
@@ -227,10 +217,8 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     private func setupProgress() {
         
-        guard let currentStudyOverall = currentStudyOverall else { return }
+        guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else { return }
         
-        // domb: totalStudyHeldCount == 0 이라면 Fatal error: Division by zero
-        let totalStudyHeldCount = currentStudyOverall.totalFine != 0 ? currentStudyOverall.totalFine : 10000
         let studyAttendance: [Attendance : Int] = [
             .attended: currentStudyOverall.attendedCount,
             .late: currentStudyOverall.lateCount,
@@ -239,12 +227,17 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         ]
         
         let attendanceRatio = Float(studyAttendance[.attended]! * 100 / totalStudyHeldCount) / 100
-        let latendssRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
+        let latenessRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
         let absenceRatio = Float(studyAttendance[.absent]! * 100 / totalStudyHeldCount) / 100
         let allowedRatio = Float(studyAttendance[.allowed]! * 100 / totalStudyHeldCount) / 100
+        
+        print("attendanceRatio", attendanceRatio)
+        print("latenessRatio", latenessRatio)
+        print("absenceRatio", absenceRatio)
+        print("allowedRatio", allowedRatio)
 
         self.progressView.setProgress(section: 0, to: attendanceRatio)
-        self.progressView.setProgress(section: 1, to: latendssRatio)
+        self.progressView.setProgress(section: 1, to: latenessRatio)
         self.progressView.setProgress(section: 2, to: absenceRatio)
         self.progressView.setProgress(section: 3, to: allowedRatio)
 

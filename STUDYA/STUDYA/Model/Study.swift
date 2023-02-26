@@ -120,6 +120,9 @@ struct StudyOverall: Codable {
     let totalFine, attendedCount, absentCount, lateCount, allowedCount, timeLeftUntilNextStudy: Int
     let studySchedule: StudySchedule?
     let isOwner: Bool
+    var totalStudyHeldCount: Int? {
+        return attendedCount + lateCount + absentCount + allowedCount
+    }
     
     enum CodingKeys: String, CodingKey {
         case announcement = "notification"
