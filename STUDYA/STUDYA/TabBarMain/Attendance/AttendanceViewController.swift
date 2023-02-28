@@ -60,7 +60,7 @@ class AttendanceViewModel {
     let studyID: ID
     
     var myAttendanceOverall: Observable<MyAttendanceOverall>
-    var allUsersAttendacneForADay: Observable<AllUsersAttendacneForADay>?
+    var allUsersAttendanceForADay: Observable<AllUsersAttendacneForADay>?
     var error: Observable<PeoplesError>?
     
     var monthlyGroupedDates: [String: [Date]] = [:]
@@ -70,7 +70,7 @@ class AttendanceViewModel {
         self.myAttendanceOverall = Observable(myAttendanceOverall)
         
         if let allUsersAttendacneForADay = allUsersAttendacneForADay {
-            self.allUsersAttendacneForADay = Observable(allUsersAttendacneForADay)
+            self.allUsersAttendanceForADay = Observable(allUsersAttendacneForADay)
         }
     }
     
@@ -91,21 +91,21 @@ class AttendanceViewModel {
         }
     }
     
-//    func getAllMembersAttendances() {
-//        let formatter = DateFormatter.dashedDateFormatter
-//        let today = Date()
-//        let dashedToday = formatter.string(from: today)
-//
-//        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
-//            switch result {
-//            case .success(let allUsersAttendancesForADay):
-//                self.allUsersAttendancesForADay = Observable(allUsersAttendancesForADay)
-//                self.seperateAllDaysByMonth()
-//            case .failure(let error):
-//                self.error = Observable(error)
-//            }
-//        }
-//    }
+    func getAllMembersAttendances() {
+        let formatter = DateFormatter.dashedDateFormatter
+        let today = Date()
+        let dashedToday = formatter.string(from: today)
+
+        Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
+            switch result {
+            case .success(let allUsersAttendancesForADay):
+                self.allUsersAttendanceForADay = Observable(allUsersAttendancesForADay)
+                self.seperateAllDaysByMonth()
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
     
     func seperateAllDaysByMonth() {
         let dateFormatter = DateFormatter()

@@ -29,7 +29,7 @@ class TokenAuthenticator: Authenticator {
        
         let bearerAccessToken = HTTPHeader.bearerAccessToken(credential.accessToken).value
         let bearerRefreshToken = HTTPHeader.bearerRefreshToken(credential.refreshToken).value
-        return urlRequest.headers["AccessToken"] == bearerAccessToken && urlRequest.headers["RefreshToken"] == bearerRefreshToken
+        return urlRequest.headers[Constant.accessToken] == bearerAccessToken && urlRequest.headers[Constant.refreshToken] == bearerRefreshToken
     }
     
     func didRequest(_ urlRequest: URLRequest, with response: HTTPURLResponse, failDueToAuthenticationError error: Error) -> Bool {

@@ -114,12 +114,12 @@ final class MainViewController: SwitchableViewController {
 //            switch result {
 //            case .success(let attendanceInformation):
 //                print("success")
-//                
+//
 //            case .failure(let error):
 //                print("fail")
 //            }
 //        }
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 120, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-26", repeatEndDate: "", startTime: "19:30", endTime: "19:32", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-28", repeatEndDate: "", startTime: "01:57", endTime: "01:59", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -127,6 +127,7 @@ final class MainViewController: SwitchableViewController {
 //                print("fa")
 //            }
 //        }
+        
 //        Network.shared.createAnnouncement(title: "test1", content: "테스트중", studyID: 109) { result in
 //            switch result {
 //            case .success(let announcements):

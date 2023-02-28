@@ -112,7 +112,7 @@ extension RequestPurpose {
     var path: String {
         switch self {
             
-            //    HTTPMethod: POST
+//    HTTPMethod: POST
         case .signUp:
             return "/signup"
         case .emailCheck:
