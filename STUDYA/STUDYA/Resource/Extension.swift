@@ -198,6 +198,13 @@ extension Date {
     func convertToDateComponents(_ components: Set<Calendar.Component>) -> DateComponents {
         Calendar.current.dateComponents(components, from: self)
     }
+    
+    func isSameDay(as otherDate: Date) -> Bool {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: self)
+        let otherComponents = calendar.dateComponents([.year, .month, .day], from: otherDate)
+        return components == otherComponents
+    }
 }
 
 extension DateComponents {

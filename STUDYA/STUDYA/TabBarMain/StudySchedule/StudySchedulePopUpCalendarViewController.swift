@@ -17,9 +17,10 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         case end
     }
     
-    var selectedDate: Date
     weak var presentingVC: UIViewController?
-    lazy var startDate: Date = Date()
+    var selectedDate: Date
+    var startDate: Date?
+    var endDate: Date?
 
     private let calendarType: PopUpCalendarType
     private let button = UIButton(frame: .zero)
@@ -56,7 +57,9 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         calendarView.dateSelectAction = { (date) in
             self.calendarIsSelected(date: date)
         }
+        
         calendarView.select(date: selectedDate)
+        
         
         if calendarType == .end {
             calendarView.minimumDate = startDate
@@ -114,39 +117,39 @@ extension StudySchedulePopUpCalendarViewController {
     
     func calendarIsSelected(date: Date) {
         if let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController {
-            
+
             switch calendarType {
             case .start:
 
-                presentingVC.studyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
-                
+                presentingVC.studySchedulePostingViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
+
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if presentingVC.studyScheduleViewModel.studySchedule.repeatOption != nil {
-                    presentingVC.studyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+                if presentingVC.studySchedulePostingViewModel.studySchedule.repeatOption != .norepeat {
+                    presentingVC.studySchedulePostingViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
-                
+
                 self.dismiss(animated: true)
             case .end:
-                
-                presentingVC.studyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-                
+
+                presentingVC.studySchedulePostingViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+
                 self.dismiss(animated: true)
             }
         } else if let presentingVC = presentingVC as? EditingStudySchduleViewController {
             switch calendarType {
             case .start:
                 presentingVC.editingStudyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
-                
+
                 // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != nil {
+                if presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != .norepeat {
                     presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
                 }
-                
+
                 self.dismiss(animated: true)
             case .end:
-                
+
                 presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-                
+
                 self.dismiss(animated: true)
             }
         }

@@ -15,7 +15,6 @@ final class MainViewController: SwitchableViewController {
     private var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall else { return }
-            print("studyID: \(currentStudyOverall.study.id)")
             isManager = currentStudyOverall.isManager
             mainTableView.reloadData()
         }
@@ -157,10 +156,12 @@ final class MainViewController: SwitchableViewController {
         getUserInformationAndStudies()
         
         view.backgroundColor = .systemBackground
-        
-        print("origin accessToken: ",KeyChain.read(key: Constant.accessToken)!)
-        print("origin refreshToken: ",KeyChain.read(key: Constant.refreshToken)!)
-        
+        print("postman의 key 입력하는 곳에 바로 붙여넣기, cmd + c GO")
+        print("----------------------------------------------------------")
+        print("""
+            [{"key":"AccessToken","value":"Bearer \(KeyChain.read(key: Constant.accessToken)!)","description":null,"type":"text","enabled":true,"equals":true},{"key":"RefreshToken","value":"Bearer \(KeyChain.read(key: Constant.refreshToken)!)","description":"","type":"text","enabled":true}]
+            """)
+        print("----------------------------------------------------------")
         configureTabBarSeparator()
         configureNavigationBar()
     }

@@ -59,7 +59,7 @@ class StudyScheduleTableViewCell: UITableViewCell {
         
         backgroundColor = .clear
         selectionStyle = .none
-    
+        
         setupRoundedBackgroundView()
         configureViews()
         
@@ -99,6 +99,16 @@ class StudyScheduleTableViewCell: UITableViewCell {
             repeatOptionLabel.change(textColor: .appColor(.keyColor1))
         case .study:
             repeatOptionLabel.text = schedule.repeatOption?.translatedKorean
+            
+            if schedule.repeatOption == nil {
+                repeatOptionLabel.snp.updateConstraints { make in
+                    make.height.equalTo(0)
+                }
+            } else {
+                repeatOptionLabel.snp.updateConstraints { make in
+                    make.height.equalTo(16)
+                }
+            }
         }
     }
     
@@ -130,38 +140,41 @@ class StudyScheduleTableViewCell: UITableViewCell {
             make.edges.equalTo(contentView).inset(10)
         }
         timeLabelStackView.snp.makeConstraints { make in
-            make.centerY.equalTo(roundedBackgroundView).offset(5)
+            make.trailing.equalTo(bookmarkColorView.snp.leading).offset(-7)
             make.leading.equalTo(roundedBackgroundView).offset(10)
             make.height.equalTo(30)
+            make.width.equalTo(40)
+            make.centerY.equalTo(bookmarkColorView)
         }
         bookmarkColorView.snp.makeConstraints { make in
-            make.leading.equalTo(timeLabelStackView.snp.trailing).offset(7)
-            make.centerY.equalTo(roundedBackgroundView).offset(5)
-            make.height.equalTo(38)
+            make.top.equalTo(topicLabel).offset(-1)
             make.width.equalTo(2)
-            make.bottom.equalTo(roundedBackgroundView).offset(-16)
+            make.bottom.equalTo(locationIcon).offset(1)
         }
         topicLabel.snp.makeConstraints { make in
             make.leading.equalTo(bookmarkColorView.snp.trailing).offset(7)
-            make.bottom.equalTo(bookmarkColorView.snp.centerY).offset(-2)
+            make.trailing.equalTo(roundedBackgroundView).inset(40)
         }
         locationIcon.snp.makeConstraints { make in
-            make.leading.equalTo(bookmarkColorView.snp.trailing).offset(7)
-            make.top.equalTo(bookmarkColorView.snp.centerY).offset(2)
+            make.leading.equalTo(topicLabel)
+            make.top.equalTo(topicLabel.snp.bottom).offset(6)
             make.height.equalTo(13)
             make.width.equalTo(10)
+            make.bottom.equalTo(roundedBackgroundView).inset(17)
         }
         placeLabel.snp.makeConstraints { make in
             make.leading.equalTo(locationIcon.snp.trailing).offset(6)
             make.centerY.equalTo(locationIcon)
         }
+        
         etcButton.snp.makeConstraints { make in
             make.centerY.equalTo(roundedBackgroundView)
             make.trailing.equalTo(roundedBackgroundView).inset(12)
         }
         repeatOptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(roundedBackgroundView).offset(8)
-            make.bottom.equalTo(topicLabel.snp.top).offset(-6)
+            make.top.equalTo(roundedBackgroundView).offset(9)
+            make.height.equalTo(16)
+            make.bottom.equalTo(topicLabel.snp.top).offset(-8)
             make.leading.equalTo(topicLabel).offset(2)
         }
     }

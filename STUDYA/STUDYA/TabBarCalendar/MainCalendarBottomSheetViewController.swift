@@ -14,14 +14,12 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     internal weak var sheetCoordinator: UBottomSheetCoordinator?
     internal weak var dataSource: UBottomSheetCoordinatorDataSource?
     
-    var studySchedule: [StudySchedule] = [] {
+    var studyScheduleAtSelectedDate = [StudySchedule]() {
         didSet {
             
-            let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? StudyScheduleCollectionViewCell
-            
-            cell?.studySchedules = studySchedule
-            cell?.reloadTableView()
-            cell?.checkScheduleIsEmpty()
+            let cell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? StudyScheduleCollectionViewCell
+            cell?.studyScheduleAtSelectedDate = studyScheduleAtSelectedDate
+            collectionView.reloadItems(at: [IndexPath(item: 1, section: 0)])
         }
     }
     
@@ -62,29 +60,23 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     @objc func tabButtonTapped(_ sender: UIButton) {
         
         switch sender {
-            case leftTabButton:
-                underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(6)
-                    make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(6 / 2))
-                    make.centerX.equalTo(leftTabButton)
-                }
+        case leftTabButton:
+            underLine.snp.remakeConstraints { make in
+                make.height.equalTo(6)
+                make.width.equalTo(86)
+                make.bottom.equalTo(topScrollView).inset( -(6 / 2))
+                make.centerX.equalTo(leftTabButton)
+            }
             collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
-            case rightTabButton:
-                underLine.snp.remakeConstraints { make in
-                    make.height.equalTo(6)
-                    make.width.equalTo(86)
-                    make.bottom.equalTo(topScrollView).inset( -(6 / 2))
-                    make.centerX.equalTo(rightTabButton)
-                }
-            collectionView.scrollToItem(at: IndexPath(row: 1, section: 0), at: .centeredHorizontally, animated: true)
-            
-                let cell = collectionView.cellForItem(at: IndexPath(row: 1, section: 0)) as? StudyScheduleCollectionViewCell
-            
-                cell?.studySchedules = studySchedule
-                cell?.reloadTableView()
-                cell?.checkScheduleIsEmpty()
-                
+        case rightTabButton:
+            underLine.snp.remakeConstraints { make in
+                make.height.equalTo(6)
+                make.width.equalTo(86)
+                make.bottom.equalTo(topScrollView).inset( -(6 / 2))
+                make.centerX.equalTo(rightTabButton)
+            }
+            collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
+            collectionView.reloadItems(at: [IndexPath(item: 1, section: 0)])
             default:
                 return
         }
@@ -240,11 +232,7 @@ extension MainCalendarBottomSheetViewController: UICollectionViewDataSource {
             
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StudyScheduleCollectionViewCell.identifier, for: indexPath) as? StudyScheduleCollectionViewCell else { return StudyScheduleCollectionViewCell() }
-            
-            cell.studySchedules = studySchedule
-            cell.reloadTableView()
-            cell.checkScheduleIsEmpty()
-            
+            cell.studyScheduleAtSelectedDate = studyScheduleAtSelectedDate
             return cell
         default: break
         }

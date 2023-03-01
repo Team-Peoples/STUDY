@@ -51,17 +51,17 @@ struct StudySchedulePosting: Codable {
     var startTime: String?
     var endTime: String?
     
-    var repeatOption: RepeatOption?
+    var repeatOption: RepeatOption = .norepeat
     
     var periodFormIsFilled: Bool {
-        if repeatOption == nil {
+        if repeatOption == .norepeat {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil
         } else {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil && repeatEndDate != ""
         }
     }
     var repeatOptionFormIsFilled: Bool {
-        if repeatOption != nil {
+        if repeatOption != .norepeat {
             return repeatEndDate != ""
         } else {
             return true
@@ -86,10 +86,10 @@ struct StudySchedulePosting: Codable {
 }
 
 enum RepeatOption: String, Codable {
-    case everyDay = "매일"
-    case everyWeek = "매주"
-    case everyTwoWeeks = "2주 마다"
-    case everyMonth = "매달"
+    case everyDay
+    case everyWeek
+    case everyTwoWeeks
+    case everyMonth
     case norepeat = ""
     
     enum CodingKeys: String, CodingKey {
@@ -97,7 +97,6 @@ enum RepeatOption: String, Codable {
         case everyWeek
         case everyTwoWeeks = "everyTwoWeek"
         case everyMonth
-        case norepeat
     }
     
     var translatedKorean: String {

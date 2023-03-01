@@ -11,7 +11,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyScheduleViewModel = StudyScheduleViewModel()
+    var studySchedulePostingViewModel = StudySchedulePostingViewModel()
     
     private let topicTitleLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let topicTextView: BaseTextView = {
@@ -43,7 +43,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        studyScheduleViewModel.bind { [self] studySchedule in
+        studySchedulePostingViewModel.bind { [self] studySchedule in
             topicTextView.text = studySchedule.topic
             placeTextView.text = studySchedule.place
             
@@ -80,9 +80,10 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
     
     @objc private func creatingScheduleButtonDidTapped() {
         
-        studyScheduleViewModel.postStudySchedule() {
-            self.dismiss(animated: true)
+        studySchedulePostingViewModel.postStudySchedule() {
+            NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
         }
+        self.dismiss(animated: true)
     }
     
     @objc private func onKeyboardAppear(_ notification: NSNotification) {
@@ -237,12 +238,12 @@ extension CreatingStudyScheduleContentViewController: UITextViewDelegate {
             if topicTextView.text.contains(where: { $0 == "\n" }) {
                 topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
             }
-            studyScheduleViewModel.studySchedule.topic = topicTextView.text
+            studySchedulePostingViewModel.studySchedule.topic = topicTextView.text
         case placeTextView:
             if placeTextView.text.contains(where: { $0 == "\n" }) {
                 placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
             }
-            studyScheduleViewModel.studySchedule.place = placeTextView.text
+            studySchedulePostingViewModel.studySchedule.place = placeTextView.text
         default:
             break
         }
