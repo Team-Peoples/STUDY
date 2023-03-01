@@ -37,6 +37,7 @@ final class MainCalendarViewController: UIViewController {
             
             // domb: 캘린더에 스터디 스케쥴과 관련된 정보를 넣을수밖에 없나...
             calendarView.bind(studySchedule)
+            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
         }
         
         studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
@@ -47,7 +48,8 @@ final class MainCalendarViewController: UIViewController {
         }
         
         calendarView.dateSelectAction = { [self] (date) in
-            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: date)
+            selectedDate = date
+            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
             NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
             
         }
