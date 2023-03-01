@@ -1044,7 +1044,7 @@ struct Network {
         }
     }
     
-    func getAllMembersAttendanceOn(_ date: DashedDate, studyID: ID, completion: @escaping (Result<AllUsersAttendacneForADay, PeoplesError>) -> Void) {
+    func getAllMembersAttendanceOn(_ date: DashedDate, studyID: ID, completion: @escaping (Result<AllUsersAttendanceForADay, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllMembersAttendanceOn(date, studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -1053,7 +1053,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let allUsersAttendacneForADay = jsonDecode(type: AllUsersAttendacneForADay.self, data: data) else {
+                guard let data = response.data, let allUsersAttendacneForADay = jsonDecode(type: AllUsersAttendanceForADay.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
                 }

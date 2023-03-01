@@ -7,6 +7,54 @@
 
 import UIKit
 
+class AttendanceForAMemberViewModel {
+    var studyID: Int
+    
+    var userAttendanceOverall: Observable<MyAttendanceOverall>?
+    var error: Observable<PeoplesError>?
+    
+    var monthlyGroupedDates: [String: [Date]] = [:]
+    
+    init(studyID: Int) {
+        self.studyID = studyID
+    }
+    
+    func seperateAllDaysByMonth() {
+        guard let userAttendanceOverall = userAttendanceOverall else { return }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+
+        let datas: [OneTimeAttendanceInformation] = userAttendanceOverall.value.oneTimeAttendanceInformation
+        var dates: [Date] = []
+
+        datas.forEach { oneTimeAttendanceInfo in
+            let studyScheduleDate = oneTimeAttendanceInfo.studyScheduleDateAndTime
+            dates.append(studyScheduleDate)
+        }
+
+        dates.forEach { date in
+            let monthAndYear = dateFormatter.string(from: date)
+            if monthlyGroupedDates[monthAndYear] == nil {
+                monthlyGroupedDates[monthAndYear] = []
+            }
+            monthlyGroupedDates[monthAndYear]?.append(date)
+        }
+    }
+    
+    func getUserAttendanceOverall(between startDate: DashedDate, and endDate: DashedDate) {
+        
+        Network.shared.getMyAttendanceBetween(start: startDate, end: endDate, studyID: studyID) { result in
+            switch result {
+            case .success(let attendanceOverall):
+                self.userAttendanceOverall = Observable(attendanceOverall)
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+}
+
 class AttendanceForAMemberView: UIView {
     
     enum Viewer {
@@ -15,7 +63,7 @@ class AttendanceForAMemberView: UIView {
     }
     
     var viewer: Viewer
-    var viewModel: AttendanceViewModel?
+    var viewModel: AttendanceForAMemberViewModel?
     
     // MARK: - Properties
     
@@ -25,7 +73,7 @@ class AttendanceForAMemberView: UIView {
         switch self.viewer {
         case .user:
             let headerView = MyAttendanceStatusView()
-            headerView.attendanceOverall = viewModel?.myAttendanceOverall
+            headerView.attendanceOverall = viewModel?.userAttendanceOverall
             
             return headerView
         case .manager:

@@ -10,7 +10,7 @@ import UIKit
 final class AttendancesModificationViewModel {
     var studyID: Int
     
-    var allUsersAttendancesForADay: AllUsersAttendacneForADay? {
+    var allUsersAttendancesForADay: AllUsersAttendanceForADay? {
         didSet {
             guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
             times = allUsersAttendancesForADay.map { $0.key }
