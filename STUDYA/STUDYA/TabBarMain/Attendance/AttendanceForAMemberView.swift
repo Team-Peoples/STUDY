@@ -28,10 +28,9 @@ class AttendanceForAMemberViewModel {
             case .success(let attendanceOverall):
                 self.attendanceOverall = attendanceOverall
                 self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
-                self.reloadTable = Observable(true)
+                self.reloadTable.value = true
                 
             case .failure(let error):
-                print(error)
                 self.error = Observable(error)
             }
         }
@@ -76,6 +75,8 @@ class AttendanceForAMemberView: UIView {
     var viewer: Viewer
     var viewModel: AttendanceForAMemberViewModel? {
         didSet {
+            setBinding()
+            
             if viewer == .user {
                 let today = Date()
                 let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
@@ -132,8 +133,13 @@ class AttendanceForAMemberView: UIView {
     // MARK: - Actions
 
     private func setBinding() {
-        viewModel?.reloadTable.bind({ _ in
+        guard let viewModel = viewModel else { return }
+        viewModel.reloadTable.bind({ _ in
             self.attendanceDetailsTableView.reloadData()
+        })
+        viewModel.error?.bind({ error in
+            guard let delegate = self.delegate else { return }
+            UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }
     
@@ -168,7 +174,6 @@ extension AttendanceForAMemberView: UITableViewDataSource {
         guard let yearAndMonthsOfAttendances = viewModel?.yearAndMonthOfAttendances else { return 0 }
         
         let headerCount = 1
-        print("아니시부래")
         return yearAndMonthsOfAttendances.count + headerCount
     }
     

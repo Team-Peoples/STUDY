@@ -33,7 +33,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 14)
     private let fineLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(frontLabel: "벌금 ", labelFontSize: 12, value: 99999, valueFontSize: 18, valueTextColor: .ppsGray1, withCurrency: true)
+        lbl.attributedText = AttributedString.custom(frontLabel: "벌금 ", labelFontSize: 12, value: 0, valueFontSize: 18, valueTextColor: .ppsGray1, withCurrency: true)
         return lbl
     }()
     
@@ -220,7 +220,8 @@ final class AttendanceTableViewDayCell: UITableViewCell {
         
         let dayAndTime = DateFormatter.dayAndTimeFormatter.string(from: attendance.studyScheduleDateAndTime)
         let day = String(dayAndTime.prefix(2))
-        let timeFirstIndex = dayAndTime.index(dayAndTime.endIndex, offsetBy: 5)
+        
+        let timeFirstIndex = dayAndTime.index(dayAndTime.endIndex, offsetBy: -5)
         let time = String(dayAndTime[timeFirstIndex...])
         
         dayLabel.text = day
@@ -238,7 +239,7 @@ final class AttendanceTableViewDayCell: UITableViewCell {
         default: break
         }
         
-        fineLabel.text = NumberFormatter.decimalNumberFormatter.string(from: attendance.fine)
+        fineLabel.text = NumberFormatter.decimalNumberFormatter.string(from: attendance.fine!)  //🛑api 수정후 !삭제하기
     }
     
     func configureViews() {

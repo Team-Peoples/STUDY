@@ -79,7 +79,7 @@ class AttendanceStatusWithProfileView: UIView {
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
     private let fineLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 999999, valueFontSize: 24, withCurrency: true)
+        lbl.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
         return lbl
     }()
     
