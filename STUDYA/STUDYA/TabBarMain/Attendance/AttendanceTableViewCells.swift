@@ -7,31 +7,30 @@
 
 import UIKit
 
-class AttendanceDetailsCell: UITableViewCell {
+final class AttendanceDetailsCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var bottomSheetAddableDelegate: BottomSheetAddable?
-    var studyAttendance: [String: Int] = ["출석": 60,
-                                          "지각": 15,
-                                          "결석": 3,
-                                          "사유": 5] {
+    var attendanceOverall: UserAttendanceOverall? {
         didSet {
+            configureAttendanceInformation()
         }
     }
     
+    var bottomSheetAddableDelegate: BottomSheetAddable?
+    
     private let titleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "details")!, text: " 상세 내역")
+        lbl.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
         return lbl
     }()
-    private let periodSettingButton = BrandButton(title: "22.06.01~22.08.20", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
+    private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
     private let roundedBackgroundView = RoundableView(cornerRadius: 16)
     
-    private let attendanceCountLabel = CustomLabel(title: "0", tintColor: .attendedMain, size: 14)
-    private let latenessCountLabel = CustomLabel(title: "0", tintColor: .lateMain, size: 14)
-    private let absenceCountLabel = CustomLabel(title: "0", tintColor: .absentMain, size: 14)
-    private let allowedCountLabel = CustomLabel(title: "0", tintColor: .allowedMain, size: 14)
+    private let attendanceCountLabel = CustomLabel(title: "?", tintColor: .attendedMain, size: 14)
+    private let latenessCountLabel = CustomLabel(title: "?", tintColor: .lateMain, size: 14)
+    private let absenceCountLabel = CustomLabel(title: "?", tintColor: .absentMain, size: 14)
+    private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 14)
     private let fineLabel: UILabel = {
         let lbl = UILabel()
         lbl.attributedText = AttributedString.custom(frontLabel: "벌금 ", labelFontSize: 12, value: 99999, valueFontSize: 18, valueTextColor: .ppsGray1, withCurrency: true)
@@ -49,8 +48,6 @@ class AttendanceDetailsCell: UITableViewCell {
         setupPeriodSettingButton()
         setupRoundedBackgroundView()
         setupLabels()
-        
-        configure(studyAttendance)
     }
     
     required init?(coder: NSCoder) {
@@ -66,12 +63,15 @@ class AttendanceDetailsCell: UITableViewCell {
         bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     
-    func configure(_ studyAttendance: [String: Int]) {
+    func configureAttendanceInformation() {
+        guard let attendanceOverall = attendanceOverall else { return }
         
-        attendanceCountLabel.text = "\(studyAttendance["출석"]!)"
-        latenessCountLabel.text = "\(studyAttendance["지각"]!)"
-        absenceCountLabel.text = "\(studyAttendance["결석"]!)"
-        allowedCountLabel.text = "\(studyAttendance["사유"]!)"
+        attendanceCountLabel.text = attendanceOverall.attendedCount.toString()
+        latenessCountLabel.text = attendanceOverall.lateCount.toString()
+        absenceCountLabel.text = attendanceOverall.absentCount.toString()
+        allowedCountLabel.text = attendanceOverall.allowedCount.toString()
+        
+        fineLabel.text = attendanceOverall.totalFine.toString()
     }
     
     // MARK: - Configure
@@ -87,6 +87,13 @@ class AttendanceDetailsCell: UITableViewCell {
     }
     
     func setupPeriodSettingButton() {
+        
+        let today = Date()
+        let dashedToday = DateFormatter.shortenDottedDateFormatter.string(from: today)
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+        let dashedThirtyDaysAgo = DateFormatter.shortenDottedDateFormatter.string(from: thirtyDaysAgo ?? today)
+        
+        periodSettingButton.setTitle("\(dashedThirtyDaysAgo)~\(dashedToday)", for: .normal)
         
         contentView.addSubview(periodSettingButton)
         
@@ -173,24 +180,21 @@ class AttendanceDetailsCell: UITableViewCell {
     }
 }
 
-class AttendanceTableViewDayCell: UITableViewCell {
+final class AttendanceTableViewDayCell: UITableViewCell {
     
     // MARK: - Properties
     
-    var attendance: Attendance? {
+    var attendance: OneTimeAttendanceInformation? {
         didSet {
-            guard let attendance = attendance else { return }
-            
-            attendanceLabel.text = attendance.korean
-            attendanceLabelBackgroundView.backgroundColor = .appColor(attendance.color)
+            configureViewsWithAttendance()
         }
     }
     
-    private let dayLabel = CustomLabel(title: "01일", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let timeLabel = CustomLabel(title: "18:00", tintColor: .ppsGray2, size: 12)
+    private let dayLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let timeLabel = CustomLabel(title: "", tintColor: .ppsGray2, size: 12)
     private let attendanceLabelBackgroundView = RoundableView(cornerRadius: 16 / 2)
     private lazy var attendanceLabel = CustomLabel(title: "", tintColor: .whiteLabel, size: 10)
-    private let fineLabel = CustomLabel(title: "0", tintColor: .ppsGray1, size: 18)
+    private let fineLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 18)
     
     // MARK: - Initialization
 
@@ -206,10 +210,36 @@ class AttendanceTableViewDayCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-
     // MARK: - Actions
+        
     
     // MARK: - Configure
+    
+    func configureViewsWithAttendance() {
+        guard let attendance = attendance else { return }
+        
+        let dayAndTime = DateFormatter.dayAndTimeFormatter.string(from: attendance.studyScheduleDateAndTime)
+        let day = String(dayAndTime.prefix(2))
+        let timeFirstIndex = dayAndTime.index(dayAndTime.endIndex, offsetBy: 5)
+        let time = String(dayAndTime[timeFirstIndex...])
+        
+        dayLabel.text = day
+        timeLabel.text = time
+        
+        switch attendance.attendanceStatus {
+        case Constant.attendance:
+            attendanceLabelBackgroundView.backgroundColor = .appColor(.attendedMain)
+        case Constant.late:
+            attendanceLabelBackgroundView.backgroundColor = .appColor(.lateMain)
+        case Constant.absent:
+            attendanceLabelBackgroundView.backgroundColor = .appColor(.absentMain)
+        case Constant.allowed:
+            attendanceLabelBackgroundView.backgroundColor = .appColor(.allowedMain)
+        default: break
+        }
+        
+        fineLabel.text = NumberFormatter.decimalNumberFormatter.string(from: attendance.fine)
+    }
     
     func configureViews() {
         
@@ -249,16 +279,19 @@ class AttendanceTableViewDayCell: UITableViewCell {
     }
 }
 
-class MonthlyHeaderView: UITableViewHeaderFooterView {
+final class MonthlyHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
+    internal var month = Observable("")
     
-    private let dayLabel = CustomLabel(title: "6월", tintColor: .ppsBlack, size: 12, isBold: true)
+    private let dayLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 12, isBold: true)
     
     // MARK: - Initialization
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
+        
+        setBinding()
         
         addSubview(dayLabel)
         
@@ -271,9 +304,13 @@ class MonthlyHeaderView: UITableViewHeaderFooterView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func setBinding() {
+        month.bind{ self.dayLabel.text = $0 + "월" }
+    }
 }
 
-class MonthlyFooterView: UITableViewHeaderFooterView {
+final class MonthlyFooterView: UITableViewHeaderFooterView {
     
     // MARK: - Properties
     

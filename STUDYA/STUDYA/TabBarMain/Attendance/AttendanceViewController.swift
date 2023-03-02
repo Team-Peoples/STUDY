@@ -11,14 +11,12 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     internal var studyID: ID? {
         didSet {
-            guard let studyID = studyID else { return }
+            guard let studyID = studyID, let userID = KeyChain.read(key: Constant.userId) else { return }
             
-            userView.viewModel = AttendanceForAMemberViewModel(studyID: studyID)
+            userView.viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
             
-            
-            
-            managerView.studyID = studyID
-            viewModel = AttendancesModificationViewModel(studyID: studyID)
+//            managerView.studyID = studyID
+//            viewModel = AttendancesModificationViewModel(studyID: studyID)
         }
     }
     internal var viewModel: AttendancesModificationViewModel?
@@ -40,7 +38,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         if isManager {
             managerView.delegate = self
         }
-        userView.bottomSheetAddableDelegate = self
+        userView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,7 +62,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
 //    
 //    let studyID: ID
 //    
-//    var myAttendanceOverall: Observable<MyAttendanceOverall>
+//    var myAttendanceOverall: Observable<UserAttendanceOverall>
 //    var allUsersAttendanceForADay: Observable<AllUsersAttendanceForADay>?
 //    var error: Observable<PeoplesError>?
 //    
@@ -116,7 +114,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
 //        let dateFormatter = DateFormatter()
 //        dateFormatter.dateFormat = "MM-yyyy"
 //
-//        let datas: [OneTimeAttendanceInformation] = myAttendanceOverall.value.oneTimeAttendanceInformation
+//        let datas: [OneTimeAttendanceInformation] = myAttendanceOverall.value.oneTimeAttendanceInformations
 //        var dates: [Date] = []
 //
 //        datas.forEach { oneTimeAttendanceInfo in

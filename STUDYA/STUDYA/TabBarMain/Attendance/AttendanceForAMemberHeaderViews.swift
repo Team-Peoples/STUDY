@@ -12,7 +12,7 @@ import MultiProgressView
 class MyAttendanceStatusView: UIView {
     
     // MARK: - Properties
-    internal var attendanceOverall: Observable<MyAttendanceOverall>?
+    internal var attendanceOverall: Observable<UserAttendanceOverall>?
     
 //    필요정보: 총벌금, 출석지각결석사유 횟수
     private let titleLabel = CustomLabel(title: "출결 현황", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -137,7 +137,7 @@ class AttendanceStatusWithProfileView: UIView {
 private class AttendanceReusableProgressView: UIView {
     
     // MARK: - Properties
-    internal var attendanceOverall: Observable<MyAttendanceOverall>?
+    internal var attendanceOverall: Observable<UserAttendanceOverall>?
     
     private var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.allowedMain)]
     

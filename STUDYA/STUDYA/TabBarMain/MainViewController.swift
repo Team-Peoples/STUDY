@@ -110,6 +110,8 @@ final class MainViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
 //        Network.shared.attend(in: 289, with: 4561) { result in
 //            switch result {
 //            case .success(let attendanceInformation):
@@ -289,7 +291,7 @@ final class MainViewController: SwitchableViewController {
                     
                     self.myStudyList = studies
                     self.getCurrentStudyOverall(with: studyID)
-                    
+                    print("studyID", studyID)
                 } else {
                     self.configureViewWhenNoStudy()
                 }

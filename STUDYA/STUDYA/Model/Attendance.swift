@@ -7,29 +7,30 @@
 
 import Foundation
 
-struct MyAttendanceOverall: Codable {
+struct UserAttendanceOverall: Codable {
     let totalFine, attendedCount, lateCount, allowedCount, absentCount: Int
-    let oneTimeAttendanceInformation: [OneTimeAttendanceInformation]
+    let oneTimeAttendanceInformations: [OneTimeAttendanceInformation]
     
     enum CodingKeys: String, CodingKey {
         case attendedCount = "attendanceCnt"
         case lateCount = "latenessCnt"
         case allowedCount = "holdCnt"
         case absentCount = "absentCnt"
-        case oneTimeAttendanceInformation = "attendanceDetail"
+        case oneTimeAttendanceInformations = "attendanceDetail"
         case totalFine
     }
 }
 
 struct OneTimeAttendanceInformation: Codable {
-    let fine, attendanceID: Int
-    let attendanceStatus: Attendance
-    let userID: String
+    let fine: Int?
+    let attendanceID: Int?
+    let attendanceStatus: String?
+    let userID: String?
     let studyScheduleDateAndTime: Date
     
     enum CodingKeys: String, CodingKey {
         case studyScheduleDateAndTime = "studyScheduleDateTime"
-        case attendanceStatus = "attendStatus"
+        case attendanceStatus = "attendance"
         
         case attendanceID = "attendanceId"
         case userID = "userId"

@@ -69,10 +69,27 @@ extension DateFormatter {
         return dateFormatter
     }()
     
+    static let shortenDottedDateFormatter: DateFormatter = {
+       
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "yy.MM.dd"
+        
+        return dateFormatter
+    }()
+    
     static let timeFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         
         dateFormatter.dateFormat = "HH:mm"
+        
+        return dateFormatter
+    }()
+    
+    static let dayAndTimeFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        
+        dateFormatter.dateFormat = "dd HH:mm"
         
         return dateFormatter
     }()

@@ -88,7 +88,7 @@ enum RequestPurpose: Requestable {
     case checkEmailCertificated
     case getAllStudyMembers(ID)
     case getAttendanceCertificactionCode(ID)
-    case getMyAttendanceBetween(DashedDate, DashedDate, ID)
+    case getUserAttendanceBetween(DashedDate, DashedDate, ID, UserID)
     case getAllMembersAttendanceOn(DashedDate, ID)
     case getAllMySchedules
     case getImminentScheduleAttendnace(ID)
@@ -209,8 +209,8 @@ extension RequestPurpose {
             return "/studyMember/\(studyID)"
         case .getAttendanceCertificactionCode(let scheduleID):
             return "/attendance/checkNumber/\(scheduleID)"
-        case .getMyAttendanceBetween:
-            return "/attendance"
+        case .getUserAttendanceBetween(_,_,_, let userID):
+            return "/attendance/\(userID)"
         case .getAllMembersAttendanceOn:
             return "/attendance/master"
         case .getAllMySchedules:
@@ -226,7 +226,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getMyAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules, .getImminentScheduleAttendnace : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules, .getImminentScheduleAttendnace : return .get
         }
     }
     
@@ -279,8 +279,8 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 ///    HTTPMethod: GET
-        case .getMyAttendanceBetween(let beginningDate, let endDate, let studyID):
-            return .body(["studyId": studyID,
+        case .getUserAttendanceBetween(let beginningDate, let endDate, let studyID, _):
+            return .query(["studyId": studyID,
                           "searchDateStart": beginningDate,
                           "searchDateEnd": endDate])
         case .getAllMembersAttendanceOn(let date, let studyID):
@@ -332,6 +332,10 @@ extension RequestPurpose {
             
             return try URLEncoding.default.encode(urlRequest, with: query)
             
+        case .query(let query):
+            
+            return try URLEncoding.default.encode(urlRequest, with: query)
+            
         case .body(let params):
             
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: params)
@@ -354,6 +358,7 @@ extension RequestPurpose {
 
 enum RequestParameters {
     case queryString([String : String])
+    case query([String : Any])
     case body([String : Codable])
     case encodableBody(_ parameter: Encodable)
     case none
