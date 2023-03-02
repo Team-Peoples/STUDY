@@ -12,7 +12,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     static let identifier = "MainFifthAttendanceTableViewCell"
     
-    internal var currentStudyOverall: StudyOverall? {
+    var currentStudyOverall: StudyOverall? {
         didSet {
             guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
                 configureErrorSituation()
@@ -20,57 +20,12 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             }
             
             if totalStudyHeldCount != 0 {
-                progressView.resetProgress()
-                setupProgress()
-                
-                let notAbsentCount = currentStudyOverall.attendedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount
-                attendanceRatioLabel.text = "\(100 * notAbsentCount / totalStudyHeldCount)%"
-                
-                penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
-                
-                noAttendanceDataLabel.isHidden = true
-                progressView.isHidden = false
-                stackView.isHidden = false
-                hoveringButton.isHidden = false
-
+                configureProgressBarWhenYesAttendanceData(with: currentStudyOverall)
             } else {
-                noAttendanceDataLabel.isHidden = false
-                progressView.isHidden = true
-                stackView.isHidden = true
-                hoveringButton.isHidden = false
+                configureWhenNoAttendanceData()
             }
         }
     }
-//    internal var studyAttendance: [AttendanceStatus: Int]?
-//    internal var totalStudyHeldCount: Int? {
-//        didSet {
-//            guard let _ = totalStudyHeldCount else {
-//                noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
-//                return
-//            }
-//
-//            if totalStudyHeldCount != 0 {
-//                setupProgress()
-//
-//                noAttendanceDataLabel.isHidden = true
-//                progressView.isHidden = false
-//                stackView.isHidden = false
-//                hoveringButton.isHidden = false
-//
-//            } else {
-//                noAttendanceDataLabel.isHidden = false
-//                progressView.isHidden = true
-//                stackView.isHidden = true
-//                hoveringButton.isHidden = true
-//            }
-//        }
-//    }
-//    internal var penalty: Int? {
-//        didSet {
-//            penaltyLabel.text = String(penalty!.formatted(.number))
-//        }
-//    }
-//    internal var studyID: ID?
     
     internal var delegate: (Navigatable & SwitchSyncable & SwitchStatusGivable)?
 
@@ -146,65 +101,9 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
               let studyID = currentStudyOverall.study.id else {
             return
         }
-//        guard let delegate = delegate,
-//              let currentStudyOverall = currentStudyOverall,
-//              let studyID = currentStudyOverall.study.id,
-//              currentStudyOverall.totalStudyHeldCount != 0 else {
-//            return
-//        }
-//
-        let formatter = DateFormatter.dashedDateFormatter
-        let today = Date()
-        let dashedToday = formatter.string(from: today)
-//
+        
         let nextVC = AttendanceViewController()
-//
-        if delegate.getSwtichStatus() {
-
-            guard let studyID = currentStudyOverall.study.id else { return }
-
-            Network.shared.getAllMembersAttendanceOn(dashedToday, studyID: studyID) { result in
-                switch result {
-                case .success(let allUserAttendanceInfo):
-                    break
-//                    nextVC.allUserAttendancePerday = allUserAttendanceInfo
-
-                case .failure(let error):
-                    switch error {
-                    case .studyNotFound:
-                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
-                            delegate.pop()
-                        }
-                        delegate.present(alert)
-                    default:
-                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
-                    }
-                }
-            }
-        } else {
-
-            let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-            let dashedThirtyDaysAgo = formatter.string(from: thirtyDaysAgo ?? today)
-
-            Network.shared.getMyAttendanceBetween(start: dashedThirtyDaysAgo, end: dashedToday, studyID: studyID) { result in
-                switch result {
-                case .success(let attendanceOverall):
-//                    nextVC.viewModel = attendanceViewModel(studyID: studyID, myAttendanceOverall: attendanceOverall, allUsersAttendancesForADay: nil)
-                    print("성공")
-
-                case .failure(let error):
-                    switch error {
-                    case .studyNotFound:
-                        let alert = SimpleAlert(buttonTitle: "확인", message: "스터디를 찾을 수 없습니다.") { finished in
-                            delegate.pop()
-                        }
-                        delegate.present(alert)
-                    default:
-                        UIAlertController.handleCommonErros(presenter: delegate, error: error)
-                    }
-                }
-            }
-        }
+        nextVC.studyID = studyID
         
         delegate.syncSwitchWith(nextVC: nextVC)
         delegate.push(vc: nextVC)
@@ -215,8 +114,30 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
     }
     
-    private func setupProgress() {
+    private func configureProgressBarWhenYesAttendanceData(with currentStudyOverall: StudyOverall) {
+        progressView.resetProgress()
+        setupMultiProgressView()
         
+        let totalStudyHeldCount = currentStudyOverall.attendedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount + currentStudyOverall.absentCount
+        let notAbsentCount = currentStudyOverall.attendedCount + currentStudyOverall.lateCount + currentStudyOverall.allowedCount
+        attendanceRatioLabel.text = "\(100 * notAbsentCount / totalStudyHeldCount)%"
+        
+        penaltyLabel.text = String(currentStudyOverall.totalFine.formatted(.number))
+        
+        noAttendanceDataLabel.isHidden = true
+        progressView.isHidden = false
+        stackView.isHidden = false
+        hoveringButton.isHidden = false
+    }
+    
+    private func configureWhenNoAttendanceData() {
+        noAttendanceDataLabel.isHidden = false
+        progressView.isHidden = true
+        stackView.isHidden = true
+        hoveringButton.isHidden = false
+    }
+    
+    private func setupMultiProgressView() {
         guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else { return }
         
         let studyAttendance: [Attendance : Int] = [
