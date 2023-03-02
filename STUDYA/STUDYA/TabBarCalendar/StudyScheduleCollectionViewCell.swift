@@ -9,10 +9,17 @@ import UIKit
 
 class StudyScheduleCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     static let identifier = "StudyScheduleCollectionViewCell"
-    
-    var studySchedules: [StudySchedule] = []
-    
+   
+    var studyScheduleAtSelectedDate = [StudySchedule]() {
+        didSet {
+            checkScheduleIsEmpty()
+            scheduleTableView.reloadData()
+        }
+    }
+   
     lazy var studyScheduleEmptyLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "일정이 없어요 😴"
@@ -33,22 +40,50 @@ class StudyScheduleCollectionViewCell: UICollectionViewCell {
         return tableView
     }()
     
+    // MARK: - Initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        scheduleTableView.dataSource = self
-        scheduleTableView.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(updateStudyScheduleEmptyLabelConstraints), name: .bottomSheetSizeChanged, object: nil)
         
-        self.contentView.addSubview(scheduleTableView)
-        scheduleTableView.backgroundColor = .appColor(.background)
-        
-        scheduleTableView.snp.makeConstraints { make in
-            make.edges.equalTo(self.contentView)
-        }
+        configureViews()
+        setConstraints()
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func updateStudyScheduleEmptyLabelConstraints(_ notification: Notification) {
+        let bottomSheetDisplayedPercentage = notification.userInfo?["percentage"] as? CGFloat
+        let bottomSheetExpanded = bottomSheetDisplayedPercentage! == 100.0
+        if bottomSheetExpanded {
+            if studyScheduleAtSelectedDate.isEmpty {
+                UIView.animate(withDuration: 0.1) {
+                    self.studyScheduleEmptyLabel.snp.remakeConstraints { make in
+                        make.center.equalTo(self.scheduleTableView)
+                    }
+                    self.studyScheduleEmptyLabel.layoutIfNeeded()
+                }
+            }
+        } else {
+            if studyScheduleAtSelectedDate.isEmpty {
+                UIView.animate(withDuration: 0.1) {
+                    self.studyScheduleEmptyLabel.snp.remakeConstraints { make in
+                        make.centerX.equalTo(self.scheduleTableView)
+                        make.top.equalTo(self.scheduleTableView).inset(80)
+                    }
+                    self.studyScheduleEmptyLabel.layoutIfNeeded()
+                }
+            }
+        }
     }
     
     func reloadTableView() {
@@ -58,29 +93,46 @@ class StudyScheduleCollectionViewCell: UICollectionViewCell {
     
     func checkScheduleIsEmpty() {
 
-        if studySchedules.isEmpty {
+        if studyScheduleAtSelectedDate.isEmpty {
             scheduleTableView.addSubview(studyScheduleEmptyLabel)
             studyScheduleEmptyLabel.snp.makeConstraints { make in
                 make.centerX.equalTo(scheduleTableView)
-                make.top.equalTo(scheduleTableView).inset(100)
+                make.top.equalTo(scheduleTableView).inset(80)
             }
         } else {
             studyScheduleEmptyLabel.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - Configure Views
+    
+    private func configureViews() {
+        scheduleTableView.dataSource = self
+        scheduleTableView.delegate = self
+        
+        self.contentView.addSubview(scheduleTableView)
+        scheduleTableView.backgroundColor = .appColor(.background)
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func setConstraints() {
+        scheduleTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.contentView)
         }
     }
 }
 
 extension StudyScheduleCollectionViewCell: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        studySchedules.count
+        studyScheduleAtSelectedDate.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: StudyScheduleTableViewCell.identifier, for: indexPath) as! StudyScheduleTableViewCell
         
-        let schedule = studySchedules[indexPath.row]
-        
-        cell.configure(schedule: schedule, kind: .personal)
+        let studySchedules = studyScheduleAtSelectedDate[indexPath.row]
+        cell.configure(schedule: studySchedules, kind: .personal)
         
         return cell
     }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import FSCalendar
 
 @available(iOS 16.0, *)
 
@@ -14,33 +13,50 @@ final class MainCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let datesWithMultipleEvents = [String]()
-    
-    let studyAllScheduleViewModel = StudyAllScheduleViewModel()
-    
+    private let studyAllScheduleViewModel = StudyScheduleViewModel()
+    private var selectedDate: Date = Date()
+    private var studyAllSchedule: [StudySchedule] = []
     var sheetCoordinator: UBottomSheetCoordinator!
     var dataSource: UBottomSheetCoordinatorDataSource?
     
-    let calendarView = CustomCalendarView()
-    let calendarBottomSheetVC = MainCalendarBottomSheetViewController()
+    private let calendarView = CustomCalendarView()
+    let calendarBottomSheetViewController = MainCalendarBottomSheetViewController()
     
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        studyAllScheduleViewModel.getAllStudyAllSchedule()
-        studyAllScheduleViewModel.bind { [self] _ in
-            // 데이터를 가져와서 달력의 해당 날짜에 스터디 스케쥴이 있으면 점 개수, 북마크컬러로 보여주기
-            // 캘린더 날을 선택하면 노티로 각 테이블 뷰에 전달하기
+        
+        title = "나의 캘린더"
+        
+        // 스터디 스케쥴 바인딩
+        studyAllScheduleViewModel.bind { [self] allStudyScheduleOfAllStudy in
+            
+            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleArray()
+            studyAllSchedule = studySchedule
+            
+            // domb: 캘린더에 스터디 스케쥴과 관련된 정보를 넣을수밖에 없나...
+            calendarView.bind(studySchedule)
+            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
         }
         
-        calendarView.select(date: Date())
-        calendarView.dateSelectAction = { (date) in
-            NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
+        studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
+        
+        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [self] _ in
+            studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
+            calendarView.reloadData()
         }
+        
+        calendarView.dateSelectAction = { [self] (date) in
+            selectedDate = date
+            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
+            NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
+            
+        }
+        
+        calendarView.select(date: selectedDate)
         
         dataSource = CalendarBottomSheetDatasource()
-        title = "나의 캘린더"
         
         configureViews()
         setConstraints()
@@ -48,8 +64,6 @@ final class MainCalendarViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        studyAllScheduleViewModel.getAllStudyAllSchedule()
     }
     
     override func viewWillLayoutSubviews() {
@@ -61,9 +75,9 @@ final class MainCalendarViewController: UIViewController {
         
         if dataSource != nil { sheetCoordinator.dataSource = dataSource }
         
-        calendarBottomSheetVC.sheetCoordinator = sheetCoordinator
+        calendarBottomSheetViewController.sheetCoordinator = sheetCoordinator
         
-        sheetCoordinator.addSheet(calendarBottomSheetVC, to: self, didContainerCreate: { container in
+        sheetCoordinator.addSheet(calendarBottomSheetViewController, to: self, didContainerCreate: { container in
             let frame = self.view.frame
             let rect = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: frame.height)
             
@@ -72,6 +86,10 @@ final class MainCalendarViewController: UIViewController {
         })
         
         sheetCoordinator.setCornerRadius(10)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Actions
@@ -101,5 +119,14 @@ extension MainCalendarViewController: UBottomSheetCoordinatorDelegate {
     
     func bottomSheet(_ container: UIView?, didPresent state: SheetTranslationState) {
         self.sheetCoordinator.addDropShadowIfNotExist()
+    }
+    
+    func bottomSheet(_ container: UIView?, didChange state: SheetTranslationState) {
+        switch state {
+        case .finished( _, let percentage):
+            NotificationCenter.default.post(name: .bottomSheetSizeChanged, object: nil, userInfo:["percentage": percentage])
+        default:
+            return
+        }
     }
 }

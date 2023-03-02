@@ -6,21 +6,32 @@
 //
 
 import UIKit
+import FSCalendar
 
 class StudyScheduleViewController: SwitchableViewController {
     
     // MARK: - Properties
     
-    let studyAllScheduleViewModel = StudyAllScheduleViewModel()
+    let studyAllScheduleViewModel = StudyScheduleViewModel()
     
     private let studyID: ID
-    private var studyScheduleAtSelectedDate = [StudySchedule]()
+    var selectedDate: Date = Date()
+    private var studyScheduleOfThisStudy: [StudySchedule] = [] {
+        didSet {
+            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+        }
+    }
+    
+    private var studyScheduleOfThisStudyAtSelectedDate: [StudySchedule] = [] {
+        didSet {
+            scheduleTableView.reloadData()
+        }
+    }
     private let calendarView = CustomCalendarView()
     private let scheduleTableView: UITableView = {
         
         let tableView = UITableView()
-        
-        tableView.backgroundColor = .systemBackground
+    
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
         tableView.separatorStyle = .none
@@ -36,12 +47,12 @@ class StudyScheduleViewController: SwitchableViewController {
         
         return buttonView
     }()
-      
+    
     // MARK: - Life Cycle
     
     init(studyID: ID) {
         self.studyID = studyID
-        studyAllScheduleViewModel.getAllStudyAllSchedule()
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,25 +63,38 @@ class StudyScheduleViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.dateSelectAction = { [self] (date) in
-           
-            guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: date) else { return }
-            self.studyScheduleAtSelectedDate = studySchedule
-            self.scheduleTableView.reloadData()
+        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [self] _ in
+            studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
+            calendarView.reloadData()
         }
-        calendarView.select(date: Date())
+
+        calendarView.dateSelectAction = { [self] (date) in
+            selectedDate = date
+            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+        }
+        
+        studyAllScheduleViewModel.bind { [self] allStudyScheduleOfAllStudy in
+            calendarView.select(date: selectedDate)
+            
+            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleArray()
+            let studyScheduleThisStudy = studySchedule.filteredStudySchedule(by: studyID)
+            
+            calendarView.bind(studyScheduleThisStudy)
+            calendarView.reloadData()
+            
+            studyScheduleOfThisStudy = studyScheduleThisStudy
+        }
+        
+        studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
         
         confifureViews()
         configureTableView()
         setConstraints()
         configureNavigationBar()
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        studyAllScheduleViewModel.getAllStudyAllSchedule()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -78,13 +102,20 @@ class StudyScheduleViewController: SwitchableViewController {
         syncSwitchReverse(isSwitchOn)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     // MARK: - Actions
     
     @objc func floatingButtonDidTapped() {
+        
         let currentStudyID = studyID
         let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+        let dashedSelectedDate = DateFormatter.dashedDateFormatter.string(from: selectedDate)
         
-        studySchedulePriodFormVC.studyScheduleViewModel.studySchedule.studyID = currentStudyID
+        studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = currentStudyID
+        studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.startDate = dashedSelectedDate
         
         let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
         
@@ -118,11 +149,10 @@ class StudyScheduleViewController: SwitchableViewController {
     private func configureTableView() {
         scheduleTableView.dataSource = self
         scheduleTableView.delegate = self
-        scheduleTableView.backgroundColor = .appColor(.background)
         
         tabBarController?.tabBar.isHidden = true
     }
-
+    
     // MARK: - Setting Constraints
     
     private func setConstraints() {
@@ -136,6 +166,7 @@ class StudyScheduleViewController: SwitchableViewController {
             make.top.equalTo(calendarView.snp.bottom)
             make.leading.trailing.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
+        
         floatingButtonView.snp.makeConstraints { make in
             make.bottom.trailing.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.width.equalTo(102)
@@ -148,13 +179,15 @@ class StudyScheduleViewController: SwitchableViewController {
 
 extension StudyScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        studyScheduleAtSelectedDate.count
+        scheduleTableView.backgroundColor = studyScheduleOfThisStudyAtSelectedDate.count == 0 ? .systemBackground:.appColor(.background)
+        
+        return studyScheduleOfThisStudyAtSelectedDate.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: StudyScheduleTableViewCell.identifier, for: indexPath) as? StudyScheduleTableViewCell else { return UITableViewCell() }
         
-        let schedule = studyScheduleAtSelectedDate[indexPath.row]
+        let schedule = studyScheduleOfThisStudyAtSelectedDate[indexPath.row]
         
         cell.configure(schedule: schedule, kind: .study)
         cell.editable = self.isSwitchOn
@@ -170,8 +203,8 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
-          
-            let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studyScheduleAtSelectedDate[indexPath.row])
+            
+            let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studyScheduleOfThisStudyAtSelectedDate[indexPath.row])
             
             let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
             navigationVC.modalPresentationStyle = .fullScreen
@@ -181,21 +214,20 @@ extension StudyScheduleViewController: UITableViewDataSource {
         
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
             
-            let popupVC = StudySchedulePopUpAlertViewController(type: "삭제")
+            let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete)
             popupVC.firstButtonAction = { [self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [self] in
-                    studyAllScheduleViewModel.getAllStudyAllSchedule()
+                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [self] in
+                    // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
+                    studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
                     
-                    guard let studySchedule = studyAllScheduleViewModel.studySchedule(of: studyID, at: calendarView.selectedDate) else { return }
-                    studyScheduleAtSelectedDate = studySchedule
                     scheduleTableView.reloadData()
                     
                     dismiss(animated: true)
                 }
             }
             popupVC.secondButtonAction = { [self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: true) {
-                    self.studyAllScheduleViewModel.getAllStudyAllSchedule()
+                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: true) {
+                    self.studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
                     self.dismiss(animated: true)
                     self.scheduleTableView.reloadData()
                 }
@@ -205,7 +237,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-
+        
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)

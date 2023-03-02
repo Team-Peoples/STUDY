@@ -15,9 +15,7 @@ final class CreatingStudyFormViewController: UIViewController {
     
     var categoryChoice: StudyCategory? {
         willSet(newCategory) {
-            if categoryChoice == nil {
-                
-            } else {
+            if categoryChoice != nil {
                 guard let indexPath = categoryChoice?.indexPath else { fatalError() }
                 let cell = studyCategoryCollectionView.cellForItem(at: indexPath) as! CategoryCell
                 cell.toogleButton()
@@ -68,7 +66,11 @@ final class CreatingStudyFormViewController: UIViewController {
         v.layer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.8).cgColor
         return v
     }()
-    private let doneButton = BrandButton(title: "다음", isBold: true, isFill: false)
+    private let doneButton: BrandButton = {
+        let button = BrandButton(title: "다음", isBold: true, isFill: false)
+        button.isEnabled = false
+        return button
+    }()
 
     private lazy var closeButton = UIBarButtonItem(image: UIImage(named: "close"), style: .done, target: self, action: #selector(closeButtonDidTapped))
     
@@ -84,10 +86,6 @@ final class CreatingStudyFormViewController: UIViewController {
         
         configureViews()
         setDelegate()
-        enableTapGesture()
-        
-        onlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
-        offlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
         
         setConstraints()
         setNavigation()
@@ -95,7 +93,9 @@ final class CreatingStudyFormViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         tabBarController?.tabBar.isHidden = true
+        
         addNotification()
     }
     
@@ -140,14 +140,15 @@ final class CreatingStudyFormViewController: UIViewController {
         view.addSubview(bottomStickyView)
         bottomStickyView.addSubview(doneButton)
         
+        onlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
+        offlineButton.addTarget(self, action: #selector(typeButtonDidTapped), for: .touchUpInside)
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
-        doneButton.isEnabled = false
     }
 
     // MARK: - Actions
     
-    @objc func typeButtonDidTapped(_ sender: CheckBoxButton) {
-        
+    @objc private func typeButtonDidTapped(_ sender: CheckBoxButton) {
+
         sender.toggleState()
         
         switch sender {
@@ -160,7 +161,7 @@ final class CreatingStudyFormViewController: UIViewController {
         }
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func onKeyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -185,7 +186,7 @@ final class CreatingStudyFormViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         
         scrollView.contentInset = UIEdgeInsets.zero
         
@@ -197,7 +198,7 @@ final class CreatingStudyFormViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    @objc func doneButtonDidTapped() {
+    @objc private func doneButtonDidTapped() {
 
         let vc = CreatingStudyRuleViewController()
         
@@ -206,20 +207,9 @@ final class CreatingStudyFormViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func closeButtonDidTapped() {
+    @objc private func closeButtonDidTapped() {
 
         self.dismiss(animated: true)
-    }
-    
-    private func enableTapGesture() {
-        
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
-        
-        singleTapGestureRecognizer.numberOfTapsRequired = 1
-        singleTapGestureRecognizer.isEnabled = true
-        singleTapGestureRecognizer.cancelsTouchesInView = false
-        
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     private func setNavigation() {

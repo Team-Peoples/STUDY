@@ -125,7 +125,7 @@ extension MainSpreadUpDimmingViewController: UITableViewDelegate {
             dismiss(animated: true) {
                 let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
                 
-                studySchedulePriodFormVC.studyScheduleViewModel.studySchedule.studyID = self.studyID
+                studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = self.studyID
                 
                 let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
                 

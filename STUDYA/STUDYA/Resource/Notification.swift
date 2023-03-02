@@ -19,5 +19,10 @@ extension Notification.Name {
     static let tokenExpired = Notification.Name(rawValue: "tokenExpired")
     static let unauthorizedUser = Notification.Name(rawValue: "unauthorizedUser")
     static let mainCalenderDateTapped = Notification.Name(rawValue: "mainCalenderDateTapped")
+    static let mainCalendarAppear = Notification.Name(rawValue: "mainCalendarAppear")
     static let myScheduleCellRemoved = Notification.Name(rawValue: "myScheduleCellRemoved")
+    static let updateStudySchedule = Notification.Name(rawValue: "updateStudySchedule")
+    static let calendarShouldUpdate = Notification.Name(rawValue: "calendarShouldUpdate")
+    static let reloadScheduleTableView = Notification.Name(rawValue: "reloadScheduleTableView")
+    static let bottomSheetSizeChanged = Notification.Name(rawValue: "bottomSheetSizeChanged")
 }

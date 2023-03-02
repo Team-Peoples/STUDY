@@ -12,14 +12,20 @@ import FSCalendar
 final class CustomCalendarView: UIView {
     
     // MARK: - Properties
-   
-//    var 날짜별_갯수별_스터디아이디컬러: [DateComponents: ID]?
-    var minimumDate: Date?
-    var maximumDate: Date?
+    private var allStudyAllSchedule: [StudySchedule] = [] {
+        didSet {
+            if !allStudyAllSchedule.isEmpty {
+                calendar.reloadData()
+            }
+        }
+    }
     
-    var dateSelectAction: ((Date) -> Void) = {(Date) in }
+    var minimumDate: Date? { didSet { calendar.reloadData() } }
+    var maximumDate: Date? { didSet { calendar.reloadData() } }
+    var dateSelectAction: ((Date) -> Void) = { (SelectedDate) in }
+    var willDisplayAction: ((Date) -> Void) = { (CurrentPageDate) in }
     
-    private(set) lazy var selectedDate: Date? = calendar.selectedDate
+    private(set) lazy var currentMonth: DateComponents = calendar.currentPage.convertToDateComponents([.year, .month])
     private let calendar = FSCalendar()
     
     /// CalendarHeaderView
@@ -97,6 +103,14 @@ final class CustomCalendarView: UIView {
     // 해당날짜를 선택된 것으로 표시해주는 메소드
     func select(date: Date) {
         calendar.select(date)
+    }
+    
+    func reloadData() {
+        calendar.reloadData()
+    }
+    
+    func bind(_ allStudyAllSchedule: [StudySchedule]) {
+        self.allStudyAllSchedule = allStudyAllSchedule
     }
     
     private func initCalendar() {
@@ -208,7 +222,7 @@ extension CustomCalendarView: FSCalendarDataSource {
         }
     }
     
-     // 캘린더에서 볼수있는 맥시멈 날짜
+    // 캘린더에서 볼수있는 맥시멈 날짜
     func maximumDate(for calendar: FSCalendar) -> Date {
         if let maximumDate = maximumDate {
             return maximumDate
@@ -221,14 +235,9 @@ extension CustomCalendarView: FSCalendarDataSource {
     
     // 이벤트 발생 날짜에 필요한 만큼 개수 반환 (최대 3개)
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let eventDay = date.convertToDateComponents([.year, .month, .day])
-        // 헤당 날짜의 일정 갯수
-//        let studySchedules = 날짜별_갯수별_스터디아이디컬러?.filter { (date, id) in
-//            date == eventDay
-//        }
-//        let studySchedulesCount = studySchedules?.count
-//        return studySchedulesCount ?? 0
-        return 0
+        let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+        let studyCount = Set(studySchedule.map { $0.studyID }).count
+        return studyCount
     }
 }
 
@@ -250,8 +259,7 @@ extension CustomCalendarView: FSCalendarDelegate {
             calendar.setCurrentPage(date, animated: true)
         }
     }
-    
-    // 캘린더의 오늘을 표시하는 부분
+
     func calendar(_ calendar: FSCalendar, willDisplay cell: FSCalendarCell, for date: Date, at position: FSCalendarMonthPosition) {
         
         let dateComponents = date.convertToDateComponents([.year, .month, .day])
@@ -262,6 +270,7 @@ extension CustomCalendarView: FSCalendarDelegate {
         } else {
             todayCell?.setTodayBorderLayerIsHidden(true)
         }
+        willDisplayAction(date)
     }
 }
 // MARK: - FSCalendarDelegateAppearance
@@ -270,8 +279,25 @@ extension CustomCalendarView: FSCalendarDelegateAppearance {
 
     // 스터디 스케쥴 북마크컬러에따라 컬러 지정
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
-
-        return nil
+        if !allStudyAllSchedule.isEmpty {
+            let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+            let bookmarkColors = studySchedule.compactMap { $0.bookMarkColor }
+            let bookmarkColorSet = Array(Set(bookmarkColors))
+            return bookmarkColorSet
+        } else {
+            return nil
+        }
+    }
+    
+    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
+        if !allStudyAllSchedule.isEmpty {
+            let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+            let bookmarkColors = studySchedule.compactMap { $0.bookMarkColor }
+            let bookmarkColorSet = Array(Set(bookmarkColors))
+            return bookmarkColorSet
+        } else {
+            return nil
+        }
     }
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillSelectionColorFor date: Date) -> UIColor? {

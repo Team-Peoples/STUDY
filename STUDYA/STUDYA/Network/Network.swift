@@ -722,8 +722,8 @@ struct Network {
     
     // MARK: - Study Schedule
     
-    func getAllStudyAllSchedule(completion: @escaping (Result<AllStudyAllSchedule, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getStudyAllSchedule, interceptor: AuthenticationInterceptor()).validate().response { response in
+    func getAllStudyScheduleOfAllStudy(completion: @escaping (Result<AllStudyScheduleOfAllStudy, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAllStudyScheduleOfAllStudy, interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
@@ -732,7 +732,7 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                guard let data = response.data, let studyAllSchedule = jsonDecode(type: AllStudyAllSchedule.self, data: data) else { return }
+                guard let data = response.data, let studyAllSchedule = jsonDecode(type: AllStudyScheduleOfAllStudy.self, data: data) else { return }
                 completion(.success(studyAllSchedule))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in

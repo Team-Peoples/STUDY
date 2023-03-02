@@ -11,7 +11,8 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Properties
     
-    let editingStudyScheduleViewModel = StudyScheduleViewModel()
+    // domb: 새로운 모델을 생성하는게 맞는지, 이전화면에서 할당하는 방식으로 할지..
+    let editingStudyScheduleViewModel = StudySchedulePostingViewModel()
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -91,8 +92,8 @@ final class EditingStudySchduleViewController: UIViewController {
             
             doneButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.contentFormIsFilled && studySchedule.repeatOptionFormIsFilled
             
-            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != nil
-            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != nil ? 1 : 0.5
+            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != .norepeat
+            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != .norepeat ? 1 : 0.5
         }
         
         configureViews()
@@ -171,7 +172,7 @@ final class EditingStudySchduleViewController: UIViewController {
        
         if selectedRepeatOptionCheckBox == sender {
             
-            editingStudyScheduleViewModel.studySchedule.repeatOption = nil
+            editingStudyScheduleViewModel.studySchedule.repeatOption = .norepeat
             // 반복일정 끝나는 날짜 초기화
             editingStudyScheduleViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
@@ -179,9 +180,19 @@ final class EditingStudySchduleViewController: UIViewController {
             
             guard let title = sender.currentTitle else { return }
             
-            let repeatOption = RepeatOption(rawValue: title)
+            switch title {
+            case RepeatOption.everyDay.translatedKorean:
+                editingStudyScheduleViewModel.studySchedule.repeatOption = RepeatOption.everyDay
+            case RepeatOption.everyWeek.translatedKorean:
+                editingStudyScheduleViewModel.studySchedule.repeatOption = RepeatOption.everyWeek
+            case RepeatOption.everyTwoWeeks.translatedKorean:
+                editingStudyScheduleViewModel.studySchedule.repeatOption = RepeatOption.everyTwoWeeks
+            case RepeatOption.everyMonth.translatedKorean:
+                editingStudyScheduleViewModel.studySchedule.repeatOption = RepeatOption.everyMonth
+            default:
+                break
+            }
             
-            editingStudyScheduleViewModel.studySchedule.repeatOption = repeatOption
             selectedRepeatOptionCheckBox = sender
         }
     }
