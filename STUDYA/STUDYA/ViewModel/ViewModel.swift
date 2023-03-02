@@ -166,66 +166,37 @@ class GeneralRuleViewModel {
 
 // MARK: - StudyAllScheduleViewModel
 
-class StudyAllScheduleViewModel: ViewModel {
-    typealias Model = [StudySchedule]
+class StudyScheduleViewModel: ViewModel {
+    typealias Model = AllStudyScheduleOfAllStudy
     
-    var allStudyAllSchedule: AllStudyAllSchedule {
+    var allStudyScheduleOfAllStudy: AllStudyScheduleOfAllStudy {
         didSet {
-            var studyScheduleList = [StudySchedule]()
-            
-            allStudyAllSchedule.forEach { (studyID, studySchedules) in
-                studySchedules.forEach({ studySchedule in
-                    var studySchedule = studySchedule
-                    studySchedule.studyID = studyID
-                    
-                    studyScheduleList.append(studySchedule)
-                })
-            }
-            studySchedules = studyScheduleList
-        }
-    }
-    
-    var studySchedules: [StudySchedule] = [] {
-        didSet {
-            handler?(studySchedules)
+            handler?(allStudyScheduleOfAllStudy)
         }
     }
     
     var handler: DataHandler?
     
-    init(allStudyAllSchedule: AllStudyAllSchedule = AllStudyAllSchedule()) {
-        self.allStudyAllSchedule = allStudyAllSchedule
+    init(allStudyAllSchedule: AllStudyScheduleOfAllStudy = AllStudyScheduleOfAllStudy()) {
+        self.allStudyScheduleOfAllStudy = allStudyAllSchedule
     }
     
     func bind(_ handler: DataHandler?) {
         self.handler = handler
-        handler?(studySchedules)
+        handler?(allStudyScheduleOfAllStudy)
     }
     
-    func getAllStudyAllSchedule() {
-        Network.shared.getAllStudyAllSchedule { result in
+    func getAllStudyScheduleOfAllStudy() {
+        Network.shared.getAllStudyScheduleOfAllStudy { result in
             switch result {
-            case .success(let allStudyAllSchedule):
-                self.allStudyAllSchedule = allStudyAllSchedule
+            case .success(let allStudyAllStudySchedule):
+                self.allStudyScheduleOfAllStudy = allStudyAllStudySchedule
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    func studySchedule(at selectedDate: Date) -> [StudySchedule] {
-        let studyScheduleAtSelectedDate = filtering(studySchedules, at: selectedDate)
-        
-        return studyScheduleAtSelectedDate
-    }
-
-    func studySchedule(of studyID: ID, at selectedDate: Date?) -> [StudySchedule]? {
-        let studySchedule = studySchedules.filter { $0.studyID == "\(studyID)"}
-        let studyScheduleAtSelectedDate = filtering(studySchedule, at: selectedDate)
-
-        return studyScheduleAtSelectedDate
-    }
-
     func deleteStudySchedule(id studyScheduleID: ID, deleteRepeatedSchedule: Bool, successHandler: @escaping () -> Void) {
         Network.shared.deleteStudySchedule(studyScheduleID, deleteRepeatSchedule: deleteRepeatedSchedule) { result in
             switch result {
@@ -236,26 +207,40 @@ class StudyAllScheduleViewModel: ViewModel {
             }
         }
     }
-    
-    // MARK: - Helper
-    private func filtering(_ studySchedule: [StudySchedule], at selectedDate: Date?) -> [StudySchedule] {
-        let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day])
-        let studySchedules = studySchedule.filter { studySchedule in
-           
-            let startDate = studySchedule.startDateAndTime
-            let startDateComponents = startDate.convertToDateComponents([.year, .month, .day])
-            let isSameDate = selectedDateComponents == startDateComponents
-            
-            return isSameDate
+}
+
+extension AllStudyScheduleOfAllStudy {
+    // 스터디 ID를 포함한 스터디 스케쥴로 매핑
+    func mappingStudyScheduleArray() -> [StudySchedule] {
+        let mappedStudySchedule = self.flatMap { id, studySchedules in
+            studySchedules.map {
+                StudySchedule(studyName: $0.studyName, studyScheduleID: $0.studyScheduleID, studyID: id, topic: $0.topic, place: $0.place, startDateAndTime: $0.startDateAndTime, endDateAndTime: $0.endDateAndTime, repeatOption: $0.repeatOption)
+            }
         }
+        return mappedStudySchedule
+    }
+}
+
+extension [StudySchedule] {
+    func filteredStudySchedule(at date: Date) -> [StudySchedule]  {
         
-        return studySchedules
+        let filteredStudySchedule = self.filter { studySchedule in
+            studySchedule.startDateAndTime.isSameDay(as: date)
+        }
+        return filteredStudySchedule
+    }
+    
+    func filteredStudySchedule(by studyID: ID) -> [StudySchedule] {
+        let filteredStudySchedule = self.filter { studySchedule in
+            studySchedule.studyID == "\(studyID)"
+        }
+        return filteredStudySchedule
     }
 }
 
 // MARK: - StudyScheduleViewModel
 
-class StudyScheduleViewModel: ViewModel {
+class StudySchedulePostingViewModel: ViewModel {
     typealias Model = StudySchedulePosting
     
     var studySchedule: StudySchedulePosting {

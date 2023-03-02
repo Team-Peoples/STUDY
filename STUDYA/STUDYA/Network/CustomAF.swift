@@ -83,7 +83,7 @@ enum RequestPurpose: Requestable {
     case getAllStudy    //12
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
-    case getStudyAllSchedule ////19
+    case getAllStudyScheduleOfAllStudy ////19
     case getStudyLog    //24
     case checkEmailCertificated
     case getAllStudyMembers(ID)
@@ -199,7 +199,7 @@ extension RequestPurpose {
             return "/study/\(id)"
         case .getAllAnnouncements(let id):
             return "/noti/\(id)"
-        case .getStudyAllSchedule:
+        case .getAllStudyScheduleOfAllStudy:
             return "/study/schedule"
         case .getStudyLog:
             return "/user/history"

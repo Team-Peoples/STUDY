@@ -34,4 +34,6 @@ enum Constant {
     static let late = "LATENESS"
     static let absent = "ABSENT"
     static let allowed = "HOLD"
+    static let delete = "삭제"
+    static let edit = "수정"
 }

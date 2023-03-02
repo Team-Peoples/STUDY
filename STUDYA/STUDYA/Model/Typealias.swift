@@ -20,4 +20,4 @@ typealias DottedDate = String
 typealias Time = String
 typealias Deposit = Int
 typealias StudyID = String
-typealias AllStudyAllSchedule = [StudyID: [StudySchedule]]
+typealias AllStudyScheduleOfAllStudy = [StudyID: [StudySchedule]]

@@ -11,7 +11,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyScheduleViewModel = StudyScheduleViewModel()
+    var studySchedulePostingViewModel = StudySchedulePostingViewModel()
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -55,14 +55,14 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        studyScheduleViewModel.bind { [self] studySchedule in
+        studySchedulePostingViewModel.bind { [self] studySchedule in
             configureUI(studySchedule)
             
             nextButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.repeatOptionFormIsFilled
             nextButton.isEnabled ? nextButton.fillIn(title: "다음") : nextButton.fillOut(title: "다음")
             
-            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != nil
-            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != nil ? 1 : 0.5
+            repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != .norepeat
+            repeatEndDateSelectableView.alpha = studySchedule.repeatOption != .norepeat ? 1 : 0.5
         }
         
         setNavigation()
@@ -80,7 +80,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let periodFormVC = CreatingStudyScheduleContentViewController()
         
-        periodFormVC.studyScheduleViewModel = self.studyScheduleViewModel
+        periodFormVC.studySchedulePostingViewModel = self.studySchedulePostingViewModel
         navigationController?.pushViewController(periodFormVC, animated: true)
     }
     
@@ -90,11 +90,13 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     @objc private func startDateSelectableViewTapped() {
         
-        let studySchedule = studyScheduleViewModel.studySchedule
-
+        let studySchedule = studySchedulePostingViewModel.studySchedule
+        let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
+        
         guard let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate)
-
+        
+        popUpCalendarVC.endDate = repeatEndDate
         popUpCalendarVC.presentingVC = self
 
         present(popUpCalendarVC, animated: true)
@@ -102,44 +104,42 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     @objc private func repeatEndDateSelectableViewTapped() {
         
-        let studySchedule = studyScheduleViewModel.studySchedule
+        let studySchedule = studySchedulePostingViewModel.studySchedule
+        let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
+        let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate)!
         
-        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
-            
-            guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
-            
-            popUpCalendarVC.startDate = startDate
-            popUpCalendarVC.presentingVC = self
-
-            present(popUpCalendarVC, animated: true)
-        } else {
-            
-            guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: startDate)
-            
-            popUpCalendarVC.startDate = startDate
-            popUpCalendarVC.presentingVC = self
-            
-            present(popUpCalendarVC, animated: true)
-        }
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate ?? startDate)
+        
+        popUpCalendarVC.startDate = startDate
+        popUpCalendarVC.presentingVC = self
+        print(repeatEndDate, startDate,"🔥")
+        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
 
         if selectedRepeatOptionCheckBox == sender {
             
-            studyScheduleViewModel.studySchedule.repeatOption = nil
+            studySchedulePostingViewModel.studySchedule.repeatOption = .norepeat
             // 반복일정 끝나는 날짜 초기화
-            studyScheduleViewModel.studySchedule.repeatEndDate = ""
+            studySchedulePostingViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
             guard let title = sender.currentTitle else { return }
             
-            let repeatOption = RepeatOption(rawValue: title)
-            
-            studyScheduleViewModel.studySchedule.repeatOption = repeatOption
+            switch title {
+            case RepeatOption.everyDay.translatedKorean:
+                studySchedulePostingViewModel.studySchedule.repeatOption = RepeatOption.everyDay
+            case RepeatOption.everyWeek.translatedKorean:
+                studySchedulePostingViewModel.studySchedule.repeatOption = RepeatOption.everyWeek
+            case RepeatOption.everyTwoWeeks.translatedKorean:
+                studySchedulePostingViewModel.studySchedule.repeatOption = RepeatOption.everyTwoWeeks
+            case RepeatOption.everyMonth.translatedKorean:
+                studySchedulePostingViewModel.studySchedule.repeatOption = RepeatOption.everyMonth
+            default:
+                break
+            }
             selectedRepeatOptionCheckBox = sender
         }
     }
@@ -154,7 +154,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "en_gb")
         
-        if let endTime = studyScheduleViewModel.studySchedule.endTime {
+        if let endTime = studySchedulePostingViewModel.studySchedule.endTime {
             guard let hour = endTime.components(separatedBy: ":").first?.toInt(),
                   let minute = endTime.components(separatedBy: ":").last?.toInt() else { return }
             datePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
@@ -162,7 +162,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let startTime = DateFormatter.timeFormatter.string(from: datePicker.date)
-            self.studyScheduleViewModel.studySchedule.startTime = startTime
+            self.studySchedulePostingViewModel.studySchedule.startTime = startTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
@@ -196,7 +196,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         datePicker.preferredDatePickerStyle = .wheels
         datePicker.locale = Locale(identifier: "en_gb")
         
-        if let startTime = studyScheduleViewModel.studySchedule.startTime {
+        if let startTime = studySchedulePostingViewModel.studySchedule.startTime {
             guard let hour = startTime.components(separatedBy: ":").first?.toInt(),
                   let minute = startTime.components(separatedBy: ":").last?.toInt() else { return }
             datePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
@@ -204,7 +204,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
             let endTime = DateFormatter.timeFormatter.string(from: datePicker.date)
-            self.studyScheduleViewModel.studySchedule.endTime = endTime
+            self.studySchedulePostingViewModel.studySchedule.endTime = endTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)

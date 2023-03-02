@@ -51,17 +51,17 @@ struct StudySchedulePosting: Codable {
     var startTime: String?
     var endTime: String?
     
-    var repeatOption: RepeatOption?
+    var repeatOption: RepeatOption = .norepeat
     
     var periodFormIsFilled: Bool {
-        if repeatOption == nil {
+        if repeatOption == .norepeat {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil
         } else {
             return startTime != nil && startTime != "" && endTime != "" && endTime != nil && repeatEndDate != ""
         }
     }
     var repeatOptionFormIsFilled: Bool {
-        if repeatOption != nil {
+        if repeatOption != .norepeat {
             return repeatEndDate != ""
         } else {
             return true
