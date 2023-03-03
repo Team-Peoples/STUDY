@@ -7,6 +7,64 @@
 
 import UIKit
 
+class AttendanceForAMemberViewModel {
+    var studyID: ID
+    var userID: UserID
+    
+    var attendanceOverall: UserAttendanceOverall?
+    var yearAndMonthOfAttendances: [DashedDate] = []
+    var monthlyGroupedAttendanceInformation: [DashedDate: [OneTimeAttendanceInformation]] = [:]
+    var error: Observable<PeoplesError>?
+    var reloadTable: Observable<Bool> = Observable(false)
+    
+    init(studyID: Int, userID: UserID) {
+        self.studyID = studyID
+        self.userID = userID
+    }
+    
+    func getUserAttendanceOverall(between startDate: DashedDate, and endDate: DashedDate) {
+        Network.shared.getUserAttendanceBetween(start: startDate, end: endDate, studyID: studyID, userID: userID) { result in
+            switch result {
+            case .success(let attendanceOverall):
+                self.attendanceOverall = attendanceOverall
+                self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
+                self.reloadTable.value = true
+                
+            case .failure(let error):
+                self.error = Observable(error)
+            }
+        }
+    }
+    
+    func seperateAllUserAttendancesByMonth(attendances: UserAttendanceOverall) {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM-yyyy"
+
+        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations
+        var yearAndMonthOfAttendances: [DashedDate] = []
+        
+        oneTimeAttendanceInformations.forEach { oneTimeAttendance in
+            let studyScheduleDate = oneTimeAttendance.studyScheduleDateAndTime
+            let monthAndYearOfStudySchedule = dateFormatter.string(from: studyScheduleDate)
+            
+            if monthlyGroupedAttendanceInformation[monthAndYearOfStudySchedule] == nil {
+                monthlyGroupedAttendanceInformation[monthAndYearOfStudySchedule] = []
+            }
+            
+            monthlyGroupedAttendanceInformation[monthAndYearOfStudySchedule]?.append(oneTimeAttendance)
+            yearAndMonthOfAttendances.append(monthAndYearOfStudySchedule)
+        }
+        self.yearAndMonthOfAttendances = removeDuplication(in: yearAndMonthOfAttendances)
+    }
+    
+    func removeDuplication(in array: [String]) -> [String]{
+        let set = Set(array)
+        let duplicationRemovedArray = Array(set)
+        return duplicationRemovedArray
+    }
+}
+
 class AttendanceForAMemberView: UIView {
     
     enum Viewer {
@@ -15,17 +73,30 @@ class AttendanceForAMemberView: UIView {
     }
     
     var viewer: Viewer
-    var viewModel: AttendanceViewModel?
+    var viewModel: AttendanceForAMemberViewModel? {
+        didSet {
+            setBinding()
+            
+            if viewer == .user {
+                let today = Date()
+                let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
+                let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+                let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
+                
+                viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
+            }
+        }
+    }
     
     // MARK: - Properties
     
-    weak var bottomSheetAddableDelegate: BottomSheetAddable?
+    weak var delegate: (BottomSheetAddable & Navigatable)?
     
     lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
             let headerView = MyAttendanceStatusView()
-            headerView.attendanceOverall = viewModel?.myAttendanceOverall
+//            headerView.attendanceOverall = viewModel?.attendanceOverall   🛑api 변경후 다시보자
             
             return headerView
         case .manager:
@@ -62,9 +133,13 @@ class AttendanceForAMemberView: UIView {
     // MARK: - Actions
 
     private func setBinding() {
-        viewModel?.myAttendanceOverall.bind({ myAttendanceOverall in
-            self.viewModel?.seperateAllDaysByMonth()
+        guard let viewModel = viewModel else { return }
+        viewModel.reloadTable.bind({ _ in
             self.attendanceDetailsTableView.reloadData()
+        })
+        viewModel.error?.bind({ error in
+            guard let delegate = self.delegate else { return }
+            UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }
     
@@ -96,11 +171,10 @@ class AttendanceForAMemberView: UIView {
 extension AttendanceForAMemberView: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        guard let viewModel = viewModel else { return 0 }
+        guard let yearAndMonthsOfAttendances = viewModel?.yearAndMonthOfAttendances else { return 0 }
         
         let headerCount = 1
-        
-        return viewModel.monthlyGroupedDates.keys.count + headerCount
+        return yearAndMonthsOfAttendances.count + headerCount
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -121,13 +195,31 @@ extension AttendanceForAMemberView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         switch section {
-            case 0:
-                let headerView = UIView()
-                headerView.backgroundColor = .appColor(.background)
-                return headerView
-            default:
-                let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as! MonthlyHeaderView
-                return headerView
+        case 0:
+            let headerView = UIView()
+            headerView.backgroundColor = .appColor(.background)
+            
+            return headerView
+        default:
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as? MonthlyHeaderView,
+                  let yearAndMonthOfAttendances = viewModel?.yearAndMonthOfAttendances else { return MonthlyHeaderView() }
+            
+            let month = String(yearAndMonthOfAttendances[section - 1].prefix(2))
+            let monthForHeaderView = removeFirstZeroIfMonthNumberIsBelow10(month: month)
+            
+            headerView.month = Observable(monthForHeaderView)
+            
+            return headerView
+        }
+    }
+    
+    func removeFirstZeroIfMonthNumberIsBelow10(month: String) -> String {
+        guard let intMonth = month.toInt() else { return "?" }
+        
+        if intMonth < 10 {
+            return String(month.prefix(1))
+        } else {
+            return month
         }
     }
     
@@ -149,7 +241,7 @@ extension AttendanceForAMemberView: UITableViewDataSource {
             default:
             guard let viewModel = viewModel else { return 0 }
             
-            let numberOfStudyDatesInAMonth = viewModel.monthlyGroupedDates.values.map { $0.count }
+            let numberOfStudyDatesInAMonth = viewModel.monthlyGroupedAttendanceInformation.values.map { $0.count }
             
             return numberOfStudyDatesInAMonth[section - 1]
         }
@@ -162,14 +254,22 @@ extension AttendanceForAMemberView: UITableViewDataSource {
             guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
                     as? AttendanceDetailsCell else { return  AttendanceDetailsCell() }
             
+            attendanceTableViewDetailsCell.attendanceOverall = viewModel?.attendanceOverall
+            
             if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = bottomSheetAddableDelegate
+                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
             }
             
             return attendanceTableViewDetailsCell
         default:
             guard let dayCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDayCell.identifier, for: indexPath)
-                    as? AttendanceTableViewDayCell else { return AttendanceTableViewDayCell() }
+                    as? AttendanceTableViewDayCell,
+                  let yearAndMonth = viewModel?.yearAndMonthOfAttendances[indexPath.section - 1],
+                  let attendanceInformationsInAMonth = viewModel?.monthlyGroupedAttendanceInformation[yearAndMonth] else { return AttendanceTableViewDayCell() }
+            
+            let attendanceForADay = attendanceInformationsInAMonth[indexPath.row]
+            
+            dayCell.attendance = attendanceForADay
             
             return dayCell
         }
@@ -180,6 +280,15 @@ extension AttendanceForAMemberView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        guard let delegate = delegate, viewer == .manager else { return }
+//        guard let yearAndMonth = viewModel?.yearAndMonthOfAttendances[indexPath.section - 1],
+//              let attendanceInformationsInAMonth = viewModel?.monthlyGroupedAttendanceInformation[yearAndMonth] else { return }
+//
+//        let attendanceForADay = attendanceInformationsInAMonth[indexPath.row]
+//        delegate.presentBottomSheet(vc: <#T##UIViewController#>, detent: <#T##CGFloat#>, prefersGrabberVisible: <#T##Bool#>)
     }
 }
 

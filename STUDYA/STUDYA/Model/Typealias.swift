@@ -7,7 +7,7 @@
 
 import UIKit
 
-typealias AllUsersAttendacneForADay = [Time: [SingleUserAnAttendanceInformation]]
+typealias AllUsersAttendanceForADay = [Time: [SingleUserAnAttendanceInformation]]
 typealias UserID = String //사용자의 아이디
 typealias ID = Int // 사용자 id 이외의 id
 typealias Title = String
