@@ -276,7 +276,7 @@ extension MyScheduleCollectionViewCell: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 33   //🛑폰트 크기 바뀌면 여기도 바꿔야
+        return 38   //🛑폰트 크기 바뀌면 여기도 바꿔야
     }
 }
 

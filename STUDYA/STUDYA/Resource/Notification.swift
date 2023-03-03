@@ -25,4 +25,5 @@ extension Notification.Name {
     static let calendarShouldUpdate = Notification.Name(rawValue: "calendarShouldUpdate")
     static let reloadScheduleTableView = Notification.Name(rawValue: "reloadScheduleTableView")
     static let bottomSheetSizeChanged = Notification.Name(rawValue: "bottomSheetSizeChanged")
+    static let studyListChanged = Notification.Name(rawValue: "studyListChanged")
 }

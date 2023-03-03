@@ -9,13 +9,25 @@ import UIKit
 
 final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     
+    internal var currentStudyID: Int? {
+        didSet {
+            guard let currentStudyID = currentStudyID else { return }
+            getMemberList(studyID: currentStudyID)
+        }
+    }
+    internal var currentStudyName: String? {
+        didSet {
+            guard let currentStudyName = currentStudyName else { return }
+            navigationItem.title = currentStudyName
+        }
+    }
+    
     internal var members: Members? {
         didSet {
             collectionView.reloadData()
         }
     }
     internal var isOwner: Bool?
-    internal var currentStudyID: Int?
     private var nowLookingMemberID: ID?
     
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -139,21 +151,11 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         
         view.backgroundColor = .systemBackground
         
+//        navigationController?.setBrandNavigation()
+//        configureNavigationBar()
+//        navigationController?.title = "요시"
+        configureViews()
         configureCollectionView()
-        
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(30)
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(14)
-        }
-        
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-            make.top.equalTo(titleLabel.snp.bottom).offset(45)
-        }
-        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -172,6 +174,22 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         print(#function)
     }
     
+    private func getMemberList(studyID: ID) {
+        Network.shared.getAllMembers(studyID: studyID) { result in
+            switch result {
+            case .success(let response):
+                
+                self.members = response.memberList
+                
+                self.isManager = response.isUserManager
+                self.isOwner = response.isUserOwner
+                
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
     private func getMemberListAndReload() {
         guard let currentStudyID = self.currentStudyID else { return }
         
@@ -182,6 +200,21 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
+        }
+    }
+    
+    private func configureViews() {
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(30)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(14)
+        }
+        
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
     }
     

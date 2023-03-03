@@ -166,6 +166,8 @@ final class MainViewController: SwitchableViewController {
         print("----------------------------------------------------------")
         configureTabBarSeparator()
         configureNavigationBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(studyListChanged), name: .studyListChanged, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -189,7 +191,6 @@ final class MainViewController: SwitchableViewController {
     var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-    
         let nextVC = NotificationViewController()
         push(vc: nextVC)
     }
@@ -239,6 +240,18 @@ final class MainViewController: SwitchableViewController {
         }
         
         present(dimmingVC, animated: true)
+    }
+    
+    @objc private func refresh() {
+        getUserInformationAndStudies()
+        mainTableView.refreshControl?.endRefreshing()
+    }
+    
+    @objc private func studyListChanged() {
+        for subview in self.view.subviews {
+            subview.removeFromSuperview()
+        }
+        getAllStudies()
     }
     
     override func extraWorkWhenSwitchToggled() {
@@ -317,11 +330,6 @@ final class MainViewController: SwitchableViewController {
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
-    }
-    
-    @objc private func refresh() {
-        getUserInformationAndStudies()
-        mainTableView.refreshControl?.endRefreshing()
     }
     
     private func configureViewWhenYesStudy() {
@@ -498,6 +506,7 @@ extension MainViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
             
             cell.currentStudyID = currentStudyOverall?.study.id
+            cell.currentStudyName = currentStudyOverall?.study.studyName
             cell.navigatableSwitchSyncableDelegate = self
             
             return cell

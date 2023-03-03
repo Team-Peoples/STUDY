@@ -239,7 +239,7 @@ final class AttendanceTableViewDayCell: UITableViewCell {
         default: break
         }
         
-        fineLabel.text = NumberFormatter.decimalNumberFormatter.string(from: attendance.fine!)  //🛑api 수정후 !삭제하기
+//        fineLabel.text = NumberFormatter.decimalNumberFormatter.string(from: attendance.fine!)  //🛑api 수정후 !삭제하기
     }
     
     func configureViews() {

@@ -113,42 +113,38 @@ class ProfileSettingViewController: UIViewController {
             switch result {
             case .success(let user):
                 
-                DispatchQueue.main.async {
-                    if let nickName = user.nickName {
-                        
-                        KeyChain.create(key: Constant.tempNickname, value: nickName)
-                        
-                        let vc = MailCheckViewController()
-                        vc.modalPresentationStyle = .fullScreen
-                        
-                        self.present(vc, animated: true)
-                    } else {
-                        
-                        let alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 2")
-                        
-                        self.present(alert, animated: true)
-                    }
+                if let nickName = user.nickName {
+                    
+                    KeyChain.create(key: Constant.tempNickname, value: nickName)
+                    
+                    let vc = MailCheckViewController()
+                    vc.modalPresentationStyle = .fullScreen
+                    
+                    self.present(vc, animated: true)
+                } else {
+                    
+                    let alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = 2")
+                    
+                    self.present(alert, animated: true)
                 }
                 
             case .failure(let error):
                 var alert = SimpleAlert(message: "")
                 
-                DispatchQueue.main.async {
-                    switch error {
-                    case .duplicatedEmail:
-                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
-                            self.navigationController?.popViewController(animated: true)
-                        })
-                    case .wrongPassword:
-                        alert = SimpleAlert(buttonTitle: Constant.OK, message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
-                            self.navigationController?.popViewController(animated: true)
-                        })
-                    default:
-                        UIAlertController.handleCommonErros(presenter: self, error: error)
-                    }
-                    
-                    self.present(alert, animated: true)
+                switch error {
+                case .duplicatedEmail:
+                    alert = SimpleAlert(buttonTitle: Constant.OK, message: "이미 사용중인 이메일이예요. 이전화면에서 다른 이메일을 입력해주세요.", completion: { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                case .wrongPassword:
+                    alert = SimpleAlert(buttonTitle: Constant.OK, message: "비밀번호와 비밀번호 확인이 서로 달라요. 이전화면에서 비밀번호를 다시 확인해주세요.", completion: { _ in
+                        self.navigationController?.popViewController(animated: true)
+                    })
+                default:
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
+                
+                self.present(alert, animated: true)
             }
         }
     }

@@ -22,6 +22,7 @@ final class WelcomViewController: UIViewController {
     private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .keyColor1, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
     private let buttonsStackView = UIStackView()
+    private let descriptionLabel = CustomLabel(title: "가입을 진행하면, 이용 약관 및 개인정보 처리방침에 동의한 것으로 간주합니다.", tintColor: .ppsGray1, size: 11)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,89 +46,72 @@ final class WelcomViewController: UIViewController {
         
         underBar.backgroundColor = UIColor.appColor(.keyColor3)
         
+        configureDescriptionLabel()
         addSubviews()
         addArangedSubviewsToStack()
         addConstraints()
     }
     
     @objc private func kakaoLoginButtonTapped() {
-//        if (UserApi.isKakaoTalkLoginAvailable()) {
-//            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-//                if let error = error {
-//                    print(error)
-//                } else {
-//                    print("loginWithKakaoTalk() success.")
-//
-//                    guard let accessToken = oauthToken?.accessToken else { return }
-//                    self.socialSignIn(SNSToken: accessToken, service: .kakao)
-//                }
-//            }
-//        }
+        //        if (UserApi.isKakaoTalkLoginAvailable()) {
+        //            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+        //                if let error = error {
+        //                    print(error)
+        //                } else {
+        //                    print("loginWithKakaoTalk() success.")
+        //
+        //                    guard let accessToken = oauthToken?.accessToken else { return }
+        //                    self.socialSignIn(SNSToken: accessToken, service: .kakao)
+        //                }
+        //            }
+        //        }
     }
+    
+    @objc private func naverLoginButtonTapped() {
+        naverLogin?.delegate = self
+        naverLogin?.requestThirdPartyLogin()
+    }
+    
+    @objc private func emailLoginButtonDidTapped() {
+        let signInVC = SignInViewController()
+        navigationController?.pushViewController(signInVC, animated: true)
+    }
+    
+    @objc private func signUpViewDidTapped() {
+        let signUpVC = SignUpViewController()
+        navigationController?.pushViewController(signUpVC, animated: true)
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        let descriptionLabel = sender.view as! UILabel
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: descriptionLabel.bounds.size)
+        let attributedText = NSMutableAttributedString(attributedString: descriptionLabel.attributedText!)
         
-        @objc private func naverLoginButtonTapped() {
-            naverLogin?.delegate = self
-            naverLogin?.requestThirdPartyLogin()
-        }
-
-        @objc private func emailLoginButtonDidTapped() {
-            let signInVC = SignInViewController()
-            navigationController?.pushViewController(signInVC, animated: true)
-        }
+        layoutManager.addTextContainer(textContainer)
+        attributedText.addAttributes([NSAttributedString.Key.font: descriptionLabel.font!], range: NSRange(location: 0, length: attributedText.length))
+        let textStorage = NSTextStorage(attributedString: attributedText)
+        textStorage.addLayoutManager(layoutManager)
         
-        @objc private func signUpViewDidTapped() {
-            let signUpVC = SignUpViewController()
-            navigationController?.pushViewController(signUpVC, animated: true)
-        }
+        // Find the character index of the tapped word
+        let locationOfTapInLabel = sender.location(in: descriptionLabel)
+        let textBoundingBox = layoutManager.usedRect(for: textContainer)
+        let textContainerOffset = CGPoint(x: (descriptionLabel.bounds.width - textBoundingBox.width) * 0.5 - textBoundingBox.minX,
+                                          y: (descriptionLabel.bounds.height - textBoundingBox.height) * 0.5 - textBoundingBox.minY)
+        let locationOfTapInTextContainer = CGPoint(x: locationOfTapInLabel.x - textContainerOffset.x,
+                                                   y: locationOfTapInLabel.y - textContainerOffset.y)
+        let characterIndex = layoutManager.characterIndex(for: locationOfTapInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
         
-        private func addSubviews() {
-            
-            view.addSubview(welcomeLabel)
-            view.addSubview(buttonsStackView)
-            view.addSubview(signUpView)
-            view.addSubview(underBar)
-        }
+        let range1 = (descriptionLabel.text! as NSString).range(of: "이용 약관")
+        let range2 = (descriptionLabel.text! as NSString).range(of: "개인정보 처리방침")
         
-        private func addArangedSubviewsToStack() {
-            
-            buttonsStackView.addArrangedSubview(kakaoLoginButton)
-            buttonsStackView.addArrangedSubview(naverLoginButton)
-            buttonsStackView.addArrangedSubview(emailLoginButton)
+        // Check which word was tapped and push the appropriate view controller
+        if range1.contains(characterIndex) {
+            navigationController?.pushViewController(AgreementViewController(), animated: true)
+        } else if range2.contains(characterIndex) {
+            navigationController?.pushViewController(TreatingPersonalDataViewController(), animated: true)
         }
-        
-        private func configureButtons() {
-            
-            kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
-            kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
-            kakaoLoginButton.backgroundColor = .appColor(.kakao)
-            kakaoLoginButton.layer.borderWidth = 0
-            kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
-            
-            naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
-            naverLoginButton.setTitleColor(.white, for: .normal)
-            naverLoginButton.backgroundColor = .appColor(.naver)
-            naverLoginButton.layer.borderWidth = 0
-            naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
-        }
-        
-        private func configureStackView() {
-            
-            buttonsStackView.spacing = 14
-            buttonsStackView.distribution = .fillEqually
-            buttonsStackView.axis = .vertical
-        }
-        
-        private func addConstraints() {
-            
-            welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
-            
-            buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
-            
-            signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
-            signUpView.centerX(inView: view)
-            
-            underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
-        }
+    }
     
     private func socialSignIn(SNSToken: String, service: SNS) {
         Network.shared.SNSSignIn(token: SNSToken, sns: service) { result in
@@ -139,28 +123,100 @@ final class WelcomViewController: UIViewController {
                     if isFirstLogin {
                         KeyChain.create(key: Constant.tempIsFirstSNSLogin, value: "1")
                         KeyChain.create(key: Constant.isEmailCertificated, value: "1")
-                        DispatchQueue.main.async {
-                            let nextVC = ProfileSettingViewController()
-                            self.navigationController?.pushViewController(nextVC, animated: true)
-                        }
-
+                        
+                        let nextVC = ProfileSettingViewController()
+                        self.navigationController?.pushViewController(nextVC, animated: true)
+                        
                     } else {
-                        DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-                        }
+                        NotificationCenter.default.post(name: .authStateDidChange, object: nil)
                     }
                     
                 } else {
-                    DispatchQueue.main.async {
-                        let alert = SimpleAlert(message: Constant.serverErrorMessage)
-                        self.present(alert, animated: true)
-                    }
+                    let alert = SimpleAlert(message: Constant.serverErrorMessage)
+                    self.present(alert, animated: true)
                 }
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
+    
+    private func configureDescriptionLabel() {
+        underlinePartOfLabel()
+        insertTapActionToDescriptionLabel()
+    }
+    
+    private func underlinePartOfLabel() {
+        let attributedString = NSMutableAttributedString(string: descriptionLabel.text!)
+        let range1 = (descriptionLabel.text! as NSString).range(of: "이용 약관")
+        let range2 = (descriptionLabel.text! as NSString).range(of: "개인정보 처리방침")
+        
+        attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range1)
+        attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range2)
+        descriptionLabel.attributedText = attributedString
+    }
+    
+    private func insertTapActionToDescriptionLabel() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        
+        descriptionLabel.isUserInteractionEnabled = true
+        descriptionLabel.addGestureRecognizer(tapGesture)
+    }
+    
+    private func addSubviews() {
+        
+        view.addSubview(welcomeLabel)
+        view.addSubview(buttonsStackView)
+        view.addSubview(signUpView)
+        view.addSubview(underBar)
+        view.addSubview(descriptionLabel)
+    }
+    
+    private func addArangedSubviewsToStack() {
+        
+        buttonsStackView.addArrangedSubview(kakaoLoginButton)
+        buttonsStackView.addArrangedSubview(naverLoginButton)
+        buttonsStackView.addArrangedSubview(emailLoginButton)
+    }
+    
+    private func configureButtons() {
+        
+        kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
+        kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
+        kakaoLoginButton.backgroundColor = .appColor(.kakao)
+        kakaoLoginButton.layer.borderWidth = 0
+        kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+        
+        naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
+        naverLoginButton.setTitleColor(.white, for: .normal)
+        naverLoginButton.backgroundColor = .appColor(.naver)
+        naverLoginButton.layer.borderWidth = 0
+        naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+    }
+    
+    private func configureStackView() {
+        
+        buttonsStackView.spacing = 14
+        buttonsStackView.distribution = .fillEqually
+        buttonsStackView.axis = .vertical
+    }
+    
+    private func addConstraints() {
+        
+        welcomeLabel.anchor(top: view.topAnchor, topConstant: 130, leading: view.leadingAnchor, leadingConstant: 20)
+        
+        buttonsStackView.anchor(top: welcomeLabel.bottomAnchor, topConstant: 200, leading: view.leadingAnchor, leadingConstant: 20, trailing: view.trailingAnchor, trailingConstant: 20)
+        
+        signUpView.anchor(top: buttonsStackView.bottomAnchor, topConstant: 14)
+        signUpView.centerX(inView: view)
+        
+        underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
+        descriptionLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.snp.bottom).inset(28)
+            make.centerX.equalTo(view)
+        }
+    }
+    
 }
 
 extension WelcomViewController: NaverThirdPartyLoginConnectionDelegate {
