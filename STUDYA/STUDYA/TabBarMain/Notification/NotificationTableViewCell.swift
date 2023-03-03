@@ -11,13 +11,27 @@ class NotificationTableViewCell: UITableViewCell {
     
     static let identifier = "NotificationTableViewCell"
     
+    internal var notificaion: Noti? {
+        didSet {
+            guard let notificaion = notificaion else { return }
+            
+            titleLabel.text = "[\(notificaion.studyName)]"
+            dateLabel.text = DateFormatter.dottedDateFormatter.string(from: notificaion.createdDate)
+            contentLabel.text = notificaion.contents
+            
+            changeBackgroundColorIfNotificationAboutExcommunication(notificaion)
+        }
+    }
+    
     private let backView = UIView(frame: .zero)
-    private let titleLabel = CustomLabel(title: "아리가또", tintColor: .ppsGray1, size: 18)
-    private let dateLabel = CustomLabel(title: "2022.06.01", tintColor: .ppsGray1, size: 12)
-    private let contentLabel = CustomLabel(title: "오늘은 일본어를 배워봅니다. 코노야로들아.", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let titleLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 18)
+    private let dateLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 12)
+    private let contentLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        selectionStyle = .none
         
         backView.configureBorder(color: .ppsGray3, width: 1, radius: 24)
         
@@ -46,5 +60,17 @@ class NotificationTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func changeBackgroundColorIfNotificationAboutExcommunication(_ noti: Noti) {
+        if noti.contents.contains("강퇴") {
+            backView.backgroundColor = UIColor(red: 245/255, green: 242/255, blue: 255/255, alpha: 1)
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        backView.backgroundColor = .systemBackground
     }
 }

@@ -92,6 +92,7 @@ enum RequestPurpose: Requestable {
     case getAllMembersAttendanceOn(DashedDate, ID)
     case getAllMySchedules
     case getImminentScheduleAttendnace(ID)
+    case getAllNotifications
 }
 
 extension RequestPurpose {
@@ -215,6 +216,8 @@ extension RequestPurpose {
             return "/attendance/master"
         case .getAllMySchedules:
             return "/user/schedule"
+        case .getAllNotifications:
+            return "/alarm"
         }
     }
     
@@ -226,7 +229,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getStudyAllSchedule, .getAllMySchedules, .getImminentScheduleAttendnace : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications : return .get
         }
     }
     
@@ -328,10 +331,6 @@ extension RequestPurpose {
         urlRequest.headers = headers
         
         switch parameters {
-//        case .query(let query):
-//            
-//            return try URLEncoding.default.encode(urlRequest, with: query)
-//            
         case .query(let query):
             
             return try URLEncoding.default.encode(urlRequest, with: query)
@@ -357,7 +356,6 @@ extension RequestPurpose {
 }
 
 enum RequestParameters {
-//    case query([String : String])
     case query([String : Any])
     case body([String : Codable])
     case encodableBody(_ parameter: Encodable)

@@ -9,6 +9,18 @@ import UIKit
 
 final class NotificationViewController: UIViewController {
     
+    var notifications: [Noti]? {
+        didSet {
+            guard let notifications = notifications else { return }
+            
+            if notifications.isEmpty {
+                configureViewWhenNoNotification()
+            } else {
+                tableView.reloadData()
+            }
+        }
+    }
+    
     private lazy var noNotiImageView = UIImageView(image: UIImage(named: "noNotification"))
     private lazy var noNotiLabel = CustomLabel(title: "알림이 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
     
@@ -31,12 +43,35 @@ final class NotificationViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        navigationController?.setBrandNavigation()
+        getAllNotifications()
         
-        title = "알림"
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.ppsBlack)]
+        configureTableView()
+        setNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        configureViewWhenNoNotification()
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    private func getAllNotifications() {
+        Network.shared.getAllNotifications { result in
+            switch result {
+            case .success(let notifications):
+                print(notifications)
+                self.notifications = notifications
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
+    }
+    
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(view)
+        }
     }
     
     private func configureViewWhenNoNotification() {
@@ -56,20 +91,25 @@ final class NotificationViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        tabBarController?.tabBar.isHidden = true
+    private func setNavigationBar() {
+        title = "알림"
+        navigationController?.setBrandNavigation()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.ppsBlack)]
     }
 }
 
 extension NotificationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        5
+        guard let notifications = notifications else { return 0 }
+        
+        return notifications.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.identifier) as! NotificationTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationTableViewCell.identifier) as? NotificationTableViewCell,
+              let notifications = notifications else { return NotificationTableViewCell() }
+        
+        cell.notificaion = notifications[indexPath.row]
         
         return cell
     }
