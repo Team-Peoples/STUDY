@@ -1223,7 +1223,6 @@ struct Network {
             case 200:
                 guard let data = response.data, let attendanceInfo = jsonDecode(type: AttendanceInformation.self, data: data) else {
                     completion(.failure(.decodingError))
-                    print(String(data: response.data!, encoding: .utf8), "❌")
                     return
                 }
                 
@@ -1233,6 +1232,30 @@ struct Network {
             }
         }
     }
+    
+    func getAllNotifications(completion: @escaping (Result<[Noti], PeoplesError>) -> Void) {
+            AF.request(RequestPurpose.getAllNotifications, interceptor: AuthenticationInterceptor()).validate().response { response in
+                print(String(data: response.data!, encoding: .utf8))
+                
+                guard let httpResponse = response.response else {
+                    completion(.failure(.serverError))
+                    return
+                }
+                
+                switch httpResponse.statusCode {
+                case 200:
+                    guard let data = response.data, let notifications = jsonDecode(type: [Noti].self, data: data) else {
+                        completion(.failure(.decodingError))
+                        
+                        return
+                    }
+                    
+                    completion(.success(notifications))
+                default:
+                    seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+                }
+            }
+        }
 }
 
 // MARK: - Helpers

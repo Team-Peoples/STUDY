@@ -24,13 +24,13 @@ final class MainViewController: SwitchableViewController {
             mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
         }
     }
-    private var notification: String? {
-        didSet {
-            if notification != nil {
-                notificationBtn.setImage(UIImage(named: "noti-new"), for: .normal)
-            }
-        }
-    }
+//    private var notification: String? {
+//        didSet {
+//            if notification != nil {
+//                notificationBtn.setImage(UIImage(named: "noti-new"), for: .normal)
+//            }
+//        }
+//    }
     
     private lazy var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { attendanceInformation in
         guard let studyID = self.currentStudyOverall?.study.id else { return }  //클로저명 바꿔야함
@@ -190,8 +190,8 @@ final class MainViewController: SwitchableViewController {
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
     
-//        let nextVC = NotificationViewController()
-//        push(vc: nextVC)
+        let nextVC = NotificationViewController()
+        push(vc: nextVC)
     }
     
     @objc private func createStudyButtonDidTapped() {
