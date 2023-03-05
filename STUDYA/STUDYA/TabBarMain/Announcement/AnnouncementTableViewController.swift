@@ -58,17 +58,13 @@ final class AnnouncementTableViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
         titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
-        
-        navigationController?.navigationBar.titleTextAttributes = isSwitchOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
         
         view.backgroundColor = .systemBackground
         
         configureHeaderView()
         configureTableView()
         configureEmptyView()
-        configureNavigationBar()
         
         configureFloatingButton()
     }
@@ -150,7 +146,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
     
     override func extraWorkWhenSwitchToggled() {
         
-        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
         titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
 
         floatingButtonView.isHidden = isSwitchOn ? false : true

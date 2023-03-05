@@ -165,7 +165,6 @@ final class MainViewController: SwitchableViewController {
             """)
         print("----------------------------------------------------------")
         configureTabBarSeparator()
-        configureNavigationBar()
         
         NotificationCenter.default.addObserver(self, selector: #selector(studyListChanged), name: .studyListChanged, object: nil)
     }
@@ -174,7 +173,7 @@ final class MainViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = false
-        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
 //        let appearance = UINavigationBarAppearance()
 //        appearance.configureWithTransparentBackground()
 //        appearance.backgroundColor = .systemBackground
@@ -403,12 +402,12 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    override func configureNavigationBar() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-        guard !myStudyList.isEmpty else { return }
-        
-        super.configureNavigationBar()
-    }
+//    override func configureNavigationBar() {
+//        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+//        guard !myStudyList.isEmpty else { return }
+//
+//        super.configureNavigationBar()
+//    }
     
     private func configureNavigationBarNotiBtn() {
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
@@ -521,23 +520,27 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case mainTableView:
-            if indexPath.row == 3 {
-                guard let studyID = currentStudyOverall?.study.id else { return }
+            if indexPath.row == 1 {
+                guard let currentStudyOverall = currentStudyOverall, let studyID = currentStudyOverall.study.id else { return }
+                let studyScheduleVC = StudyScheduleViewController(studyID: studyID)
+                
+                studyScheduleVC.title = currentStudyOverall.study.studyName
+                
+                self.syncSwitchWith(nextVC: studyScheduleVC)
+                self.push(vc: studyScheduleVC)
+                
+            } else if indexPath.row == 3 {
+                guard let currentStudyOverall = currentStudyOverall, let studyID = currentStudyOverall.study.id else { return }
                 
                 saveAnnouncementIDUserAlreadyCheckedInStudy(studyID)
                 
                 let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
+                announcementTableVC.title = currentStudyOverall.study.studyName
                 
                 self.syncSwitchWith(nextVC: announcementTableVC)
                 self.push(vc: announcementTableVC)
             }
-            if indexPath.row == 1 {
-                guard let studyID = currentStudyOverall?.study.id else { return }
-                let studyScheduleVC = StudyScheduleViewController(studyID: studyID)
-                
-                self.syncSwitchWith(nextVC: studyScheduleVC)
-                self.push(vc: studyScheduleVC)
-            }
+            
         default: break
         }
     }

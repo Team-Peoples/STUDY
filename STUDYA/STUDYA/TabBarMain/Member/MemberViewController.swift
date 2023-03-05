@@ -14,14 +14,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             guard let currentStudyID = currentStudyID else { return }
             getMemberList(studyID: currentStudyID)
         }
-    }
-    internal var currentStudyName: String? {
-        didSet {
-            guard let currentStudyName = currentStudyName else { return }
-            navigationItem.title = currentStudyName
-        }
-    }
-    
+    }    
     internal var members: Members? {
         didSet {
             collectionView.reloadData()
@@ -154,6 +147,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
 //        navigationController?.setBrandNavigation()
 //        configureNavigationBar()
 //        navigationController?.title = "요시"
+//        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
         configureViews()
         configureCollectionView()
     }
@@ -180,8 +174,6 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             case .success(let response):
                 
                 self.members = response.memberList
-                
-                self.isManager = response.isUserManager
                 self.isOwner = response.isUserOwner
                 
             case .failure(let error):

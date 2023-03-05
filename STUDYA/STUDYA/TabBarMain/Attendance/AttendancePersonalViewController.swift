@@ -19,7 +19,6 @@ class AttendancePersonalViewController: SwitchableViewController {
         view = AttendanceForAMemberView(viewer: .manager)
         title = "스터디이름"
         navigationController?.setBrandNavigation()
-        configureNavigationBar()
     }
     
     // MARK: - Actions

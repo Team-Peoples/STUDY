@@ -83,7 +83,6 @@ final class MainDropDownDimmingViewController: UIViewController {
     }
     
     @objc private func createStudyButtonDidTapped() {
-//        presentCreateNewStudyVC(presentVC)
         dismiss(animated: true) {
             let creatingStudyFormVC = CreatingStudyFormViewController()
             

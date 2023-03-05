@@ -19,7 +19,7 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     var isSwitchOn = false {
         didSet {
             toggleNavigationBar()
-            toggleBackButtonColor()
+//            toggleBackButtonColor()
             extraWorkWhenSwitchToggled()
         }
     }
@@ -29,7 +29,7 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     
     private lazy var managerSwitch = BrandSwitch()
 
-    @objc func managerSwitchTappedAction(sender: BrandSwitch) {
+    @objc private func managerSwitchTappedAction(sender: BrandSwitch) {
         isSwitchOn = sender.isOn ? true : false
     }
     
@@ -40,12 +40,12 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        extendedLayoutIncludesOpaqueBars = true
         managerSwitch.isOn = switchStatusWhenWillAppear
         isSwitchOn = switchStatusWhenWillAppear
         
 //        toggleNavigationBar()
-        toggleBackButtonColor()
+//        toggleBackButtonColor()
         extraWorkWhenSwitchToggled()
     }
     
@@ -58,28 +58,28 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
     }
+//
+//    func toggleBackButtonColor() {
+////        navigationController?.navigationBar.tintColor = isSwitchOn ? .appColor(.whiteLabel) : .appColor(.ppsBlack)
+//    }
     
-    func toggleBackButtonColor() {
-//        navigationController?.navigationBar.tintColor = isSwitchOn ? .appColor(.whiteLabel) : .appColor(.ppsBlack)
-    }
-    
-    func toggleNavigationBar() {
+    private func toggleNavigationBar() {
         if isSwitchOn { turnOnNavigationBar() } else { turnOffNavigationBar() }
     }
     
-    func turnOnNavigationBar() {
+    private func turnOnNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
     }
     
-    func turnOffNavigationBar() {
+    private func turnOffNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .systemBackground
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.ppsBlack)]
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         navigationController?.setBrandNavigation()
         
         if isManager {
@@ -88,10 +88,6 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
         } else {
             navigationItem.setRightBarButtonItems(nil, animated: true)
         }
-    }
-    
-    func changeNavigationBarTitleColor(to color: UIColor) {
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: color]
     }
 }
 

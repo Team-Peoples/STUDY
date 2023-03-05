@@ -88,9 +88,11 @@ class MainSixthETCTableViewCell: UITableViewCell {
     @objc private func informationButtonTapped() {
         let storyboard = UIStoryboard(name: StudyInfoViewController.identifier, bundle: nil)
         let nextVC  = storyboard.instantiateViewController(withIdentifier: StudyInfoViewController.identifier) as! StudyInfoViewController
-        guard let currentStudyID = currentStudyID else { return }
+        guard let currentStudyID = currentStudyID, let currentStudyName = currentStudyName else { return }
+        
         nextVC.studyID = currentStudyID
-
+        nextVC.title = currentStudyName
+        
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
