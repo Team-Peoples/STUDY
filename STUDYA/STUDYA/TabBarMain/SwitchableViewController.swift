@@ -23,7 +23,7 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
             extraWorkWhenSwitchToggled()
         }
     }
-    private var switchStatusWhenWillAppear = false
+//    private var switchStatusWhenWillAppear = false
     
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
@@ -35,14 +35,14 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        extendedLayoutIncludesOpaqueBars = true
-        managerSwitch.isOn = switchStatusWhenWillAppear
-        isSwitchOn = switchStatusWhenWillAppear
+
+        managerSwitch.isOn = isSwitchOn
+//        isSwitchOn = switchStatusWhenWillAppear
         
 //        toggleNavigationBar()
 //        toggleBackButtonColor()
@@ -52,7 +52,7 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        switchStatusWhenWillAppear = isSwitchOn
+//        switchStatusWhenWillAppear = isSwitchOn
     }
     
 //    needs override for each scene
@@ -74,7 +74,7 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     }
     
     private func turnOffNavigationBar() {
-        navigationController?.navigationBar.backgroundColor = .systemBackground
+        navigationController?.navigationBar.backgroundColor = nil
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.ppsBlack)]
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
@@ -95,9 +95,14 @@ extension SwitchableViewController: SwitchSyncable {
     
     func syncSwitchWith(nextVC: SwitchableViewController) {
         nextVC.isManager = self.isManager
-        nextVC.switchStatusWhenWillAppear = isSwitchOn
+        nextVC.isSwitchOn = isSwitchOn
         nextVC.syncSwitchReverse = { sender in
-            self.switchStatusWhenWillAppear = nextVC.isSwitchOn
+            self.isSwitchOn = nextVC.isSwitchOn
         }
+//        nextVC.isManager = self.isManager
+//        nextVC.switchStatusWhenWillAppear = isSwitchOn
+//        nextVC.syncSwitchReverse = { sender in
+//            self.switchStatusWhenWillAppear = nextVC.isSwitchOn
+//        }
     }
 }

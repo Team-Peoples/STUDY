@@ -208,11 +208,11 @@ final class StudyInfoViewController: SwitchableViewController {
         
         print("isSwitchOn: ", isSwitchOn)
         print("isManager: ", isManager)
-        studyformEditButton.isHidden = !isSwitchOn
-        generalRuleEditButton.isHidden = !isSwitchOn
-        freeRuleEditButton.isHidden = !isSwitchOn
+        studyformEditButton?.isHidden = !isSwitchOn
+        generalRuleEditButton?.isHidden = !isSwitchOn
+        freeRuleEditButton?.isHidden = !isSwitchOn
         
-        isSwitchOn ? studyLeaveOrCloseButton.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
+        isSwitchOn ? studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
     }
 
     private func adjustHeight(of view: UIView, accordingTo value: Int?) {
