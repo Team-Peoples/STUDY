@@ -23,7 +23,6 @@ final class CreatingStudyFormViewController: UIViewController {
             studyViewModel.study.category = newCategory?.rawValue
         }
     }
-    private var token: NSObjectProtocol?
     
     private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .ppsBlack, size: 24, isBold: true)
 
@@ -80,12 +79,14 @@ final class CreatingStudyFormViewController: UIViewController {
         super.viewDidLoad()
         
         studyViewModel.bind { [self] study in
+            print(study)
             doneButton.isEnabled = study.formIsFilled
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
         
         configureViews()
         setDelegate()
+        enableScroll()
         
         setConstraints()
         setNavigation()
@@ -103,9 +104,6 @@ final class CreatingStudyFormViewController: UIViewController {
         super.viewWillDisappear(animated)
       
         NotificationCenter.default.removeObserver(self)
-        if let token = token {
-            NotificationCenter.default.removeObserver(token)
-        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -161,6 +159,18 @@ final class CreatingStudyFormViewController: UIViewController {
         }
     }
     
+    @objc private func categoryDidChanged(_ notification: Notification) {
+        
+        guard let cellInfo = notification.object as? [String: Any] else { return }
+        let title = cellInfo["title"] as! String
+        
+        let selectedCategory = StudyCategory.allCases.filter { category in
+            category.translatedKorean == title
+        }.first
+        
+        categoryChoice = selectedCategory
+    }
+    
     @objc private func onKeyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
@@ -189,12 +199,16 @@ final class CreatingStudyFormViewController: UIViewController {
     @objc private func onKeyboardDisappear(_ notification: NSNotification) {
         
         scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
         
         bottomStickyView.snp.updateConstraints { make in
             make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         view.layoutIfNeeded()
-        
+
+    }
+    
+    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
     
@@ -212,13 +226,23 @@ final class CreatingStudyFormViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    private func enableScroll() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
+        
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
     private func setNavigation() {
         
         self.navigationItem.title = "스터디 만들기"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.navigationItem.rightBarButtonItem = closeButton
     }
-    
+
     // MARK: - Setting Constraints
     
     func setConstraints() {
@@ -230,7 +254,7 @@ final class CreatingStudyFormViewController: UIViewController {
         containerView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide)
             make.width.equalTo(scrollView.snp.width)
-            make.height.greaterThanOrEqualTo(view.safeAreaLayoutGuide.snp.height)
+            make.height.greaterThanOrEqualTo(view.safeAreaLayoutGuide)
         }
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(containerView).offset(41)
@@ -295,20 +319,9 @@ final class CreatingStudyFormViewController: UIViewController {
     // MARK: - Helpers
     
     private func addNotification() {
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(categoryDidChanged), name: .categoryDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        token = NotificationCenter.default.addObserver(forName: .categoryDidChange, object: nil, queue: .main) { [self] noti in
-            guard let cellInfo = noti.object as? [String: Any] else { return }
-            let title = cellInfo["title"] as! String
-            
-            let selectedCategory = StudyCategory.allCases.filter { category in
-                category.translatedKorean == title
-            }.first
-            
-            categoryChoice = selectedCategory
-        }
     }
     
     private func setDelegate() {
@@ -374,7 +387,7 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         
-        ///domb: 엔터 입력할때 안되도록...막아야함
+        // domb: 엔터 입력할때 안되도록...막아야함
         switch textView {
             case studyNameTextView:
                 if textView.text.contains(where: { $0 == "\n" }) {
