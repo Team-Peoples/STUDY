@@ -26,6 +26,9 @@
 		727BB2B129431F7B003DB78A /* CreatingStudyCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */; };
 		7282F18228FFE7D2003EF100 /* MyScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18128FFE7D2003EF100 /* MyScheduleCollectionViewCell.swift */; };
 		7282F18428FFE7DC003EF100 /* StudyScheduleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7282F18328FFE7DC003EF100 /* StudyScheduleCollectionViewCell.swift */; };
+		7286618A29B5B8CF001170A7 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7286618929B5B8CF001170A7 /* SignInViewModel.swift */; };
+		7286618C29B5B8F2001170A7 /* StudyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7286618B29B5B8F2001170A7 /* StudyViewModel.swift */; };
+		7286618E29B5B919001170A7 /* StudyScheduleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7286618D29B5B919001170A7 /* StudyScheduleViewModel.swift */; };
 		7299967C28A9FE6E0008A1C1 /* CustomAF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967B28A9FE6E0008A1C1 /* CustomAF.swift */; };
 		7299968028AF54190008A1C1 /* AnnouncementTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299967F28AF54190008A1C1 /* AnnouncementTableViewController.swift */; };
 		7299968228AF5C480008A1C1 /* AnnouncementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7299968128AF5C480008A1C1 /* AnnouncementTableViewCell.swift */; };
@@ -173,6 +176,9 @@
 		727BB2B029431F7B003DB78A /* CreatingStudyCompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyCompleteViewController.swift; sourceTree = "<group>"; };
 		7282F18128FFE7D2003EF100 /* MyScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
 		7282F18328FFE7DC003EF100 /* StudyScheduleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleCollectionViewCell.swift; sourceTree = "<group>"; };
+		7286618929B5B8CF001170A7 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		7286618B29B5B8F2001170A7 /* StudyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewModel.swift; sourceTree = "<group>"; };
+		7286618D29B5B919001170A7 /* StudyScheduleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleViewModel.swift; sourceTree = "<group>"; };
 		7299967B28A9FE6E0008A1C1 /* CustomAF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAF.swift; sourceTree = "<group>"; };
 		7299967F28AF54190008A1C1 /* AnnouncementTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementTableViewController.swift; sourceTree = "<group>"; };
 		7299968128AF5C480008A1C1 /* AnnouncementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementTableViewCell.swift; sourceTree = "<group>"; };
@@ -392,6 +398,9 @@
 			isa = PBXGroup;
 			children = (
 				72ED25C42897FCFC00031AD1 /* ViewModel.swift */,
+				7286618D29B5B919001170A7 /* StudyScheduleViewModel.swift */,
+				7286618929B5B8CF001170A7 /* SignInViewModel.swift */,
+				7286618B29B5B8F2001170A7 /* StudyViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -833,6 +842,7 @@
 				72ED25BC289778A200031AD1 /* Component.swift in Sources */,
 				72512A7C292CDE7C0003F431 /* StudyScheduleViewController.swift in Sources */,
 				D3BF054628C116DB00AF7D3B /* CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.swift in Sources */,
+				7286618A29B5B8CF001170A7 /* SignInViewModel.swift in Sources */,
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				D371D2172923D5A000E28231 /* Protocol.swift in Sources */,
 				72758D2D295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeRuleTableViewCell.swift in Sources */,
@@ -855,6 +865,7 @@
 				D3EC2F46289A7F8400D4DA18 /* ProfileSettingViewController.swift in Sources */,
 				D3F2C6F528B27DA700CEC549 /* MyPageMainViewController.swift in Sources */,
 				72ED25BE289778CB00031AD1 /* Color.swift in Sources */,
+				7286618E29B5B919001170A7 /* StudyScheduleViewModel.swift in Sources */,
 				7299968028AF54190008A1C1 /* AnnouncementTableViewController.swift in Sources */,
 				D306E6CB292A268400F9BE5C /* AttendanceIndividualOverallInfoTableViewCell.swift in Sources */,
 				D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift in Sources */,
@@ -873,6 +884,7 @@
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
 				72E2BF09292769DE009BCCB7 /* AttendanceTableViewCells.swift in Sources */,
 				D398B47428B7AEAF00598B03 /* TreatingPersonalDataViewController.swift in Sources */,
+				7286618C29B5B8F2001170A7 /* StudyViewModel.swift in Sources */,
 				D3D8D1B62927E8C400B9D6B6 /* AttendanceIndividualInfoTableViewCell.swift in Sources */,
 				D398B47028B5F20700598B03 /* MyPageSettingAlertTableViewController.swift in Sources */,
 				D33439A6294D6F23000875C7 /* AppController.swift in Sources */,
