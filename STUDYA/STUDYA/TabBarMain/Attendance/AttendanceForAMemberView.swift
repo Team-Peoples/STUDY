@@ -28,6 +28,7 @@ class AttendanceForAMemberViewModel {
             case .success(let attendanceOverall):
                 self.attendanceOverall = attendanceOverall
                 self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
+                
                 self.reloadTable.value = true
                 
             case .failure(let error):
@@ -61,7 +62,8 @@ class AttendanceForAMemberViewModel {
     func removeDuplication(in array: [String]) -> [String]{
         let set = Set(array)
         let duplicationRemovedArray = Array(set)
-        return duplicationRemovedArray
+        
+        return duplicationRemovedArray.sorted()
     }
 }
 
@@ -241,9 +243,10 @@ extension AttendanceForAMemberView: UITableViewDataSource {
             default:
             guard let viewModel = viewModel else { return 0 }
             
-            let numberOfStudyDatesInAMonth = viewModel.monthlyGroupedAttendanceInformation.values.map { $0.count }
+            let monthAndYear = viewModel.yearAndMonthOfAttendances[section - 1]
+            guard let attendancesForAMonth = viewModel.monthlyGroupedAttendanceInformation[monthAndYear] else { return 0 }
             
-            return numberOfStudyDatesInAMonth[section - 1]
+            return attendancesForAMonth.count
         }
     }
     
