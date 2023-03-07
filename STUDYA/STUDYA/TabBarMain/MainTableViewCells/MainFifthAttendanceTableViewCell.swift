@@ -12,20 +12,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     static let identifier = "MainFifthAttendanceTableViewCell"
     
-    var currentStudyOverall: StudyOverall? {
-        didSet {
-            guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
-                configureErrorSituation()
-                return
-            }
-            
-            if totalStudyHeldCount != 0 {
-                configureProgressBarWhenYesAttendanceData(with: currentStudyOverall)
-            } else {
-                configureWhenNoAttendanceData()
-            }
-        }
-    }
+    private var currentStudyOverall: StudyOverall?
     
     internal var delegate: (Navigatable & SwitchSyncable & SwitchStatusGivable)?
 
@@ -109,6 +96,21 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         delegate.syncSwitchWith(nextVC: nextVC)
         delegate.push(vc: nextVC)
+    }
+    
+    internal func configureCellWithStudy(_ currentStudyOverall: StudyOverall?) {
+        self.currentStudyOverall = currentStudyOverall
+        
+        guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
+            configureErrorSituation()
+            return
+        }
+        
+        if totalStudyHeldCount != 0 {
+            configureProgressBarWhenYesAttendanceData(with: currentStudyOverall)
+        } else {
+            configureWhenNoAttendanceData()
+        }
     }
     
     private func configureErrorSituation() {

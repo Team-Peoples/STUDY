@@ -199,11 +199,8 @@ extension MainDropDownDimmingViewController: UITableViewDelegate {
             
             switch result {
             case .success(let studyOverall):
-                
                 self.studyTapped(studyOverall)
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true)
-                }
+                self.dismiss(animated: true)
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }

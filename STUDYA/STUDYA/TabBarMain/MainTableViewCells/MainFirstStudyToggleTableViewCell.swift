@@ -11,20 +11,11 @@ class MainFirstStudyToggleTableViewCell: UITableViewCell {
     
     static let identifier = "MainFirstStudyToggleTableViewCell"
     
-    internal var studyTitle: String! {
-        didSet {
-            guard let studyTitle = studyTitle else { return }
-            dropdownButton.setTitle("\(studyTitle)  ", for: .normal)
-        }
-    }
+    private var studyTitle: String?
+    
+    internal var buttonTapped: () -> () = {}
     
     private lazy var dropdownButton = UIButton()
-    
-    internal var buttonTapped: () -> () = {} {
-        didSet {
-            print(#function)
-        }
-    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -45,8 +36,12 @@ class MainFirstStudyToggleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    internal func configureCellWithStudyTitle(studyTitle: String?) {
+        guard let studyTitle = studyTitle else { return }
+        dropdownButton.setTitle("\(studyTitle)  ", for: .normal)
+    }
     
-    func configureDropdownButton() {
+    private func configureDropdownButton() {
         dropdownButton.setTitleColor(UIColor.appColor(.ppsGray1), for: .normal)
         dropdownButton.titleLabel?.font = .boldSystemFont(ofSize: 20)
         dropdownButton.setImage(UIImage(named: "dropDown")?.withTintColor(UIColor.appColor(.ppsGray1), renderingMode: .alwaysOriginal), for: .normal)

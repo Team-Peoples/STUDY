@@ -11,8 +11,8 @@ class MainSixthETCTableViewCell: UITableViewCell {
     
     static let identifier = "MainSixthETCTableViewCell"
     
-    internal var currentStudyID: Int?
-    internal var currentStudyName: String?
+    private var currentStudyID: Int?
+    private var currentStudyName: String?
     
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
     
@@ -106,5 +106,10 @@ class MainSixthETCTableViewCell: UITableViewCell {
         
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
+    }
+    
+    internal func configureCellWith(currentStudyID: Int?, currentStudyName: String?) {
+        self.currentStudyID = currentStudyID
+        self.currentStudyName = currentStudyName
     }
 }
