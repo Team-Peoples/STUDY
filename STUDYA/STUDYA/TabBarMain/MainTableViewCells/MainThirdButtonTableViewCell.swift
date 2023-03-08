@@ -12,19 +12,11 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     static let identifier = "MainThirdButtonTableViewCell"
     
-    internal var attendanceInformation: AttendanceInformation?
-    internal var schedule: StudySchedule? {
-        didSet {
-            guard let switchDelegate = navigatableSwitchObservableDelegate else { return }
-            divider = ButtonStatusDivder(schedule: schedule, attendanceInformation: attendanceInformation, delegate: switchDelegate)
-            configureButton()
-        }
-    }
+    private var attendanceInformation: AttendanceInformation?
+    private var studySchedule: StudySchedule?
 
     internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
     private var divider: ButtonStatusDivder?
-    
-    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
     
     private let allowedSymbol = "allowedSymbol"
     
@@ -46,7 +38,6 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
 
         selectionStyle = .none
         backgroundColor = .systemBackground
-//        hideEverythingForReload()
         configureMainButton()
         configureAfterCheckView()
     }
@@ -57,19 +48,26 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     @objc private func mainButtonTapped() {
         guard let delegate = navigatableSwitchObservableDelegate else { return }
-//        switchStatus 도 가져오고 ismanager값이 true인지도 가져올까?
         if delegate.getSwtichStatus() { showValidationNumberCheckingVC() } else { showValidationNumberFillingInVC() }
+    }
+    
+    internal func configureCellWith(attendanceInformation: AttendanceInformation?, studySchedule: StudySchedule?) {
+        self.attendanceInformation = attendanceInformation
+        self.studySchedule = studySchedule
+        
+        guard let switchDelegate = navigatableSwitchObservableDelegate else { return }
+        divider = ButtonStatusDivder(schedule: studySchedule, attendanceInformation: attendanceInformation, delegate: switchDelegate)
+        configureButton()
     }
     
     private func showValidationNumberCheckingVC() {
         let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberCheckingPopViewController.identifier) as! MainValidationNumberCheckingPopViewController
         
-        vc.scheduleID = schedule?.studyScheduleID
+        vc.scheduleID = studySchedule?.studyScheduleID
         vc.getDidAttend = {
             vc.didAttendForButtonStatus = self.attendanceInformation == nil ? false : true
         }
-        vc.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
@@ -80,9 +78,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         let storyboard = UIStoryboard(name: "MainPopOverViewControllers", bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: MainValidationNumberFillingInPopViewController.identifier) as! MainValidationNumberFillingInPopViewController
         
-        vc.scheduleID = schedule?.studyScheduleID
+        vc.scheduleID = studySchedule?.studyScheduleID
         vc.preferredContentSize = CGSize(width: 286, height: 247)
-        vc.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
         
         navigatableSwitchObservableDelegate?.present(vc)
     }

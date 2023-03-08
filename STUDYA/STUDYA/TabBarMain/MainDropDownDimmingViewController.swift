@@ -83,7 +83,6 @@ final class MainDropDownDimmingViewController: UIViewController {
     }
     
     @objc private func createStudyButtonDidTapped() {
-//        presentCreateNewStudyVC(presentVC)
         dismiss(animated: true) {
             let creatingStudyFormVC = CreatingStudyFormViewController()
             
@@ -201,12 +200,11 @@ extension MainDropDownDimmingViewController: UITableViewDelegate {
             switch result {
             case .success(let studyOverall):
                 
-                self.studyTapped(studyOverall)
                 let currentStudyName = studyOverall.study.studyName!
                 KeyChain.create(key: Constant.currentStudyName, value: currentStudyName)
-                DispatchQueue.main.async {
-                    self.dismiss(animated: true)
-                }
+                
+                self.studyTapped(studyOverall)
+                self.dismiss(animated: true)
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }

@@ -983,7 +983,7 @@ struct Network {
                     completion(.failure(.decodingError))
                     return
                 }
-                print(attendanceInformation, "❤️")
+                
                 completion(.success(attendanceInformation))
             case 400:
                 guard let data = response.data,
@@ -1017,6 +1017,12 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
+                if let dataString = String(data: response.data!, encoding: .utf8) {
+                    let cleanString = dataString.replacingOccurrences(of: "\\", with: "")
+                    print("📕📕📕📕📕📕📕📕")
+                    print(cleanString)
+                    print("📕📕📕📕📕📕📕📕")
+                }
                 guard let data = response.data, let attendanceOverall = jsonDecode(type: UserAttendanceOverall.self, data: data) else {
                     completion(.failure(.decodingError))
                     return

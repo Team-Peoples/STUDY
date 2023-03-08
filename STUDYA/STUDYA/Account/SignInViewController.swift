@@ -31,8 +31,6 @@ final class SignInViewController: UIViewController {
         configureViews()
         configureCompleteButton()
         configureFindPasswordButton()
-        
-        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +56,33 @@ final class SignInViewController: UIViewController {
         view.addSubview(passwordInputView)
         view.addSubview(findPasswordButton)
         view.addSubview(completeButton)
+        
+        loginLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
+        }
+        
+        emailInputView.snp.makeConstraints { make in
+            make.top.equalTo(loginLabel).offset(70)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        passwordInputView.snp.makeConstraints { make in
+            make.top.equalTo(emailInputView.snp.bottom).offset(40)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
+        
+        completeButton.snp.makeConstraints { make in
+            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(50)
+            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+        }
+        
+        findPasswordButton.snp.makeConstraints { make in
+            make.top.equalTo(passwordInputView.snp.bottom).offset(6)
+            make.trailing.equalTo(passwordInputView)
+        }
     }
     
     private func configureTextFieldDelegate() {
@@ -179,38 +204,6 @@ final class SignInViewController: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
-        
-        loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-        }
-        
-        emailInputView.snp.makeConstraints { make in
-            make.top.equalTo(loginLabel).offset(70)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        
-        passwordInputView.snp.makeConstraints { make in
-            make.top.equalTo(emailInputView.snp.bottom).offset(40)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-        }
-        
-        completeButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(50)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
-        }
-        
-        findPasswordButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordInputView.snp.bottom).offset(6)
-            make.trailing.equalTo(passwordInputView)
-        }
     }
 }
 // MARK: - UITextFieldDelegate

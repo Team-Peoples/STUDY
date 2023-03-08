@@ -13,31 +13,15 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     
     internal var didAttendForButtonStatus: Bool? {
         didSet {
-//            thirdCEll에서 넘어올 때 네트워킹에서 받기도 하고 여기서 출석버튼 눌러서 받기도함.
-            if let didAttend = didAttendForButtonStatus, didAttend {
-                attendButton.setTitle("출석 완료", for: .normal)
-                attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
-                attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
-                attendButton.backgroundColor = .systemBackground
-                attendButton.isEnabled = false
-            }
+            guard let didAttend = didAttendForButtonStatus, didAttend else { return }
+            disableAttendButton()
         }
     }
-    internal var checkCode: Int? {
-        didSet {
-            guard let checkCode = checkCode else { return }
-            validationNumberLabel.text = String(checkCode)
-        }
-    }
-    internal var scheduleID: Int? {
-        didSet {
-            getCertificationCode()
-        }
-    }
+    internal var checkCode: Int?
+    internal var scheduleID: Int? { didSet { getCertificationCode() } }
     
     private var customTransitioningDelegate = TransitioningDelegate()
     
-    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
     internal var getDidAttend = {}
         
     @IBOutlet weak var validationNumberLabel: UILabel!
@@ -69,6 +53,7 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
             switch result {
             case .success(let code):
                 self.checkCode = code
+                self.validationNumberLabel.text = String(code)
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
@@ -77,27 +62,39 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
     
     private func attend() {
         guard let scheduleID = scheduleID, let checkCode = checkCode else { return }
-        print(scheduleID, checkCode, "☺️")
+        
         Network.shared.attend(in: scheduleID, with: checkCode) { result in
             switch result {
-            case .success(let attendanceInformation):
+            case .success:
                 self.didAttendForButtonStatus = true
-                self.changeImminentStudyScheduleAttendanceInformationTo(attendanceInformation)
+                NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
             case .failure(let error):
-                switch error {
-                    
-                case .userNotFound:
-                    let alert = SimpleAlert(message: "잘못된 접근입니다. 다시 시도해주세요.")
-                    self.present(alert, animated: true)
-                    
-                case .wrongAttendanceCode:
-                    let alert = SimpleAlert(message: "서버 에러. 인증코드 불일치")
-                    self.present(alert, animated: true)
-                    
-                default:
-                    UIAlertController.handleCommonErros(presenter: self, error: error)
-                }
+                self.handleAttending(error)
             }
+        }
+    }
+    
+    private func disableAttendButton() {
+        attendButton.setTitle("출석 완료", for: .normal)
+        attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
+        attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
+        attendButton.backgroundColor = .systemBackground
+        attendButton.isEnabled = false
+    }
+    
+    private func handleAttending(_ error: PeoplesError) {
+        switch error {
+            
+        case .userNotFound:
+            let alert = SimpleAlert(message: "잘못된 접근입니다. 다시 시도해주세요.")
+            self.present(alert, animated: true)
+            
+        case .wrongAttendanceCode:
+            let alert = SimpleAlert(message: "서버 에러. 인증코드 불일치")
+            self.present(alert, animated: true)
+            
+        default:
+            UIAlertController.handleCommonErros(presenter: self, error: error)
         }
     }
     

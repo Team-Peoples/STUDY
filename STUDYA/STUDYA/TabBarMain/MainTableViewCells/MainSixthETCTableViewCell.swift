@@ -11,7 +11,8 @@ class MainSixthETCTableViewCell: UITableViewCell {
     
     static let identifier = "MainSixthETCTableViewCell"
     
-    internal var currentStudyID: Int?
+    private var currentStudyID: Int?
+    private var currentStudyName: String?
     
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
     
@@ -87,32 +88,28 @@ class MainSixthETCTableViewCell: UITableViewCell {
     @objc private func informationButtonTapped() {
         let storyboard = UIStoryboard(name: StudyInfoViewController.identifier, bundle: nil)
         let nextVC  = storyboard.instantiateViewController(withIdentifier: StudyInfoViewController.identifier) as! StudyInfoViewController
-        guard let currentStudyID = currentStudyID else { return }
+        guard let currentStudyID = currentStudyID, let currentStudyName = currentStudyName else { return }
         
         nextVC.studyID = currentStudyID
-
+        nextVC.title = currentStudyName
+        
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
     }
     
     @objc private func membersButtonTapped() {
-        guard let currentStudyID = currentStudyID else { return }
+        guard let currentStudyID = currentStudyID, let currentStudyName = currentStudyName else { return }
         let nextVC = MemberViewController()
         
-        Network.shared.getAllMembers(studyID: currentStudyID) { result in
-            switch result {
-            case .success(let response):
-                nextVC.members = response.memberList
-                nextVC.currentStudyID = currentStudyID
-                nextVC.isManager = response.isUserManager
-                nextVC.isOwner = response.isUserOwner
-                
-            case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self.navigatableSwitchSyncableDelegate, error: error)
-            }
-        }
+        nextVC.currentStudyID = currentStudyID
+        nextVC.title = currentStudyName
         
         navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
         navigatableSwitchSyncableDelegate.push(vc: nextVC)
+    }
+    
+    internal func configureCellWith(currentStudyID: Int?, currentStudyName: String?) {
+        self.currentStudyID = currentStudyID
+        self.currentStudyName = currentStudyName
     }
 }

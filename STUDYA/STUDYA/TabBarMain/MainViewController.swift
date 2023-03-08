@@ -6,24 +6,15 @@
 //
 
 import UIKit
+
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
     
     internal var nickName: String?
     private var myStudyList = [Study]()
-    private var currentStudyOverall: StudyOverall? {
-        didSet {
-            guard let currentStudyOverall = currentStudyOverall else { return }
-            isManager = currentStudyOverall.isManager
-            mainTableView.reloadData()
-        }
-    }
-    private var imminentAttendanceInformation: AttendanceInformation? {
-        didSet {
-            mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
-        }
-    }
+    private var currentStudyOverall: StudyOverall?
+    private var imminentAttendanceInformation: AttendanceInformation?
 //    private var notification: String? {
 //        didSet {
 //            if notification != nil {
@@ -31,24 +22,7 @@ final class MainViewController: SwitchableViewController {
 //            }
 //        }
 //    }
-    
-    private lazy var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { attendanceInformation in
-        guard let studyID = self.currentStudyOverall?.study.id else { return }  //클로저명 바꿔야함
-        Network.shared.getStudy(studyID: studyID) { result in
-            
-            switch result {
-            case .success(let studyOverall):
-                
-                self.isManager = studyOverall.isManager
-                self.currentStudyOverall = studyOverall
-                
-                self.setImminentStudyScheduleAttendanceImformation()
-            case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
-            }
-        }
-//        self.imminentAttendanceInformation = attendanceInformation
-    }
+    private var isRefreshing = false
     
     private lazy var notificationBtn: UIButton = {
         
@@ -119,7 +93,7 @@ final class MainViewController: SwitchableViewController {
 //                print("fail")
 //            }
 //        }
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-02-28", repeatEndDate: "", startTime: "01:57", endTime: "01:59", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-03-07", repeatEndDate: "", startTime: "01:42", endTime: "01:44", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -165,14 +139,16 @@ final class MainViewController: SwitchableViewController {
             """)
         print("----------------------------------------------------------")
         configureTabBarSeparator()
-        configureNavigationBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadStudyList), name: .reloadStudyList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadCurrentStudy), name: .reloadCurrentStudy, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = false
-        
+        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
 //        let appearance = UINavigationBarAppearance()
 //        appearance.configureWithTransparentBackground()
 //        appearance.backgroundColor = .systemBackground
@@ -189,7 +165,6 @@ final class MainViewController: SwitchableViewController {
     var flag = true
     // MARK: - Actions
     @objc private func notificationButtonDidTapped() {
-    
         let nextVC = NotificationViewController()
         push(vc: nextVC)
     }
@@ -216,9 +191,9 @@ final class MainViewController: SwitchableViewController {
         
         dimmingVC.modalTransitionStyle = .crossDissolve
         dimmingVC.modalPresentationStyle = .overFullScreen
-        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
-        dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
+        dimmingVC.currentStudy = currentStudyOverall?.study
+        dimmingVC.studyTapped = { studyOverall in self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall) }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
         present(dimmingVC, animated: true)
@@ -238,6 +213,38 @@ final class MainViewController: SwitchableViewController {
         }
         
         present(dimmingVC, animated: true)
+    }
+    
+    @objc private func refresh() {
+        isRefreshing = true
+        for subview in self.view.subviews {
+            subview.removeFromSuperview()
+        }
+        getUserInformationAndStudies()
+    }
+    
+    @objc private func reloadStudyList() {
+        for subview in self.view.subviews {
+            subview.removeFromSuperview()
+        }
+        getAllStudies()
+    }
+    
+    @objc private func reloadCurrentStudy() {
+        guard let studyID = currentStudyOverall?.study.id else { return }
+        Network.shared.getStudy(studyID: studyID) { result in
+            
+            switch result {
+            case .success(let studyOverall):
+                
+                self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
+                
+                self.configureTableViewThirdCell()
+                
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
     }
     
     override func extraWorkWhenSwitchToggled() {
@@ -292,7 +299,7 @@ final class MainViewController: SwitchableViewController {
                 if let firstStudy = studies.first, let studyID = firstStudy.id {
                     
                     self.myStudyList = studies
-                    self.getCurrentStudyOverall(with: studyID)
+                    self.configureTableView(with: studyID)
                     print("studyID", studyID)
                 } else {
                     self.configureViewWhenNoStudy()
@@ -303,19 +310,18 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    private func getCurrentStudyOverall(with studyID: ID) {
+    private func configureTableView(with studyID: ID) {
         Network.shared.getStudy(studyID: studyID) { result in
             
             switch result {
             case .success(let studyOverall):
                 
-                self.isManager = studyOverall.isManager
-                self.currentStudyOverall = studyOverall
-                
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
                 KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
                 self.configureViewWhenYesStudy()
-                self.setImminentStudyScheduleAttendanceImformation()
+                self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
+                
+                self.configureTableViewThirdCell()
                 
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
@@ -323,9 +329,10 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    @objc private func refresh() {
-        getUserInformationAndStudies()
-        mainTableView.refreshControl?.endRefreshing()
+    private func reloadTableViewWithCurrentStudy(studyOverall: StudyOverall) {
+        self.currentStudyOverall = studyOverall
+        isManager = studyOverall.isManager
+        mainTableView.reloadData()
     }
     
     private func configureViewWhenYesStudy() {
@@ -346,31 +353,35 @@ final class MainViewController: SwitchableViewController {
         configureFloatingButton()
     }
     
-    private func setImminentStudyScheduleAttendanceImformation() {
+    private func configureTableViewThirdCell() {
         if let scheduleID = currentStudyOverall?.studySchedule?.studyScheduleID {
-            getImminentScheudleAttendanceInformation(with: scheduleID)
+            reloadTableViewThirdCell(with: scheduleID)
         } else {
             self.imminentAttendanceInformation = nil
+            mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
+            endRefreshIfIsRefreshing()
         }
     }
     
-    private func getImminentScheudleAttendanceInformation(with id: ID) {
+    private func reloadTableViewThirdCell(with id: ID) {
         Network.shared.getImminentScheduleAttendance(scheduleID: id) { result in
             switch result {
             case .success(let attendanceInfo):
-                self.save(attendanceInfo)
+                self.reloadTableViewThirdCell(with: attendanceInfo)
+                self.endRefreshIfIsRefreshing()
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
     
-    private func save(_ attendanceInfo: AttendanceInformation) {
+    private func reloadTableViewThirdCell(with attendanceInfo: AttendanceInformation) {
         if attendanceInfo.attendanceStatus != nil {
             self.imminentAttendanceInformation = attendanceInfo
         } else {
             self.imminentAttendanceInformation = nil
         }
+        mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
     }
     
     private func configureViewWhenNoStudy() {
@@ -397,14 +408,22 @@ final class MainViewController: SwitchableViewController {
             make.width.equalTo(200)
             make.top.equalTo(studyEmptyLabel.snp.bottom).offset(10)
         }
+        
+        endRefreshIfIsRefreshing()
     }
     
-    override func configureNavigationBar() {
-        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
-        guard !myStudyList.isEmpty else { return }
-        
-        super.configureNavigationBar()
+    private func endRefreshIfIsRefreshing() {
+        if isRefreshing {
+            mainTableView.refreshControl?.endRefreshing()
+        }
     }
+    
+//    override func configureNavigationBar() {
+//        navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
+//        guard !myStudyList.isEmpty else { return }
+//
+//        super.configureNavigationBar()
+//    }
     
     private func configureNavigationBarNotiBtn() {
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
@@ -451,58 +470,52 @@ extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as! MainFirstStudyToggleTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainFirstStudyToggleTableViewCell.identifier) as? MainFirstStudyToggleTableViewCell else { return MainFirstStudyToggleTableViewCell() }
             
-            cell.studyTitle = currentStudyOverall?.study.studyName
+            cell.configureCellWithStudyTitle(studyTitle: currentStudyOverall?.study.studyName)
             cell.buttonTapped = { self.dropdownButtonDidTapped() }
             
             return cell
+            
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as! MainSecondScheduleTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as? MainSecondScheduleTableViewCell else { return MainSecondScheduleTableViewCell() }
             
-            cell.nickName = nickName
-            cell.schedule = currentStudyOverall?.studySchedule
             cell.navigatableSwitchSyncableDelegate = self
-            
-            return cell
-        case 2:
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as! MainThirdButtonTableViewCell
-            
-            print("currentStudy: \(currentStudyOverall?.study.id), scheduleID: \(currentStudyOverall?.studySchedule?.studyScheduleID)")
-            cell.schedule = currentStudyOverall?.studySchedule
-            cell.navigatableSwitchObservableDelegate = self
-            cell.attendanceInformation = imminentAttendanceInformation
-            cell.schedule = currentStudyOverall?.studySchedule
-            cell.changeImminentStudyScheduleAttendanceInformationTo = changeImminentStudyScheduleAttendanceInformationTo
-            
-            return cell
-        case 3:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as! MainFourthAnnouncementTableViewCell
-            
-            cell.navigatable = self
-            
-            cell.studyID = currentStudyOverall?.study.id
-            cell.announcement = currentStudyOverall?.announcement
+            cell.configureCellWith(nickName: nickName, schedule: currentStudyOverall?.studySchedule)
 
             return cell
             
+        case 2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as? MainThirdButtonTableViewCell else { return MainThirdButtonTableViewCell() }
+            
+            cell.navigatableSwitchObservableDelegate = self
+            cell.configureCellWith(attendanceInformation: imminentAttendanceInformation, studySchedule: currentStudyOverall?.studySchedule)
+            
+            return cell
+            
+        case 3:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainFourthAnnouncementTableViewCell.identifier) as? MainFourthAnnouncementTableViewCell else { return MainFourthAnnouncementTableViewCell() }
+            
+            cell.navigatable = self
+            cell.configureCell(with: currentStudyOverall?.announcement)
+            
+            return cell
+            
         case 4:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as! MainFifthAttendanceTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainFifthAttendanceTableViewCell.identifier, for: indexPath) as? MainFifthAttendanceTableViewCell else { return MainFifthAttendanceTableViewCell() }
             
             guard let currentStudyOverall = currentStudyOverall else { return MainFifthAttendanceTableViewCell() }
             
-            cell.currentStudyOverall = currentStudyOverall
-            
             cell.delegate = self
+            cell.configureCellWithStudy(currentStudyOverall)
             
             return cell
             
         case 5:
-            let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as! MainSixthETCTableViewCell
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as? MainSixthETCTableViewCell else { return MainSixthETCTableViewCell() }
             
-            cell.currentStudyID = currentStudyOverall?.study.id
             cell.navigatableSwitchSyncableDelegate = self
+            cell.configureCellWith(currentStudyID: currentStudyOverall?.study.id, currentStudyName: currentStudyOverall?.study.studyName)
             
             return cell
         default:
@@ -516,23 +529,27 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
         case mainTableView:
-            if indexPath.row == 3 {
-                guard let studyID = currentStudyOverall?.study.id else { return }
+            if indexPath.row == 1 {
+                guard let currentStudyOverall = currentStudyOverall, let studyID = currentStudyOverall.study.id else { return }
+                let studyScheduleVC = StudyScheduleViewController(studyID: studyID)
+                
+                studyScheduleVC.title = currentStudyOverall.study.studyName
+                
+                self.syncSwitchWith(nextVC: studyScheduleVC)
+                self.push(vc: studyScheduleVC)
+                
+            } else if indexPath.row == 3 {
+                guard let currentStudyOverall = currentStudyOverall, let studyID = currentStudyOverall.study.id else { return }
                 
                 saveAnnouncementIDUserAlreadyCheckedInStudy(studyID)
                 
                 let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
+                announcementTableVC.title = currentStudyOverall.study.studyName
                 
                 self.syncSwitchWith(nextVC: announcementTableVC)
                 self.push(vc: announcementTableVC)
             }
-            if indexPath.row == 1 {
-                guard let studyID = currentStudyOverall?.study.id else { return }
-                let studyScheduleVC = StudyScheduleViewController(studyID: studyID)
-                
-                self.syncSwitchWith(nextVC: studyScheduleVC)
-                self.push(vc: studyScheduleVC)
-            }
+            
         default: break
         }
     }

@@ -19,71 +19,70 @@ class SwitchableViewController: UIViewController, Navigatable, SwitchStatusGivab
     var isSwitchOn = false {
         didSet {
             toggleNavigationBar()
-            toggleBackButtonColor()
+//            toggleBackButtonColor()
             extraWorkWhenSwitchToggled()
         }
     }
-    private var switchStatusWhenWillAppear = false
+//    private var switchStatusWhenWillAppear = false
     
     internal var syncSwitchReverse: (Bool) -> () = { sender in }
     
     private lazy var managerSwitch = BrandSwitch()
 
-    @objc func managerSwitchTappedAction(sender: BrandSwitch) {
+    @objc private func managerSwitchTappedAction(sender: BrandSwitch) {
         isSwitchOn = sender.isOn ? true : false
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        managerSwitch.isOn = isSwitchOn
+//        isSwitchOn = switchStatusWhenWillAppear
         
-        managerSwitch.isOn = switchStatusWhenWillAppear
-        isSwitchOn = switchStatusWhenWillAppear
-        
-        toggleNavigationBar()
-        toggleBackButtonColor()
+//        toggleNavigationBar()
+//        toggleBackButtonColor()
         extraWorkWhenSwitchToggled()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        switchStatusWhenWillAppear = isSwitchOn
+//        switchStatusWhenWillAppear = isSwitchOn
     }
     
 //    needs override for each scene
     func extraWorkWhenSwitchToggled() {
     }
+//
+//    func toggleBackButtonColor() {
+////        navigationController?.navigationBar.tintColor = isSwitchOn ? .appColor(.whiteLabel) : .appColor(.ppsBlack)
+//    }
     
-    func toggleBackButtonColor() {
-        navigationController?.navigationBar.tintColor = isSwitchOn ? .appColor(.whiteLabel) : .appColor(.ppsBlack)
-    }
-    
-    func toggleNavigationBar() {
+    private func toggleNavigationBar() {
         if isSwitchOn { turnOnNavigationBar() } else { turnOffNavigationBar() }
     }
     
-    func turnOnNavigationBar() {
+    private func turnOnNavigationBar() {
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = .white
     }
     
-    func turnOffNavigationBar() {
-        navigationController?.navigationBar.backgroundColor = .systemBackground
+    private func turnOffNavigationBar() {
+        navigationController?.navigationBar.backgroundColor = nil
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.ppsBlack)]
         navigationController?.navigationBar.tintColor = .appColor(.ppsBlack)
     }
     
-    func configureNavigationBar() {
+    private func configureNavigationBar() {
         navigationController?.setBrandNavigation()
         
         if isManager {
-            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             managerSwitch.addTarget(self, action: #selector(managerSwitchTappedAction), for: .valueChanged)
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: managerSwitch)
         } else {
@@ -96,9 +95,14 @@ extension SwitchableViewController: SwitchSyncable {
     
     func syncSwitchWith(nextVC: SwitchableViewController) {
         nextVC.isManager = self.isManager
-        nextVC.switchStatusWhenWillAppear = isSwitchOn
+        nextVC.isSwitchOn = isSwitchOn
         nextVC.syncSwitchReverse = { sender in
-            self.switchStatusWhenWillAppear = nextVC.isSwitchOn
+            self.isSwitchOn = nextVC.isSwitchOn
         }
+//        nextVC.isManager = self.isManager
+//        nextVC.switchStatusWhenWillAppear = isSwitchOn
+//        nextVC.syncSwitchReverse = { sender in
+//            self.switchStatusWhenWillAppear = nextVC.isSwitchOn
+//        }
     }
 }
