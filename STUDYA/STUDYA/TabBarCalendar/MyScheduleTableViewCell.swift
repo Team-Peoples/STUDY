@@ -56,7 +56,7 @@ class MyScheduleTableViewCell: UITableViewCell {
        
         let v = UITextView()
         
-        v.font = .systemFont(ofSize: 15)
+        v.font = .systemFont(ofSize: 18)
         v.text = placeholder
         v.textColor = .appColor(.ppsGray1)
         v.isScrollEnabled = false

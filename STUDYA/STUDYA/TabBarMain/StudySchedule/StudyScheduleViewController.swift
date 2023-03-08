@@ -90,7 +90,6 @@ class StudyScheduleViewController: SwitchableViewController {
         confifureViews()
         configureTableView()
         setConstraints()
-        configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {

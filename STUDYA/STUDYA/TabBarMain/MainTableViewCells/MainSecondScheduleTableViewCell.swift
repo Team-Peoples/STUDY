@@ -11,42 +11,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
     
-    internal var nickName: String? {
-        didSet {
-            title.text = "\(nickName ?? "회원")님의 일정"
-        }
-    }
-    
-    internal var schedule: StudySchedule? {
-        didSet {
-            guard let schedule = schedule else { isScheduleExist = false; return }
-            
-            isScheduleExist = true
-            
-            place.text = schedule.place
-            todayContent.text = schedule.topic
-            configureDateInformation(schedule.startDateAndTime)
-        }
-    }
-    
     internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
-    
-    private var isScheduleExist: Bool? {
-        didSet {
-            guard let isScheduleExist = isScheduleExist else { return }
-            if isScheduleExist {
-                noScheudleLabel.isHidden = true
-                date.isHidden = false
-                place.isHidden = false
-                todayContent.isHidden = false
-            } else {
-                noScheudleLabel.isHidden = false
-                date.isHidden = true
-                place.isHidden = true
-                todayContent.isHidden = true
-            }
-        }
-    }
     
     private let title = CustomLabel(title: "", tintColor: .ppsBlack, size: 20, isBold: true)
     private let disclosureIndicatorView = UIImageView(image: UIImage(named: "circleDisclosureIndicator"))
@@ -103,6 +68,38 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             todayContent.numberOfLines = 1
     }
     
+    internal func configureCellWith(nickName: String?, schedule: StudySchedule?) {
+        configureTitleNickNameLabel(nickName: nickName)
+        
+        if let schedule = schedule {
+            configureLabelsWhenYesStudySchedule(schedule: schedule)
+        } else {
+            configureLabelsWhenNoStudySchedule()
+        }
+    }
+    
+    private func configureTitleNickNameLabel(nickName: String?) {
+        title.text = "\(nickName ?? "회원")님의 일정"
+    }
+    
+    private func configureLabelsWhenYesStudySchedule(schedule: StudySchedule) {
+        place.text = schedule.place
+        todayContent.text = schedule.topic
+        configureDateInformation(schedule.startDateAndTime)
+        
+        noScheudleLabel.isHidden = true
+        date.isHidden = false
+        place.isHidden = false
+        todayContent.isHidden = false
+    }
+    
+    private func configureLabelsWhenNoStudySchedule() {
+        noScheudleLabel.isHidden = false
+        date.isHidden = true
+        place.isHidden = true
+        todayContent.isHidden = true
+    }
+    
     private func addSubviews() {
         addSubview(scheduleBackView)
         scheduleBackView.addSubview(title)
@@ -135,11 +132,6 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
             make.centerX.equalTo(scheduleBackView)
             make.top.equalTo(title.snp.bottom).offset(50)
         }
-        
-        
-//        scheduleButton.snp.makeConstraints { make in
-//            make.edges.equalTo(scheduleBackView)
-//        }
     }
     
     required init?(coder: NSCoder) {

@@ -15,8 +15,6 @@ final class MainValidationNumberFillingInPopViewController: UIViewController {
     
     private var customTransitioningDelegate = TransitioningDelegate()
     
-    internal var changeImminentStudyScheduleAttendanceInformationTo: ((AttendanceInformation) -> Void) = { info in }
-    
     @IBOutlet weak var firstField: RoundedCornersField!
     @IBOutlet weak var secondField: RoundedCornersField!
     @IBOutlet weak var thirdField: RoundedCornersField!
@@ -63,8 +61,8 @@ final class MainValidationNumberFillingInPopViewController: UIViewController {
         
         Network.shared.attend(in: scheduleID, with: validationNumber) { result in
             switch result {
-            case .success(let attendanceInformation):
-                self.changeImminentStudyScheduleAttendanceInformationTo(attendanceInformation)
+            case .success:
+                NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
                 self.dismiss(animated: true)
             case .failure(let error):
                 self.handle(error: error)

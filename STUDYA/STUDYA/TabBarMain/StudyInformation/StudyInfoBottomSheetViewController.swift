@@ -112,6 +112,7 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                         print("스터디 탈퇴 성공")
                         
                         UserDefaults.standard.removeObject(forKey: "checkedAnnouncementIDOfStudy\(studyID)")
+                        NotificationCenter.default.post(name: .reloadStudyList, object: nil)
                         self.dismiss(animated: true)
                     case .failure(let error):
                         print("스터디장은 탈퇴할 수 없어요.")
@@ -125,6 +126,7 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                     switch result {
                     case .success:
                         print("스터디장이 스터디 종료 성공")
+                        NotificationCenter.default.post(name: .reloadStudyList, object: nil)
                         self.dismiss(animated: true)
                     case .failure(let error):
                         print(error)
