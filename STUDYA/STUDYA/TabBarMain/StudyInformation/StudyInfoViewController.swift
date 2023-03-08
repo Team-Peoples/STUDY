@@ -15,7 +15,7 @@ final class StudyInfoViewController: SwitchableViewController {
     
     var studyID: ID?
     
-    private var studyViewModel = StudyViewModel()
+    private let studyViewModel = StudyViewModel()
     
     /// 스터디 폼
     @IBOutlet weak var studyCategoryBackgroundView: UIView!
@@ -75,6 +75,10 @@ final class StudyInfoViewController: SwitchableViewController {
             configureViews(study)
         }
         
+        getStudyInfo()
+        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
+        navigationController?.navigationBar.titleTextAttributes = isSwitchOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
+        addNotification()
         configureView()
         setConstraints()
     }
@@ -83,17 +87,23 @@ final class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-        
-        getStudyInfo()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        syncSwitchReverse(isSwitchOn)
+        syncSwitchReverse(isSwitchOn)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Actions
+    
+    @objc private func studyInfoShouldUpdate() {
+        getStudyInfo()
+    }
     
     @IBAction func linkTouched(_ sender: UIButton) {
         
@@ -127,7 +137,7 @@ final class StudyInfoViewController: SwitchableViewController {
         let editingStudyFormVC = EditingStudyFormViewController()
         let vc = UINavigationController(rootViewController: editingStudyFormVC)
         
-        editingStudyFormVC.studyViewModel = studyViewModel
+        editingStudyFormVC.studyViewModel.study = studyViewModel.study
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
@@ -135,7 +145,7 @@ final class StudyInfoViewController: SwitchableViewController {
     @IBAction func generalRuleEditButtonDidTapped(_ sender: Any) {
 
         let studygeneralRuleVC = EditingStudyGeneralRuleViewController()
-        studygeneralRuleVC.studyViewModel = studyViewModel
+        studygeneralRuleVC.studyViewModel.study = studyViewModel.study
         
         let vc = UINavigationController(rootViewController: studygeneralRuleVC)
         
@@ -150,7 +160,7 @@ final class StudyInfoViewController: SwitchableViewController {
         
         let storyboard = UIStoryboard(name: EditingStudyFreeRuleViewController.identifier, bundle: nil)
         let studyFreeRuleVC = storyboard.instantiateViewController(withIdentifier: EditingStudyFreeRuleViewController.identifier) as! EditingStudyFreeRuleViewController
-        studyFreeRuleVC.studyViewModel = studyViewModel
+        studyFreeRuleVC.studyViewModel.study = studyViewModel.study
 
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
         
@@ -206,6 +216,8 @@ final class StudyInfoViewController: SwitchableViewController {
     
     override func extraWorkWhenSwitchToggled() {
         
+        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
+        
         print("isSwitchOn: ", isSwitchOn)
         print("isManager: ", isManager)
         studyformEditButton?.isHidden = !isSwitchOn
@@ -214,20 +226,9 @@ final class StudyInfoViewController: SwitchableViewController {
         
         isSwitchOn ? studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
     }
-
-    private func adjustHeight(of view: UIView, accordingTo value: Int?) {
-        
-        if value == nil || value == 0 {
-            view.isHidden = true
-            view.snp.remakeConstraints { make in
-                make.height.equalTo(0)
-            }
-        } else {
-            view.isHidden = false
-            view.snp.remakeConstraints { make in
-                make.height.equalTo(16)
-            }
-        }
+    
+    private func addNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(studyInfoShouldUpdate), name: .studyInfoShouldUpdate, object: nil)
     }
     
     // MARK: - Networking
@@ -344,6 +345,21 @@ final class StudyInfoViewController: SwitchableViewController {
     }
     
     // MARK: - Setting Constraints
+    
+    private func adjustHeight(of view: UIView, accordingTo value: Int?) {
+        
+        if value == nil || value == 0 {
+            view.isHidden = true
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(0)
+            }
+        } else {
+            view.isHidden = false
+            view.snp.remakeConstraints { make in
+                make.height.equalTo(16)
+            }
+        }
+    }
     
     private func setConstraints() {
         separateLineBetweenTimeAndFineSection.snp.makeConstraints { make in

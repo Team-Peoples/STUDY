@@ -199,6 +199,10 @@ extension MainDropDownDimmingViewController: UITableViewDelegate {
             
             switch result {
             case .success(let studyOverall):
+                
+                let currentStudyName = studyOverall.study.studyName!
+                KeyChain.create(key: Constant.currentStudyName, value: currentStudyName)
+                
                 self.studyTapped(studyOverall)
                 self.dismiss(animated: true)
             case .failure(let error):

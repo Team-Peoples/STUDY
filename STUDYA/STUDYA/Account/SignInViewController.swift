@@ -163,11 +163,10 @@ final class SignInViewController: UIViewController {
     @objc private func completeButtonDidTapped() {
         signInViewModel.singIn { user in
             guard let userID = user.id else { fatalError("사용자 아이디 없음") }
-            guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음")}
+            guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음") }
             
             KeyChain.create(key: Constant.tempUserId, value: userID)
             KeyChain.create(key: Constant.tempNickname, value: nickname)
-            print("키체인에 저장")
             
             if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)

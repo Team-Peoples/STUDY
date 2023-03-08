@@ -45,18 +45,6 @@ final class StudyGeneralRuleAttendanceTimeRuleTableViewCell: UITableViewCell {
     
     // MARK: - Actions
     
-    @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
-      
-        switch sender {
-        case latenessRuleTimeField:
-            latenessRuleTimeFieldAction(sender.text?.toInt())
-        case absenceRuleTimeField:
-            absenceRuleTimeFieldAction(sender.text?.toInt())
-        default:
-            return
-        }
-    }
-    
     // MARK: - Configure
     
     private func configureViews() {
