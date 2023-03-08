@@ -11,6 +11,8 @@ final class InviteMemberCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "InviteMemberCollectionViewCell"
     
+    var inviteButtonAction: () -> Void = {}
+    
     let buttonBackgroundView = UIImageView(image: UIImage(named: "inviteButton"))
     let button = UIButton(frame: .zero)
     let buttonTitleLabel = CustomLabel(title: "멤버 초대", tintColor: .ppsGray1, size: 12, isBold: true)
@@ -41,6 +43,6 @@ final class InviteMemberCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func invite() {
-        print(#function)
+        inviteButtonAction()
     }
 }

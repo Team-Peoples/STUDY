@@ -218,7 +218,6 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.modalPresentationStyle = .overFullScreen
         dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
-        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.studyTapped = { sender in self.currentStudyOverall = sender }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
@@ -266,6 +265,9 @@ final class MainViewController: SwitchableViewController {
                 
             case .success(let user):
                 self.nickName = user.nickName
+                
+                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
+                KeyChain.create(key: Constant.nickname, value: user.nickName!)
                 self.getAllStudies()
             case .failure(let error):
                 
@@ -310,6 +312,8 @@ final class MainViewController: SwitchableViewController {
                 self.isManager = studyOverall.isManager
                 self.currentStudyOverall = studyOverall
                 
+                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
+                KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
                 self.configureViewWhenYesStudy()
                 self.setImminentStudyScheduleAttendanceImformation()
                 

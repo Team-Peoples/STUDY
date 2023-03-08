@@ -6,6 +6,11 @@
 //
 
 import UIKit
+//import LinkPresentation
+import KakaoSDKShare
+import KakaoSDKTemplate
+import KakaoSDKCommon
+
 
 final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     
@@ -213,6 +218,33 @@ extension MemberViewController: UICollectionViewDataSource {
         
         if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InviteMemberCollectionViewCell.identifier, for: indexPath) as! InviteMemberCollectionViewCell
+            
+            cell.inviteButtonAction = {
+                
+                let templateID: Int64 = 90874
+
+                if ShareApi.isKakaoTalkSharingAvailable() {
+                    // 카카오톡으로 카카오톡 공유 가능
+                    let userNickname = KeyChain.read(key: Constant.nickname)!
+                    let studyName = KeyChain.read(key: Constant.currentStudyName)!
+                    ShareApi.shared.shareCustom(templateId: templateID, templateArgs:["nickname": userNickname, "studyName": studyName]) {(sharingResult, error) in
+                        if let error = error {
+                            print(error)
+                        }
+                        else {
+                            print("shareCustom() success.")
+                            if let sharingResult = sharingResult {
+                                UIApplication.shared.open(sharingResult.url, options: [:], completionHandler: nil)
+                            }
+                        }
+                    }
+                }
+//                guard let shareURL = URL(string: "https://www.google.com") else { return }
+//
+//                let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
+//
+//                self.present(activityVC, animated: true)
+            }
             
             return cell
         } else {

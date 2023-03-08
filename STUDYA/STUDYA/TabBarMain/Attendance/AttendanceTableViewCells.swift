@@ -21,7 +21,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     
     private let titleLabel: UILabel = {
         let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
+        lbl.attributedText = AttributedString.custom(image: UIImage(named: "details")!, text: " 상세 내역")
         return lbl
     }()
     private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
