@@ -75,20 +75,7 @@ class AttendanceForAMemberView: UIView {
     }
     
     var viewer: Viewer
-    var viewModel: AttendanceForAMemberViewModel? {
-        didSet {
-            setBinding()
-            
-            if viewer == .user {
-                let today = Date()
-                let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
-                let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-                let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
-                
-                viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
-            }
-        }
-    }
+    var viewModel: AttendanceForAMemberViewModel?
     
     // MARK: - Properties
     
@@ -97,10 +84,7 @@ class AttendanceForAMemberView: UIView {
     lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
-            let headerView = MyAttendanceStatusView()
-//            headerView.attendanceOverall = viewModel?.attendanceOverall   🛑api 변경후 다시보자
-            
-            return headerView
+            return MyAttendanceStatusView()
         case .manager:
             return AttendanceStatusWithProfileView()
         }
@@ -146,6 +130,29 @@ class AttendanceForAMemberView: UIView {
     }
     
     // MARK: - Configure
+    
+    internal func configureHeaderView(studyID: ID, userID: UserID) {
+        
+        if viewer == .user {
+            viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
+            
+            guard let headerView = oneMemberAttendanceHeaderView as? MyAttendanceStatusView else { return }
+            headerView.navigatable = delegate
+            headerView.getAttendanceStats(with: viewModel!.studyID)
+        } else {
+            
+        }
+        setBinding()
+    }
+    
+    private func getAttendanceOverallToViewModel() {
+        let today = Date()
+        let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+        let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
+        
+        viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
+    }
     
     private func register() {
         attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)

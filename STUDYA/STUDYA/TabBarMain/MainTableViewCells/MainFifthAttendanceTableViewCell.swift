@@ -91,7 +91,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
-        nextVC.studyID = studyID
+        nextVC.configureViewController(with: studyID)
         nextVC.title = currentStudyOverall.study.studyName
         
         delegate.syncSwitchWith(nextVC: nextVC)
@@ -163,7 +163,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
             let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
-//            
+            
             if attendanceRatio != 0 {
                 attendanceRatio += lackRatio
             } else if latenessRatio != 0 {

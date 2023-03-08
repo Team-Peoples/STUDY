@@ -9,17 +9,7 @@ import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var studyID: ID? {
-        didSet {
-            guard let studyID = studyID, let userID = KeyChain.read(key: Constant.userId) else { return }
-            
-            userView.viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
-            
-//            managerView.studyID = studyID
-//            viewModel = AttendancesModificationViewModel(studyID: studyID)
-        }
-    }
-    internal var viewModel: AttendancesModificationViewModel?
+    internal var studyID: ID?
     
     private lazy var managerView: AttendanceManagerModeView = {
         
@@ -55,6 +45,11 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     override func extraWorkWhenSwitchToggled() {
         view = isSwitchOn ? managerView : userView
+    }
+    
+    internal func configureViewController(with studyID: ID) {
+        guard let userID = KeyChain.read(key: Constant.userId) else { return }
+        userView.configureHeaderView(studyID: studyID, userID: userID)
     }
 }
 

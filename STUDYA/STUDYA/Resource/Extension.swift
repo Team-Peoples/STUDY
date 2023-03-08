@@ -251,3 +251,14 @@ extension URLRequest {
         print("HEADERS \n \(self.allHTTPHeaderFields)")
     }
 }
+
+extension Data {
+    func printResponseData() {
+        if let dataString = String(data: self, encoding: .utf8) {
+            let cleanString = dataString.replacingOccurrences(of: "\\", with: "")
+            print("📕📕📕📕📕📕📕📕")
+            print(cleanString)
+            print("📕📕📕📕📕📕📕📕")
+        }
+    }
+}

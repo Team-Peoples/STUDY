@@ -93,6 +93,7 @@ enum RequestPurpose: Requestable {
     case getAllMySchedules
     case getImminentScheduleAttendnace(ID)
     case getAllNotifications
+    case getAttendanceStats(ID)
 }
 
 extension RequestPurpose {
@@ -218,6 +219,8 @@ extension RequestPurpose {
             return "/user/schedule"
         case .getAllNotifications:
             return "/alarm"
+        case .getAttendanceStats:
+            return "/attendance/statistics"
         }
     }
     
@@ -229,7 +232,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats : return .get
         }
     }
     
@@ -282,10 +285,6 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 ///    HTTPMethod: GET
-        case .getUserAttendanceBetween(let beginningDate, let endDate, let studyID, _):
-            return .query(["studyId": studyID,
-                          "searchDateStart": beginningDate,
-                          "searchDateEnd": endDate])
         case .getAllMembersAttendanceOn(let date, let studyID):
             return .body(["studyId": studyID,
                           "searchDate": date])
@@ -304,10 +303,16 @@ extension RequestPurpose {
             return .encodableBody(attendanceInformation)
             
 // Query
+        case .getUserAttendanceBetween(let beginningDate, let endDate, let studyID, _):
+            return .query(["studyId": studyID,
+                          "searchDateStart": beginningDate,
+                          "searchDateEnd": endDate])
         case .getNewPassord(let id):
             return .query(["userId": id])
         case .getJWTToken(let SNSToken, _):
             return .query(["token": SNSToken])
+        case .getAttendanceStats(let studyID):
+            return .query(["studyId": studyID])
 // None
         default:
             return .none

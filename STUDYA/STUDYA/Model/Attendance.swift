@@ -21,6 +21,19 @@ struct UserAttendanceOverall: Codable {
     }
 }
 
+struct AttendanceStats: Codable {
+    let attendedCount, lateCount, allowedCount, absentCount, totalCount, totalFine: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
+        case totalCount = "totalAttendCnt"
+        case totalFine
+    }
+}
+
 struct OneTimeAttendanceInformation: Codable {
     let fine: Int?
     let attendanceID: Int?

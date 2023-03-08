@@ -24,10 +24,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     private let latenessCountLabel = CustomLabel(title: "?", tintColor: .lateMain, size: 14)
     private let absenceCountLabel = CustomLabel(title: "?", tintColor: .absentMain, size: 14)
     private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 14)
-    private let fineLabel: UILabel = {
-        let lbl = UILabel()
-        return lbl
-    }()
+    private let fineLabel = UILabel(frame: .zero)
     
     // MARK: - Initialization
     

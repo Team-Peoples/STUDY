@@ -1017,12 +1017,6 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                if let dataString = String(data: response.data!, encoding: .utf8) {
-                    let cleanString = dataString.replacingOccurrences(of: "\\", with: "")
-                    print("📕📕📕📕📕📕📕📕")
-                    print(cleanString)
-                    print("📕📕📕📕📕📕📕📕")
-                }
                 guard let data = response.data, let attendanceOverall = jsonDecode(type: UserAttendanceOverall.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
@@ -1240,28 +1234,54 @@ struct Network {
     }
     
     func getAllNotifications(completion: @escaping (Result<[Noti], PeoplesError>) -> Void) {
-            AF.request(RequestPurpose.getAllNotifications, interceptor: AuthenticationInterceptor()).validate().response { response in
-                print(String(data: response.data!, encoding: .utf8))
-                
-                guard let httpResponse = response.response else {
-                    completion(.failure(.serverError))
+        AF.request(RequestPurpose.getAllNotifications, interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let notifications = jsonDecode(type: [Noti].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    
                     return
                 }
                 
-                switch httpResponse.statusCode {
-                case 200:
-                    guard let data = response.data, let notifications = jsonDecode(type: [Noti].self, data: data) else {
-                        completion(.failure(.decodingError))
-                        
-                        return
-                    }
-                    
-                    completion(.success(notifications))
-                default:
-                    seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
-                }
+                completion(.success(notifications))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
+    }
+    
+    func getAttendanceStats(studyID: ID, completion: @escaping (Result<AttendanceStats, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getAttendanceStats(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            response.data?.printResponseData()
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let stats = jsonDecode(type: AttendanceStats.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    
+                    return
+                }
+                
+                completion(.success(stats))
+            case 404:
+                completion(.failure(.studyNotFound))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
 }
 
 // MARK: - Helpers

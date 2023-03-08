@@ -11,16 +11,12 @@ import MultiProgressView
 
 class MyAttendanceStatusView: UIView {
     
-    // MARK: - Properties
-    internal var attendanceOverall: Observable<UserAttendanceOverall>?
+    // MARK: - Properties    
+    internal var navigatable: Navigatable?
     
 //    필요정보: 총벌금, 출석지각결석사유 횟수
     private let titleLabel = CustomLabel(title: "출결 현황", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let fineLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
-        return lbl
-    }()
+    private let fineLabel = UILabel(frame: .zero)
     private let attendanceProgressView = AttendanceReusableProgressView()
     
     // MARK: - Initialization
@@ -29,32 +25,36 @@ class MyAttendanceStatusView: UIView {
         super.init(frame: frame)
         
         configureViews()
-        setConstraints()
-        attendanceProgressView.attendanceOverall = attendanceOverall
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - configure
+    internal func getAttendanceStats(with studyID: ID) {
+        Network.shared.getAttendanceStats(studyID: studyID) { result in
+            switch result {
+            case .success(let stats):
+                self.attendanceProgressView.configureView(with: stats)
+                self.setFineLabel(fine: stats.totalFine)
+                
+            case .failure(let error):
+                guard let navigatable = self.navigatable else { return }
+                UIAlertController.handleCommonErros(presenter: navigatable, error: error)
+            }
+        }
+    }
     
-    private func setBinding() {
-        attendanceOverall?.bind({ myAttendanceOverall in
-            self.fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: myAttendanceOverall.totalFine, valueFontSize: 24, withCurrency: true)
-            self.attendanceProgressView.attendanceOverall = self.attendanceOverall
-        })
+    // MARK: - configure
+    private func setFineLabel(fine: Int) {
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: fine, valueFontSize: 24, withCurrency: true)
     }
     
     private func configureViews() {
         addSubview(titleLabel)
         addSubview(fineLabel)
         addSubview(attendanceProgressView)
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+        
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.snp.top).offset(14)
             make.leading.equalTo(self.safeAreaLayoutGuide).inset(30)
@@ -77,12 +77,7 @@ class AttendanceStatusWithProfileView: UIView {
     private let titleLabel = CustomLabel(title: "출결 상세", tintColor: .ppsBlack, size: 16, isBold: true)
     private let profileImageView = ProfileImageView(size: 40)
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
-    private let fineLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
-        return lbl
-    }()
-    
+    private let fineLabel = UILabel(frame: .zero)
     private let attendanceProgressView = AttendanceReusableProgressView()
     
     // MARK: - Initialization
@@ -90,8 +85,9 @@ class AttendanceStatusWithProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
+        
         configureViews()
-        setConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -99,18 +95,13 @@ class AttendanceStatusWithProfileView: UIView {
     }
     
     // MARK: - configure
-    
-    func configureViews() {
+    private func configureViews() {
         addSubview(titleLabel)
         addSubview(profileImageView)
         addSubview(nickNameLabel)
         addSubview(fineLabel)
         addSubview(attendanceProgressView)
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+        
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.snp.top).offset(14)
             make.leading.equalTo(self.snp.leading).inset(30)
@@ -137,8 +128,6 @@ class AttendanceStatusWithProfileView: UIView {
 private class AttendanceReusableProgressView: UIView {
     
     // MARK: - Properties
-    internal var attendanceOverall: Observable<UserAttendanceOverall>?
-    
     private var barColors: [UIColor] = [.appColor(.attendedMain), .appColor(.lateMain), .appColor(.absentMain), .appColor(.allowedMain)]
     
     private let attendanceProportionLabel: UILabel = {
@@ -175,7 +164,6 @@ private class AttendanceReusableProgressView: UIView {
         backgroundColor = .systemBackground
         
         setupProgressBar()
-        setupProgress()
         setupAttendanceProportionLabel()
         setupLabelStackViewUnderProgressBar()
         setupSeparater()
@@ -184,26 +172,19 @@ private class AttendanceReusableProgressView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Actions
-    
-    func setBinding() {
-        attendanceOverall?.bind({ [self] myAttendanceOverall in
-            
-            let totalCount = myAttendanceOverall.attendedCount + myAttendanceOverall.lateCount + myAttendanceOverall.absentCount + myAttendanceOverall.allowedCount
-            attendanceProportionLabel.text = "출석률 \((myAttendanceOverall.attendedCount + myAttendanceOverall.lateCount + myAttendanceOverall.allowedCount) / totalCount)%"
-            
-            attendanceCountLabel.text = String(myAttendanceOverall.attendedCount)
-            latenessLabel.text = String(myAttendanceOverall.lateCount)
-            absenceCountLabel.text = String(myAttendanceOverall.absentCount)
-            allowedCountLabel.text = String(myAttendanceOverall.allowedCount)
-            
-            setupProgress()
-        })
+
+    // MARK: - Configure
+    internal func configureView(with attendanceStats: AttendanceStats) {
+        attendanceProportionLabel.text = "출석률 \((attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount) / attendanceStats.totalCount)%"
+        
+        attendanceCountLabel.text = String(attendanceStats.attendedCount)
+        latenessCountLabel.text = String(attendanceStats.lateCount)
+        absenceCountLabel.text = String(attendanceStats.absentCount)
+        allowedCountLabel.text = String(attendanceStats.allowedCount)
+        
+        setupProgress(attendanceStats: attendanceStats)
     }
     
-    // MARK: - Configure
-
     private func setupProgressBar() {
         
         addSubview(progressView)
@@ -229,16 +210,28 @@ private class AttendanceReusableProgressView: UIView {
         }
     }
     
-    private func setupProgress() {
-        guard let attendanceOverall = attendanceOverall else { return }
-        let total = attendanceOverall.value.absentCount + attendanceOverall.value.lateCount + attendanceOverall.value.absentCount + attendanceOverall.value.allowedCount
-        let attendanceRatio = Float(attendanceOverall.value.attendedCount * 100 / total) / 100
-        let latendssRatio = Float(attendanceOverall.value.lateCount * 100 / total) / 100
-        let absenceRatio = Float(attendanceOverall.value.absentCount * 100 / total) / 100
-        let allowedRatio = Float(attendanceOverall.value.allowedCount * 100 / total) / 100
+    private func setupProgress(attendanceStats: AttendanceStats) {
+        var attendanceRatio = Float(attendanceStats.attendedCount * 100 / attendanceStats.totalCount) / 100
+        var latenessRatio = Float(attendanceStats.lateCount * 100 / attendanceStats.totalCount) / 100
+        var absenceRatio = Float(attendanceStats.absentCount * 100 / attendanceStats.totalCount) / 100
+        var allowedRatio = Float(attendanceStats.allowedCount * 100 / attendanceStats.totalCount) / 100
+        
+        if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
+            let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
+            
+            if attendanceRatio != 0 {
+                attendanceRatio += lackRatio
+            } else if latenessRatio != 0 {
+                latenessRatio += lackRatio
+            } else if absenceRatio != 0 {
+                absenceRatio += lackRatio
+            } else if allowedRatio != 0 {
+                allowedRatio += lackRatio
+            }
+        }
         
         self.progressView.setProgress(section: 0, to: attendanceRatio)
-        self.progressView.setProgress(section: 1, to: latendssRatio)
+        self.progressView.setProgress(section: 1, to: latenessRatio)
         self.progressView.setProgress(section: 2, to: absenceRatio)
         self.progressView.setProgress(section: 3, to: allowedRatio)
         
