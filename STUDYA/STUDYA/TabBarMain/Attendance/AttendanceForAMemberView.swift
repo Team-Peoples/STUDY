@@ -193,7 +193,6 @@ extension AttendanceForAMemberView: UITableViewDataSource {
         }
     }
     
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         switch section {
@@ -203,26 +202,27 @@ extension AttendanceForAMemberView: UITableViewDataSource {
             
             return headerView
         default:
-            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as? MonthlyHeaderView,
-                  let yearAndMonthOfAttendances = viewModel?.yearAndMonthOfAttendances else { return MonthlyHeaderView() }
+            guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier) as? MonthlyHeaderView else { return MonthlyHeaderView() }
             
-            let month = String(yearAndMonthOfAttendances[section - 1].prefix(2))
-            let monthForHeaderView = removeFirstZeroIfMonthNumberIsBelow10(month: month)
-            
-            headerView.month = Observable(monthForHeaderView)
+            let month = getMonthNumberString(section: section)
+            headerView.configureCell(with: month)
             
             return headerView
         }
     }
     
+    private func getMonthNumberString(section: Int) -> String {
+        guard let yearAndMonthOfAttendances = viewModel?.yearAndMonthOfAttendances else { return "?" }
+        
+        let month = String(yearAndMonthOfAttendances[section - 1].prefix(2))
+        let monthForHeaderView = removeFirstZeroIfMonthNumberIsBelow10(month: month)
+        
+        return monthForHeaderView
+    }
+    
     func removeFirstZeroIfMonthNumberIsBelow10(month: String) -> String {
         guard let intMonth = month.toInt() else { return "?" }
-        
-        if intMonth < 10 {
-            return String(month.prefix(1))
-        } else {
-            return month
-        }
+        return intMonth.toString()
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -255,9 +255,10 @@ extension AttendanceForAMemberView: UITableViewDataSource {
         switch indexPath.section {
         case 0:
             guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
-                    as? AttendanceDetailsCell else { return  AttendanceDetailsCell() }
+                    as? AttendanceDetailsCell,
+                  let attendanceOverall = viewModel?.attendanceOverall else { return  AttendanceDetailsCell() }
             
-            attendanceTableViewDetailsCell.attendanceOverall = viewModel?.attendanceOverall
+            attendanceTableViewDetailsCell.configureCell(with: attendanceOverall)
             
             if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
                 attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
@@ -272,7 +273,7 @@ extension AttendanceForAMemberView: UITableViewDataSource {
             
             let attendanceForADay = attendanceInformationsInAMonth[indexPath.row]
             
-            dayCell.attendance = attendanceForADay
+            dayCell.configureCell(with: attendanceForADay)
             
             return dayCell
         }

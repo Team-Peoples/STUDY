@@ -151,15 +151,29 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
             .allowed: currentStudyOverall.allowedCount
         ]
         
-        let attendanceRatio = Float(studyAttendance[.attended]! * 100 / totalStudyHeldCount) / 100
-        let latenessRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
-        let absenceRatio = Float(studyAttendance[.absent]! * 100 / totalStudyHeldCount) / 100
-        let allowedRatio = Float(studyAttendance[.allowed]! * 100 / totalStudyHeldCount) / 100
+        var attendanceRatio = Float(studyAttendance[.attended]! * 100 / totalStudyHeldCount) / 100
+        var latenessRatio = Float(studyAttendance[.late]! * 100 / totalStudyHeldCount) / 100
+        var absenceRatio = Float(studyAttendance[.absent]! * 100 / totalStudyHeldCount) / 100
+        var allowedRatio = Float(studyAttendance[.allowed]! * 100 / totalStudyHeldCount) / 100
         
         print("attendanceRatio", attendanceRatio)
         print("latenessRatio", latenessRatio)
         print("absenceRatio", absenceRatio)
         print("allowedRatio", allowedRatio)
+        
+        if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
+            let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
+//            
+            if attendanceRatio != 0 {
+                attendanceRatio += lackRatio
+            } else if latenessRatio != 0 {
+                latenessRatio += lackRatio
+            } else if absenceRatio != 0 {
+                absenceRatio += lackRatio
+            } else if allowedRatio != 0 {
+                allowedRatio += lackRatio
+            }
+        }
 
         self.progressView.setProgress(section: 0, to: attendanceRatio)
         self.progressView.setProgress(section: 1, to: latenessRatio)
