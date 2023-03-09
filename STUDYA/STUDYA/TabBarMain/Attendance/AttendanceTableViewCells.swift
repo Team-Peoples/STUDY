@@ -10,13 +10,9 @@ import UIKit
 final class AttendanceDetailsCell: UITableViewCell {
     
     // MARK: - Properties
-    var bottomSheetAddableDelegate: BottomSheetAddable?
+    internal var bottomSheetAddableDelegate: BottomSheetAddable?
     
-    private let titleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
-        return lbl
-    }()
+    private let titleLabel = UILabel(frame: .zero)
     private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
     private let roundedBackgroundView = RoundableView(cornerRadius: 16)
     
@@ -33,10 +29,7 @@ final class AttendanceDetailsCell: UITableViewCell {
         
         self.selectionStyle = .none
         
-        setupTitleLabel()
-        setupPeriodSettingButton()
-        setupRoundedBackgroundView()
-        setupLabels()
+        configureViews()
     }
     
     required init?(coder: NSCoder) {
@@ -49,6 +42,7 @@ final class AttendanceDetailsCell: UITableViewCell {
         let bottomVC = AttendanceBottomViewController()
         
         bottomVC.viewType = .individualPeriodSearchSetting
+        print(bottomSheetAddableDelegate)
         bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     
@@ -63,18 +57,35 @@ final class AttendanceDetailsCell: UITableViewCell {
     
     // MARK: - Configure
     
-    func setupTitleLabel() {
+    func configureViews() {
+        titleLabel.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
+        
+        configurePeriodButton()
+        
+        roundedBackgroundView.backgroundColor = .appColor(.ppsGray3)
         
         contentView.addSubview(titleLabel)
+        contentView.addSubview(periodSettingButton)
+        contentView.addSubview(roundedBackgroundView)
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(contentView).inset(30)
             make.leading.equalTo(contentView).inset(20)
         }
+        periodSettingButton.snp.makeConstraints { make in
+            make.top.equalTo(contentView).inset(30)
+            make.trailing.equalTo(contentView).inset(20)
+        }
+        roundedBackgroundView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.leading.trailing.bottom.equalTo(contentView).inset(20)
+            make.height.equalTo(56)
+        }
+        
+        setupLabels()
     }
     
-    func setupPeriodSettingButton() {
-        
+    func configurePeriodButton() {
         let today = Date()
         let dashedToday = DateFormatter.shortenDottedDateFormatter.string(from: today)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
@@ -82,28 +93,8 @@ final class AttendanceDetailsCell: UITableViewCell {
         
         periodSettingButton.setTitle("\(dashedThirtyDaysAgo)~\(dashedToday)", for: .normal)
         
-        contentView.addSubview(periodSettingButton)
-        
         periodSettingButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 15)
         periodSettingButton.addTarget(self, action: #selector(periodSettingButtonDidTapped), for: .touchUpInside)
-    
-        periodSettingButton.snp.makeConstraints { make in
-            make.top.equalTo(contentView).inset(30)
-            make.trailing.equalTo(contentView).inset(20)
-        }
-    }
-    
-    func setupRoundedBackgroundView() {
-        
-        contentView.addSubview(roundedBackgroundView)
-        
-        roundedBackgroundView.backgroundColor = .appColor(.ppsGray3)
-        
-        roundedBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
-            make.leading.trailing.bottom.equalTo(contentView).inset(20)
-            make.height.equalTo(56)
-        }
     }
     
     func setupLabels() {

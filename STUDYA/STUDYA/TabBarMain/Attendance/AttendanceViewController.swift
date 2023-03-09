@@ -24,11 +24,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if isManager {
-            managerView.delegate = self
-        }
-        userView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,7 +44,12 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     
     internal func configureViewController(with studyID: ID) {
         guard let userID = KeyChain.read(key: Constant.userId) else { return }
-        userView.configureHeaderView(studyID: studyID, userID: userID)
+        
+        userView.delegate = self
+        userView.configureViewWith(studyID: studyID, userID: userID)
+        
+        guard isManager else { return }
+        managerView.delegate = self
     }
 }
 

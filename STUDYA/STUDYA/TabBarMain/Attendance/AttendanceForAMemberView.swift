@@ -28,7 +28,6 @@ class AttendanceForAMemberViewModel {
             case .success(let attendanceOverall):
                 self.attendanceOverall = attendanceOverall
                 self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
-                
                 self.reloadTable.value = true
                 
             case .failure(let error):
@@ -100,16 +99,7 @@ class AttendanceForAMemberView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.addSubview(oneMemberAttendanceHeaderView)
-        self.addSubview(attendanceDetailsTableView)
-        
-        attendanceDetailsTableView.separatorStyle = .none
-        attendanceDetailsTableView.backgroundColor = .white
-        attendanceDetailsTableView.delegate = self
-        attendanceDetailsTableView.dataSource = self
-        
-        register()
-        setConstraints()
+        configureViews()
     }
     
     required init?(coder: NSCoder) {
@@ -118,6 +108,22 @@ class AttendanceForAMemberView: UIView {
     
     // MARK: - Actions
 
+    
+    // MARK: - Configure
+    
+    internal func configureViewWith(studyID: ID, userID: UserID) {
+        viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
+        
+        setBinding()
+        
+        if viewer == .user {
+            configureHeaderViewWithAttendanceStats()
+            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
+        } else {
+            
+        }
+    }
+    
     private func setBinding() {
         guard let viewModel = viewModel else { return }
         viewModel.reloadTable.bind({ _ in
@@ -129,23 +135,7 @@ class AttendanceForAMemberView: UIView {
         })
     }
     
-    // MARK: - Configure
-    
-    internal func configureHeaderView(studyID: ID, userID: UserID) {
-        
-        if viewer == .user {
-            viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
-            
-            guard let headerView = oneMemberAttendanceHeaderView as? MyAttendanceStatusView else { return }
-            headerView.navigatable = delegate
-            headerView.getAttendanceStats(with: viewModel!.studyID)
-        } else {
-            
-        }
-        setBinding()
-    }
-    
-    private func getAttendanceOverallToViewModel() {
+    private func reloadTableViewWithAttendanceDataFrom30DaysAgoToNow() {
         let today = Date()
         let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
@@ -154,16 +144,18 @@ class AttendanceForAMemberView: UIView {
         viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
     }
     
-    private func register() {
-        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
-        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
-        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
-        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
+    private func configureHeaderViewWithAttendanceStats() {
+        guard let headerView = oneMemberAttendanceHeaderView as? MyAttendanceStatusView else { return }
+        headerView.navigatable = delegate
+        headerView.getAttendanceStats(with: viewModel?.studyID)
     }
     
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+    private func configureViews() {
+        configureAttendanceDetailsTableView()
+        
+        self.addSubview(oneMemberAttendanceHeaderView)
+        self.addSubview(attendanceDetailsTableView)
+        
         oneMemberAttendanceHeaderView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
@@ -172,8 +164,19 @@ class AttendanceForAMemberView: UIView {
             make.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
+    
+    private func configureAttendanceDetailsTableView() {
+        attendanceDetailsTableView.separatorStyle = .none
+        attendanceDetailsTableView.backgroundColor = .white
+        attendanceDetailsTableView.delegate = self
+        attendanceDetailsTableView.dataSource = self
+        
+        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
+        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
+        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
+        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
+    }
 }
-
 
 // MARK: UITableViewDataSource
 
@@ -265,11 +268,12 @@ extension AttendanceForAMemberView: UITableViewDataSource {
                     as? AttendanceDetailsCell,
                   let attendanceOverall = viewModel?.attendanceOverall else { return  AttendanceDetailsCell() }
             
+            attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
             attendanceTableViewDetailsCell.configureCell(with: attendanceOverall)
             
-            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
-            }
+//            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
+            
+//            }
             
             return attendanceTableViewDetailsCell
         default:

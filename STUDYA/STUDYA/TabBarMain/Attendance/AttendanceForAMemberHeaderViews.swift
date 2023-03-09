@@ -31,7 +31,9 @@ class MyAttendanceStatusView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal func getAttendanceStats(with studyID: ID) {
+    internal func getAttendanceStats(with studyID: ID?) {
+        guard let studyID = studyID else { return }
+        
         Network.shared.getAttendanceStats(studyID: studyID) { result in
             switch result {
             case .success(let stats):
@@ -175,7 +177,12 @@ private class AttendanceReusableProgressView: UIView {
 
     // MARK: - Configure
     internal func configureView(with attendanceStats: AttendanceStats) {
-        attendanceProportionLabel.text = "출석률 \((attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount) / attendanceStats.totalCount)%"
+        let totalCount = attendanceStats.attendedCount
+        + attendanceStats.lateCount
+        + attendanceStats.absentCount
+        + attendanceStats.allowedCount
+        
+        attendanceProportionLabel.text = "출석률 \((attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount) / totalCount)%"
         
         attendanceCountLabel.text = String(attendanceStats.attendedCount)
         latenessCountLabel.text = String(attendanceStats.lateCount)
@@ -211,10 +218,15 @@ private class AttendanceReusableProgressView: UIView {
     }
     
     private func setupProgress(attendanceStats: AttendanceStats) {
-        var attendanceRatio = Float(attendanceStats.attendedCount * 100 / attendanceStats.totalCount) / 100
-        var latenessRatio = Float(attendanceStats.lateCount * 100 / attendanceStats.totalCount) / 100
-        var absenceRatio = Float(attendanceStats.absentCount * 100 / attendanceStats.totalCount) / 100
-        var allowedRatio = Float(attendanceStats.allowedCount * 100 / attendanceStats.totalCount) / 100
+        let totalCount = attendanceStats.attendedCount
+        + attendanceStats.lateCount
+        + attendanceStats.absentCount
+        + attendanceStats.allowedCount
+        
+        var attendanceRatio = Float(attendanceStats.attendedCount * 100 / totalCount) / 100
+        var latenessRatio = Float(attendanceStats.lateCount * 100 / totalCount) / 100
+        var absenceRatio = Float(attendanceStats.absentCount * 100 / totalCount) / 100
+        var allowedRatio = Float(attendanceStats.allowedCount * 100 / totalCount) / 100
         
         if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
             let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
