@@ -1251,38 +1251,47 @@ final class AttendanceStatusCapsuleView: RoundableView {
 }
 
 protocol BottomFullDoneButtonAddable {
-    var navigatable: Navigatable { get }
-    
     var doneButton: CustomButton { get }
     var titleButton: CustomButton { get }
     
     var isDoneButtonSelected: Bool { get }
     
     func doneButtonTapped()
-    func selectDoneButton()
-    func deselectDoneButton()
     func enableDoneButton()
     func disableDoneButton()
     func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int)
 }
 
-extension BottomFullDoneButtonAddable {
-    func selectDoneButton() {
-        doneButton.isSelected = true
-        titleButton.isSelected = true
+class FullDoneButtonButtonViewController: UIViewController, BottomFullDoneButtonAddable {
+    lazy var doneButton: CustomButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Constant.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
+    
+    var isDoneButtonSelected: Bool { doneButton.isSelected }
+    
+    init(doneButtonTitle: String) {
+        super.init(nibName: nil, bundle: nil)
+        
+        titleButton.setTitle(doneButtonTitle, for: .normal)
     }
     
-    func deselectDoneButton() {
-        doneButton.isSelected = false
-        titleButton.isSelected = false
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func doneButtonTapped() {
+//        needs override
     }
     
     func enableDoneButton() {
+        doneButton.isSelected = true
+        titleButton.isSelected = true
         doneButton.isEnabled = true
         titleButton.isEnabled = true
     }
     
     func disableDoneButton() {
+        doneButton.isSelected = false
+        titleButton.isSelected = false
         doneButton.isEnabled = false
         titleButton.isEnabled = false
     }
@@ -1304,30 +1313,6 @@ extension BottomFullDoneButtonAddable {
     }
 }
 
-class FullDoneButtonButtonViewController: UIViewController, BottomFullDoneButtonAddable {
-    var navigatable: Navigatable
-    
-    lazy var doneButton: CustomButton = CustomButton(fontSize: 1, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, selectedBackgroundColor: .keyColor1, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    lazy var titleButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalTitle: Constant.done, selectedBackgroundColor: .keyColor1, selectedTitleColor: .whiteLabel, radiusIfNotCapsule: 0, target: self, action: #selector(doneButtonTapped))
-    
-    var isDoneButtonSelected: Bool { doneButton.isSelected }
-    
-    init(navigatable: Navigatable, doneButtonTitle: String) {
-        self.navigatable = navigatable
-        
-        super.init(nibName: nil, bundle: nil)
-        
-        titleButton.setTitle(doneButtonTitle, for: .normal)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc func doneButtonTapped() {
-//        needs override
-    }
-}
 class FullDoneButtonButtomView: UIView {
     
     internal var navigatable: Navigatable?

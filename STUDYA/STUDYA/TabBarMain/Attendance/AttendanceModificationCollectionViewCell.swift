@@ -198,7 +198,7 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let bottomVC = AttendanceBottomViewController()
         
-        bottomVC.viewModel = viewModel
+//        bottomVC.viewModel = viewModel
         bottomVC.indexPath = indexPath
         bottomVC.viewType = .individualUpdate
         

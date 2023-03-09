@@ -9,6 +9,9 @@ import UIKit
 
 final class AttendanceDetailsCell: UITableViewCell {
     
+    private var precedingDottedDate: DottedDate?
+    private var followingDottedDate: DottedDate?
+    
     // MARK: - Properties
     internal var bottomSheetAddableDelegate: BottomSheetAddable?
     
@@ -39,12 +42,13 @@ final class AttendanceDetailsCell: UITableViewCell {
     // MARK: - Actions
     
     @objc func periodSettingButtonDidTapped() {
-        let bottomVC = AttendanceBottomViewController()
+        guard let precedingDottedDate = precedingDottedDate, let followingDottedDate = followingDottedDate else { return }
+        let bottomVC = AttendanceBottomIndividualPeriodSearchSettingBottomViewController(doneButtonTitle: "조회")
         
-        bottomVC.viewType = .individualPeriodSearchSetting
-//        if bottomVC.viewType.view == FullDoneButtonButtomView.
+        bottomVC.dateLabelUpdatableDelegate = self
+        bottomVC.configureDayLabelsWith(precedingDate: precedingDottedDate, followingDate: followingDottedDate)
         
-        bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: 291, prefersGrabberVisible: false)
     }
     
     func configureCell(with attendanceOverall: UserAttendanceOverall) {       
@@ -88,11 +92,12 @@ final class AttendanceDetailsCell: UITableViewCell {
     
     func configurePeriodButton() {
         let today = Date()
-        let dottedToday = DateFormatter.shortenDottedDateFormatter.string(from: today)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-        let dottedThirtyDaysAgo = DateFormatter.shortenDottedDateFormatter.string(from: thirtyDaysAgo ?? today)
         
-        periodSettingButton.setTitle("\(dottedThirtyDaysAgo)~\(dottedToday)", for: .normal)
+        followingDottedDate = DateFormatter.shortenDottedDateFormatter.string(from: today)
+        precedingDottedDate = DateFormatter.shortenDottedDateFormatter.string(from: thirtyDaysAgo ?? today)
+        
+        periodSettingButton.setTitle("\(precedingDottedDate!)~\(followingDottedDate!)", for: .normal)
         
         periodSettingButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 15)
         periodSettingButton.addTarget(self, action: #selector(periodSettingButtonDidTapped), for: .touchUpInside)
@@ -156,6 +161,12 @@ final class AttendanceDetailsCell: UITableViewCell {
             make.centerY.equalTo(roundedBackgroundView)
             make.trailing.equalTo(roundedBackgroundView.snp.trailing).inset(14)
         }
+    }
+}
+
+extension AttendanceDetailsCell: DateLabelUpdatable {
+    func updateDateLabels(preceding: DottedDate, following: DottedDate) {
+        periodSettingButton.setTitle("\(preceding)~\(following)", for: .normal)
     }
 }
 

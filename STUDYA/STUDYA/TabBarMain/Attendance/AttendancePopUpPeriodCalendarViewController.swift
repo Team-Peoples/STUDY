@@ -142,8 +142,12 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        guard let precedingDate = precedingDateComponents?.convertToDate(), let followingDate = followingDateComponents?.convertToDate() else { return }
-        dateLabelUpdatableDelegate?.updateDateLabels(preceding: precedingDate, following: followingDate)
+        guard let precedingDate = precedingDateComponents?.convertToDate(),
+              let followingDate = followingDateComponents?.convertToDate() else { return }
+        let dottedPrecedingDate = DateFormatter.shortenDottedDateFormatter.string(from: precedingDate)
+        let dottedFollowingDate = DateFormatter.shortenDottedDateFormatter.string(from: followingDate)
+        
+        dateLabelUpdatableDelegate?.updateDateLabels(preceding: dottedPrecedingDate, following: dottedFollowingDate)
         self.dismiss(animated: true)
     }
     

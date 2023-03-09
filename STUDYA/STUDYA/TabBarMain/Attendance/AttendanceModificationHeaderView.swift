@@ -46,7 +46,7 @@ final class AttendanceModificationHeaderView: UIView {
     @IBAction func leftButtonTapped(_ sender: UIButton) {
         let bottomVC = AttendanceBottomViewController()
         
-        bottomVC.viewModel = viewModel
+//        bottomVC.viewModel = viewModel
         bottomVC.viewType = .daySearchSetting
         
         navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)

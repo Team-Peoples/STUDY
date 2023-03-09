@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol DateLabelUpdatable: AnyObject {
-    func updateDateLabels(preceding: Date, following: Date)
+    func updateDateLabels(preceding: DottedDate, following: DottedDate)
 }
 
 final class AttendanceBottomViewController: UIViewController, Navigatable {
@@ -73,9 +73,8 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
 }
 
 extension AttendanceBottomViewController: DateLabelUpdatable {
-    internal func updateDateLabels(preceding: Date, following: Date) {
-        precedingDate = preceding
-        followingDate = following
+    func updateDateLabels(preceding: DottedDate, following: DottedDate) {
+//        🛑구색 맞추기용 나중에 삭제해야
     }
 }
 
