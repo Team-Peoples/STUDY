@@ -14,7 +14,7 @@ protocol DateLabelUpdatable: AnyObject {
 
 final class AttendanceBottomViewController: UIViewController, Navigatable {
 
-    internal var viewModel: AttendancesModificationViewModel?
+//    internal var viewModel: AttendancesModificationViewModel?
     internal var indexPath: IndexPath?
     private lazy var bottomView = viewType?.view
     
@@ -27,7 +27,7 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
             case .daySearchSetting:
                 guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
                 
-                bottomView.viewModel = viewModel
+//                bottomView.viewModel = viewModel
                 
             case .membersPeriodSearchSetting:
                 guard let bottomView = bottomView as? AttendanceBottomMembersPeriodSearchSettingView else { return }
@@ -42,7 +42,7 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
             case .individualUpdate:
                 guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
                 
-                bottomView.viewModel = viewModel
+//                bottomView.viewModel = viewModel
                 bottomView.indexPath = indexPath
                 
             default: break
@@ -78,3 +78,4 @@ extension AttendanceBottomViewController: DateLabelUpdatable {
         followingDate = following
     }
 }
+

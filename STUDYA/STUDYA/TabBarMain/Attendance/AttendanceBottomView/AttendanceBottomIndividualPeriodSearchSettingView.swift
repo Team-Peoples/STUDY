@@ -21,8 +21,8 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
         return v
     }()
     private let periodSettingLabel = CustomLabel(title: "기간설정", tintColor: .ppsBlack, size: 14, isBold: true)
-    private lazy var allPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "전체", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
-    private lazy var customPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "직접설정", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
+    private lazy var allPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "전체", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(turnOnAllPeriodButton))
+    private lazy var customPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "직접설정", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(turnOnCustomPeriodButton))
     private let backgroundContainerView = RoundableView(cornerRadius: 12)
     private let precedingDayLabel = CustomLabel(title: "22.06.10", tintColor: .ppsGray1, size: 16, isBold: false)
     private let middleLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16, isBold: false)
@@ -58,13 +58,17 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func changeOrderType() {
-        allPeriodButton.toggle()
-        customPeriodButton.toggle()
+    @objc private func turnOnAllPeriodButton() {
+        allPeriodButton.isSelected = true
+        customPeriodButton.isSelected = false
+    }
+    
+    @objc private func turnOnCustomPeriodButton() {
+        allPeriodButton.isSelected = false
+        customPeriodButton.isSelected = true
     }
     
     @objc private func selectPeriodButtonTapped() {
-        print(#function)
         let vc = AttendancePopUpPeriodCalendarViewController()
         vc.dateLabelUpdatableDelegate = dateLabelUpdatableDelegate
         navigatable?.present(vc)

@@ -42,7 +42,8 @@ final class AttendanceDetailsCell: UITableViewCell {
         let bottomVC = AttendanceBottomViewController()
         
         bottomVC.viewType = .individualPeriodSearchSetting
-        print(bottomSheetAddableDelegate)
+//        if bottomVC.viewType.view == FullDoneButtonButtomView.
+        
         bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }
     
@@ -87,11 +88,11 @@ final class AttendanceDetailsCell: UITableViewCell {
     
     func configurePeriodButton() {
         let today = Date()
-        let dashedToday = DateFormatter.shortenDottedDateFormatter.string(from: today)
+        let dottedToday = DateFormatter.shortenDottedDateFormatter.string(from: today)
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-        let dashedThirtyDaysAgo = DateFormatter.shortenDottedDateFormatter.string(from: thirtyDaysAgo ?? today)
+        let dottedThirtyDaysAgo = DateFormatter.shortenDottedDateFormatter.string(from: thirtyDaysAgo ?? today)
         
-        periodSettingButton.setTitle("\(dashedThirtyDaysAgo)~\(dashedToday)", for: .normal)
+        periodSettingButton.setTitle("\(dottedThirtyDaysAgo)~\(dottedToday)", for: .normal)
         
         periodSettingButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 15, bottom: 8, right: 15)
         periodSettingButton.addTarget(self, action: #selector(periodSettingButtonDidTapped), for: .touchUpInside)
