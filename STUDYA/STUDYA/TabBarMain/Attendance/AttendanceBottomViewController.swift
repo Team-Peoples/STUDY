@@ -34,11 +34,6 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
                 
                 bottomView.dateLabelUpdatableDelegate = self
                 
-            case .individualPeriodSearchSetting:
-                guard let bottomView = bottomView as? AttendanceBottomIndividualPeriodSearchSettingView else { return }
-                
-                bottomView.dateLabelUpdatableDelegate = self
-                
             case .individualUpdate:
                 guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
                 
@@ -52,24 +47,8 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
         }
     }
     
-    internal lazy var precedingDate = Date() {
-        didSet {
-            if viewType == .membersPeriodSearchSetting {
-                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
-            } else {
-                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
-            }
-        }
-    }
-    internal lazy var followingDate = Date() {
-        didSet {
-            if viewType == . membersPeriodSearchSetting {
-                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
-            } else {
-                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
-            }
-        }
-    }
+    internal lazy var precedingDate = Date()
+    internal lazy var followingDate = Date()
 }
 
 extension AttendanceBottomViewController: DateLabelUpdatable {

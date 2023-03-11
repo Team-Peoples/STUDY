@@ -17,6 +17,7 @@ typealias SNSToken = String
 typealias Members = [Member]
 typealias DashedDate = String
 typealias DottedDate = String
+typealias ShortenDottedDate = String
 typealias Time = String
 typealias Deposit = Int
 typealias StudyID = String

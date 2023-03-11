@@ -45,6 +45,24 @@ extension String {
         
         return false
     }
+    
+    func convertShortenDottedDateToDashedDate() -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yy.MM.dd"
+        let date = dateFormatter.date(from: self)
+
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date!)
+    }
+    
+    func convertDashedDateToShortenDottedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.date(from: self)
+
+        dateFormatter.dateFormat = "yy.MM.dd"
+        return dateFormatter.string(from: date!)
+    }
 }
 
 

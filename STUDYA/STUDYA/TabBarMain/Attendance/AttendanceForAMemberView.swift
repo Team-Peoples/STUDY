@@ -8,8 +8,11 @@
 import UIKit
 
 class AttendanceForAMemberViewModel {
-    var studyID: ID
-    var userID: UserID
+    private var userID: UserID
+    fileprivate var studyID: ID
+    
+    var precedingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
+    var followingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()))
     
     var attendanceOverall: UserAttendanceOverall?
     var yearAndMonthOfAttendances: [DashedDate] = []
@@ -22,10 +25,17 @@ class AttendanceForAMemberViewModel {
         self.userID = userID
     }
     
-    func getUserAttendanceOverall(between startDate: DashedDate, and endDate: DashedDate) {
-        Network.shared.getUserAttendanceBetween(start: startDate, end: endDate, studyID: studyID, userID: userID) { result in
+//    func updateAttendanceOverall(between precedingDate: DashedDate, and followingDate: DashedDate) {
+////        precedingDate.date.value =
+//    }
+    
+    func getUserAttendanceOverall(between precedingDate: DashedDate, and followingDate: DashedDate) {
+        Network.shared.getUserAttendanceBetween(preceding: precedingDate, following: followingDate, studyID: studyID, userID: userID) { result in
             switch result {
             case .success(let attendanceOverall):
+                self.precedingDate.value = precedingDate.convertDashedDateToShortenDottedDate()
+                self.followingDate.value = followingDate.convertDashedDateToShortenDottedDate()
+                
                 self.attendanceOverall = attendanceOverall
                 self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
                 self.reloadTable.value = true
@@ -266,14 +276,10 @@ extension AttendanceForAMemberView: UITableViewDataSource {
         case 0:
             guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
                     as? AttendanceDetailsCell,
-                  let attendanceOverall = viewModel?.attendanceOverall else { return  AttendanceDetailsCell() }
+                  let viewModel = viewModel else { return  AttendanceDetailsCell() }
             
             attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
-            attendanceTableViewDetailsCell.configureCell(with: attendanceOverall)
-            
-//            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-            
-//            }
+            attendanceTableViewDetailsCell.configureCell(with: viewModel)
             
             return attendanceTableViewDetailsCell
         default:
@@ -326,5 +332,37 @@ enum AttendanceReusableView {
                     return "MonthlyFooterView"
             }
         }
+    }
+}
+
+struct DateStorage {
+    internal var date: Observable<Date>
+    
+    internal var DottedDate: DottedDate {
+        DateFormatter.dottedDateFormatter.string(from: date.value)
+    }
+    internal var shortenDottedDate: ShortenDottedDate {
+        DateFormatter.shortenDottedDateFormatter.string(from: date.value)
+    }
+    internal var dashedDate: DashedDate {
+        DateFormatter.dashedDateFormatter.string(from: date.value)
+    }
+    
+    init(date: Date) {
+        self.date = Observable(date)
+    }
+    
+    mutating func changeDate(to date: Date) {
+        self.date.value = date
+    }
+    
+    mutating func changeDateTo(shortenDottedDate: ShortenDottedDate) {
+        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: shortenDottedDate) else { return }
+        self.date.value = date
+    }
+    
+    mutating func changeDateTo(dottedDate: DottedDate) {
+        guard let date = DateFormatter.dottedDateFormatter.date(from: dottedDate) else { return }
+        self.date.value = date
     }
 }

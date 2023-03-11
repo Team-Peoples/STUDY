@@ -208,7 +208,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(26)
         }
         calendarView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(upperContainerView.snp.bottom)
+            make.top.equalTo(upperContainerView.snp.bottom)
             make.bottom.equalTo(doneButton.snp.top)
             make.leading.trailing.equalTo(popUpContainerView)
         }

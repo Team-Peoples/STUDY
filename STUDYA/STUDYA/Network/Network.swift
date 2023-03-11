@@ -1007,8 +1007,8 @@ struct Network {
         }
     }
     
-    func getUserAttendanceBetween(start: DashedDate, end: DashedDate, studyID: ID, userID: UserID,completion: @escaping (Result<UserAttendanceOverall, PeoplesError>) -> Void) {
-        AF.request(RequestPurpose.getUserAttendanceBetween(start, end, studyID, userID), interceptor: AuthenticationInterceptor()).validate().response { response in
+    func getUserAttendanceBetween(preceding: DashedDate, following: DashedDate, studyID: ID, userID: UserID,completion: @escaping (Result<UserAttendanceOverall, PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getUserAttendanceBetween(preceding, following, studyID, userID), interceptor: AuthenticationInterceptor()).validate().response { response in
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))

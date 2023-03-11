@@ -13,6 +13,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     private var followingDottedDate: DottedDate?
     
     // MARK: - Properties
+    internal var viewModel: AttendanceForAMemberViewModel?
     internal var bottomSheetAddableDelegate: BottomSheetAddable?
     
     private let titleLabel = UILabel(frame: .zero)
@@ -45,24 +46,36 @@ final class AttendanceDetailsCell: UITableViewCell {
         guard let precedingDottedDate = precedingDottedDate, let followingDottedDate = followingDottedDate else { return }
         let bottomVC = AttendanceBottomIndividualPeriodSearchSettingBottomViewController(doneButtonTitle: "조회")
         
-        bottomVC.dateLabelUpdatableDelegate = self
+        bottomVC.viewModel = viewModel
         bottomVC.configureDayLabelsWith(precedingDate: precedingDottedDate, followingDate: followingDottedDate)
         
         bottomSheetAddableDelegate?.presentBottomSheet(vc: bottomVC, detent: 291, prefersGrabberVisible: false)
     }
     
-    func configureCell(with attendanceOverall: UserAttendanceOverall) {       
-        attendanceCountLabel.text = attendanceOverall.attendedCount.toString()
-        latenessCountLabel.text = attendanceOverall.lateCount.toString()
-        absenceCountLabel.text = attendanceOverall.absentCount.toString()
-        allowedCountLabel.text = attendanceOverall.allowedCount.toString()
+    internal func configureCell(with viewModel: AttendanceForAMemberViewModel) {
+        self.viewModel = viewModel
+        setBinding()
         
-        fineLabel.attributedText = AttributedString.custom(frontLabel: "", labelFontSize: 12, value: attendanceOverall.totalFine, valueFontSize: 18, valueTextColor: .ppsGray1, withCurrency: true)
+        guard let attendance = viewModel.attendanceOverall else { return }
+        
+        attendanceCountLabel.text = attendance.attendedCount.toString()
+        latenessCountLabel.text = attendance.lateCount.toString()
+        absenceCountLabel.text = attendance.absentCount.toString()
+        allowedCountLabel.text = attendance.allowedCount.toString()
+        
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "", labelFontSize: 12, value: attendance.totalFine, valueFontSize: 18, valueTextColor: .ppsGray1, withCurrency: true)
     }
     
     // MARK: - Configure
     
-    func configureViews() {
+    private func setBinding() {
+        guard let viewModel = viewModel else { return }
+        viewModel.followingDate.bind({ date in
+            self.periodSettingButton.setTitle("\(viewModel.precedingDate.value)~\(date)", for: .normal)
+        })
+    }
+    
+    private func configureViews() {
         titleLabel.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
         
         configurePeriodButton()
@@ -90,7 +103,7 @@ final class AttendanceDetailsCell: UITableViewCell {
         setupLabels()
     }
     
-    func configurePeriodButton() {
+    private func configurePeriodButton() {
         let today = Date()
         let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
         
@@ -103,7 +116,7 @@ final class AttendanceDetailsCell: UITableViewCell {
         periodSettingButton.addTarget(self, action: #selector(periodSettingButtonDidTapped), for: .touchUpInside)
     }
     
-    func setupLabels() {
+    private func setupLabels() {
         
         let separater1 = UIView()
         let separater2 = UIView()
@@ -164,11 +177,6 @@ final class AttendanceDetailsCell: UITableViewCell {
     }
 }
 
-extension AttendanceDetailsCell: DateLabelUpdatable {
-    func updateDateLabels(preceding: DottedDate, following: DottedDate) {
-        periodSettingButton.setTitle("\(preceding)~\(following)", for: .normal)
-    }
-}
 
 final class AttendanceTableViewDayCell: UITableViewCell {
     
