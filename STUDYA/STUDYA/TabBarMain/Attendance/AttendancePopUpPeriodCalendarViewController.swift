@@ -35,9 +35,6 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             followingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    
-    var strSelectedDate = "2022.06.01"  //임시
-    var strSelectedDate2 = "2022.06.11" //임시
 
     private var isPrecedingDateTurn = true
     
@@ -50,15 +47,15 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     private let dismissButton: UIButton = {
         
         let button = UIButton()
-        let image = UIImage(named: "dismiss")
+        let image = UIImage(named: "Dismiss")
         
         button.setImage(image, for: .normal)
         
         return button
     }()
-    private lazy var precedingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: strSelectedDate, selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(precedingDateButtonTapped))
+    private lazy var precedingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: "", selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(precedingDateButtonTapped))
     private let waveLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16)
-    private lazy var followingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: strSelectedDate2, selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(followingDateButtonTapped))
+    private lazy var followingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: "", selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(followingDateButtonTapped))
     private lazy var stackView: UIStackView = {
        
         let s = UIStackView(arrangedSubviews: [precedingDateButton, waveLabel, followingDateButton])
@@ -149,6 +146,11 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         
         dateLabelUpdatableDelegate?.updateDateLabels(preceding: dottedPrecedingDate, following: dottedFollowingDate)
         self.dismiss(animated: true)
+    }
+    
+    internal func setDateButtonsTitleWith(precedingDate: ShortenDottedDate, followingDate: ShortenDottedDate) {
+        precedingDateButton.setTitle(precedingDate, for: .normal)
+        followingDateButton.setTitle(followingDate, for: .normal)
     }
     
     private func enablePrecedingButton() {

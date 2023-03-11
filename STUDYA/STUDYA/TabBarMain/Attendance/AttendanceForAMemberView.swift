@@ -25,11 +25,8 @@ class AttendanceForAMemberViewModel {
         self.userID = userID
     }
     
-//    func updateAttendanceOverall(between precedingDate: DashedDate, and followingDate: DashedDate) {
-////        precedingDate.date.value =
-//    }
-    
     func getUserAttendanceOverall(between precedingDate: DashedDate, and followingDate: DashedDate) {
+        
         Network.shared.getUserAttendanceBetween(preceding: precedingDate, following: followingDate, studyID: studyID, userID: userID) { result in
             switch result {
             case .success(let attendanceOverall):
@@ -53,6 +50,8 @@ class AttendanceForAMemberViewModel {
 
         let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations
         var yearAndMonthOfAttendances: [DashedDate] = []
+        
+        monthlyGroupedAttendanceInformation = [:]
         
         oneTimeAttendanceInformations.forEach { oneTimeAttendance in
             let studyScheduleDate = oneTimeAttendance.studyScheduleDateAndTime

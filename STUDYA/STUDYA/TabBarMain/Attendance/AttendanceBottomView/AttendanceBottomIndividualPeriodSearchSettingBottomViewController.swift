@@ -11,8 +11,8 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
        
     internal var viewModel: AttendanceForAMemberViewModel?
     
-    private var precedingDate: ShortenDottedDate?
-    private var followingDate: ShortenDottedDate?
+    private var tempPrecedingDate: ShortenDottedDate?
+    private var tempFollowingDate: ShortenDottedDate?
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
@@ -54,7 +54,10 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
     }
     
     override func doneButtonTapped() {
-        
+        guard let precedingDashedDate = tempPrecedingDate?.convertShortenDottedDateToDashedDate(),
+              let followingDashedDate = tempFollowingDate?.convertShortenDottedDateToDashedDate() else { return }
+        viewModel?.getUserAttendanceOverall(between: precedingDashedDate, and: followingDashedDate)
+        dismiss(animated: true)
     }
     
     @objc private func turnOnAllPeriodButton() {
@@ -70,10 +73,14 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
     @objc private func selectPeriodButtonTapped() {
         let vc = AttendancePopUpPeriodCalendarViewController()
         vc.dateLabelUpdatableDelegate = self
+        vc.setDateButtonsTitleWith(precedingDate: tempPrecedingDate ?? "", followingDate: tempFollowingDate ?? "")
         present(vc, animated: true)
     }
     
     internal func configureDayLabelsWith(precedingDate: ShortenDottedDate, followingDate: ShortenDottedDate) {
+        self.tempPrecedingDate = precedingDate
+        self.tempFollowingDate = followingDate
+        
         precedingDayLabel.text = precedingDate
         followingDayLabel.text = followingDate
     }
@@ -133,8 +140,8 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
 
 extension AttendanceBottomIndividualPeriodSearchSettingBottomViewController: DateLabelUpdatable {
     func updateDateLabels(preceding: ShortenDottedDate, following: ShortenDottedDate) {
-        precedingDate = preceding
-        followingDate = following
+        tempPrecedingDate = preceding
+        tempFollowingDate = following
         
         precedingDayLabel.text = preceding
         followingDayLabel.text = following

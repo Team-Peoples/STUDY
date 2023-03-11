@@ -945,7 +945,7 @@ struct Network {
     
     func getAttendanceCertificationCode(scheduleID: ID, completion: @escaping (Result<Int, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAttendanceCertificactionCode(scheduleID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            print("⚡️", response.response?.statusCode)
+            
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -1009,7 +1009,7 @@ struct Network {
     
     func getUserAttendanceBetween(preceding: DashedDate, following: DashedDate, studyID: ID, userID: UserID,completion: @escaping (Result<UserAttendanceOverall, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getUserAttendanceBetween(preceding, following, studyID, userID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
+            response.data!.printResponseData()
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -1258,8 +1258,6 @@ struct Network {
     
     func getAttendanceStats(studyID: ID, completion: @escaping (Result<AttendanceStats, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAttendanceStats(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            
-            response.data?.printResponseData()
             
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
