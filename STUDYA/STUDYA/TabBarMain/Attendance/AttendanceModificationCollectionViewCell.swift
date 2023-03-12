@@ -10,12 +10,7 @@ import UIKit
 final class AttendancesModificationViewModel {
     var studyID: Int
     
-    var allUsersAttendancesForADay: AllUsersAttendanceForADay? {
-        didSet {
-            guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
-            times = allUsersAttendancesForADay.map { $0.key }
-        }
-    }
+    var allUsersAttendancesForADay: AllUsersAttendanceForADay?
     var times: [Time] = []
     
     var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]> = Observable([])
@@ -36,7 +31,9 @@ final class AttendancesModificationViewModel {
             
             switch result {
             case .success(let allUsersAttendancesForADay):
+                
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                weakSelf.times = allUsersAttendancesForADay.map { $0.key }
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
                     weakSelf.selectedTime = Observable(firstTime)
@@ -95,16 +92,9 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceModificationCollectionViewCell"
     
-    internal var viewModel: AttendancesModificationViewModel? {
+    internal var viewModel: AttendancesModificationViewModel?
+    internal var delegate: (BottomSheetAddable & Navigatable)? {
         didSet {
-            setBinding()
-            viewModel?.getAllMembersAttendanceOn(date: DateFormatter.dashedDateFormatter.string(from: Date()))
-            headerView.viewModel = viewModel
-        }
-    }
-    internal var delegate: (BottomSheetAddable & Navigatable)! {
-        didSet {
-            print("델리게이트")
             headerView.navigatableBottomSheetableDelegate = delegate
         }
     }
@@ -150,6 +140,16 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     internal func tableViewReload() {
         tableView.reloadData()
+    }
+    
+    internal func configureCellWith(studyID: ID) {
+        viewModel = AttendancesModificationViewModel(studyID: studyID)
+        
+        guard let viewModel = viewModel else { return }
+        
+        setBinding()
+        viewModel.getAllMembersAttendanceOn(date: DateFormatter.dashedDateFormatter.string(from: Date()))
+        headerView.configureViewWith(viewModel: viewModel)
     }
     
     private func setBinding() {
@@ -201,6 +201,8 @@ extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
 //        bottomVC.viewModel = viewModel
         bottomVC.indexPath = indexPath
         bottomVC.viewType = .individualUpdate
+        
+        guard let delegate = delegate else { return }
         
         delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
     }

@@ -9,12 +9,7 @@ import UIKit
 
 final class AttendanceManagerModeView: UIView {
     
-    internal var studyID: Int? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    
+    internal var studyID: Int?
     weak var delegate: (Navigatable & SwitchSyncable & BottomSheetAddable)?
     
     @IBOutlet weak var leftLabel: UILabel!
@@ -24,9 +19,6 @@ final class AttendanceManagerModeView: UIView {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: IndexPath(item: 0, section: 0)) as? AttendanceModificationCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
         
         cell.delegate = delegate
-        if let studyID = studyID {
-            cell.viewModel = AttendancesModificationViewModel(studyID: studyID)
-        }
         
         return cell
     }()
@@ -82,6 +74,13 @@ final class AttendanceManagerModeView: UIView {
             self.leftLabel.textColor = UIColor.appColor(.ppsGray2)
             self.rightLabel.textColor = UIColor.appColor(.ppsBlack)
         }
+    }
+    
+    internal func configureViewWith(studyID: ID) {
+        self.studyID = studyID
+        self.leftCell.viewModel = AttendancesModificationViewModel(studyID: studyID)
+        
+        self.collectionView.reloadData()
     }
 }
 

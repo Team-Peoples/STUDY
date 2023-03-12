@@ -16,11 +16,7 @@ final class AttendanceModificationHeaderView: UIView {
     internal var leftButtonTapped: (() -> ()) = {}
     internal var rightButtonTapped: (() -> ()) = {}
     
-    internal var viewModel: AttendancesModificationViewModel? {
-        didSet {
-            setBinding()
-        }
-    }
+    internal var viewModel: AttendancesModificationViewModel?
     
     @IBOutlet weak var sortingTypeLabel: UILabel!
     @IBOutlet weak var studyTimeLabel: UILabel!
@@ -28,6 +24,11 @@ final class AttendanceModificationHeaderView: UIView {
     
     static func nib() -> UINib {
         return UINib(nibName: "AttendanceModificationHeaderView", bundle: nil)
+    }
+    
+    internal func configureViewWith(viewModel: AttendancesModificationViewModel) {
+        self.viewModel = viewModel
+        setBinding()
     }
     
     private func setBinding() {

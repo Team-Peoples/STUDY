@@ -14,14 +14,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     private var alignment = LeftButtonAlignment.name
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let separator: UIView = {
-        
-        let v = UIView(frame: .zero)
-        
-        v.backgroundColor = .appColor(.ppsGray3)
-        
-        return v
-    }()
+    private let separator = UIView(frame: .zero)
     private let sortTitleLabel = CustomLabel(title: "정렬기준", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var nameInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "이름순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
     private lazy var attendanceInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "출석순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
@@ -40,11 +33,9 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         super.init(doneButtonTitle: doneButtonTitle)
         
         backgroundColor = .systemBackground
-        
         nameInOrderButton.isSelected = true
         
-        addSubViews()
-        setConstraints()
+        configureViews()
         configureDoneButton(on: self, under: collectionView, constant: 16)
     }
 
@@ -57,8 +48,6 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         nameInOrderButton.toggle()
         attendanceInOrderButton.toggle()
     }
-    
-    
     
     override func doneButtonTapped() {
         guard let viewModel = viewModel else { return }
@@ -120,7 +109,9 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         collectionView.register(AttendanceTimeCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceTimeCollectionViewCell.identifier)
     }
     
-    private func addSubViews() {
+    private func configureViews() {
+        separator.backgroundColor = .appColor(.ppsGray3)
+        
         addSubview(titleLabel)
         addSubview(separator)
         addSubview(sortTitleLabel)
@@ -128,9 +119,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         addSubview(attendanceInOrderButton)
         addSubview(timeTitleLabel)
         addSubview(collectionView)
-    }
-    
-    private func setConstraints() {
+        
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(self)
             make.top.equalTo(self.snp.top).inset(24)
