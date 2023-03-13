@@ -60,7 +60,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
             
             align(&attendancesForATime)
             
-            viewModel.attendancesForATime = Observable(attendancesForATime)
+//            viewModel.attendancesForATime = Observable(attendancesForATime)
         }
         
         viewModel.alignment = Observable(alignment)

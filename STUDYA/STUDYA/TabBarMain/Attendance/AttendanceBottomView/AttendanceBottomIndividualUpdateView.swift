@@ -14,9 +14,9 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         didSet {
             guard let viewModel = viewModel, let indexPath = indexPath else { return }
             
-            let attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
+//            let attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
             
-            nicknameLabel.text = attendanceInformation.userID  //🛑여기 userID아니고 닉네임
+//            nicknameLabel.text = attendanceInformation.userID  //🛑여기 userID아니고 닉네임
 //            🛑프로필 이미지 넣기
         }
     }
@@ -130,15 +130,15 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
               let attendance = attendance,
               absentButton.isSelected || lateButton.isSelected || absentButton.isSelected || allowedButton.isSelected else { return }
         
-        var attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
-        let fine = text.components(separatedBy: ",").joined()
-        
-        attendanceInformation.fine = penalty
-        attendanceInformation.attendanceStatus = attendance
-        
-        viewModel.updateAttendance(attendanceInformation) {
-            self.navigatable?.dismiss()
-        }
+//        var attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
+//        let fine = text.components(separatedBy: ",").joined()
+//        
+//        attendanceInformation.fine = penalty
+//        attendanceInformation.attendanceStatus = attendance
+//        
+//        viewModel.updateAttendance(attendanceInformation) {
+//            self.navigatable?.dismiss()
+//        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

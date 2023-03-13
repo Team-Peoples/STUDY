@@ -20,6 +20,10 @@ final class AttendanceManagerModeView: UIView {
         
         cell.delegate = delegate
         
+        if let studyID = studyID {
+            cell.configureCellWith(studyID: studyID)
+        }
+        
         return cell
     }()
     private lazy var rightCell: AttendanceOverallCheckCollectionViewCell = {
@@ -52,7 +56,7 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .defaultHigh
         
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [.centeredHorizontally], animated: true)
-        leftCell.tableViewReload()
+        leftCell.reloadTableView()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -66,7 +70,7 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .required
         
         collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: [.centeredHorizontally], animated: true)
-        rightCell.tableViewReload()
+        rightCell.reloadTableView()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()

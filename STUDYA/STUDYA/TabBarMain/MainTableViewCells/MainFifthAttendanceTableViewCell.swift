@@ -91,10 +91,11 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
+        delegate.syncSwitchWith(nextVC: nextVC)
+        
         nextVC.configureViewController(with: studyID)
         nextVC.title = currentStudyOverall.study.studyName
         
-        delegate.syncSwitchWith(nextVC: nextVC)
         delegate.push(vc: nextVC)
     }
     

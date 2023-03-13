@@ -13,11 +13,12 @@ final class AttendancesModificationViewModel {
     var allUsersAttendancesForADay: AllUsersAttendanceForADay?
     var times: [Time] = []
     
-    var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]> = Observable([])
+    var attendancesForATime: [SingleUserAnAttendanceInformation] = []
     
     var alignment = Observable(LeftButtonAlignment.name)
     lazy var selectedTime = Observable(times.first ?? "")
-    var selectedDate = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
+    var selectedDate = Observable(DateFormatter.shortenDottedDateFormatter.string(from: Date()))
+    var reloadTableView = Observable(false)
     
     var error: Observable<PeoplesError>?
     
@@ -36,12 +37,15 @@ final class AttendancesModificationViewModel {
                 weakSelf.times = allUsersAttendancesForADay.map { $0.key }
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
+                    
                     weakSelf.selectedTime = Observable(firstTime)
-                    weakSelf.attendancesForATime = Observable(attendancesForATime)
+                    weakSelf.attendancesForATime = attendancesForATime
                 } else {
                     weakSelf.selectedTime = Observable("")
-                    weakSelf.attendancesForATime = Observable([])
+                    weakSelf.attendancesForATime = []
                 }
+                
+                weakSelf.reloadTableView.value = true
                 
             case .failure(let error):
                 weakSelf.error = Observable(error)
@@ -50,7 +54,9 @@ final class AttendancesModificationViewModel {
     }
     
     func updateAllMembersAttendance() {
-        Network.shared.getAllMembersAttendanceOn(selectedDate.value, studyID: studyID) { [weak self] result in
+        let dashedSelectedDate = selectedDate.value.convertShortenDottedDateToDashedDate()
+        
+        Network.shared.getAllMembersAttendanceOn(dashedSelectedDate, studyID: studyID) { [weak self] result in
             guard let weakSelf = self else { return }
             
             switch result {
@@ -58,10 +64,10 @@ final class AttendancesModificationViewModel {
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
                 
                 if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
-                    weakSelf.attendancesForATime = Observable(allUsersAttendancesForADay[weakSelf.selectedTime.value]!)
+                    weakSelf.attendancesForATime = allUsersAttendancesForADay[weakSelf.selectedTime.value]!
                 } else {
                     weakSelf.selectedTime = Observable("")
-                    weakSelf.attendancesForATime = Observable([])
+                    weakSelf.attendancesForATime = []
                 }
                 
             case .failure(let error):
@@ -117,28 +123,19 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         
         return t
     }()
+    private lazy var noAttendanceLabel = CustomLabel(title: "출결이 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.addSubview(headerView)
-        contentView.addSubview(tableView)
-        
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(contentView)
-            make.height.equalTo(53)
-        }
-        tableView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalTo(contentView)
-            make.top.equalTo(headerView.snp.bottom)
-        }
+        configureViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal func tableViewReload() {
+    internal func reloadTableView() {
         tableView.reloadData()
     }
     
@@ -155,12 +152,30 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     private func setBinding() {
         guard let viewModel = viewModel else { return }
         
-        viewModel.selectedDate.bind({ dashedDate in
-            self.headerView.configureRightButtonTitle(dashedDate)
-        })
-        viewModel.attendancesForATime.bind({ allUsersAnAttendanceInformationArray in
+        viewModel.reloadTableView.bind({ _ in
             self.tableView.reloadData()
         })
+    }
+    
+    private func configureViews() {
+        noAttendanceLabel.isHidden = true
+        
+        contentView.addSubview(headerView)
+        contentView.addSubview(tableView)
+        
+        headerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(contentView)
+            make.height.equalTo(53)
+        }
+        tableView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(contentView)
+            make.top.equalTo(headerView.snp.bottom)
+        }
+        
+        tableView.addSubview(noAttendanceLabel)
+        noAttendanceLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(tableView)
+        }
     }
 }
 
@@ -171,8 +186,13 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
             return 0
         }
         
-        let numberOfMembers = attendancesForATime.value.count
-//        NotificationCenter.default.post(name: .attendanceManagerTableViewsReloaded, object: delegate, userInfo: ["numberOfMembers" : numberOfMembers])
+        let numberOfMembers = attendancesForATime.count
+        
+        if numberOfMembers == 0 {
+            noAttendanceLabel.isHidden = false
+        } else {
+            noAttendanceLabel.isHidden = true
+        }
         
         return numberOfMembers
     }
@@ -181,7 +201,7 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell else {
             return AttendanceIndividualInfoTableViewCell()
         }
-        cell.anUserAttendanceInformation = viewModel?.attendancesForATime.value[indexPath.row]
+        cell.anUserAttendanceInformation = viewModel?.attendancesForATime[indexPath.row]
         return cell
     }
     
