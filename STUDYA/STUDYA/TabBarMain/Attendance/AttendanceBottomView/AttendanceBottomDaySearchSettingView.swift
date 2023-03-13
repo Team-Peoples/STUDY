@@ -68,37 +68,37 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     }
     
     private func align(_ attendancesForATime: inout [SingleUserAnAttendanceInformation]) {
-        if alignment == .name {
-            attendancesForATime.sort { (lhs, rhs) -> Bool in
-                
-                if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임임
-                    
-                    if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
-                        return lhs.userID > rhs.userID  //여기는 userID맞음
-                    } else {
-                        return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
-                    }
-                    
-                } else {
-                    return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
-                }
-            }
-        } else {
-            attendancesForATime.sort { lhs, rhs in
-                
-                if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
-                    
-                    if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임
-                        return lhs.userID > rhs.userID  //여기는 맞음
-                    } else {
-                        return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
-                    }
-                    
-                } else {
-                    return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
-                }
-            }
-        }
+//        if alignment == .name {
+//            attendancesForATime.sort { (lhs, rhs) -> Bool in
+//                
+//                if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임임
+//                    
+//                    if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+//                        return lhs.userID > rhs.userID  //여기는 userID맞음
+//                    } else {
+//                        return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+//                    }
+//                    
+//                } else {
+//                    return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+//                }
+//            }
+//        } else {
+//            attendancesForATime.sort { lhs, rhs in
+//                
+//                if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
+//                    
+//                    if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임
+//                        return lhs.userID > rhs.userID  //여기는 맞음
+//                    } else {
+//                        return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
+//                    }
+//                    
+//                } else {
+//                    return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
+//                }
+//            }
+//        }
     }
     
     private func configureCollectionView() {

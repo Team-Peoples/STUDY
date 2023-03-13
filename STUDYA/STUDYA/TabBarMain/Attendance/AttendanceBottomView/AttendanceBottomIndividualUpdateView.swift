@@ -108,13 +108,13 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         
         sender.isSelected = true
         
-        switch sender.tag {
-        case 1: attendance = .allowed
-        case 2: attendance = .late
-        case 3: attendance = .absent
-        case 4: attendance = .allowed
-        default: break
-        }
+//        switch sender.tag {
+//        case 1: attendance = .allowed
+//        case 2: attendance = .late
+//        case 3: attendance = .absent
+//        case 4: attendance = .allowed
+//        default: break
+//        }
         
         if !isDoneButtonSelected {
             enableDoneButton()

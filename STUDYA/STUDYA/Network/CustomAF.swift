@@ -213,8 +213,8 @@ extension RequestPurpose {
             return "/attendance/checkNumber/\(scheduleID)"
         case .getUserAttendanceBetween(_,_,_, let userID):
             return "/attendance/\(userID)"
-        case .getAllMembersAttendanceOn:
-            return "/attendance/master"
+        case .getAllMembersAttendanceOn(_, let studyID):
+            return "/attendance/master/\(studyID)"
         case .getAllMySchedules:
             return "/user/schedule"
         case .getAllNotifications:
@@ -285,9 +285,6 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 ///    HTTPMethod: GET
-        case .getAllMembersAttendanceOn(let date, let studyID):
-            return .body(["studyId": studyID,
-                          "searchDate": date])
 // EndodableBody
         case .updateUser(let user):
             return .encodableBody(user)
@@ -313,6 +310,8 @@ extension RequestPurpose {
             return .query(["token": SNSToken])
         case .getAttendanceStats(let studyID):
             return .query(["studyId": studyID])
+        case .getAllMembersAttendanceOn(let date, _):
+            return .query(["searchDate": date])
 // None
         default:
             return .none

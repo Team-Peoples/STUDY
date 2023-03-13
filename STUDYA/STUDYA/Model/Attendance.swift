@@ -50,12 +50,30 @@ struct OneTimeAttendanceInformation: Codable {
     }
 }
 
+struct AttendanceSeperator {
+    var inputString: String
+    var attendance: Attendance {
+        switch inputString {
+        case "ATTENDANCE":
+            return .attended
+        case "LATENESS":
+            return .late
+        case "ABSENT":
+            return .absent
+        case "HOLD":
+            return .allowed
+        default:
+            return .allowed
+        }
+    }
+}
+
 enum Attendance: Codable {
     case attended
     case late
     case absent
     case allowed
-
+    
     enum CodingKEys: String, CodingKey {
         case attended = "ATTENDANCE"
         case late = "LATENESS"
@@ -105,17 +123,18 @@ enum Attendance: Codable {
 
 struct SingleUserAnAttendanceInformation: Codable {
     var fine: Int
-    var attendanceStatus: Attendance
+    var attendanceStatus: String
     let userID: String
     let attendanceID: Int
-//    let nickName: String?
-//    let imageURL: String?
+    let nickName: String
+    let imageURL: String
 
     enum CodingKeys: String, CodingKey {
-        case fine
+        case fine, nickName
         case attendanceStatus = "attendance"
         case userID = "userId"
         case attendanceID = "attendanceId"
+        case imageURL = "img"
     }
 }
 

@@ -41,7 +41,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         
         self.viewModel = viewModel
         self.presentingVC = presentingVC
-        print(viewModel.selectedDate.value,"❤️")
+        
         guard let date = DateFormatter.shortenDottedDateFormatter.date(from: viewModel.selectedDate.value) else { return }
         
         selectedDate = date
@@ -56,20 +56,10 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
             guard let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day]) else { return }
             let dateComponents = date.convertToDateComponents([.year, .month, .day])
             
-//            if dateComponents == selectedDateComponents {
-//
-////                self.selectedDateComponents = nil
-////                selectionSingleDate.setSelected(nil, animated: true)
-//                // domb: 무엇을 하려는건지 몰라서 참고 함수만 적어놨어~
-////                calendarView.select(date: <#T##Date#>)
-//                doneButton.fillOut(title: Constant.done)
-//                doneButton.isEnabled = false
-//            } else {
             selectedDate = dateComponents.convertToDate()
             
             doneButton.fillIn(title: Constant.done)
             doneButton.isEnabled = true
-//            }
         }
     }
     
@@ -107,7 +97,6 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         
         viewModel?.getAllMembersAttendanceOn(date: dateString)
         viewModel?.selectedDate.value = shortenDottedString
-        print("selectedDate", viewModel?.selectedDate)
         
         self.dismiss(animated: true)
     }

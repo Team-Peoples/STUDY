@@ -38,10 +38,10 @@ final class AttendancesModificationViewModel {
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
                     
-                    weakSelf.selectedTime = Observable(firstTime)
+                    weakSelf.selectedTime.value = firstTime
                     weakSelf.attendancesForATime = attendancesForATime
                 } else {
-                    weakSelf.selectedTime = Observable("")
+                    weakSelf.selectedTime.value = ""
                     weakSelf.attendancesForATime = []
                 }
                 
@@ -150,10 +150,13 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel, let delegate = delegate else { return }
         
         viewModel.reloadTableView.bind({ _ in
             self.tableView.reloadData()
+        })
+        viewModel.error?.bind({ error in
+            UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }
     

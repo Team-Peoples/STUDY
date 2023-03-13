@@ -14,8 +14,9 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     internal var anUserAttendanceInformation: SingleUserAnAttendanceInformation? {
         didSet {
             guard let anUserAttendanceInformation = anUserAttendanceInformation else { return }
+            let attendance = AttendanceSeperator(inputString: anUserAttendanceInformation.attendanceStatus).attendance
             
-            attendanceStatusView.configure(title: anUserAttendanceInformation.attendanceStatus.korean, color: anUserAttendanceInformation.attendanceStatus.color)
+            attendanceStatusView.configure(title: attendance.korean, color: attendance.color)
             penaltyLabel.text = anUserAttendanceInformation.fine.toString()
 //            🛑api되면 닉네임, 사진 넣기
         }

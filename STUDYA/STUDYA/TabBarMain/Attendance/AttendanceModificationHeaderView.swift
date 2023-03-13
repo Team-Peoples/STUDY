@@ -48,6 +48,8 @@ final class AttendanceModificationHeaderView: UIView {
         viewModel?.selectedTime.bind { time in
             if !time.isEmpty {
                 self.studyTimeLabel.text = "·" + time
+            } else {
+                self.studyTimeLabel.text = ""
             }
         }
     }
