@@ -12,7 +12,6 @@ final class AttendancesModificationViewModel {
     
     var allUsersAttendancesForADay: AllUsersAttendanceForADay?
     var times: [Time] = []
-    
     var attendancesForATime: [SingleUserAnAttendanceInformation] = []
     
     var alignment = Observable(LeftButtonAlignment.name)
@@ -40,6 +39,7 @@ final class AttendancesModificationViewModel {
                     
                     weakSelf.selectedTime.value = firstTime
                     weakSelf.attendancesForATime = attendancesForATime
+                    
                 } else {
                     weakSelf.selectedTime.value = ""
                     weakSelf.attendancesForATime = []
@@ -48,7 +48,7 @@ final class AttendancesModificationViewModel {
                 weakSelf.reloadTableView.value = true
                 
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
     }
@@ -66,12 +66,13 @@ final class AttendancesModificationViewModel {
                 if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
                     weakSelf.attendancesForATime = allUsersAttendancesForADay[weakSelf.selectedTime.value]!
                 } else {
-                    weakSelf.selectedTime = Observable("")
+                    weakSelf.selectedTime.value = ""
                     weakSelf.attendancesForATime = []
                 }
+                weakSelf.reloadTableView.value = true
                 
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
     }
@@ -88,7 +89,7 @@ final class AttendancesModificationViewModel {
                 completion()
                 
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
     }
