@@ -8,6 +8,7 @@
 import UIKit
 import KakaoSDKCommon
 import NaverThirdPartyLogin
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,16 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // 다이나믹링크
+        FirebaseApp.configure()
         
+        // 카카오 로그인
         KakaoSDK.initSDK(appKey: "ed23abff026b1ec548a706e81bd6ea22")
         
+        // 네이버 로그인
         let instance = NaverThirdPartyLoginConnection.getSharedInstance()
         
         instance?.isNaverAppOauthEnable = true
         instance?.isInAppOauthEnable = true
-        
         instance?.setOnlyPortraitSupportInIphone(true)  //세로 화면에서만 인증
-        
         instance?.serviceUrlScheme = kServiceAppUrlScheme // 앱을 등록할 때 입력한 URL Scheme
         instance?.consumerKey = kConsumerKey // 상수 - client id
         instance?.consumerSecret = kConsumerSecret // pw

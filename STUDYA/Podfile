@@ -10,4 +10,5 @@ pod 'naveridlogin-sdk-ios'
 pod 'MultiProgressView'
 pod 'Kingfisher', '~> 7.0'
 pod 'FSCalendar'
+pod 'FirebaseDynamicLinks'
 end
