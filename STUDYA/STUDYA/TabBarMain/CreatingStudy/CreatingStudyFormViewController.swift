@@ -361,7 +361,7 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
             
             let maxLength = 10
             
-            limitCharactersNumber(with: studyNameTextView, maxLength: maxLength)
+            studyNameTextView.limitCharactersNumber(maxLength: maxLength)
             
             let currentTextCount = textView.text.count
             studyNameTextView.getCharactersNumberLabel().text = "\(currentTextCount)/\(maxLength)"
@@ -370,7 +370,7 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
             
             let maxLength = 50
             
-            limitCharactersNumber(with: studyNameTextView, maxLength: maxLength)
+            studyIntroductionTextView.limitCharactersNumber(maxLength: maxLength)
             
             let currentTextCount = textView.text.count
             studyIntroductionTextView.getCharactersNumberLabel().text = "\(currentTextCount)/\(maxLength)"
@@ -378,17 +378,6 @@ extension CreatingStudyFormViewController: UITextViewDelegate {
         default:
             break
         }
-    }
-    
-    private func limitCharactersNumber(with textView: UITextView, maxLength: Int) {
-        guard let currentText = textView.text else { return }
-        guard currentText.count > maxLength else { return }
-        
-        let selection = textView.selectedTextRange
-        let newEnd = textView.position(from: selection!.start, offset: 0)!
-        
-        textView.text = String(currentText.prefix(maxLength))
-        textView.selectedTextRange = textView.textRange(from: newEnd, to: newEnd)
     }
 }
 

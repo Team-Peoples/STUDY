@@ -47,13 +47,7 @@ final class MainCalendarViewController: UIViewController {
             calendarView.reloadData()
         }
         
-        calendarView.dateSelectAction = { [self] (date) in
-            selectedDate = date
-            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
-            NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
-            
-        }
-        
+        calendarView.delegate = self
         calendarView.select(date: selectedDate)
         
         dataSource = CalendarBottomSheetDatasource()
@@ -128,5 +122,14 @@ extension MainCalendarViewController: UBottomSheetCoordinatorDelegate {
         default:
             return
         }
+    }
+}
+
+extension MainCalendarViewController: CustomCalendarViewDelegate {
+   
+    func calendarView(didselectAt date: Date) {
+        selectedDate = date
+        calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate)
+        NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
     }
 }

@@ -75,7 +75,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     init(studySchedule: StudySchedule) {
         
-        editingStudyScheduleViewModel.studySchedule = EditingStudySchduleViewController.studySchedulePostingConverted(from: studySchedule)
+        editingStudyScheduleViewModel.studySchedule = studySchedule.convertStudySchedulePosting()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -97,14 +97,6 @@ final class EditingStudySchduleViewController: UIViewController {
         }
         
         configureViews()
-        setNavigation()
-        enableTapGesture()
-        addActionsAtButtons()
-        
-        topicTextView.delegate = self
-        placeTextView.delegate = self
-        
-        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,14 +123,13 @@ final class EditingStudySchduleViewController: UIViewController {
         }
     }
     
-    @objc private func openDateSelectableViewTapped() {
+    @objc private func startDateSelectableViewTapped() {
         
         let studySchedule = editingStudyScheduleViewModel.studySchedule
-        
-        guard let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate)
-        
-        popUpCalendarVC.presentingVC = self
+        let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate)!
+        let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate, viewModel: editingStudyScheduleViewModel)
+        popUpCalendarVC.endDate = repeatEndDate
 
         present(popUpCalendarVC, animated: true)
     }
@@ -146,26 +137,12 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func repeatEndDateSelectableViewTapped() {
         
         let studySchedule = editingStudyScheduleViewModel.studySchedule
+        let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate)!
+        let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) ?? startDate
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate, viewModel: editingStudyScheduleViewModel)
         
-        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
-            
-            guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate)
-            
-            popUpCalendarVC.startDate = startDate
-            popUpCalendarVC.presentingVC = self
-
-            present(popUpCalendarVC, animated: true)
-        } else {
-            
-            guard let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-            let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: startDate)
-            
-            popUpCalendarVC.startDate = startDate
-            popUpCalendarVC.presentingVC = self
-            
-            present(popUpCalendarVC, animated: true)
-        }
+        popUpCalendarVC.startDate = startDate
+        present(popUpCalendarVC, animated: true)
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
@@ -173,7 +150,6 @@ final class EditingStudySchduleViewController: UIViewController {
         if selectedRepeatOptionCheckBox == sender {
             
             editingStudyScheduleViewModel.studySchedule.repeatOption = .norepeat
-            // 반복일정 끝나는 날짜 초기화
             editingStudyScheduleViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
@@ -200,33 +176,27 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let datePicker = UIDatePicker()
-        
-        datePicker.calendar = Calendar.current
-        datePicker.datePickerMode = .time
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.locale = Locale(identifier: "en_gb")
-        
+        let timePicker = CalendarTimePicker.shared
         
         if let endTime = editingStudyScheduleViewModel.studySchedule.endTime {
-            datePicker.maximumDate = DateFormatter.timeFormatter.date(from: endTime)
+            timePicker.maximumDate = DateFormatter.timeFormatter.date(from: endTime)
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let startTime = DateFormatter.timeFormatter.string(from: datePicker.date)
+            let startTime = DateFormatter.timeFormatter.string(from: timePicker.date)
             self.editingStudyScheduleViewModel.studySchedule.startTime = startTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
-        alert.view.addSubview(datePicker)
+        alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
             make.height.equalTo(350)
         }
         
-        datePicker.snp.makeConstraints { make in
+        timePicker.snp.makeConstraints { make in
             make.height.equalTo(150)
             make.centerX.equalTo(alert.view.safeAreaLayoutGuide)
             make.top.equalTo(alert.view).offset(50)
@@ -241,32 +211,27 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let datePicker = UIDatePicker()
-        
-        datePicker.calendar = Calendar.current
-        datePicker.datePickerMode = .time
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.locale = Locale(identifier: "en_gb")
+        let timePicker = CalendarTimePicker.shared
         
         if let startTime = editingStudyScheduleViewModel.studySchedule.startTime {
-            datePicker.minimumDate = DateFormatter.timeFormatter.date(from: startTime)
+            timePicker.minimumDate = DateFormatter.timeFormatter.date(from: startTime)
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let endTime = DateFormatter.timeFormatter.string(from: datePicker.date)
+            let endTime = DateFormatter.timeFormatter.string(from: timePicker.date)
             self.editingStudyScheduleViewModel.studySchedule.endTime = endTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
-        alert.view.addSubview(datePicker)
+        alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
             make.height.equalTo(350)
         }
         
-        datePicker.snp.makeConstraints { make in
+        timePicker.snp.makeConstraints { make in
             make.height.equalTo(150)
             make.centerX.equalTo(alert.view)
             make.top.equalTo(alert.view).offset(50)
@@ -289,11 +254,22 @@ final class EditingStudySchduleViewController: UIViewController {
         
         var viewFrame = self.view.frame
         
-        viewFrame.size.height -= keyboardSize.height
+        viewFrame.size.height -= (keyboardSize.height + view.safeAreaInsets.bottom + 100)
+        
+        let activeTextView: UITextView? = [topicTextView, placeTextView].first { $0.isFirstResponder }
+        
+        if let activeTextView = activeTextView {
+            
+            if !viewFrame.contains(activeTextView.frame.origin) {
+
+                let scrollPoint = CGPoint(x: 0, y: activeTextView.frame.origin.y - keyboardSize.height + activeTextView.frame.height)
+                
+                scrollView.setContentOffset(scrollPoint, animated: true)
+            }
+        }
     }
     
     @objc private func keyboardDisappear(_ notification: NSNotification) {
-        
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
@@ -304,7 +280,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     private func enableTapGesture() {
         
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
         
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
@@ -319,42 +295,14 @@ final class EditingStudySchduleViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
+        topicTextView.delegate = self
+        placeTextView.delegate = self
         
-        containerView.addSubview(startDateSelectableView)
-        
-        containerView.addSubview(timeLabel)
-        containerView.addSubview(startTimeSelectButton)
-        containerView.addSubview(startTimeSuffixLabel)
-        containerView.addSubview(endTimeSelectButton)
-        containerView.addSubview(endTimeSuffixLabel)
-      
-        containerView.addSubview(topicTitleLabel)
-        containerView.addSubview(topicTextView)
-        containerView.addSubview(topicTextViewCharactersCountLimitLabel)
-        
-        containerView.addSubview(placeTitleLabel)
-        containerView.addSubview(placeTextView)
-        containerView.addSubview(placeTextViewCharactersCountLimitLabel)
-        
-        containerView.addSubview(repeatOptionTitle)
-        containerView.addSubview(repeatOptionStackView)
-        
-        containerView.addSubview(repeatEndDateSelectableView)
-    }
-    
-    private static func studySchedulePostingConverted(from studySchedule: StudySchedule) -> StudySchedulePosting {
-        
-        let studyScheduleID = studySchedule.studyScheduleID
-        let topic = studySchedule.topic
-        let place = studySchedule.place
-    
-        let startDate = DateFormatter.dashedDateFormatter.string(from: studySchedule.startDateAndTime)
-        let startTime = DateFormatter.timeFormatter.string(from: studySchedule.startDateAndTime)
-        let endTime = DateFormatter.timeFormatter.string(from: studySchedule.endDateAndTime)
-
-        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: "", startTime: startTime, endTime: endTime)
+        setNavigation()
+        enableTapGesture()
+        addActionsAtButtons()
+        addNotification()
+        addSubviewsWithConstraints()
     }
     
     private func configureUI(_ studySchedule: StudySchedulePosting) {
@@ -405,7 +353,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     private func addActionsAtButtons() {
         
-        startDateSelectableView.addTapGesture(target: self, action: #selector(openDateSelectableViewTapped))
+        startDateSelectableView.addTapGesture(target: self, action: #selector(startDateSelectableViewTapped))
         repeatEndDateSelectableView.addTapGesture(target: self, action: #selector(repeatEndDateSelectableViewTapped))
         
         startTimeSelectButton.addTarget(self, action: #selector(startTimeSelectButtonDidTapped), for: .touchUpInside)
@@ -414,22 +362,44 @@ final class EditingStudySchduleViewController: UIViewController {
     
     private func setNavigation() {
         
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-        
-        navigationItem.title = "일정 수정"
-        
-        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationItem.rightBarButtonItem = doneButton
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancelButtonDidTapped))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
+        navigationItem.title = "일정 수정"
+        
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
     }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+  
+    private func addSubviewsWithConstraints() {
+        
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        
+        containerView.addSubview(startDateSelectableView)
+        
+        containerView.addSubview(timeLabel)
+        containerView.addSubview(startTimeSelectButton)
+        containerView.addSubview(startTimeSuffixLabel)
+        containerView.addSubview(endTimeSelectButton)
+        containerView.addSubview(endTimeSuffixLabel)
+      
+        containerView.addSubview(topicTitleLabel)
+        containerView.addSubview(topicTextView)
+        containerView.addSubview(topicTextViewCharactersCountLimitLabel)
+        
+        containerView.addSubview(placeTitleLabel)
+        containerView.addSubview(placeTextView)
+        containerView.addSubview(placeTextViewCharactersCountLimitLabel)
+        
+        containerView.addSubview(repeatOptionTitle)
+        containerView.addSubview(repeatOptionStackView)
+        
+        containerView.addSubview(repeatEndDateSelectableView)
         
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
@@ -518,66 +488,60 @@ extension EditingStudySchduleViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         
         switch textView {
-            case topicTextView:
-                topicTextView.hidePlaceholder(true)
-                
-            case placeTextView:
-                placeTextView.hidePlaceholder(true)
-            default:
-                return
+        case topicTextView:
+            topicTextView.hidePlaceholder(true)
+        case placeTextView:
+            placeTextView.hidePlaceholder(true)
+        default:
+            return
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         
-        if textView.text == "" {
+        if textView.text.isEmpty {
             
             switch textView {
-                case topicTextView:
-                    topicTextView.hidePlaceholder(false)
-                case placeTextView:
-                    placeTextView.hidePlaceholder(false)
-                default:
-                    return
+            case topicTextView:
+                topicTextView.hidePlaceholder(false)
+            case placeTextView:
+                placeTextView.hidePlaceholder(false)
+            default:
+                return
             }
         }
     }
     
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-
-        switch textView {
-            case topicTextView:
-                
-                guard let inputedText = textView.text else { return true }
-                let newLength = inputedText.count + text.count - range.length
-                topicTextViewCharactersCountLimitLabel.text = newLength > 20 ? "20/20" : "\(newLength)/20"
-                return newLength <= 20
-            case placeTextView:
-                
-                guard let inputedText = textView.text else { return true }
-                let newLength = inputedText.count + text.count - range.length
-                placeTextViewCharactersCountLimitLabel.text = newLength > 20 ? "20/20" : "\(newLength)/20"
-                return newLength <= 20
-                
-            default:
-                return false
+        
+        if text == "\n" {
+            return false
+        } else {
+            return true
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
         
-        ///엔터 입력할때 안되도록...막아야함
         switch textView {
-        case topicTextView:
-            if topicTextView.text.contains(where: { $0 == "\n" }) {
-                topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
-            }
+            case topicTextView:
+            
+            let maxLength = 20
+            
+            topicTextView.limitCharactersNumber(maxLength: maxLength)
+            
+            let currentTextCount = textView.text.count
+            topicTextViewCharactersCountLimitLabel.text = "\(currentTextCount)/\(maxLength)"
             editingStudyScheduleViewModel.studySchedule.topic = topicTextView.text
         case placeTextView:
-            if placeTextView.text.contains(where: { $0 == "\n" }) {
-                placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
-            }
+            
+            let maxLength = 20
+            
+            placeTextView.limitCharactersNumber(maxLength: maxLength)
+            
+            let currentTextCount = textView.text.count
+            placeTextViewCharactersCountLimitLabel.text = "\(currentTextCount)/\(maxLength)"
             editingStudyScheduleViewModel.studySchedule.place = placeTextView.text
         default:
             break

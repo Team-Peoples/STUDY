@@ -10,6 +10,7 @@
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
 		721482B2297125E100A903FF /* StudySchedulePopUpAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */; };
 		721BD40C29C216D5000C8DA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */; };
+		721BD40E29C30A22000C8DA4 /* CalendarTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */; };
 		724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
@@ -161,6 +162,7 @@
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
 		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpAlertViewController.swift; path = ../StudySchedule/StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
 		721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTimePicker.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
 		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditingStudySchduleViewController.swift; path = ../StudySchedule/EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3245C1129A8F46400703847 /* HapticManager.swift */,
 				72B44AAE29A753110088F678 /* CustomCalendar.swift */,
+				721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -883,6 +886,7 @@
 				72758D2F295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineRuleTableViewCell.swift in Sources */,
 				D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */,
 				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
+				721BD40E29C30A22000C8DA4 /* CalendarTimePicker.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,

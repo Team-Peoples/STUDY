@@ -15,7 +15,7 @@ class StudyScheduleViewController: SwitchableViewController {
     let studyAllScheduleViewModel = StudyScheduleViewModel()
     
     private let studyID: ID
-    var selectedDate: Date = Date()
+    private var selectedDate: Date = Date()
     private var studyScheduleOfThisStudy: [StudySchedule] = [] {
         didSet {
             studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
@@ -40,13 +40,8 @@ class StudyScheduleViewController: SwitchableViewController {
         
         return tableView
     }()
-    lazy var floatingButtonView: PlusButtonWithLabelContainerView = {
-        let buttonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
+    lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "일정추가")
         
-        buttonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
-        
-        return buttonView
-    }()
     
     // MARK: - Life Cycle
     
@@ -62,16 +57,8 @@ class StudyScheduleViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [self] _ in
-            studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
-            calendarView.reloadData()
-        }
 
-        calendarView.dateSelectAction = { [self] (date) in
-            selectedDate = date
-            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
-        }
+        calendarView.delegate = self
         
         studyAllScheduleViewModel.bind { [self] allStudyScheduleOfAllStudy in
             calendarView.select(date: selectedDate)
@@ -88,8 +75,6 @@ class StudyScheduleViewController: SwitchableViewController {
         studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
         
         confifureViews()
-        configureTableView()
-        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,8 +107,15 @@ class StudyScheduleViewController: SwitchableViewController {
         present(navigation, animated: true)
     }
     
+    private func addNotification(){
+        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [self] _ in
+            studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
+        }
+    }
+    
     override func extraWorkWhenSwitchToggled() {
         floatingButtonView.isHidden = !isSwitchOn
+        
         let cells = scheduleTableView.cellsForRows(at: 0)
         let scheduleTableViewCells = cells.compactMap { cell in
             let cell = cell as? StudyScheduleTableViewCell
@@ -138,23 +130,29 @@ class StudyScheduleViewController: SwitchableViewController {
     // MARK: - Configure
     
     private func confifureViews() {
+        
         view.backgroundColor = .systemBackground
         
-        view.addSubview(calendarView)
-        view.addSubview(scheduleTableView)
-        view.addSubview(floatingButtonView)
+        tabBarController?.tabBar.isHidden = true
+        
+        floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
+        
+        addNotification()
+        configureTableView()
+        addSubViewsWithConstraints()
+        
     }
     
     private func configureTableView() {
         scheduleTableView.dataSource = self
         scheduleTableView.delegate = self
-        
-        tabBarController?.tabBar.isHidden = true
     }
     
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+    private func addSubViewsWithConstraints() {
+        
+        view.addSubview(calendarView)
+        view.addSubview(scheduleTableView)
+        view.addSubview(floatingButtonView)
         
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
@@ -250,6 +248,13 @@ extension StudyScheduleViewController: UITableViewDataSource {
 extension StudyScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+extension StudyScheduleViewController: CustomCalendarViewDelegate {
+    func calendarView(didselectAt date: Date) {
+        selectedDate = date
+        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
     }
 }
 

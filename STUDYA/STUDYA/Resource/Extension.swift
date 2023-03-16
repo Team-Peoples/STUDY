@@ -135,6 +135,26 @@ extension UIView {
     }
 }
 
+extension UIButton {
+    convenience init(image: UIImage?) {
+        self.init()
+        self.setImage(image, for: .normal)
+    }
+}
+
+extension UITextView {
+    func limitCharactersNumber(maxLength: Int) {
+        guard let currentText = self.text else { return }
+        guard currentText.count > maxLength else { return }
+        
+        let selection = self.selectedTextRange
+        let newEnd = self.position(from: selection!.start, offset: 0)!
+        
+        self.text = String(currentText.prefix(maxLength))
+        self.selectedTextRange = self.textRange(from: newEnd, to: newEnd)
+    }
+}
+
 extension Int {
     func toString() -> String {
         return String(self)

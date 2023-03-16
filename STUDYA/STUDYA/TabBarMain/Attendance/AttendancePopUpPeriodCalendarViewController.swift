@@ -90,31 +90,10 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         calendarView.select(date: precedingDate)
         
         let today = Date()
-        calendarView.maximumDate = today
+        calendarView.setMaximumDate(today)
         calendarView.reloadData()
+        calendarView.delegate = self
         
-        calendarView.dateSelectAction = { [self] (date) in
-            let dateComponents = date.convertToDateComponents([.year, .month, .day])
-            if isPrecedingDateTurn {
-                precedingDateComponents = dateComponents
-                enableFollowingButton()
-                doneButton.fillOut(title: Constant.OK)
-                doneButton.isEnabled = false
-                isPrecedingDateTurn = false
-            } else {
-                if date < precedingDate {
-                    precedingDateComponents = dateComponents
-                    doneButton.fillOut(title: Constant.OK)
-                    doneButton.isEnabled = false
-                } else {
-                    followingDateComponents = dateComponents
-                    doneButton.fillIn(title: Constant.OK)
-                    doneButton.isEnabled = true
-                }
-            }
-        }
-        
-
         dimmingViewButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         doneButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
@@ -211,6 +190,30 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(popUpContainerView).inset(20)
             make.top.greaterThanOrEqualTo(calendarView.snp.bottom).offset(20)
+        }
+    }
+}
+
+extension AttendancePopUpPeriodCalendarViewController: CustomCalendarViewDelegate {
+    
+    func calendarView(didselectAt date: Date) {
+        let dateComponents = date.convertToDateComponents([.year, .month, .day])
+        if isPrecedingDateTurn {
+            precedingDateComponents = dateComponents
+            enableFollowingButton()
+            doneButton.fillOut(title: Constant.OK)
+            doneButton.isEnabled = false
+            isPrecedingDateTurn = false
+        } else {
+            if date < precedingDate {
+                precedingDateComponents = dateComponents
+                doneButton.fillOut(title: Constant.OK)
+                doneButton.isEnabled = false
+            } else {
+                followingDateComponents = dateComponents
+                doneButton.fillIn(title: Constant.OK)
+                doneButton.isEnabled = true
+            }
         }
     }
 }

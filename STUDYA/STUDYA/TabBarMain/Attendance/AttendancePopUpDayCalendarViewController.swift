@@ -46,26 +46,8 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         calendarView.select(date: date)
         
         let today = Date()
-        calendarView.maximumDate = today
-        calendarView.reloadData()
-        
-        calendarView.dateSelectAction = { [self] (date) in
-            guard let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day]) else { return }
-            let dateComponents = date.convertToDateComponents([.year, .month, .day])
-            
-            if dateComponents == selectedDateComponents {
-                
-//                self.selectedDateComponents = nil
-//                selectionSingleDate.setSelected(nil, animated: true)
-                // domb: 무엇을 하려는건지 몰라서 참고 함수만 적어놨어~
-//                calendarView.select(date: <#T##Date#>)
-                doneButton.fillOut(title: Constant.done)
-                doneButton.isEnabled = false
-            } else {
-                doneButton.fillIn(title: Constant.done)
-                doneButton.isEnabled = true
-            }
-        }
+        calendarView.setMaximumDate(today)
+        calendarView.delegate = self
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -147,6 +129,27 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         doneButton.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalTo(popUpContainerView).inset(20)
             make.top.greaterThanOrEqualTo(calendarView.snp.bottom).offset(20)
+        }
+    }
+}
+
+extension AttendancePopUpDayCalendarViewController: CustomCalendarViewDelegate {
+    
+    func calendarView(didselectAt date: Date) {
+        guard let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day]) else { return }
+        let dateComponents = date.convertToDateComponents([.year, .month, .day])
+        
+        if dateComponents == selectedDateComponents {
+            
+//                self.selectedDateComponents = nil
+//                selectionSingleDate.setSelected(nil, animated: true)
+            // domb: 무엇을 하려는건지 몰라서 참고 함수만 적어놨어~
+//                calendarView.select(date: <#T##Date#>)
+            doneButton.fillOut(title: Constant.done)
+            doneButton.isEnabled = false
+        } else {
+            doneButton.fillIn(title: Constant.done)
+            doneButton.isEnabled = true
         }
     }
 }

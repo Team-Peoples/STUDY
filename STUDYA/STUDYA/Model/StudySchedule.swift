@@ -37,6 +37,18 @@ struct StudySchedule: Codable {
         case studyName
         case studyID
     }
+    
+    func convertStudySchedulePosting() -> StudySchedulePosting {
+        let studyScheduleID = self.studyScheduleID
+        let topic = self.topic
+        let place = self.place
+    
+        let startDate = DateFormatter.dashedDateFormatter.string(from: self.startDateAndTime)
+        let startTime = DateFormatter.timeFormatter.string(from: self.startDateAndTime)
+        let endTime = DateFormatter.timeFormatter.string(from: self.endDateAndTime)
+
+        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: "", startTime: startTime, endTime: endTime)
+    }
 }
 
 struct StudySchedulePosting: Codable {
