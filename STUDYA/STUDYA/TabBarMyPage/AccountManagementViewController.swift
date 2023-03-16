@@ -234,16 +234,9 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func leaveApp() {
-        let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
-            _ in
-            
+        let alertController = SimpleAlert(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", firstActionTitle: "탈퇴하기", actionStyle: .destructive, firstActionHandler: { _ in
             self.closeAccount()
-        }
-        
-        alertController.addAction(closeAccountAction)
-        alertController.addAction(cancelAction)
+        }, cancelActionTitle: Constant.cancel)
         
         present(alertController, animated: true)
     }

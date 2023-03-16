@@ -266,10 +266,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         }
         
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
-            
-            let alertController = UIAlertController(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "삭제", style: .destructive) {
-                _ in
+            let alertController = SimpleAlert(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", firstActionTitle: Constant.delete, actionStyle: .destructive, firstActionHandler: { _ in
                 if let announcementID = cell.announcement?.id {
                     Network.shared.deleteAnnouncement(announcementID) { result in
                         switch result {
@@ -281,12 +278,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
                     }
                 }
                 self.announcements.remove(at: indexPath.row)
-            }
-            
-            let cancelAction = UIAlertAction(title: "닫기", style: .cancel)
-            
-            alertController.addAction(okAction)
-            alertController.addAction(cancelAction)
+            }, cancelActionTitle: Constant.cancel)
             
             self.present(alertController, animated: true)
         }

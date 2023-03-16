@@ -145,17 +145,20 @@ final class EditingStudyFormViewController: UIViewController {
     @objc func barButtonDidTapped(sender: UIBarButtonItem) {
         
         switch sender {
-            case doneButton:
+        case doneButton:
             
             studyViewModel.updateStudy {
                 NotificationCenter.default.post(name: .studyInfoShouldUpdate, object: nil)
                 self.dismiss(animated: true)
             }
-            case  cancelButton:
-                print("수정 취소")
+        case cancelButton:
+            let simpleAlert = SimpleAlert(title: "작성을 중단할까요?", message: "페이지를 나가면 작성하던 내용이 사라져요.", firstActionTitle: "나가기", actionStyle: .destructive, firstActionHandler: { _ in
                 self.dismiss(animated: true)
-            default:
-                return
+            }, cancelActionTitle: "남아있기")
+            
+            present(simpleAlert, animated: true)
+        default:
+            return
         }
     }
     

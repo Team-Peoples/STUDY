@@ -53,7 +53,11 @@ final class EditingStudyFreeRuleViewController: UIViewController {
     
     @objc func cancel() {
         
-        self.dismiss(animated: true)
+        let simpleAlert = SimpleAlert(title: "작성을 중단할까요?", message: "페이지를 나가면 작성하던 내용이 사라져요.", firstActionTitle: "나가기", actionStyle: .destructive, firstActionHandler: { _ in
+            self.dismiss(animated: true)
+        }, cancelActionTitle: "남아있기")
+        
+        present(simpleAlert, animated: true)
     }
     
     // MARK: - Setting Constraints

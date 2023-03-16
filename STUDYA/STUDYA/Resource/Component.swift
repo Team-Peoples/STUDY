@@ -535,6 +535,17 @@ class SimpleAlert: UIAlertController {
         
         self.addAction(okAction)
     }
+    
+    /// 두가지 옵션 제공 Alert Controller
+    convenience init(title: String, message: String, firstActionTitle: String, actionStyle: UIAlertAction.Style, firstActionHandler: ((UIAlertAction) -> Void)? = nil, cancelActionTitle: String, cancelActionHandler: ((UIAlertAction) -> Void)? = nil) {
+        self.init(title: title, message: message, preferredStyle: .alert)
+        
+        let firstAction = UIAlertAction(title: firstActionTitle, style: actionStyle, handler: firstActionHandler)
+        let cancelAction = UIAlertAction(title: cancelActionTitle, style: .cancel, handler: cancelActionHandler)
+        
+        addAction(firstAction)
+        addAction(cancelAction)
+    }
 }
 
 class ProfileImageView: UIView {
