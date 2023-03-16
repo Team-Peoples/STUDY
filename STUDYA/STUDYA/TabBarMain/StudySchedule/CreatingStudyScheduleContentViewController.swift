@@ -57,8 +57,8 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
         creatingScheduleButton.isEnabled = false
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         topicTextView.delegate = self
         placeTextView.delegate = self
@@ -86,7 +86,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    @objc private func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -98,7 +98,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
-    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func keyboardDisappear(_ notification: NSNotification) {
         bottomStickyView.snp.updateConstraints { make in
             make.bottom.equalTo(view)
         }

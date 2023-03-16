@@ -277,7 +277,7 @@ final class CharactersNumberLimitedTextView: BaseTextView {
     
     // MARK: - Actions
     
-    func getCharactersNumerLabel() -> UILabel {
+    func getCharactersNumberLabel() -> UILabel {
         charactersNumberLabel
     }
     

@@ -172,7 +172,7 @@ final class AnnouncementViewController: UIViewController {
     
     // MARK: - Actions
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -182,7 +182,7 @@ final class AnnouncementViewController: UIViewController {
         scrollView.contentInset = insets
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc func keyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         view.endEditing(true)
     }
@@ -224,7 +224,7 @@ final class AnnouncementViewController: UIViewController {
     
     private func enableTapGesture() {
         
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
         
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
@@ -260,7 +260,7 @@ final class AnnouncementViewController: UIViewController {
     }
     
     private func addNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
     
     // MARK: - Setting Constraints

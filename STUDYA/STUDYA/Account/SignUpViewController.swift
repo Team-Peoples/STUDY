@@ -59,8 +59,8 @@ class SignUpViewController: UIViewController {
         passwordInputField.delegate = self
         passwordCheckInputField.delegate = self
         
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         doneButton.isEnabled = false
         doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
@@ -110,7 +110,7 @@ class SignUpViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -136,7 +136,7 @@ class SignUpViewController: UIViewController {
         //            }
         //        }
     }
-    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func keyboardDisappear(_ notification: NSNotification) {
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }

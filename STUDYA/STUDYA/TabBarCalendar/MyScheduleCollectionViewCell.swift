@@ -160,7 +160,7 @@ class MyScheduleCollectionViewCell: UICollectionViewCell {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -171,7 +171,7 @@ class MyScheduleCollectionViewCell: UICollectionViewCell {
         tableView.scrollIndicatorInsets = insets
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc func keyboardDisappear(_ notification: NSNotification) {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
@@ -199,8 +199,8 @@ class MyScheduleCollectionViewCell: UICollectionViewCell {
 
             self.viewModel?.selectedDate = dashedDate
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
 

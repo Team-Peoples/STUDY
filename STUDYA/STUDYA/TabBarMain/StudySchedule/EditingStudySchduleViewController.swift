@@ -278,21 +278,33 @@ final class EditingStudySchduleViewController: UIViewController {
         present(alert, animated: true)
     }
     
-    @objc private func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
         let keyboardSize = keyboardFrame.cgRectValue
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         
+        scrollView.contentInset = insets
+        
+        var viewFrame = self.view.frame
+        
+        viewFrame.size.height -= keyboardSize.height
     }
     
-    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
-     
+    @objc private func keyboardDisappear(_ notification: NSNotification) {
+        
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    @objc private func pullKeyboard() {
+        self.view.endEditing(true)
     }
     
     private func enableTapGesture() {
         
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onKeyboardDisappear))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
         
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
@@ -387,8 +399,8 @@ final class EditingStudySchduleViewController: UIViewController {
     }
     
     private func addNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func addActionsAtButtons() {
