@@ -40,6 +40,12 @@ final class FindPasswordCompleteViewController: UIViewController {
         setConstraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     // MARK: - Configure
     
     private func configureViews() {

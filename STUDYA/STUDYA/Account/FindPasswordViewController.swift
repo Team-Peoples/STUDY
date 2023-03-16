@@ -63,20 +63,16 @@ final class FindPasswordViewController: UIViewController {
         
         Network.shared.getNewPassword(id: email) { result in
             switch result {
-                case .success(let isSuccessed):
-                    if isSuccessed {
-                        let nextVC = FindPasswordCompleteViewController(email: email)
-                        self.navigationController?.pushViewController(nextVC, animated: true)
-                    } else {
-                        let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
-                        self.present(okAlert, animated: true)
-                    }
-                    
-                case .failure(let error):
+            case .success:
+                
+                let nextVC = FindPasswordCompleteViewController(email: email)
+                self.navigationController?.pushViewController(nextVC, animated: true)
+            case .failure(let error):
                 switch error {
                 case .userNotFound:
-                    let alert = SimpleAlert(message: "사용자를 찾을 수 없습니다. 이메일을 확인해주세요.")
-                    self.present(alert, animated: true)
+                    
+                    let okAlert = SimpleAlert(message: "가입된 이메일이\n아니에요 😮")
+                    self.present(okAlert, animated: true)
                 default:
                     UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
