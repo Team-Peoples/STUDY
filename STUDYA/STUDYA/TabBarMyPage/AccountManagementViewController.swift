@@ -689,7 +689,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async {
                     
                     if let image = image as? UIImage {
-                        self.profileImageView.setImageWith(image)
+                        self.profileImage = image
                         self.profileImageChangeOkay = true
                         self.checkSaveButtonPossible()
                     }
