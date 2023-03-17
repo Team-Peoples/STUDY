@@ -14,7 +14,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     private var currentStudyOverall: StudyOverall?
     
-    internal var delegate: (Navigatable & SwitchSyncable & SwitchStatusGivable)?
+    internal var delegate: (Navigatable & Managable)?
 
     private let backView = RoundableView(cornerRadius: 24)
     private let titleLabel = CustomLabel(title: "지금까지의 출결", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -94,7 +94,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         nextVC.studyID = studyID
         nextVC.title = currentStudyOverall.study.studyName
         
-        delegate.syncSwitchWith(nextVC: nextVC)
+        delegate.syncManager(with: nextVC)
         delegate.push(vc: nextVC)
     }
     

@@ -100,7 +100,8 @@ final class CustomCalendarView: UIView {
     }
     
     // 해당날짜를 선택된 것으로 표시해주는 메소드
-    func select(date: Date) {
+    func select(date: Date?) {
+        guard let date = date else { return }
         monthLabel.text = DateFormatter.yearMonthDateFormatter.string(from: date)
         calendar.select(date)
     }

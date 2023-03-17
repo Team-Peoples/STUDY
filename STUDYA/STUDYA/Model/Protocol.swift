@@ -43,8 +43,8 @@ extension BottomSheetAddable {
     }
 }
 
-protocol SwitchSyncable {
-    func syncSwitchWith(nextVC: SwitchableViewController)
+protocol Managable {
+    func syncManager(with: SwitchableViewController)
 }
 
 protocol GrowingCellProtocol: AnyObject {

@@ -11,7 +11,7 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceOverallCheckCollectionViewCell"
     
-    weak var delegate: (BottomSheetAddable & Navigatable & SwitchSyncable)? {
+    weak var delegate: (BottomSheetAddable & Navigatable & Managable)? {
         didSet {
             headerView.navigatableBottomSheetableDelegate = delegate
         }
@@ -85,7 +85,7 @@ extension AttendanceOverallCheckCollectionViewCell: UITableViewDataSource {
 extension AttendanceOverallCheckCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let AttendancePersonalVC = AttendancePersonalViewController()
-        delegate?.syncSwitchWith(nextVC: AttendancePersonalVC)
+        delegate?.syncManager(with: AttendancePersonalVC)
         delegate?.push(vc: AttendancePersonalVC)
     }
 }

@@ -47,7 +47,7 @@ class StudyScheduleViewController: SwitchableViewController {
     
     init(studyID: ID) {
         self.studyID = studyID
-        
+        print(#function)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -57,37 +57,24 @@ class StudyScheduleViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         calendarView.delegate = self
         
-        studyAllScheduleViewModel.bind { [self] allStudyScheduleOfAllStudy in
-            calendarView.select(date: selectedDate)
+        studyAllScheduleViewModel.bind { [weak self] allStudyScheduleOfAllStudy in
+            self?.calendarView.select(date: self?.selectedDate)
             
             let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleArray()
-            let studyScheduleThisStudy = studySchedule.filteredStudySchedule(by: studyID)
+            let studyScheduleThisStudy = studySchedule.filteredStudySchedule(by: self?.studyID)
             
-            calendarView.bind(studyScheduleThisStudy)
-            calendarView.reloadData()
+            self?.calendarView.bind(studyScheduleThisStudy)
+            self?.calendarView.reloadData()
             
-            studyScheduleOfThisStudy = studyScheduleThisStudy
+            self?.studyScheduleOfThisStudy = studyScheduleThisStudy
         }
         
         studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
         
         confifureViews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        syncSwitchReverse(isSwitchOn)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Actions
@@ -107,14 +94,8 @@ class StudyScheduleViewController: SwitchableViewController {
         present(navigation, animated: true)
     }
     
-    private func addNotification(){
-        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [self] _ in
-            studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
-        }
-    }
-    
-    override func extraWorkWhenSwitchToggled() {
-        floatingButtonView.isHidden = !isSwitchOn
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
+        floatingButtonView.isHidden = !isOn
         
         let cells = scheduleTableView.cellsForRows(at: 0)
         let scheduleTableViewCells = cells.compactMap { cell in
@@ -123,7 +104,7 @@ class StudyScheduleViewController: SwitchableViewController {
         }
         
         scheduleTableViewCells.forEach { cell in
-            cell.editable = isSwitchOn
+            cell.editable = isOn
         }
     }
     
@@ -137,7 +118,6 @@ class StudyScheduleViewController: SwitchableViewController {
         
         floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
         
-        addNotification()
         configureTableView()
         addSubViewsWithConstraints()
         
@@ -187,7 +167,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let schedule = studyScheduleOfThisStudyAtSelectedDate[indexPath.row]
         
         cell.configure(schedule: schedule, kind: .study)
-        cell.editable = self.isSwitchOn
+//        cell.editable = self.isSwitchOn
         
         cell.etcButtonAction = { [unowned self] in
             presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
@@ -212,8 +192,8 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
             
             let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete)
-            popupVC.firstButtonAction = { [self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [self] in
+            popupVC.firstButtonAction = { [unowned self] in
+                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [unowned self] in
                     // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
                     studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
                     
@@ -222,7 +202,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                     dismiss(animated: true)
                 }
             }
-            popupVC.secondButtonAction = { [self] in
+            popupVC.secondButtonAction = { [unowned self] in
                 studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: true) {
                     self.studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
                     self.dismiss(animated: true)

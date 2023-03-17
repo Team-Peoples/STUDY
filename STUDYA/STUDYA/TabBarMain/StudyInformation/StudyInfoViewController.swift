@@ -71,13 +71,12 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyViewModel.study.id = studyID
         
-        studyViewModel.bind { [self] study in
-            configureViews(study)
+        studyViewModel.bind { [weak self] study in
+            self?.configureViews(study)
         }
         
         getStudyInfo()
-        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
-        navigationController?.navigationBar.titleTextAttributes = isSwitchOn ? [.foregroundColor: UIColor.white] : [.foregroundColor: UIColor.black]
+        
         addNotification()
         configureView()
         setConstraints()
@@ -87,16 +86,6 @@ final class StudyInfoViewController: SwitchableViewController {
         super.viewWillAppear(animated)
         
         tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        syncSwitchReverse(isSwitchOn)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Actions
@@ -121,7 +110,7 @@ final class StudyInfoViewController: SwitchableViewController {
             
             UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
                 self.toastMessage.alpha = 0
-            } completion: {[self] _ in
+            } completion: { [self] _ in
                 
                 toastMessage.snp.updateConstraints { make in
                     make.bottom.equalTo(view).offset(50)
@@ -214,17 +203,13 @@ final class StudyInfoViewController: SwitchableViewController {
         }
     }
     
-    override func extraWorkWhenSwitchToggled() {
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
+
+        studyformEditButton?.isHidden = !isOn
+        generalRuleEditButton?.isHidden = !isOn
+        freeRuleEditButton?.isHidden = !isOn
         
-        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
-        
-        print("isSwitchOn: ", isSwitchOn)
-        print("isManager: ", isManager)
-        studyformEditButton?.isHidden = !isSwitchOn
-        generalRuleEditButton?.isHidden = !isSwitchOn
-        freeRuleEditButton?.isHidden = !isSwitchOn
-        
-        isSwitchOn ? studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
+        isOn ? studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.ownerClose.translatedKorean, for: .normal) : studyLeaveOrCloseButton?.setTitle(UserTaskInStudyInfo.leave.translatedKorean, for: .normal)
     }
     
     private func addNotification() {

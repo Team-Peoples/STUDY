@@ -14,7 +14,7 @@ class MainSixthETCTableViewCell: UITableViewCell {
     private var currentStudyID: Int?
     private var currentStudyName: String?
     
-    internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
+    internal var navigatableManagableDelegate: (Navigatable & Managable)!
     
     private let infoBackgroundView = RoundableView(cornerRadius: 15)
     private let memberBackgroundView = RoundableView(cornerRadius: 15)
@@ -93,8 +93,8 @@ class MainSixthETCTableViewCell: UITableViewCell {
         nextVC.studyID = currentStudyID
         nextVC.title = currentStudyName
         
-        navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
-        navigatableSwitchSyncableDelegate.push(vc: nextVC)
+        navigatableManagableDelegate.syncManager(with: nextVC)
+        navigatableManagableDelegate.push(vc: nextVC)
     }
     
     @objc private func membersButtonTapped() {
@@ -104,8 +104,8 @@ class MainSixthETCTableViewCell: UITableViewCell {
         nextVC.currentStudyID = currentStudyID
         nextVC.title = currentStudyName
         
-        navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: nextVC)
-        navigatableSwitchSyncableDelegate.push(vc: nextVC)
+        navigatableManagableDelegate.syncManager(with: nextVC)
+        navigatableManagableDelegate.push(vc: nextVC)
     }
     
     internal func configureCellWith(currentStudyID: Int?, currentStudyName: String?) {

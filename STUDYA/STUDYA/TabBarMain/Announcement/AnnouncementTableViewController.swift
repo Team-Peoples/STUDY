@@ -13,10 +13,9 @@ final class AnnouncementTableViewController: SwitchableViewController {
     // MARK: - Properties
     
     let studyID: ID
-    
+    let studyName: String
     var announcements: [Announcement] = [] {
         didSet {
-            self.announcementBoardTableView.reloadData()
             self.checkAnnouncementBoardIsEmpty()
         }
     }
@@ -34,7 +33,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
         setConstraints(announcementEmptyImageView, in: view)
         setConstraints(of: announcementEmptyLabel, with: announcementEmptyImageView)
         
-        view.isHidden = true
         return view
     }()
     
@@ -44,10 +42,13 @@ final class AnnouncementTableViewController: SwitchableViewController {
     private let announcementBoardTableView = UITableView()
     private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "공지추가")
     
+    weak var observer: NSObjectProtocol?
+    
     // MARK: - Life Cycle
     
-    init(studyID: ID) {
+    init(studyID: ID, studyName: String) {
         self.studyID = studyID
+        self.studyName = studyName
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -58,38 +59,22 @@ final class AnnouncementTableViewController: SwitchableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
-        
+        title = studyName
         view.backgroundColor = .systemBackground
         
         configureHeaderView()
         configureTableView()
-        configureEmptyView()
-        
+    
         configureFloatingButton()
+        fetchAnnouncement()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         tabBarController?.tabBar.isHidden = true
-        
-        Network.shared.getAllAnnouncement(studyID: studyID) { result in
-            switch result {
-            case .success(let announcements):
-                self.announcements = announcements
-            case .failure(let failure):
-                print(failure)
-            }
-        }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        syncSwitchReverse(isSwitchOn)
-    }
-    
+
     // MARK: - Configure
     
     private func configureHeaderView() {
@@ -123,7 +108,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         announcementBoardTableView.addSubview(announcementEmptyView)
         
         announcementEmptyView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.leading.trailing.bottom.equalTo(announcementBoardTableView.safeAreaLayoutGuide)
         }
     }
     
@@ -139,16 +124,18 @@ final class AnnouncementTableViewController: SwitchableViewController {
             make.height.equalTo(50)
         }
         
-        floatingButtonView.isHidden = isSwitchOn ? false : true
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        
+        floatingButtonView.isHidden = !isSwitchOn
     }
     
     // MARK: - Actions
     
-    override func extraWorkWhenSwitchToggled() {
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
         
-        titleLabel.text = isSwitchOn ? "공지사항 관리" : "공지사항"
+        titleLabel.text = isOn ? "공지사항 관리" : "공지사항"
 
-        floatingButtonView.isHidden = isSwitchOn ? false : true
+        floatingButtonView.isHidden = isOn ? false : true
         
         if announcements.count >= 1 {
             let cells = announcementBoardTableView.cellsForRows(at: 0)
@@ -157,7 +144,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
                 return cell
             }
             announcementBoardTableViewCells.forEach { cell in
-                cell.editable = isSwitchOn
+                cell.editable = isOn
             }
         }
     }
@@ -170,12 +157,48 @@ final class AnnouncementTableViewController: SwitchableViewController {
         let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
         navigationVC.modalPresentationStyle = .fullScreen
         
+        if observer == nil {
+            observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
+                print("노티 호출")
+                self.fetchAnnouncement()
+            })
+        }
+        
         present(navigationVC, animated: true)
+    }
+    
+    @objc private func fetchAnnouncement() {
+        print(#function,"🔥")
+        Network.shared.getAllAnnouncement(studyID: studyID) { result in
+            switch result {
+            case .success(let announcements):
+                self.announcements = announcements
+            case .failure(let failure):
+                print(failure)
+            }
+        }
+        if let observer = observer {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     private func checkAnnouncementBoardIsEmpty(){
         
-        announcementEmptyView.isHidden = announcements.isEmpty ? false :  true
+        if announcements.isEmpty {
+            configureEmptyView()
+        } else {
+            announcementEmptyView.removeFromSuperview()
+        }
+        
+        announcementBoardTableView.reloadData()
+    }
+    
+//    private func addNotification() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(fetchAnnouncement), name: .updateAnnouncement, object: nil)
+//    }
+    
+    private func removeNotification() {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Setting Constraints
@@ -212,16 +235,25 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AnnouncementTableViewCell.identifier, for: indexPath) as? AnnouncementTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
         
-        //자사용 이슈 떄문에 설정해줌.
-        cell.editable = self.isSwitchOn
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        cell.editable = isSwitchOn
         
         cell.etcButtonAction = { [unowned self] in
             presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
         }
 
         cell.cellAction = { [unowned self] in
-            let vc = AnnouncementViewController(task: .viewing, studyID: studyID)
+            let vc = AnnouncementViewController(task: .viewing, studyID: studyID, studyName: studyName)
             vc.announcement = announcements[indexPath.row]
+            vc.title = studyName
+
+            if observer == nil {
+                observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
+                    print("노티 호출")
+                    self.fetchAnnouncement()
+                })
+            }
+
             navigationController?.pushViewController(vc, animated: true)
         }
 
@@ -261,6 +293,13 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             
             let navigationVC = UINavigationController(rootViewController: editingAnnouncementVC)
             navigationVC.modalPresentationStyle = .fullScreen
+            
+            if observer == nil {
+                observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
+                    print("노티 호출")
+                    self.fetchAnnouncement()
+                })
+            }
             
             present(navigationVC, animated: true)
         }

@@ -21,21 +21,16 @@ final class AnnouncementViewController: UIViewController {
     
     let task: Task
     let studyID: ID
+    let studyName: String?
     
     ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
         didSet {
             if isMaster == true {
-                titleTextView.isUserInteractionEnabled = true
                 titleTextView.isEditable = true
-                
-                contentTextView.isUserInteractionEnabled = true
                 contentTextView.isEditable = true
             } else {
-                titleTextView.isUserInteractionEnabled = false
                 titleTextView.isEditable = false
-                
-                contentTextView.isUserInteractionEnabled = false
                 contentTextView.isEditable = false
             }
         }
@@ -106,9 +101,10 @@ final class AnnouncementViewController: UIViewController {
     
     // MARK: - Initialization
     
-    init(task: Task, studyID: ID) {
+    init(task: Task, studyID: ID, studyName: String? = nil) {
         self.task = task
         self.studyID = studyID
+        self.studyName = studyName
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -122,18 +118,8 @@ final class AnnouncementViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.setBrandNavigation()
-        
         configureViews()
         checkIfUserIsMaster()
-        
-        titleTextView.delegate = self
-        contentTextView.delegate = self
-        
-        addNotification()
-        enableTapGesture()
-        
-        setConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -143,10 +129,12 @@ final class AnnouncementViewController: UIViewController {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)
         }
+        addNotification()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        removeNotification()
     }
     
     // MARK: - Configure
@@ -155,19 +143,13 @@ final class AnnouncementViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
+        titleTextView.delegate = self
+        contentTextView.delegate = self
         
-        switch task {
-        case .viewing:
-            contentView.addSubview(headerView)
-        case .creating, .editing:
-            break
-        }
+        navigationController?.setBrandNavigation()
+        enableTapGesture()
         
-        contentView.addSubview(titleTextView)
-        contentView.addSubview(contentTextView)
-        contentView.addSubview(timeLabel)
+        addSubviewsWithConstraints()
     }
     
     // MARK: - Actions
@@ -194,7 +176,8 @@ final class AnnouncementViewController: UIViewController {
         
         Network.shared.createAnnouncement(title: title, content: content, studyID: studyID) { result in
             switch result {
-            case .success(_):
+            case .success:
+                NotificationCenter.default.post(name: .updateAnnouncement, object: nil)
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)
@@ -211,6 +194,7 @@ final class AnnouncementViewController: UIViewController {
         Network.shared.updateAnnouncement(title: title, content: content, announcementID: announcementID) { result in
             switch result {
             case .success(_):
+                NotificationCenter.default.post(name: .updateAnnouncement, object: nil)
                 self.dismiss(animated: true)
             case .failure(let failure):
                 print(failure)
@@ -219,7 +203,11 @@ final class AnnouncementViewController: UIViewController {
     }
     
     @objc func cancel() {
-        self.dismiss(animated: true)
+        let simpleAlert = SimpleAlert(title: "작성을 중단할까요?", message: "페이지를 나가면 작성하던 내용이 사라져요.", firstActionTitle: "나가기", actionStyle: .destructive, firstActionHandler: { _ in
+            self.dismiss(animated: true)
+        }, cancelActionTitle: "남아있기")
+        
+        present(simpleAlert, animated: true)
     }
     
     private func enableTapGesture() {
@@ -245,27 +233,39 @@ final class AnnouncementViewController: UIViewController {
         case .creating:
             navigationItem.title = "공지사항 만들기"
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .editing:
             navigationItem.title = "공지사항 수정"
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .viewing:
-            navigationItem.title = "스터디 이름"
+            navigationItem.title = studyName
+            navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         }
         
-        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
         navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
-        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
     
     private func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
+    private func removeNotification() {
+        NotificationCenter.default.removeObserver(self)
+    }
     
-    // MARK: - Setting Constraints
-    
-    func setConstraints() {
+    func addSubviewsWithConstraints() {
+        
+        view.addSubview(scrollView)
+        
+        scrollView.addSubview(contentView)
+        
+        contentView.addSubview(titleTextView)
+        contentView.addSubview(contentTextView)
+        contentView.addSubview(timeLabel)
         
         scrollView.snp.makeConstraints { make in
             make.centerX.width.top.bottom.equalTo(view.safeAreaLayoutGuide)
@@ -291,6 +291,8 @@ final class AnnouncementViewController: UIViewController {
                 make.leading.trailing.equalTo(contentView).inset(30)
             }
         case .viewing:
+            contentView.addSubview(headerView)
+            
             headerView.snp.makeConstraints({ make in
                 make.leading.top.trailing.equalTo(contentView)
                 make.height.equalTo(48)
@@ -340,10 +342,26 @@ extension AnnouncementViewController: UITextViewDelegate {
         }
     }
     
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == titleTextView {
+            if text == "\n" {
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
+    
     func textViewDidChange(_ textView: UITextView) {
+        
+        if textView == titleTextView {
+            let maxLength = 40
+            textView.limitCharactersNumber(maxLength: maxLength)
+        }
+        
         let size = CGSize(width: textView.frame.width, height: .infinity)
         let estimatedSize = textView.sizeThatFits(size)
-        
         textView.constraints.forEach { (constraint) in
             if constraint.firstAttribute == .height {
                 constraint.constant = estimatedSize.height

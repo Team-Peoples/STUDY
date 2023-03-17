@@ -17,7 +17,6 @@ class AttendancePersonalViewController: SwitchableViewController {
         super.viewDidLoad()
         
         view = AttendanceForAMemberView(viewer: .manager)
-        title = "스터디이름"
         navigationController?.setBrandNavigation()
     }
     

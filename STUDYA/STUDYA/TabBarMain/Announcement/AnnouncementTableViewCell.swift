@@ -59,7 +59,7 @@ final class AnnouncementTableViewCell: UITableViewCell {
         return v
     }()
     private let titleLabel: CustomLabel = {
-        let lbl = CustomLabel(title: "", tintColor: .ppsBlack, size: 18, isBold: true)
+        let lbl = CustomLabel(title: String(), tintColor: .ppsBlack, size: 18, isBold: true)
         
         lbl.numberOfLines = 1
         lbl.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)

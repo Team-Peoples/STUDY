@@ -247,7 +247,7 @@ final class MainViewController: SwitchableViewController {
         }
     }
     
-    override func extraWorkWhenSwitchToggled() {
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
 
 //        let appearance = UINavigationBarAppearance()
 //        appearance.configureWithOpaqueBackground()
@@ -258,10 +258,10 @@ final class MainViewController: SwitchableViewController {
         let thirdCellIndexPath = IndexPath(row: 2, section: 0)
         mainTableView.reloadRows(at: [thirdCellIndexPath], with: .automatic)
         
-        notificationBtn.isHidden = isSwitchOn ? true : false
-        floatingButtonContainerView.isHidden = isSwitchOn ? false : true
+        notificationBtn.isHidden = isOn
+        floatingButtonContainerView.isHidden = !isOn
         
-        guard !isSwitchOn else { return }
+        guard !isOn else { return }
         floatingButton.isSelected = false
     }
     
@@ -318,6 +318,7 @@ final class MainViewController: SwitchableViewController {
                 
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
                 KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
+                self.isManager = studyOverall.isManager
                 self.configureViewWhenYesStudy()
                 self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
                 
@@ -430,7 +431,8 @@ final class MainViewController: SwitchableViewController {
     }
 
     private func configureFloatingButton() {
-        floatingButtonContainerView.isHidden = isSwitchOn ? false : true
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        floatingButtonContainerView.isHidden = !isSwitchOn
         view.addSubview(floatingButtonContainerView)
         floatingButtonContainerView.addSubview(floatingButton)
         floatingButtonContainerView.snp.makeConstraints { make in
@@ -480,7 +482,7 @@ extension MainViewController: UITableViewDataSource {
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as? MainSecondScheduleTableViewCell else { return MainSecondScheduleTableViewCell() }
             
-            cell.navigatableSwitchSyncableDelegate = self
+            cell.navigatableManagableDelegate = self
             cell.configureCellWith(nickName: nickName, schedule: currentStudyOverall?.studySchedule)
 
             return cell
@@ -488,7 +490,7 @@ extension MainViewController: UITableViewDataSource {
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MainThirdButtonTableViewCell.identifier) as? MainThirdButtonTableViewCell else { return MainThirdButtonTableViewCell() }
             
-            cell.navigatableSwitchObservableDelegate = self
+            cell.navigatableDelegate = self
             cell.configureCellWith(attendanceInformation: imminentAttendanceInformation, studySchedule: currentStudyOverall?.studySchedule)
             
             return cell
@@ -514,7 +516,7 @@ extension MainViewController: UITableViewDataSource {
         case 5:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MainSixthETCTableViewCell.identifier, for: indexPath) as? MainSixthETCTableViewCell else { return MainSixthETCTableViewCell() }
             
-            cell.navigatableSwitchSyncableDelegate = self
+            cell.navigatableManagableDelegate = self
             cell.configureCellWith(currentStudyID: currentStudyOverall?.study.id, currentStudyName: currentStudyOverall?.study.studyName)
             
             return cell
@@ -535,7 +537,7 @@ extension MainViewController: UITableViewDelegate {
                 
                 studyScheduleVC.title = currentStudyOverall.study.studyName
                 
-                self.syncSwitchWith(nextVC: studyScheduleVC)
+                self.syncManager(with: studyScheduleVC)
                 self.push(vc: studyScheduleVC)
                 
             } else if indexPath.row == 3 {
@@ -543,10 +545,10 @@ extension MainViewController: UITableViewDelegate {
                 
                 saveAnnouncementIDUserAlreadyCheckedInStudy(studyID)
                 
-                let announcementTableVC = AnnouncementTableViewController(studyID: studyID)
-                announcementTableVC.title = currentStudyOverall.study.studyName
+                guard let studyName = currentStudyOverall.study.studyName else { return }
+                let announcementTableVC = AnnouncementTableViewController(studyID: studyID, studyName: studyName)
                 
-                self.syncSwitchWith(nextVC: announcementTableVC)
+                self.syncManager(with: announcementTableVC)
                 self.push(vc: announcementTableVC)
             }
             
@@ -556,7 +558,7 @@ extension MainViewController: UITableViewDelegate {
     
     private func saveAnnouncementIDUserAlreadyCheckedInStudy(_ studyID: ID) {
         guard let announcementID = currentStudyOverall?.announcement?.id else { return }
-        UserDefaults.standard.setValue(announcementID, forKey: "checkedAnnouncementIDOfStudy\(studyID)")
+        UserDefaults.standard.set(announcementID, forKey: "checkedAnnouncementIDOfStudy\(studyID)")
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -574,17 +576,5 @@ extension MainViewController: UITableViewDelegate {
         default:
             return 70
         }
-    }
-}
-
-protocol SwitchStatusGivable {
-    var isSwitchOn: Bool { get set }
-    
-    func getSwtichStatus() -> Bool
-}
-
-extension SwitchStatusGivable {
-    func getSwtichStatus() -> Bool {
-        isSwitchOn
     }
 }

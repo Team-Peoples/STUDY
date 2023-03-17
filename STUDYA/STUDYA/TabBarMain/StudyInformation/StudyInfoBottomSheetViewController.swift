@@ -127,7 +127,9 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                     case .success:
                         print("스터디장이 스터디 종료 성공")
                         NotificationCenter.default.post(name: .reloadStudyList, object: nil)
-                        self.dismiss(animated: true)
+                        self.dismiss(animated: true) {
+                            self.presentingVC?.navigationController?.popToRootViewController(animated: true)
+                        }
                     case .failure(let error):
                         print(error)
                     }

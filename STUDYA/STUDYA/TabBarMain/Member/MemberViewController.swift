@@ -166,7 +166,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(isSwitchOn)
+//        syncSwitchReverse(isSwitchOn)
     }
     
     @objc private func dimmingViewTapped() {
@@ -278,8 +278,7 @@ extension MemberViewController: UICollectionViewDataSource {
             guard let members = members else { return MemberCollectionViewCell() }
             
             cell.member = members[indexPath.item - 1]
-            cell.switchObservableDelegate = self
-            
+            let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
             if isSwitchOn { //🛑여기 isManager 아니겠지?
                 cell.profileViewTapped = { [self] member in
                     

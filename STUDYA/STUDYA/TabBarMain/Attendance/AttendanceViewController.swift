@@ -37,8 +37,9 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         if isManager {
             managerView.delegate = self
+        } else {
+            userView.delegate = self
         }
-        userView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,11 +51,11 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        syncSwitchReverse(isSwitchOn)
+//        syncSwitchReverse(isSwitchOn)
     }
     
-    override func extraWorkWhenSwitchToggled() {
-        view = isSwitchOn ? managerView : userView
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
+        view = isOn ? managerView : userView
     }
 }
 
