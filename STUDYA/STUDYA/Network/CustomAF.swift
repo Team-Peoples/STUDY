@@ -57,6 +57,7 @@ enum RequestPurpose: Requestable {
     case updateStudy(ID, Study)
     case updateAnnouncement(Title, Content, ID) //16
     case updatePinnedAnnouncement(ID, Bool)   //17
+    case forcingUpdatePinnedAnnouncement(ID)
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudySchedulePosting)
@@ -154,6 +155,8 @@ extension RequestPurpose {
             return "/noti"
         case .updatePinnedAnnouncement:
             return "/noti/pin"
+        case .forcingUpdatePinnedAnnouncement(let id):
+            return "/noti/pin/compulsion/\(id)"
         case .updateScheduleStatus(let id):
             return "/user/schedule/\(id)"
         case .updateSchedule:
@@ -225,7 +228,7 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .forcingUpdatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             

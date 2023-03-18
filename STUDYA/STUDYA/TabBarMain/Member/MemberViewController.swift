@@ -246,8 +246,7 @@ extension MemberViewController: UICollectionViewDataSource {
             
             cell.inviteButtonAction = {
                 
-                let templateID: Int64 = 90874
-
+//                let templateID: Int64 = 90874
 //                if ShareApi.isKakaoTalkSharingAvailable() {
 //                    // 카카오톡으로 카카오톡 공유 가능
 //                    let userNickname = KeyChain.read(key: Constant.nickname)!

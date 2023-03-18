@@ -93,6 +93,10 @@ final class AnnouncementTableViewController: SwitchableViewController {
         announcementBoardTableView.dataSource = self
         announcementBoardTableView.delegate = self
         
+        announcementBoardTableView.refreshControl = UIRefreshControl()
+        
+        announcementBoardTableView.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        
         announcementBoardTableView.register(AnnouncementTableViewCell.self, forCellReuseIdentifier: AnnouncementTableViewCell.identifier)
         
         announcementBoardTableView.separatorStyle = .none
@@ -149,6 +153,10 @@ final class AnnouncementTableViewController: SwitchableViewController {
         }
     }
     
+    @objc private func refresh() {
+        fetchAnnouncement()
+    }
+    
     @objc func floatingButtonDidTapped() {
     
         let creatingAnnouncementVC = AnnouncementViewController(task: .creating, studyID: studyID)
@@ -159,7 +167,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
         
         if observer == nil {
             observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                print("노티 호출")
                 self.fetchAnnouncement()
             })
         }
@@ -168,20 +175,48 @@ final class AnnouncementTableViewController: SwitchableViewController {
     }
     
     @objc private func fetchAnnouncement() {
-        print(#function,"🔥")
         Network.shared.getAllAnnouncement(studyID: studyID) { result in
             switch result {
             case .success(let announcements):
                 self.announcements = announcements
+                self.announcementBoardTableView.refreshControl?.endRefreshing()
             case .failure(let failure):
                 print(failure)
             }
         }
+        
         if let observer = observer {
             NotificationCenter.default.removeObserver(observer)
         }
     }
     
+    private func updatePin(announcement announcementID: ID, isPinned: Bool, successHandler: @escaping () -> Void) {
+        
+        Network.shared.updatePinnedAnnouncement(announcementID, isPinned: isPinned
+        ) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let failure):
+                let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
+                self.present(simpleAlert)
+                print(failure)
+            }
+        }
+    }
+    
+    private func forcingUpdatePin(announcement announcementID: ID, successHandler: @escaping () -> Void) {
+        Network.shared.forcingUpdatePinnedAnnouncement(announcementID) { result in
+            switch result {
+            case .success:
+                successHandler()
+            case .failure(let failure):
+                let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
+                self.present(simpleAlert)
+                print(failure)
+            }
+        }
+    }
     private func checkAnnouncementBoardIsEmpty(){
         
         if announcements.isEmpty {
@@ -191,14 +226,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
         }
         
         announcementBoardTableView.reloadData()
-    }
-    
-//    private func addNotification() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(fetchAnnouncement), name: .updateAnnouncement, object: nil)
-//    }
-    
-    private func removeNotification() {
-        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Setting Constraints
@@ -238,23 +265,24 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
         cell.editable = isSwitchOn
         
-        cell.etcButtonAction = { [unowned self] in
-            presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
+        cell.etcButtonAction = { [weak self] in
+            self?.presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
         }
 
-        cell.cellAction = { [unowned self] in
-            let vc = AnnouncementViewController(task: .viewing, studyID: studyID, studyName: studyName)
-            vc.announcement = announcements[indexPath.row]
-            vc.title = studyName
+        cell.cellAction = { [weak self] in
+            guard let studyID = self?.studyID else { return }
+            let vc = AnnouncementViewController(task: .viewing, studyID: studyID, studyName: self?.studyName)
+            vc.announcement = self?.announcements[indexPath.row]
+            vc.title = self?.studyName
 
-            if observer == nil {
-                observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
+            if self?.observer == nil {
+                self?.observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
                     print("노티 호출")
-                    self.fetchAnnouncement()
+                    self?.fetchAnnouncement()
                 })
             }
 
-            navigationController?.pushViewController(vc, animated: true)
+            self?.navigationController?.pushViewController(vc, animated: true)
         }
 
         cell.announcement = announcements[indexPath.row]
@@ -264,26 +292,35 @@ extension AnnouncementTableViewController: UITableViewDataSource {
     func presentActionSheet(selected cell: AnnouncementTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { _ in
-            guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementTableViewCell] else { return }
-            let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
-            pinnedCell?.announcement?.isPinned = false
-            
-            // domb: 아직 409에러 피드백 받아서 할게 있음. ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-            cell.announcement?.isPinned = true
-            
-            if let announcementID = cell.announcement?.id {
-                Network.shared.updatePinnedAnnouncement(announcementID, isPinned: true) { result in
-                    switch result {
-                    case .success(let success):
-                        print(success)
-                    case .failure(let failure):
-                        print(failure)
-                    }
+        let announcementAlreadyPinned = cell.isPinned == true
+        
+        if announcementAlreadyPinned {
+            // 핀공지 해제
+            let pinAction = UIAlertAction(title: "핀공지 해제", style: .default) { [weak  self] _ in
+                guard let announcementID = cell.announcement?.id else { return }
+                self?.updatePin(announcement: announcementID, isPinned: false) { [weak self] in
+                    self?.refresh()
                 }
             }
+            actionSheet.addAction(pinAction)
+        } else {
+            let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { [weak  self] _ in
+                guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementTableViewCell] else { return }
+                let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
+                guard let announcementID = cell.announcement?.id else { return }
+                
+                guard pinnedCell != nil else {
+                    self?.forcingUpdatePin(announcement: announcementID, successHandler: {
+                        self?.refresh()
+                    })
+                    return
+                }
+                self?.updatePin(announcement: announcementID, isPinned: true) {
+                    self?.refresh()
+                }
+            }
+            actionSheet.addAction(pinAction)
         }
-        
         
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
           
@@ -323,8 +360,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-
-        actionSheet.addAction(pinAction)
+        
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)

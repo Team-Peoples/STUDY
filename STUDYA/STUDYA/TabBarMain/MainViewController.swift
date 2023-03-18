@@ -163,7 +163,9 @@ final class MainViewController: SwitchableViewController {
 //        self.navigationItem.scrollEdgeAppearance = nil
     }
     var flag = true
+    
     // MARK: - Actions
+    
     @objc private func notificationButtonDidTapped() {
         let nextVC = NotificationViewController()
         push(vc: nextVC)

@@ -92,6 +92,9 @@ struct Network {
                 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpStatusCode) { result in
                     completion(result)
                 }
@@ -134,6 +137,9 @@ struct Network {
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -159,6 +165,9 @@ struct Network {
 
                 saveLoginformation(httpResponse: httpResponse, user: user, completion: completion)
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -173,6 +182,9 @@ struct Network {
             case 200:
                 completion(.success(true))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -192,6 +204,9 @@ struct Network {
                 
                 completion(.success(isEmailCertificated))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: statusCode) { result in
                     completion(result)
                 }
@@ -220,7 +235,9 @@ struct Network {
             case 404:
                 completion(.failure(.userNotFound))
             default:
-                
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -249,7 +266,9 @@ struct Network {
             case 404:
                 completion(.failure(.userNotFound))
             default:
-                
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -301,7 +320,9 @@ struct Network {
                 }
                 
             default:
-                
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -333,7 +354,9 @@ struct Network {
                 
                 break
             default:
-                
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode:  httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -366,7 +389,9 @@ struct Network {
                 
                 completion(.failure(.userNotFound))
             default:
-                
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode:  httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -407,6 +432,9 @@ struct Network {
                 }
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -434,6 +462,9 @@ struct Network {
                 completion(.success(studies))
 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -455,6 +486,9 @@ struct Network {
                 }
                 completion(.success(studyOverall))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -477,6 +511,9 @@ struct Network {
                 
                 completion(.success(study))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -515,6 +552,9 @@ struct Network {
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -554,6 +594,9 @@ struct Network {
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -592,6 +635,9 @@ struct Network {
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -618,6 +664,9 @@ struct Network {
                 completion(.failure(.ownerCantLeave))
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -635,6 +684,9 @@ struct Network {
                 }
                 completion(.success(response))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -668,7 +720,11 @@ struct Network {
             case 404:
                 completion(.failure(.unauthorizedMember))
                 
-            default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
     }
@@ -685,6 +741,9 @@ struct Network {
                 }
                 completion(.success(isSucceed))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -715,6 +774,9 @@ struct Network {
                 }
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -735,6 +797,9 @@ struct Network {
                 guard let data = response.data, let studyAllSchedule = jsonDecode(type: AllStudyScheduleOfAllStudy.self, data: data) else { return }
                 completion(.success(studyAllSchedule))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -761,6 +826,9 @@ struct Network {
             case 404:
                 completion(.failure(.userNotFound))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -787,6 +855,9 @@ struct Network {
                 completion(.success(isSuccessed))
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -811,6 +882,9 @@ struct Network {
                 completion(.success(isSuccessed))
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -838,6 +912,9 @@ struct Network {
                 completion(.success(announcements))
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -862,6 +939,9 @@ struct Network {
                 
                 completion(.success(announcements))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -886,6 +966,9 @@ struct Network {
                 
                 completion(.success(announcements))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -910,6 +993,36 @@ struct Network {
                 
                 completion(.success(announcements))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
+                seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    
+    func forcingUpdatePinnedAnnouncement(_ announcementID: ID, completion: @escaping (Result<[Announcement], PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.forcingUpdatePinnedAnnouncement(announcementID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let announcements = jsonDecode(type: [Announcement].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(announcements))
+            default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -934,6 +1047,9 @@ struct Network {
                 
                 completion(.success(announcements))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -960,6 +1076,9 @@ struct Network {
                 
                 completion(.success(code))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -1000,6 +1119,9 @@ struct Network {
                 }
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -1043,6 +1165,9 @@ struct Network {
                 }
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -1079,6 +1204,9 @@ struct Network {
                 }
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode) { result in
                     completion(result)
                 }
@@ -1104,6 +1232,9 @@ struct Network {
             case 400:
                 completion(.failure(.userNotFound))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1126,6 +1257,9 @@ struct Network {
                 
                 completion(.success(schdules))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1147,6 +1281,9 @@ struct Network {
                 
                 completion(.success(schdules))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1168,6 +1305,9 @@ struct Network {
                 
                 completion(.success(schdules))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1189,6 +1329,9 @@ struct Network {
                 
                 completion(.success(schdules))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1213,6 +1356,9 @@ struct Network {
                 completion(.failure(.youAreNotOwner))
                 
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1234,6 +1380,9 @@ struct Network {
                 
                 completion(.success(attendanceInfo))
             default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
         }
@@ -1258,6 +1407,9 @@ struct Network {
                     
                     completion(.success(notifications))
                 default:
+                    guard let data = response.data,
+                          let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                    print(errorBody)
                     seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
             }
