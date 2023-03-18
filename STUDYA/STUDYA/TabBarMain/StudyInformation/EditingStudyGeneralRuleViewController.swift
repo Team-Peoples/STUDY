@@ -251,8 +251,8 @@ extension EditingStudyGeneralRuleViewController: UICollectionViewDataSource {
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell else { return EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell() }
             
-            cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString()
-            cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString()
+            cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString() ?? "--"
+            cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString() ?? "--"
             
             cell.latenessCountFieldAction = { [self] latenessCount in
                 studyViewModel.study.generalRule?.excommunication.lateness = latenessCount

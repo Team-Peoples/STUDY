@@ -12,7 +12,7 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
     static let identifier = "CreatingStudyGeneralRuleViewController"
     
     var doneButtonDidTapped: (GeneralStudyRule) -> () = { generalRule in }
-    var generalRuleViewModel = GeneralRuleViewModel()
+    let generalRuleViewModel = GeneralRuleViewModel()
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
@@ -73,16 +73,24 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        // domb: 두 개의 컬렉션뷰셀을 전환할 때 하나의 셀은 nil이 되어 doneButtonDidTapped Action에서 다른 하나의 셀에 담긴 generalRule을 밖에 가져가지 못한다.
+
         if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell {
-            generalRuleViewModel.generalRule.lateness = cell.lateness ?? Lateness()
-            generalRuleViewModel.generalRule.absence = cell.absence ?? Absence()
-            generalRuleViewModel.generalRule.deposit = cell.deposit
+            
+            let generalRule = cell.generalRuleViewModel?.generalRule
+            
+            self.generalRuleViewModel.generalRule.absence = generalRule?.absence ?? Absence()
+            self.generalRuleViewModel.generalRule.lateness = generalRule?.lateness ?? Lateness()
+            self.generalRuleViewModel.generalRule.deposit = generalRule?.deposit ?? 0
         }
         
         if let excommunicationCell = collectionView.cellForItem(at: IndexPath(item: 1, section: 0)) as? CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell {
-            generalRuleViewModel.generalRule.excommunication = Excommunication(lateness: excommunicationCell.lateNumberField.text?.toInt(), absence: excommunicationCell.absenceNumberField.text?.toInt())
+            
+            let generalRule = excommunicationCell.generalRuleViewModel?.generalRule
+            
+            generalRuleViewModel.generalRule.excommunication.lateness = generalRule?.excommunication.lateness
+            generalRuleViewModel.generalRule.excommunication.absence = generalRule?.excommunication.absence
         }
+
         doneButtonDidTapped(generalRuleViewModel.generalRule)
         dismiss(animated: true)
     }
@@ -94,24 +102,24 @@ extension CreatingStudyGeneralRuleViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         switch indexPath.item {
         case 0:
+            
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell.identifier, for: indexPath) as! CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell
             
-            generalRuleViewModel.configure(cell)
+            cell.generalRuleViewModel = generalRuleViewModel
             
             return cell
-            
         case 1:
             
             guard let excommunicationCell = collectionView.dequeueReusableCell(withReuseIdentifier: CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell else {
                 return UICollectionViewCell()
             }
             
-            generalRuleViewModel.configure(cell: excommunicationCell)
+            excommunicationCell.generalRuleViewModel = generalRuleViewModel
             
             return excommunicationCell
-            
         default: break
         }
         

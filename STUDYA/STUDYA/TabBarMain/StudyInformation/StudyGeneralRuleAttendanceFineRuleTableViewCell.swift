@@ -56,8 +56,6 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
     
         switch sender {
-        case perLateMinuteField:
-            perLateMinuteFieldAction(perLateMinuteField.text?.toInt())
         case latenessFineField:
             latenessFineFieldAction(latenessFineField.text?.toInt() ?? 0)
         case absenceFineField:
