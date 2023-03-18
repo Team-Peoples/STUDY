@@ -18,6 +18,7 @@
 		72512A7E292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */; };
 		72512A80292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */; };
 		72512AFE2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */; };
+		72578BAF29C4E02F002D6FA5 /* DynamicLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */; };
 		726FA4652901A496004E49A9 /* StudyScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4642901A496004E49A9 /* StudyScheduleTableViewCell.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
 		72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */; };
@@ -170,6 +171,8 @@
 		72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudySchedulePriodFormViewController.swift; path = ../StudySchedule/CreatingStudySchedulePriodFormViewController.swift; sourceTree = "<group>"; };
 		72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudyScheduleContentViewController.swift; path = ../StudySchedule/CreatingStudyScheduleContentViewController.swift; sourceTree = "<group>"; };
 		72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpCalendarViewController.swift; path = ../StudySchedule/StudySchedulePopUpCalendarViewController.swift; sourceTree = "<group>"; };
+		72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicLinkBuilder.swift; sourceTree = "<group>"; };
+		72578BB029C4E6E2002D6FA5 /* STUDYADebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = STUDYADebug.entitlements; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* StudyScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
 		72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -347,6 +350,7 @@
 		72ED25A62897788900031AD1 /* STUDYA */ = {
 			isa = PBXGroup;
 			children = (
+				72578BB029C4E6E2002D6FA5 /* STUDYADebug.entitlements */,
 				72ED25A72897788900031AD1 /* AppDelegate.swift */,
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72E5574D29A46CCE007A2CC0 /* ViewController.swift */,
@@ -432,6 +436,7 @@
 				D3245C1129A8F46400703847 /* HapticManager.swift */,
 				72B44AAE29A753110088F678 /* CustomCalendar.swift */,
 				721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */,
+				72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -862,6 +867,7 @@
 				D394146128FDBAA7006E75C3 /* MainDropDownTableViewCell.swift in Sources */,
 				D381460129B1F07700503569 /* Noti.swift in Sources */,
 				72E5574E29A46CCE007A2CC0 /* ViewController.swift in Sources */,
+				72578BAF29C4E02F002D6FA5 /* DynamicLinkBuilder.swift in Sources */,
 				D31C529E29A6745C005933E7 /* MySchedule.swift in Sources */,
 				72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */,
 				D34E4F5E291D3F9A00958557 /* MemberViewController.swift in Sources */,
@@ -1075,6 +1081,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = STUDYA/STUDYADebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G8228CR939;

@@ -19,7 +19,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             guard let currentStudyID = currentStudyID else { return }
             getMemberList(studyID: currentStudyID)
         }
-    }    
+    }
     internal var members: Members? {
         didSet {
             collectionView.reloadData()
@@ -248,20 +248,32 @@ extension MemberViewController: UICollectionViewDataSource {
                 
                 let templateID: Int64 = 90874
 
-                if ShareApi.isKakaoTalkSharingAvailable() {
-                    // 카카오톡으로 카카오톡 공유 가능
-                    let userNickname = KeyChain.read(key: Constant.nickname)!
-                    let studyName = KeyChain.read(key: Constant.currentStudyName)!
-                    ShareApi.shared.shareCustom(templateId: templateID, templateArgs:["nickname": userNickname, "studyName": studyName]) {(sharingResult, error) in
-                        if let error = error {
-                            print(error)
-                        }
-                        else {
-                            print("shareCustom() success.")
-                            if let sharingResult = sharingResult {
-                                UIApplication.shared.open(sharingResult.url, options: [:], completionHandler: nil)
-                            }
-                        }
+//                if ShareApi.isKakaoTalkSharingAvailable() {
+//                    // 카카오톡으로 카카오톡 공유 가능
+//                    let userNickname = KeyChain.read(key: Constant.nickname)!
+//                    let studyName = KeyChain.read(key: Constant.currentStudyName)!
+//                    ShareApi.shared.shareCustom(templateId: templateID, templateArgs:["nickname": userNickname, "studyName": studyName]) {(sharingResult, error) in
+//                        if let error = error {
+//                            print(error)
+//                        }
+//                        else {
+//                            print("shareCustom() success.")
+//                            if let sharingResult = sharingResult {
+//                                UIApplication.shared.open(sharingResult.url, options: [:], completionHandler: nil)
+//                            }
+//                        }
+//                    }
+//                }
+                guard let studyID = self.currentStudyID else { return }
+                DynamicLinkBuilder().getURL(studyID: studyID) { dynamicLinkURL, array, error in
+                    guard let shareURL = dynamicLinkURL else {
+                        print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
+                        return
+                    }
+                    print(shareURL)
+                    DispatchQueue.main.async {
+                        let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
+                        self.present(activityVC, animated: true)
                     }
                 }
 //                guard let shareURL = URL(string: "https://www.google.com") else { return }
