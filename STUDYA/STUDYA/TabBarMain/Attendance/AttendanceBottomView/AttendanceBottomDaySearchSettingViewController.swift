@@ -1,5 +1,5 @@
 //
-//  AttendanceBottomDayCheckConditionSettingView.swift
+//  AttendanceBottomDaySearchSettingViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/11/23.
@@ -7,17 +7,18 @@
 
 import UIKit
 
-final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
+final class AttendanceBottomDaySearchSettingViewController: FullDoneButtonButtonViewController {
     
-    internal var viewModel: AttendancesModificationViewModel?
+    private var viewModel: AttendancesModificationViewModel?
+    
     private var time: Time?
-    private var alignment = LeftButtonAlignment.name
+    private var alignment: LeftButtonAlignment?
     
     private let titleLabel = CustomLabel(title: "조회조건설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator = UIView(frame: .zero)
     private let sortTitleLabel = CustomLabel(title: "정렬기준", tintColor: .ppsBlack, size: 14, isBold: true)
-    private lazy var nameInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "이름순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
-    private lazy var attendanceInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "출석순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changeOrderType))
+    private lazy var nameInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "이름순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(orderAttendanceDatasInName))
+    private lazy var attendanceInOrderButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "출석순", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(orderAttendanceDatasInAttendance))
     private let timeTitleLabel = CustomLabel(title: "회차 선택", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var flowLayout: UICollectionViewFlowLayout = {
         
@@ -29,76 +30,55 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     }()
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     
-    override init(doneButtonTitle: String) {
-        super.init(doneButtonTitle: doneButtonTitle)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        backgroundColor = .systemBackground
-        nameInOrderButton.isSelected = true
+        view.backgroundColor = .systemBackground
+        
+        enableDoneButton()
         
         configureViews()
-        configureDoneButton(on: self, under: collectionView, constant: 16)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        configureDoneButton(under: collectionView, constant: 16)
     }
     
+    @objc private func orderAttendanceDatasInName() {
+        alignment = .name
+        
+        nameInOrderButton.isSelected = true
+        attendanceInOrderButton.isSelected = false
+    }
     
-    @objc private func changeOrderType() {
-        nameInOrderButton.toggle()
-        attendanceInOrderButton.toggle()
+    @objc private func orderAttendanceDatasInAttendance() {
+        alignment = .attendance
+        
+        nameInOrderButton.isSelected = false
+        attendanceInOrderButton.isSelected = true
     }
     
     override func doneButtonTapped() {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel, let time = time, let alignment = alignment else { return }
         
-        if let allUsersAttendanceForADay = viewModel.allUsersAttendancesForADay,
-           let time = time,
-           var attendancesForATime = allUsersAttendanceForADay[time] {
-            
-            viewModel.selectedTime = Observable(time)
-            
-            align(&attendancesForATime)
-            
-//            viewModel.attendancesForATime = Observable(attendancesForATime)
-        }
+        viewModel.updateAttendancesData(at: time, by: alignment)
         
-        viewModel.alignment = Observable(alignment)
-        navigatable?.dismiss()
+        dismiss(animated: true)
     }
     
-    private func align(_ attendancesForATime: inout [SingleUserAnAttendanceInformation]) {
-//        if alignment == .name {
-//            attendancesForATime.sort { (lhs, rhs) -> Bool in
-//                
-//                if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임임
-//                    
-//                    if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
-//                        return lhs.userID > rhs.userID  //여기는 userID맞음
-//                    } else {
-//                        return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
-//                    }
-//                    
-//                } else {
-//                    return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
-//                }
-//            }
-//        } else {
-//            attendancesForATime.sort { lhs, rhs in
-//                
-//                if lhs.attendanceStatus.priority == rhs.attendanceStatus.priority {
-//                    
-//                    if lhs.userID == rhs.userID {   //여기는 userID아니고 닉네임
-//                        return lhs.userID > rhs.userID  //여기는 맞음
-//                    } else {
-//                        return lhs.userID > rhs.userID  //여기는 userid 아니고 닉네임
-//                    }
-//                    
-//                } else {
-//                    return lhs.attendanceStatus.priority > rhs.attendanceStatus.priority
-//                }
-//            }
-//        }
+    internal func configureViewWith(viewModel: AttendancesModificationViewModel) {
+        self.viewModel = viewModel
+        
+        self.time = viewModel.selectedTime.value
+        self.alignment = viewModel.alignment.value
+        
+        if alignment == .name {
+            nameInOrderButton.isSelected = true
+            attendanceInOrderButton.isSelected = false
+        } else {
+            nameInOrderButton.isSelected = false
+            attendanceInOrderButton.isSelected = true
+        }
+        
+        configureCollectionView()
+        collectionView.reloadData()
     }
     
     private func configureCollectionView() {
@@ -112,25 +92,25 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     private func configureViews() {
         separator.backgroundColor = .appColor(.ppsGray3)
         
-        addSubview(titleLabel)
-        addSubview(separator)
-        addSubview(sortTitleLabel)
-        addSubview(nameInOrderButton)
-        addSubview(attendanceInOrderButton)
-        addSubview(timeTitleLabel)
-        addSubview(collectionView)
+        view.addSubview(titleLabel)
+        view.addSubview(separator)
+        view.addSubview(sortTitleLabel)
+        view.addSubview(nameInOrderButton)
+        view.addSubview(attendanceInOrderButton)
+        view.addSubview(timeTitleLabel)
+        view.addSubview(collectionView)
         
         titleLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(self)
-            make.top.equalTo(self.snp.top).inset(24)
+            make.centerX.equalTo(view)
+            make.top.equalTo(view.snp.top).inset(24)
         }
         separator.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self)
+            make.leading.trailing.equalTo(view)
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
             make.height.equalTo(1)
         }
         sortTitleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(self.snp.leading).offset(18)
+            make.leading.equalTo(view.snp.leading).offset(18)
             make.top.equalTo(separator.snp.bottom).offset(24)
         }
         nameInOrderButton.snp.makeConstraints { make in
@@ -139,7 +119,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         }
         attendanceInOrderButton.snp.makeConstraints { make in
             make.leading.equalTo(nameInOrderButton.snp.trailing).offset(14)
-            make.trailing.equalTo(self).inset(18)
+            make.trailing.equalTo(view).inset(18)
             make.top.width.equalTo(nameInOrderButton)
         }
         timeTitleLabel.snp.makeConstraints { make in
@@ -148,14 +128,14 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
         }
         collectionView.snp.makeConstraints { make in
             make.leading.equalTo(sortTitleLabel.snp.leading)
-            make.trailing.equalTo(self)
+            make.trailing.equalTo(view)
             make.top.equalTo(timeTitleLabel.snp.bottom).offset(12)
             make.height.equalTo(40)
         }
     }
 }
 
-extension AttendanceBottomDaySearchSettingView: UICollectionViewDataSource {
+extension AttendanceBottomDaySearchSettingViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel?.times.count ?? 0
     }
@@ -165,7 +145,8 @@ extension AttendanceBottomDaySearchSettingView: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceTimeCollectionViewCell.identifier, for: indexPath) as! AttendanceTimeCollectionViewCell
         
         cell.time = viewModel?.times[indexPath.item]
-        if indexPath.item == 0 {
+        if cell.time == time {
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .right)
             cell.enableButton()
         }
         
@@ -173,13 +154,14 @@ extension AttendanceBottomDaySearchSettingView: UICollectionViewDataSource {
     }
 }
 
-extension AttendanceBottomDaySearchSettingView: UICollectionViewDelegateFlowLayout {
+extension AttendanceBottomDaySearchSettingViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
         
         time = viewModel?.times[indexPath.item]
+        
         cell.enableButton()
     }
     

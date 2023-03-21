@@ -59,12 +59,12 @@ final class AttendanceModificationHeaderView: UIView {
     }
     
     @IBAction func leftButtonTapped(_ sender: UIButton) {
-        let bottomVC = AttendanceBottomViewController()
+        guard let viewModel = viewModel else { return }
+        let bottomVC = AttendanceBottomDaySearchSettingViewController(doneButtonTitle: "조회")
         
-//        bottomVC.viewModel = viewModel
-        bottomVC.viewType = .daySearchSetting
+        bottomVC.configureViewWith(viewModel: viewModel)
         
-        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: 316, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
         guard let viewModel = viewModel else { return }

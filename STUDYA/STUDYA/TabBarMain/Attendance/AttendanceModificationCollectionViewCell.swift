@@ -93,6 +93,49 @@ final class AttendancesModificationViewModel {
             }
         }
     }
+    
+    func updateAttendancesData(at time: Time, by alignment: LeftButtonAlignment) {
+        sortAttendanceForATimeFromAttendanceForADay(at: time)
+        alignAttendancesForATime(by: alignment)
+        reloadTableView.value = true
+    }
+    
+    func alignAttendancesForATime(by alignment: LeftButtonAlignment) {
+        if alignment == .name {
+            attendancesForATime.sort { (first, second) -> Bool in
+                if first.nickName == second.nickName {
+                    if AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority {
+                        return first.userID > second.userID
+                    } else {
+                        return AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority
+                    }
+                } else {
+                    return first.nickName > second.nickName
+                }
+            }
+        } else {
+            attendancesForATime.sort { (lhs, rhs) -> Bool in
+                if AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority {
+                    if lhs.nickName == rhs.nickName {
+                        return lhs.userID > rhs.userID
+                    } else {
+                        return lhs.nickName > rhs.nickName
+                    }
+                } else {
+                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
+                }
+            }
+        }
+        
+        self.alignment.value = alignment
+    }
+    
+    func sortAttendanceForATimeFromAttendanceForADay(at time: Time) {
+        guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
+        
+        selectedTime.value = time
+        attendancesForATime = allUsersAttendancesForADay[time]!
+    }
 }
 
 final class AttendanceModificationCollectionViewCell: UICollectionViewCell {

@@ -50,7 +50,7 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
 
         initialButtonSettings()
         configureViews()
-        configureDoneButton(on: view, under: backgroundContainerView, constant: 37)
+        configureDoneButton(under: backgroundContainerView, constant: 37)
     }
     
     override func doneButtonTapped() {

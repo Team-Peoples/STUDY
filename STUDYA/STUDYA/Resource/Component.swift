@@ -1259,7 +1259,7 @@ protocol BottomFullDoneButtonAddable {
     func doneButtonTapped()
     func enableDoneButton()
     func disableDoneButton()
-    func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int)
+    func configureDoneButton(under upperView: UIView, constant: Int)
 }
 
 class FullDoneButtonButtonViewController: UIViewController, BottomFullDoneButtonAddable {
@@ -1296,7 +1296,7 @@ class FullDoneButtonButtonViewController: UIViewController, BottomFullDoneButton
         titleButton.isEnabled = false
     }
     
-    func configureDoneButton(on view: UIView, under upperView: UIView, constant: Int) {
+    func configureDoneButton(under upperView: UIView, constant: Int) {
 
         view.addSubview(doneButton)
         doneButton.snp.makeConstraints { make in

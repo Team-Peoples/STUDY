@@ -24,8 +24,8 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
             bottomView?.navigatable = self
             
             switch viewType {
-            case .daySearchSetting:
-                guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
+//            case .daySearchSetting:
+//                guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
                 
 //                bottomView.viewModel = viewModel
                 

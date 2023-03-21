@@ -17,6 +17,7 @@ enum PeoplesError: Error {
     case unknownError(Int?)
     case tokenExpired
     case internalServerError
+    case duplicatedData
     
     case duplicatedEmail
     case alreadySNSSignUp
@@ -1359,6 +1360,7 @@ extension Network {
         case 500: completion(.failure(.internalServerError))
         case 401: completion(.failure(.unauthorizedUser))
         case 403: completion(.failure(.tokenExpired))
+        case 409: completion(.failure(.duplicatedData))
         default: completion(.failure(.unknownError(statusCode)))
         }
     }
@@ -1383,6 +1385,8 @@ extension UIAlertController {
             alert = SimpleAlert(buttonTitle: Constant.OK, message: "로그인이 만료되었습니다. 다시 로그인해주세요.", completion: { finished in
                 AppController.shared.deleteUserInformationAndLogout()
             })
+        case .duplicatedData:
+            alert = SimpleAlert(message: "이미 존재하는 데이터 입니다.")
         case .unknownError(let errorCode):
             guard let errorCode = errorCode else { return }
             alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = \(errorCode)")
