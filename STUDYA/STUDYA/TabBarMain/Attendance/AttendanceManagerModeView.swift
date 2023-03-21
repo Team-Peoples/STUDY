@@ -33,7 +33,8 @@ final class AttendanceManagerModeView: UIView {
         collectionView.register(AttendanceOverallCheckCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier)
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        layout.scrollDirection = .horizontal
+        
+        layout.estimatedItemSize = collectionView.frame.size
     }
     
     @IBAction private func leftButtonTapped(_ sender: UIButton) {
