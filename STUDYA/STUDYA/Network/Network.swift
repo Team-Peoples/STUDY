@@ -1484,7 +1484,7 @@ extension Network {
         }
     }
 
-    func seperateCommonErrors<T: Decodable>(statusCode: Int?, completionType: T.Type = T.self, completion: @escaping (Result<T,PeoplesError>) -> Void) {
+    func seperateCommonErrors<T: Decodable>(statusCode: Int?, completion: @escaping (Result<T,PeoplesError>) -> Void) {
 
         guard let statusCode = statusCode else { return }
         print(statusCode,"🔥")

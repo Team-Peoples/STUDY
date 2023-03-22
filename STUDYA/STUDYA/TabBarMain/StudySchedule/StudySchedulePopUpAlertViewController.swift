@@ -12,6 +12,7 @@ class StudySchedulePopUpAlertViewController: UIViewController {
     // MARK: - Properties
     
     let popUpType: String
+    let repeatOption: RepeatOption
     var firstButtonAction: () -> Void = {}
     var secondButtonAction: () -> Void = {}
     
@@ -24,8 +25,9 @@ class StudySchedulePopUpAlertViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(type: String) {
+    init(type: String, repeatOption: RepeatOption) {
         self.popUpType = type
+        self.repeatOption = repeatOption
         
         super.init(nibName: nil, bundle: nil)
         
@@ -76,7 +78,9 @@ class StudySchedulePopUpAlertViewController: UIViewController {
         popUpContainerView.layer.cornerRadius = 24
         popUpContainerView.addSubview(popUpTitleLabel)
         popUpContainerView.addSubview(firstButton)
-        popUpContainerView.addSubview(secondButton)
+        if repeatOption != .norepeat {
+            popUpContainerView.addSubview(secondButton)
+        }
         popUpContainerView.addSubview(cancelButton)
     }
     
@@ -95,17 +99,26 @@ class StudySchedulePopUpAlertViewController: UIViewController {
             make.leading.trailing.equalTo(popUpContainerView).inset(20)
             make.top.equalTo(popUpTitleLabel.snp.bottom).offset(40)
         }
-        secondButton.snp.makeConstraints { make in
-            make.width.equalTo(260)
-            make.leading.trailing.equalTo(popUpContainerView).inset(20)
-            make.top.equalTo(firstButton.snp.bottom).offset(10)
+        if repeatOption != .norepeat {
+            
+            secondButton.snp.makeConstraints { make in
+                make.width.equalTo(260)
+                make.leading.trailing.equalTo(popUpContainerView).inset(20)
+                make.top.equalTo(firstButton.snp.bottom).offset(10)
+            }
+            cancelButton.snp.makeConstraints { make in
+                make.width.equalTo(260)
+                make.leading.trailing.equalTo(popUpContainerView).inset(20)
+                make.top.equalTo(secondButton.snp.bottom).offset(10)
+                make.bottom.equalTo(popUpContainerView).inset(20)
+            }
+        } else {
+            cancelButton.snp.makeConstraints { make in
+                make.width.equalTo(260)
+                make.leading.trailing.equalTo(popUpContainerView).inset(20)
+                make.top.equalTo(firstButton.snp.bottom).offset(10)
+                make.bottom.equalTo(popUpContainerView).inset(20)
+            }
         }
-        cancelButton.snp.makeConstraints { make in
-            make.width.equalTo(260)
-            make.leading.trailing.equalTo(popUpContainerView).inset(20)
-            make.top.equalTo(secondButton.snp.bottom).offset(10)
-            make.bottom.equalTo(popUpContainerView).inset(20)
-        }
-        
     }
 }

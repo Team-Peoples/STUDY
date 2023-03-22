@@ -118,6 +118,10 @@ class StudyScheduleViewController: SwitchableViewController {
         
         floatingButtonView.addTapAction(target: self, action: #selector(floatingButtonDidTapped))
         
+        NotificationCenter.default.addObserver(forName: .updateStudySchedule, object: nil, queue: nil) { [weak self] _ in
+            self?.studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
+        }
+        
         configureTableView()
         addSubViewsWithConstraints()
         
@@ -167,7 +171,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
         let schedule = studyScheduleOfThisStudyAtSelectedDate[indexPath.row]
         
         cell.configure(schedule: schedule, kind: .study)
-//        cell.editable = self.isSwitchOn
+        cell.editable = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
         
         cell.etcButtonAction = { [unowned self] in
             presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
@@ -177,40 +181,88 @@ extension StudyScheduleViewController: UITableViewDataSource {
     }
     
     func presentActionSheet(selected cell: StudyScheduleTableViewCell, indexPath: IndexPath, in tableView: UITableView) {
+        
+        let studySchedule = studyScheduleOfThisStudyAtSelectedDate[indexPath.row]
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
+        let editAction = UIAlertAction(title: "수정하기", style: .default) { [weak self] _ in
+            // 반복인지 확인하고 분기처리
             
-            let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studyScheduleOfThisStudyAtSelectedDate[indexPath.row])
+            guard let repeatOption = studySchedule.repeatOption, repeatOption != .norepeat else {
+                
+                let popupVC = StudySchedulePopUpAlertViewController(type: Constant.edit, repeatOption: .norepeat)
+                
+                popupVC.firstButtonAction = {
+                    self?.dismiss(animated: true)
+                    
+                    let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
+                    
+                    let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
+                    navigationVC.modalPresentationStyle = .fullScreen
+                    
+                    self?.present(navigationVC, animated: true)
+                }
+                
+                self?.present(popupVC, animated: true)
+                return
+            }
             
-            let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
-            navigationVC.modalPresentationStyle = .fullScreen
+            let popupVC = StudySchedulePopUpAlertViewController(type: Constant.edit, repeatOption: repeatOption)
             
-            present(navigationVC, animated: true)
+            popupVC.firstButtonAction = {
+                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
+                
+                let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
+                navigationVC.modalPresentationStyle = .fullScreen
+                
+                self?.present(navigationVC, animated: true)
+            }
+            popupVC.secondButtonAction = {
+                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
+                
+                let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
+                navigationVC.modalPresentationStyle = .fullScreen
+                
+                self?.present(navigationVC, animated: true)
+            }
+            
+            self?.present(popupVC, animated: true)
         }
         
-        let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { [weak self] _ in
             
-            let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete)
-            popupVC.firstButtonAction = { [unowned self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: false) { [unowned self] in
+            guard let repeatOption = studySchedule.repeatOption,
+                  repeatOption != .norepeat else {
+                let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete, repeatOption: .norepeat)
+                popupVC.firstButtonAction = {
+                    self?.studyAllScheduleViewModel.deleteStudySchedule(id: studySchedule.studyScheduleID!, deleteRepeatedSchedule: false) {
+                        // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
+                        NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
+                        self?.dismiss(animated: true)
+                    }
+                }
+                
+                self?.present(popupVC, animated: true)
+                return
+            }
+            
+            let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete, repeatOption: repeatOption)
+            popupVC.firstButtonAction = {
+                self?.studyAllScheduleViewModel.deleteStudySchedule(id: studySchedule.studyScheduleID!, deleteRepeatedSchedule: false) {
                     // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
-                    studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
-                    
-                    scheduleTableView.reloadData()
-                    
-                    dismiss(animated: true)
+                    NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
+                    self?.dismiss(animated: true)
                 }
             }
-            popupVC.secondButtonAction = { [unowned self] in
-                studyAllScheduleViewModel.deleteStudySchedule(id: studyScheduleOfThisStudyAtSelectedDate[indexPath.row].studyScheduleID!, deleteRepeatedSchedule: true) {
-                    self.studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
-                    self.dismiss(animated: true)
-                    self.scheduleTableView.reloadData()
+            popupVC.secondButtonAction = {
+                self?.studyAllScheduleViewModel.deleteStudySchedule(id: studySchedule.studyScheduleID!, deleteRepeatedSchedule: true) {
+
+                    NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
+                    self?.dismiss(animated: true)
                 }
             }
-            
-            self.present(popupVC, animated: true)
+
+            self?.present(popupVC, animated: true)
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)

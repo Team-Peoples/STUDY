@@ -13,6 +13,8 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     var studySchedulePostingViewModel = StudySchedulePostingViewModel()
     
+    // 이미 있는 스터디 스케쥴 정보
+    
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
             selectedRepeatOptionCheckBox?.isSelected.toggle()
@@ -137,6 +139,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
         let timePicker = CalendarTimePicker.shared
+        
         
         if let endTime = studySchedulePostingViewModel.studySchedule.endTime {
             guard let hour = endTime.components(separatedBy: ":").first?.toInt(),

@@ -42,12 +42,15 @@ struct StudySchedule: Codable {
         let studyScheduleID = self.studyScheduleID
         let topic = self.topic
         let place = self.place
+        
+        let repeatOption = self.repeatOption
     
         let startDate = DateFormatter.dashedDateFormatter.string(from: self.startDateAndTime)
         let startTime = DateFormatter.timeFormatter.string(from: self.startDateAndTime)
+        let endDate = DateFormatter.dashedDateFormatter.string(from: self.endDateAndTime)
         let endTime = DateFormatter.timeFormatter.string(from: self.endDateAndTime)
 
-        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: "", startTime: startTime, endTime: endTime)
+        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: endDate, startTime: startTime, endTime: endTime, repeatOption: repeatOption ?? .norepeat)
     }
 }
 

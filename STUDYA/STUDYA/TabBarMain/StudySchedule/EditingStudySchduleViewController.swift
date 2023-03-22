@@ -75,9 +75,12 @@ final class EditingStudySchduleViewController: UIViewController {
     
     init(studySchedule: StudySchedule) {
         
-        editingStudyScheduleViewModel.studySchedule = studySchedule.convertStudySchedulePosting()
+        let studySchedule = studySchedule.convertStudySchedulePosting()
+        editingStudyScheduleViewModel.studySchedule = studySchedule
         
         super.init(nibName: nil, bundle: nil)
+        
+        initialConfigure(studySchedule)
     }
     
     required init?(coder: NSCoder) {
@@ -88,7 +91,6 @@ final class EditingStudySchduleViewController: UIViewController {
         super.viewDidLoad()
         
         editingStudyScheduleViewModel.bind { [self] studySchedule in
-            configureUI(studySchedule)
             
             doneButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.contentFormIsFilled && studySchedule.repeatOptionFormIsFilled
             
@@ -151,6 +153,8 @@ final class EditingStudySchduleViewController: UIViewController {
             
             editingStudyScheduleViewModel.studySchedule.repeatOption = .norepeat
             editingStudyScheduleViewModel.studySchedule.repeatEndDate = ""
+            
+            repeatEndDateSelectableView.calendarLinkedDateLabel.text = ""
             selectedRepeatOptionCheckBox = nil
         } else {
             
@@ -305,13 +309,15 @@ final class EditingStudySchduleViewController: UIViewController {
         addSubviewsWithConstraints()
     }
     
-    private func configureUI(_ studySchedule: StudySchedulePosting) {
+    private func initialConfigure(_ studySchedule: StudySchedulePosting) {
         
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)
         }
         
-        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
+        // 반복일정이 아닌경우 repeatEndDate = nil이 아니라 서버에서 startDate와 동일한 날짜로 보내준다.
+        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate),
+           repeatEndDate != DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             repeatEndDateSelectableView.setUpCalendarLinkedDateLabel(at: repeatEndDate)
         } else {
             repeatEndDateSelectableView.calendarLinkedDateLabel.text = ""
@@ -331,6 +337,18 @@ final class EditingStudySchduleViewController: UIViewController {
         } else {
             endTimeSelectButton.setTitle("--:--", for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
+        }
+        
+        if studySchedule.repeatOption != .norepeat {
+            let checkBoxButtonsInStackView = repeatOptionStackView.arrangedSubviews.compactMap { view in
+                let checkBoxButton = view as? CheckBoxButton
+                return checkBoxButton
+            }
+            let shouldCheckBoxButton = checkBoxButtonsInStackView.filter { checkBoxButton in
+                checkBoxButton.currentTitle == studySchedule.repeatOption.translatedKorean
+            }.first
+            
+            selectedRepeatOptionCheckBox = shouldCheckBoxButton
         }
 
         if let place = studySchedule.place, !place.isEmpty {

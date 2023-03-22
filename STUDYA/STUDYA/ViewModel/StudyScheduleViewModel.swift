@@ -71,6 +71,7 @@ class StudySchedulePostingViewModel: ViewModel {
     
     var studySchedule: StudySchedulePosting {
         didSet {
+            print(studySchedule)
             handler?(studySchedule)
         }
     }

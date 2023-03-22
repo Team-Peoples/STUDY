@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         instance?.consumerSecret = kConsumerSecret // pw
         instance?.appName = kServiceAppName // app name
         
+        UserDefaults.standard.set(false, forKey: Constant.isSwitchOn)
+        
         return true
     }
 
