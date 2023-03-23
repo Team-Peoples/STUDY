@@ -74,11 +74,17 @@ enum Attendance: Codable {
     case absent
     case allowed
     
-    enum CodingKEys: String, CodingKey {
-        case attended = "ATTENDANCE"
-        case late = "LATENESS"
-        case absent = "ABSENT"
-        case allowed = "HOLD"
+    var english: String {
+        switch self {
+        case .attended:
+            return "ATTENDANCE"
+        case .late:
+            return "LATENESS"
+        case .absent:
+            return "ABSENT"
+        case .allowed:
+            return "HOLD"
+        }
     }
 
     var korean: String {
@@ -135,6 +141,20 @@ struct SingleUserAnAttendanceInformation: Codable {
         case userID = "userId"
         case attendanceID = "attendanceId"
         case imageURL = "img"
+    }
+}
+
+struct SingleUserAnAttendanceInformationForPut: Codable {
+    var fine: Int
+    var attendanceStatus: String
+    let userID: String
+    let attendanceID: Int
+
+    enum CodingKeys: String, CodingKey {
+        case fine
+        case attendanceStatus = "attendStatus"
+        case userID = "userId"
+        case attendanceID = "attendanceId"
     }
 }
 

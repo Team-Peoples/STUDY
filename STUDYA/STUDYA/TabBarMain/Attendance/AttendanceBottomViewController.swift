@@ -34,11 +34,11 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
                 
                 bottomView.dateLabelUpdatableDelegate = self
                 
-            case .individualUpdate:
-                guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
-                
-//                bottomView.viewModel = viewModel
-                bottomView.indexPath = indexPath
+//            case .individualUpdate:
+//                guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
+//                
+////                bottomView.viewModel = viewModel
+//                bottomView.indexPath = indexPath
                 
             default: break
             }

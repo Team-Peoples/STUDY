@@ -181,8 +181,9 @@ private class AttendanceReusableProgressView: UIView {
         + attendanceStats.lateCount
         + attendanceStats.absentCount
         + attendanceStats.allowedCount
+        let notAbsentCount = attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount
         
-        attendanceProportionLabel.text = "출석률 \((attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount) / totalCount)%"
+        attendanceProportionLabel.text = "출석률 \(100 * notAbsentCount / totalCount)%"
         
         attendanceCountLabel.text = String(attendanceStats.attendedCount)
         latenessCountLabel.text = String(attendanceStats.lateCount)
@@ -227,9 +228,9 @@ private class AttendanceReusableProgressView: UIView {
         var latenessRatio = Float(attendanceStats.lateCount * 100 / totalCount) / 100
         var absenceRatio = Float(attendanceStats.absentCount * 100 / totalCount) / 100
         var allowedRatio = Float(attendanceStats.allowedCount * 100 / totalCount) / 100
-        
+        print(attendanceRatio, "🍓")
         if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
-            let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
+            let lackRatio = 1 - (attendanceRatio + latenessRatio + absenceRatio + allowedRatio)
             
             if attendanceRatio != 0 {
                 attendanceRatio += lackRatio
@@ -246,8 +247,6 @@ private class AttendanceReusableProgressView: UIView {
         self.progressView.setProgress(section: 1, to: latenessRatio)
         self.progressView.setProgress(section: 2, to: absenceRatio)
         self.progressView.setProgress(section: 3, to: allowedRatio)
-        
-        attendanceProportionLabel.text = "출석률 \(Double(attendanceRatio * 100).formatted(.number))%"
     }
     
     private func setupLabelStackViewUnderProgressBar() {

@@ -9,13 +9,13 @@ import Foundation
 
 enum AttendanceBottomViewType {
 //    case daySearchSetting
-    case individualUpdate
+//    case individualUpdate
     case membersPeriodSearchSetting
     
     var view: FullDoneButtonButtomView {
         switch self {
 //            case .daySearchSetting: return AttendanceBottomDaySearchSettingView(doneButtonTitle: "조회")
-            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: Constant.done)
+//            case .individualUpdate: return AttendanceBottomIndividualUpdateView(doneButtonTitle: Constant.done)
             case .membersPeriodSearchSetting: return AttendanceBottomMembersPeriodSearchSettingView(doneButtonTitle: "조회")
         }
     }
@@ -23,7 +23,7 @@ enum AttendanceBottomViewType {
     var detent: CGFloat {
         switch self {
 //            case .daySearchSetting: return 316
-            case .individualUpdate: return 316
+//            case .individualUpdate: return 316
             case .membersPeriodSearchSetting: return 381
         }
     }

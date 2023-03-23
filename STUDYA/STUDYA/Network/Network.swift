@@ -1053,7 +1053,6 @@ struct Network {
             
             switch httpResponse.statusCode {
             case 200:
-                response.data?.printResponseData()
                 guard let data = response.data, let allUsersAttendacneForADay = jsonDecode(type: AllUsersAttendanceForADay.self, data: data) else {
                     completion(.failure(.decodingError))
                     return
@@ -1069,7 +1068,7 @@ struct Network {
                 }
                 
                 switch errorCode {
-                case ErrorCode.studyNotFound:  completion(.failure(.studyNotFound))
+                case ErrorCode.studyNotFound: completion(.failure(.studyNotFound))
                 default: seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
                 }
                 
@@ -1081,7 +1080,7 @@ struct Network {
         }
     }
     
-    func updateAttendanceInformation(_ info: SingleUserAnAttendanceInformation, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
+    func updateAttendanceInformation(_ info: SingleUserAnAttendanceInformationForPut, completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.update(info), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))

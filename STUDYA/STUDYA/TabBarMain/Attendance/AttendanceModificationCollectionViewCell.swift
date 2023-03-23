@@ -33,7 +33,7 @@ final class AttendancesModificationViewModel {
             case .success(let allUsersAttendancesForADay):
                 
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
-                weakSelf.times = allUsersAttendancesForADay.map { $0.key }
+                weakSelf.times = allUsersAttendancesForADay.map { $0.key }.sorted()
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
                     
@@ -55,14 +55,14 @@ final class AttendancesModificationViewModel {
     
     func updateAllMembersAttendance() {
         let dashedSelectedDate = selectedDate.value.convertShortenDottedDateToDashedDate()
-        
+
         Network.shared.getAllMembersAttendanceOn(dashedSelectedDate, studyID: studyID) { [weak self] result in
             guard let weakSelf = self else { return }
-            
+
             switch result {
             case .success(let allUsersAttendancesForADay):
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
-                
+
                 if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
                     weakSelf.attendancesForATime = allUsersAttendancesForADay[weakSelf.selectedTime.value]!
                 } else {
@@ -70,14 +70,14 @@ final class AttendancesModificationViewModel {
                     weakSelf.attendancesForATime = []
                 }
                 weakSelf.reloadTableView.value = true
-                
+
             case .failure(let error):
                 weakSelf.error?.value = error
             }
         }
     }
     
-    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformation, completion: @escaping () -> Void) {
+    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformationForPut, completion: @escaping () -> ()) {
         Network.shared.updateAttendanceInformation(attendanceInfo) { [weak self] result in
             guard let weakSelf = self else { return }
             
@@ -115,6 +115,7 @@ final class AttendancesModificationViewModel {
             }
         } else {
             attendancesForATime.sort { (lhs, rhs) -> Bool in
+                
                 if AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority {
                     if lhs.nickName == rhs.nickName {
                         return lhs.userID > rhs.userID
@@ -245,10 +246,13 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell,
+              let viewModel = viewModel else {
             return AttendanceIndividualInfoTableViewCell()
         }
-        cell.anUserAttendanceInformation = viewModel?.attendancesForATime[indexPath.row]
+        
+        cell.configureCell(with: viewModel.attendancesForATime[indexPath.row])
+        
         return cell
     }
     
@@ -263,15 +267,12 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
 
 extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let bottomVC = AttendanceBottomViewController()
+        guard let delegate = delegate, let viewModel = viewModel else { return }
+        let bottomVC = AttendanceBottomIndividualUpdateViewController(doneButtonTitle: "완료")
         
-//        bottomVC.viewModel = viewModel
-        bottomVC.indexPath = indexPath
-        bottomVC.viewType = .individualUpdate
+        bottomVC.configure(with: viewModel.attendancesForATime[indexPath.row], viewModel: viewModel)
         
-        guard let delegate = delegate else { return }
-        
-        delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        delegate.presentBottomSheet(vc: bottomVC, detent: 316, prefersGrabberVisible: false)
     }
 }
 

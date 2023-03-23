@@ -51,7 +51,7 @@ final class AttendanceTableViewDayCell: UITableViewCell {
         case Constant.attendance:
             attendanceCapsuleView.configure(title: "출석", color: .attendedMain)
         case Constant.late:
-            attendanceCapsuleView.configure(title: "지각", color: .attendedMain)
+            attendanceCapsuleView.configure(title: "지각", color: .lateMain)
         case Constant.absent:
             attendanceCapsuleView.configure(title: "결석", color: .absentMain)
         case Constant.allowed:

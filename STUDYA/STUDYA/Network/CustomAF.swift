@@ -63,7 +63,7 @@ enum RequestPurpose: Requestable {
     case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
-    case update(SingleUserAnAttendanceInformation)
+    case update(SingleUserAnAttendanceInformationForPut)
     case toggleMyScheduleStatus(ID)
     case updateMySchedule(ID, String)
     case turnOverStudyOwnerTo(ID)
