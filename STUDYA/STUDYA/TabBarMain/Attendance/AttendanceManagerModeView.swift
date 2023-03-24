@@ -42,7 +42,6 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .defaultHigh
         
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [.centeredHorizontally], animated: true)
-        leftCell?.reloadTableView()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -56,7 +55,6 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .required
         
         collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: [.centeredHorizontally], animated: true)
-        rightCell?.reloadTableView()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -75,9 +73,9 @@ final class AttendanceManagerModeView: UIView {
         leftCell?.configureCellWith(studyID: studyID)
         
         rightCell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? AttendanceOverallCheckCollectionViewCell ?? AttendanceOverallCheckCollectionViewCell()
+//        rightCell?.configureCellWith(studyID: studyID)
         
         rightCell?.delegate = delegate
-        
     }
 }
 

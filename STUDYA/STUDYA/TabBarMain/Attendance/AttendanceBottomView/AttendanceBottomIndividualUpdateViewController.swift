@@ -14,7 +14,7 @@ final class AttendanceBottomIndividualUpdateViewController: FullDoneButtonButton
     private var singleUserAnAttendanceInformation: SingleUserAnAttendanceInformation?
     
     private let profileImageView = ProfileImageView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let nicknameLabel = CustomLabel(title: "?", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
        
         let v = UIView(frame: .zero)

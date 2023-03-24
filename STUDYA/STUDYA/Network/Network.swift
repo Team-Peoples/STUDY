@@ -1280,6 +1280,28 @@ struct Network {
             }
         }
     }
+    
+    func getAllParticipatedStudies(completion: @escaping ((Result<[StudyEndToEndInformation], PeoplesError>) -> Void)) {
+        AF.request(RequestPurpose.getAllParticipatedStudies, interceptor: AuthenticationInterceptor()).validate().response { response in
+            
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let studyEndToEndInformations = jsonDecode(type: [StudyEndToEndInformation].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(studyEndToEndInformations))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
 }
 
 // MARK: - Helpers

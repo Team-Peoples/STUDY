@@ -8,7 +8,7 @@
 import UIKit
 
 final class AttendancesModificationViewModel {
-    var studyID: Int
+    let studyID: Int
     
     var allUsersAttendancesForADay: AllUsersAttendanceForADay?
     var times: [Time] = []
@@ -143,7 +143,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceModificationCollectionViewCell"
     
-    internal var viewModel: AttendancesModificationViewModel?
+    private var viewModel: AttendancesModificationViewModel?
     internal var delegate: (BottomSheetAddable & Navigatable)? {
         didSet {
             headerView.navigatableBottomSheetableDelegate = delegate

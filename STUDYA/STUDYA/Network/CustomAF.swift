@@ -94,6 +94,7 @@ enum RequestPurpose: Requestable {
     case getImminentScheduleAttendnace(ID)
     case getAllNotifications
     case getAttendanceStats(ID)
+    case getAllParticipatedStudies
 }
 
 extension RequestPurpose {
@@ -221,6 +222,8 @@ extension RequestPurpose {
             return "/alarm"
         case .getAttendanceStats:
             return "/attendance/statistics"
+        case .getAllParticipatedStudies:
+            return "/study/participation"
         }
     }
     
@@ -232,7 +235,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies : return .get
         }
     }
     

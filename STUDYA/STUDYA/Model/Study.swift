@@ -186,6 +186,7 @@ enum StudyCategory: String, CaseIterable {
     }
 }
 
+
 enum OnOff: String {
     case on
     case off
@@ -211,5 +212,19 @@ enum UserTaskInStudyInfo: String {
     
     var translatedKorean: String {
         return self.rawValue
+    }
+}
+
+struct StudyEndToEndInformation: Codable {
+    let studyID: Int
+    let studyName: String
+    let start: Date
+    let end: Date?
+
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyName
+        case start = "createdAt"
+        case end = "finishAt"
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 class AttendanceForAMemberViewModel {
     private var userID: UserID
     fileprivate var studyID: ID
+    private var studyStartDate: Date?
     
     var precedingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
     var followingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()))
@@ -39,6 +40,18 @@ class AttendanceForAMemberViewModel {
                 
             case .failure(let error):
                 self.error = Observable(error)
+            }
+        }
+    }
+    
+    func getStartDateOfStudy() {
+        Network.shared.getAllParticipatedStudies { result in
+            switch result {
+            case .success(let studyEndToEndInformations):
+                let studyEndToEndInformation = studyEndToEndInformations.filter{ $0.studyID == self.studyID}.first
+                self.studyStartDate = studyEndToEndInformation?.start
+            case .failure(let error):
+                self.error?.value = error
             }
         }
     }
