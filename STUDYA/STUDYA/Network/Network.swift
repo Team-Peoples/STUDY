@@ -11,6 +11,8 @@ import Alamofire
 // MARK: - Peoples Error
 
 enum PeoplesError: Error {
+    case noError
+    
     case unauthorizedUser
     case serverError
     case decodingError
@@ -1283,7 +1285,7 @@ struct Network {
     
     func getAllParticipatedStudies(completion: @escaping ((Result<[StudyEndToEndInformation], PeoplesError>) -> Void)) {
         AF.request(RequestPurpose.getAllParticipatedStudies, interceptor: AuthenticationInterceptor()).validate().response { response in
-            
+            response.data?.printResponseData()
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return

@@ -11,9 +11,9 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
-    var precedingDate = Date() - 2000000 //임시
-    var followingDate = Date()
-    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToDateComponents([.year, .month, .day]) {
+    var precedingDate: Date?
+    var followingDate: Date?
+    lazy var precedingDateComponents: DateComponents? = precedingDate?.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let precedingDateComponents = precedingDateComponents,
@@ -24,7 +24,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             precedingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    lazy var followingDateComponents: DateComponents? = followingDate.convertToDateComponents([.year, .month, .day]) {
+    lazy var followingDateComponents: DateComponents? = followingDate?.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let followingDateComponents = followingDateComponents,
@@ -84,31 +84,36 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.select(date: precedingDate)
+        calendarView.select(date: precedingDate!)
         
         let today = Date()
         calendarView.maximumDate = today
         calendarView.reloadData()
         
         calendarView.dateSelectAction = { [self] (date) in
+            
             let dateComponents = date.convertToDateComponents([.year, .month, .day])
             if isPrecedingDateTurn {
+                precedingDate = date
                 precedingDateComponents = dateComponents
                 enableFollowingButton()
                 doneButton.fillOut(title: Constant.OK)
                 doneButton.isEnabled = false
-                isPrecedingDateTurn = false
             } else {
-                if date < precedingDate {
+                if date < precedingDate! {
+                    precedingDate = date
                     precedingDateComponents = dateComponents
+                    enableFollowingButton()
                     doneButton.fillOut(title: Constant.OK)
                     doneButton.isEnabled = false
                 } else {
+                    followingDate = date
                     followingDateComponents = dateComponents
                     doneButton.fillIn(title: Constant.OK)
                     doneButton.isEnabled = true
                 }
             }
+            isPrecedingDateTurn = false
         }
         
 
@@ -149,6 +154,9 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     }
     
     internal func setDateButtonsTitleWith(precedingDate: ShortenDottedDate, followingDate: ShortenDottedDate) {
+        self.precedingDate = DateFormatter.shortenDottedDateFormatter.date(from: precedingDate)
+        self.followingDate = DateFormatter.shortenDottedDateFormatter.date(from: followingDate)
+        
         precedingDateButton.setTitle(precedingDate, for: .normal)
         followingDateButton.setTitle(followingDate, for: .normal)
     }

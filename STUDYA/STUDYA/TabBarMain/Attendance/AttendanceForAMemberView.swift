@@ -10,7 +10,7 @@ import UIKit
 class AttendanceForAMemberViewModel {
     private var userID: UserID
     fileprivate var studyID: ID
-    private var studyStartDate: Date?
+    internal var studyStartDate: Date?
     
     var precedingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
     var followingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()))
@@ -18,7 +18,7 @@ class AttendanceForAMemberViewModel {
     var attendanceOverall: UserAttendanceOverall?
     var yearAndMonthOfAttendances: [DashedDate] = []
     var monthlyGroupedAttendanceInformation: [DashedDate: [OneTimeAttendanceInformation]] = [:]
-    var error: Observable<PeoplesError>?
+    var error: Observable<PeoplesError> = Observable(.noError)
     var reloadTable: Observable<Bool> = Observable(false)
     
     init(studyID: Int, userID: UserID) {
@@ -39,7 +39,28 @@ class AttendanceForAMemberViewModel {
                 self.reloadTable.value = true
                 
             case .failure(let error):
-                self.error = Observable(error)
+                self.error.value = error
+            }
+        }
+    }
+    
+    func getUserAttendanceOverallFromEndToEnd() {
+        guard let studyStartDate = studyStartDate else { return }
+        let dashedStudyStartDate = DateFormatter.dashedDateFormatter.string(from: studyStartDate)
+        let dashedToday = DateFormatter.dashedDateFormatter.string(from: Date())
+        
+        Network.shared.getUserAttendanceBetween(preceding: dashedStudyStartDate, following: dashedToday, studyID: studyID, userID: userID) { result in
+            switch result {
+            case .success(let attendanceOverall):
+                self.precedingDate.value = dashedStudyStartDate.convertDashedDateToShortenDottedDate()
+                self.followingDate.value = dashedToday.convertDashedDateToShortenDottedDate()
+                
+                self.attendanceOverall = attendanceOverall
+                self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
+                self.reloadTable.value = true
+                
+            case .failure(let error):
+                self.error.value = error
             }
         }
     }
@@ -51,7 +72,7 @@ class AttendanceForAMemberViewModel {
                 let studyEndToEndInformation = studyEndToEndInformations.filter{ $0.studyID == self.studyID}.first
                 self.studyStartDate = studyEndToEndInformation?.start
             case .failure(let error):
-                self.error?.value = error
+                self.error.value = error
             }
         }
     }
@@ -138,6 +159,8 @@ class AttendanceForAMemberView: UIView {
         
         setBinding()
         
+        viewModel?.getStartDateOfStudy()
+        
         if viewer == .user {
             configureHeaderViewWithAttendanceStats()
             reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
@@ -151,7 +174,7 @@ class AttendanceForAMemberView: UIView {
         viewModel.reloadTable.bind({ _ in
             self.attendanceDetailsTableView.reloadData()
         })
-        viewModel.error?.bind({ error in
+        viewModel.error.bind({ error in
             guard let delegate = self.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })

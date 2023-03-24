@@ -217,7 +217,7 @@ enum UserTaskInStudyInfo: String {
 
 struct StudyEndToEndInformation: Codable {
     let studyID: Int
-    let studyName: String
+    let studyName: String?
     let start: Date
     let end: Date?
 

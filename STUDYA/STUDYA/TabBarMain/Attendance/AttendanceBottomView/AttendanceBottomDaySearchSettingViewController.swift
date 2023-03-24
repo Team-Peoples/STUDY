@@ -39,6 +39,13 @@ final class AttendanceBottomDaySearchSettingViewController: FullDoneButtonButton
         
         configureViews()
         configureDoneButton(under: collectionView, constant: 16)
+        
+        guard let viewModel =  viewModel else { disableDoneButton(); return }
+        if viewModel.times.isEmpty {
+            disableDoneButton()
+        } else {
+            enableDoneButton()
+        }
     }
     
     @objc private func orderAttendanceDatasInName() {

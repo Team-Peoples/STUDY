@@ -55,19 +55,22 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
     
     override func doneButtonTapped() {
         if allPeriodButton.isSelected {
-            tempPrecedingDate = "23.01.01"
-            tempFollowingDate = DateFormatter.shortenDottedDateFormatter.string(from: Date())
+            viewModel?.getUserAttendanceOverallFromEndToEnd()
+        } else {
+            guard let precedingDashedDate = tempPrecedingDate?.convertShortenDottedDateToDashedDate(),
+                  let followingDashedDate = tempFollowingDate?.convertShortenDottedDateToDashedDate() else { return }
+            viewModel?.getUserAttendanceOverall(between: precedingDashedDate, and: followingDashedDate)
         }
         
-        guard let precedingDashedDate = tempPrecedingDate?.convertShortenDottedDateToDashedDate(),
-              let followingDashedDate = tempFollowingDate?.convertShortenDottedDateToDashedDate() else { return }
-        viewModel?.getUserAttendanceOverall(between: precedingDashedDate, and: followingDashedDate)
         dismiss(animated: true)
     }
     
     @objc private func turnOnAllPeriodButton() {
         allPeriodButton.isSelected = true
         customPeriodButton.isSelected = false
+        
+        precedingDayLabel.text = DateFormatter.shortenDottedDateFormatter.string(from: viewModel?.studyStartDate ?? Date())
+        followingDayLabel.text = DateFormatter.shortenDottedDateFormatter.string(from: Date())
         
         precedingDayLabel.textColor = .appColor(.ppsGray2)
         followingDayLabel.textColor = .appColor(.ppsGray2)
@@ -78,6 +81,9 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
     @objc private func turnOnCustomPeriodButton() {
         allPeriodButton.isSelected = false
         customPeriodButton.isSelected = true
+        
+        precedingDayLabel.text = tempPrecedingDate ?? "??"
+        followingDayLabel.text = tempFollowingDate ?? "??"
         
         precedingDayLabel.textColor = .appColor(.ppsGray1)
         followingDayLabel.textColor = .appColor(.ppsGray1)
@@ -103,13 +109,13 @@ final class AttendanceBottomIndividualPeriodSearchSettingBottomViewController: F
     private func setViewsInitially() {
         enableDoneButton()
         
-        allPeriodButton.isSelected = true
+        customPeriodButton.isSelected = true
         selectDayButton.addTarget(self, action: #selector(selectPeriodButtonTapped), for: .touchUpInside)
         
-        precedingDayLabel.textColor = .appColor(.ppsGray2)
-        followingDayLabel.textColor = .appColor(.ppsGray2)
+        precedingDayLabel.textColor = .appColor(.ppsGray1)
+        followingDayLabel.textColor = .appColor(.ppsGray1)
         
-        selectDayButton.isEnabled = false
+        selectDayButton.isEnabled = true
     }
     
     private func configureViews() {
