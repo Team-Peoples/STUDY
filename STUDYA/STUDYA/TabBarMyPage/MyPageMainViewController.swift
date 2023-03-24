@@ -33,7 +33,7 @@ final class MyPageMainViewController: UIViewController {
         
         return view
     }()
-    private let profileImageView = ProfileImageView(size: 80)
+    private let profileImageView = ProfileImageContainerView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private lazy var myMailLabel = CustomLabel(title: myMail ?? "이메일 정보를 불러오지 못했습니다." , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
@@ -88,10 +88,11 @@ final class MyPageMainViewController: UIViewController {
     @objc private func settingViewTapped() {
         
         let nextVC = AccountManagementViewController()
+        let navigationVC = UINavigationController(rootViewController: nextVC)
         
-        nextVC.modalPresentationStyle = .fullScreen
+        navigationVC.modalPresentationStyle = .fullScreen
         
-        present(nextVC, animated: true)
+        present(navigationVC, animated: true)
     }
     
     private func getUserInfo(completion: @escaping (User) -> Void) {

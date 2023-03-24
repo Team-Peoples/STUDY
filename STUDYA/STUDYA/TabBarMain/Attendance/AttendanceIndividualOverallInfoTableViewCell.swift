@@ -19,7 +19,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileImageView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageContainerView(size: 40)
     private let nicknameLabel = CustomLabel(title: "닉네이이이이임", tintColor: .ppsGray1, size: 16, isBold: true)
     private let disclosureIndicatorImageView = UIImageView(image: UIImage(named: "smallDisclosureIndicator"))
     private let innerView: RoundableView = {

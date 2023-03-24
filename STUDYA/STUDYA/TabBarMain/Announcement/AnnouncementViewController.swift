@@ -134,6 +134,9 @@ final class AnnouncementViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+    }
+    
+    deinit {
         removeNotification()
     }
     
@@ -245,9 +248,8 @@ final class AnnouncementViewController: UIViewController {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         }
         
-        navigationItem.rightBarButtonItem?.tintColor = .appColor(.cancel)
+        navigationController?.navigationBar.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
-        navigationItem.leftBarButtonItem?.tintColor = .appColor(.cancel)
     }
     
     private func addNotification() {

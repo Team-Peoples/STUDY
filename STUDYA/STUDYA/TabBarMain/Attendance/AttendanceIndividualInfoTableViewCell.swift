@@ -29,7 +29,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileImageView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageContainerView(size: 40)
     private let nickNameLabel = CustomLabel(title: "닉네임", tintColor: .ppsGray1, size: 16, isBold: true)
     private let attendanceStatusView: AttendanceStatusCapsuleView = {
        

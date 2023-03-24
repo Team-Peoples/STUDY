@@ -281,7 +281,7 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+        let imageData = image?.jpegData(compressionQuality: 1) ?? Data()
         
         AF.upload(multipartFormData: { data in
             

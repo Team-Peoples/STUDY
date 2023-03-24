@@ -75,7 +75,7 @@ class AttendanceStatusWithProfileView: UIView {
     // MARK: - Properties
     
     private let titleLabel = CustomLabel(title: "출결 상세", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let profileImageView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageContainerView(size: 40)
     private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
     private let fineLabel: UILabel = {
         let lbl = UILabel()

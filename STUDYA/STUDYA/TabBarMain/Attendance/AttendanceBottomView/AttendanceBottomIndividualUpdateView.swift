@@ -22,7 +22,7 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     }
     private var attendance: Attendance?
     
-    private let profileImageView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageContainerView(size: 40)
     private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
        

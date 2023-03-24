@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class BrandButton: UIButton {
     
@@ -373,7 +374,7 @@ class BasicInputView: UIView {
         addSubview(inputField)
         
         configure(text: titleText, fontSize: fontSize)
-        addRightViewOnField(cancel: isCancel, target: target, action: textFieldAction)
+        addRightViewOnField(isCancelButton: isCancel, target: target, action: textFieldAction)
         
         setConstraints(padding: titleBottomPadding)
     }
@@ -392,14 +393,14 @@ class BasicInputView: UIView {
         underline.backgroundColor = UIColor.appColor(color)
     }
     
-    private func addRightViewOnField(cancel: Bool, target: AnyObject?, action: Selector) {
+    private func addRightViewOnField(isCancelButton: Bool, target: AnyObject?, action: Selector) {
         
         let rightButton = UIButton(frame: CGRect(origin: .zero, size: CGSize(width: 36, height: 36)))
         
         rightButton.tintColor = UIColor.appColor(.keyColor3)
         rightButton.addTarget(target, action: action, for: .touchUpInside)
         
-        if cancel {
+        if isCancelButton {
             rightButton.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
         } else {
             rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
@@ -548,7 +549,7 @@ class SimpleAlert: UIAlertController {
     }
 }
 
-class ProfileImageView: UIView {
+class ProfileImageContainerView: UIView {
 
     private let outerPurpleLineView = UIView(frame: .zero)
     private let internalImageView = UIImageView(frame: .zero)
@@ -559,7 +560,7 @@ class ProfileImageView: UIView {
    
     internal var internalImage: UIImage? {
         didSet {
-            internalImageView.image = internalImage
+            internalImageView.image = internalImage != nil ? internalImage : UIImage(named: Constant.defaultProfile)
         }
     }
     
@@ -650,17 +651,23 @@ class ProfileImageView: UIView {
     
     internal func setImageWith(_ imageURL: String?) {
         if let imageURL = imageURL {
-            let url = URL(string: imageURL)
-            internalImageView.kf.setImage(with: url)
-            
-            // domb: 이렇게 하면 profileImageView의 internalImageView의 image는 바뀌지만, internalImage나 AccountManagementVC의 profileImage는 nil이 되어 외부에서 문제가 생겨요.(예를 들어 image가 nil가 nil이라 picker에서 기본이미지로 변경 액션을 사용할 수 없음)  이래서 제가 kingFisher를 지우고 internalImage: UIImage 를 사용하는 것으로 했던거에요. 그대로 사용하신다면 로직의 수정이 필요합니다.
+            guard let url = URL(string: imageURL) else { return }
+            KingfisherManager.shared.retrieveImage(with: url) { result in
+                switch result {
+                case .success(let imageResult):
+                    let image = imageResult.image
+                    self.internalImage = image
+                case .failure(let error):
+                    print(error)
+                }
+            }
         } else {
-            internalImageView.image = UIImage(named: Constant.defaultProfile)
+            internalImage = nil
         }
     }
     
     internal func setImageWith(_ image: UIImage? = nil) {
-        internalImageView.image = image == nil ? UIImage(named: Constant.defaultProfile) : image
+        internalImage = image
     }
 }
 
@@ -1163,7 +1170,7 @@ final class PurpleRoundedInputField: UITextField {
     
     private func addRightViewOnField(target: AnyObject?, action: Selector) {
         
-        let rightButton = UIButton(frame: .zero)
+        let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 24, height: 12))
         
         rightButton.tintColor = UIColor.appColor(.keyColor3)
         rightButton.addTarget(target, action: action, for: .touchUpInside)
@@ -1171,8 +1178,11 @@ final class PurpleRoundedInputField: UITextField {
         rightButton.setBackgroundImage(UIImage(named: "eye-close"), for: .normal)
         rightButton.setBackgroundImage(UIImage(named: "eye-open"), for: .selected)
         
-        rightView = rightButton
-        rightViewMode = .always
+        let rightView = UIView(frame: CGRect(x: 0, y: 0, width: 24 + 12, height: 12))
+        rightView.addSubview(rightButton)
+        
+        self.rightView = rightView
+        self.rightViewMode = .always
     }
     
     internal func update(alpha: CGFloat, of view: UIView) {
