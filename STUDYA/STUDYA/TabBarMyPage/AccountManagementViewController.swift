@@ -153,7 +153,24 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func leaveApp() {
         let alertController = SimpleAlert(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", firstActionTitle: "탈퇴하기", actionStyle: .destructive, firstActionHandler: { [weak self] _ in
-            self?.viewModel.closeAccount()
+            self?.viewModel.closeAccount{ result in
+                switch result {
+                case .success(let isNotManager):
+                    if isNotManager {
+                        print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
+                        
+                        AppController.shared.deleteUserInformation()
+                        
+                        self?.deleteAllUserDefaults()
+                        self?.presentByeViewController()
+                    } else {
+                        print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
+                    }
+                    
+                case .failure(let error):
+                    UIAlertController.handleCommonErros(presenter: self!, error: error)
+                }
+            }
         }, cancelActionTitle: Constant.cancel)
         
         present(alertController, animated: true)

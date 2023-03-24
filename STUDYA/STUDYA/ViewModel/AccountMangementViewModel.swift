@@ -118,29 +118,12 @@ class AccountMangementViewModel {
         }
     }
     
-    func closeAccount() {
+    func closeAccount(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
         guard let userId = KeyChain.read(key: Constant.userId) else { return }
         
         Network.shared.closeAccount(userID: userId) { result in
-            switch result {
-            case .success(let isNotManager):
-                if isNotManager {
-                    print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
-                    
-                    AppController.shared.deleteUserInformation()
-                    
-//                    self.deleteAllUserDefaults()
-//                    self.presentByeViewController()
-                    
-                } else {
-                    print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
-                }
-                
-            case .failure(let error):
-                print(error)
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-            }
+            completion(result)
         }
     }
     
