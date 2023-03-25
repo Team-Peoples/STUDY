@@ -83,7 +83,7 @@ final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectio
 
     @objc func keyboardDisappear(_ notification: NSNotification) {
         keyboardHeight = 0
-        generalRuleAttendanceTableView.endEditing(true)
+//        generalRuleAttendanceTableView.endEditing(true)
         generalRuleAttendanceTableView.contentInset = .zero
     }
 

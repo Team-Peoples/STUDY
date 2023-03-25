@@ -115,9 +115,8 @@ final class AccountManagementViewController: UIViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
+        viewModel.cancellables.forEach { $0.cancel() }
     }
-
     // MARK: - Actions
     
     @objc private func cancel() {
@@ -203,7 +202,6 @@ final class AccountManagementViewController: UIViewController {
     
     private func addPublisher() {
         
-        // domb: 텍스트 필드 강한참조 지우기 (지우는 방법을 못찾겠음)
         oldPasswordInputField.textPublisher
             .assign(to: \.oldPassword, on: viewModel)
             .store(in: &viewModel.cancellables)
