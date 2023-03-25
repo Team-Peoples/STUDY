@@ -82,7 +82,7 @@ class AttendanceForAMemberViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy"
 
-        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations
+        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations ?? []
         var yearAndMonthOfAttendances: [DashedDate] = []
         
         monthlyGroupedAttendanceInformation = [:]

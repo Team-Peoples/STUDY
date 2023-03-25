@@ -7,9 +7,41 @@
 
 import UIKit
 
+final class AttendanceOverallCheckViewModel {
+    let studyID: ID
+    
+    var precedingDate = Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()
+    var followingDate = Date()
+    var allMemebersAttendanceStatistics = [UserAttendanceStatistics]()
+    
+    var alignment = Observable(LeftButtonAlignment.name)
+    lazy var selectedPeriods = Observable("\(DateFormatter.shortenDottedDateFormatter.string(from: precedingDate))~\(DateFormatter.shortenDottedDateFormatter.string(from: followingDate))")
+    var reloadTable = Observable(false)
+    var error = Observable(PeoplesError.noError)
+    
+    init(studyID: ID) {
+        self.studyID = studyID
+    }
+    
+    func getAllMembersAttendaneStatisticsBetween(studyID: ID) {
+        Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { result in
+            switch result {
+            case .success(let allMemebersAttendanceStatistics):
+                self.allMemebersAttendanceStatistics = allMemebersAttendanceStatistics
+                self.reloadTable.value = true
+                
+            case .failure(let error):
+                self.error.value = error
+            }
+        }
+    }
+}
+
 final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceOverallCheckCollectionViewCell"
+    
+    private var viewModel: AttendanceOverallCheckViewModel?
     
     weak var delegate: (BottomSheetAddable & Navigatable & SwitchSyncable)? {
         didSet {
@@ -57,8 +89,8 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal func reloadTableView() {
-        tableView.reloadData()
+    internal func configureCellWith(studyID: ID) {
+        
     }
 }
 

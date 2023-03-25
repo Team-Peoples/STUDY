@@ -95,6 +95,7 @@ enum RequestPurpose: Requestable {
     case getAllNotifications
     case getAttendanceStats(ID)
     case getAllParticipatedStudies
+    case getAllMembersAttendaneStatisticsBetween(ID) //🛑api 수정 후 날짜 두개 추가해야
 }
 
 extension RequestPurpose {
@@ -224,6 +225,8 @@ extension RequestPurpose {
             return "/attendance/statistics"
         case .getAllParticipatedStudies:
             return "/study/participation"
+        case .getAllMembersAttendaneStatisticsBetween:
+            return "/attendance/master/statistics"
         }
     }
     
@@ -235,7 +238,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies, .getAllMembersAttendaneStatisticsBetween : return .get
         }
     }
     
@@ -315,6 +318,8 @@ extension RequestPurpose {
             return .query(["studyId": studyID])
         case .getAllMembersAttendanceOn(let date, _):
             return .query(["searchDate": date])
+        case .getAllMembersAttendaneStatisticsBetween(let studyID):
+            return .query(["studyID": studyID])
 // None
         default:
             return .none

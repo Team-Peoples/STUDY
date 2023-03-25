@@ -168,3 +168,20 @@ struct AttendanceInformation: Codable {
         case reason, fine
     }
 }
+
+struct UserAttendanceStatistics: Codable {
+    let totalFine, attendedCount, lateCount, allowedCount, absentCount, totalAttendanceCount: Int
+    let userID, nickName, profileImageURL: String
+
+    enum CodingKeys: String, CodingKey {
+        case profileImageURL = "img"
+        case totalAttendanceCount = "totalAttendCnt"
+        case userID = "userId"
+        case nickName = "nickname"
+        case totalFine
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
+    }
+}

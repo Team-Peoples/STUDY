@@ -1285,7 +1285,7 @@ struct Network {
     
     func getAllParticipatedStudies(completion: @escaping ((Result<[StudyEndToEndInformation], PeoplesError>) -> Void)) {
         AF.request(RequestPurpose.getAllParticipatedStudies, interceptor: AuthenticationInterceptor()).validate().response { response in
-            response.data?.printResponseData()
+            
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
@@ -1299,6 +1299,29 @@ struct Network {
                 }
                 
                 completion(.success(studyEndToEndInformations))
+            default:
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
+    func getAllMembersAttendaneStatisticsBetween(studyID: ID, completion: @escaping ((Result<[UserAttendanceStatistics], PeoplesError>) -> Void)) {
+        AF.request(RequestPurpose.getAllMembersAttendaneStatisticsBetween(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else {
+                completion(.failure(.serverError))
+                return
+            }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let allMembersAttendanceStatistics = jsonDecode(type: [UserAttendanceStatistics].self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                
+                completion(.success(allMembersAttendanceStatistics))
+            case 404:
+                completion(.failure(.studyNotFound))
             default:
                 seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
             }
