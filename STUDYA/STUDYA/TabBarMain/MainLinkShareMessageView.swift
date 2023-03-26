@@ -49,18 +49,18 @@ class MainLinkShareMessageView: RoundableView {
     
     @objc private func linkShareRegionTapped() {
 //        guard let studyID = self.currentStudyID else { return }
-        let studyID = 127
-        DynamicLinkBuilder().getURL(studyID: studyID) { dynamicLinkURL, array, error in
-            guard let shareURL = dynamicLinkURL else {
-                print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
-                return
-            }
-            print(shareURL)
-            DispatchQueue.main.async { [self] in
-                let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-                delegate?.present(activityVC, animated: true)
-            }
-        }
+//        let studyID = 127
+//        DynamicLinkBuilder().getURL(studyID: studyID) { dynamicLinkURL, array, error in
+//            guard let shareURL = dynamicLinkURL else {
+//                print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
+//                return
+//            }
+//            print(shareURL)
+//            DispatchQueue.main.async { [self] in
+//                let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
+//                delegate?.present(activityVC, animated: true)
+//            }
+//        }
     }
     
     @objc private func closeButtonDidTapped() {

@@ -52,6 +52,7 @@ struct Study: Codable, Equatable {
         case isBlocked = "studyBlock"
         case isPaused = "studyPause"
         case generalRule = "studyRule"
+        case ownerNickname
         case studyOn, studyOff
     }
 

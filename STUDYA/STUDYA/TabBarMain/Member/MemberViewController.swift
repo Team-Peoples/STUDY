@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import LinkPresentation
 import KakaoSDKShare
 import KakaoSDKTemplate
 import KakaoSDKCommon
@@ -143,6 +142,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         
         return vc
     }()
+    lazy var activityIndicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -213,6 +213,11 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.top.equalTo(titleLabel.snp.bottom).offset(45)
         }
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalTo(view)
+            make.height.equalTo(50)
+        }
     }
     
     private func configureCollectionView() {
@@ -244,42 +249,49 @@ extension MemberViewController: UICollectionViewDataSource {
         if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InviteMemberCollectionViewCell.identifier, for: indexPath) as! InviteMemberCollectionViewCell
             
-            cell.inviteButtonAction = {
+            cell.inviteButtonAction = { [weak self] in
+                guard let view = self?.view else { return }
                 
-//                let templateID: Int64 = 90874
-//                if ShareApi.isKakaoTalkSharingAvailable() {
-//                    // 카카오톡으로 카카오톡 공유 가능
-//                    let userNickname = KeyChain.read(key: Constant.nickname)!
-//                    let studyName = KeyChain.read(key: Constant.currentStudyName)!
-//                    ShareApi.shared.shareCustom(templateId: templateID, templateArgs:["nickname": userNickname, "studyName": studyName]) {(sharingResult, error) in
-//                        if let error = error {
-//                            print(error)
-//                        }
-//                        else {
-//                            print("shareCustom() success.")
-//                            if let sharingResult = sharingResult {
-//                                UIApplication.shared.open(sharingResult.url, options: [:], completionHandler: nil)
-//                            }
-//                        }
-//                    }
-//                }
-                guard let studyID = self.currentStudyID else { return }
-                DynamicLinkBuilder().getURL(studyID: studyID) { dynamicLinkURL, array, error in
-                    guard let shareURL = dynamicLinkURL else {
+               
+                self?.activityIndicator.startAnimating()
+                
+                guard let nickname = KeyChain.read(key: Constant.nickname) else { return }
+                guard let studyName = KeyChain.read(key: Constant.currentStudyName) else { return }
+                guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
+                guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
+
+                let memberCount = self?.members?.count ?? 0 + 1
+
+                DynamicLinkBuilder().getURL(study: currentStudy, memberCount: memberCount) { dynamicLinkURL, array, error in
+                    guard let link = dynamicLinkURL?.absoluteString else {
                         print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
                         return
                     }
-                    print(shareURL)
+                    
+                    let shareText = """
+                            "\(nickname)"님이 \(studyName)에 초대했어요!
+                            
+                            아래 링크를 통해 스터디에
+                            참여하실 수 있어요 👇🏼
+                            
+                            참여 링크: "\(link)"
+                            
+                            어떤 모임이든! 피플즈에서 쉽게 모이고 간편하게 관리해요 📚
+                            """
+                    let image = UIImage(named: "logo")!
+                    print(image)
                     DispatchQueue.main.async {
-                        let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-                        self.present(activityVC, animated: true)
+                        self?.activityIndicator.stopAnimating()
+                        
+                        let activityViewController = UIActivityViewController(activityItems : [shareText, image], applicationActivities: nil)
+                        activityViewController.popoverPresentationController?.sourceView = view
+                        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+                        activityViewController.popoverPresentationController?.permittedArrowDirections = []
+
+                        self?.present(activityViewController, animated: true, completion: nil)
+
                     }
                 }
-//                guard let shareURL = URL(string: "https://www.google.com") else { return }
-//
-//                let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-//
-//                self.present(activityVC, animated: true)
             }
             
             return cell

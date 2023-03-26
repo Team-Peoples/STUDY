@@ -317,9 +317,10 @@ final class MainViewController: SwitchableViewController {
             
             switch result {
             case .success(let studyOverall):
-                
+                // 스터디정보를 처음으로 가져온다.
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
                 KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
+                // domb: 중복된 작업인건지 물어보기
                 self.isManager = studyOverall.isManager
                 self.configureViewWhenYesStudy()
                 self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
@@ -333,7 +334,18 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func reloadTableViewWithCurrentStudy(studyOverall: StudyOverall) {
+        var study = studyOverall.study
+        let studyOwnerNickname = studyOverall.ownerNickname
+        study.ownerNickname = studyOwnerNickname
+        
+        DispatchQueue.global().async {
+            let data = try? JSONEncoder().encode(study)
+            UserDefaults.standard.removeObject(forKey: Constant.currentStudy)
+            UserDefaults.standard.set(data, forKey: Constant.currentStudy)
+        }
+
         self.currentStudyOverall = studyOverall
+        // domb: 중복된 작업인건지 물어보기
         isManager = studyOverall.isManager
         mainTableView.reloadData()
     }
