@@ -73,9 +73,8 @@ final class AttendanceManagerModeView: UIView {
         leftCell?.configureCellWith(studyID: studyID)
         
         rightCell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? AttendanceOverallCheckCollectionViewCell ?? AttendanceOverallCheckCollectionViewCell()
-//        rightCell?.configureCellWith(studyID: studyID)
-        
         rightCell?.delegate = delegate
+        rightCell?.configureCellWith(studyID: studyID)
     }
 }
 

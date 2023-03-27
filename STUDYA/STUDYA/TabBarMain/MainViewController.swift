@@ -110,7 +110,7 @@ final class MainViewController: SwitchableViewController {
 //            }
 //        }
 
-//        Network.shared.joinStudy(id: 110) { result in
+//        Network.shared.joinStudy(id: 118) { result in
 //            switch result {
 //            case .success(let suc):
 //                print(suc)

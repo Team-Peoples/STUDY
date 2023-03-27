@@ -319,7 +319,7 @@ extension RequestPurpose {
         case .getAllMembersAttendanceOn(let date, _):
             return .query(["searchDate": date])
         case .getAllMembersAttendaneStatisticsBetween(let studyID):
-            return .query(["studyID": studyID])
+            return .query(["studyId": studyID])
 // None
         default:
             return .none
