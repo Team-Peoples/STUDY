@@ -97,7 +97,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
         

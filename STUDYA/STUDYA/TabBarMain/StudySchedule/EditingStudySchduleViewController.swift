@@ -297,7 +297,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         topicTextView.delegate = self
         placeTextView.delegate = self

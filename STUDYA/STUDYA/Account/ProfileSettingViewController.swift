@@ -29,7 +29,7 @@ class ProfileSettingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         nickNameInputView.getInputField().delegate = self
         nickNameInputView.getInputField().addTarget(target, action: #selector(toggleDoneButton), for: .editingChanged)

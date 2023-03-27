@@ -18,10 +18,10 @@ class StudySchedulePopUpAlertViewController: UIViewController {
     
     private lazy var popUpTitleLabel = CustomLabel(title: "일정을 \(popUpType)할까요?", tintColor: .ppsBlack, size: 16)
     
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
+    private let popUpContainerView = UIView(backgroundColor: .white)
     private lazy var firstButton = BrandButton(title: "이 일정만 \(popUpType)", fontSize: 16, backgroundColor: .appColor(.keyColor1), textColor: .appColor(.whiteLabel), radius: 12)
     private lazy var secondButton = BrandButton(title: "반복 일정까지 모두 \(popUpType)", fontSize: 16, backgroundColor: .appColor(.keyColor1), textColor: .appColor(.whiteLabel), radius: 12)
-    private let cancelButton = BrandButton(title: "취소", fontSize: 16, backgroundColor: .systemBackground, textColor: .appColor(.keyColor1), radius: 12, borderColor: .keyColor1)
+    private let cancelButton = BrandButton(title: "취소", fontSize: 16, backgroundColor: .white, textColor: .appColor(.keyColor1), radius: 12, borderColor: .keyColor1)
     
     // MARK: - Life Cycle
     

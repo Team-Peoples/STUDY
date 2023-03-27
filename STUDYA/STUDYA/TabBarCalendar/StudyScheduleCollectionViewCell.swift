@@ -30,7 +30,7 @@ class StudyScheduleCollectionViewCell: UICollectionViewCell {
         
         let tableView = UITableView()
         
-        tableView.backgroundColor = .systemBackground
+        tableView.backgroundColor = .white
         tableView.alwaysBounceVertical = true
         tableView.keyboardDismissMode = .interactive
         tableView.separatorStyle = .none

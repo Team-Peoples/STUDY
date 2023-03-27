@@ -30,7 +30,7 @@ final class CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UICol
         lateNumberField.delegate = self
         absenceNumberField.delegate = self
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         addSubview(titleLabel)
         addSubview(descriptionLabel)

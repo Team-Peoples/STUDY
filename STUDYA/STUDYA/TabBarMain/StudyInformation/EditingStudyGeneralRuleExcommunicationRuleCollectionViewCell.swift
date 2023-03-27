@@ -51,7 +51,7 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     // MARK: - Configure
     
     func configureViews() {
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         contentView.addSubview(excommunicationTitleLabel)
         contentView.addSubview(excommunicationDescriptionLabel)

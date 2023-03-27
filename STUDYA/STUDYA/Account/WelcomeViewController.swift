@@ -27,7 +27,7 @@ final class WelcomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(named: "back")

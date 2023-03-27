@@ -23,7 +23,7 @@ class SwitchableViewController: UIViewController, Navigatable {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         navigationController?.setBrandNavigation()
     }
     

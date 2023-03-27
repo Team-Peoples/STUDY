@@ -112,7 +112,7 @@ class StudyScheduleViewController: SwitchableViewController {
     
     private func confifureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         tabBarController?.tabBar.isHidden = true
         
@@ -160,7 +160,7 @@ class StudyScheduleViewController: SwitchableViewController {
 
 extension StudyScheduleViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        scheduleTableView.backgroundColor = studyScheduleOfThisStudyAtSelectedDate.count == 0 ? .systemBackground:.appColor(.background)
+        scheduleTableView.backgroundColor = studyScheduleOfThisStudyAtSelectedDate.count == 0 ? .white:.appColor(.background)
         
         return studyScheduleOfThisStudyAtSelectedDate.count
     }

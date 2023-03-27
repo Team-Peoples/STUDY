@@ -49,7 +49,7 @@ final class FindPasswordCompleteViewController: UIViewController {
     // MARK: - Configure
     
     private func configureViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         view.addSubview(titleLabel)
         view.addSubview(emailLabel)
         view.addSubview(descriptionLabel)

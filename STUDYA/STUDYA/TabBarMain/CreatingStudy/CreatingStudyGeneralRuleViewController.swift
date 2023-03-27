@@ -26,7 +26,7 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         collectionView.delegate = self
         collectionView.dataSource = self

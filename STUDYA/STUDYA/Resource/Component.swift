@@ -65,7 +65,7 @@ final class BrandButton: UIButton {
     internal func fillOut(title: String) {
         
         setTitle(title, for: .normal)
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         setTitleColor(UIColor.appColor(.keyColor1), for: .normal)
     }
     
@@ -1245,7 +1245,7 @@ final class AttendanceStatusCapsuleView: RoundableView {
         
         backgroundColor = .appColor(color)
         label.font = .boldSystemFont(ofSize: 10)
-        label.textColor = .systemBackground
+        label.textColor = .white
         
         addSubview(label)
         label.centerXY(inView: self)

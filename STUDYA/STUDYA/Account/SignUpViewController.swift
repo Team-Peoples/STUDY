@@ -50,7 +50,7 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -67,7 +67,7 @@ class SignUpViewController: UIViewController {
         
         passwordInputField.rightView?.tag = 1
         passwordCheckInputField.rightView?.tag = 2
-        passwordCheckValidationLabel.textColor = .systemBackground
+        passwordCheckValidationLabel.textColor = .white
         
         addSubviews()
         setConstraints()
@@ -203,7 +203,7 @@ class SignUpViewController: UIViewController {
     
     private func checkValidation1Label() {
         if emailValidationOkay {
-            emailValidationLabel.textColor = .systemBackground
+            emailValidationLabel.textColor = .white
         } else {
             let text = emailInputField.text
             
@@ -214,7 +214,7 @@ class SignUpViewController: UIViewController {
     
     private func checkValidation2Label() {
         if passwordValidationOkay {
-            passwordValidationLabel.textColor = .systemBackground
+            passwordValidationLabel.textColor = .white
         } else {
             let text = passwordInputField.text
             
@@ -224,11 +224,11 @@ class SignUpViewController: UIViewController {
     
     private func checkValidation3Label() {
         if passwordCheckOkay {
-            passwordCheckValidationLabel.textColor = .systemBackground
+            passwordCheckValidationLabel.textColor = .white
         } else {
             let text = passwordCheckInputField.text
             
-            passwordCheckValidationLabel.textColor = text == "" ? .systemBackground : UIColor.appColor(.subColor1)
+            passwordCheckValidationLabel.textColor = text == "" ? .white : UIColor.appColor(.subColor1)
         }
     }
     

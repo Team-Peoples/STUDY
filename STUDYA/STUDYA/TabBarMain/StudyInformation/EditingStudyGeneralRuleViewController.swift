@@ -112,7 +112,7 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         addTopScrollView()
         addContentView()

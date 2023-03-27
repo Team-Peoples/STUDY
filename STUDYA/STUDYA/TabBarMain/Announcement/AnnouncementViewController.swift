@@ -144,7 +144,7 @@ final class AnnouncementViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         titleTextView.delegate = self
         contentTextView.delegate = self

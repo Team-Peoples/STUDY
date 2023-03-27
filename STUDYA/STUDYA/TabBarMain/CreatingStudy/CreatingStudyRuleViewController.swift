@@ -101,7 +101,7 @@ final class CreatingStudyRuleViewController: UIViewController {
             }
         }
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         title = "스터디 만들기"
         
         addsubViews()

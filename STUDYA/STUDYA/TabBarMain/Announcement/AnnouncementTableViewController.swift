@@ -60,7 +60,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         super.viewDidLoad()
         
         title = studyName
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         configureHeaderView()
         configureTableView()
@@ -100,7 +100,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         announcementBoardTableView.register(AnnouncementTableViewCell.self, forCellReuseIdentifier: AnnouncementTableViewCell.identifier)
         
         announcementBoardTableView.separatorStyle = .none
-        announcementBoardTableView.backgroundColor = .systemBackground
+        announcementBoardTableView.backgroundColor = .white
         announcementBoardTableView.tableHeaderView = headerView
         
         announcementBoardTableView.snp.makeConstraints { make in

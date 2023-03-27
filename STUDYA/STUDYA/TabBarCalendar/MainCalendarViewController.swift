@@ -92,7 +92,7 @@ final class MainCalendarViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         view.addSubview(calendarView)
     }
     

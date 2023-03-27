@@ -25,7 +25,7 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
 
     private let calendarType: PopUpCalendarType
     private let button = UIButton(frame: .zero)
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
+    private let popUpContainerView = UIView(backgroundColor: .white)
     private let dismissButton = UIButton(image: UIImage(named: "dismiss"))
     private let calendarView = CustomCalendarView()
     

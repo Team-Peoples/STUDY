@@ -34,7 +34,7 @@ final class TabBarViewController: UITabBarController {
     private func configureTabbarController() {
         
         tabBar.tintColor = .appColor(.ppsGray1)
-        tabBar.backgroundColor = .systemBackground
+        tabBar.backgroundColor = .white
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         
