@@ -106,6 +106,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
+        
         guard let fine = formatter.string(from: NSNumber(value: userAttendanceStatistics.totalFine)) else { return }
         penaltyLabel.text = fine
     }

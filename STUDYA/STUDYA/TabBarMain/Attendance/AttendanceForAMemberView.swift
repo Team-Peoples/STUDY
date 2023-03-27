@@ -149,24 +149,17 @@ class AttendanceForAMemberView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Actions
-
-    
     // MARK: - Configure
     
-    internal func configureViewWith(studyID: ID, userID: UserID) {
-        viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
-        
+    internal func configureViewWith(studyID: ID, userID: UserID, stats: UserAttendanceStatistics? = nil) {
+        initViewModelWith(studyID: studyID, userID: userID)
         setBinding()
-        
+        configureView(with: stats)
+    }
+    
+    private func initViewModelWith(studyID: ID, userID: UserID) {
+        viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
         viewModel?.getStartDateOfStudy()
-        
-        if viewer == .user {
-            configureHeaderViewWithAttendanceStats()
-            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
-        } else {
-            
-        }
     }
     
     private func setBinding() {
@@ -178,6 +171,17 @@ class AttendanceForAMemberView: UIView {
             guard let delegate = self.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
+    }
+    
+    private func configureView(with stats: UserAttendanceStatistics?) {
+        if viewer == .user {
+            configureHeaderViewWithAttendanceStats()
+            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
+        } else {
+            guard let stats = stats else { return }
+            configureMemberHeaderView(with: stats)
+            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
+        }
     }
     
     private func reloadTableViewWithAttendanceDataFrom30DaysAgoToNow() {
@@ -193,6 +197,11 @@ class AttendanceForAMemberView: UIView {
         guard let headerView = oneMemberAttendanceHeaderView as? MyAttendanceStatusView else { return }
         headerView.navigatable = delegate
         headerView.getAttendanceStats(with: viewModel?.studyID)
+    }
+    
+    private func configureMemberHeaderView(with stats: UserAttendanceStatistics) {
+        guard let headerView = oneMemberAttendanceHeaderView as? AttendanceStatusWithProfileView else { return }
+        headerView.configureViewWith(stats: stats)
     }
     
     private func configureViews() {

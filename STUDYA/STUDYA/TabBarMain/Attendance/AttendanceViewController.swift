@@ -22,10 +22,6 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }()
     let userView = AttendanceForAMemberView(viewer: .user)
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

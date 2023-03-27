@@ -78,7 +78,7 @@ class AttendanceStatusWithProfileView: UIView {
     
     private let titleLabel = CustomLabel(title: "출결 상세", tintColor: .ppsBlack, size: 16, isBold: true)
     private let profileImageView = ProfileImageView(size: 40)
-    private let nickNameLabel = CustomLabel(title: "니이이이이이이이익넴", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let nickNameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
     private let fineLabel = UILabel(frame: .zero)
     private let attendanceProgressView = AttendanceReusableProgressView()
     
@@ -87,8 +87,6 @@ class AttendanceStatusWithProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
-        
         configureViews()
     }
     
@@ -96,8 +94,20 @@ class AttendanceStatusWithProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    internal func configureViewWith(stats: UserAttendanceStatistics) {
+        profileImageView.setImageWith(stats.profileImageURL)
+        nickNameLabel.text = stats.nickName
+        fineLabel.text = stats.totalFine.toString()
+        
+        let attendanceStats = AttendanceStats(attendedCount: stats.attendedCount, lateCount: stats.lateCount, allowedCount: stats.allowedCount, absentCount: stats.absentCount, totalCount: stats.totalAttendanceCount, totalFine: stats.totalFine)
+        
+        attendanceProgressView.configureView(with: attendanceStats)
+    }
+    
     // MARK: - configure
     private func configureViews() {
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: 0, valueFontSize: 24, withCurrency: true)
+        
         addSubview(titleLabel)
         addSubview(profileImageView)
         addSubview(nickNameLabel)
@@ -151,10 +161,10 @@ private class AttendanceReusableProgressView: UIView {
     private let absenceLabel = CustomLabel(title: "결석", tintColor: .ppsGray1, size: 14)
     private let allowedLabel = CustomLabel(title: "사유", tintColor: .ppsGray1, size: 14)
     
-    private let attendanceCountLabel = CustomLabel(title: "?", tintColor: .attendedMain, size: 16, isBold: true)
-    private let latenessCountLabel = CustomLabel(title: "?", tintColor: .lateMain, size: 16, isBold: true)
-    private let absenceCountLabel = CustomLabel(title: "?", tintColor: .absentMain, size: 16, isBold: true)
-    private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 16, isBold: true)
+    private let attendanceCountLabel = CustomLabel(title: "", tintColor: .attendedMain, size: 16, isBold: true)
+    private let latenessCountLabel = CustomLabel(title: "", tintColor: .lateMain, size: 16, isBold: true)
+    private let absenceCountLabel = CustomLabel(title: "", tintColor: .absentMain, size: 16, isBold: true)
+    private let allowedCountLabel = CustomLabel(title: "", tintColor: .allowedMain, size: 16, isBold: true)
     
     private let separater = UIView()
     

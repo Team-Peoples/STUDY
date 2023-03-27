@@ -17,10 +17,10 @@ final class AttendanceDetailsCell: UITableViewCell {
     private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
     private let roundedBackgroundView = RoundableView(cornerRadius: 16)
     
-    private let attendanceCountLabel = CustomLabel(title: "?", tintColor: .attendedMain, size: 14)
-    private let latenessCountLabel = CustomLabel(title: "?", tintColor: .lateMain, size: 14)
-    private let absenceCountLabel = CustomLabel(title: "?", tintColor: .absentMain, size: 14)
-    private let allowedCountLabel = CustomLabel(title: "?", tintColor: .allowedMain, size: 14)
+    private let attendanceCountLabel = CustomLabel(title: "", tintColor: .attendedMain, size: 14)
+    private let latenessCountLabel = CustomLabel(title: "", tintColor: .lateMain, size: 14)
+    private let absenceCountLabel = CustomLabel(title: "", tintColor: .absentMain, size: 14)
+    private let allowedCountLabel = CustomLabel(title: "", tintColor: .allowedMain, size: 14)
     private let fineLabel = UILabel(frame: .zero)
     
     // MARK: - Initialization

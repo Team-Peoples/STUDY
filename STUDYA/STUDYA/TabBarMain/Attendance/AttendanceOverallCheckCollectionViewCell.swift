@@ -215,8 +215,16 @@ extension AttendanceOverallCheckCollectionViewCell: UITableViewDataSource {
 
 extension AttendanceOverallCheckCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        let aMemberAttendanceStats = viewModel.allMemebersAttendanceStatistics[indexPath.row]
+        
         let AttendancePersonalVC = AttendancePersonalViewController()
+        
         delegate?.syncSwitchWith(nextVC: AttendancePersonalVC)
+        
+        AttendancePersonalVC.configureViewControllerWith(studyID: viewModel.studyID, stats: aMemberAttendanceStats)
+        AttendancePersonalVC.title = delegate?.title
+        
         delegate?.push(vc: AttendancePersonalVC)
     }
 }

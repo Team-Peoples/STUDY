@@ -1307,7 +1307,7 @@ struct Network {
     
     func getAllMembersAttendaneStatisticsBetween(studyID: ID, completion: @escaping ((Result<[UserAttendanceStatistics], PeoplesError>) -> Void)) {
         AF.request(RequestPurpose.getAllMembersAttendaneStatisticsBetween(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
-            response.data?.printResponseData()
+            
             guard let httpResponse = response.response else {
                 completion(.failure(.serverError))
                 return
