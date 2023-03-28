@@ -52,7 +52,7 @@ final class MainViewController: SwitchableViewController {
         
         t.showsVerticalScrollIndicator = false
         t.separatorStyle = .none
-        t.backgroundColor = .systemBackground
+        t.backgroundColor = .white
         t.refreshControl = UIRefreshControl()
         
         t.refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -131,7 +131,7 @@ final class MainViewController: SwitchableViewController {
         
         getUserInformationAndStudies()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         print("postman의 key 입력하는 곳에 바로 붙여넣기, cmd + c GO")
         print("----------------------------------------------------------")
         print("""

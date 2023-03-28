@@ -47,7 +47,7 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
         backgroundContainerView.backgroundColor = .appColor(.ppsGray3)
         selectPeriodButton.addTarget(self, action: #selector(selectPeriodButtonTapped), for: .touchUpInside)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         nameInOrderButton.isSelected = true
         allPeriodButton.isSelected = true

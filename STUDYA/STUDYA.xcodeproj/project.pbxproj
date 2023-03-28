@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
+		72137F0329D17860000384B9 /* InviteeLandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72137F0229D17860000384B9 /* InviteeLandingViewController.swift */; };
 		721482B2297125E100A903FF /* StudySchedulePopUpAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */; };
 		721BD40C29C216D5000C8DA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */; };
 		721BD40E29C30A22000C8DA4 /* CalendarTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */; };
@@ -162,6 +163,7 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		72137F0229D17860000384B9 /* InviteeLandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteeLandingViewController.swift; sourceTree = "<group>"; };
 		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpAlertViewController.swift; path = ../StudySchedule/StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
 		721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTimePicker.swift; sourceTree = "<group>"; };
@@ -357,6 +359,7 @@
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72E5574D29A46CCE007A2CC0 /* ViewController.swift */,
 				D33439A5294D6F23000875C7 /* AppController.swift */,
+				72137F0229D17860000384B9 /* InviteeLandingViewController.swift */,
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				D33DA9EE299DE4FF003DD5A9 /* Model */,
 				D33DA9FF299DE8AE003DD5A9 /* ViewModel */,
@@ -888,6 +891,7 @@
 				D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingView.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* MainCalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
+				72137F0329D17860000384B9 /* InviteeLandingViewController.swift in Sources */,
 				72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift in Sources */,
 				D3DD808B29268A8F001250CF /* MainValidationNumberCheckingPopViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,

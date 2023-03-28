@@ -17,7 +17,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
     weak var presentingVC: UIViewController?
     
     private let dimmingViewButton = UIButton(frame: .zero)
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
+    private let popUpContainerView = UIView(backgroundColor: .white)
     private let titleLabel = CustomLabel(title: "조회 날짜 설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let dismissButton: UIButton = {
         
@@ -95,7 +95,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         view.addSubview(popUpContainerView)
         
         popUpContainerView.layer.cornerRadius = 24
-        popUpContainerView.backgroundColor = .systemBackground
+        popUpContainerView.backgroundColor = .white
         
         popUpContainerView.addSubview(dismissButton)
         popUpContainerView.addSubview(calendarView)

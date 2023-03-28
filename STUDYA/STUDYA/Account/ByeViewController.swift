@@ -16,7 +16,7 @@ final class ByeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         title = "회원 탈퇴"
         
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)

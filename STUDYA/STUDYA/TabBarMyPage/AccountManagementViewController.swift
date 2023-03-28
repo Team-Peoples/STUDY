@@ -99,6 +99,7 @@ final class AccountManagementViewController: UIViewController {
         configureViews()
         
         viewModel.getUserInfo { [weak self] user in
+            print(user)
             self?.nickNameField.text = user.nickName
             self?.emailLabel.text = user.id
             

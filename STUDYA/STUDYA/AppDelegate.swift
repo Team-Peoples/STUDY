@@ -63,6 +63,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return true
     }
     
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
+    {
+        // Get URL components from the incoming user activity.
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let incomingURL = userActivity.webpageURL,
+            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else {
+            return false
+        }
+
+        // Check for specific URL components that you need.
+//        guard let path = components.path,
+//        let params = components.queryItems else {
+//            return false
+//        }
+//        print("path = \(path)")
+//
+//        if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
+//            let photoIndex = params.first(where: { $0.name == "index" })?.value {
+//
+//            print("album = \(albumName)")
+//            print("photoIndex = \(photoIndex)")
+//            return true
+//
+//        } else {
+//            print("Either album name or photo index missing")
+//            return false
+//        }
+    }
+    // domb: 링크가 있으면 이렇게 처리??
+//        if let appURL = URL(string: "https://myphotoapp.example.com/albums?albumname=vacation&index=1") {
+//            UIApplication.shared.open(appURL) { success in
+//                if success {
+//                    print("The URL was delivered successfully.")
+//                } else {
+//                    print("The URL failed to open.")
+//                }
+//            }
+//        } else {
+//            print("Invalid URL specified.")
+//        }
+      
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -75,16 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
-    }
-    
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        let handled = DynamicLinks.dynamicLinks()
-            .handleUniversalLink(userActivity.webpageURL!) { dynamiclink, error in
-                print(dynamiclink, error,"🔥")
-            }
-        
-        return handled
     }
 }
 

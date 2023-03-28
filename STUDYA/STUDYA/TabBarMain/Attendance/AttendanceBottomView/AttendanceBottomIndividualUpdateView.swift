@@ -74,7 +74,7 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
     override init(doneButtonTitle: String) {
         super.init(doneButtonTitle: doneButtonTitle)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
 
         penaltyFeeInputField.delegate = self
         

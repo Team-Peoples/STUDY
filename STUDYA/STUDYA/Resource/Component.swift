@@ -572,7 +572,6 @@ class ProfileImageContainerView: UIView {
         
         addSubview(internalImageView)
         
-        internalImageView.image = UIImage(named: "defaultProfile")
         internalImageView.clipsToBounds = true
         internalImageView.contentMode = .scaleAspectFill
         internalImageView.configureBorder(color: .keyColor3, width: 1, radius: radius)
@@ -596,7 +595,7 @@ class ProfileImageContainerView: UIView {
         outerPurpleLineView.configureBorder(color: .keyColor1, width: 1, radius: radius + 2)
         
         roleMark.isUserInteractionEnabled = false
-        roleMark.backgroundColor = .systemBackground
+        roleMark.backgroundColor = .white
         roleMark.setTitleColor(.black, for: .normal)
         roleMark.titleLabel?.font = .boldSystemFont(ofSize: 10)
         roleMark.layer.applySketchShadow(color: .black, alpha: 0.2, x: 0, y: 0, blur: 4, spread: 0)
@@ -1004,7 +1003,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         picker.delegate = self
         picker.dataSource = self
         self.inputView = picker
-        picker.backgroundColor = .systemBackground
+        picker.backgroundColor = .white
         configureToolbar()
     }
     
@@ -1436,6 +1435,7 @@ class RoundedPurpleCell: UICollectionViewCell {
 
         contentView.addSubview(button)
         setConstraints(height: 28)
+        configure(backgroundColor: .background, normalTextColor: .ppsGray1, selectedTextColor: .ppsGray1)
     }
     
     internal func configure(backgroundColor: AssetColor, normalTextColor: AssetColor, selectedTextColor: AssetColor) {

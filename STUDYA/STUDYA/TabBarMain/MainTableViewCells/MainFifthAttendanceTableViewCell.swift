@@ -51,7 +51,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         backView.backgroundColor = .appColor(.background2)
         
         

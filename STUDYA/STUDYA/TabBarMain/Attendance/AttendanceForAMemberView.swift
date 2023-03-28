@@ -114,7 +114,7 @@ class AttendanceForAMemberView: UIView {
         
         super.init(frame: .zero)
         
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = .white
         
         self.addSubview(oneMemberAttendanceHeaderView)
         self.addSubview(attendanceDetailsTableView)

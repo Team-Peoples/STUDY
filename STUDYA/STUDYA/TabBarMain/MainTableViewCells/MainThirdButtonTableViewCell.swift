@@ -37,7 +37,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         configureMainButton()
         configureAfterCheckView()
     }
@@ -203,7 +203,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     private func disableMainButton() {
         mainButton.isEnabled = false
-        mainButton.backgroundColor = .systemBackground
+        mainButton.backgroundColor = .white
         mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
         mainButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
     }

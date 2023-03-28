@@ -29,7 +29,7 @@ final class MyPageStudyHistoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        Network.shared.fetchStudyLog { result in
+        Network.shared.fetchParticipatedStudiesInfo() { result in
             switch result {
             case .success(let studyList):
                 self.studyHistoryList = studyList

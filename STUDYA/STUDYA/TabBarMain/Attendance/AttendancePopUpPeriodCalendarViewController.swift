@@ -44,7 +44,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
     
     private let dimmingViewButton = UIButton(frame: .zero)
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
+    private let popUpContainerView = UIView(backgroundColor: .white)
     private let upperContainerView = UIView(backgroundColor: .appColor(.background))
     private let titleLabel = CustomLabel(title: "조회 기간 설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let dismissButton: UIButton = {
@@ -146,7 +146,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         
         popUpContainerView.layer.cornerRadius = 24
         popUpContainerView.clipsToBounds = true
-        popUpContainerView.backgroundColor = .systemBackground
+        popUpContainerView.backgroundColor = .white
         
         popUpContainerView.addSubview(upperContainerView)
         upperContainerView.addSubview(titleLabel)

@@ -78,7 +78,7 @@ final class MainValidationNumberCheckingPopViewController: UIViewController {
         attendButton.setTitle("출석 완료", for: .normal)
         attendButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         attendButton.configureBorder(color: .ppsGray2, width: 1, radius: 20)
-        attendButton.backgroundColor = .systemBackground
+        attendButton.backgroundColor = .white
         attendButton.isEnabled = false
     }
     

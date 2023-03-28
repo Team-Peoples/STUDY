@@ -26,7 +26,7 @@ class TreatingPersonalDataViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         title = "앱 정보"
         
         navigationController?.setBrandNavigation()

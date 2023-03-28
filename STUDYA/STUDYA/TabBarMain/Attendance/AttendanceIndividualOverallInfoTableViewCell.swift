@@ -26,7 +26,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         let v = RoundableView(cornerRadius: 14)
         
-        v.backgroundColor = .systemBackground
+        v.backgroundColor = .white
         
         return v
     }()
@@ -77,7 +77,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         selectionStyle = .none
         
         contentView.addSubview(view)

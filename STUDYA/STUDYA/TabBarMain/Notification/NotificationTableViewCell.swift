@@ -71,6 +71,6 @@ class NotificationTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        backView.backgroundColor = .systemBackground
+        backView.backgroundColor = .white
     }
 }

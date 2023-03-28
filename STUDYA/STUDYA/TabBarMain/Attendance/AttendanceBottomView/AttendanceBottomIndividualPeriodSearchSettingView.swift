@@ -42,7 +42,7 @@ final class AttendanceBottomIndividualPeriodSearchSettingView: FullDoneButtonBut
     override init(doneButtonTitle: String) {
         super.init(doneButtonTitle: doneButtonTitle)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         backgroundContainerView.backgroundColor = .appColor(.ppsGray3)
         
         allPeriodButton.isSelected = true

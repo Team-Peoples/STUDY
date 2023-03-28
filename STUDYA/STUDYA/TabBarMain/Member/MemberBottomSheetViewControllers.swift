@@ -98,7 +98,7 @@ final class MemberBottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         configureView()
     }
     
@@ -259,7 +259,7 @@ final class AskChangingOwnerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         configureButton(button: backButton, title: "돌아가기")
         configureButton(button: confirmButton, title: Constant.OK)
@@ -328,7 +328,7 @@ final class AskExcommunicationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         configureButton(button: backButton, title: "돌아가기")
         configureButton(button: confirmButton, title: Constant.OK)

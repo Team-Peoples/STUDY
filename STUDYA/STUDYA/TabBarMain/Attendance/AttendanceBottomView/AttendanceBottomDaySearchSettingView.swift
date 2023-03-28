@@ -39,7 +39,7 @@ final class AttendanceBottomDaySearchSettingView: FullDoneButtonButtomView {
     override init(doneButtonTitle: String) {
         super.init(doneButtonTitle: doneButtonTitle)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         nameInOrderButton.isSelected = true
         

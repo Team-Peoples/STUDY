@@ -172,7 +172,7 @@ private class AttendanceReusableProgressView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         setupProgressBar()
         setupProgress()

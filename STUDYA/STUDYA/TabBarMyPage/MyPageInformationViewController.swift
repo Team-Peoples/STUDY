@@ -42,7 +42,7 @@ final class MyPageInformationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         title = "앱 정보"
         navigationController?.setBrandNavigation()
@@ -134,7 +134,7 @@ final class InformationVersionTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         selectionStyle = .none
         
         contentView.addSubview(titleLabel)

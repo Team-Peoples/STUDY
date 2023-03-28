@@ -33,7 +33,7 @@ class MainSixthETCTableViewCell: UITableViewCell {
         informationButton.addTarget(self, action: #selector(informationButtonTapped), for: .touchUpInside)
         membersButton.addTarget(self, action: #selector(membersButtonTapped), for: .touchUpInside)
         
-        contentView.backgroundColor = .systemBackground
+        contentView.backgroundColor = .white
         infoBackgroundView.backgroundColor = .appColor(.background2)
         memberBackgroundView.backgroundColor = .appColor(.background2)
         

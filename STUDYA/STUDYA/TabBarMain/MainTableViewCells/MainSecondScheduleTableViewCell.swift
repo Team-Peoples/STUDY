@@ -36,7 +36,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         addSubviews()
         constrainLine()

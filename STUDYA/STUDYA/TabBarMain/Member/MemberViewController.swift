@@ -147,7 +147,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
 //        navigationController?.setBrandNavigation()
 //        configureNavigationBar()
