@@ -27,9 +27,9 @@ final class AttendanceBottomMembersPeriodSearchSettingView: FullDoneButtonButtom
     private lazy var allPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "전체", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changePeriodType))
     private lazy var customPeriodButton = CustomButton(fontSize: 14, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 36, normalBorderColor: .ppsGray2, normalTitle: "직접설정", selectedTitleColor: .keyColor1, selectedBorderColor: .keyColor1, target: self, action: #selector(changePeriodType))
     private let backgroundContainerView = RoundableView(cornerRadius: 12)
-    private let precedingDayLabel = CustomLabel(title: "2022.06.10", tintColor: .ppsGray1, size: 16, isBold: false)
+    private let precedingDayLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: false)
     private let middleLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16, isBold: false)
-    private let followingDayLabel = CustomLabel(title: "2023.01.14", tintColor: .ppsGray1, size: 16, isBold: false)
+    private let followingDayLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: false)
     private lazy var stackView: UIStackView = {
        
         let s = UIStackView(arrangedSubviews: [precedingDayLabel, middleLabel, followingDayLabel])

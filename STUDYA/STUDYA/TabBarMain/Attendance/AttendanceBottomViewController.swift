@@ -9,12 +9,12 @@ import UIKit
 import SnapKit
 
 protocol DateLabelUpdatable: AnyObject {
-    func updateDateLabels(preceding: Date, following: Date)
+    func updateDateLabels(preceding: DottedDate, following: DottedDate)
 }
 
 final class AttendanceBottomViewController: UIViewController, Navigatable {
 
-    internal var viewModel: AttendancesModificationViewModel?
+//    internal var viewModel: AttendancesModificationViewModel?
     internal var indexPath: IndexPath?
     private lazy var bottomView = viewType?.view
     
@@ -24,26 +24,21 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
             bottomView?.navigatable = self
             
             switch viewType {
-            case .daySearchSetting:
-                guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
+//            case .daySearchSetting:
+//                guard let bottomView = bottomView as? AttendanceBottomDaySearchSettingView else { return }
                 
-                bottomView.viewModel = viewModel
+//                bottomView.viewModel = viewModel
                 
             case .membersPeriodSearchSetting:
                 guard let bottomView = bottomView as? AttendanceBottomMembersPeriodSearchSettingView else { return }
                 
                 bottomView.dateLabelUpdatableDelegate = self
                 
-            case .individualPeriodSearchSetting:
-                guard let bottomView = bottomView as? AttendanceBottomIndividualPeriodSearchSettingView else { return }
-                
-                bottomView.dateLabelUpdatableDelegate = self
-                
-            case .individualUpdate:
-                guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
-                
-                bottomView.viewModel = viewModel
-                bottomView.indexPath = indexPath
+//            case .individualUpdate:
+//                guard let bottomView = bottomView as? AttendanceBottomIndividualUpdateView, let indexPath = indexPath else { return }
+//                
+////                bottomView.viewModel = viewModel
+//                bottomView.indexPath = indexPath
                 
             default: break
             }
@@ -52,29 +47,13 @@ final class AttendanceBottomViewController: UIViewController, Navigatable {
         }
     }
     
-    internal lazy var precedingDate = Date() {
-        didSet {
-            if viewType == .membersPeriodSearchSetting {
-                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
-            } else {
-                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setPrecedingDateLabel(with: precedingDate)
-            }
-        }
-    }
-    internal lazy var followingDate = Date() {
-        didSet {
-            if viewType == . membersPeriodSearchSetting {
-                (bottomView as? AttendanceBottomMembersPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
-            } else {
-                (bottomView as? AttendanceBottomIndividualPeriodSearchSettingView)?.setFollowingDateLabel(with: followingDate)
-            }
-        }
-    }
+    internal lazy var precedingDate = Date()
+    internal lazy var followingDate = Date()
 }
 
 extension AttendanceBottomViewController: DateLabelUpdatable {
-    internal func updateDateLabels(preceding: Date, following: Date) {
-        precedingDate = preceding
-        followingDate = following
+    func updateDateLabels(preceding: DottedDate, following: DottedDate) {
+//        🛑구색 맞추기용 나중에 삭제해야
     }
 }
+

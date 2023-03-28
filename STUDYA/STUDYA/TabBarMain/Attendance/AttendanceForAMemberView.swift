@@ -8,13 +8,17 @@
 import UIKit
 
 class AttendanceForAMemberViewModel {
-    var studyID: ID
-    var userID: UserID
+    private var userID: UserID
+    fileprivate var studyID: ID
+    internal var studyStartDate: Date?
+    
+    var precedingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
+    var followingDate: Observable<ShortenDottedDate> = Observable(DateFormatter.dashedDateFormatter.string(from: Calendar.current.date(byAdding: .day, value: -30, to: Date()) ?? Date()))
     
     var attendanceOverall: UserAttendanceOverall?
     var yearAndMonthOfAttendances: [DashedDate] = []
     var monthlyGroupedAttendanceInformation: [DashedDate: [OneTimeAttendanceInformation]] = [:]
-    var error: Observable<PeoplesError>?
+    var error: Observable<PeoplesError> = Observable(.noError)
     var reloadTable: Observable<Bool> = Observable(false)
     
     init(studyID: Int, userID: UserID) {
@@ -22,17 +26,53 @@ class AttendanceForAMemberViewModel {
         self.userID = userID
     }
     
-    func getUserAttendanceOverall(between startDate: DashedDate, and endDate: DashedDate) {
-        Network.shared.getUserAttendanceBetween(start: startDate, end: endDate, studyID: studyID, userID: userID) { result in
+    func getUserAttendanceOverall(between precedingDate: DashedDate, and followingDate: DashedDate) {
+        
+        Network.shared.getUserAttendanceBetween(preceding: precedingDate, following: followingDate, studyID: studyID, userID: userID) { result in
             switch result {
             case .success(let attendanceOverall):
+                self.precedingDate.value = precedingDate.convertDashedDateToShortenDottedDate()
+                self.followingDate.value = followingDate.convertDashedDateToShortenDottedDate()
+                
                 self.attendanceOverall = attendanceOverall
                 self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
-                
                 self.reloadTable.value = true
                 
             case .failure(let error):
-                self.error = Observable(error)
+                self.error.value = error
+            }
+        }
+    }
+    
+    func getUserAttendanceOverallFromEndToEnd() {
+        guard let studyStartDate = studyStartDate else { return }
+        let dashedStudyStartDate = DateFormatter.dashedDateFormatter.string(from: studyStartDate)
+        let dashedToday = DateFormatter.dashedDateFormatter.string(from: Date())
+        
+        Network.shared.getUserAttendanceBetween(preceding: dashedStudyStartDate, following: dashedToday, studyID: studyID, userID: userID) { result in
+            switch result {
+            case .success(let attendanceOverall):
+                self.precedingDate.value = dashedStudyStartDate.convertDashedDateToShortenDottedDate()
+                self.followingDate.value = dashedToday.convertDashedDateToShortenDottedDate()
+                
+                self.attendanceOverall = attendanceOverall
+                self.seperateAllUserAttendancesByMonth(attendances: attendanceOverall)
+                self.reloadTable.value = true
+                
+            case .failure(let error):
+                self.error.value = error
+            }
+        }
+    }
+    
+    func getStartDateOfStudy() {
+        Network.shared.getAllParticipatedStudies { result in
+            switch result {
+            case .success(let studyEndToEndInformations):
+                let studyEndToEndInformation = studyEndToEndInformations.filter{ $0.studyID == self.studyID}.first
+                self.studyStartDate = studyEndToEndInformation?.start
+            case .failure(let error):
+                self.error.value = error
             }
         }
     }
@@ -42,8 +82,10 @@ class AttendanceForAMemberViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy"
 
-        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations
+        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations ?? []
         var yearAndMonthOfAttendances: [DashedDate] = []
+        
+        monthlyGroupedAttendanceInformation = [:]
         
         oneTimeAttendanceInformations.forEach { oneTimeAttendance in
             let studyScheduleDate = oneTimeAttendance.studyScheduleDateAndTime
@@ -75,20 +117,7 @@ class AttendanceForAMemberView: UIView {
     }
     
     var viewer: Viewer
-    var viewModel: AttendanceForAMemberViewModel? {
-        didSet {
-            setBinding()
-            
-            if viewer == .user {
-                let today = Date()
-                let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
-                let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
-                let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
-                
-                viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
-            }
-        }
-    }
+    var viewModel: AttendanceForAMemberViewModel?
     
     // MARK: - Properties
     
@@ -97,10 +126,7 @@ class AttendanceForAMemberView: UIView {
     lazy var oneMemberAttendanceHeaderView: UIView = {
         switch self.viewer {
         case .user:
-            let headerView = MyAttendanceStatusView()
-//            headerView.attendanceOverall = viewModel?.attendanceOverall   🛑api 변경후 다시보자
-            
-            return headerView
+            return MyAttendanceStatusView()
         case .manager:
             return AttendanceStatusWithProfileView()
         }
@@ -116,47 +142,74 @@ class AttendanceForAMemberView: UIView {
         
         self.backgroundColor = .systemBackground
         
-        self.addSubview(oneMemberAttendanceHeaderView)
-        self.addSubview(attendanceDetailsTableView)
-        
-        attendanceDetailsTableView.separatorStyle = .none
-        attendanceDetailsTableView.backgroundColor = .white
-        attendanceDetailsTableView.delegate = self
-        attendanceDetailsTableView.dataSource = self
-        
-        register()
-        setConstraints()
+        configureViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Actions
-
+    // MARK: - Configure
+    
+    internal func configureViewWith(studyID: ID, userID: UserID, stats: UserAttendanceStatistics? = nil) {
+        initViewModelWith(studyID: studyID, userID: userID)
+        setBinding()
+        configureView(with: stats)
+    }
+    
+    private func initViewModelWith(studyID: ID, userID: UserID) {
+        viewModel = AttendanceForAMemberViewModel(studyID: studyID, userID: userID)
+        viewModel?.getStartDateOfStudy()
+    }
+    
     private func setBinding() {
         guard let viewModel = viewModel else { return }
         viewModel.reloadTable.bind({ _ in
             self.attendanceDetailsTableView.reloadData()
         })
-        viewModel.error?.bind({ error in
+        viewModel.error.bind({ error in
             guard let delegate = self.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }
     
-    // MARK: - Configure
-    
-    private func register() {
-        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
-        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
-        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
-        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
+    private func configureView(with stats: UserAttendanceStatistics?) {
+        if viewer == .user {
+            configureHeaderViewWithAttendanceStats()
+            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
+        } else {
+            guard let stats = stats else { return }
+            configureMemberHeaderView(with: stats)
+            reloadTableViewWithAttendanceDataFrom30DaysAgoToNow()
+        }
     }
     
-    // MARK: - Setting Constraints
+    private func reloadTableViewWithAttendanceDataFrom30DaysAgoToNow() {
+        let today = Date()
+        let dashedToday = DateFormatter.dashedDateFormatter.string(from: today)
+        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: today)
+        let dashedThirtyDaysAgo = DateFormatter.dashedDateFormatter.string(from: thirtyDaysAgo ?? today)
+        
+        viewModel?.getUserAttendanceOverall(between: dashedThirtyDaysAgo, and: dashedToday)
+    }
     
-    private func setConstraints() {
+    private func configureHeaderViewWithAttendanceStats() {
+        guard let headerView = oneMemberAttendanceHeaderView as? MyAttendanceStatusView else { return }
+        headerView.navigatable = delegate
+        headerView.getAttendanceStats(with: viewModel?.studyID)
+    }
+    
+    private func configureMemberHeaderView(with stats: UserAttendanceStatistics) {
+        guard let headerView = oneMemberAttendanceHeaderView as? AttendanceStatusWithProfileView else { return }
+        headerView.configureViewWith(stats: stats)
+    }
+    
+    private func configureViews() {
+        configureAttendanceDetailsTableView()
+        
+        self.addSubview(oneMemberAttendanceHeaderView)
+        self.addSubview(attendanceDetailsTableView)
+        
         oneMemberAttendanceHeaderView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
@@ -165,8 +218,19 @@ class AttendanceForAMemberView: UIView {
             make.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
         }
     }
+    
+    private func configureAttendanceDetailsTableView() {
+        attendanceDetailsTableView.separatorStyle = .none
+        attendanceDetailsTableView.backgroundColor = .white
+        attendanceDetailsTableView.delegate = self
+        attendanceDetailsTableView.dataSource = self
+        
+        attendanceDetailsTableView.register(AttendanceDetailsCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDetailsCell.identifier)
+        attendanceDetailsTableView.register(AttendanceTableViewDayCell.self, forCellReuseIdentifier: AttendanceReusableView.reusableDayCell.identifier)
+        attendanceDetailsTableView.register(MonthlyHeaderView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyHeaderView.identifier)
+        attendanceDetailsTableView.register(MonthlyFooterView.self, forHeaderFooterViewReuseIdentifier: AttendanceReusableView.reusableMonthlyFooterView.identifier)
+    }
 }
-
 
 // MARK: UITableViewDataSource
 
@@ -256,13 +320,10 @@ extension AttendanceForAMemberView: UITableViewDataSource {
         case 0:
             guard let attendanceTableViewDetailsCell = tableView.dequeueReusableCell(withIdentifier: AttendanceReusableView.reusableDetailsCell.identifier, for: indexPath)
                     as? AttendanceDetailsCell,
-                  let attendanceOverall = viewModel?.attendanceOverall else { return  AttendanceDetailsCell() }
+                  let viewModel = viewModel else { return  AttendanceDetailsCell() }
             
-            attendanceTableViewDetailsCell.configureCell(with: attendanceOverall)
-            
-            if attendanceTableViewDetailsCell.bottomSheetAddableDelegate == nil {
-                attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
-            }
+            attendanceTableViewDetailsCell.bottomSheetAddableDelegate = delegate
+            attendanceTableViewDetailsCell.configureCell(with: viewModel)
             
             return attendanceTableViewDetailsCell
         default:
@@ -315,5 +376,37 @@ enum AttendanceReusableView {
                     return "MonthlyFooterView"
             }
         }
+    }
+}
+
+struct DateStorage {
+    internal var date: Observable<Date>
+    
+    internal var DottedDate: DottedDate {
+        DateFormatter.dottedDateFormatter.string(from: date.value)
+    }
+    internal var shortenDottedDate: ShortenDottedDate {
+        DateFormatter.shortenDottedDateFormatter.string(from: date.value)
+    }
+    internal var dashedDate: DashedDate {
+        DateFormatter.dashedDateFormatter.string(from: date.value)
+    }
+    
+    init(date: Date) {
+        self.date = Observable(date)
+    }
+    
+    mutating func changeDate(to date: Date) {
+        self.date.value = date
+    }
+    
+    mutating func changeDateTo(shortenDottedDate: ShortenDottedDate) {
+        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: shortenDottedDate) else { return }
+        self.date.value = date
+    }
+    
+    mutating func changeDateTo(dottedDate: DottedDate) {
+        guard let date = DateFormatter.dottedDateFormatter.date(from: dottedDate) else { return }
+        self.date.value = date
     }
 }

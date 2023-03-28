@@ -11,9 +11,9 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     
     // MARK: - Properties
     
-    var precedingDate = Date() - 2000000 //임시
-    var followingDate = Date()
-    lazy var precedingDateComponents: DateComponents? = precedingDate.convertToDateComponents([.year, .month, .day]) {
+    var precedingDate: Date?
+    var followingDate: Date?
+    lazy var precedingDateComponents: DateComponents? = precedingDate?.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let precedingDateComponents = precedingDateComponents,
@@ -24,7 +24,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             precedingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    lazy var followingDateComponents: DateComponents? = followingDate.convertToDateComponents([.year, .month, .day]) {
+    lazy var followingDateComponents: DateComponents? = followingDate?.convertToDateComponents([.year, .month, .day]) {
         didSet {
             
             guard let followingDateComponents = followingDateComponents,
@@ -35,9 +35,6 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             followingDateButton.setTitle("\(year).\(month).\(day)", for: .normal)
         }
     }
-    
-    var strSelectedDate = "2022.06.01"  //임시
-    var strSelectedDate2 = "2022.06.11" //임시
 
     private var isPrecedingDateTurn = true
     
@@ -50,15 +47,15 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     private let dismissButton: UIButton = {
         
         let button = UIButton()
-        let image = UIImage(named: "dismiss")
+        let image = UIImage(named: "Dismiss")
         
         button.setImage(image, for: .normal)
         
         return button
     }()
-    private lazy var precedingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: strSelectedDate, selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(precedingDateButtonTapped))
+    private lazy var precedingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: "", selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(precedingDateButtonTapped))
     private let waveLabel = CustomLabel(title: "~", tintColor: .ppsGray1, size: 16)
-    private lazy var followingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: strSelectedDate2, selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(followingDateButtonTapped))
+    private lazy var followingDateButton = CustomButton(fontSize: 16, isBold: false, normalBackgroundColor: .background, normalTitleColor: .ppsGray2, height: 30, normalBorderColor: .ppsGray2, normalTitle: "", selectedBackgroundColor: .daySelected, selectedTitleColor: .ppsGray1, selectedBorderColor: .keyColor2, width: 132, contentEdgeInsets: UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25), target: self, action: #selector(followingDateButtonTapped))
     private lazy var stackView: UIStackView = {
        
         let s = UIStackView(arrangedSubviews: [precedingDateButton, waveLabel, followingDateButton])
@@ -87,31 +84,36 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.select(date: precedingDate)
+        calendarView.select(date: precedingDate!)
         
         let today = Date()
         calendarView.maximumDate = today
         calendarView.reloadData()
         
         calendarView.dateSelectAction = { [self] (date) in
+            
             let dateComponents = date.convertToDateComponents([.year, .month, .day])
             if isPrecedingDateTurn {
+                precedingDate = date
                 precedingDateComponents = dateComponents
                 enableFollowingButton()
                 doneButton.fillOut(title: Constant.OK)
                 doneButton.isEnabled = false
-                isPrecedingDateTurn = false
             } else {
-                if date < precedingDate {
+                if date < precedingDate! {
+                    precedingDate = date
                     precedingDateComponents = dateComponents
+                    enableFollowingButton()
                     doneButton.fillOut(title: Constant.OK)
                     doneButton.isEnabled = false
                 } else {
+                    followingDate = date
                     followingDateComponents = dateComponents
                     doneButton.fillIn(title: Constant.OK)
                     doneButton.isEnabled = true
                 }
             }
+            isPrecedingDateTurn = false
         }
         
 
@@ -142,9 +144,21 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     }
     
     @objc private func doneButtonTapped() {
-        guard let precedingDate = precedingDateComponents?.convertToDate(), let followingDate = followingDateComponents?.convertToDate() else { return }
-        dateLabelUpdatableDelegate?.updateDateLabels(preceding: precedingDate, following: followingDate)
+        guard let precedingDate = precedingDateComponents?.convertToDate(),
+              let followingDate = followingDateComponents?.convertToDate() else { return }
+        let dottedPrecedingDate = DateFormatter.shortenDottedDateFormatter.string(from: precedingDate)
+        let dottedFollowingDate = DateFormatter.shortenDottedDateFormatter.string(from: followingDate)
+        
+        dateLabelUpdatableDelegate?.updateDateLabels(preceding: dottedPrecedingDate, following: dottedFollowingDate)
         self.dismiss(animated: true)
+    }
+    
+    internal func setDateButtonsTitleWith(precedingDate: ShortenDottedDate, followingDate: ShortenDottedDate) {
+        self.precedingDate = DateFormatter.shortenDottedDateFormatter.date(from: precedingDate)
+        self.followingDate = DateFormatter.shortenDottedDateFormatter.date(from: followingDate)
+        
+        precedingDateButton.setTitle(precedingDate, for: .normal)
+        followingDateButton.setTitle(followingDate, for: .normal)
     }
     
     private func enablePrecedingButton() {
@@ -204,7 +218,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             make.top.equalTo(titleLabel.snp.bottom).offset(26)
         }
         calendarView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(upperContainerView.snp.bottom)
+            make.top.equalTo(upperContainerView.snp.bottom)
             make.bottom.equalTo(doneButton.snp.top)
             make.leading.trailing.equalTo(popUpContainerView)
         }

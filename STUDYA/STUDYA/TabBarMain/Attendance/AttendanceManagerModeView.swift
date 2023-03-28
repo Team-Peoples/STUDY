@@ -9,34 +9,15 @@ import UIKit
 
 final class AttendanceManagerModeView: UIView {
     
-    internal var studyID: Int? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    
+    internal var studyID: Int?
     weak var delegate: (Navigatable & SwitchSyncable & BottomSheetAddable)?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!
     @IBOutlet private weak var collectionView: UICollectionView!
-    private lazy var leftCell: AttendanceModificationCollectionViewCell = {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: IndexPath(item: 0, section: 0)) as? AttendanceModificationCollectionViewCell else { return AttendanceModificationCollectionViewCell() }
-        
-        cell.delegate = delegate
-        if let studyID = studyID {
-            cell.viewModel = AttendancesModificationViewModel(studyID: studyID)
-        }
-        
-        return cell
-    }()
-    private lazy var rightCell: AttendanceOverallCheckCollectionViewCell = {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? AttendanceOverallCheckCollectionViewCell else { return AttendanceOverallCheckCollectionViewCell() }
-        
-        cell.delegate = delegate
-        
-        return cell
-    }()
+    
+    private var leftCell: AttendanceModificationCollectionViewCell?
+    private var rightCell: AttendanceOverallCheckCollectionViewCell?
     
     @IBOutlet weak var leftCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightCenterXConstraint: NSLayoutConstraint!
@@ -53,6 +34,7 @@ final class AttendanceManagerModeView: UIView {
         
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
         layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = collectionView.frame.size
     }
     
     @IBAction private func leftButtonTapped(_ sender: UIButton) {
@@ -60,7 +42,6 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .defaultHigh
         
         collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: [.centeredHorizontally], animated: true)
-        leftCell.tableViewReload()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -74,7 +55,6 @@ final class AttendanceManagerModeView: UIView {
         rightCenterXConstraint.priority = .required
         
         collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: [.centeredHorizontally], animated: true)
-        rightCell.tableViewReload()
         
         UIView.animate(withDuration: 0.3) {
             self.layoutIfNeeded()
@@ -82,6 +62,19 @@ final class AttendanceManagerModeView: UIView {
             self.leftLabel.textColor = UIColor.appColor(.ppsGray2)
             self.rightLabel.textColor = UIColor.appColor(.ppsBlack)
         }
+    }
+    
+    internal func configureViewWith(studyID: ID) {
+        self.studyID = studyID
+        
+        leftCell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceModificationCollectionViewCell.identifier, for: IndexPath(item: 0, section: 0)) as? AttendanceModificationCollectionViewCell ?? AttendanceModificationCollectionViewCell()
+        
+        leftCell?.delegate = delegate
+        leftCell?.configureCellWith(studyID: studyID)
+        
+        rightCell = collectionView.dequeueReusableCell(withReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier, for: IndexPath(item: 1, section: 0)) as? AttendanceOverallCheckCollectionViewCell ?? AttendanceOverallCheckCollectionViewCell()
+        rightCell?.delegate = delegate
+        rightCell?.configureCellWith(studyID: studyID)
     }
 }
 
@@ -91,6 +84,8 @@ extension AttendanceManagerModeView: UICollectionViewDataSource, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let leftCell = leftCell, let rightCell = rightCell else { return UICollectionViewCell() }
+        
         switch indexPath.item {
         case 0: return leftCell
         case 1: return rightCell

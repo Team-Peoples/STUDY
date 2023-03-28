@@ -11,15 +11,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     
     static let identifier = "AttendanceIndividualInfoTableViewCell"
     
-    internal var anUserAttendanceInformation: SingleUserAnAttendanceInformation? {
-        didSet {
-            guard let anUserAttendanceInformation = anUserAttendanceInformation else { return }
-            
-            attendanceStatusView.configure(title: anUserAttendanceInformation.attendanceStatus.korean, color: anUserAttendanceInformation.attendanceStatus.color)
-            penaltyLabel.text = anUserAttendanceInformation.fine.toString()
-//            🛑api되면 닉네임, 사진 넣기
-        }
-    }
+    internal var anUserAttendanceInformation: SingleUserAnAttendanceInformation?
     
     internal let view: RoundableView = {
         
@@ -30,7 +22,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         return v
     }()
     private let profileImageView = ProfileImageView(size: 40)
-    private let nickNameLabel = CustomLabel(title: "닉네임", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let nickNameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
     private let attendanceStatusView: AttendanceStatusCapsuleView = {
        
         let v = AttendanceStatusCapsuleView(color: .attendedMain)
@@ -76,5 +68,14 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal func configureCell(with anUserAttendanceInformation: SingleUserAnAttendanceInformation) {
+        let attendance = AttendanceSeperator(inputString: anUserAttendanceInformation.attendanceStatus).attendance
+        
+        attendanceStatusView.configure(title: attendance.korean, color: attendance.color)
+        penaltyLabel.text = anUserAttendanceInformation.fine.toString()
+        profileImageView.setImageWith(anUserAttendanceInformation.imageURL)
+        nickNameLabel.text = anUserAttendanceInformation.nickName
     }
 }

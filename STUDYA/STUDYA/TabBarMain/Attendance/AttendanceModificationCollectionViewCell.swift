@@ -8,21 +8,16 @@
 import UIKit
 
 final class AttendancesModificationViewModel {
-    var studyID: Int
+    let studyID: Int
     
-    var allUsersAttendancesForADay: AllUsersAttendanceForADay? {
-        didSet {
-            guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
-            times = allUsersAttendancesForADay.map { $0.key }
-        }
-    }
+    var allUsersAttendancesForADay: AllUsersAttendanceForADay?
     var times: [Time] = []
-    
-    var attendancesForATime: Observable<[SingleUserAnAttendanceInformation]> = Observable([])
+    var attendancesForATime: [SingleUserAnAttendanceInformation] = []
     
     var alignment = Observable(LeftButtonAlignment.name)
     lazy var selectedTime = Observable(times.first ?? "")
-    var selectedDate = Observable(DateFormatter.dashedDateFormatter.string(from: Date()))
+    var selectedDate = Observable(DateFormatter.shortenDottedDateFormatter.string(from: Date()))
+    var reloadTableView = Observable(false)
     
     var error: Observable<PeoplesError>?
     
@@ -36,44 +31,53 @@ final class AttendancesModificationViewModel {
             
             switch result {
             case .success(let allUsersAttendancesForADay):
+                
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                weakSelf.times = allUsersAttendancesForADay.map { $0.key }.sorted()
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
-                    weakSelf.selectedTime = Observable(firstTime)
-                    weakSelf.attendancesForATime = Observable(attendancesForATime)
+                    
+                    weakSelf.selectedTime.value = firstTime
+                    weakSelf.attendancesForATime = attendancesForATime
+                    
                 } else {
-                    weakSelf.selectedTime = Observable("")
-                    weakSelf.attendancesForATime = Observable([])
+                    weakSelf.selectedTime.value = ""
+                    weakSelf.attendancesForATime = []
                 }
                 
+                weakSelf.reloadTableView.value = true
+                
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
     }
     
     func updateAllMembersAttendance() {
-        Network.shared.getAllMembersAttendanceOn(selectedDate.value, studyID: studyID) { [weak self] result in
+        let dashedSelectedDate = selectedDate.value.convertShortenDottedDateToDashedDate()
+
+        Network.shared.getAllMembersAttendanceOn(dashedSelectedDate, studyID: studyID) { [weak self] result in
             guard let weakSelf = self else { return }
-            
+
             switch result {
             case .success(let allUsersAttendancesForADay):
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
-                
+
                 if !allUsersAttendancesForADay.isEmpty, weakSelf.times.contains(weakSelf.selectedTime.value) {
-                    weakSelf.attendancesForATime = Observable(allUsersAttendancesForADay[weakSelf.selectedTime.value]!)
+                    weakSelf.attendancesForATime = allUsersAttendancesForADay[weakSelf.selectedTime.value]!
                 } else {
-                    weakSelf.selectedTime = Observable("")
-                    weakSelf.attendancesForATime = Observable([])
+                    weakSelf.selectedTime.value = ""
+                    weakSelf.attendancesForATime = []
                 }
-                
+                weakSelf.reloadTableView.value = true
+
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
     }
     
-    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformation, completion: @escaping () -> Void) {
+    func updateAttendance(_ attendanceInfo: SingleUserAnAttendanceInformationForPut, completion: @escaping () -> ()) {
         Network.shared.updateAttendanceInformation(attendanceInfo) { [weak self] result in
             guard let weakSelf = self else { return }
             
@@ -85,9 +89,53 @@ final class AttendancesModificationViewModel {
                 completion()
                 
             case .failure(let error):
-                weakSelf.error = Observable(error)
+                weakSelf.error?.value = error
             }
         }
+    }
+    
+    func updateAttendancesData(at time: Time, by alignment: LeftButtonAlignment) {
+        sortAttendanceForATimeFromAttendanceForADay(at: time)
+        alignAttendancesForATime(by: alignment)
+        reloadTableView.value = true
+    }
+    
+    func alignAttendancesForATime(by alignment: LeftButtonAlignment) {
+        if alignment == .name {
+            attendancesForATime.sort { (first, second) -> Bool in
+                if first.nickName == second.nickName {
+                    if AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority {
+                        return first.userID > second.userID
+                    } else {
+                        return AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority
+                    }
+                } else {
+                    return first.nickName > second.nickName
+                }
+            }
+        } else {
+            attendancesForATime.sort { (lhs, rhs) -> Bool in
+                
+                if AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority {
+                    if lhs.nickName == rhs.nickName {
+                        return lhs.userID > rhs.userID
+                    } else {
+                        return lhs.nickName > rhs.nickName
+                    }
+                } else {
+                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
+                }
+            }
+        }
+        
+        self.alignment.value = alignment
+    }
+    
+    func sortAttendanceForATimeFromAttendanceForADay(at time: Time) {
+        guard let allUsersAttendancesForADay = allUsersAttendancesForADay else { return }
+        
+        selectedTime.value = time
+        attendancesForATime = allUsersAttendancesForADay[time]!
     }
 }
 
@@ -95,16 +143,9 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceModificationCollectionViewCell"
     
-    internal var viewModel: AttendancesModificationViewModel? {
+    private var viewModel: AttendancesModificationViewModel?
+    internal var delegate: (BottomSheetAddable & Navigatable)? {
         didSet {
-            setBinding()
-            viewModel?.getAllMembersAttendanceOn(date: DateFormatter.dashedDateFormatter.string(from: Date()))
-            headerView.viewModel = viewModel
-        }
-    }
-    internal var delegate: (BottomSheetAddable & Navigatable)! {
-        didSet {
-            print("델리게이트")
             headerView.navigatableBottomSheetableDelegate = delegate
         }
     }
@@ -127,9 +168,45 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
         
         return t
     }()
+    private lazy var noAttendanceLabel = CustomLabel(title: "출결이 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        configureViews()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal func reloadTableView() {
+        tableView.reloadData()
+    }
+    
+    internal func configureCellWith(studyID: ID) {
+        viewModel = AttendancesModificationViewModel(studyID: studyID)
+        
+        guard let viewModel = viewModel else { return }
+        
+        setBinding()
+        viewModel.getAllMembersAttendanceOn(date: DateFormatter.dashedDateFormatter.string(from: Date()))
+        headerView.configureViewWith(viewModel: viewModel)
+    }
+    
+    private func setBinding() {
+        guard let viewModel = viewModel, let delegate = delegate else { return }
+        
+        viewModel.reloadTableView.bind({ _ in
+            self.tableView.reloadData()
+        })
+        viewModel.error?.bind({ error in
+            UIAlertController.handleCommonErros(presenter: delegate, error: error)
+        })
+    }
+    
+    private func configureViews() {
+        noAttendanceLabel.isHidden = true
         
         contentView.addSubview(headerView)
         contentView.addSubview(tableView)
@@ -142,25 +219,11 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
             make.leading.trailing.bottom.equalTo(contentView)
             make.top.equalTo(headerView.snp.bottom)
         }
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    internal func tableViewReload() {
-        tableView.reloadData()
-    }
-    
-    private func setBinding() {
-        guard let viewModel = viewModel else { return }
         
-        viewModel.selectedDate.bind({ dashedDate in
-            self.headerView.configureRightButtonTitle(dashedDate)
-        })
-        viewModel.attendancesForATime.bind({ allUsersAnAttendanceInformationArray in
-            self.tableView.reloadData()
-        })
+        tableView.addSubview(noAttendanceLabel)
+        noAttendanceLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(tableView)
+        }
     }
 }
 
@@ -171,17 +234,25 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
             return 0
         }
         
-        let numberOfMembers = attendancesForATime.value.count
-//        NotificationCenter.default.post(name: .attendanceManagerTableViewsReloaded, object: delegate, userInfo: ["numberOfMembers" : numberOfMembers])
+        let numberOfMembers = attendancesForATime.count
+        
+        if numberOfMembers == 0 {
+            noAttendanceLabel.isHidden = false
+        } else {
+            noAttendanceLabel.isHidden = true
+        }
         
         return numberOfMembers
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AttendanceIndividualInfoTableViewCell.identifier, for: indexPath) as? AttendanceIndividualInfoTableViewCell,
+              let viewModel = viewModel else {
             return AttendanceIndividualInfoTableViewCell()
         }
-        cell.anUserAttendanceInformation = viewModel?.attendancesForATime.value[indexPath.row]
+        
+        cell.configureCell(with: viewModel.attendancesForATime[indexPath.row])
+        
         return cell
     }
     
@@ -196,13 +267,12 @@ extension AttendanceModificationCollectionViewCell: UITableViewDataSource {
 
 extension AttendanceModificationCollectionViewCell: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let bottomVC = AttendanceBottomViewController()
+        guard let delegate = delegate, let viewModel = viewModel else { return }
+        let bottomVC = AttendanceBottomIndividualUpdateViewController(doneButtonTitle: "완료")
         
-        bottomVC.viewModel = viewModel
-        bottomVC.indexPath = indexPath
-        bottomVC.viewType = .individualUpdate
+        bottomVC.configure(with: viewModel.attendancesForATime[indexPath.row], viewModel: viewModel)
         
-        delegate.presentBottomSheet(vc: bottomVC, detent: bottomVC.viewType.detent, prefersGrabberVisible: false)
+        delegate.presentBottomSheet(vc: bottomVC, detent: 316, prefersGrabberVisible: false)
     }
 }
 

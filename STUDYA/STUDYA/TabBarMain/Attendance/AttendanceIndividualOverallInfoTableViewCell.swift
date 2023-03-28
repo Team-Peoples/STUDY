@@ -20,7 +20,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         return v
     }()
     private let profileImageView = ProfileImageView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "닉네이이이이임", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let nicknameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
     private let disclosureIndicatorImageView = UIImageView(image: UIImage(named: "smallDisclosureIndicator"))
     private let innerView: RoundableView = {
         
@@ -30,38 +30,10 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let attendCapsule: AttendanceStatusCapsuleView = {
-        
-        let v = AttendanceStatusCapsuleView(color: .attendedMain)
-        
-        v.setTitle("100")
-        
-        return v
-    }()
-    private let lateCapsule: AttendanceStatusCapsuleView = {
-       
-        let v = AttendanceStatusCapsuleView(color: .lateMain)
-        
-        v.setTitle("20")
-        
-        return v
-    }()
-    private let absentCapsule: AttendanceStatusCapsuleView = {
-       
-        let v = AttendanceStatusCapsuleView(color: .absentMain)
-        
-        v.setTitle("8")
-        
-        return v
-    }()
-    private let allowedCapsule: AttendanceStatusCapsuleView = {
-       
-        let v = AttendanceStatusCapsuleView(color: .allowedMain)
-        
-        v.setTitle("0")
-        
-        return v
-    }()
+    private let attendCapsule = AttendanceStatusCapsuleView(color: .attendedMain)
+    private let lateCapsule = AttendanceStatusCapsuleView(color: .lateMain)
+    private let absentCapsule = AttendanceStatusCapsuleView(color: .absentMain)
+    private let allowedCapsule = AttendanceStatusCapsuleView(color: .allowedMain)
     private lazy var capsuleStackView: UIStackView = {
        
         let v = UIStackView(arrangedSubviews: [attendCapsule, lateCapsule, absentCapsule, allowedCapsule])
@@ -72,7 +44,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let penaltyLabel = CustomLabel(title: "23,000", tintColor: .ppsGray1, size: 18, isBold: true)
+    private let penaltyLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 18, isBold: true)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -122,5 +94,20 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal func configureCell(with userAttendanceStatistics: UserAttendanceStatistics) {
+        profileImageView.setImageWith(userAttendanceStatistics.profileImageURL)
+        nicknameLabel.text = userAttendanceStatistics.nickName
+        attendCapsule.setTitle(userAttendanceStatistics.attendedCount.toString())
+        lateCapsule.setTitle(userAttendanceStatistics.lateCount.toString())
+        absentCapsule.setTitle(userAttendanceStatistics.absentCount.toString())
+        allowedCapsule.setTitle(userAttendanceStatistics.allowedCount.toString())
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        guard let fine = formatter.string(from: NSNumber(value: userAttendanceStatistics.totalFine)) else { return }
+        penaltyLabel.text = fine
     }
 }

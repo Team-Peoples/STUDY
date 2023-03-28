@@ -63,7 +63,7 @@ enum RequestPurpose: Requestable {
     case closeStudy(ID)
     case toggleManagerAuth(ID)
     case updateUserRole(ID, String)
-    case update(SingleUserAnAttendanceInformation)
+    case update(SingleUserAnAttendanceInformationForPut)
     case toggleMyScheduleStatus(ID)
     case updateMySchedule(ID, String)
     case turnOverStudyOwnerTo(ID)
@@ -93,6 +93,9 @@ enum RequestPurpose: Requestable {
     case getAllMySchedules
     case getImminentScheduleAttendnace(ID)
     case getAllNotifications
+    case getAttendanceStats(ID)
+    case getAllParticipatedStudies
+    case getAllMembersAttendaneStatisticsBetween(ID) //🛑api 수정 후 날짜 두개 추가해야
 }
 
 extension RequestPurpose {
@@ -212,12 +215,18 @@ extension RequestPurpose {
             return "/attendance/checkNumber/\(scheduleID)"
         case .getUserAttendanceBetween(_,_,_, let userID):
             return "/attendance/\(userID)"
-        case .getAllMembersAttendanceOn:
-            return "/attendance/master"
+        case .getAllMembersAttendanceOn(_, let studyID):
+            return "/attendance/master/\(studyID)"
         case .getAllMySchedules:
             return "/user/schedule"
         case .getAllNotifications:
             return "/alarm"
+        case .getAttendanceStats:
+            return "/attendance/statistics"
+        case .getAllParticipatedStudies:
+            return "/study/participation"
+        case .getAllMembersAttendaneStatisticsBetween:
+            return "/attendance/master/statistics"
         }
     }
     
@@ -229,7 +238,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies, .getAllMembersAttendaneStatisticsBetween : return .get
         }
     }
     
@@ -282,13 +291,6 @@ extension RequestPurpose {
                           "repeatDelete": deleteRepeatSchedule])
             
 ///    HTTPMethod: GET
-        case .getUserAttendanceBetween(let beginningDate, let endDate, let studyID, _):
-            return .query(["studyId": studyID,
-                          "searchDateStart": beginningDate,
-                          "searchDateEnd": endDate])
-        case .getAllMembersAttendanceOn(let date, let studyID):
-            return .body(["studyId": studyID,
-                          "searchDate": date])
 // EndodableBody
         case .updateUser(let user):
             return .encodableBody(user)
@@ -304,10 +306,20 @@ extension RequestPurpose {
             return .encodableBody(attendanceInformation)
             
 // Query
+        case .getUserAttendanceBetween(let beginningDate, let endDate, let studyID, _):
+            return .query(["studyId": studyID,
+                          "searchDateStart": beginningDate,
+                          "searchDateEnd": endDate])
         case .getNewPassord(let id):
             return .query(["userId": id])
         case .getJWTToken(let SNSToken, _):
             return .query(["token": SNSToken])
+        case .getAttendanceStats(let studyID):
+            return .query(["studyId": studyID])
+        case .getAllMembersAttendanceOn(let date, _):
+            return .query(["searchDate": date])
+        case .getAllMembersAttendaneStatisticsBetween(let studyID):
+            return .query(["studyId": studyID])
 // None
         default:
             return .none
