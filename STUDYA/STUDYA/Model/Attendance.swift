@@ -21,6 +21,19 @@ struct UserAttendanceOverall: Codable {
     }
 }
 
+struct AttendanceStats: Codable {
+    let attendedCount, lateCount, allowedCount, absentCount, totalCount, totalFine: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
+        case totalCount = "totalAttendCnt"
+        case totalFine
+    }
+}
+
 struct OneTimeAttendanceInformation: Codable {
     let fine: Int?
     let attendanceID: Int?
@@ -37,17 +50,41 @@ struct OneTimeAttendanceInformation: Codable {
     }
 }
 
+struct AttendanceSeperator {
+    var inputString: String
+    var attendance: Attendance {
+        switch inputString {
+        case "ATTENDANCE":
+            return .attended
+        case "LATENESS":
+            return .late
+        case "ABSENT":
+            return .absent
+        case "HOLD":
+            return .allowed
+        default:
+            return .allowed
+        }
+    }
+}
+
 enum Attendance: Codable {
     case attended
     case late
     case absent
     case allowed
-
-    enum CodingKEys: String, CodingKey {
-        case attended = "ATTENDANCE"
-        case late = "LATENESS"
-        case absent = "ABSENT"
-        case allowed = "HOLD"
+    
+    var english: String {
+        switch self {
+        case .attended:
+            return "ATTENDANCE"
+        case .late:
+            return "LATENESS"
+        case .absent:
+            return "ABSENT"
+        case .allowed:
+            return "HOLD"
+        }
     }
 
     var korean: String {
@@ -92,15 +129,30 @@ enum Attendance: Codable {
 
 struct SingleUserAnAttendanceInformation: Codable {
     var fine: Int
-    var attendanceStatus: Attendance
+    var attendanceStatus: String
     let userID: String
     let attendanceID: Int
-//    let nickName: String?
-//    let imageURL: String?
+    let nickName: String
+    let imageURL: String
+
+    enum CodingKeys: String, CodingKey {
+        case fine, nickName
+        case attendanceStatus = "attendance"
+        case userID = "userId"
+        case attendanceID = "attendanceId"
+        case imageURL = "img"
+    }
+}
+
+struct SingleUserAnAttendanceInformationForPut: Codable {
+    var fine: Int
+    var attendanceStatus: String
+    let userID: String
+    let attendanceID: Int
 
     enum CodingKeys: String, CodingKey {
         case fine
-        case attendanceStatus = "attendance"
+        case attendanceStatus = "attendStatus"
         case userID = "userId"
         case attendanceID = "attendanceId"
     }
@@ -114,5 +166,22 @@ struct AttendanceInformation: Codable {
         case userID = "userId"
         case attendanceStatus = "attendStatus"
         case reason, fine
+    }
+}
+
+struct UserAttendanceStatistics: Codable {
+    let totalFine, attendedCount, lateCount, allowedCount, absentCount, totalAttendanceCount: Int
+    let userID, nickName, profileImageURL: String
+
+    enum CodingKeys: String, CodingKey {
+        case profileImageURL = "img"
+        case totalAttendanceCount = "totalAttendCnt"
+        case userID = "userId"
+        case nickName = "nickname"
+        case totalFine
+        case attendedCount = "attendanceCnt"
+        case lateCount = "latenessCnt"
+        case allowedCount = "holdCnt"
+        case absentCount = "absentCnt"
     }
 }

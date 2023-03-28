@@ -93,7 +93,7 @@ final class MainViewController: SwitchableViewController {
 //                print("fail")
 //            }
 //        }
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-03-07", repeatEndDate: "", startTime: "01:42", endTime: "01:44", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-03-21", repeatEndDate: "", startTime: "15:39", endTime: "16:10", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
@@ -111,7 +111,7 @@ final class MainViewController: SwitchableViewController {
 //            }
 //        }
 
-//        Network.shared.joinStudy(id: 110) { result in
+//        Network.shared.joinStudy(id: 118) { result in
 //            switch result {
 //            case .success(let suc):
 //                print(suc)

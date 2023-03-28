@@ -1,0 +1,1294 @@
+2023-03-26 14:57:25 +0000  Initial pipeline context: <IDEDistributionProcessingPipelineContext: 0x5915048c0; archive(resolved)="<IDEArchive: 0x6000459b5da0>", distributionTask(resolved)="2", distributionDestination(resolved)="1", distributionMethod(resolved)="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team(resolved)="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	Chain (16, self inclusive):
+	<IDEDistributionProcessingPipelineContext: 0x5915048c0; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionProcessingPipelineContext: 0x595c1c420; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x59f0a7000; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x59a467750; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x56803af70; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x59f09d180; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x569f33000; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x58ec62bb0; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x58ecd84b0; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x58ec7bc40; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x59fbc1580; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x2e123bfc0; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x58ef21210; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="<IDEProvisioningDisambiguatableBasicTeam: 0x60002a438ec0; teamID='G8228CR939', teamName='DONGWOON SEO', teamType='Individual', username='woon4910@gmail.com', isFreeProvisioningTeam='0'>">
+	<IDEDistributionContext: 0x59a44cc70; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="(null)">
+	<IDEDistributionContext: 0x58730fae0; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="<IDEDistributionMethodiOSAppStoreDistribution: 0x600037e77df0>", team="(null)">
+	<IDEDistributionContext: 0x58ec3d280; archive = "<IDEArchive: 0x6000459b5da0>", distributionMethod="(null)", team="(null)">
+</IDEDistributionProcessingPipelineContext: 0x5915048c0>
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionCreateDestRootStep
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionCopyItemStep
+2023-03-26 14:57:25 +0000  Running /usr/bin/ditto '-V' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app'
+2023-03-26 14:57:25 +0000  >>> Copying /Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app 
+2023-03-26 14:57:25 +0000  copying file ./_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  22801 bytes for ./_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyGeneralRuleViewController.storyboardc/CreatingStudyGeneralRuleViewController.nib ... 
+2023-03-26 14:57:25 +0000  1168 bytes for ./CreatingStudyGeneralRuleViewController.storyboardc/CreatingStudyGeneralRuleViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyGeneralRuleViewController.storyboardc/hqm-Ba-i7e-view-LI6-6D-zkr.nib ... 
+2023-03-26 14:57:25 +0000  9549 bytes for ./CreatingStudyGeneralRuleViewController.storyboardc/hqm-Ba-i7e-view-LI6-6D-zkr.nib
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyGeneralRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  201 bytes for ./CreatingStudyGeneralRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyFreeRuleViewController.storyboardc/FyJ-fD-aUN-view-l0b-hw-HXY.nib ... 
+2023-03-26 14:57:25 +0000  5700 bytes for ./CreatingStudyFreeRuleViewController.storyboardc/FyJ-fD-aUN-view-l0b-hw-HXY.nib
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyFreeRuleViewController.storyboardc/CreatingStudyFreeRuleViewController.nib ... 
+2023-03-26 14:57:25 +0000  1059 bytes for ./CreatingStudyFreeRuleViewController.storyboardc/CreatingStudyFreeRuleViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./CreatingStudyFreeRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  195 bytes for ./CreatingStudyFreeRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./AppIcon60x60@2x.png ... 
+2023-03-26 14:57:25 +0000  5516 bytes for ./AppIcon60x60@2x.png
+2023-03-26 14:57:25 +0000  copying file ./MainPopOverViewControllers.storyboardc/MainValidationNumberFillingInPopViewController.nib ... 
+2023-03-26 14:57:25 +0000  1081 bytes for ./MainPopOverViewControllers.storyboardc/MainValidationNumberFillingInPopViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./MainPopOverViewControllers.storyboardc/MainValidationNumberCheckingPopViewController.nib ... 
+2023-03-26 14:57:25 +0000  1079 bytes for ./MainPopOverViewControllers.storyboardc/MainValidationNumberCheckingPopViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./MainPopOverViewControllers.storyboardc/Biy-uF-mCF-view-zId-Wb-7JT.nib ... 
+2023-03-26 14:57:25 +0000  8812 bytes for ./MainPopOverViewControllers.storyboardc/Biy-uF-mCF-view-zId-Wb-7JT.nib
+2023-03-26 14:57:25 +0000  copying file ./MainPopOverViewControllers.storyboardc/1f7-nD-acw-view-u17-Nf-XFz.nib ... 
+2023-03-26 14:57:25 +0000  7797 bytes for ./MainPopOverViewControllers.storyboardc/1f7-nD-acw-view-u17-Nf-XFz.nib
+2023-03-26 14:57:25 +0000  copying file ./MainPopOverViewControllers.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  326 bytes for ./MainPopOverViewControllers.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./GoogleService-Info.plist ... 
+2023-03-26 14:57:25 +0000  657 bytes for ./GoogleService-Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib ... 
+2023-03-26 14:57:25 +0000  929 bytes for ./Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib ... 
+2023-03-26 14:57:25 +0000  1197 bytes for ./Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/Main.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  258 bytes for ./Base.lproj/Main.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2023-03-26 14:57:25 +0000  2151 bytes for ./Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2023-03-26 14:57:25 +0000  896 bytes for ./Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib
+2023-03-26 14:57:25 +0000  copying file ./Base.lproj/LaunchScreen.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  258 bytes for ./Base.lproj/LaunchScreen.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./AttendanceManagerModeView.nib ... 
+2023-03-26 14:57:25 +0000  8966 bytes for ./AttendanceManagerModeView.nib
+2023-03-26 14:57:25 +0000  copying file ./StudyInfoViewController.storyboardc/NJq-jK-GYe-view-9ZU-Hx-SxE.nib ... 
+2023-03-26 14:57:25 +0000  28236 bytes for ./StudyInfoViewController.storyboardc/NJq-jK-GYe-view-9ZU-Hx-SxE.nib
+2023-03-26 14:57:25 +0000  copying file ./StudyInfoViewController.storyboardc/StudyInfoViewController.nib ... 
+2023-03-26 14:57:25 +0000  1035 bytes for ./StudyInfoViewController.storyboardc/StudyInfoViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./StudyInfoViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  171 bytes for ./StudyInfoViewController.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Assets.car ... 
+2023-03-26 14:57:25 +0000  1085312 bytes for ./Assets.car
+2023-03-26 14:57:25 +0000  copying file ./AppIcon76x76@2x~ipad.png ... 
+2023-03-26 14:57:25 +0000  7327 bytes for ./AppIcon76x76@2x~ipad.png
+2023-03-26 14:57:25 +0000  copying file ./STUDYA ... 
+2023-03-26 14:57:25 +0000  3909584 bytes for ./STUDYA
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/Kingfisher.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/Kingfisher.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/Kingfisher.framework/Kingfisher ... 
+2023-03-26 14:57:25 +0000  2388864 bytes for ./Frameworks/Kingfisher.framework/Kingfisher
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/Kingfisher.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  788 bytes for ./Frameworks/Kingfisher.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FBLPromises.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/FBLPromises.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FBLPromises.framework/FBLPromises ... 
+2023-03-26 14:57:25 +0000  191936 bytes for ./Frameworks/FBLPromises.framework/FBLPromises
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FBLPromises.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  789 bytes for ./Frameworks/FBLPromises.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/MultiProgressView.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/MultiProgressView.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/MultiProgressView.framework/MultiProgressView ... 
+2023-03-26 14:57:25 +0000  214976 bytes for ./Frameworks/MultiProgressView.framework/MultiProgressView
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/MultiProgressView.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  803 bytes for ./Frameworks/MultiProgressView.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCoreInternal.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/FirebaseCoreInternal.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal ... 
+2023-03-26 14:57:25 +0000  413456 bytes for ./Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCoreInternal.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  811 bytes for ./Frameworks/FirebaseCoreInternal.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCore.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/FirebaseCore.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCore.framework/FirebaseCore ... 
+2023-03-26 14:57:25 +0000  197360 bytes for ./Frameworks/FirebaseCore.framework/FirebaseCore
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseCore.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  793 bytes for ./Frameworks/FirebaseCore.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  5378 bytes for ./Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:25 +0000  316 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/NaverAuth.strings
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:25 +0000  313 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/NaverAuth.strings
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@2x.png ... 
+2023-03-26 14:57:25 +0000  1860 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@2x.png
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@3x.png ... 
+2023-03-26 14:57:25 +0000  2783 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@3x.png
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:25 +0000  338 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/NaverAuth.strings
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:25 +0000  316 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/NaverAuth.strings
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/btn_notice_close_normal@2x.png ... 
+2023-03-26 14:57:25 +0000  1975 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/btn_notice_close_normal@2x.png
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@3x.png ... 
+2023-03-26 14:57:25 +0000  1358 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@3x.png
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@2x.png ... 
+2023-03-26 14:57:25 +0000  1148 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@2x.png
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin ... 
+2023-03-26 14:57:25 +0000  451568 bytes for ./Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/NaverThirdPartyLogin.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  735 bytes for ./Frameworks/NaverThirdPartyLogin.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/GoogleUtilities.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/GoogleUtilities.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/GoogleUtilities.framework/GoogleUtilities ... 
+2023-03-26 14:57:25 +0000  139952 bytes for ./Frameworks/GoogleUtilities.framework/GoogleUtilities
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/GoogleUtilities.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  800 bytes for ./Frameworks/GoogleUtilities.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FSCalendar.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/FSCalendar.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FSCalendar.framework/FSCalendar ... 
+2023-03-26 14:57:25 +0000  496224 bytes for ./Frameworks/FSCalendar.framework/FSCalendar
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FSCalendar.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  787 bytes for ./Frameworks/FSCalendar.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:25 +0000  1798 bytes for ./Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks ... 
+2023-03-26 14:57:25 +0000  278672 bytes for ./Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks
+2023-03-26 14:57:25 +0000  copying file ./Frameworks/FirebaseDynamicLinks.framework/Info.plist ... 
+2023-03-26 14:57:25 +0000  811 bytes for ./Frameworks/FirebaseDynamicLinks.framework/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./embedded.mobileprovision ... 
+2023-03-26 14:57:25 +0000  12394 bytes for ./embedded.mobileprovision
+2023-03-26 14:57:25 +0000  copying file ./Info.plist ... 
+2023-03-26 14:57:25 +0000  2165 bytes for ./Info.plist
+2023-03-26 14:57:25 +0000  copying file ./AttendanceOverallCheckHeaderView.nib ... 
+2023-03-26 14:57:25 +0000  6012 bytes for ./AttendanceOverallCheckHeaderView.nib
+2023-03-26 14:57:25 +0000  copying file ./AttendanceModificationHeaderView.nib ... 
+2023-03-26 14:57:25 +0000  7093 bytes for ./AttendanceModificationHeaderView.nib
+2023-03-26 14:57:25 +0000  copying file ./EditingStudyFreeRuleViewController.storyboardc/rqm-kF-6bt-view-IXp-d2-L9t.nib ... 
+2023-03-26 14:57:25 +0000  5700 bytes for ./EditingStudyFreeRuleViewController.storyboardc/rqm-kF-6bt-view-IXp-d2-L9t.nib
+2023-03-26 14:57:25 +0000  copying file ./EditingStudyFreeRuleViewController.storyboardc/EditingStudyFreeRuleViewController.nib ... 
+2023-03-26 14:57:25 +0000  1057 bytes for ./EditingStudyFreeRuleViewController.storyboardc/EditingStudyFreeRuleViewController.nib
+2023-03-26 14:57:25 +0000  copying file ./EditingStudyFreeRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:25 +0000  193 bytes for ./EditingStudyFreeRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:25 +0000  copying file ./PkgInfo ... 
+2023-03-26 14:57:25 +0000  8 bytes for ./PkgInfo
+2023-03-26 14:57:25 +0000  /usr/bin/ditto exited with 0
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionEmbedProfileStep
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045666100; bundleID='org.cocoapods.FBLPromises', path='<DVTFilePath:0x60006d486220:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b8e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FBLPromises', executablePath='<DVTFilePath:0x60006d576fb0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045664960; bundleID='org.cocoapods.FSCalendar', path='<DVTFilePath:0x60006d485dc0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a760; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FSCalendar', executablePath='<DVTFilePath:0x60006d5795e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045985a40; bundleID='org.cocoapods.FirebaseCore', path='<DVTFilePath:0x60006d4816c0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f89e50; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCore', executablePath='<DVTFilePath:0x60006d575e30:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x6000456432a0; bundleID='org.cocoapods.FirebaseCoreInternal', path='<DVTFilePath:0x60002516b600:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b0c0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCoreInternal', executablePath='<DVTFilePath:0x60006d5776b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045665620; bundleID='org.cocoapods.FirebaseDynamicLinks', path='<DVTFilePath:0x60002516b680:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c2d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseDynamicLinks', executablePath='<DVTFilePath:0x60006d578d20:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045664540; bundleID='org.cocoapods.GoogleUtilities', path='<DVTFilePath:0x600035323c80:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a300; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.GoogleUtilities', executablePath='<DVTFilePath:0x60006d577d40:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045664180; bundleID='org.cocoapods.Kingfisher', path='<DVTFilePath:0x60006d4a7f00:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c140; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.Kingfisher', executablePath='<DVTFilePath:0x60006d56e060:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x6000456653e0; bundleID='org.cocoapods.MultiProgressView', path='<DVTFilePath:0x60002516b780:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c0f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.MultiProgressView', executablePath='<DVTFilePath:0x60006d4595e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Skipping profile for item: <IDEDistributionItem: 0x600045664f00; bundleID='com.navercorp.NaverThirdPartyLogin', path='<DVTFilePath:0x60002516b800:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c1e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba49a0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='com.navercorp.NaverThirdPartyLogin', executablePath='<DVTFilePath:0x60006d56d3b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionInfoPlistStep
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionItemRemovalStep
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionAppThinningPlistStep
+2023-03-26 14:57:25 +0000  Skipping step: IDEDistributionAppThinningPlistStep because it said so
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionCompileBitcodeStep
+2023-03-26 14:57:25 +0000  Skipping step: IDEDistributionCompileBitcodeStep because it said so
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionCodeSlimmingStep
+2023-03-26 14:57:25 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin' '-r' '-keep_cs' '-o' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'
+2023-03-26 14:57:25 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip exited with 0
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionCopyBCSymbolMapsStep
+2023-03-26 14:57:25 +0000  Processing step: IDEDistributionSymbolsStep
+2023-03-26 14:57:25 +0000  Processing symbols for FBLPromises.framework
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:25 +0000  5 files to consider
+2023-03-26 14:57:25 +0000  FBLPromises.framework/
+2023-03-26 14:57:25 +0000  FBLPromises.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/FBLPromises.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:25 +0000  FBLPromises.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  
+2023-03-26 14:57:25 +0000  sent 226 bytes  received 38 bytes  528.00 bytes/sec
+total size is 189.99K  speedup is 736.94
+2023-03-26 14:57:25 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:25 +0000  55 files to consider
+2023-03-26 14:57:25 +0000  ./
+2023-03-26 14:57:25 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:25 +0000  FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+2023-03-26 14:57:25 +0000  GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:25 +0000  
+2023-03-26 14:57:25 +0000  sent 1.87K bytes  received 242 bytes  4.22K bytes/sec
+total size is 27.41M  speedup is 13306.27
+2023-03-26 14:57:25 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:25 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/25F1CD98-37A1-35EC-B75F-64A95279D083.symbols
+2023-03-26 14:57:25 +0000  Processing symbols for FSCalendar.framework
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:25 +0000  5 files to consider
+2023-03-26 14:57:25 +0000  FSCalendar.framework/
+2023-03-26 14:57:25 +0000  FSCalendar.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/FSCalendar.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:25 +0000  FSCalendar.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  
+2023-03-26 14:57:25 +0000  sent 224 bytes  received 38 bytes  524.00 bytes/sec
+total size is 487.15K  speedup is 1903.96
+2023-03-26 14:57:25 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:25 +0000  55 files to consider
+2023-03-26 14:57:25 +0000  ./
+2023-03-26 14:57:25 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:25 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:25 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:25 +0000  Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:25 +0000  
+2023-03-26 14:57:25 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:25 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:25 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/EA1B0400-28DB-3A34-97A8-B75EA0D2160D.symbols
+2023-03-26 14:57:25 +0000  Processing symbols for FirebaseCore.framework
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:25 +0000  5 files to consider
+2023-03-26 14:57:25 +0000  FirebaseCore.framework/
+2023-03-26 14:57:25 +0000  FirebaseCore.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/FirebaseCore.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:25 +0000  FirebaseCore.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:25 +0000  
+2023-03-26 14:57:25 +0000  sent 228 bytes  received 38 bytes  532.00 bytes/sec
+total size is 195.29K  speedup is 751.80
+2023-03-26 14:57:25 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:25 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:25 +0000  building file list ... 
+2023-03-26 14:57:25 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+2023-03-26 14:57:26 +0000  Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  1.55K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/A23D90D9-3C1C-34E1-8524-A57ABEE113EF.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for FirebaseCoreInternal.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  5 files to consider
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/FirebaseCoreInternal.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 244 bytes  received 38 bytes  564.00 bytes/sec
+total size is 406.34K  speedup is 1475.51
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/398046CB-2308-39DA-B6D2-7CF19D7BF4D9.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for FirebaseDynamicLinks.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  5 files to consider
+2023-03-26 14:57:26 +0000  FirebaseDynamicLinks.framework/
+2023-03-26 14:57:26 +0000  FirebaseDynamicLinks.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  FirebaseDynamicLinks.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 244 bytes  received 38 bytes  564.00 bytes/sec
+total size is 274.72K  speedup is 997.55
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/E6CC723B-82FA-3F3D-A4CE-1EB27E679B15.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for GoogleUtilities.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  5 files to consider
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework/
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/GoogleUtilities.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 234 bytes  received 38 bytes  544.00 bytes/sec
+total size is 139.24K  speedup is 524.18
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/69C84E17-3F55-3F56-9785-C2C49B0BAF94.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for Kingfisher.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  5 files to consider
+2023-03-26 14:57:26 +0000  Kingfisher.framework/
+2023-03-26 14:57:26 +0000  Kingfisher.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Kingfisher.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  Kingfisher.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 224 bytes  received 38 bytes  524.00 bytes/sec
+total size is 2.28M  speedup is 9127.78
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/47C05542-D2D9-3425-BA83-2991165AB856.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for MultiProgressView.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  5 files to consider
+2023-03-26 14:57:26 +0000  MultiProgressView.framework/
+2023-03-26 14:57:26 +0000  MultiProgressView.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/MultiProgressView.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  MultiProgressView.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 238 bytes  received 38 bytes  552.00 bytes/sec
+total size is 212.51K  speedup is 788.43
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+2023-03-26 14:57:26 +0000  STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/51B8D050-5F31-3F17-8B7B-731F5A655024.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for NaverThirdPartyLogin.framework
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  19 files to consider
+2023-03-26 14:57:26 +0000  NaverThirdPartyLogin.framework/
+2023-03-26 14:57:26 +0000  NaverThirdPartyLogin.framework/NaverAuth.bundle/
+NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/
+NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/
+NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/
+2023-03-26 14:57:26 +0000  NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/
+NaverThirdPartyLogin.framework/_CodeSignature/
+rsync: link "/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources" => /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources failed: Operation not permitted (1)
+2023-03-26 14:57:26 +0000  NaverThirdPartyLogin.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 695 bytes  received 68 bytes  1.49K bytes/sec
+total size is 185.16K  speedup is 248.49
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/
+FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/83500ACC-C502-3332-A541-B827EE67221B.symbols
+2023-03-26 14:57:26 +0000  Processing symbols for STUDYA.app
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000   100 files...2023-03-26 14:57:26 +0000  105 files to consider
+2023-03-26 14:57:26 +0000  STUDYA.app/
+2023-03-26 14:57:26 +0000  STUDYA.app/Base.lproj/
+STUDYA.app/Base.lproj/LaunchScreen.storyboardc/
+STUDYA.app/Base.lproj/Main.storyboardc/
+STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/
+2023-03-26 14:57:26 +0000  STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/
+STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/
+STUDYA.app/Frameworks/
+STUDYA.app/Frameworks/FBLPromises.framework/
+STUDYA.app/Frameworks/FBLPromises.framework/_CodeSignature/
+STUDYA.app/Frameworks/FSCalendar.framework/
+STUDYA.app/Frameworks/FSCalendar.framework/_CodeSignature/
+STUDYA.app/Frameworks/FirebaseCore.framework/
+STUDYA.app/Frameworks/FirebaseCore.framework/_CodeSignature/
+STUDYA.app/Frameworks/FirebaseCoreInternal.framework/
+STUDYA.app/Frameworks/FirebaseCoreInternal.framework/_CodeSignature/
+STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/
+STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/
+STUDYA.app/Frameworks/GoogleUtilities.framework/
+STUDYA.app/Frameworks/GoogleUtilities.framework/_CodeSignature/
+STUDYA.app/Frameworks/Kingfisher.framework/
+STUDYA.app/Frameworks/Kingfisher.framework/_CodeSignature/
+STUDYA.app/Frameworks/MultiProgressView.framework/
+STUDYA.app/Frameworks/MultiProgressView.framework/_CodeSignature/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/
+2023-03-26 14:57:26 +0000  STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/
+STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/
+STUDYA.app/MainPopOverViewControllers.storyboardc/
+STUDYA.app/StudyInfoViewController.storyboardc/
+STUDYA.app/_CodeSignature/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 4.11K bytes  received 224 bytes  8.65K bytes/sec
+total size is 9.23M  speedup is 2184.81
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Running /usr/bin/rsync '-8aPhhE' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '--link-dest' '/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/dSYMs/' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW'
+2023-03-26 14:57:26 +0000  building file list ... 
+2023-03-26 14:57:26 +0000   0 files...2023-03-26 14:57:26 +0000  55 files to consider
+2023-03-26 14:57:26 +0000  ./
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/
+FBLPromises.framework.dSYM/Contents/
+FBLPromises.framework.dSYM/Contents/Resources/
+2023-03-26 14:57:26 +0000  FBLPromises.framework.dSYM/Contents/Resources/DWARF/
+FSCalendar.framework.dSYM/
+FSCalendar.framework.dSYM/Contents/
+FSCalendar.framework.dSYM/Contents/Resources/
+FSCalendar.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCore.framework.dSYM/
+FirebaseCore.framework.dSYM/Contents/
+FirebaseCore.framework.dSYM/Contents/Resources/
+FirebaseCore.framework.dSYM/Contents/Resources/DWARF/
+FirebaseCoreInternal.framework.dSYM/
+FirebaseCoreInternal.framework.dSYM/Contents/
+2023-03-26 14:57:26 +0000  FirebaseCoreInternal.framework.dSYM/Contents/Resources/
+FirebaseCoreInternal.framework.dSYM/Contents/Resources/DWARF/
+FirebaseDynamicLinks.framework.dSYM/
+FirebaseDynamicLinks.framework.dSYM/Contents/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/
+FirebaseDynamicLinks.framework.dSYM/Contents/Resources/DWARF/
+GoogleUtilities.framework.dSYM/
+GoogleUtilities.framework.dSYM/Contents/
+GoogleUtilities.framework.dSYM/Contents/Resources/
+GoogleUtilities.framework.dSYM/Contents/Resources/DWARF/
+Kingfisher.framework.dSYM/
+2023-03-26 14:57:26 +0000  Kingfisher.framework.dSYM/Contents/
+Kingfisher.framework.dSYM/Contents/Resources/
+Kingfisher.framework.dSYM/Contents/Resources/DWARF/
+MultiProgressView.framework.dSYM/
+MultiProgressView.framework.dSYM/Contents/
+MultiProgressView.framework.dSYM/Contents/Resources/
+MultiProgressView.framework.dSYM/Contents/Resources/DWARF/
+STUDYA.app.dSYM/
+STUDYA.app.dSYM/Contents/
+STUDYA.app.dSYM/Contents/Resources/
+STUDYA.app.dSYM/Contents/Resources/DWARF/
+2023-03-26 14:57:26 +0000  
+2023-03-26 14:57:26 +0000  sent 1.98K bytes  received 350 bytes  4.64K bytes/sec
+total size is 27.41M  speedup is 12096.61
+2023-03-26 14:57:26 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:26 +0000  Writing /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols/56B9E11A-9180-34A2-B213-31729171D53E.symbols
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionCopyAppleProvidedContentStep
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionAppThinningStep
+2023-03-26 14:57:26 +0000  Skipping step: IDEDistributionAppThinningStep because it said so
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionArchThinningStep
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "FBLPromises" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "FSCalendar" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "FirebaseCore" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "FirebaseCoreInternal" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "FirebaseDynamicLinks" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "GoogleUtilities" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "Kingfisher" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "MultiProgressView" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "NaverThirdPartyLogin" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Running /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/STUDYA' '-verify_arch' 'arm64e'
+2023-03-26 14:57:26 +0000  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo exited with 1
+2023-03-26 14:57:26 +0000  Skipping architecture thinning for item "STUDYA" because arch "arm64e" wasn't found
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionODRStep
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionStripXattrsStep
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045666100; bundleID='org.cocoapods.FBLPromises', path='<DVTFilePath:0x60006d486220:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b8e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FBLPromises', executablePath='<DVTFilePath:0x60006d576fb0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045664960; bundleID='org.cocoapods.FSCalendar', path='<DVTFilePath:0x60006d485dc0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a760; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FSCalendar', executablePath='<DVTFilePath:0x60006d5795e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045985a40; bundleID='org.cocoapods.FirebaseCore', path='<DVTFilePath:0x60006d4816c0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f89e50; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCore', executablePath='<DVTFilePath:0x60006d575e30:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x6000456432a0; bundleID='org.cocoapods.FirebaseCoreInternal', path='<DVTFilePath:0x60002516b600:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b0c0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCoreInternal', executablePath='<DVTFilePath:0x60006d5776b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045665620; bundleID='org.cocoapods.FirebaseDynamicLinks', path='<DVTFilePath:0x60002516b680:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c2d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseDynamicLinks', executablePath='<DVTFilePath:0x60006d578d20:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045664540; bundleID='org.cocoapods.GoogleUtilities', path='<DVTFilePath:0x600035323c80:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a300; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.GoogleUtilities', executablePath='<DVTFilePath:0x60006d577d40:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045664180; bundleID='org.cocoapods.Kingfisher', path='<DVTFilePath:0x60006d4a7f00:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c140; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.Kingfisher', executablePath='<DVTFilePath:0x60006d56e060:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x6000456653e0; bundleID='org.cocoapods.MultiProgressView', path='<DVTFilePath:0x60002516b780:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c0f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.MultiProgressView', executablePath='<DVTFilePath:0x60006d4595e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Skipping stripping extended attributes of item: <IDEDistributionItem: 0x600045664f00; bundleID='com.navercorp.NaverThirdPartyLogin', path='<DVTFilePath:0x60002516b800:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c1e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='com.navercorp.NaverThirdPartyLogin', executablePath='<DVTFilePath:0x60006d56d3b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'>', hardenedRuntime='0'>'>
+2023-03-26 14:57:26 +0000  Running /usr/bin/xattr '-crs' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app'
+2023-03-26 14:57:26 +0000  /usr/bin/xattr exited with 0
+2023-03-26 14:57:26 +0000  Processing step: IDEDistributionCodesignStep
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045666100; bundleID='org.cocoapods.FBLPromises', path='<DVTFilePath:0x60006d486220:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b8e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0210; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FBLPromises', executablePath='<DVTFilePath:0x60006d576fb0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045666100; bundleID='org.cocoapods.FBLPromises', path='<DVTFilePath:0x60006d486220:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b8e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FBLPromises', executablePath='<DVTFilePath:0x60006d576fb0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:26 +0000  Writing entitlements for <IDEDistributionItem: 0x600045666100; bundleID='org.cocoapods.FBLPromises', path='<DVTFilePath:0x60006d486220:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b8e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FBLPromises', executablePath='<DVTFilePath:0x60006d576fb0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~V0pFJQ
+2023-03-26 14:57:26 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~V0pFJQ' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework'
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework: replacing existing signature
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.FBLPromises]
+2023-03-26 14:57:26 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045664960; bundleID='org.cocoapods.FSCalendar', path='<DVTFilePath:0x60006d485dc0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a760; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448c8bb0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FSCalendar', executablePath='<DVTFilePath:0x60006d5795e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045664960; bundleID='org.cocoapods.FSCalendar', path='<DVTFilePath:0x60006d485dc0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a760; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FSCalendar', executablePath='<DVTFilePath:0x60006d5795e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:26 +0000  Writing entitlements for <IDEDistributionItem: 0x600045664960; bundleID='org.cocoapods.FSCalendar', path='<DVTFilePath:0x60006d485dc0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a760; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FSCalendar', executablePath='<DVTFilePath:0x60006d5795e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~9KNwg7
+2023-03-26 14:57:26 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~9KNwg7' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework'
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework: replacing existing signature
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.FSCalendar]
+2023-03-26 14:57:26 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045985a40; bundleID='org.cocoapods.FirebaseCore', path='<DVTFilePath:0x60006d4816c0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f89e50; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0dc0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCore', executablePath='<DVTFilePath:0x60006d575e30:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045985a40; bundleID='org.cocoapods.FirebaseCore', path='<DVTFilePath:0x60006d4816c0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f89e50; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCore', executablePath='<DVTFilePath:0x60006d575e30:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:26 +0000  Writing entitlements for <IDEDistributionItem: 0x600045985a40; bundleID='org.cocoapods.FirebaseCore', path='<DVTFilePath:0x60006d4816c0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f89e50; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1290; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCore', executablePath='<DVTFilePath:0x60006d575e30:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~zzstbg
+2023-03-26 14:57:26 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~zzstbg' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework'
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework: replacing existing signature
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.FirebaseCore]
+2023-03-26 14:57:26 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x6000456432a0; bundleID='org.cocoapods.FirebaseCoreInternal', path='<DVTFilePath:0x60002516b600:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b0c0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0dc0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCoreInternal', executablePath='<DVTFilePath:0x60006d5776b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x6000456432a0; bundleID='org.cocoapods.FirebaseCoreInternal', path='<DVTFilePath:0x60002516b600:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b0c0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCoreInternal', executablePath='<DVTFilePath:0x60006d5776b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:26 +0000  Writing entitlements for <IDEDistributionItem: 0x6000456432a0; bundleID='org.cocoapods.FirebaseCoreInternal', path='<DVTFilePath:0x60002516b600:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8b0c0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1290; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseCoreInternal', executablePath='<DVTFilePath:0x60006d5776b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~rQUxEX
+2023-03-26 14:57:26 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~rQUxEX' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework: replacing existing signature
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.FirebaseCoreInternal]
+2023-03-26 14:57:26 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045665620; bundleID='org.cocoapods.FirebaseDynamicLinks', path='<DVTFilePath:0x60002516b680:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c2d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseDynamicLinks', executablePath='<DVTFilePath:0x60006d578d20:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:26 +0000  Entitlements for <IDEDistributionItem: 0x600045665620; bundleID='org.cocoapods.FirebaseDynamicLinks', path='<DVTFilePath:0x60002516b680:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c2d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseDynamicLinks', executablePath='<DVTFilePath:0x60006d578d20:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:26 +0000  Writing entitlements for <IDEDistributionItem: 0x600045665620; bundleID='org.cocoapods.FirebaseDynamicLinks', path='<DVTFilePath:0x60002516b680:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c2d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.FirebaseDynamicLinks', executablePath='<DVTFilePath:0x60006d578d20:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~aKMHkz
+2023-03-26 14:57:26 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~aKMHkz' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework: replacing existing signature
+2023-03-26 14:57:26 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.FirebaseDynamicLinks]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664540; bundleID='org.cocoapods.GoogleUtilities', path='<DVTFilePath:0x600035323c80:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a300; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448c8bb0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.GoogleUtilities', executablePath='<DVTFilePath:0x60006d577d40:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664540; bundleID='org.cocoapods.GoogleUtilities', path='<DVTFilePath:0x600035323c80:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a300; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.GoogleUtilities', executablePath='<DVTFilePath:0x60006d577d40:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:27 +0000  Writing entitlements for <IDEDistributionItem: 0x600045664540; bundleID='org.cocoapods.GoogleUtilities', path='<DVTFilePath:0x600035323c80:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8a300; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba0370; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.GoogleUtilities', executablePath='<DVTFilePath:0x60006d577d40:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~mkXSxf
+2023-03-26 14:57:27 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~mkXSxf' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework'
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework: replacing existing signature
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.GoogleUtilities]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664180; bundleID='org.cocoapods.Kingfisher', path='<DVTFilePath:0x60006d4a7f00:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c140; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0dc0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.Kingfisher', executablePath='<DVTFilePath:0x60006d56e060:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664180; bundleID='org.cocoapods.Kingfisher', path='<DVTFilePath:0x60006d4a7f00:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c140; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.Kingfisher', executablePath='<DVTFilePath:0x60006d56e060:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:27 +0000  Writing entitlements for <IDEDistributionItem: 0x600045664180; bundleID='org.cocoapods.Kingfisher', path='<DVTFilePath:0x60006d4a7f00:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c140; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1290; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.Kingfisher', executablePath='<DVTFilePath:0x60006d56e060:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~KjfpfX
+2023-03-26 14:57:27 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~KjfpfX' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework'
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework: replacing existing signature
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.Kingfisher]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x6000456653e0; bundleID='org.cocoapods.MultiProgressView', path='<DVTFilePath:0x60002516b780:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c0f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048b90000; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.MultiProgressView', executablePath='<DVTFilePath:0x60006d4595e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x6000456653e0; bundleID='org.cocoapods.MultiProgressView', path='<DVTFilePath:0x60002516b780:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c0f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.MultiProgressView', executablePath='<DVTFilePath:0x60006d4595e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:27 +0000  Writing entitlements for <IDEDistributionItem: 0x6000456653e0; bundleID='org.cocoapods.MultiProgressView', path='<DVTFilePath:0x60002516b780:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c0f0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='org.cocoapods.MultiProgressView', executablePath='<DVTFilePath:0x60006d4595e0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~1rQvKc
+2023-03-26 14:57:27 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~1rQvKc' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework'
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework: replacing existing signature
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework: signed bundle with Mach-O thin (arm64) [org.cocoapods.MultiProgressView]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664f00; bundleID='com.navercorp.NaverThirdPartyLogin', path='<DVTFilePath:0x60002516b800:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c1e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0dc0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='com.navercorp.NaverThirdPartyLogin', executablePath='<DVTFilePath:0x60006d56d3b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'>', hardenedRuntime='0'>'>: {
+}
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x600045664f00; bundleID='com.navercorp.NaverThirdPartyLogin', path='<DVTFilePath:0x60002516b800:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c1e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1130; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='com.navercorp.NaverThirdPartyLogin', executablePath='<DVTFilePath:0x60006d56d3b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'>', hardenedRuntime='0'>'> are: {
+}
+2023-03-26 14:57:27 +0000  Writing entitlements for <IDEDistributionItem: 0x600045664f00; bundleID='com.navercorp.NaverThirdPartyLogin', path='<DVTFilePath:0x60002516b800:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c1e0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a1290; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='(null)', teamID='G8228CR939', identifier='com.navercorp.NaverThirdPartyLogin', executablePath='<DVTFilePath:0x60006d56d3b0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~4l0omF
+2023-03-26 14:57:27 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~4l0omF' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework: replacing existing signature
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework: signed bundle with Mach-O universal (arm64) [com.navercorp.NaverThirdPartyLogin]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x60004565fe40; bundleID='com.PeoplesStudy', path='<DVTFilePath:0x60006d57d8f0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c7d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048b900b0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='{
+    "application-identifier" = "G8228CR939.com.PeoplesStudy";
+    "com.apple.developer.team-identifier" = G8228CR939;
+    "get-task-allow" = 1;
+}', teamID='G8228CR939', identifier='com.PeoplesStudy', executablePath='<DVTFilePath:0x60004590de60:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/STUDYA'>', hardenedRuntime='0'>'>: {
+    "application-identifier" = "G8228CR939.com.PeoplesStudy";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = G8228CR939;
+    "get-task-allow" = 0;
+}
+2023-03-26 14:57:27 +0000  Entitlements for <IDEDistributionItem: 0x60004565fe40; bundleID='com.PeoplesStudy', path='<DVTFilePath:0x60006d57d8f0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c7d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x600048ba08f0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='{
+    "application-identifier" = "G8228CR939.com.PeoplesStudy";
+    "com.apple.developer.team-identifier" = G8228CR939;
+    "get-task-allow" = 1;
+}', teamID='G8228CR939', identifier='com.PeoplesStudy', executablePath='<DVTFilePath:0x60004590de60:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/STUDYA'>', hardenedRuntime='0'>'> are: {
+    "application-identifier" = "G8228CR939.com.PeoplesStudy";
+    "beta-reports-active" = 1;
+    "com.apple.developer.team-identifier" = G8228CR939;
+    "get-task-allow" = 0;
+}
+2023-03-26 14:57:27 +0000  Writing entitlements for <IDEDistributionItem: 0x60004565fe40; bundleID='com.PeoplesStudy', path='<DVTFilePath:0x60006d57d8f0:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app'>', codeSigningInfo='<_DVTCodeSigningInformation_Path: 0x600111f8c7d0; isSigned='1', isAdHocSigned='0', signingCertificate='<DVTSigningCertificate: 0x6000448a0fd0; name='Apple Development: DONGWOON SEO (ARYVGTK96L)', hash='9DCD9FB87C9C522C3F107D748971C08F848FB811', serialNumber='21772659B1BB5CD276A8B808F2441507', certificateKinds='(
+    "1.2.840.113635.100.6.1.12",
+    "1.2.840.113635.100.6.1.2"
+), issueDate='2023-03-17 18:06:30 +0000''>', entitlements='{
+    "application-identifier" = "G8228CR939.com.PeoplesStudy";
+    "com.apple.developer.team-identifier" = G8228CR939;
+    "get-task-allow" = 1;
+}', teamID='G8228CR939', identifier='com.PeoplesStudy', executablePath='<DVTFilePath:0x60004590de60:'/Users/domb/Library/Developer/Xcode/Archives/2023-03-26/STUDYA 3-26-23, 11.47 PM.xcarchive/Products/Applications/STUDYA.app/STUDYA'>', hardenedRuntime='0'>'> to: /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~RLrCBg
+2023-03-26 14:57:27 +0000  Running /usr/bin/codesign '-vvv' '--force' '--sign' '6E2C71BCDAAA432E4659183C11C9B00E78264D0B' '--entitlements' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/entitlements~~~RLrCBg' '--generate-entitlement-der' '--preserve-metadata=identifier,flags,runtime' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app'
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app: replacing existing signature
+2023-03-26 14:57:27 +0000  /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app: signed app bundle with Mach-O thin (arm64) [com.PeoplesStudy]
+2023-03-26 14:57:27 +0000  /usr/bin/codesign exited with 0
+2023-03-26 14:57:27 +0000  Processing step: IDEDistributionZipODRItemStep
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Skipping step: IDEDistributionZipODRItemStep because it said so
+2023-03-26 14:57:27 +0000  Processing step: IDEDistributionCreateIPAStep
+2023-03-26 14:57:27 +0000  Running /usr/bin/rsync '-8aPhhE' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Symbols' '--link-dest' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root'
+2023-03-26 14:57:27 +0000  building file list ... 
+2023-03-26 14:57:27 +0000   0 files...2023-03-26 14:57:27 +0000  11 files to consider
+2023-03-26 14:57:27 +0000  Symbols/
+2023-03-26 14:57:27 +0000  
+2023-03-26 14:57:27 +0000  sent 617 bytes  received 26 bytes  1.26K bytes/sec
+total size is 8.64M  speedup is 14090.10
+2023-03-26 14:57:27 +0000  /usr/bin/rsync exited with 0
+2023-03-26 14:57:27 +0000  Running /usr/bin/ditto '-V' '-c' '-k' '--norsrc' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root' '/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Packages/STUDYA.ipa'
+2023-03-26 14:57:27 +0000  >>> Copying /var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root 
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  22801 bytes for ./Payload/STUDYA.app/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/CreatingStudyGeneralRuleViewController.nib ... 
+2023-03-26 14:57:27 +0000  1168 bytes for ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/CreatingStudyGeneralRuleViewController.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/hqm-Ba-i7e-view-LI6-6D-zkr.nib ... 
+2023-03-26 14:57:27 +0000  9549 bytes for ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/hqm-Ba-i7e-view-LI6-6D-zkr.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  201 bytes for ./Payload/STUDYA.app/CreatingStudyGeneralRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/FyJ-fD-aUN-view-l0b-hw-HXY.nib ... 
+2023-03-26 14:57:27 +0000  5700 bytes for ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/FyJ-fD-aUN-view-l0b-hw-HXY.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/CreatingStudyFreeRuleViewController.nib ... 
+2023-03-26 14:57:27 +0000  1059 bytes for ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/CreatingStudyFreeRuleViewController.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  195 bytes for ./Payload/STUDYA.app/CreatingStudyFreeRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/AppIcon60x60@2x.png ... 
+2023-03-26 14:57:27 +0000  5516 bytes for ./Payload/STUDYA.app/AppIcon60x60@2x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/MainValidationNumberFillingInPopViewController.nib ... 
+2023-03-26 14:57:27 +0000  1081 bytes for ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/MainValidationNumberFillingInPopViewController.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/MainValidationNumberCheckingPopViewController.nib ... 
+2023-03-26 14:57:27 +0000  1079 bytes for ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/MainValidationNumberCheckingPopViewController.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/Biy-uF-mCF-view-zId-Wb-7JT.nib ... 
+2023-03-26 14:57:27 +0000  8812 bytes for ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/Biy-uF-mCF-view-zId-Wb-7JT.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/1f7-nD-acw-view-u17-Nf-XFz.nib ... 
+2023-03-26 14:57:27 +0000  7797 bytes for ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/1f7-nD-acw-view-u17-Nf-XFz.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  326 bytes for ./Payload/STUDYA.app/MainPopOverViewControllers.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/GoogleService-Info.plist ... 
+2023-03-26 14:57:27 +0000  657 bytes for ./Payload/STUDYA.app/GoogleService-Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib ... 
+2023-03-26 14:57:27 +0000  929 bytes for ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/UIViewController-BYZ-38-t0r.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib ... 
+2023-03-26 14:57:27 +0000  1197 bytes for ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/BYZ-38-t0r-view-8bC-Xf-vdC.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  258 bytes for ./Payload/STUDYA.app/Base.lproj/Main.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib ... 
+2023-03-26 14:57:27 +0000  2151 bytes for ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib ... 
+2023-03-26 14:57:27 +0000  896 bytes for ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  258 bytes for ./Payload/STUDYA.app/Base.lproj/LaunchScreen.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/AttendanceManagerModeView.nib ... 
+2023-03-26 14:57:27 +0000  8966 bytes for ./Payload/STUDYA.app/AttendanceManagerModeView.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/NJq-jK-GYe-view-9ZU-Hx-SxE.nib ... 
+2023-03-26 14:57:27 +0000  28236 bytes for ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/NJq-jK-GYe-view-9ZU-Hx-SxE.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/StudyInfoViewController.nib ... 
+2023-03-26 14:57:27 +0000  1035 bytes for ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/StudyInfoViewController.nib
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:27 +0000  171 bytes for ./Payload/STUDYA.app/StudyInfoViewController.storyboardc/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Assets.car ... 
+2023-03-26 14:57:27 +0000  1085312 bytes for ./Payload/STUDYA.app/Assets.car
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/AppIcon76x76@2x~ipad.png ... 
+2023-03-26 14:57:27 +0000  7327 bytes for ./Payload/STUDYA.app/AppIcon76x76@2x~ipad.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/STUDYA ... 
+2023-03-26 14:57:27 +0000  3909648 bytes for ./Payload/STUDYA.app/STUDYA
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/_CodeSignature/CodeResources ... 
+1798 bytes for ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/_CodeSignature/CodeResources
+copying file ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher ... 
+2023-03-26 14:57:27 +0000  2389136 bytes for ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/Kingfisher
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/Info.plist ... 
+817 bytes for ./Payload/STUDYA.app/Frameworks/Kingfisher.framework/Info.plist
+copying file ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises ... 
+2023-03-26 14:57:27 +0000  192240 bytes for ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/FBLPromises
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  818 bytes for ./Payload/STUDYA.app/Frameworks/FBLPromises.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView ... 
+2023-03-26 14:57:27 +0000  215280 bytes for ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/MultiProgressView
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  832 bytes for ./Payload/STUDYA.app/Frameworks/MultiProgressView.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal ... 
+2023-03-26 14:57:27 +0000  413760 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/FirebaseCoreInternal
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  839 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore ... 
+2023-03-26 14:57:27 +0000  197680 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/FirebaseCore
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  821 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseCore.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  5378 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:27 +0000  316 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hans.lproj/NaverAuth.strings
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:27 +0000  313 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/en.lproj/NaverAuth.strings
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@2x.png ... 
+2023-03-26 14:57:27 +0000  1860 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@2x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@3x.png ... 
+2023-03-26 14:57:27 +0000  2783 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_naverapp_logo@3x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:27 +0000  338 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/ko.lproj/NaverAuth.strings
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/NaverAuth.strings ... 
+2023-03-26 14:57:27 +0000  316 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/zh-Hant.lproj/NaverAuth.strings
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/btn_notice_close_normal@2x.png ... 
+2023-03-26 14:57:27 +0000  1975 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/btn_notice_close_normal@2x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@3x.png ... 
+2023-03-26 14:57:27 +0000  1358 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@3x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@2x.png ... 
+2023-03-26 14:57:27 +0000  1148 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverAuth.bundle/login_banner_btn_close@2x.png
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin ... 
+2023-03-26 14:57:27 +0000  169808 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/NaverThirdPartyLogin
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  774 bytes for ./Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities ... 
+2023-03-26 14:57:27 +0000  140256 bytes for ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/GoogleUtilities
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  828 bytes for ./Payload/STUDYA.app/Frameworks/GoogleUtilities.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar ... 
+2023-03-26 14:57:27 +0000  496528 bytes for ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/FSCalendar
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/Info.plist ... 
+2023-03-26 14:57:27 +0000  816 bytes for ./Payload/STUDYA.app/Frameworks/FSCalendar.framework/Info.plist
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources ... 
+2023-03-26 14:57:27 +0000  1798 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/_CodeSignature/CodeResources
+2023-03-26 14:57:27 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks ... 
+2023-03-26 14:57:28 +0000  278928 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/FirebaseDynamicLinks
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/Info.plist ... 
+2023-03-26 14:57:28 +0000  839 bytes for ./Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework/Info.plist
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/embedded.mobileprovision ... 
+2023-03-26 14:57:28 +0000  14355 bytes for ./Payload/STUDYA.app/embedded.mobileprovision
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/Info.plist ... 
+2023-03-26 14:57:28 +0000  2196 bytes for ./Payload/STUDYA.app/Info.plist
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/AttendanceOverallCheckHeaderView.nib ... 
+2023-03-26 14:57:28 +0000  6012 bytes for ./Payload/STUDYA.app/AttendanceOverallCheckHeaderView.nib
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/AttendanceModificationHeaderView.nib ... 
+2023-03-26 14:57:28 +0000  7093 bytes for ./Payload/STUDYA.app/AttendanceModificationHeaderView.nib
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/rqm-kF-6bt-view-IXp-d2-L9t.nib ... 
+2023-03-26 14:57:28 +0000  5700 bytes for ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/rqm-kF-6bt-view-IXp-d2-L9t.nib
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/EditingStudyFreeRuleViewController.nib ... 
+2023-03-26 14:57:28 +0000  1057 bytes for ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/EditingStudyFreeRuleViewController.nib
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/Info.plist ... 
+2023-03-26 14:57:28 +0000  193 bytes for ./Payload/STUDYA.app/EditingStudyFreeRuleViewController.storyboardc/Info.plist
+2023-03-26 14:57:28 +0000  copying file ./Payload/STUDYA.app/PkgInfo ... 
+2023-03-26 14:57:28 +0000  8 bytes for ./Payload/STUDYA.app/PkgInfo
+2023-03-26 14:57:28 +0000  copying file ./Symbols/51B8D050-5F31-3F17-8B7B-731F5A655024.symbols ... 
+2023-03-26 14:57:28 +0000  113068 bytes for ./Symbols/51B8D050-5F31-3F17-8B7B-731F5A655024.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/47C05542-D2D9-3425-BA83-2991165AB856.symbols ... 
+2023-03-26 14:57:28 +0000  1527132 bytes for ./Symbols/47C05542-D2D9-3425-BA83-2991165AB856.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/A23D90D9-3C1C-34E1-8524-A57ABEE113EF.symbols ... 
+2023-03-26 14:57:28 +0000  79956 bytes for ./Symbols/A23D90D9-3C1C-34E1-8524-A57ABEE113EF.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/398046CB-2308-39DA-B6D2-7CF19D7BF4D9.symbols ... 
+2023-03-26 14:57:28 +0000  261060 bytes for ./Symbols/398046CB-2308-39DA-B6D2-7CF19D7BF4D9.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/E6CC723B-82FA-3F3D-A4CE-1EB27E679B15.symbols ... 
+2023-03-26 14:57:28 +0000  129164 bytes for ./Symbols/E6CC723B-82FA-3F3D-A4CE-1EB27E679B15.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/56B9E11A-9180-34A2-B213-31729171D53E.symbols ... 
+2023-03-26 14:57:28 +0000  6515852 bytes for ./Symbols/56B9E11A-9180-34A2-B213-31729171D53E.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/69C84E17-3F55-3F56-9785-C2C49B0BAF94.symbols ... 
+2023-03-26 14:57:28 +0000  52420 bytes for ./Symbols/69C84E17-3F55-3F56-9785-C2C49B0BAF94.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/EA1B0400-28DB-3A34-97A8-B75EA0D2160D.symbols ... 
+2023-03-26 14:57:28 +0000  278500 bytes for ./Symbols/EA1B0400-28DB-3A34-97A8-B75EA0D2160D.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/25F1CD98-37A1-35EC-B75F-64A95279D083.symbols ... 
+2023-03-26 14:57:28 +0000  77620 bytes for ./Symbols/25F1CD98-37A1-35EC-B75F-64A95279D083.symbols
+2023-03-26 14:57:28 +0000  copying file ./Symbols/83500ACC-C502-3332-A541-B827EE67221B.symbols ... 
+2023-03-26 14:57:28 +0000  25164 bytes for ./Symbols/83500ACC-C502-3332-A541-B827EE67221B.symbols
+2023-03-26 14:57:28 +0000  /usr/bin/ditto exited with 0
+2023-03-26 14:57:28 +0000  Processing step: IDEDistributionAppStoreInformationStep
+2023-03-26 14:57:28 +0000  Skipping step: IDEDistributionAppStoreInformationStep because it said so
+2023-03-26 14:57:28 +0000  Processing step: IDEDistributionGenerateProcessedDistributionItems
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x6000794a8150:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FBLPromises.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x6000794a8380:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCore.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x6000794a83f0:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FSCalendar.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x6000794a8540:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/Kingfisher.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x60003526b100:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/NaverThirdPartyLogin.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x60003521cd80:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/MultiProgressView.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x600035214480:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseCoreInternal.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x600035214100:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/GoogleUtilities.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x600035214a80:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app/Frameworks/FirebaseDynamicLinks.framework'>
+2023-03-26 14:57:28 +0000  IDEDistributionItem init <DVTFilePath:0x60006d482c30:'/var/folders/6t/fgtmrq_d0dddn48n5j6wlzbw0000gn/T/XcodeDistPipeline.~~~OmJjfW/Root/Payload/STUDYA.app'>
+2023-03-26 14:57:28 +0000  Processing step: IDEDistributionCreateManifestStep
+2023-03-26 14:57:28 +0000  Skipping step: IDEDistributionCreateManifestStep because it said so

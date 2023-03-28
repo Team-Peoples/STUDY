@@ -42,7 +42,9 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
         self.viewModel = viewModel
         self.presentingVC = presentingVC
         
-        guard let date = DateFormatter.dashedDateFormatter.date(from: viewModel.selectedDate.value) else { return }
+        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: viewModel.selectedDate.value) else { return }
+        
+        selectedDate = date
         calendarView.select(date: date)
         
         let today = Date()
@@ -80,8 +82,10 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
               let day = selectedDateComponents.day else { return }
         
         let dateString = String(format: "%04d-%02d-%02d", year, month, day)
-        viewModel?.selectedDate = Observable(dateString)
+        let shortenDottedString = dateString.convertDashedDateToShortenDottedDate()
+        
         viewModel?.getAllMembersAttendanceOn(date: dateString)
+        viewModel?.selectedDate.value = shortenDottedString
         
         self.dismiss(animated: true)
     }
@@ -122,7 +126,7 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
             make.top.trailing.equalTo(popUpContainerView).inset(16)
         }
         calendarView.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom)
+            make.top.equalTo(titleLabel.snp.bottom)
             make.bottom.equalTo(doneButton.snp.top)
             make.leading.trailing.equalTo(popUpContainerView)
         }
@@ -136,20 +140,11 @@ final class AttendancePopUpDayCalendarViewController: UIViewController {
 extension AttendancePopUpDayCalendarViewController: CustomCalendarViewDelegate {
     
     func calendarView(didselectAt date: Date) {
-        guard let selectedDateComponents = selectedDate?.convertToDateComponents([.year, .month, .day]) else { return }
         let dateComponents = date.convertToDateComponents([.year, .month, .day])
         
-        if dateComponents == selectedDateComponents {
-            
-//                self.selectedDateComponents = nil
-//                selectionSingleDate.setSelected(nil, animated: true)
-            // domb: 무엇을 하려는건지 몰라서 참고 함수만 적어놨어~
-//                calendarView.select(date: <#T##Date#>)
-            doneButton.fillOut(title: Constant.done)
-            doneButton.isEnabled = false
-        } else {
-            doneButton.fillIn(title: Constant.done)
-            doneButton.isEnabled = true
-        }
+        selectedDate = dateComponents.convertToDate()
+        
+        doneButton.fillIn(title: Constant.done)
+        doneButton.isEnabled = true
     }
 }

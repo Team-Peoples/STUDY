@@ -7,9 +7,7 @@
 
 import UIKit
 
-class AttendancePersonalViewController: SwitchableViewController {
-    
-    // MARK: - Properties
+class AttendancePersonalViewController: SwitchableViewController, BottomSheetAddable {
     
     // MARK: - Life Cycle
     
@@ -20,18 +18,9 @@ class AttendancePersonalViewController: SwitchableViewController {
         navigationController?.setBrandNavigation()
     }
     
-    // MARK: - Actions
-    
-    
-    // MARK: - Configure
-    
-    private func configureViews() {
-        
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
-        
+    internal func configureViewControllerWith(studyID: ID, stats: UserAttendanceStatistics) {
+        let memberView = view as? AttendanceForAMemberView
+        memberView?.delegate = self
+        memberView?.configureViewWith(studyID: studyID, userID: stats.userID, stats: stats)
     }
 }

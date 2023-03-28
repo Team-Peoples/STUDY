@@ -45,6 +45,41 @@ extension String {
         
         return false
     }
+    
+    func convertShortenDottedDateToDashedDate() -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yy.MM.dd"
+        let date = dateFormatter.date(from: self)
+
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: date!)
+    }
+    
+    func convertDashedDateToShortenDottedDate() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let date = dateFormatter.date(from: self)
+
+        dateFormatter.dateFormat = "yy.MM.dd"
+        return dateFormatter.string(from: date!)
+    }
+    
+    func checkOnlyNumbers() -> Bool {
+        do {
+            let regex = try NSRegularExpression(pattern: "^[0-9]$", options: .caseInsensitive)
+            
+            if let _ = regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, self.count)) { return true }
+        } catch {
+            print(error.localizedDescription)
+            
+            return false
+        }
+        return false
+    }
+    
+    func toInt() -> Int? {
+        return Int(self)
+    }
 }
 
 
@@ -161,25 +196,6 @@ extension Int {
     }
 }
 
-extension String {
-    func checkOnlyNumbers() -> Bool {
-        do {
-            let regex = try NSRegularExpression(pattern: "^[0-9]$", options: .caseInsensitive)
-            
-            if let _ = regex.firstMatch(in: self, options: NSRegularExpression.MatchingOptions.reportCompletion, range: NSMakeRange(0, self.count)) { return true }
-        } catch {
-            print(error.localizedDescription)
-            
-            return false
-        }
-        return false
-    }
-    
-    func toInt() -> Int? {
-        return Int(self)
-    }
-}
-
 extension UITableView {
     
     public func cellsForRows(at section: Int) -> [UITableViewCell] {
@@ -269,5 +285,16 @@ extension URLRequest {
         let str = String(decoding: self.httpBody ?? Data(), as: UTF8.self)
         print("BODY \n \(str)")
         print("HEADERS \n \(self.allHTTPHeaderFields)")
+    }
+}
+
+extension Data {
+    func printResponseData() {
+        if let dataString = String(data: self, encoding: .utf8) {
+            let cleanString = dataString.replacingOccurrences(of: "\\", with: "")
+            print("📕📕📕📕📕📕📕📕")
+            print(cleanString)
+            print("📕📕📕📕📕📕📕📕")
+        }
     }
 }

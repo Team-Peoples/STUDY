@@ -91,7 +91,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
-        nextVC.studyID = studyID
+        nextVC.configureViewController(with: studyID)
         nextVC.title = currentStudyOverall.study.studyName
         
         delegate.syncManager(with: nextVC)
@@ -162,8 +162,8 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         print("allowedRatio", allowedRatio)
         
         if attendanceRatio + latenessRatio + absenceRatio + allowedRatio != 1 {
-            let lackRatio = 1 - attendanceRatio + latenessRatio + absenceRatio + allowedRatio
-//            
+            let lackRatio = 1 - (attendanceRatio + latenessRatio + absenceRatio + allowedRatio)
+            
             if attendanceRatio != 0 {
                 attendanceRatio += lackRatio
             } else if latenessRatio != 0 {
@@ -179,8 +179,6 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         self.progressView.setProgress(section: 1, to: latenessRatio)
         self.progressView.setProgress(section: 2, to: absenceRatio)
         self.progressView.setProgress(section: 3, to: allowedRatio)
-
-        attendanceRatioLabel.text = "\(Double(attendanceRatio * 100).formatted(.number))%"
     }
     
     private func configureViewWhenNoData() {

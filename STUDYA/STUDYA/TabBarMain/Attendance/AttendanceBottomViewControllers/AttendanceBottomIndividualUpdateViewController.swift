@@ -1,5 +1,5 @@
 //
-//  AttendanceBottomIndividualUpdateView.swift
+//  AttendanceBottomIndividualUpdateViewController.swift
 //  STUDYA
 //
 //  Created by 신동훈 on 2022/11/23.
@@ -7,23 +7,13 @@
 
 import UIKit
 
-final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
+final class AttendanceBottomIndividualUpdateViewController: FullDoneButtonButtonViewController {
     
     internal var viewModel: AttendancesModificationViewModel?
-    internal var indexPath: IndexPath? {
-        didSet {
-            guard let viewModel = viewModel, let indexPath = indexPath else { return }
-            
-            let attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
-            
-            nicknameLabel.text = attendanceInformation.userID  //🛑여기 userID아니고 닉네임
-//            🛑프로필 이미지 넣기
-        }
-    }
-    private var attendance: Attendance?
     
+    private var singleUserAnAttendanceInformation: SingleUserAnAttendanceInformation?
     private let profileImageView = ProfileImageContainerView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "다나카상", tintColor: .ppsBlack, size: 16, isBold: true)
+    private let nicknameLabel = CustomLabel(title: "?", tintColor: .ppsBlack, size: 16, isBold: true)
     private let separator: UIView = {
        
         let v = UIView(frame: .zero)
@@ -46,7 +36,7 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         
         return v
     }()
-    private lazy var penaltyFeeInputField: PurpleRoundedInputField = {
+    private lazy var fineInputField: PurpleRoundedInputField = {
        
         let f = PurpleRoundedInputField(target: nil, action: nil)
         
@@ -71,27 +61,33 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         return f
     }()
     
-    override init(doneButtonTitle: String) {
-        super.init(doneButtonTitle: doneButtonTitle)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        backgroundColor = .white
-
-        penaltyFeeInputField.delegate = self
+        view.backgroundColor = .white
         
-        deselectDoneButton()
-        tagButtons()
+        fineInputField.delegate = self
+        enableDoneButton()
         
         addSubviews()
         setConstraints()
-        configureDoneButton(on: self, under: penaltyFeeInputField, constant: 52)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        configureDoneButton(under: fineInputField, constant: 52)
     }
     
     @objc private func buttonTapped(sender: UIButton) {
         guard let sender = sender as? CustomButton else { return }
+        
+        switch sender {
+        case attendedButton:
+            singleUserAnAttendanceInformation?.attendanceStatus = Constant.attendance
+        case lateButton:
+            singleUserAnAttendanceInformation?.attendanceStatus = Constant.late
+        case absentButton:
+            singleUserAnAttendanceInformation?.attendanceStatus = Constant.absent
+        case allowedButton:
+            singleUserAnAttendanceInformation?.attendanceStatus = Constant.allowed
+        default: break
+        }
         
         if attendedButton.isSelected {
             attendedButton.isSelected = false
@@ -107,65 +103,66 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         }
         
         sender.isSelected = true
-        
-        switch sender.tag {
-        case 1: attendance = .allowed
-        case 2: attendance = .late
-        case 3: attendance = .absent
-        case 4: attendance = .allowed
-        default: break
-        }
-        
-        if !isDoneButtonSelected {
-            enableDoneButton()
-            selectDoneButton()
-        }
     }
     
     override func doneButtonTapped() {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
         guard let viewModel = viewModel,
-              let indexPath = indexPath,
-              let text = penaltyFeeInputField.text,
-              let penalty = text.toInt(),
-              let attendance = attendance,
+              let strFine = fineInputField.text,
+              let fine = formatter.number(from: strFine) as? Int,
+              let singleUserAnAttendanceInformation = singleUserAnAttendanceInformation,
               absentButton.isSelected || lateButton.isSelected || absentButton.isSelected || allowedButton.isSelected else { return }
         
-        var attendanceInformation = viewModel.attendancesForATime.value[indexPath.item]
-        let fine = text.components(separatedBy: ",").joined()
-        
-        attendanceInformation.fine = penalty
-        attendanceInformation.attendanceStatus = attendance
-        
-        viewModel.updateAttendance(attendanceInformation) {
-            self.navigatable?.dismiss()
+        let newAttendanceInformation = SingleUserAnAttendanceInformationForPut(fine: fine, attendanceStatus: singleUserAnAttendanceInformation.attendanceStatus, userID: singleUserAnAttendanceInformation.userID, attendanceID: singleUserAnAttendanceInformation.attendanceID)
+
+        viewModel.updateAttendance(newAttendanceInformation) {
+            self.dismiss(animated: true)
         }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         
-        endEditing(true)
+        view.endEditing(true)
     }
     
-    private func tagButtons() {
-        attendedButton.tag = 1
-        lateButton.tag = 2
-        absentButton.tag = 3
-        allowedButton.tag = 4
+    internal func configure(with anUserAttendanceInformation: SingleUserAnAttendanceInformation, viewModel: AttendancesModificationViewModel) {
+        self.viewModel = viewModel
+        self.singleUserAnAttendanceInformation = anUserAttendanceInformation
+        
+        profileImageView.setImageWith(anUserAttendanceInformation.imageURL)
+        nicknameLabel.text = anUserAttendanceInformation.nickName
+        
+        let attendance = AttendanceSeperator(inputString: anUserAttendanceInformation.attendanceStatus).attendance
+        
+        switch attendance {
+        case .attended:
+            attendedButton.isSelected = true
+        case .late:
+            lateButton.isSelected = true
+        case .absent:
+            absentButton.isSelected = true
+        case .allowed:
+            allowedButton.isSelected = true
+        }
+        
+        fineInputField.text = anUserAttendanceInformation.fine.toString()
     }
     
     private func addSubviews() {
-        addSubview(profileImageView)
-        addSubview(nicknameLabel)
-        addSubview(separator)
-        addSubview(stackView)
-        addSubview(penaltyFeeInputField)
+        view.addSubview(profileImageView)
+        view.addSubview(nicknameLabel)
+        view.addSubview(separator)
+        view.addSubview(stackView)
+        view.addSubview(fineInputField)
     }
     
     private func setConstraints() {
         profileImageView.snp.makeConstraints { make in
-            make.leading.equalTo(self.snp.leading).inset(20)
-            make.top.equalTo(self.snp.top).inset(30)
+            make.leading.equalTo(view.snp.leading).inset(20)
+            make.top.equalTo(view.snp.top).inset(30)
         }
         nicknameLabel.snp.makeConstraints { make in
             make.leading.equalTo(profileImageView.snp.trailing).offset(10)
@@ -173,20 +170,20 @@ final class AttendanceBottomIndividualUpdateView: FullDoneButtonButtomView {
         }
         separator.snp.makeConstraints { make in
             make.top.equalTo(profileImageView.snp.bottom).offset(12)
-            make.leading.trailing.equalTo(self)
+            make.leading.trailing.equalTo(view)
         }
         stackView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(self).inset(30)
+            make.leading.trailing.equalTo(view).inset(30)
             make.top.equalTo(separator).offset(20)
         }
-        penaltyFeeInputField.snp.makeConstraints { make in
+        fineInputField.snp.makeConstraints { make in
             make.leading.trailing.equalTo(stackView)
             make.top.equalTo(stackView.snp.bottom).offset(18)
         }
     }
 }
 
-extension AttendanceBottomIndividualUpdateView: UITextFieldDelegate {
+extension AttendanceBottomIndividualUpdateViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         let currentText = NSString(string: textField.text ?? "")

@@ -130,7 +130,6 @@ final class CustomCalendarView: UIView {
         calendar.headerHeight = 0
         calendar.appearance.headerMinimumDissolvedAlpha = 0
         calendar.locale = Locale(identifier: "ko_KR")
-        
         calendar.register(CustomCalendarCell.self, forCellReuseIdentifier: CustomCalendarCell.identifier)
     }
     

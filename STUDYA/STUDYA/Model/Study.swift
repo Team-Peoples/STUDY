@@ -188,6 +188,7 @@ enum StudyCategory: String, CaseIterable {
     }
 }
 
+
 enum OnOff: String {
     case on
     case off
@@ -228,3 +229,17 @@ struct ParticipatedStudyInfo: Codable {
 }
 
 typealias ParticipatedStudyInfoList = [ParticipatedStudyInfo]
+
+struct StudyEndToEndInformation: Codable {
+    let studyID: Int
+    let studyName: String?
+    let start: Date
+    let end: Date?
+
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyName
+        case start = "createdAt"
+        case end = "finishAt"
+    }
+}
