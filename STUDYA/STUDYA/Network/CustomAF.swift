@@ -85,7 +85,7 @@ enum RequestPurpose: Requestable {
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
     case getAllStudyScheduleOfAllStudy ////19
-    case getStudyLog    //24
+    case getParticipatedStudiesInfo    //24
     case checkEmailCertificated
     case getAllStudyMembers(ID)
     case getAttendanceCertificactionCode(ID)
@@ -205,8 +205,8 @@ extension RequestPurpose {
             return "/noti/\(id)"
         case .getAllStudyScheduleOfAllStudy:
             return "/study/schedule"
-        case .getStudyLog:
-            return "/user/history"
+        case .getParticipatedStudiesInfo:
+            return "/study/participation"
         case .checkEmailCertificated:
             return "/signup/email/auth"
         case .getAllStudyMembers(let studyID):
@@ -232,7 +232,7 @@ extension RequestPurpose {
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getParticipatedStudiesInfo, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications : return .get
         }
     }
     

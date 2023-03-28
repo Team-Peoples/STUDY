@@ -672,6 +672,26 @@ struct Network {
         }
     }
     
+    func fetchParticipatedStudiesInfo(completion: @escaping (Result<ParticipatedStudyInfoList,PeoplesError>) -> Void) {
+        AF.request(RequestPurpose.getParticipatedStudiesInfo, interceptor: AuthenticationInterceptor()).validate().response { response in
+            guard let httpResponse = response.response else { completion(.failure(.serverError)); return }
+            
+            switch httpResponse.statusCode {
+            case 200:
+                guard let data = response.data, let response = jsonDecode(type: ParticipatedStudyInfoList.self, data: data) else {
+                    completion(.failure(.decodingError))
+                    return
+                }
+                completion(.success(response))
+            default:
+                guard let data = response.data,
+                      let errorBody = jsonDecode(type: ErrorResponse.self, data: data) else { return }
+                print(errorBody)
+                seperateCommonErrors(statusCode: httpResponse.statusCode, completion: completion)
+            }
+        }
+    }
+    
     func getAllMembers(studyID: Int, completion: @escaping (Result<MemberListResponse, PeoplesError>) -> Void) {
         AF.request(RequestPurpose.getAllStudyMembers(studyID), interceptor: AuthenticationInterceptor()).validate().response { response in
             guard let httpResponse = response.response else { completion(.failure(.serverError)); return }

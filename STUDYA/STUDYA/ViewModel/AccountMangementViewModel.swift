@@ -88,6 +88,14 @@ class AccountMangementViewModel {
                 self?.id = user.id
                 self?.nickName = user.nickName
                 
+                if let kakaoLogin = user.isKakaoLogin, kakaoLogin {
+                    self?.sns = .kakao
+                } else if let naverLogin = user.isNaverLogin, naverLogin {
+                    self?.sns = .naver
+                } else {
+                    self?.sns = .none
+                }
+                
                 if let imageURL = user.imageURL {
                     guard let url = URL(string: imageURL) else { return }
                     KingfisherManager.shared.retrieveImage(with: url) { result in

@@ -9,7 +9,11 @@ import UIKit
 
 final class MyPageStudyHistoryViewController: UIViewController {
     
-    internal var studyHistoryList: [StudyHistory]?
+    internal var studyHistoryList: ParticipatedStudyInfoList? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     private let tableView: UITableView = {
        
@@ -24,10 +28,17 @@ final class MyPageStudyHistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        studyHistoryList = [StudyHistory(name: "토익 영단어1", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어2", start: "2022.01.01", end: "2022.03.01", auth: "어"), StudyHistory(name: "토익 영단어3", start: "2022.01.01", end: "2022.03.01", auth: "어")]
+    
+        Network.shared.fetchStudyLog { result in
+            switch result {
+            case .success(let studyList):
+                self.studyHistoryList = studyList
+            case .failure(let failure):
+                print(failure)
+            }
+        }
                 
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         title = "참여한 스터디"
         navigationController?.setBrandNavigation()
@@ -41,7 +52,7 @@ final class MyPageStudyHistoryViewController: UIViewController {
 
 extension MyPageStudyHistoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        studyHistoryList!.count
+        studyHistoryList?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

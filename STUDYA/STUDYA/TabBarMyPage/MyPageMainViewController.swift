@@ -21,14 +21,14 @@ final class MyPageMainViewController: UIViewController {
     
     internal var myMail: String?
     
-    private let numberOfRows = 3
+    private let numberOfRows = 2
     
     private let headerContainerView = UIView(backgroundColor: .appColor(.background))
     private let headerView: UIView = {
        
         let view = UIView(frame: .zero)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         view.layer.cornerRadius = 24
         
         return view
@@ -59,7 +59,7 @@ final class MyPageMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         
         tableView.dataSource = self
@@ -159,8 +159,8 @@ extension MyPageMainViewController: UITableViewDelegate {
         case 0:
             navigationController?.pushViewController(MyPageStudyHistoryViewController(), animated: true)
         case 1:
-            navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
-        case 2:
+//            navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
+//        case 2:
             navigationController?.pushViewController(MyPageInformationViewController(), animated: true)
         default: break
         }

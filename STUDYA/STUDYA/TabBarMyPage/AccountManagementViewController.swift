@@ -102,6 +102,14 @@ final class AccountManagementViewController: UIViewController {
             self?.nickNameField.text = user.nickName
             self?.emailLabel.text = user.id
             
+            if let kakaoLogin = user.isKakaoLogin, kakaoLogin {
+                self?.snsImageView.image = UIImage(named: SNS.kakao.rawValue + "Small")
+                self?.centerStackView.isHidden = true
+            } else if let naverLogin = user.isNaverLogin, naverLogin {
+                self?.snsImageView.image = UIImage(named: SNS.naver.rawValue + "Small")
+                self?.centerStackView.isHidden = true
+            }
+            
             guard let imageURL = user.imageURL else { return }
             self?.profileImageView.setImageWith(imageURL)
         }
@@ -147,7 +155,11 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func logout() {
-        AppController.shared.deleteUserInformationAndLogout()
+        let simpleAlert = SimpleAlert(title: "로그아웃", message: "로그아웃 하시겠어요?", firstActionTitle: "로그아웃", actionStyle: .destructive, firstActionHandler: { _ in
+            AppController.shared.deleteUserInformationAndLogout()
+        }, cancelActionTitle: "취소")
+        
+        present(simpleAlert, animated: true)
     }
     
     @objc private func leaveApp() {
@@ -357,12 +369,10 @@ final class AccountManagementViewController: UIViewController {
         containerView.addSubview(nickNameFieldUnderLine)
         containerView.addSubview(horizontalEmailStackView)
         containerView.addSubview(beneathStackView)
+        horizontalEmailStackView.addArrangedSubview(snsImageView)
         
-        if viewModel.sns != .none {
-            horizontalEmailStackView.addArrangedSubview(snsImageView)
-        } else {
-            containerView.addSubview(centerStackView)
-        }
+        containerView.addSubview(centerStackView)
+        
         
         horizontalEmailStackView.addArrangedSubview(emailLabel)
         

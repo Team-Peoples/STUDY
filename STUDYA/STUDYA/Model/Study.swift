@@ -216,7 +216,7 @@ enum UserTaskInStudyInfo: String {
     }
 }
 
-struct StudyLog: Codable {
+struct ParticipatedStudyInfo: Codable {
     let studyID: Int
     let studyName, createdAt: String
     let finishAt: String?
@@ -227,4 +227,4 @@ struct StudyLog: Codable {
     }
 }
 
-typealias StudyList = [StudyLog]
+typealias ParticipatedStudyInfoList = [ParticipatedStudyInfo]
