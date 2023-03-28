@@ -1,11 +1,14 @@
 //
-//  LinkShareMessageView.swift
+//  MainLinkShareMessageView.swift
 //  STUDYA
 //
 //  Created by 서동운 on 12/10/22.
 //
 
 import UIKit
+import KakaoSDKShare
+import KakaoSDKTemplate
+import LinkPresentation
 
 class MainLinkShareMessageView: RoundableView {
     

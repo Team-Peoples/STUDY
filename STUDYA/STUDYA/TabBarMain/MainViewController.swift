@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
 final class MainViewController: SwitchableViewController {
     // MARK: - Properties
@@ -190,7 +191,6 @@ final class MainViewController: SwitchableViewController {
         
         dimmingVC.modalTransitionStyle = .crossDissolve
         dimmingVC.modalPresentationStyle = .overFullScreen
-        dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.myStudyList = myStudyList
         dimmingVC.currentStudy = currentStudyOverall?.study
         dimmingVC.studyTapped = { studyOverall in self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall) }
@@ -272,6 +272,9 @@ final class MainViewController: SwitchableViewController {
                 
             case .success(let user):
                 self.nickName = user.nickName
+                
+                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
+                KeyChain.create(key: Constant.nickname, value: user.nickName!)
                 self.getAllStudies()
             case .failure(let error):
                 
@@ -312,6 +315,9 @@ final class MainViewController: SwitchableViewController {
             
             switch result {
             case .success(let studyOverall):
+                
+                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
+                KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
                 self.configureViewWhenYesStudy()
                 self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
                 

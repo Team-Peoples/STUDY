@@ -14,7 +14,7 @@ final class EditingStudyFreeRuleViewController: UIViewController {
     
     static let identifier = "EditingStudyFreeRuleViewController"
     
-    var studyViewModel = StudyViewModel()
+    let studyViewModel = StudyViewModel()
     
     @IBOutlet weak var freeRuletextView: UITextView!
     @IBOutlet weak var placeholderLabel: UILabel!
@@ -46,7 +46,7 @@ final class EditingStudyFreeRuleViewController: UIViewController {
     @objc func ruleEditDone() {
         
         studyViewModel.updateStudy {
-            print("업데이트 성공")
+            NotificationCenter.default.post(name: .studyInfoShouldUpdate, object: nil)
             self.dismiss(animated: true)
         }
     }
@@ -64,7 +64,6 @@ final class EditingStudyFreeRuleViewController: UIViewController {
 extension EditingStudyFreeRuleViewController: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        print(textView.text)
         studyViewModel.study.freeRule = textView.text
     }
     

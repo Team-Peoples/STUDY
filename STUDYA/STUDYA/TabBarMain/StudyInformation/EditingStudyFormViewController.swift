@@ -11,7 +11,7 @@ final class EditingStudyFormViewController: UIViewController {
     
     // MARK: - Properties
     
-    var studyViewModel = StudyViewModel()
+    let studyViewModel = StudyViewModel()
 
     var categoryChoice: StudyCategory? {
         willSet(value) {
@@ -165,6 +165,7 @@ final class EditingStudyFormViewController: UIViewController {
             case doneButton:
             
             studyViewModel.updateStudy {
+                NotificationCenter.default.post(name: .studyInfoShouldUpdate, object: nil)
                 self.dismiss(animated: true)
             }
             case  cancelButton:

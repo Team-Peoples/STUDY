@@ -86,7 +86,7 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     @objc func ruleEditDone() {
         
         studyViewModel.updateStudy {
-            print("업데이트 성공")
+            NotificationCenter.default.post(name: .studyInfoShouldUpdate, object: nil)
             self.dismiss(animated: true)
         }
     }

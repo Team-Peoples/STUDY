@@ -30,8 +30,8 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        latenessCountField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
-        absenceCountField.addTarget(self, action: #selector(roundedNumberFieldDidChanged), for: .editingChanged)
+        latenessCountField.delegate = self
+        absenceCountField.delegate = self
         
         configureViews()
         setConstaints()
@@ -107,6 +107,19 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
             make.centerY.equalTo(absenceCountField)
             make.trailing.equalTo(contentView.safeAreaLayoutGuide).inset(30)
             make.width.equalTo(70)
+        }
+    }
+}
+
+extension EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+        case latenessCountField:
+            latenessCountFieldAction(textField.text?.toInt())
+        case absenceCountField:
+            absenceCountFieldAction(textField.text?.toInt())
+        default:
+            return
         }
     }
 }
