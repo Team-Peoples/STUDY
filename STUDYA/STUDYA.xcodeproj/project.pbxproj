@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		3BB5D7AC18C8DF5E0DB6EDEC /* Pods_STUDYA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */; };
+		72137F0329D17860000384B9 /* InviteeLandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72137F0229D17860000384B9 /* InviteeLandingViewController.swift */; };
 		721482B2297125E100A903FF /* StudySchedulePopUpAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */; };
+		721BD40C29C216D5000C8DA4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */; };
+		721BD40E29C30A22000C8DA4 /* CalendarTimePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */; };
 		721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */; };
 		724DDD8929421B6000AC0B61 /* EditingStudySchduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */; };
 		7251262E28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */; };
@@ -16,6 +19,8 @@
 		72512A7E292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */; };
 		72512A80292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */; };
 		72512AFE2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */; };
+		725226BA29CB7A0D00491C64 /* AccountMangementViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725226B929CB7A0D00491C64 /* AccountMangementViewModel.swift */; };
+		72578BAF29C4E02F002D6FA5 /* DynamicLinkBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */; };
 		726FA4652901A496004E49A9 /* StudyScheduleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA4642901A496004E49A9 /* StudyScheduleTableViewCell.swift */; };
 		726FA46B291B699A004E49A9 /* StudyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */; };
 		72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */; };
@@ -161,7 +166,10 @@
 /* Begin PBXFileReference section */
 		0E1788325FAC5728639BB995 /* Pods_STUDYA.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_STUDYA.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60745814C03372860FF0B47B /* Pods-STUDYA.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-STUDYA.debug.xcconfig"; path = "Target Support Files/Pods-STUDYA/Pods-STUDYA.debug.xcconfig"; sourceTree = "<group>"; };
+		72137F0229D17860000384B9 /* InviteeLandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteeLandingViewController.swift; sourceTree = "<group>"; };
 		721482B1297125E100A903FF /* StudySchedulePopUpAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpAlertViewController.swift; path = ../StudySchedule/StudySchedulePopUpAlertViewController.swift; sourceTree = "<group>"; };
+		721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTimePicker.swift; sourceTree = "<group>"; };
 		721D8A4628A39F4C00829A2B /* CreatingStudyFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatingStudyFormViewController.swift; sourceTree = "<group>"; };
 		724DDD8829421B6000AC0B61 /* EditingStudySchduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditingStudySchduleViewController.swift; path = ../StudySchedule/EditingStudySchduleViewController.swift; sourceTree = "<group>"; };
 		7251262D28A8B49700D8DA76 /* FindPasswordCompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPasswordCompleteViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +177,9 @@
 		72512A7D292CDEEE0003F431 /* CreatingStudySchedulePriodFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudySchedulePriodFormViewController.swift; path = ../StudySchedule/CreatingStudySchedulePriodFormViewController.swift; sourceTree = "<group>"; };
 		72512A7F292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CreatingStudyScheduleContentViewController.swift; path = ../StudySchedule/CreatingStudyScheduleContentViewController.swift; sourceTree = "<group>"; };
 		72512AFC2938BD6D0003F431 /* StudySchedulePopUpCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StudySchedulePopUpCalendarViewController.swift; path = ../StudySchedule/StudySchedulePopUpCalendarViewController.swift; sourceTree = "<group>"; };
+		725226B929CB7A0D00491C64 /* AccountMangementViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountMangementViewModel.swift; sourceTree = "<group>"; };
+		72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicLinkBuilder.swift; sourceTree = "<group>"; };
+		72578BB029C4E6E2002D6FA5 /* STUDYADebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = STUDYADebug.entitlements; sourceTree = "<group>"; };
 		726FA4642901A496004E49A9 /* StudyScheduleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyScheduleTableViewCell.swift; sourceTree = "<group>"; };
 		726FA46A291B699A004E49A9 /* StudyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyInfoViewController.swift; sourceTree = "<group>"; };
 		72758D28295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -349,10 +360,12 @@
 		72ED25A62897788900031AD1 /* STUDYA */ = {
 			isa = PBXGroup;
 			children = (
+				72578BB029C4E6E2002D6FA5 /* STUDYADebug.entitlements */,
 				72ED25A72897788900031AD1 /* AppDelegate.swift */,
 				72ED25A92897788900031AD1 /* SceneDelegate.swift */,
 				72E5574D29A46CCE007A2CC0 /* ViewController.swift */,
 				D33439A5294D6F23000875C7 /* AppController.swift */,
+				72137F0229D17860000384B9 /* InviteeLandingViewController.swift */,
 				D37D8A4729081974004AF8E9 /* TabBarViewController.swift */,
 				D33DA9EE299DE4FF003DD5A9 /* Model */,
 				D33DA9FF299DE8AE003DD5A9 /* ViewModel */,
@@ -367,6 +380,7 @@
 				72ED25B02897788A00031AD1 /* Assets.xcassets */,
 				72ED25B22897788A00031AD1 /* LaunchScreen.storyboard */,
 				72ED25B52897788A00031AD1 /* Info.plist */,
+				721BD40B29C216D5000C8DA4 /* GoogleService-Info.plist */,
 			);
 			path = STUDYA;
 			sourceTree = "<group>";
@@ -407,6 +421,7 @@
 				7286618D29B5B919001170A7 /* StudyScheduleViewModel.swift */,
 				7286618929B5B8CF001170A7 /* SignInViewModel.swift */,
 				7286618B29B5B8F2001170A7 /* StudyViewModel.swift */,
+				725226B929CB7A0D00491C64 /* AccountMangementViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -432,11 +447,13 @@
 				72ED25BB289778A200031AD1 /* Component.swift */,
 				D3245C1129A8F46400703847 /* HapticManager.swift */,
 				72B44AAE29A753110088F678 /* CustomCalendar.swift */,
+				721BD40D29C30A22000C8DA4 /* CalendarTimePicker.swift */,
+				72578BAE29C4E02F002D6FA5 /* DynamicLinkBuilder.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		D33DAA06299DED7C003DD5A9 /* AttendanceBottomView */ = {
+		D33DAA06299DED7C003DD5A9 /* AttendanceBottomViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				D33DAA07299DED92003DD5A9 /* AttendanceBottomViewType.swift */,
@@ -445,7 +462,7 @@
 				D35D6F7E292E581000514980 /* AttendanceBottomIndividualUpdateViewController.swift */,
 				D35D6F802930E58D00514980 /* AttendanceBottomMembersPeriodSearchSettingView.swift */,
 			);
-			path = AttendanceBottomView;
+			path = AttendanceBottomViewControllers;
 			sourceTree = "<group>";
 		};
 		D33DAA09299E16A0003DD5A9 /* Network */ = {
@@ -574,7 +591,7 @@
 		D3582045299E26120070F7FE /* Attendance */ = {
 			isa = PBXGroup;
 			children = (
-				D33DAA06299DED7C003DD5A9 /* AttendanceBottomView */,
+				D33DAA06299DED7C003DD5A9 /* AttendanceBottomViewControllers */,
 				72E2BEDE29266470009BCCB7 /* AttendanceViewController.swift */,
 				72E2BF0A292B7427009BCCB7 /* AttendanceForAMemberView.swift */,
 				72ED89A72943B6C10072227C /* AttendancePersonalViewController.swift */,
@@ -743,6 +760,7 @@
 				72ED25B12897788A00031AD1 /* Assets.xcassets in Resources */,
 				72E5574A29A468BB007A2CC0 /* EditingStudyFreeRuleViewController.storyboard in Resources */,
 				72E5574429A465A0007A2CC0 /* CreatingStudyGeneralRuleViewController.storyboard in Resources */,
+				721BD40C29C216D5000C8DA4 /* GoogleService-Info.plist in Resources */,
 				72E5574829A466B6007A2CC0 /* CreatingStudyFreeRuleViewController.storyboard in Resources */,
 				D3DD808D29278854001250CF /* AttendanceManagerModeView.xib in Resources */,
 				72E5574629A4666A007A2CC0 /* StudyInfoViewController.storyboard in Resources */,
@@ -856,6 +874,7 @@
 				72ED25C328978EBE00031AD1 /* SignInViewController.swift in Sources */,
 				D371D2172923D5A000E28231 /* Protocol.swift in Sources */,
 				72758D2D295ACF9D00BDFF9C /* StudyGeneralRuleAttendanceTimeRuleTableViewCell.swift in Sources */,
+				725226BA29CB7A0D00491C64 /* AccountMangementViewModel.swift in Sources */,
 				72AAC6E629574D4300FAD71D /* TokenAuthenticator.swift in Sources */,
 				72512A80292CDFC40003F431 /* CreatingStudyScheduleContentViewController.swift in Sources */,
 				72E2BED5291CD50C009BCCB7 /* EditingStudyFormViewController.swift in Sources */,
@@ -866,6 +885,7 @@
 				D381460529BCE91100503569 /* MonthlyFooterView.swift in Sources */,
 				D381460129B1F07700503569 /* Noti.swift in Sources */,
 				72E5574E29A46CCE007A2CC0 /* ViewController.swift in Sources */,
+				72578BAF29C4E02F002D6FA5 /* DynamicLinkBuilder.swift in Sources */,
 				D31C529E29A6745C005933E7 /* MySchedule.swift in Sources */,
 				D381460729BCE93300503569 /* MonthlyHeaderView.swift in Sources */,
 				72E2BEDF29266470009BCCB7 /* AttendanceViewController.swift in Sources */,
@@ -883,6 +903,7 @@
 				D3488DCF293120B6009DE8B2 /* AttendanceBottomIndividualPeriodSearchSettingBottomViewController.swift in Sources */,
 				72F7CFA828F832D100E0D0C0 /* MainCalendarViewController.swift in Sources */,
 				D3F2C6ED28B1207700CEC549 /* MailCheckViewController.swift in Sources */,
+				72137F0329D17860000384B9 /* InviteeLandingViewController.swift in Sources */,
 				72758D29295ACF1F00BDFF9C /* EditingStudyGeneralRuleAttendanceRuleCollectionViewCell.swift in Sources */,
 				D3DD808B29268A8F001250CF /* MainValidationNumberCheckingPopViewController.swift in Sources */,
 				72ED25AA2897788900031AD1 /* SceneDelegate.swift in Sources */,
@@ -891,6 +912,7 @@
 				72758D2F295ACFB000BDFF9C /* StudyGeneralRuleAttendanceFineRuleTableViewCell.swift in Sources */,
 				D306E6D1292BA78300F9BE5C /* AttendanceBottomViewController.swift in Sources */,
 				D398B46E28B5E14E00598B03 /* SettingAlertTableViewCell.swift in Sources */,
+				721BD40E29C30A22000C8DA4 /* CalendarTimePicker.swift in Sources */,
 				7299968428B09B110008A1C1 /* AnnouncementViewController.swift in Sources */,
 				D3BF054328C0E9EC00AF7D3B /* CreatingStudyGeneralRuleViewController.swift in Sources */,
 				721D8A4728A39F4C00829A2B /* CreatingStudyFormViewController.swift in Sources */,
@@ -1079,6 +1101,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = STUDYA/STUDYADebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G8228CR939;

@@ -14,7 +14,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
     
     private var currentStudyOverall: StudyOverall?
     
-    internal var delegate: (Navigatable & SwitchSyncable & SwitchStatusGivable)?
+    internal var delegate: (Navigatable & Managable)?
 
     private let backView = RoundableView(cornerRadius: 24)
     private let titleLabel = CustomLabel(title: "지금까지의 출결", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -51,7 +51,7 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         backView.backgroundColor = .appColor(.background2)
         
         
@@ -91,11 +91,10 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         
         let nextVC = AttendanceViewController()
         
-        delegate.syncSwitchWith(nextVC: nextVC)
-        
         nextVC.configureViewController(with: studyID)
         nextVC.title = currentStudyOverall.study.studyName
         
+        delegate.syncManager(with: nextVC)
         delegate.push(vc: nextVC)
     }
     

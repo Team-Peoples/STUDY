@@ -21,8 +21,8 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileImageView = ProfileImageView(size: 40)
-    private let nickNameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let profileImageView = ProfileImageContainerView(size: 40)
+    private let nickNameLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 16, isBold: true)
     private let attendanceStatusView: AttendanceStatusCapsuleView = {
        
         let v = AttendanceStatusCapsuleView(color: .attendedMain)

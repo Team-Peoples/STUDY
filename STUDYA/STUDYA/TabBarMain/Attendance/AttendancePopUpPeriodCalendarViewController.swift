@@ -41,7 +41,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
     internal weak var dateLabelUpdatableDelegate: DateLabelUpdatable?
     
     private let dimmingViewButton = UIButton(frame: .zero)
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
+    private let popUpContainerView = UIView(backgroundColor: .white)
     private let upperContainerView = UIView(backgroundColor: .appColor(.background))
     private let titleLabel = CustomLabel(title: "조회 기간 설정", tintColor: .ppsBlack, size: 16, isBold: true)
     private let dismissButton: UIButton = {
@@ -87,35 +87,9 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         calendarView.select(date: precedingDate!)
         
         let today = Date()
-        calendarView.maximumDate = today
+        calendarView.setMaximumDate(today)
         calendarView.reloadData()
-        
-        calendarView.dateSelectAction = { [self] (date) in
-            
-            let dateComponents = date.convertToDateComponents([.year, .month, .day])
-            if isPrecedingDateTurn {
-                precedingDate = date
-                precedingDateComponents = dateComponents
-                enableFollowingButton()
-                doneButton.fillOut(title: Constant.OK)
-                doneButton.isEnabled = false
-            } else {
-                if date < precedingDate! {
-                    precedingDate = date
-                    precedingDateComponents = dateComponents
-                    enableFollowingButton()
-                    doneButton.fillOut(title: Constant.OK)
-                    doneButton.isEnabled = false
-                } else {
-                    followingDate = date
-                    followingDateComponents = dateComponents
-                    doneButton.fillIn(title: Constant.OK)
-                    doneButton.isEnabled = true
-                }
-            }
-            isPrecedingDateTurn = false
-        }
-        
+        calendarView.delegate = self
 
         dimmingViewButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
         dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
@@ -181,7 +155,7 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
         
         popUpContainerView.layer.cornerRadius = 24
         popUpContainerView.clipsToBounds = true
-        popUpContainerView.backgroundColor = .systemBackground
+        popUpContainerView.backgroundColor = .white
         
         popUpContainerView.addSubview(upperContainerView)
         upperContainerView.addSubview(titleLabel)
@@ -226,5 +200,33 @@ final class AttendancePopUpPeriodCalendarViewController: UIViewController {
             make.leading.trailing.bottom.equalTo(popUpContainerView).inset(20)
             make.top.greaterThanOrEqualTo(calendarView.snp.bottom).offset(20)
         }
+    }
+}
+
+extension AttendancePopUpPeriodCalendarViewController: CustomCalendarViewDelegate {
+    
+    func calendarView(didselectAt date: Date) {
+        let dateComponents = date.convertToDateComponents([.year, .month, .day])
+        if isPrecedingDateTurn {
+            precedingDate = date
+            precedingDateComponents = dateComponents
+            enableFollowingButton()
+            doneButton.fillOut(title: Constant.OK)
+            doneButton.isEnabled = false
+        } else {
+            if date < precedingDate! {
+                precedingDate = date
+                precedingDateComponents = dateComponents
+                enableFollowingButton()
+                doneButton.fillOut(title: Constant.OK)
+                doneButton.isEnabled = false
+            } else {
+                followingDate = date
+                followingDateComponents = dateComponents
+                doneButton.fillIn(title: Constant.OK)
+                doneButton.isEnabled = true
+            }
+        }
+        isPrecedingDateTurn = false
     }
 }

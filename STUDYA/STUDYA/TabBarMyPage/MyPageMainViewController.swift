@@ -21,19 +21,19 @@ final class MyPageMainViewController: UIViewController {
     
     internal var myMail: String?
     
-    private let numberOfRows = 3
+    private let numberOfRows = 2
     
     private let headerContainerView = UIView(backgroundColor: .appColor(.background))
     private let headerView: UIView = {
        
         let view = UIView(frame: .zero)
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         view.layer.cornerRadius = 24
         
         return view
     }()
-    private let profileImageView = ProfileImageView(size: 80)
+    private let profileImageView = ProfileImageContainerView(size: 80)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 16, isBold: true, isNecessaryTitle: false)
     private lazy var myMailLabel = CustomLabel(title: myMail ?? "이메일 정보를 불러오지 못했습니다." , tintColor: .ppsGray1, size: 12)
     private let settingImageView = UIImageView(image: UIImage(named: "setting"))
@@ -59,7 +59,7 @@ final class MyPageMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         
         tableView.dataSource = self
@@ -88,10 +88,11 @@ final class MyPageMainViewController: UIViewController {
     @objc private func settingViewTapped() {
         
         let nextVC = AccountManagementViewController()
+        let navigationVC = UINavigationController(rootViewController: nextVC)
         
-        nextVC.modalPresentationStyle = .fullScreen
+        navigationVC.modalPresentationStyle = .fullScreen
         
-        present(nextVC, animated: true)
+        present(navigationVC, animated: true)
     }
     
     private func getUserInfo(completion: @escaping (User) -> Void) {
@@ -158,8 +159,8 @@ extension MyPageMainViewController: UITableViewDelegate {
         case 0:
             navigationController?.pushViewController(MyPageStudyHistoryViewController(), animated: true)
         case 1:
-            navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
-        case 2:
+//            navigationController?.pushViewController(MyPageSettingAlertTableViewController(), animated: true)
+//        case 2:
             navigationController?.pushViewController(MyPageInformationViewController(), animated: true)
         default: break
         }

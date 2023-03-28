@@ -19,14 +19,14 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
         
         return v
     }()
-    private let profileImageView = ProfileImageView(size: 40)
-    private let nicknameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let profileImageView = ProfileImageContainerView(size: 40)
+    private let nicknameLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 16, isBold: true)
     private let disclosureIndicatorImageView = UIImageView(image: UIImage(named: "smallDisclosureIndicator"))
     private let innerView: RoundableView = {
         
         let v = RoundableView(cornerRadius: 14)
         
-        v.backgroundColor = .systemBackground
+        v.backgroundColor = .white
         
         return v
     }()
@@ -49,7 +49,7 @@ final class AttendanceIndividualOverallInfoTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         selectionStyle = .none
         
         contentView.addSubview(view)

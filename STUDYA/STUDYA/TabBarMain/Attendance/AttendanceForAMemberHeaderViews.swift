@@ -77,8 +77,8 @@ class AttendanceStatusWithProfileView: UIView {
     // MARK: - Properties
     
     private let titleLabel = CustomLabel(title: "출결 상세", tintColor: .ppsBlack, size: 16, isBold: true)
-    private let profileImageView = ProfileImageView(size: 40)
-    private let nickNameLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 16, isBold: true)
+    private let profileImageView = ProfileImageContainerView(size: 40)
+    private let nickNameLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 16, isBold: true)
     private let fineLabel = UILabel(frame: .zero)
     private let attendanceProgressView = AttendanceReusableProgressView()
     
@@ -173,7 +173,7 @@ private class AttendanceReusableProgressView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         setupProgressBar()
         setupAttendanceProportionLabel()

@@ -33,7 +33,7 @@ final class MailCheckViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         retryButton.addTarget(self, action: #selector(resendEmailButtonTapped), for: .touchUpInside)
         checkEmailCertificationButton.addTarget(self, action: #selector(checkEmailCertificationButtonTapped), for: .touchUpInside)
         

@@ -92,7 +92,11 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     }
     
     @objc func cancel() {
-        self.dismiss(animated: true)
+        let simpleAlert = SimpleAlert(title: "작성을 중단할까요?", message: "페이지를 나가면 작성하던 내용이 사라져요.", firstActionTitle: "나가기", actionStyle: .destructive, firstActionHandler: { _ in
+            self.dismiss(animated: true)
+        }, cancelActionTitle: "남아있기")
+        
+        present(simpleAlert, animated: true)
     }
     
     // MARK: - Configure
@@ -108,7 +112,7 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         addTopScrollView()
         addContentView()
@@ -247,8 +251,8 @@ extension EditingStudyGeneralRuleViewController: UICollectionViewDataSource {
         case 1:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier, for: indexPath) as? EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell else { return EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell() }
             
-            cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString()
-            cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString()
+            cell.latenessCountField.text = studyViewModel.study.generalRule?.excommunication.lateness?.toString() ?? "--"
+            cell.absenceCountField.text = studyViewModel.study.generalRule?.excommunication.absence?.toString() ?? "--"
             
             cell.latenessCountFieldAction = { [self] latenessCount in
                 studyViewModel.study.generalRule?.excommunication.lateness = latenessCount

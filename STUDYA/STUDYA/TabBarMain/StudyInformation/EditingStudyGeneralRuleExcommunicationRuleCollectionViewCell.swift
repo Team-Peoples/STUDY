@@ -15,6 +15,7 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     
     typealias LatenessCount = Int
     typealias AbsenceCount = Int
+    
     var latenessCountFieldAction: (LatenessCount?) -> Void = { LatenessCount in }
     var absenceCountFieldAction: (AbsenceCount?) -> Void = { AbsenceCount in }
     
@@ -40,18 +41,8 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    // MARK: - Actions
     
-    @objc func roundedNumberFieldDidChanged(_ sender: RoundedNumberField) {
-        switch sender {
-        case latenessCountField:
-            latenessCountFieldAction(sender.text?.toInt())
-        case absenceCountField:
-            absenceCountFieldAction(sender.text?.toInt())
-        default:
-            return
-        }
-    }
+    // MARK: - Actions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.endEditing(true)
@@ -60,7 +51,7 @@ final class EditingStudyGeneralRuleExcommunicationRuleCollectionViewCell: UIColl
     // MARK: - Configure
     
     func configureViews() {
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         contentView.addSubview(excommunicationTitleLabel)
         contentView.addSubview(excommunicationDescriptionLabel)

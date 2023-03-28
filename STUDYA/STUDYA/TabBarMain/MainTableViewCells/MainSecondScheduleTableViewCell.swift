@@ -11,7 +11,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     
     static let identifier = "MainSecondScheduleTableViewCell"
     
-    internal var navigatableSwitchSyncableDelegate: (Navigatable & SwitchSyncable)!
+    internal var navigatableManagableDelegate: (Navigatable & Managable)!
     
     private let title = CustomLabel(title: "", tintColor: .ppsBlack, size: 20, isBold: true)
     private let disclosureIndicatorView = UIImageView(image: UIImage(named: "circleDisclosureIndicator"))
@@ -36,7 +36,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
         
         contentView.isUserInteractionEnabled = false
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         
         addSubviews()
         constrainLine()
@@ -137,11 +137,4 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    @objc private func scheduleTapped() {
-//        let studyScheduleVC = StudyScheduleViewController()
-//
-//        navigatableSwitchSyncableDelegate.syncSwitchWith(nextVC: studyScheduleVC)
-//        navigatableSwitchSyncableDelegate.push(vc: studyScheduleVC)
-//    }
 }

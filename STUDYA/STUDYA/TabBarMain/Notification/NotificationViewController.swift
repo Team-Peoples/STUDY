@@ -30,7 +30,7 @@ final class NotificationViewController: UIViewController {
         
         t.delegate = self
         t.dataSource = self
-        t.backgroundColor = .systemBackground
+        t.backgroundColor = .white
         t.showsVerticalScrollIndicator = false
         t.separatorStyle = .none
         t.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.identifier)
@@ -41,7 +41,7 @@ final class NotificationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         getAllNotifications()
         

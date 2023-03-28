@@ -82,7 +82,7 @@ class AttendanceForAMemberViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-yyyy"
 
-        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations ?? []
+        let oneTimeAttendanceInformations: [OneTimeAttendanceInformation] = attendances.oneTimeAttendanceInformations
         var yearAndMonthOfAttendances: [DashedDate] = []
         
         monthlyGroupedAttendanceInformation = [:]
@@ -140,7 +140,7 @@ class AttendanceForAMemberView: UIView {
         
         super.init(frame: .zero)
         
-        self.backgroundColor = .systemBackground
+        self.backgroundColor = .white
         
         configureViews()
     }
@@ -378,35 +378,35 @@ enum AttendanceReusableView {
         }
     }
 }
-
-struct DateStorage {
-    internal var date: Observable<Date>
-    
-    internal var DottedDate: DottedDate {
-        DateFormatter.dottedDateFormatter.string(from: date.value)
-    }
-    internal var shortenDottedDate: ShortenDottedDate {
-        DateFormatter.shortenDottedDateFormatter.string(from: date.value)
-    }
-    internal var dashedDate: DashedDate {
-        DateFormatter.dashedDateFormatter.string(from: date.value)
-    }
-    
-    init(date: Date) {
-        self.date = Observable(date)
-    }
-    
-    mutating func changeDate(to date: Date) {
-        self.date.value = date
-    }
-    
-    mutating func changeDateTo(shortenDottedDate: ShortenDottedDate) {
-        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: shortenDottedDate) else { return }
-        self.date.value = date
-    }
-    
-    mutating func changeDateTo(dottedDate: DottedDate) {
-        guard let date = DateFormatter.dottedDateFormatter.date(from: dottedDate) else { return }
-        self.date.value = date
-    }
-}
+//
+//struct DateStorage {
+//    internal var date: Observable<Date>
+//    
+//    internal var DottedDate: DottedDate {
+//        DateFormatter.dottedDateFormatter.string(from: date.value)
+//    }
+//    internal var shortenDottedDate: ShortenDottedDate {
+//        DateFormatter.shortenDottedDateFormatter.string(from: date.value)
+//    }
+//    internal var dashedDate: DashedDate {
+//        DateFormatter.dashedDateFormatter.string(from: date.value)
+//    }
+//    
+//    init(date: Date) {
+//        self.date = Observable(date)
+//    }
+//    
+//    mutating func changeDate(to date: Date) {
+//        self.date.value = date
+//    }
+//    
+//    mutating func changeDateTo(shortenDottedDate: ShortenDottedDate) {
+//        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: shortenDottedDate) else { return }
+//        self.date.value = date
+//    }
+//    
+//    mutating func changeDateTo(dottedDate: DottedDate) {
+//        guard let date = DateFormatter.dottedDateFormatter.date(from: dottedDate) else { return }
+//        self.date.value = date
+//    }
+//}

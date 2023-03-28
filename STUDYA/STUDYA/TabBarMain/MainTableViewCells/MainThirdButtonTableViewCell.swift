@@ -15,7 +15,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     private var attendanceInformation: AttendanceInformation?
     private var studySchedule: StudySchedule?
 
-    internal weak var navigatableSwitchObservableDelegate: (Navigatable & SwitchStatusGivable)?
+    internal weak var navigatableDelegate: Navigatable?
     private var divider: ButtonStatusDivder?
     
     private let allowedSymbol = "allowedSymbol"
@@ -37,7 +37,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         selectionStyle = .none
-        backgroundColor = .systemBackground
+        backgroundColor = .white
         configureMainButton()
         configureAfterCheckView()
     }
@@ -47,16 +47,15 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func mainButtonTapped() {
-        guard let delegate = navigatableSwitchObservableDelegate else { return }
-        if delegate.getSwtichStatus() { showValidationNumberCheckingVC() } else { showValidationNumberFillingInVC() }
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        if isSwitchOn { showValidationNumberCheckingVC() } else { showValidationNumberFillingInVC() }
     }
     
     internal func configureCellWith(attendanceInformation: AttendanceInformation?, studySchedule: StudySchedule?) {
         self.attendanceInformation = attendanceInformation
         self.studySchedule = studySchedule
         
-        guard let switchDelegate = navigatableSwitchObservableDelegate else { return }
-        divider = ButtonStatusDivder(schedule: studySchedule, attendanceInformation: attendanceInformation, delegate: switchDelegate)
+        divider = ButtonStatusDivder(schedule: studySchedule, attendanceInformation: attendanceInformation)
         configureButton()
     }
     
@@ -71,7 +70,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        self.navigatableSwitchObservableDelegate?.present(vc)
+        navigatableDelegate?.present(vc)
     }
     
     private func showValidationNumberFillingInVC() {
@@ -81,7 +80,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         vc.scheduleID = studySchedule?.studyScheduleID
         vc.preferredContentSize = CGSize(width: 286, height: 247)
         
-        navigatableSwitchObservableDelegate?.present(vc)
+        navigatableDelegate?.present(vc)
     }
     
     private func configureButton() {
@@ -204,7 +203,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     
     private func disableMainButton() {
         mainButton.isEnabled = false
-        mainButton.backgroundColor = .systemBackground
+        mainButton.backgroundColor = .white
         mainButton.configureBorder(color: .ppsGray2, width: 1, radius: 25)
         mainButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
     }
@@ -290,7 +289,6 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
 struct ButtonStatusDivder {
     private let schedule: StudySchedule?
     private let attendanceInformation: AttendanceInformation?
-    private let delegate: SwitchStatusGivable
     
     private let now = Date()
     private let calendar = Calendar.current
@@ -311,10 +309,9 @@ struct ButtonStatusDivder {
         now.convertToDateComponents([.year, .month, .day])
     }
     
-    init(schedule: StudySchedule?, attendanceInformation: AttendanceInformation?, delegate: SwitchStatusGivable) {
+    init(schedule: StudySchedule?, attendanceInformation: AttendanceInformation?) {
         self.schedule = schedule
         self.attendanceInformation = attendanceInformation
-        self.delegate = delegate
     }
     
     internal func getButtonStatus() -> ButtonStatus {
@@ -326,7 +323,8 @@ struct ButtonStatusDivder {
     }
     
     private func getButtonStatusWhenNoSchedule() -> ButtonStatus {
-        if delegate.getSwtichStatus() {
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        if isSwitchOn {
             return .managerModeButtonDisabled
         } else {
             return .userModeNoSchedule
@@ -334,7 +332,8 @@ struct ButtonStatusDivder {
     }
     
     private func getButtonStatusWhenYesSchedule() -> ButtonStatus {
-        if delegate.getSwtichStatus() {
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        if isSwitchOn {
             return getButtonStatusWhenYesScheudlePlusManagerMode()
         } else {
             return getButtonStatusWhenYesSchedulePlusUserMode()

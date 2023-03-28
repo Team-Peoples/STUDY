@@ -40,7 +40,7 @@ final class MemberBottomSheetViewController: UIViewController {
     internal var askChangeOwner = {}
     internal var getMemberListAgainAndReload = {}
     
-    private let profileImageView = ProfileImageView(size: 40)
+    private let profileImageView = ProfileImageContainerView(size: 40)
     private let nicknameLabel = CustomLabel(title: "닉네임", tintColor: .ppsBlack, size: 14, isBold: true)
     private lazy var excommunicatingButton = CustomButton(fontSize: 14, isBold: true, normalBackgroundColor: .subColor3, normalTitleColor: .subColor1, height: 28, normalTitle: "강퇴", contentEdgeInsets: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12), target: self, action: #selector(askExcommunication))
     private let separator: UIView = {
@@ -98,7 +98,7 @@ final class MemberBottomSheetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         configureView()
     }
     
@@ -259,7 +259,7 @@ final class AskChangingOwnerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         configureButton(button: backButton, title: "돌아가기")
         configureButton(button: confirmButton, title: Constant.OK)
@@ -328,7 +328,7 @@ final class AskExcommunicationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         configureButton(button: backButton, title: "돌아가기")
         configureButton(button: confirmButton, title: Constant.OK)

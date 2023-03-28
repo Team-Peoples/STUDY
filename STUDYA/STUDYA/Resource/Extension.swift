@@ -145,7 +145,7 @@ extension UIView {
     
     func addDashedBorder(color: UIColor, cornerRadius: CGFloat?) {
         
-        let shapeLayer:CAShapeLayer = CAShapeLayer()
+        let shapeLayer: CAShapeLayer = CAShapeLayer()
         let frameSize = self.frame.size
         let shapeRect = CGRect(x: 0, y: 0, width: frameSize.width, height: frameSize.height)
         
@@ -167,6 +167,26 @@ extension UIView {
         self.backgroundColor = backgroundColor
         self.alpha = alpha
         self.layer.cornerRadius = cornerRadius
+    }
+}
+
+extension UIButton {
+    convenience init(image: UIImage?) {
+        self.init()
+        self.setImage(image, for: .normal)
+    }
+}
+
+extension UITextView {
+    func limitCharactersNumber(maxLength: Int) {
+        guard let currentText = self.text else { return }
+        guard currentText.count > maxLength else { return }
+        
+        let selection = self.selectedTextRange
+        let newEnd = self.position(from: selection!.start, offset: 0)!
+        
+        self.text = String(currentText.prefix(maxLength))
+        self.selectedTextRange = self.textRange(from: newEnd, to: newEnd)
     }
 }
 

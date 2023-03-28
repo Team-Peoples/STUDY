@@ -29,16 +29,12 @@ final class TabBarViewController: UITabBarController {
         print(#function, "탭바컨트롤러에서 불림. ishidden 됐다가 풀릴 때마다 뜨는 지 확인해야.")
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     // MARK: - Configure
     
     private func configureTabbarController() {
         
         tabBar.tintColor = .appColor(.ppsGray1)
-        tabBar.backgroundColor = .systemBackground
+        tabBar.backgroundColor = .white
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         

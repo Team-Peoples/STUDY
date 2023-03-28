@@ -52,12 +52,14 @@ struct Study: Codable, Equatable {
         case isBlocked = "studyBlock"
         case isPaused = "studyPause"
         case generalRule = "studyRule"
+        case ownerNickname
         case studyOn, studyOff
     }
 
-    init(id: Int? = nil, studyName: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: 0), absence: Absence(time: nil, fine: 0), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
+    init(id: Int? = nil, studyName: String? = nil, ownerNickname: String? = nil, studyOn: Bool = false, studyOff: Bool = false, category: StudyCategory? = nil, studyIntroduction: String? = nil, freeRule: String? = nil, isBlocked: Bool? = nil, isPaused: Bool? = nil, generalRule: GeneralStudyRule? = GeneralStudyRule(lateness: Lateness(time: nil, count: nil, fine: 0), absence: Absence(time: nil, fine: 0), deposit: 0, excommunication: Excommunication(lateness: nil, absence: nil))) {
         self.id = id
         self.studyName = studyName
+        self.ownerNickname = ownerNickname
         self.studyOn = studyOn
         self.studyOff = studyOff
         self.category = category?.rawValue
@@ -214,6 +216,19 @@ enum UserTaskInStudyInfo: String {
         return self.rawValue
     }
 }
+
+struct ParticipatedStudyInfo: Codable {
+    let studyID: Int
+    let studyName, createdAt: String
+    let finishAt: String?
+
+    enum CodingKeys: String, CodingKey {
+        case studyID = "studyId"
+        case studyName, createdAt, finishAt
+    }
+}
+
+typealias ParticipatedStudyInfoList = [ParticipatedStudyInfo]
 
 struct StudyEndToEndInformation: Codable {
     let studyID: Int

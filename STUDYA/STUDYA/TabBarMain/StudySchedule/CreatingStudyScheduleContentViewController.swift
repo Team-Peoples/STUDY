@@ -52,18 +52,6 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         }
         
         configureViews()
-        setNavigation()
-        
-        creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
-        creatingScheduleButton.isEnabled = false
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        topicTextView.delegate = self
-        placeTextView.delegate = self
-        
-        setConstraints()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -86,7 +74,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    @objc private func onKeyboardAppear(_ notification: NSNotification) {
+    @objc private func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -98,7 +86,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         view.layoutIfNeeded()
     }
     
-    @objc private func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc private func keyboardDisappear(_ notification: NSNotification) {
         bottomStickyView.snp.updateConstraints { make in
             make.bottom.equalTo(view)
         }
@@ -109,17 +97,22 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
-        view.addSubview(topicTitleLabel)
-        view.addSubview(topicTextView)
-        view.addSubview(topicTextViewCharactersCountLimitLabel)
-        view.addSubview(placeTitleLabel)
-        view.addSubview(placeTextView)
-        view.addSubview(placeTextViewCharactersCountLimitLabel)
-        view.addSubview(bottomStickyView)
+        creatingScheduleButton.addTarget(self, action: #selector(creatingScheduleButtonDidTapped), for: .touchUpInside)
         
-        bottomStickyView.addSubview(creatingScheduleButton)
+        topicTextView.delegate = self
+        placeTextView.delegate = self
+        
+        addNotification()
+        setNavigation()
+        
+        addSubviewsWithConstraints()
+    }
+    
+    private func addNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     private func setNavigation() {
@@ -133,9 +126,17 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         navigationItem.rightBarButtonItem = closeButton
     }
     
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+    private func addSubviewsWithConstraints() {
+        
+        view.addSubview(topicTitleLabel)
+        view.addSubview(topicTextView)
+        view.addSubview(topicTextViewCharactersCountLimitLabel)
+        view.addSubview(placeTitleLabel)
+        view.addSubview(placeTextView)
+        view.addSubview(placeTextViewCharactersCountLimitLabel)
+        view.addSubview(bottomStickyView)
+        
+        bottomStickyView.addSubview(creatingScheduleButton)
         
         topicTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
@@ -210,39 +211,34 @@ extension CreatingStudyScheduleContentViewController: UITextViewDelegate {
     
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-
-        switch textView {
-            case topicTextView:
-                
-                guard let inputedText = textView.text else { return true }
-                let newLength = inputedText.count + text.count - range.length
-                topicTextViewCharactersCountLimitLabel.text = newLength > 20 ? "20/20" : "\(newLength)/20"
-                return newLength <= 20
-            case placeTextView:
-                
-                guard let inputedText = textView.text else { return true }
-                let newLength = inputedText.count + text.count - range.length
-                placeTextViewCharactersCountLimitLabel.text = newLength > 20 ? "20/20" : "\(newLength)/20"
-                return newLength <= 20
-                
-            default:
-                return false
+        
+        if text == "\n" {
+            return false
+        } else {
+            return true
         }
     }
     
     func textViewDidChange(_ textView: UITextView) {
         
-        ///엔터 입력할때 안되도록...막아야함
         switch textView {
-        case topicTextView:
-            if topicTextView.text.contains(where: { $0 == "\n" }) {
-                topicTextView.text = topicTextView.text.replacingOccurrences(of: "\n", with: "")
-            }
+            case topicTextView:
+            
+            let maxLength = 20
+            
+            topicTextView.limitCharactersNumber(maxLength: maxLength)
+            
+            let currentTextCount = textView.text.count
+            topicTextViewCharactersCountLimitLabel.text = "\(currentTextCount)/\(maxLength)"
             studySchedulePostingViewModel.studySchedule.topic = topicTextView.text
         case placeTextView:
-            if placeTextView.text.contains(where: { $0 == "\n" }) {
-                placeTextView.text = placeTextView.text.replacingOccurrences(of: "\n", with: "")
-            }
+            
+            let maxLength = 20
+            
+            placeTextView.limitCharactersNumber(maxLength: maxLength)
+            
+            let currentTextCount = textView.text.count
+            placeTextViewCharactersCountLimitLabel.text = "\(currentTextCount)/\(maxLength)"
             studySchedulePostingViewModel.studySchedule.place = placeTextView.text
         default:
             break

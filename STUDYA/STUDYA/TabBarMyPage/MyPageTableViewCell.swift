@@ -11,7 +11,7 @@ final class MyPageTableViewCell: UITableViewCell {
     
     static let identifier = "MyPageTableViewCell"
     
-    private let titles = ["참여한 스터디", "푸시알림 설정", "앱 정보"]
+    private let titles = ["참여한 스터디", "앱 정보"]
     internal var row: Int? {
         didSet {
             switch row {
@@ -19,9 +19,9 @@ final class MyPageTableViewCell: UITableViewCell {
                 titleLabel.text = titles[row ?? 0]
                 iconImageView.image = UIImage(named: "myStudyList")
             case 1:
-                titleLabel.text = titles[row ?? 1]
-                iconImageView.image = UIImage(named: "alertSetting")
-            case 2:
+//                titleLabel.text = titles[row ?? 1]
+//                iconImageView.image = UIImage(named: "alertSetting")
+//            case 2:
                 titleLabel.text = titles[row ?? 2]
                 iconImageView.image = UIImage(named: "appInformation")
             default: break
@@ -30,7 +30,7 @@ final class MyPageTableViewCell: UITableViewCell {
     }
     
     private let iconImageView = UIImageView(frame: .zero)
-    private let titleLabel = CustomLabel(title: "제목", tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
+    private let titleLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 16, isBold: true, isNecessaryTitle: false)
     private let disclosureIndicator = UIImageView(image: UIImage(named: "disclosureIndicator")?.withRenderingMode(.alwaysTemplate))
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

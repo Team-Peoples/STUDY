@@ -57,6 +57,7 @@ enum RequestPurpose: Requestable {
     case updateStudy(ID, Study)
     case updateAnnouncement(Title, Content, ID) //16
     case updatePinnedAnnouncement(ID, Bool)   //17
+    case forcingUpdatePinnedAnnouncement(ID)
     case updateScheduleStatus(ID)  //22
     case updateSchedule(ID)    //23
     case updateStudySchedule(StudySchedulePosting)
@@ -84,7 +85,7 @@ enum RequestPurpose: Requestable {
     case getStudy(ID)  //13
     case getAllAnnouncements(ID)   //14
     case getAllStudyScheduleOfAllStudy ////19
-    case getStudyLog    //24
+    case getParticipatedStudiesInfo    //24
     case checkEmailCertificated
     case getAllStudyMembers(ID)
     case getAttendanceCertificactionCode(ID)
@@ -157,6 +158,8 @@ extension RequestPurpose {
             return "/noti"
         case .updatePinnedAnnouncement:
             return "/noti/pin"
+        case .forcingUpdatePinnedAnnouncement(let id):
+            return "/noti/pin/compulsion/\(id)"
         case .updateScheduleStatus(let id):
             return "/user/schedule/\(id)"
         case .updateSchedule:
@@ -205,8 +208,8 @@ extension RequestPurpose {
             return "/noti/\(id)"
         case .getAllStudyScheduleOfAllStudy:
             return "/study/schedule"
-        case .getStudyLog:
-            return "/user/history"
+        case .getParticipatedStudiesInfo:
+            return "/study/participation"
         case .checkEmailCertificated:
             return "/signup/email/auth"
         case .getAllStudyMembers(let studyID):
@@ -234,11 +237,11 @@ extension RequestPurpose {
         switch self {
         case .signUp, .emailCheck, .signIn, .checkOldPassword, .refreshToken, .createStudy, .joinStudy, .createAnnouncement, .createSchedule, .createStudySchedule, .attend, .createMySchedule: return .post
             
-        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
+        case .updateUser, .updateStudy, .updateAnnouncement, .updatePinnedAnnouncement, .forcingUpdatePinnedAnnouncement, .updateScheduleStatus, .updateSchedule, .updateStudySchedule, .closeStudy, .toggleManagerAuth, .updateUserRole, .update, .toggleMyScheduleStatus, .updateMySchedule, .turnOverStudyOwnerTo: return .put
             
         case .deleteUser, .deleteAnnouncement, .deleteStudySchedule, .deleteMember, .leaveFromStudy: return .delete
             
-        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getStudyLog, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies, .getAllMembersAttendaneStatisticsBetween : return .get
+        case .getNewPassord, .getMyInfo, .getJWTToken, .resendAuthEmail, .getAllStudy, .getStudy, .getAllAnnouncements, .getParticipatedStudiesInfo, .checkEmailCertificated, .getAllStudyMembers, .getAttendanceCertificactionCode, .getUserAttendanceBetween, .getAllMembersAttendanceOn, .getAllMySchedules, .getImminentScheduleAttendnace, .getAllStudyScheduleOfAllStudy, .getAllNotifications, .getAttendanceStats, .getAllParticipatedStudies, .getAllMembersAttendaneStatisticsBetween : return .get
         }
     }
     

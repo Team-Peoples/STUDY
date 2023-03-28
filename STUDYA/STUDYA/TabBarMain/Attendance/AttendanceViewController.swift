@@ -8,9 +8,7 @@ import UIKit
 import MultiProgressView
 
 final class AttendanceViewController: SwitchableViewController, BottomSheetAddable {
-//
-//    internal var studyID: ID?
-//
+
     private lazy var managerView: AttendanceManagerModeView = {
         
         let nib = UINib(nibName: "AttendanceManagerModeView", bundle: nil)
@@ -20,6 +18,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         
         return v
     }()
+    
     let userView = AttendanceForAMemberView(viewer: .user)
     
     override func viewWillAppear(_ animated: Bool) {
@@ -28,14 +27,9 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
         tabBarController?.tabBar.isHidden = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        syncSwitchReverse(isSwitchOn)
-    }
     
-    override func extraWorkWhenSwitchToggled() {
-        view = isSwitchOn ? managerView : userView
+    override func extraWorkWhenSwitchToggled(isOn: Bool) {
+        view = isOn ? managerView : userView
     }
     
     internal func configureViewController(with studyID: ID) {

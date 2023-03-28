@@ -97,7 +97,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         addBar()
         addTopScrollView()

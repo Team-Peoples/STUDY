@@ -17,34 +17,28 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         case end
     }
     
-    weak var presentingVC: UIViewController?
-    var selectedDate: Date
+    let viewModel: StudySchedulePostingViewModel
+    let selectedDate: Date
+    
     var startDate: Date?
     var endDate: Date?
 
     private let calendarType: PopUpCalendarType
     private let button = UIButton(frame: .zero)
-    private let popUpContainerView = UIView(backgroundColor: .systemBackground)
-    private let dismissButton: UIButton = {
-        
-        let button = UIButton()
-        let image = UIImage(named: "dismiss")
-        
-        button.setImage(image, for: .normal)
-        
-        return button
-    }()
+    private let popUpContainerView = UIView(backgroundColor: .white)
+    private let dismissButton = UIButton(image: UIImage(named: "dismiss"))
     private let calendarView = CustomCalendarView()
     
     // MARK: - Life Cycle
     
-    init(type: PopUpCalendarType, selectedDate: Date) {
+    init(type: PopUpCalendarType, selectedDate: Date, viewModel: StudySchedulePostingViewModel) {
         self.calendarType = type
         self.selectedDate = selectedDate
+        self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen    
+        modalPresentationStyle = .overFullScreen
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -54,22 +48,14 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        calendarView.dateSelectAction = { (date) in
-            self.calendarIsSelected(date: date)
-        }
-        
+        calendarView.delegate = self
         calendarView.select(date: selectedDate)
         
-        
         if calendarType == .end {
-            calendarView.minimumDate = startDate
+            calendarView.setMinimumDate(startDate)
         }
         
-        button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
-        dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
-        
         configureViews()
-        setConstraints()
     }
     
     // MARK: - Actions
@@ -80,7 +66,15 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
     
     // MARK: - Configure
     private func configureViews() {
+        
         view.backgroundColor = .black.withAlphaComponent(0.3)
+        
+        button.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
+        dismissButton.addTarget(self, action: #selector(dismissButtonDidTapped), for: .touchUpInside)
+        addSubviewsWithConstraints()
+    }
+    
+    private func addSubviewsWithConstraints() {
         
         view.addSubview(button)
         view.addSubview(popUpContainerView)
@@ -88,11 +82,7 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         popUpContainerView.layer.cornerRadius = 24
         popUpContainerView.addSubview(dismissButton)
         popUpContainerView.addSubview(calendarView)
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+        
         button.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
@@ -115,43 +105,25 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
 
 extension StudySchedulePopUpCalendarViewController {
     
-    func calendarIsSelected(date: Date) {
-        if let presentingVC = presentingVC as? CreatingStudySchedulePriodFormViewController {
-
-            switch calendarType {
-            case .start:
-
-                presentingVC.studySchedulePostingViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
-
-                // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if presentingVC.studySchedulePostingViewModel.studySchedule.repeatOption != .norepeat {
-                    presentingVC.studySchedulePostingViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-                }
-
-                self.dismiss(animated: true)
-            case .end:
-
-                presentingVC.studySchedulePostingViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-
-                self.dismiss(animated: true)
+    func configure(viewModel: StudySchedulePostingViewModel, date: Date) {
+        switch calendarType {
+        case .start:
+            viewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
+            
+            if viewModel.studySchedule.repeatOption != .norepeat {
+                viewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
             }
-        } else if let presentingVC = presentingVC as? EditingStudySchduleViewController {
-            switch calendarType {
-            case .start:
-                presentingVC.editingStudyScheduleViewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
-
-                // 모두 선택했다가 시작날짜를 조정하는 경우 반복여부가 설정되어있다면, 반복일정 끝나는 날짜를 선택날짜로 변경
-                if presentingVC.editingStudyScheduleViewModel.studySchedule.repeatOption != .norepeat {
-                    presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-                }
-
-                self.dismiss(animated: true)
-            case .end:
-
-                presentingVC.editingStudyScheduleViewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
-
-                self.dismiss(animated: true)
-            }
+            self.dismiss(animated: true)
+        case .end:
+            viewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+            
+            self.dismiss(animated: true)
         }
+    }
+}
+
+extension StudySchedulePopUpCalendarViewController: CustomCalendarViewDelegate {
+    func calendarView(didselectAt date: Date) {
+        self.configure(viewModel: viewModel, date: date)
     }
 }

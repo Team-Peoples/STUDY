@@ -10,128 +10,57 @@ import SnapKit
 import PhotosUI
 import Photos
 import Kingfisher
-
-//To be fixed: 입력칸 rightbutton 오른쪽 padding 10 넣기
+import Combine
 
 final class AccountManagementViewController: UIViewController {
+
+    let viewModel = AccountMangementViewModel()
+    private var saveButtonEnableCondition: (profileIsChanged: Bool, passwordIsChangedAndValidated: Bool) = (false, true) {
+        willSet(newValue) {
+            switch newValue {
+            case (false, false):
+                saveButton.isEnabled = false
+            case (true, false):
+                saveButton.isEnabled = false
+            default:
+                saveButton.isEnabled = true
+            }
+        }
+    }
     
-    private var profileImage: UIImage? { willSet { profileImageView.setImageWith(newValue) } }
-    private var nickName: String? { didSet { nickNameField.text = nickName } }
-    private var email: String? { didSet { emailLabel.text = email } }
-    private var sns: SNS = .none { didSet { snsImageView.image = UIImage(named: sns.rawValue + "Small") } }
-    
-    private var isAuthForAlbum: Bool?
-    private var profileImageChangeOkay = false
-    private var passwordChangeStarted = false
-    private var oldPasswordIsCorrect = true {
-        didSet {
-            if oldPasswordIsCorrect {
-                oldPasswordValidationLabel.textColor = .appColor(.background)
-            } else {
-                oldPasswordValidationLabel.textColor = .appColor(.subColor1)
-            }
-        }
-    }
-    private var newPasswordValidationOkay = false {
-        didSet {
-            if newPasswordValidationOkay {
-                newPasswordValidationLabel.textColor = .systemBackground
-            } else {
-                newPasswordValidationLabel.textColor = newPasswordField.text == "" ? UIColor.appColor(.ppsGray1) : UIColor.appColor(.subColor1)
-            }
-        }
-    }
-    private var newPasswordCheckValidationOkay = false {
-        didSet {
-            if newPasswordCheckValidationOkay {
-                newPasswordCheckValidationLabel.alpha = 0
-            } else {
-                newPasswordCheckValidationLabel.alpha = newPasswordCheckField.text == "" ? 0 : 1
-            }
-        }
-    }
-    private var saveButtonOkay = false {
-        didSet {
-            rightButton.isEnabled = saveButtonOkay ? true : false
-        }
-    }
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     
-    private let naviBar = UINavigationBar(frame: .zero)
-    private lazy var leftButton = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
-    private lazy var rightButton = UIBarButtonItem(title: Constant.OK, style: .plain, target: self, action: #selector(save))
-    private let profileImageView = ProfileImageView(size: 80)
+    private lazy var cancelButton = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
+    private lazy var saveButton = UIBarButtonItem(title: Constant.OK, style: .plain, target: self, action: #selector(save))
+    
+    private let profileImageView = ProfileImageContainerView(size: 80)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let nickNameField = CustomTextField(placeholder: "닉네임", fontSize: 16)
-    private let separator = UIView(backgroundColor: .appColor(.keyColor1))
-
-    private lazy var snsImageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
-        imageView.setDimensions(height: 14, width: 14)
-        imageView.layer.cornerRadius = 3
-        return imageView
-    }()
-    private let emailLabel = CustomLabel(title: "", tintColor: .ppsGray1, size: 12)
-    private lazy var horizontalEmailStackView: UIStackView = {
-       
-        let view = UIStackView()
-        
-        if sns != .none {
-            view.addArrangedSubview(snsImageView)
-        }
-        view.addArrangedSubview(emailLabel)
-        view.spacing = 4
-        
-        return view
-    }()
+    private let nickNameFieldUnderLine = UIView(backgroundColor: .appColor(.keyColor1))
+    private lazy var snsImageView = UIImageView(backgroundColor: .white, cornerRadius: 3)
+    
+    private let emailLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
+    private lazy var horizontalEmailStackView = UIStackView()
     private lazy var oldPasswordLabel = CustomLabel(title: "기존 비밀번호", tintColor: .ppsBlack, size: 16)
     private lazy var oldPasswordInputField = PurpleRoundedInputField(target: self, action: #selector(toggleIsSecureTextEntry))
     private lazy var oldPasswordValidationLabel = CustomLabel(title: "기존 비밀번호를 올바르게 입력해주세요.", tintColor: .background, size: 12)
-    private lazy var oldPasswordStackView: UIStackView = {
-       
-        let view = UIStackView(arrangedSubviews: [oldPasswordLabel, oldPasswordInputField, oldPasswordValidationLabel])
-        
-        view.spacing = 4
-        view.axis = .vertical
-        
-        return view
-    }()
+    private lazy var oldPasswordStackView = UIStackView(arrangedSubviews: [oldPasswordLabel, oldPasswordInputField, oldPasswordValidationLabel])
+    
     private lazy var newPasswordLabel = CustomLabel(title: "새 비밀번호", tintColor: .ppsBlack, size: 16)
     private lazy var newPasswordField = PurpleRoundedInputField(target: self, action: #selector(toggleIsSecureTextEntry))
     private lazy var newPasswordValidationLabel = CustomLabel(title: "특수문자, 문자, 숫자를 포함해 8글자 이상으로 설정해주세요.", tintColor: .ppsGray1, size: 12)
-    private lazy var newPasswordStackView: UIStackView = {
-        
-         let view = UIStackView(arrangedSubviews: [newPasswordLabel, newPasswordField, newPasswordValidationLabel])
+    private lazy var newPasswordStackView = UIStackView(arrangedSubviews: [newPasswordLabel, newPasswordField, newPasswordValidationLabel])
          
-         view.spacing = 4
-         view.axis = .vertical
-         
-         return view
-    }()
     private lazy var newPasswordCheckLabel = CustomLabel(title: "비밀번호 확인", tintColor: .ppsBlack, size: 16)
     private lazy var newPasswordCheckField = PurpleRoundedInputField(target: self, action: #selector(toggleIsSecureTextEntry))
     private lazy var newPasswordCheckValidationLabel = CustomLabel(title: "비밀번호가 맞지 않아요.", tintColor: .subColor1, size: 12)
-    private lazy var newPasswordCheckStackView: UIStackView = {
-        
-         let view = UIStackView(arrangedSubviews: [newPasswordCheckLabel, newPasswordCheckField, newPasswordCheckValidationLabel])
-         
-         view.spacing = 4
-         view.axis = .vertical
-         
-         return view
-    }()
-    private lazy var centerStackView: UIStackView = {
-       
-        let view = UIStackView(arrangedSubviews: [oldPasswordStackView, newPasswordStackView, newPasswordCheckStackView])
-        
-        view.spacing = 25
-        view.axis = .vertical
-        
-        return view
-    }()
+    private lazy var newPasswordCheckStackView = UIStackView(arrangedSubviews: [newPasswordCheckLabel, newPasswordCheckField, newPasswordCheckValidationLabel])
+
+    private lazy var centerStackView = UIStackView(arrangedSubviews: [oldPasswordStackView, newPasswordStackView, newPasswordCheckStackView])
+    
     private let logoutLabel = CustomLabel(title: "로그아웃", tintColor: .keyColor2, size: 16)
-    private let separator2 = CustomLabel(title: "|", tintColor: .ppsGray2, size: 16)
+    private let separator = CustomLabel(title: "|", tintColor: .ppsGray2, size: 16)
     private let leftLabel = CustomLabel(title: "회원탈퇴", tintColor: .keyColor2, size: 16)
     private lazy var beneathStackView: UIStackView = {
         
@@ -144,7 +73,7 @@ final class AccountManagementViewController: UIViewController {
         leftLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveApp)))
         
         stackView.addArrangedSubview(logoutLabel)
-        stackView.addArrangedSubview(separator2)
+        stackView.addArrangedSubview(separator)
         stackView.addArrangedSubview(leftLabel)
         
         stackView.spacing = 5
@@ -160,55 +89,52 @@ final class AccountManagementViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
-        
-        setDelegate()
-        profileImageViewAddTapGesture()
         setScrollView()
-        setNaviBar()
-        addSubviews()
-        enableScroll()
-        setConstraints()
+        setStackView()
         setTextFields()
+        setNaviBar()
         
-        getUserInfo { user in
-            self.nickName = user.nickName
-            self.email = user.id
+        profileImageViewAddTapGesture()
+    
+        configureViews()
+        
+        viewModel.getUserInfo { [weak self] user in
+            print(user)
+            self?.nickNameField.text = user.nickName
+            self?.emailLabel.text = user.id
+            
+            if let kakaoLogin = user.isKakaoLogin, kakaoLogin {
+                self?.snsImageView.image = UIImage(named: SNS.kakao.rawValue + "Small")
+                self?.centerStackView.isHidden = true
+            } else if let naverLogin = user.isNaverLogin, naverLogin {
+                self?.snsImageView.image = UIImage(named: SNS.naver.rawValue + "Small")
+                self?.centerStackView.isHidden = true
+            }
             
             guard let imageURL = user.imageURL else { return }
-            
-            self.profileImageView.setImageWith(imageURL)
+            self?.profileImageView.setImageWith(imageURL)
         }
+        
+        addPublisher()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self)
+    deinit {
+        viewModel.cancellables.forEach { $0.cancel() }
     }
-
     // MARK: - Actions
     
     @objc private func cancel() {
-        dismiss(animated: true)
+        self.dismiss(animated: true)
     }
     
     @objc private func save() {
-        
-        if let password = oldPasswordInputField.text , password != "" {
-            self.checkOldPassword(password) { isCorrectOldPassword in
-                if isCorrectOldPassword {
-                    self.oldPasswordIsCorrect = isCorrectOldPassword
-                    self.updateUserInfo()
-                } else {
-                    self.oldPasswordIsCorrect = isCorrectOldPassword
-                }
-            }
-        } else {
-            self.updateUserInfo()
+        viewModel.updateUserInfo() {
+            self.dismiss(animated: true)
         }
     }
     
@@ -230,25 +156,39 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func logout() {
-        AppController.shared.deleteUserInformationAndLogout()
+        let simpleAlert = SimpleAlert(title: "로그아웃", message: "로그아웃 하시겠어요?", firstActionTitle: "로그아웃", actionStyle: .destructive, firstActionHandler: { _ in
+            AppController.shared.deleteUserInformationAndLogout()
+        }, cancelActionTitle: "취소")
+        
+        present(simpleAlert, animated: true)
     }
     
     @objc private func leaveApp() {
-        let alertController = UIAlertController(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        let closeAccountAction = UIAlertAction(title: "탈퇴하기", style: .destructive) {
-            _ in
-            
-            self.closeAccount()
-        }
-        
-        alertController.addAction(closeAccountAction)
-        alertController.addAction(cancelAction)
+        let alertController = SimpleAlert(title: "정말 탈퇴하시겠어요?", message: "참여한 모든 스터디 기록이 삭제되고, 다시 가입해도 복구할 수 없어요.😥", firstActionTitle: "탈퇴하기", actionStyle: .destructive, firstActionHandler: { [weak self] _ in
+            self?.viewModel.closeAccount{ result in
+                switch result {
+                case .success(let isNotManager):
+                    if isNotManager {
+                        print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
+                        
+                        AppController.shared.deleteUserInformation()
+                        
+                        self?.deleteAllUserDefaults()
+                        self?.presentByeViewController()
+                    } else {
+                        print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
+                    }
+                    
+                case .failure(let error):
+                    UIAlertController.handleCommonErros(presenter: self!, error: error)
+                }
+            }
+        }, cancelActionTitle: Constant.cancel)
         
         present(alertController, animated: true)
     }
     
-    @objc func onKeyboardAppear(_ notification: NSNotification) {
+    @objc func keyboardAppear(_ notification: NSNotification) {
         
         guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         
@@ -257,25 +197,10 @@ final class AccountManagementViewController: UIViewController {
         
         scrollView.contentInset = insets
         scrollView.scrollIndicatorInsets = insets
-        
-        var viewFrame = self.view.frame
-
-        viewFrame.size.height -= keyboardSize.height
-
-        let activeField: UITextField? = [nickNameField, oldPasswordInputField, newPasswordField, newPasswordCheckField].first { $0.isFirstResponder }
-
-        if let activeField = activeField {
-
-            if !viewFrame.contains(activeField.frame.origin) {
-
-                let scrollPoint = CGPoint(x: 0, y: activeField.frame.origin.y - keyboardSize.height)
-
-                scrollView.setContentOffset(scrollPoint, animated: true)
-            }
-        }
     }
     
-    @objc func onKeyboardDisappear(_ notification: NSNotification) {
+    @objc func keyboardDisappear(_ notification: NSNotification) {
+        
         scrollView.contentInset = UIEdgeInsets.zero
         scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
@@ -288,50 +213,101 @@ final class AccountManagementViewController: UIViewController {
         view.endEditing(true)
     }
     
-    // MARK: - TextField Validation Check
-    
-    private func validateCheck(_ textField: UITextField) {
+    private func addPublisher() {
         
-        if let password = textField.text {
-            let range = password.range(of: "^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}", options: .regularExpression)
-            switch textField {
-            case newPasswordField: newPasswordValidationOkay = range != nil ? true : false
-            case newPasswordCheckField: newPasswordCheckValidationOkay = textField.text == newPasswordField.text ? true : false
-            default: break
+        oldPasswordInputField.textPublisher
+            .assign(to: \.oldPassword, on: viewModel)
+            .store(in: &viewModel.cancellables)
+
+        newPasswordField.textPublisher
+            .assign(to: \.newPassword, on: viewModel)
+            .store(in: &viewModel.cancellables)
+
+
+        newPasswordCheckField.textPublisher
+            .assign(to: \.newPasswordCheck, on: viewModel)
+            .store(in: &viewModel.cancellables)
+        
+        viewModel.profileIsChangedPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (profileIsChanged) in
+                self?.saveButtonEnableCondition.profileIsChanged = profileIsChanged
             }
-        }
+            .store(in: &viewModel.cancellables)
+
+        viewModel.passwordFormIsValidPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] (oldpasswordIsEmpty,
+                                 oldPasswordIsValid,
+                                 newPasswordIsValid,
+                                 newPasswordCheckIsValid) in
+
+                if oldPasswordIsValid {
+                    self?.oldPasswordValidationLabel.textColor = .appColor(.ppsBlack)
+                    self?.oldPasswordValidationLabel.text = "기존 비밀번호가 맞습니다. 아래에 변경할 비밀번호를 입력해주세요."
+                    self?.oldPasswordInputField.isEnabled = false
+                } else {
+                    if oldpasswordIsEmpty {
+                        self?.oldPasswordValidationLabel.textColor = .appColor(.whiteLabel)
+                    } else {
+                        self?.oldPasswordValidationLabel.textColor = .appColor(.subColor1)
+                        self?.oldPasswordValidationLabel.text = "기존 비밀번호를 올바르게 입력해주세요."
+                    }
+                }
+
+                if newPasswordIsValid {
+                    self?.newPasswordValidationLabel.textColor = .white
+                } else {
+                    if oldpasswordIsEmpty {
+                        self?.newPasswordValidationLabel.textColor = .white
+                    } else {
+                        self?.newPasswordValidationLabel.textColor = UIColor.appColor(.ppsGray1)
+                    }
+                }
+
+                if newPasswordCheckIsValid || self?.newPasswordField.text == String() {
+                    self?.newPasswordCheckValidationLabel.alpha = 0
+                } else {
+                    self?.newPasswordCheckValidationLabel.alpha = 1
+                }
+
+                self?.saveButtonEnableCondition.passwordIsChangedAndValidated = oldpasswordIsEmpty || (oldPasswordIsValid && newPasswordIsValid && newPasswordCheckIsValid)
+            }
+            .store(in: &viewModel.cancellables)
     }
     
-    private func checkSaveButtonPossible() {
-        if passwordChangeStarted {
-            if newPasswordValidationOkay &&
-                newPasswordCheckValidationOkay {
-                saveButtonOkay = true
-            } else {
-                saveButtonOkay = false
-            }
-        } else {
-            saveButtonOkay = profileImageChangeOkay || nickName != nickNameField.text ? true : false
-        }
+    private func setStackView() {
+        
+        horizontalEmailStackView.spacing = 4
+        horizontalEmailStackView.axis = .horizontal
+        
+        oldPasswordStackView.spacing = 4
+        oldPasswordStackView.axis = .vertical
+        newPasswordStackView.spacing = 4
+        newPasswordStackView.axis = .vertical
+        newPasswordCheckStackView.spacing = 4
+        newPasswordCheckStackView.axis = .vertical
+        
+        centerStackView.spacing = 25
+        centerStackView.axis = .vertical
     }
     
     private func setTextFields() {
         
-        newPasswordField.text = ""
-        newPasswordCheckField.text = ""
+        nickNameField.delegate = self
+        oldPasswordInputField.delegate = self
+        newPasswordField.delegate = self
+        newPasswordCheckField.delegate = self
+        
         newPasswordValidationLabel.textColor = UIColor.appColor(.ppsGray1)
         newPasswordCheckValidationLabel.alpha = 0
-        
-        passwordChangeStarted = false
-        newPasswordValidationOkay = false
-        newPasswordCheckValidationOkay = false
         
         nickNameField.addTarget(self, action: #selector(textDidChanged), for: .editingChanged)
         oldPasswordInputField.addTarget(self, action: #selector(textDidChanged), for: .editingChanged)
         
-        oldPasswordInputField.rightView?.tag = 0
-        newPasswordField.rightView?.tag = 1
-        newPasswordCheckField.rightView?.tag = 2
+        oldPasswordInputField.rightView?.subviews.first?.tag = 0
+        newPasswordField.rightView?.subviews.first?.tag = 1
+        newPasswordCheckField.rightView?.subviews.first?.tag = 2
     }
     
     // MARK: - Configure
@@ -355,61 +331,52 @@ final class AccountManagementViewController: UIViewController {
     
     private func setScrollView() {
         
-        let safeArea = view.safeAreaLayoutGuide
-        
-        view.addSubview(scrollView)
-        
         scrollView.showsVerticalScrollIndicator = false
-        
-        scrollView.anchor(top: safeArea.topAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
-        scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
-        
-        scrollView.addSubview(containerView)
-        
-        containerView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
-            make.height.equalTo(scrollView.frameLayoutGuide).priority(250)
-            make.width.equalTo(scrollView.frameLayoutGuide)
-        }
-    }
-    
-    private func setDelegate() {
-        nickNameField.delegate = self
-        oldPasswordInputField.delegate = self
-        newPasswordField.delegate = self
-        newPasswordCheckField.delegate = self
+        enableScroll()
     }
     
     private func setNaviBar() {
         
-        let navItem = UINavigationItem(title: "계정 관리")
+        navigationItem.title = "계정 관리"
+
+        navigationItem.rightBarButtonItem = saveButton
+        navigationItem.leftBarButtonItem = cancelButton
         
-        rightButton.isEnabled = false
-       
-        naviBar.tintColor = UIColor.appColor(.keyColor1)
-        naviBar.barTintColor = .systemBackground
-        naviBar.isTranslucent = false
-        naviBar.shadowImage = UIImage()
-        naviBar.setItems([navItem], animated: true)
-        naviBar.topItem?.leftBarButtonItem = leftButton
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.ppsBlack)]
+        navigationController?.navigationBar.tintColor = .appColor(.keyColor1)
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
         
-        navItem.title = "계정 관리"
-        navItem.titleView?.tintColor = UIColor.appColor(.ppsBlack)
-        navItem.leftBarButtonItem = leftButton
-        navItem.rightBarButtonItem = rightButton
+        saveButton.isEnabled = false
+    }
+    
+    private func configureViews() {
+        view.backgroundColor = .white
+        
+        addSubviews()
+        setConstraints()
     }
     
     private func addSubviews() {
-        containerView.addSubview(naviBar)
+        
+        view.addSubview(scrollView)
+        
+        scrollView.addSubview(containerView)
+        
         containerView.addSubview(profileImageView)
         containerView.addSubview(plusCircleView)
         containerView.addSubview(nickNameField)
-        containerView.addSubview(separator)
+        containerView.addSubview(nickNameFieldUnderLine)
         containerView.addSubview(horizontalEmailStackView)
-        if sns == .none {
-            containerView.addSubview(centerStackView)
-        }
         containerView.addSubview(beneathStackView)
+        horizontalEmailStackView.addArrangedSubview(snsImageView)
+        
+        containerView.addSubview(centerStackView)
+        
+        
+        horizontalEmailStackView.addArrangedSubview(emailLabel)
+        
         view.addSubview(alertToastMessage)
     }
     
@@ -428,7 +395,7 @@ final class AccountManagementViewController: UIViewController {
             view.layoutIfNeeded()
         } completion: { _ in
             
-            UIView.animate(withDuration: 1, delay: 3, options: .curveLinear) {
+            UIView.animate(withDuration: 1, delay: 2, options: .curveLinear) {
                 self.alertToastMessage.alpha = 0
             } completion: {[self] _ in
                 
@@ -447,12 +414,19 @@ final class AccountManagementViewController: UIViewController {
     
     private func setConstraints() {
         
-        naviBar.snp.makeConstraints { make in
-            make.leading.trailing.top.equalTo(containerView)
+        let safeArea = view.safeAreaLayoutGuide
+        
+        scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.height.equalTo(safeArea)
+        }
+        containerView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.equalTo(scrollView.frameLayoutGuide).priority(250)
+            make.width.equalTo(scrollView.frameLayoutGuide)
         }
         profileImageView.snp.makeConstraints { make in
             make.centerX.equalTo(containerView)
-            make.top.equalTo(naviBar.snp.bottom).offset(40)
+            make.top.equalTo(containerView).offset(40)
         }
         plusCircleView.snp.makeConstraints { make in
             make.trailing.bottom.equalTo(profileImageView)
@@ -461,7 +435,7 @@ final class AccountManagementViewController: UIViewController {
             make.centerX.equalTo(containerView)
             make.top.equalTo(profileImageView.snp.bottom).offset(24)
         }
-        separator.snp.makeConstraints { make in
+        nickNameFieldUnderLine.snp.makeConstraints { make in
             make.centerX.equalTo(containerView)
             make.top.equalTo(nickNameField.snp.bottom).offset(1)
             make.width.equalTo(170)
@@ -469,9 +443,13 @@ final class AccountManagementViewController: UIViewController {
         }
         horizontalEmailStackView.snp.makeConstraints { make in
             make.centerX.equalTo(containerView)
-            make.top.equalTo(separator.snp.bottom).offset(5)
+            make.top.equalTo(nickNameFieldUnderLine.snp.bottom).offset(5)
         }
-        if sns == .none {
+        snsImageView.snp.makeConstraints { make in
+            make.height.width.equalTo(14)
+        }
+        
+        if viewModel.sns == .none {
             centerStackView.snp.makeConstraints { make in
                 make.top.equalTo(horizontalEmailStackView.snp.bottom).offset(60)
                 make.leading.trailing.equalTo(containerView).inset(20)
@@ -484,60 +462,12 @@ final class AccountManagementViewController: UIViewController {
                 make.bottom.equalTo(view).offset(50)
             }
         }
+        
         beneathStackView.snp.makeConstraints { make in
             make.centerX.equalTo(containerView)
             make.bottom.equalTo(containerView).inset(30)
-            if sns == .none {
+            if viewModel.sns == .none {
                 make.top.greaterThanOrEqualTo(centerStackView).offset(40)
-            }
-        }
-    }
-    
-    // MARK: - Networking
-    
-    private func getUserInfo(completion: @escaping (User) -> Void) {
-        Network.shared.getUserInfo { result in
-            switch result {
-            case .success(let user):
-                completion(user)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
-    private func updateUserInfo() {
-        Network.shared.updateUserInfo(oldPassword: oldPasswordInputField.text, password: newPasswordField.text, passwordCheck: newPasswordCheckField.text, nickname: nickNameField.text, image: profileImage) { result in
-            switch result {
-            case .success:
-                self.dismiss(animated: true)
-            case .failure(let failure):
-                print(failure)
-            }
-        }
-    }
-    
-    private func closeAccount() {
-        
-        guard let userId = KeyChain.read(key: Constant.userId) else { return }
-        
-        Network.shared.closeAccount(userID: userId) { result in
-            switch result {
-            case .success(let isNotManager):
-                if isNotManager {
-                    print("참여중인 스터디의 스터디장이 아닐경우 탈퇴됨.")
-                    
-                    AppController.shared.deleteUserInformation()
-                    
-                    self.deleteAllUserDefaults()
-                    self.presentByeViewController()
-                    
-                } else {
-                    print("참여중인 스터디의 스터디장일 경우 양도하는 플로우로 연결")
-                }
-                
-            case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
@@ -553,25 +483,11 @@ final class AccountManagementViewController: UIViewController {
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true)
     }
-    
-    private func checkOldPassword(_ password: String, completion: @escaping (Bool) -> Void) {
-        
-        guard let email = email else { fatalError() }
-        
-        Network.shared.checkIfCorrectedOldPassword(userID: email, password: password) { result in
-            switch result {
-            case .success(let isCorrectOldPassword):
-                completion(isCorrectOldPassword)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
 }
 
 extension AccountManagementViewController: PHPickerViewControllerDelegate {
     
-    private func setupImagePicker() {
+    private func openImagePicker() {
         
         var configuration = PHPickerConfiguration()
         
@@ -585,7 +501,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         self.present(picker, animated: true, completion: nil)
     }
     
-    private func AuthSettingOpen() {
+    private func requestAuthorization() {
         
         let alert = UIAlertController(title: "", message: "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다", preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .default)
@@ -642,17 +558,21 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
     @objc private func touchUpImageView() {
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { _ in
-            self.openAlbum()
+        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { [weak self] _ in
+            self?.openAlbum()
         }
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        if profileImage != nil {
-            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { _ in
-                self.profileImage = nil
-                self.profileImageChangeOkay = true
+        if profileImageView.internalImage != nil {
+            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { [weak self] _ in
+                self?.profileImageView.internalImage = nil
+                self?.viewModel.profileImage = nil
+                
+                if self?.viewModel.profileImageChanged == false  {
+                    self?.viewModel.profileImageChanged = true
+                }
             }
-            
+
             alert.addAction(defaultImageAction)
         }
         
@@ -663,24 +583,21 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
     }
     
     @objc private func openAlbum() {
-        PHPhotoLibrary.requestAuthorization( { status in
+        PHPhotoLibrary.requestAuthorization { [weak self] status in
 
             switch status {
             case .authorized:
                 DispatchQueue.main.async {
-                    self.setupImagePicker()
+                    self?.openImagePicker()
                 }
             case .denied:
-                if self.isAuthForAlbum == false {
-                    DispatchQueue.main.async {
-                        self.AuthSettingOpen()
-                    }
+                DispatchQueue.main.async {
+                    self?.requestAuthorization()
                 }
-                self.isAuthForAlbum = false
             default:
                 break
             }
-        })
+        }
     }
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
@@ -689,77 +606,48 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         
         let itemProvider = results.first?.itemProvider
         
-        if let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
+        guard let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) else { return }
+        
+        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
             
-            itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+            DispatchQueue.main.async {
+
+                guard let image = image as? UIImage else { return }
+                self?.viewModel.profileImage = image
+                self?.profileImageView.setImageWith(image)
                 
-                DispatchQueue.main.async {
-                    
-                    if let image = image as? UIImage {
-                        self.profileImageView.setImageWith(image)
-                        self.profileImageChangeOkay = true
-                        self.checkSaveButtonPossible()
-                    }
+                if self?.viewModel.profileImageChanged == false  {
+                    self?.viewModel.profileImageChanged = true
                 }
             }
-        } else {
-            print("이미지 못 불러왔음!!!!")
         }
     }
 }
 
 extension AccountManagementViewController: UITextFieldDelegate {
+
     
     @objc private func textDidChanged(_ textField: UITextField) {
-       
-        switch textField {
-        case oldPasswordInputField:
-            if textField.text == "" || textField.text == nil {
-                oldPasswordValidationLabel.textColor = .appColor(.background)
-                passwordChangeStarted = false
-            } else {
-                passwordChangeStarted = true
+        if textField == nickNameField {
+            viewModel.nickName = nickNameField.text
+            
+            if !viewModel.nicknameChanged  {
+                viewModel.nicknameChanged = true
             }
-        default:
-            break
         }
-        checkSaveButtonPossible()
-        validateCheck(textField)
     }
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-       
-        switch textField {
-        case newPasswordField, newPasswordCheckField:
-            if oldPasswordInputField.text == "" || oldPasswordInputField.text == nil {
-                oldPasswordValidationLabel.textColor = .appColor(.background)
+        if textField == newPasswordField || textField == newPasswordCheckField {
+            if viewModel.oldPasswordIsValidated {
+                return true
+            } else {
                 showToastMessage()
                 return false
-
-            } else {
-                return true
             }
-        default:
+        } else {
             return true
         }
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-      
-        switch textField {
-        case oldPasswordInputField:
-            if textField.text == "" || textField.text == nil {
-                oldPasswordValidationLabel.textColor = .appColor(.background)
-                passwordChangeStarted = false
-               
-            } else {
-                passwordChangeStarted = true
-            }
-        default: break
-        }
-        validateCheck(textField)
-        checkSaveButtonPossible()
-        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

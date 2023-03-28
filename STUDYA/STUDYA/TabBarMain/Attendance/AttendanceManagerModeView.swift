@@ -10,7 +10,7 @@ import UIKit
 final class AttendanceManagerModeView: UIView {
     
     internal var studyID: Int?
-    weak var delegate: (Navigatable & SwitchSyncable & BottomSheetAddable)?
+    weak var delegate: (Navigatable & Managable & BottomSheetAddable)?
     
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var rightLabel: UILabel!

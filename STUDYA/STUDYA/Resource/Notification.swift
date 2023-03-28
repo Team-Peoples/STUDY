@@ -21,6 +21,7 @@ extension Notification.Name {
     static let mainCalenderDateTapped = Notification.Name(rawValue: "mainCalenderDateTapped")
     static let mainCalendarAppear = Notification.Name(rawValue: "mainCalendarAppear")
     static let myScheduleCellRemoved = Notification.Name(rawValue: "myScheduleCellRemoved")
+    static let updateAnnouncement = Notification.Name("updateAnnouncement")
     static let updateStudySchedule = Notification.Name(rawValue: "updateStudySchedule")
     static let calendarShouldUpdate = Notification.Name(rawValue: "calendarShouldUpdate")
     static let reloadScheduleTableView = Notification.Name(rawValue: "reloadScheduleTableView")

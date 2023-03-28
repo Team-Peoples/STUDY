@@ -9,8 +9,6 @@ import UIKit
 
 class AttendancePersonalViewController: SwitchableViewController, BottomSheetAddable {
     
-    // MARK: - Properties
-    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -20,30 +18,9 @@ class AttendancePersonalViewController: SwitchableViewController, BottomSheetAdd
         navigationController?.setBrandNavigation()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        syncSwitchReverse(isSwitchOn)
-    }
-    
     internal func configureViewControllerWith(studyID: ID, stats: UserAttendanceStatistics) {
         let memberView = view as? AttendanceForAMemberView
         memberView?.delegate = self
         memberView?.configureViewWith(studyID: studyID, userID: stats.userID, stats: stats)
-    }
-    
-    // MARK: - Actions
-    
-    
-    // MARK: - Configure
-    
-    private func configureViews() {
-        
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
-        
     }
 }

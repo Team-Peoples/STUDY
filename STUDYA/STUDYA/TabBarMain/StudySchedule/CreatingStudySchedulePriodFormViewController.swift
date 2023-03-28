@@ -13,6 +13,8 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     var studySchedulePostingViewModel = StudySchedulePostingViewModel()
     
+    // 이미 있는 스터디 스케쥴 정보
+    
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
             selectedRepeatOptionCheckBox?.isSelected.toggle()
@@ -65,13 +67,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             repeatEndDateSelectableView.alpha = studySchedule.repeatOption != .norepeat ? 1 : 0.5
         }
         
-        setNavigation()
-        
         configureViews()
-        addActionsAtButtons()
-        setConstraints()
-        
-        nextButton.isEnabled = false
     }
     
     // MARK: - Actions
@@ -92,12 +88,10 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let studySchedule = studySchedulePostingViewModel.studySchedule
         let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
-        
-        guard let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate) else { fatalError() }
-        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate)
+        let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate)!
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate, viewModel: studySchedulePostingViewModel)
         
         popUpCalendarVC.endDate = repeatEndDate
-        popUpCalendarVC.presentingVC = self
 
         present(popUpCalendarVC, animated: true)
     }
@@ -107,12 +101,10 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         let studySchedule = studySchedulePostingViewModel.studySchedule
         let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
         let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate)!
-        
-        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate ?? startDate)
+        let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate ?? startDate, viewModel: studySchedulePostingViewModel)
         
         popUpCalendarVC.startDate = startDate
-        popUpCalendarVC.presentingVC = self
-        print(repeatEndDate, startDate,"🔥")
+       
         present(popUpCalendarVC, animated: true)
     }
     
@@ -121,7 +113,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         if selectedRepeatOptionCheckBox == sender {
             
             studySchedulePostingViewModel.studySchedule.repeatOption = .norepeat
-            // 반복일정 끝나는 날짜 초기화
             studySchedulePostingViewModel.studySchedule.repeatEndDate = ""
             selectedRepeatOptionCheckBox = nil
         } else {
@@ -147,34 +138,29 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let datePicker = UIDatePicker()
+        let timePicker = CalendarTimePicker.shared
         
-        datePicker.calendar = Calendar.current
-        datePicker.datePickerMode = .time
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.locale = Locale(identifier: "en_gb")
         
         if let endTime = studySchedulePostingViewModel.studySchedule.endTime {
             guard let hour = endTime.components(separatedBy: ":").first?.toInt(),
                   let minute = endTime.components(separatedBy: ":").last?.toInt() else { return }
-            datePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
+            timePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let startTime = DateFormatter.timeFormatter.string(from: datePicker.date)
+            let startTime = DateFormatter.timeFormatter.string(from: timePicker.date)
             self.studySchedulePostingViewModel.studySchedule.startTime = startTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
-        alert.view.addSubview(datePicker)
-        
+
+        alert.view.addSubview(timePicker)
         alert.view.snp.makeConstraints { make in
             make.height.equalTo(350)
         }
         
-        datePicker.snp.makeConstraints { make in
+        timePicker.snp.makeConstraints { make in
             make.height.equalTo(150)
             make.centerX.equalTo(alert.view.safeAreaLayoutGuide)
             make.top.equalTo(alert.view).offset(50)
@@ -189,34 +175,29 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let datePicker = UIDatePicker()
-        
-        datePicker.calendar = Calendar.current
-        datePicker.datePickerMode = .time
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.locale = Locale(identifier: "en_gb")
+        let timePicker = CalendarTimePicker.shared
         
         if let startTime = studySchedulePostingViewModel.studySchedule.startTime {
             guard let hour = startTime.components(separatedBy: ":").first?.toInt(),
                   let minute = startTime.components(separatedBy: ":").last?.toInt() else { return }
-            datePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
+            timePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let endTime = DateFormatter.timeFormatter.string(from: datePicker.date)
+            let endTime = DateFormatter.timeFormatter.string(from: timePicker.date)
             self.studySchedulePostingViewModel.studySchedule.endTime = endTime
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
         /// picker 수정하기
-        alert.view.addSubview(datePicker)
+        alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
             make.height.equalTo(350)
         }
         
-        datePicker.snp.makeConstraints { make in
+        timePicker.snp.makeConstraints { make in
             make.height.equalTo(150)
             make.centerX.equalTo(alert.view)
             make.top.equalTo(alert.view).offset(50)
@@ -272,7 +253,22 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     // MARK: - Configure
     
     private func configureViews() {
-        view.backgroundColor = .systemBackground
+        
+        view.backgroundColor = .white
+        
+        setNavigation()
+        addActionsAtButtons()
+        addSubviewsWithConstraints()
+    }
+    
+    private func setNavigation() {
+        self.navigationItem.title = "일정 만들기"
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        self.navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+        self.navigationItem.rightBarButtonItem = closeButton
+    }
+    
+    private func addSubviewsWithConstraints() {
         
         view.addSubview(startDateSelectableView)
         view.addSubview(timeLabel)
@@ -284,18 +280,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         view.addSubview(repeatOptionStackView)
         view.addSubview(repeatEndDateSelectableView)
         view.addSubview(nextButton)
-    }
-    
-    private func setNavigation() {
-        self.navigationItem.title = "일정 만들기"
-        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-        self.navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
-        self.navigationItem.rightBarButtonItem = closeButton
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
+        
         startDateSelectableView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
             make.height.equalTo(42)

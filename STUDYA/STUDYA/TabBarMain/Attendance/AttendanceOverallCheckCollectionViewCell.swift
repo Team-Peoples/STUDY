@@ -54,7 +54,7 @@ final class AttendanceOverallCheckViewModel {
             }
         }
     }
-    
+
     func getAllMembersAttendaneStatisticsBetween(studyID: ID) {
         Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { result in
             switch result {
@@ -119,7 +119,7 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     private var viewModel: AttendanceOverallCheckViewModel?
     
-    weak var delegate: (BottomSheetAddable & Navigatable & SwitchSyncable)?
+    weak var delegate: (BottomSheetAddable & Navigatable & Managable)?
     
     private lazy var tableView: UITableView = {
        
@@ -220,7 +220,7 @@ extension AttendanceOverallCheckCollectionViewCell: UITableViewDelegate {
         
         let AttendancePersonalVC = AttendancePersonalViewController()
         
-        delegate?.syncSwitchWith(nextVC: AttendancePersonalVC)
+        delegate?.syncManager(with: AttendancePersonalVC)
         
         AttendancePersonalVC.configureViewControllerWith(studyID: viewModel.studyID, stats: aMemberAttendanceStats)
         AttendancePersonalVC.title = delegate?.title

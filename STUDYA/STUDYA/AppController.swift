@@ -29,7 +29,7 @@ final class AppController {
         
         guard let window = window else  { return }
         
-        window.backgroundColor = .systemBackground
+        window.backgroundColor = .white
         window.makeKeyAndVisible()
         
         checkLoginIn()

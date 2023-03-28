@@ -20,12 +20,11 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    internal var switchObservableDelegate: SwitchStatusGivable?
     internal var profileViewTapped: ((Member) -> ()) = { _ in }
     
-    private lazy var profileImageView: ProfileImageView = {
+    private lazy var profileImageView: ProfileImageContainerView = {
        
-        let p = ProfileImageView(internalImageSize: 72)
+        let p = ProfileImageContainerView(internalImageSize: 72)
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
         p.addGestureRecognizer(recognizer)
@@ -69,7 +68,8 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     }
     
     @objc private func profileImageTapped() {
-        guard let switchObservableDelegate = switchObservableDelegate, switchObservableDelegate.getSwtichStatus(), let member = member else { return }
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        guard isSwitchOn, let member = member else { return }
         profileViewTapped(member)
     }
 }

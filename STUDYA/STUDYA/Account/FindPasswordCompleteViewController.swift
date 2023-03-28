@@ -40,10 +40,16 @@ final class FindPasswordCompleteViewController: UIViewController {
         setConstraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     // MARK: - Configure
     
     private func configureViews() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         view.addSubview(titleLabel)
         view.addSubview(emailLabel)
         view.addSubview(descriptionLabel)

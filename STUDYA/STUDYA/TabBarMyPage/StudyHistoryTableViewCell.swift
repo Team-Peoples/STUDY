@@ -11,10 +11,14 @@ final class StudyHistoryTableViewCell: UITableViewCell {
     
     static let identifier = "StudyHistoryTableViewCell"
     
-    internal var studyHistory: StudyHistory? {
+    internal var studyHistory: ParticipatedStudyInfo? {
         didSet {
-            titleLabel.text = studyHistory?.name
-            durationLabel.text = "\(studyHistory?.start ?? "")~\(studyHistory?.end ?? "")"
+            titleLabel.text = studyHistory?.studyName
+            let startDate = studyHistory?.createdAt ?? ""
+            let endDate = studyHistory?.finishAt ?? ""
+            let formattedStartDate = startDate.replacingOccurrences(of: #"(\d{4})-(\d{2})-(\d{2}).*"#, with: "$1.$2.$3", options: .regularExpression)
+            let formattedEndDate = endDate.replacingOccurrences(of: #"(\d{4})-(\d{2})-(\d{2}).*"#, with: "$1.$2.$3", options: .regularExpression)
+            durationLabel.text = "\(formattedStartDate)~\(formattedEndDate)"
         }
     }
     
@@ -33,17 +37,5 @@ final class StudyHistoryTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-struct StudyHistory {
-    let name: String
-    let start: String
-    let end: String?
-    let auth: String
-    
-    enum CodingKeys: String, CodingKey {
-        case name, start, end
-        case auth = "po"
     }
 }

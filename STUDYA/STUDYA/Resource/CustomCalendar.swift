@@ -9,6 +9,11 @@ import UIKit
 import SnapKit
 import FSCalendar
 
+protocol CustomCalendarViewDelegate: AnyObject {
+    
+    func calendarView(didselectAt date: Date)
+}
+
 final class CustomCalendarView: UIView {
     
     // MARK: - Properties
@@ -20,13 +25,12 @@ final class CustomCalendarView: UIView {
         }
     }
     
-    var minimumDate: Date? { didSet { calendar.reloadData() } }
-    var maximumDate: Date? { didSet { calendar.reloadData() } }
-    var dateSelectAction: ((Date) -> Void) = { (SelectedDate) in }
-    var willDisplayAction: ((Date) -> Void) = { (CurrentPageDate) in }
+    private var minimumDate: Date? { didSet { calendar.reloadData() } }
+    private var maximumDate: Date? { didSet { calendar.reloadData() } }
+    var currentDate: Date = Date()
     
-    private(set) lazy var currentMonth: DateComponents = calendar.currentPage.convertToDateComponents([.year, .month])
     private let calendar = FSCalendar()
+    weak var delegate: CustomCalendarViewDelegate?
     
     /// CalendarHeaderView
     private let customHeaderView = UIView(backgroundColor: .white)
@@ -34,8 +38,7 @@ final class CustomCalendarView: UIView {
     private let monthLabel: UILabel = {
         
         let titleLabel = UILabel(backgroundColor: UIColor.clear)
-        let today = Date()
-        titleLabel.text = DateFormatter.yearMonthDateFormatter.string(from: today)
+
         titleLabel.textColor = .black
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -72,12 +75,8 @@ final class CustomCalendarView: UIView {
         super.init(frame: frame)
         
         initCalendar()
-        
-        setCalendarWeekdayView()
-        setCalendarDaysView()
-        
+    
         configureViews()
-        setConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -101,8 +100,18 @@ final class CustomCalendarView: UIView {
     }
     
     // 해당날짜를 선택된 것으로 표시해주는 메소드
-    func select(date: Date) {
+    func select(date: Date?) {
+        guard let date = date else { return }
+        monthLabel.text = DateFormatter.yearMonthDateFormatter.string(from: date)
         calendar.select(date)
+    }
+    
+    func setMaximumDate(_ date: Date?) {
+        maximumDate = date
+    }
+    
+    func setMinimumDate(_ date: Date?) {
+        minimumDate = date
     }
     
     func reloadData() {
@@ -142,6 +151,16 @@ final class CustomCalendarView: UIView {
     
     private func configureViews() {
         
+        setCalendarWeekdayView()
+        setCalendarDaysView()
+        
+        addSubViewsWithConstraints()
+    }
+    
+    // MARK: - Setting Constraints
+    
+    private func addSubViewsWithConstraints() {
+        
         addSubview(customHeaderView)
         addSubview(calendar)
         
@@ -152,11 +171,6 @@ final class CustomCalendarView: UIView {
         monthBackgroundView.addSubview(monthLabel)
         monthBackgroundView.addSubview(leftButton)
         monthBackgroundView.addSubview(rightButton)
-    }
-    
-    // MARK: - Setting Constraints
-    
-    private func setConstraints() {
         
         monthLabel.snp.makeConstraints { make in
             make.center.equalTo(monthBackgroundView)
@@ -251,7 +265,7 @@ extension CustomCalendarView: FSCalendarDelegate {
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         
-        dateSelectAction(date)
+        delegate?.calendarView(didselectAt: date)
         
         // 현재 캘린더에서 보이는 이전달 또는 다음달의 날짜를 누르면 해당 달로 이동하도록 하는 부분
         if monthPosition == .previous || monthPosition == .next {
@@ -269,7 +283,6 @@ extension CustomCalendarView: FSCalendarDelegate {
         } else {
             todayCell?.setTodayBorderLayerIsHidden(true)
         }
-        willDisplayAction(date)
     }
 }
 // MARK: - FSCalendarDelegateAppearance

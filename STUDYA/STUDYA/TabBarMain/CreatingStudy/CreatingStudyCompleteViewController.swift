@@ -62,7 +62,7 @@ final class CreatingStudyCompleteViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         view.addSubview(titleLabel)
         view.addSubview(completeImageView)

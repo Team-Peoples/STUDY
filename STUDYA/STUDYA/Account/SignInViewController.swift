@@ -49,7 +49,7 @@ final class SignInViewController: UIViewController {
     
     private func configureViews() {
         
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         view.addSubview(loginLabel)
         view.addSubview(emailInputView)

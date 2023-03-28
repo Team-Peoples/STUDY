@@ -71,6 +71,7 @@ class StudySchedulePostingViewModel: ViewModel {
     
     var studySchedule: StudySchedulePosting {
         didSet {
+            print(studySchedule)
             handler?(studySchedule)
         }
     }
@@ -118,7 +119,8 @@ extension [StudySchedule] {
         return filteredStudySchedule
     }
     
-    func filteredStudySchedule(by studyID: ID) -> [StudySchedule] {
+    func filteredStudySchedule(by studyID: ID?) -> [StudySchedule] {
+        guard let studyID = studyID else { return [] }
         let filteredStudySchedule = self.filter { studySchedule in
             studySchedule.studyID == "\(studyID)"
         }
