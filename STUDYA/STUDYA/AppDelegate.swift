@@ -92,6 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            print("Either album name or photo index missing")
 //            return false
 //        }
+        return true
     }
     // domb: 링크가 있으면 이렇게 처리??
 //        if let appURL = URL(string: "https://myphotoapp.example.com/albums?albumname=vacation&index=1") {
