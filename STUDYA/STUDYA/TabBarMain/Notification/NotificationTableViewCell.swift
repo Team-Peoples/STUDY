@@ -15,7 +15,7 @@ class NotificationTableViewCell: UITableViewCell {
         didSet {
             guard let notificaion = notificaion else { return }
             
-            titleLabel.text = "[\(notificaion.studyName!)]"
+            titleLabel.text = "[\(notificaion.studyName ?? "")]"
             dateLabel.text = DateFormatter.dottedDateFormatter.string(from: notificaion.createdDate)
             contentLabel.text = notificaion.contents
             

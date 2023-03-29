@@ -16,7 +16,7 @@ final class NotificationViewController: UIViewController {
             if notifications.isEmpty {
                 configureViewWhenNoNotification()
             } else {
-                tableView.reloadData()
+                configureViewWhenYesNotification()
             }
         }
     }
@@ -45,7 +45,6 @@ final class NotificationViewController: UIViewController {
         
         getAllNotifications()
         
-        configureTableView()
         setNavigationBar()
     }
     
@@ -67,13 +66,6 @@ final class NotificationViewController: UIViewController {
         }
     }
     
-    private func configureTableView() {
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
-        }
-    }
-    
     private func configureViewWhenNoNotification() {
         view.addSubview(noNotiImageView)
         view.addSubview(noNotiLabel)
@@ -87,7 +79,7 @@ final class NotificationViewController: UIViewController {
     private func configureViewWhenYesNotification() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view)
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
