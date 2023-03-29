@@ -11,31 +11,39 @@ final class MemberCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "MemberCollectionViewCell"
     
-    internal var member: Member? {
-        didSet {
-            guard let member = member else { return }
-
-            profileImageView.configure(imageURL: member.profileImageURL, isManager: member.isManager, role: member.role)
-            nickNameLabel.text = member.nickName
-        }
-    }
+    internal var member: Member?
     
     internal var profileViewTapped: ((Member) -> ()) = { _ in }
     
-    private lazy var profileImageView: ProfileImageContainerView = {
-       
-        let p = ProfileImageContainerView(internalImageSize: 72)
-        
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
-        p.addGestureRecognizer(recognizer)
-        
-        return p
-    }()
+    private lazy var profileImageView = ProfileImageContainerView(internalImageSize: 72)
     private lazy var nickNameLabel = CustomLabel(title: "", tintColor: .ppsBlack, size: 12, isBold: true)
     private let button = UIButton(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        configureView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        profileImageView.hideMarks()
+    }
+    
+    @objc private func profileImageTapped() {
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+        guard isSwitchOn, let member = member else { return }
+        profileViewTapped(member)
+    }
+    
+    private func configureView() {
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        profileImageView.addGestureRecognizer(recognizer)
         
         button.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
         
@@ -57,19 +65,10 @@ final class MemberCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        profileImageView.hideMarks()
-    }
-    
-    @objc private func profileImageTapped() {
-        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
-        guard isSwitchOn, let member = member else { return }
-        profileViewTapped(member)
+    internal func configureCell(with member: Member) {
+        self.member = member
+
+        profileImageView.configure(imageURL: member.profileImageURL, isManager: member.isManager, role: member.role)
+        nickNameLabel.text = member.nickName
     }
 }
