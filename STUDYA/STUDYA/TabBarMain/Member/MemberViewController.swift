@@ -163,12 +163,6 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         tabBarController?.tabBar.isHidden = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-//        syncSwitchReverse(isSwitchOn)
-    }
-    
     @objc private func dimmingViewTapped() {
         print(#function)
     }
@@ -301,17 +295,16 @@ extension MemberViewController: UICollectionViewDataSource {
             guard let members = members else { return MemberCollectionViewCell() }
             
             cell.member = members[indexPath.item - 1]
-            let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
-            if isSwitchOn { //🛑여기 isManager 아니겠지?
-                cell.profileViewTapped = { [self] member in
-                    
+            
+            cell.profileViewTapped = { [self] member in
+                let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
+                if isSwitchOn { //🛑여기 isManager 아니겠지?
                     self.nowLookingMemberID = member.memberID
                     memberBottomVC.member = member
                     
                     presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
                 }
             }
-            
             return cell
         }
     }
