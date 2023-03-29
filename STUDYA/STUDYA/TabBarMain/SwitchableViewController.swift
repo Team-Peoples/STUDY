@@ -32,8 +32,7 @@ class SwitchableViewController: UIViewController, Navigatable {
         
         let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
         
-        self.isSwitchOn = isSwitchOn
-        self.managerSwitch.isOn = isSwitchOn
+        forceSwitchStatus(isOn: isSwitchOn)
     }
     
     deinit {
@@ -48,6 +47,13 @@ class SwitchableViewController: UIViewController, Navigatable {
     @objc private func managerSwitchTappedAction(sender: BrandSwitch) {
         UserDefaults.standard.set(sender.isOn, forKey: Constant.isSwitchOn)
         isSwitchOn = sender.isOn
+    }
+    
+    internal func forceSwitchStatus(isOn: Bool) {
+        UserDefaults.standard.set(isOn, forKey: Constant.isSwitchOn)
+        
+        self.managerSwitch.isOn = isOn
+        self.isSwitchOn = isOn
     }
     
     private func changeBarButton(by isOn: Bool) {
