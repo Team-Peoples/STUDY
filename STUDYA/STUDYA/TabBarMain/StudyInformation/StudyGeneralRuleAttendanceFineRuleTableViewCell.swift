@@ -75,6 +75,7 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     private func configureViews() {
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(fineTitleLabel)
         contentView.addSubview(fineDescriptionLabel)

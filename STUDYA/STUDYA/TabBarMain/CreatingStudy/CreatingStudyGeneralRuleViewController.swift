@@ -40,7 +40,7 @@ final class CreatingStudyGeneralRuleViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
-        
+        collectionView.backgroundColor = .white
         collectionView.register(CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell.self, forCellWithReuseIdentifier: CreatingStudyGeneralRuleAttendanceRuleCollectionViewCell.identifier)
         collectionView.register(CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.self, forCellWithReuseIdentifier: CreatingStudyGeneralRuleExcommunicationRuleCollectionViewCell.identifier)
         

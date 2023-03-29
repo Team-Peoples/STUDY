@@ -55,6 +55,7 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     private func configureViews() {
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(depositTitleLabel)
         contentView.addSubview(depositTextField)
