@@ -7,6 +7,15 @@
 
 import UIKit
 
+class GeneralRuleViewModel {
+    var generalRule: GeneralStudyRule
+    
+    init() {
+        generalRule = GeneralStudyRule()
+    }
+}
+
+
 final class CreatingStudyGeneralRuleViewController: UIViewController {
     
     static let identifier = "CreatingStudyGeneralRuleViewController"

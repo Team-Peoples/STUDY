@@ -24,11 +24,3 @@ extension ViewModel {
         self.handler = handler
     }
 }
-
-class GeneralRuleViewModel {
-    var generalRule: GeneralStudyRule
-    
-    init() {
-        generalRule = GeneralStudyRule()
-    }
-}
