@@ -73,7 +73,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     }
     
     private func configureViews() {
-        titleLabel.attributedText = AttributedString.custom(image: UIImage(named: "Details")!, text: " 상세 내역")
+        titleLabel.attributedText = AttributedString.custom(image: UIImage(named: "details") ?? UIImage(), text: " 상세 내역")
         
         configurePeriodButton()
         
