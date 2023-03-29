@@ -7,8 +7,6 @@
 
 import UIKit
 
-@available(iOS 16.0, *)
-
 final class MainCalendarViewController: UIViewController {
     
     // MARK: - Properties

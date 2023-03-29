@@ -134,7 +134,13 @@ extension StudyGeneralRuleAttendanceTimeRuleTableViewCell: UITextFieldDelegate {
             let latenessRuleTimeSelectedTimeindex = latenessRuleTimeField.strArray.firstIndex(of: latenessRuleTimeField.text ?? "--") ?? 0
             var array = (latenessRuleTimeSelectedTimeindex...99).map{ String($0) }
             if latenessRuleTimeSelectedTimeindex == 0 {
-                array = array.replacing(["0"], with: ["--"])
+                
+                if #available(iOS 16.0, *) {
+                    array = array.replacing(["0"], with: ["--"])
+                } else {
+                    array.removeFirst()
+                    array.insert("--", at: 0)
+                }
             } else {
                 array.insert("--", at: 0)
             }

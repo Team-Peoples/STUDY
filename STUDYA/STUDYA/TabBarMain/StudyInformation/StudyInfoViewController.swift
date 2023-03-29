@@ -168,8 +168,11 @@ final class StudyInfoViewController: SwitchableViewController {
                 
                 vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
-                    
-                    sheet.detents = [ .custom { _ in return 300 } ]
+                    if #available(iOS 16.0, *) {
+                        sheet.detents = [ .custom { _ in return 300 } ]
+                    } else {
+                        sheet.detents = [ .medium() ]
+                    }
                     
                     sheet.preferredCornerRadius = 24
                 }
@@ -180,7 +183,11 @@ final class StudyInfoViewController: SwitchableViewController {
                 vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
                     
-                    sheet.detents = [ .custom { _ in return 300 } ]
+                    if #available(iOS 16.0, *) {
+                        sheet.detents = [ .custom { _ in return 300 } ]
+                    } else {
+                        sheet.detents = [ .medium() ]
+                    }
                     
                     sheet.preferredCornerRadius = 24
                 }
@@ -193,7 +200,11 @@ final class StudyInfoViewController: SwitchableViewController {
             vcToPresent.presentingVC = self
             if let sheet = vcToPresent.sheetPresentationController {
                 
-                sheet.detents = [ .custom { _ in return 300 } ]
+                if #available(iOS 16.0, *) {
+                    sheet.detents = [ .custom { _ in return 300 } ]
+                } else {
+                    sheet.detents = [ .medium() ]
+                }
                 
                 sheet.preferredCornerRadius = 24
             }

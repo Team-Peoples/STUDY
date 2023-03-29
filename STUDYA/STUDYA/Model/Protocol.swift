@@ -35,7 +35,12 @@ extension BottomSheetAddable {
         
         guard let sheet = vc.sheetPresentationController else { return }
         
-        sheet.detents = [ .custom { _ in return detent }]
+        if #available(iOS 16.0, *) {
+            sheet.detents = [ .custom { _ in return detent }]
+        } else {
+            sheet.detents = [ .medium() ]
+        }
+        
         sheet.preferredCornerRadius = 24
         sheet.prefersGrabberVisible = prefersGrabberVisible
         
