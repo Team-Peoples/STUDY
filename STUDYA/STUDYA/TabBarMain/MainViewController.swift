@@ -195,7 +195,10 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.modalPresentationStyle = .overFullScreen
         dimmingVC.myStudyList = myStudyList
         dimmingVC.currentStudy = currentStudyOverall?.study
-        dimmingVC.studyTapped = { studyOverall in self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall) }
+        dimmingVC.studyTapped = { [weak self] studyOverall in
+            self?.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
+            self?.forceSwitchStatus(isOn: false)
+        }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
         
         present(dimmingVC, animated: true)

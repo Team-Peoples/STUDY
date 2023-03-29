@@ -37,6 +37,8 @@ final class CreatingStudyCompleteViewController: UIViewController {
         guard let mainNavigationController = tabbarController.selectedViewController as? UINavigationController else { return }
         guard let mainVC = mainNavigationController.viewControllers.first as? MainViewController else { return }
         
+        NotificationCenter.default.post(name: .reloadStudyList, object: nil)
+        
         dismiss(animated: true) {
             let linkShareMessageView = MainLinkShareMessageView()
             linkShareMessageView.delegate = mainVC
