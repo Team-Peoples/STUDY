@@ -61,7 +61,6 @@ final class MyPageMainViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false

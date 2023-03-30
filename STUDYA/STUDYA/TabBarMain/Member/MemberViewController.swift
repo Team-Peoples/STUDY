@@ -142,7 +142,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         
         return vc
     }()
-    lazy var activityIndicator = UIActivityIndicatorView()
+    lazy var activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()

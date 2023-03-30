@@ -23,7 +23,6 @@ class ProfileSettingViewController: UIViewController {
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let doneButton = BrandButton(title: Constant.done, isBold: true, isFill: false)
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,6 +41,7 @@ class ProfileSettingViewController: UIViewController {
         
         addSubViews()
         addConstraints()
+        navigationController?.setBrandNavigation()
     }
     
     @objc private func clearButtonDidTapped() {
@@ -49,20 +49,42 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func touchUpImageView() {
-        PHPhotoLibrary.requestAuthorization( { status in
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { [weak self] _ in
+            self?.openAlbum()
+        }
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
+        
+        if profileImageSelectorView.internalImage != nil {
+            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { [weak self] _ in
+                self?.profileImageSelectorView.internalImage = nil
+            }
+
+            alert.addAction(defaultImageAction)
+        }
+        
+        alert.addAction(selectImageAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func openAlbum() {
+        PHPhotoLibrary.requestAuthorization( { [weak self] status in
             
             switch status {
             case .authorized:
                 DispatchQueue.main.async {
-                    self.setupImagePicker()
+                    self?.setupImagePicker()
                 }
             case .denied:
-                if self.isAuthForAlbum == false {
+                if self?.isAuthForAlbum == false {
                     DispatchQueue.main.async {
-                        self.AuthSettingOpen()
+                        self?.AuthSettingOpen()
                     }
                 }
-                self.isAuthForAlbum = false
+                self?.isAuthForAlbum = false
                 
             case .restricted, .notDetermined:
                 break
@@ -107,7 +129,7 @@ class ProfileSettingViewController: UIViewController {
             return
         }
         
-        guard let profileImage = profileImageSelectorView.internalImage else { return }
+        let profileImage = profileImageSelectorView.internalImage
         
         Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickName, image: profileImage) { result in
             switch result {
@@ -151,7 +173,7 @@ class ProfileSettingViewController: UIViewController {
     
     private func setProfileWhenSNSSignUp() {
         
-        guard let profileImage = profileImageSelectorView.internalImage else { return }
+        let profileImage = profileImageSelectorView.internalImage
         
         Network.shared.updateUserInfo(oldPassword: "", password: "", passwordCheck: "", nickname: nickName, image: profileImage) { result in
             switch result {
