@@ -133,6 +133,7 @@ final class MemberBottomSheetViewController: UIViewController {
             case .success(let isSucceed):
                 
                 if isSucceed {
+                    self.getMemberListAgainAndReload()
                     self.dismiss(animated: true)
                     
                 } else {
@@ -166,9 +167,9 @@ final class MemberBottomSheetViewController: UIViewController {
         ownerButton.isHidden = isOwner ? false : true
         managerButton.isHidden = isOwner ? false : true
         
-        ownerButton.isEnabled = member.role == "스터디장" ? false : true
-        managerButton.isEnabled = member.role == "스터디장" ? false : true
-//        excommunicatingButton.isEnabled = member.role == "스터디장" ? false : true
+        ownerButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
+        managerButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
+//        excommunicatingButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
     }
     
     private func configureView() {
@@ -384,7 +385,6 @@ final class AskExcommunicationViewController: UIViewController {
     }
     
     @objc private func excommuViewConfirmButtonTapped() {
-        print(#function)
         excommunicateMember()
     }
     

@@ -633,7 +633,7 @@ class ProfileImageContainerView: UIView {
             }
         }
         
-        guard let role = role else { return }
+        guard let role = role, !role.isEmpty else { return }
         
         roleMark.isHidden = false
         roleMark.setTitle(role, for: .normal)

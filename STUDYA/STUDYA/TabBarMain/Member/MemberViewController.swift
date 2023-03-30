@@ -108,7 +108,9 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     
                     if isSuccess {
                         vc.dismiss(animated: true) {
-                            self.getMemberListAndReload()
+                            forceSwitchStatus(isOn: false)
+                            NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
+                            self.pop()
                         }
                         
                     } else {
@@ -150,15 +152,16 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         tabBarController?.tabBar.isHidden = true
     }
     
-    @objc private func dimmingViewTapped() {
-        print(#function)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        view.endEditing(true)
     }
     
     private func getMemberList(studyID: ID) {
         Network.shared.getAllMembers(studyID: studyID) { result in
             switch result {
             case .success(let response):
-                
                 self.members = response.memberList
                 self.isOwner = response.isUserOwner
                 self.collectionView.reloadData()
@@ -176,6 +179,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             switch result {
             case .success(let response):
                 self.members = response.memberList
+                self.collectionView.reloadData()
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }

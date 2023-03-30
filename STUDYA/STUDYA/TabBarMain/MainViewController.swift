@@ -244,7 +244,6 @@ final class MainViewController: SwitchableViewController {
             case .success(let studyOverall):
                 
                 self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
-                
                 self.configureTableViewThirdCell()
                 
             case .failure(let error):
@@ -303,7 +302,6 @@ final class MainViewController: SwitchableViewController {
             case .success(let studies):
                 
                 if let firstStudy = studies.first, let studyID = firstStudy.id {
-//                    print(studies, "❤️")
                     self.myStudyList = studies
                     self.configureTableView(with: studyID)
                     print("studyID", studyID)
