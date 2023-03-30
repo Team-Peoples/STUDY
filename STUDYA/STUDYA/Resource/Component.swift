@@ -969,6 +969,7 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         isHavePicker = isPicker
         
         if isPicker {
+            tintColor = .clear
             setPicker()
         }
     }
