@@ -168,7 +168,7 @@ final class MemberBottomSheetViewController: UIViewController {
         
         ownerButton.isEnabled = member.role == "스터디장" ? false : true
         managerButton.isEnabled = member.role == "스터디장" ? false : true
-        excommunicatingButton.isEnabled = member.role == "스터디장" ? false : true
+//        excommunicatingButton.isEnabled = member.role == "스터디장" ? false : true
     }
     
     private func configureView() {
@@ -384,6 +384,7 @@ final class AskExcommunicationViewController: UIViewController {
     }
     
     @objc private func excommuViewConfirmButtonTapped() {
+        print(#function)
         excommunicateMember()
     }
     

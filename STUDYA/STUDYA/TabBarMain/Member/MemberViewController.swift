@@ -82,6 +82,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     default:
                         UIAlertController.handleCommonErros(presenter: self, error: error)
                     }
+                    vc.present(alert, animated: true)
                 }
             }
         }
