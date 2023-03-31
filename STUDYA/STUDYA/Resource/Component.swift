@@ -949,10 +949,11 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     var isNecessaryField = false
     var isHavePicker = false
+    var maxLength: Int = 7
     
     private lazy var picker = UIPickerView()
     
-    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false) {
+    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false, maxLength: Int = 7) {
         super.init(frame: .zero)
         
         delegate = self
@@ -969,6 +970,8 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         isHavePicker = isPicker
         
+        self.maxLength = maxLength
+        
         if isPicker {
             tintColor = .clear
             setPicker()
@@ -977,15 +980,6 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        delegate = self
-        backgroundColor = UIColor.appColor(.background)
-        font = .boldSystemFont(ofSize: 20)
-        textColor = UIColor.appColor(.ppsGray1)
-        textAlignment = .center
-        text = "--"
-        setPicker()
-        
     }
     
     override func setNeedsLayout() {
@@ -1063,7 +1057,22 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
             
             return false
         } else {
-            return true
+            let currentText = NSString(string: textField.text ?? "")
+            
+            let finalText = currentText.replacingCharacters(in: range, with: string)
+            
+            let characterLimit = self.maxLength
+            guard finalText.count <= characterLimit else {
+                return false
+            }
+
+            let utf8Char = string.cString(using: .utf8)
+            let isBackSpace = strcmp(utf8Char, "\\b")
+            if string.checkOnlyNumbers() || isBackSpace == -92 {
+                return true
+            } else {
+                return false
+            }
         }
     }
     
