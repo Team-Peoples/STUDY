@@ -55,7 +55,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -64,7 +64,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         
         configureHeaderView()
         configureTableView()
-    
+        
         configureFloatingButton()
         fetchAnnouncement()
     }
@@ -74,7 +74,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         tabBarController?.tabBar.isHidden = true
     }
     
-
+    
     // MARK: - Configure
     
     private func configureHeaderView() {
@@ -138,7 +138,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
     override func extraWorkWhenSwitchToggled(isOn: Bool) {
         
         titleLabel.text = isOn ? "공지사항 관리" : "공지사항"
-
+        
         floatingButtonView.isHidden = isOn ? false : true
         
         if announcements.count >= 1 {
@@ -158,7 +158,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
     }
     
     @objc func floatingButtonDidTapped() {
-    
+        
         let creatingAnnouncementVC = AnnouncementViewController(task: .creating, studyID: studyID)
         creatingAnnouncementVC.isMaster = true
         
@@ -178,7 +178,9 @@ final class AnnouncementTableViewController: SwitchableViewController {
         Network.shared.getAllAnnouncement(studyID: studyID) { result in
             switch result {
             case .success(let announcements):
-                self.announcements = announcements
+                let sortedAnnouncements = announcements.sorted { $0.createdDate > $1.createdDate
+                }
+                self.announcements = sortedAnnouncements
                 self.announcementBoardTableView.refreshControl?.endRefreshing()
             case .failure(let failure):
                 print(failure)
@@ -256,9 +258,9 @@ extension AnnouncementTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return announcements.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AnnouncementTableViewCell.identifier, for: indexPath) as? AnnouncementTableViewCell else { return UITableViewCell() }
         cell.selectionStyle = .none
         
@@ -268,23 +270,23 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         cell.etcButtonAction = { [weak self] in
             self?.presentActionSheet(selected: cell, indexPath: indexPath, in: tableView)
         }
-
+        
         cell.cellAction = { [weak self] in
             guard let studyID = self?.studyID else { return }
             let vc = AnnouncementViewController(task: .viewing, studyID: studyID, studyName: self?.studyName)
             vc.announcement = self?.announcements[indexPath.row]
             vc.title = self?.studyName
-
+            
             if self?.observer == nil {
                 self?.observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
                     print("노티 호출")
                     self?.fetchAnnouncement()
                 })
             }
-
+            
             self?.navigationController?.pushViewController(vc, animated: true)
         }
-
+        
         cell.announcement = announcements[indexPath.row]
         return cell
     }
@@ -323,7 +325,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         }
         
         let editAction = UIAlertAction(title: "수정하기", style: .default) { [unowned self] _ in
-          
+            
             let editingAnnouncementVC = AnnouncementViewController(task: .editing, studyID: studyID)
             editingAnnouncementVC.isMaster = true
             editingAnnouncementVC.announcement = announcements[indexPath.row]

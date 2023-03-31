@@ -23,7 +23,11 @@ final class AnnouncementViewController: UIViewController {
     let studyID: ID
     let studyName: String?
     
-    ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
+    var userIsEditing: (title: Bool, content: Bool) = (false, false) {
+        didSet {
+            toggleRightBarButton(when: userIsEditing)
+        }
+    }
     var isMaster = false {
         didSet {
             if isMaster == true {
@@ -96,6 +100,10 @@ final class AnnouncementViewController: UIViewController {
         return lbl
     }()
     
+    lazy var createButton = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+    lazy var editButton = UIBarButtonItem(title: Constant.edit, style: .done, target: self, action: #selector(editButtonDidTapped))
+    lazy var cancelButton = UIBarButtonItem(title: Constant.cancel, style: .done, target: self, action: #selector(cancel))
+    
     let scrollView = UIScrollView()
     let contentView = UIView()
     
@@ -120,6 +128,9 @@ final class AnnouncementViewController: UIViewController {
         
         configureViews()
         checkIfUserIsMaster()
+        
+        createButton.isEnabled = false
+        editButton.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -231,16 +242,16 @@ final class AnnouncementViewController: UIViewController {
     }
     
     private func checkIfCreateOrEdit() {
-    
+        
         switch task {
         case .creating:
             navigationItem.title = "공지사항 만들기"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+            navigationItem.rightBarButtonItem = createButton
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .editing:
             navigationItem.title = "공지사항 수정"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
+            navigationItem.rightBarButtonItem = editButton
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .viewing:
@@ -249,7 +260,28 @@ final class AnnouncementViewController: UIViewController {
         }
         
         navigationController?.navigationBar.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = cancelButton
+    }
+    
+    private func toggleRightBarButton(when userIsEditing: (Bool, Bool)) {
+        switch task {
+        case .creating:
+            switch userIsEditing {
+            case (true, true):
+                createButton.isEnabled = true
+            default:
+                createButton.isEnabled = false
+            }
+        case .editing:
+            switch userIsEditing {
+            case (true, true):
+                editButton.isEnabled = true
+            default:
+                editButton.isEnabled = false
+            }
+        case .viewing:
+            return
+        }
     }
     
     private func addNotification() {
@@ -304,7 +336,7 @@ final class AnnouncementViewController: UIViewController {
                 make.leading.trailing.equalTo(contentView).inset(30)
             }
         }
-    
+        
         contentTextView.snp.makeConstraints { make in
             make.top.equalTo(titleTextView.snp.bottom).offset(25)
             make.bottom.equalTo(contentView.snp.bottom).inset(110)
@@ -324,23 +356,26 @@ extension AnnouncementViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         switch textView {
-            case titleTextView:
-                titleTextView.hidePlaceholder(true)
-            case contentTextView:
-                contentTextView.hidePlaceholder(true)
-            default:
-                return
+        case titleTextView:
+            titleTextView.hidePlaceholder(true)
+        case contentTextView:
+            contentTextView.hidePlaceholder(true)
+        default:
+            return
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         switch textView {
-            case titleTextView:
-                titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
-            case contentTextView:
-                contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
-            default:
-                return
+        case titleTextView:
+            titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
+            userIsEditing.title = titleTextView.text.isEmpty ? false : true
+            
+        case contentTextView:
+            contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
+            userIsEditing.content = contentTextView.text.isEmpty ? false : true
+        default:
+            return
         }
     }
     

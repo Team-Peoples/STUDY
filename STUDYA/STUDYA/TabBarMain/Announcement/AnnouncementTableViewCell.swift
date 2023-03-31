@@ -49,7 +49,7 @@ final class AnnouncementTableViewCell: UITableViewCell {
         v.layer.cornerRadius = 24
         v.clipsToBounds = false
         v.backgroundColor = .appColor(.background)
-
+        
         v.layer.borderColor = UIColor.appColor(.keyColor1).cgColor
         v.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor
         v.layer.shadowOpacity = 1
@@ -110,7 +110,7 @@ final class AnnouncementTableViewCell: UITableViewCell {
     
     private func configureViews() {
         contentView.addSubview(cell)
-
+        
         cell.addSubview(titleLabel)
         cell.addSubview(timeLabel)
         cell.addSubview(contentLabel)
