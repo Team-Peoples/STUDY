@@ -187,13 +187,14 @@ private class AttendanceReusableProgressView: UIView {
 
     // MARK: - Configure
     internal func configureView(with attendanceStats: AttendanceStats) {
-        let totalCount = attendanceStats.attendedCount
-        + attendanceStats.lateCount
-        + attendanceStats.absentCount
-        + attendanceStats.allowedCount
+
         let notAbsentCount = attendanceStats.attendedCount + attendanceStats.lateCount + attendanceStats.allowedCount
         
-        attendanceProportionLabel.text = "출석률 \(100 * notAbsentCount / totalCount)%"
+        if attendanceStats.totalCount == 0 {
+            attendanceProportionLabel.text = ""
+        } else {
+            attendanceProportionLabel.text = "출석률 \(100 * notAbsentCount / attendanceStats.totalCount)%"
+        }
         
         attendanceCountLabel.text = String(attendanceStats.attendedCount)
         latenessCountLabel.text = String(attendanceStats.lateCount)
@@ -229,10 +230,8 @@ private class AttendanceReusableProgressView: UIView {
     }
     
     private func setupProgress(attendanceStats: AttendanceStats) {
-        let totalCount = attendanceStats.attendedCount
-        + attendanceStats.lateCount
-        + attendanceStats.absentCount
-        + attendanceStats.allowedCount
+        guard attendanceStats.totalCount != 0 else { return }
+        let totalCount = attendanceStats.totalCount
         
         var attendanceRatio = Float(attendanceStats.attendedCount * 100 / totalCount) / 100
         var latenessRatio = Float(attendanceStats.lateCount * 100 / totalCount) / 100

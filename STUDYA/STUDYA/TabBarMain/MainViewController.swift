@@ -110,12 +110,13 @@ final class MainViewController: SwitchableViewController {
 //                print("fail")
 //            }
 //        }
-
-//        Network.shared.joinStudy(id: 118) { result in
+//        Network.shared.joinStudy(id: 149) { result in
 //            switch result {
 //            case .success(let suc):
+//                print("🍓🍓")
 //                print(suc)
 //            case .failure(let err):
+//                print("🍓")
 //                print(err)
 //            }
 //        }
@@ -243,7 +244,6 @@ final class MainViewController: SwitchableViewController {
             case .success(let studyOverall):
                 
                 self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
-                
                 self.configureTableViewThirdCell()
                 
             case .failure(let error):
@@ -302,7 +302,6 @@ final class MainViewController: SwitchableViewController {
             case .success(let studies):
                 
                 if let firstStudy = studies.first, let studyID = firstStudy.id {
-                    
                     self.myStudyList = studies
                     self.configureTableView(with: studyID)
                     print("studyID", studyID)
@@ -407,7 +406,6 @@ final class MainViewController: SwitchableViewController {
         let studyEmptyLabel = CustomLabel(title: "참여중인 스터디가 없어요😴", tintColor: .ppsBlack, size: 20, isBold: true)
         let createStudyButton = BrandButton(title: "스터디 만들기", isBold: true, isFill: true, fontSize: 20, height: 50)
         
-        studyEmptyImageView.backgroundColor = .lightGray
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
         
         view.addSubview(studyEmptyImageView)

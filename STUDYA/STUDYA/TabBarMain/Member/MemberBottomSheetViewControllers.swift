@@ -9,30 +9,9 @@ import UIKit
 
 final class MemberBottomSheetViewController: UIViewController {
     
-    deinit {
-        print("🚨🚨🚨🚨🚨")
-    }
+    internal var member: Member?
+    internal var isOwner: Bool?
     
-    internal var member: Member? {
-        didSet {
-            guard let member = member else { return }
-            
-            profileImageView.setImageWith(member.profileImageURL)
-            nicknameLabel.text = member.nickName
-            roleInputField.text = member.role
-            
-            managerButton.isSelected = member.isManager ? true : false
-            ownerButton.isSelected = member.role == "스터디장" ? true : false
-        }
-    }
-    internal var isOwner: Bool? {
-        didSet {
-            guard let isOwner = isOwner else { return }
-            
-            ownerButton.isHidden = isOwner ? false : true
-            managerButton.isHidden = isOwner ? false : true
-        }
-    }
     private var newRole: String?
     internal var hasMemeberInfoEverChanged = false
     
@@ -71,7 +50,6 @@ final class MemberBottomSheetViewController: UIViewController {
         
         return f
     }()
-//    🛑스터디장 역할 수정하려고할 때 색깔바꿔주기
     private lazy var noticeLabel = CustomLabel(title: "스터디장의 역할은 변경할 수 없습니다.", tintColor: .whiteLabel, size: 12)
     private lazy var doneButton: UIButton = {
 
@@ -155,6 +133,7 @@ final class MemberBottomSheetViewController: UIViewController {
             case .success(let isSucceed):
                 
                 if isSucceed {
+                    self.getMemberListAgainAndReload()
                     self.dismiss(animated: true)
                     
                 } else {
@@ -172,6 +151,25 @@ final class MemberBottomSheetViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    internal func configureViewControllerWith(member: Member, isOwner: Bool) {
+        self.member = member
+        self.isOwner = isOwner
+        
+        profileImageView.setImageWith(member.profileImageURL)
+        nicknameLabel.text = member.nickName
+        roleInputField.text = member.role
+        
+        managerButton.isSelected = member.isManager ? true : false
+        ownerButton.isSelected = member.role == "스터디장" ? true : false
+        
+        ownerButton.isHidden = isOwner ? false : true
+        managerButton.isHidden = isOwner ? false : true
+        
+        ownerButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
+        managerButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
+//        excommunicatingButton.isUserInteractionEnabled = member.role == "스터디장" ? false : true
     }
     
     private func configureView() {
@@ -228,9 +226,25 @@ final class MemberBottomSheetViewController: UIViewController {
 
 extension MemberBottomSheetViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        🛑멤버가 스터디장이라면 False 리턴
-        true
+        if textField.text == "스터디장" {
+            animateTextColor(to: .appColor(.ppsGray1))
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                self.animateTextColor(to: .white)
+            }
+            
+            return false
+        } else {
+            return true
+        }
     }
+    
+    func animateTextColor(to color: UIColor) {
+        UIView.transition(with: noticeLabel, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            self.noticeLabel.textColor = color
+        })
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         newRole = textField.text
     }

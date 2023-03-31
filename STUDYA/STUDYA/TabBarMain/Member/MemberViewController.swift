@@ -13,17 +13,8 @@ import KakaoSDKCommon
 
 final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     
-    internal var currentStudyID: Int? {
-        didSet {
-            guard let currentStudyID = currentStudyID else { return }
-            getMemberList(studyID: currentStudyID)
-        }
-    }
-    internal var members: Members? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    internal var currentStudyID: Int?
+    internal var members: Members?
     internal var isOwner: Bool?
     private var nowLookingMemberID: ID?
     
@@ -34,7 +25,6 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     private lazy var memberBottomVC: MemberBottomSheetViewController = {
         let vc = MemberBottomSheetViewController()
 
-        vc.isOwner = isOwner
         vc.askExcommunicateMember = {
             vc.dismiss(animated: true) { [self] in
                 presentBottomSheet(vc: askExcommunicationVC, detent: 300, prefersGrabberVisible: false)
@@ -92,6 +82,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     default:
                         UIAlertController.handleCommonErros(presenter: self, error: error)
                     }
+                    vc.present(alert, animated: true)
                 }
             }
         }
@@ -117,7 +108,9 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     
                     if isSuccess {
                         vc.dismiss(animated: true) {
-                            self.getMemberListAndReload()
+                            forceSwitchStatus(isOn: false)
+                            NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
+                            self.pop()
                         }
                         
                     } else {
@@ -149,10 +142,6 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         
         view.backgroundColor = .white
         
-//        navigationController?.setBrandNavigation()
-//        configureNavigationBar()
-//        navigationController?.title = "요시"
-//        navigationItem.title = isSwitchOn ? "관리자 모드" : "스터디 이름"
         configureViews()
         configureCollectionView()
     }
@@ -163,17 +152,19 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         tabBarController?.tabBar.isHidden = true
     }
     
-    @objc private func dimmingViewTapped() {
-        print(#function)
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        view.endEditing(true)
     }
     
     private func getMemberList(studyID: ID) {
         Network.shared.getAllMembers(studyID: studyID) { result in
             switch result {
             case .success(let response):
-                
                 self.members = response.memberList
                 self.isOwner = response.isUserOwner
+                self.collectionView.reloadData()
                 
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
@@ -188,10 +179,16 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             switch result {
             case .success(let response):
                 self.members = response.memberList
+                self.collectionView.reloadData()
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
+    }
+    
+    internal func configureView(with studyID: ID) {
+        self.currentStudyID = studyID
+        getMemberList(studyID: studyID)
     }
     
     private func configureViews() {
@@ -294,13 +291,17 @@ extension MemberViewController: UICollectionViewDataSource {
             
             guard let members = members else { return MemberCollectionViewCell() }
             
-            cell.member = members[indexPath.item - 1]
+            cell.configureCell(with: members[indexPath.item - 1])
             
             cell.profileViewTapped = { [self] member in
+                
                 let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
-                if isSwitchOn { //🛑여기 isManager 아니겠지?
+                
+                if isSwitchOn {
+                    guard let isOwner = isOwner else { return }
+                    
                     self.nowLookingMemberID = member.memberID
-                    memberBottomVC.member = member
+                    memberBottomVC.configureViewControllerWith(member: member, isOwner: isOwner)
                     
                     presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
                 }

@@ -67,6 +67,7 @@ final class WelcomViewController: UIViewController {
     
     @objc private func naverLoginButtonTapped() {
         naverLogin?.delegate = self
+        naverLogin?.requestThirdPartyLogin()
     }
     
     @objc private func emailLoginButtonDidTapped() {
