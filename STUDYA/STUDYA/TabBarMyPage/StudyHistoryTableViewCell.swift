@@ -31,6 +31,8 @@ final class StudyHistoryTableViewCell: UITableViewCell {
         addSubview(titleLabel)
         addSubview(durationLabel)
         
+        self.selectionStyle = .none
+        
         titleLabel.anchor(top: topAnchor, topConstant: 15, leading: leadingAnchor, leadingConstant: 20)
         durationLabel.anchor(top: titleLabel.bottomAnchor, topConstant: 10, leading: titleLabel.leadingAnchor)
     }
