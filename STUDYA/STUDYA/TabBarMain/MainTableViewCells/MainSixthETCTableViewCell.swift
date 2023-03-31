@@ -101,8 +101,8 @@ class MainSixthETCTableViewCell: UITableViewCell {
         guard let currentStudyID = currentStudyID, let currentStudyName = currentStudyName else { return }
         let nextVC = MemberViewController()
         
-        nextVC.currentStudyID = currentStudyID
         nextVC.title = currentStudyName
+        nextVC.configureView(with: currentStudyID)
         
         navigatableManagableDelegate.syncManager(with: nextVC)
         navigatableManagableDelegate.push(vc: nextVC)

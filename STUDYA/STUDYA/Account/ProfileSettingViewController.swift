@@ -31,19 +31,7 @@ class ProfileSettingViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        nickNameInputView.getInputField().delegate = self
-        nickNameInputView.getInputField().addTarget(target, action: #selector(toggleDoneButton), for: .editingChanged)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
-        
-        profileImageSelectorView.addGestureRecognizer(tapGesture)
-        profileImageSelectorView.isUserInteractionEnabled = true
-        
-        doneButton.isEnabled = false
-        doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
-        
-        addSubViews()
-        addConstraints()
+        configureViews()
     }
     
     @objc private func clearButtonDidTapped() {
@@ -239,6 +227,24 @@ class ProfileSettingViewController: UIViewController {
                                                         constant: 0))
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    private func configureViews() {
+        nickNameInputView.getInputField().delegate = self
+        nickNameInputView.getInputField().addTarget(target, action: #selector(toggleDoneButton), for: .editingChanged)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchUpImageView))
+        
+        profileImageSelectorView.addGestureRecognizer(tapGesture)
+        profileImageSelectorView.isUserInteractionEnabled = true
+        profileImageSelectorView.setImageWith(UIImage(named: "defaultProfile"))
+        
+        
+        doneButton.isEnabled = false
+        doneButton.addTarget(self, action: #selector(doneButtonDidTapped), for: .touchUpInside)
+        
+        addSubViews()
+        addConstraints()
     }
     
     private func addSubViews() {

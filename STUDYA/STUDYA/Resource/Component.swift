@@ -560,6 +560,7 @@ class ProfileImageContainerView: UIView {
    
     internal var internalImage: UIImage? {
         didSet {
+            print(internalImage)
             internalImageView.image = internalImage != nil ? internalImage : UIImage(named: Constant.defaultProfile)
         }
     }
@@ -632,7 +633,7 @@ class ProfileImageContainerView: UIView {
             }
         }
         
-        guard let role = role else { return }
+        guard let role = role, !role.isEmpty else { return }
         
         roleMark.isHidden = false
         roleMark.setTitle(role, for: .normal)
@@ -665,7 +666,7 @@ class ProfileImageContainerView: UIView {
         }
     }
     
-    internal func setImageWith(_ image: UIImage? = nil) {
+    internal func setImageWith(_ image: UIImage?) {
         internalImage = image
     }
 }
