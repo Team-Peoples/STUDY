@@ -50,6 +50,7 @@ final class StudyGeneralRuleAttendanceTimeRuleTableViewCell: UITableViewCell {
     private func configureViews() {
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(attendanceTitleLabel)
         contentView.addSubview(attendanceDescriptionLabel)

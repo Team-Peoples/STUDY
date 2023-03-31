@@ -367,6 +367,8 @@ class BasicInputView: UIView {
     init(titleText: String, fontSize: CGFloat = 20, titleBottomPadding: CGFloat = 16, placeholder: String, keyBoardType: UIKeyboardType, returnType: UIReturnKeyType, isFieldSecure: Bool = false, isCancel: Bool = false, target: AnyObject? = nil, textFieldAction: Selector) {
         super.init(frame: .zero)
         
+        backgroundColor = .white
+        
         inputField = CustomTextField(placeholder: placeholder, fontSize: fontSize, keyBoardType: keyBoardType, returnType: returnType, isFieldSecure: isFieldSecure)
         
         addSubview(nameLabel)
@@ -445,13 +447,13 @@ class BasicInputView: UIView {
 class CustomTextField: UITextField {
     // MARK: - Initialization
     
-    init(placeholder: String, fontSize: CGFloat, isBold: Bool = false, keyBoardType: UIKeyboardType = .default, returnType: UIReturnKeyType = .default, isFieldSecure: Bool = false) {
+    init(placeholder: String, textColor: UIColor = .black, fontSize: CGFloat, isBold: Bool = false, keyBoardType: UIKeyboardType = .default, returnType: UIReturnKeyType = .default, isFieldSecure: Bool = false) {
         super.init(frame: .zero)
         
         autocorrectionType = .no
         autocapitalizationType = .none
         font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)
-
+        self.textColor = textColor
         keyboardType = keyboardType
         borderStyle = .none
         returnKeyType = returnType
@@ -552,7 +554,7 @@ class SimpleAlert: UIAlertController {
 class ProfileImageContainerView: UIView {
 
     private let outerPurpleLineView = UIView(frame: .zero)
-    private let internalImageView = UIImageView(frame: .zero)
+    private let internalImageView = UIImageView(image: UIImage(named: Constant.defaultProfile))
     private let adminMark = UIImageView(image: UIImage(named: "adminMark")!)
     private let roleMark = UIButton(frame: .zero)
     private var radius: CGFloat = 0
@@ -947,13 +949,15 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
     
     var isNecessaryField = false
     var isHavePicker = false
+    var maxLength: Int = 7
     
     private lazy var picker = UIPickerView()
     
-    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false) {
+    init(numPlaceholder: Int?, centerAlign: Bool, isPicker: Bool = true, isNecessary: Bool = false, maxLength: Int = 7) {
         super.init(frame: .zero)
         
         delegate = self
+        keyboardType = .numberPad
         
         configure(centerAlign: centerAlign)
         isNecessaryField = isNecessary
@@ -966,22 +970,16 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
         
         isHavePicker = isPicker
         
+        self.maxLength = maxLength
+        
         if isPicker {
+            tintColor = .clear
             setPicker()
         }
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        delegate = self
-        backgroundColor = UIColor.appColor(.background)
-        font = .boldSystemFont(ofSize: 20)
-        textColor = UIColor.appColor(.ppsGray1)
-        textAlignment = .center
-        text = "--"
-        setPicker()
-        
     }
     
     override func setNeedsLayout() {
@@ -1059,7 +1057,22 @@ final class RoundedNumberField: UITextField, UITextFieldDelegate, UIPickerViewDe
             
             return false
         } else {
-            return true
+            let currentText = NSString(string: textField.text ?? "")
+            
+            let finalText = currentText.replacingCharacters(in: range, with: string)
+            
+            let characterLimit = self.maxLength
+            guard finalText.count <= characterLimit else {
+                return false
+            }
+
+            let utf8Char = string.cString(using: .utf8)
+            let isBackSpace = strcmp(utf8Char, "\\b")
+            if string.checkOnlyNumbers() || isBackSpace == -92 {
+                return true
+            } else {
+                return false
+            }
         }
     }
     

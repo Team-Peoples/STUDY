@@ -10,7 +10,7 @@ import FirebaseDynamicLinks
 
 struct DynamicLinkBuilder {
     
-    func getURL(study: Study, memberCount: Int, completion: @escaping (URL?, [String]?, Error?) -> Void) {
+    func getURL(study: Study, completion: @escaping (URL?, [String]?, Error?) -> Void) {
         
         guard let studyID = study.id,
               let studyName = study.studyName,
@@ -19,8 +19,6 @@ struct DynamicLinkBuilder {
               let studyInfo = study.studyIntroduction else { return }
         let studyOn = study.studyOn.description
         let studyOff = study.studyOff.description
-        let memberCount = memberCount
-              
 
         guard let baseURL = URL(string: "https://www.notion.so/f5a505a1caa6442ca6dde83ee3a7017c") else { return }
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
@@ -31,8 +29,7 @@ struct DynamicLinkBuilder {
           URLQueryItem(name: "masterNickname", value: studyMasterNickname),
           URLQueryItem(name: "studyInfo", value: studyInfo),
           URLQueryItem(name: "studyOn", value: studyOn),
-          URLQueryItem(name: "studyOff", value: studyOff),
-          URLQueryItem(name: "memberCnt", value: "\(memberCount)")
+          URLQueryItem(name: "studyOff", value: studyOff)
         ]
         guard let link = components?.url else { return }
         let dynamicLinksDomain = "https://peoplesofficial.page.link"

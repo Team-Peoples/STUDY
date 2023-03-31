@@ -13,11 +13,11 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     
     static let identifier = "StudyGeneralRuleDepositTableViewCell"
     
-    let depositTitleLabel = CustomLabel(title: "보증금", tintColor: .ppsBlack, size: 16, isBold: true)
+    let depositTitleLabel = CustomLabel(title: "보증금 ( 최대 999,999 원 )", boldPart: "보증금", tintColor: .ppsBlack, size: 16)
     let depositBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
   
     /// 보증금
-    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let depositTextField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, maxLength: 6)
     
     var depositTextFieldAction: (Deposit) -> Void = { deposit in }
     
@@ -55,6 +55,7 @@ final class StudyGeneralRuleDepositTableViewCell: UITableViewCell {
     private func configureViews() {
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(depositTitleLabel)
         contentView.addSubview(depositTextField)

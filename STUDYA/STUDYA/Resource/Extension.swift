@@ -80,6 +80,10 @@ extension String {
     func toInt() -> Int? {
         return Int(self)
     }
+    
+    func toBool() -> Bool? {
+        return Bool(self)
+    }
 }
 
 

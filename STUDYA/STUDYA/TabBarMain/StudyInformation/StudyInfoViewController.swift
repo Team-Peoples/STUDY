@@ -62,6 +62,8 @@ final class StudyInfoViewController: SwitchableViewController {
     private lazy var separateLineBetweenTimeAndFineSection = UIView(backgroundColor: .appColor(.ppsGray2))
     private lazy var separateLineBetweenFineAndDepositSection = UIView(backgroundColor: .appColor(.ppsGray2))
     
+    @IBOutlet weak var linkTitleLabel: UILabel!
+    lazy var linkButton = UIButton()
     private lazy var toastMessage = ToastMessage(message: "초대 링크가 복사되었습니다.", messageColor: .whiteLabel, messageSize: 12, image: "copy-check")
     
     // MARK: - Life Cycle
@@ -73,6 +75,9 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyViewModel.bind { [weak self] study in
             self?.configureViews(study)
+            DynamicLinkBuilder().getURL(study: study) { url, array, error in
+                self?.linkButton.setTitle(url?.absoluteString, for: .normal)
+            }
         }
         
         getStudyInfo()
@@ -94,7 +99,7 @@ final class StudyInfoViewController: SwitchableViewController {
         getStudyInfo()
     }
     
-    @IBAction func linkTouched(_ sender: UIButton) {
+    @objc private func linkTouched(_ sender: UIButton) {
         
         UIPasteboard.general.string = sender.titleLabel?.text
         
@@ -321,6 +326,12 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyGeneralRuleBackgroundView.addSubview(separateLineBetweenTimeAndFineSection)
         studyGeneralRuleBackgroundView.addSubview(separateLineBetweenFineAndDepositSection)
+        linkButton.setTitleColor(.appColor(.keyColor1), for: .normal)
+        linkButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        linkButton.titleLabel?.numberOfLines = 1
+        linkButton.addTarget(self, action: #selector(linkTouched), for: .touchUpInside)
+        
+        view.addSubview(linkButton)
         view.addSubview(toastMessage)
     }
     
@@ -367,6 +378,11 @@ final class StudyInfoViewController: SwitchableViewController {
             make.top.equalTo(absenceFineRuleView.snp.bottom).offset(10)
             make.height.equalTo(1)
             make.leading.trailing.equalTo(studyGeneralRuleBackgroundView).inset(40)
+        }
+        linkButton.snp.makeConstraints { make in
+            make.leading.equalTo(linkTitleLabel.snp.trailing).offset(5)
+            make.centerY.equalTo(linkTitleLabel)
+            make.width.equalTo(200)
         }
         toastMessage.snp.makeConstraints { make in
             make.centerX.equalTo(view)

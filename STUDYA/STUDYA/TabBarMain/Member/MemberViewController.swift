@@ -135,7 +135,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         
         return vc
     }()
-    lazy var activityIndicator = UIActivityIndicatorView()
+    lazy var activityIndicator = UIActivityIndicatorView(style: .large)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -251,9 +251,7 @@ extension MemberViewController: UICollectionViewDataSource {
                 guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
                 guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
 
-                let memberCount = self?.members?.count ?? 0 + 1
-
-                DynamicLinkBuilder().getURL(study: currentStudy, memberCount: memberCount) { dynamicLinkURL, array, error in
+                DynamicLinkBuilder().getURL(study: currentStudy) { dynamicLinkURL, array, error in
                     guard let link = dynamicLinkURL?.absoluteString else {
                         print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
                         return
@@ -269,12 +267,10 @@ extension MemberViewController: UICollectionViewDataSource {
                             
                             어떤 모임이든! 피플즈에서 쉽게 모이고 간편하게 관리해요 📚
                             """
-                    let image = UIImage(named: "logo")!
-                    print(image)
                     DispatchQueue.main.async {
                         self?.activityIndicator.stopAnimating()
                         
-                        let activityViewController = UIActivityViewController(activityItems : [shareText, image], applicationActivities: nil)
+                        let activityViewController = UIActivityViewController(activityItems : [shareText], applicationActivities: nil)
                         activityViewController.popoverPresentationController?.sourceView = view
                         activityViewController.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
                         activityViewController.popoverPresentationController?.permittedArrowDirections = []

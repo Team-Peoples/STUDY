@@ -36,6 +36,7 @@ enum PeoplesError: Error {
     case cantChangeOwnerRole
     case youAreNotOwner
     case ownerCantLeave
+    case alreadyJoined
 }
 
 enum ErrorCode {
@@ -104,14 +105,14 @@ struct Network {
             }
         }
     }
-    
-    //    회원가입시 사진 선택 안하면 이미지에 nil을 보내게할 수는 없는건가
+
     func signUp(userId: String, pw: String, pwCheck: String, nickname: String?, image: UIImage?, completion: @escaping (Result<User, PeoplesError>) -> Void) {
         
         let user = User(id: userId, password: pw, passwordCheck: pwCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
-        let imageData = image?.jpegData(compressionQuality: 0.5) ?? Data()
+        let image = image ?? UIImage(named: Constant.defaultProfile)
+        let imageData = image?.jpegData(compressionQuality: 1) ?? Data()
         
         AF.upload(multipartFormData: { data in
             data.append(jsonData, withName: "param", fileName: "param", mimeType: "application/json")
@@ -284,6 +285,7 @@ struct Network {
         let user = User(id: nil, oldPassword: oldPassword, password: password, passwordCheck: passwordCheck, nickName: nickname)
         
         guard let jsonData = try? JSONEncoder().encode(user) else { return }
+        let image = image ?? UIImage(named: Constant.defaultProfile)
         let imageData = image?.jpegData(compressionQuality: 1) ?? Data()
         
         AF.upload(multipartFormData: { data in
@@ -623,6 +625,8 @@ struct Network {
                 }
                 
                 completion(.success(isSuccess))
+            case 400:
+                completion(.failure(.alreadyJoined))
                 
             case 404:
                 guard let data = response.data,

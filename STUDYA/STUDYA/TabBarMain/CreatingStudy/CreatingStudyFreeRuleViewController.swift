@@ -33,6 +33,7 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
 
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
         setConstraints()
+        enableTapGesture()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -66,6 +67,21 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
                 
             default : break
         }
+    }
+    
+    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    private func enableTapGesture() {
+
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
+
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+
+        view.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     // MARK: - Setting Constraints

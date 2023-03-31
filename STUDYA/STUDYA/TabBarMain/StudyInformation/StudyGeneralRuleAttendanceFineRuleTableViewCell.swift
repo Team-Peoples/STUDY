@@ -19,13 +19,13 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     let perLateMinuteFieldLabel = CustomLabel(title: "지각", tintColor: .ppsBlack, size: 16)
     let perLateMinuteFieldBehindLabel = CustomLabel(title: "분당", tintColor: .ppsBlack, size: 16)
     let latenessFineFieldBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
-    let absenceFineCountLabel = CustomLabel(title: "결석 1회당", tintColor: .ppsBlack, size: 16)
+    let absenceFineCountLabel = CustomLabel(title: "결석 1회당 ( 최대 99,999 원 )", tintColor: .ppsBlack, size: 16)
     let absenceFineFieldBehindLabel = CustomLabel(title: "원", tintColor: .ppsBlack, size: 16)
     
     /// 벌금규칙
     let perLateMinuteField = RoundedNumberField(numPlaceholder: nil, centerAlign: true, isNecessary: true)
-    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
-    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false)
+    let latenessFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, maxLength: 5)
+    let absenceFineField = RoundedNumberField(numPlaceholder: 0, centerAlign: false, isPicker: false, maxLength: 5)
     
     var perLateMinuteFieldAction: (Int?) -> Void = { perLateMinute in }
     var latenessFineFieldAction: (Int) -> Void = { latenessFine in }
@@ -75,6 +75,7 @@ final class StudyGeneralRuleAttendanceFineRuleTableViewCell: UITableViewCell {
     private func configureViews() {
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(fineTitleLabel)
         contentView.addSubview(fineDescriptionLabel)
