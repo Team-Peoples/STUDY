@@ -165,8 +165,8 @@ final class SignInViewController: UIViewController {
             guard let userID = user.id else { fatalError("사용자 아이디 없음") }
             guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음") }
             
-            KeyChain.create(key: Constant.tempUserId, value: userID)
-            KeyChain.create(key: Constant.tempNickname, value: nickname)
+            KeychainService.shared.create(key: Constant.tempUserId, value: userID)
+            KeychainService.shared.create(key: Constant.tempNickname, value: nickname)
             
             if let isEmailCertificated = user.isEmailCertificated, isEmailCertificated {
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)

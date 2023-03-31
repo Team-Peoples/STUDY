@@ -246,8 +246,8 @@ extension MemberViewController: UICollectionViewDataSource {
                
                 self?.activityIndicator.startAnimating()
                 
-                guard let nickname = KeyChain.read(key: Constant.nickname) else { return }
-                guard let studyName = KeyChain.read(key: Constant.currentStudyName) else { return }
+                guard let nickname = KeychainService.shared.read(key: Constant.nickname) else { return }
+                guard let studyName = KeychainService.shared.read(key: Constant.currentStudyName) else { return }
                 guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
                 guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
 

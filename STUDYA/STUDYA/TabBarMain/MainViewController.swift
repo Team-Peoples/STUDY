@@ -134,11 +134,11 @@ final class MainViewController: SwitchableViewController {
         
         view.backgroundColor = .white
         print("postman의 key 입력하는 곳에 바로 붙여넣기, cmd + c GO")
-        print("----------------------------------------------------------")
-        print("""
-            [{"key":"AccessToken","value":"Bearer \(KeyChain.read(key: Constant.accessToken)!)","description":null,"type":"text","enabled":true,"equals":true},{"key":"RefreshToken","value":"Bearer \(KeyChain.read(key: Constant.refreshToken)!)","description":"","type":"text","enabled":true}]
-            """)
-        print("----------------------------------------------------------")
+//        print("----------------------------------------------------------")
+//        print("""
+//            [{"key":"AccessToken","value":"Bearer \(KeychainService.shared.read(key: Constant.accessToken)!)","description":null,"type":"text","enabled":true,"equals":true},{"key":"RefreshToken","value":"Bearer \(KeychainService.shared.read(key: Constant.refreshToken)!)","description":"","type":"text","enabled":true}]
+//            """)
+//        print("----------------------------------------------------------")
         configureTabBarSeparator()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadStudyList), name: .reloadStudyList, object: nil)
@@ -279,7 +279,7 @@ final class MainViewController: SwitchableViewController {
                 self.nickName = user.nickName
                 
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
-                KeyChain.create(key: Constant.nickname, value: user.nickName!)
+                KeychainService.shared.create(key: Constant.nickname, value: user.nickName!)
                 self.getAllStudies()
             case .failure(let error):
                 
@@ -321,7 +321,7 @@ final class MainViewController: SwitchableViewController {
             case .success(let studyOverall):
                 // 스터디정보를 처음으로 가져온다.
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
-                KeyChain.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
+                KeychainService.shared.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
                 // domb: 중복된 작업인건지 물어보기
                 self.isManager = studyOverall.isManager
                 self.configureViewWhenYesStudy()

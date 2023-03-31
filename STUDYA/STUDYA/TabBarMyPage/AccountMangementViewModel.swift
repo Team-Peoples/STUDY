@@ -128,7 +128,7 @@ class AccountMangementViewModel {
     
     func closeAccount(completion: @escaping (Result<Bool, PeoplesError>) -> Void) {
         
-        guard let userId = KeyChain.read(key: Constant.userId) else { return }
+        guard let userId = KeychainService.shared.read(key: Constant.userId) else { return }
         
         Network.shared.closeAccount(userID: userId) { result in
             completion(result)

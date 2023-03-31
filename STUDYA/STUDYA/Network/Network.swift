@@ -426,8 +426,8 @@ struct Network {
                 if let accesToken = httpResponse.allHeaderFields[Constant.accessToken] as? String,
                    let refreshToken = httpResponse.allHeaderFields[Constant.refreshToken] as? String {
                     
-                    KeyChain.create(key: Constant.accessToken, value: accesToken)
-                    KeyChain.create(key: Constant.refreshToken, value: refreshToken)
+                    KeychainService.shared.create(key: Constant.accessToken, value: accesToken)
+                    KeychainService.shared.create(key: Constant.refreshToken, value: refreshToken)
                     print("리프레시 토큰 저장 성공")
                     completion(.success(isSuccessed))
                 } else {
@@ -1527,16 +1527,16 @@ extension Network {
            let userID = user.id,
            let isEmailCertificated = user.isEmailCertificated {
             
-            KeyChain.create(key: Constant.accessToken, value: accesToken)
-            KeyChain.create(key: Constant.refreshToken, value: refreshToken)
-            KeyChain.create(key: Constant.userId, value: userID)
+            KeychainService.shared.create(key: Constant.accessToken, value: accesToken)
+            KeychainService.shared.create(key: Constant.refreshToken, value: refreshToken)
+            KeychainService.shared.create(key: Constant.userId, value: userID)
             
             if isEmailCertificated {
                 
                 UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
-                KeyChain.create(key: Constant.isEmailCertificated, value: "1")
+                KeychainService.shared.create(key: Constant.isEmailCertificated, value: "1")
             } else {
-                KeyChain.create(key: Constant.isEmailCertificated, value: "0")
+                KeychainService.shared.create(key: Constant.isEmailCertificated, value: "0")
             }
             
             completion(.success(user))
