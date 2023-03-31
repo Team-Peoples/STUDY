@@ -10,11 +10,15 @@ import KakaoSDKShare
 import KakaoSDKTemplate
 import LinkPresentation
 
+protocol LinkShareable: AnyObject, MainViewController {
+    
+}
+
 class MainLinkShareMessageView: RoundableView {
     
     // MARK: - Properties
     
-    weak var delegate: UIViewController?
+    weak var delegate: LinkShareable?
     
     private let titleLabel = CustomLabel(title: "스터디 링크를 공유할래요!", tintColor: .keyColor2, size: 16, isBold: true)
     private let subTitleLabel = CustomLabel(title: "링크 공유를 통해 멤버를 초대해 보세요☺️", tintColor: .background, size: 12)
@@ -48,19 +52,38 @@ class MainLinkShareMessageView: RoundableView {
     // MARK: - Actions
     
     @objc private func linkShareRegionTapped() {
-//        guard let studyID = self.currentStudyID else { return }
-//        let studyID = 127
-//        DynamicLinkBuilder().getURL(studyID: studyID) { dynamicLinkURL, array, error in
-//            guard let shareURL = dynamicLinkURL else {
-//                print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
-//                return
-//            }
-//            print(shareURL)
-//            DispatchQueue.main.async { [self] in
-//                let activityVC = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
-//                delegate?.present(activityVC, animated: true)
-//            }
-//        }
+        
+        guard let view = delegate?.view else { return }
+        
+        guard let nickname = KeyChain.read(key: Constant.nickname) else { return }
+        guard let studyName = KeyChain.read(key: Constant.currentStudyName) else { return }
+        guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
+        guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
+
+        DynamicLinkBuilder().getURL(study: currentStudy) { [weak self] dynamicLinkURL, array, error in
+            guard let link = dynamicLinkURL?.absoluteString else {
+                print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
+                return
+            }
+            
+            let shareText = """
+                    "\(nickname)"님이 \(studyName)에 초대했어요!
+                    
+                    아래 링크를 통해 스터디에
+                    참여하실 수 있어요 👇🏼
+                    
+                    참여 링크: "\(link)"
+                    
+                    어떤 모임이든! 피플즈에서 쉽게 모이고 간편하게 관리해요 📚
+                    """
+            
+            let activityViewController = UIActivityViewController(activityItems : [shareText], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = view
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            activityViewController.popoverPresentationController?.permittedArrowDirections = []
+            
+            self?.delegate?.present(activityViewController, animated: true, completion: nil)
+        }
     }
     
     @objc private func closeButtonDidTapped() {

@@ -36,6 +36,7 @@ enum PeoplesError: Error {
     case cantChangeOwnerRole
     case youAreNotOwner
     case ownerCantLeave
+    case alreadyJoined
 }
 
 enum ErrorCode {
@@ -624,6 +625,8 @@ struct Network {
                 }
                 
                 completion(.success(isSuccess))
+            case 400:
+                completion(.failure(.alreadyJoined))
                 
             case 404:
                 guard let data = response.data,

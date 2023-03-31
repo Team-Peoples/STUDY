@@ -63,7 +63,6 @@ final class CreatingStudyFormViewController: UIViewController {
         super.viewDidLoad()
         
         studyViewModel.bind { [self] study in
-            print(study)
             doneButton.isEnabled = study.formIsFilled
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
