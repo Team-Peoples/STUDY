@@ -90,6 +90,7 @@ class MyScheduleTableViewCell: UITableViewCell {
 
         checkButton.snp.makeConstraints { make in
             make.top.leading.equalTo(contentView)
+            make.height.width.equalTo(16)
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
         todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
@@ -105,6 +106,7 @@ class MyScheduleTableViewCell: UITableViewCell {
     
     @objc private func checkButtonTapped() {
         guard let indexPath = getIndexPath(), let schedule = schedule, let id = schedule.id else { return }
+        checkButton.isSelected.toggle()
         toggleScheduleStatus(indexPath, id)
     }
     
