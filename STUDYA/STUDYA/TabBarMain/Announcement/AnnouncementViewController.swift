@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-// to be fixed: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
+// domb: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
 
 final class AnnouncementViewController: UIViewController {
     // MARK: - Properties

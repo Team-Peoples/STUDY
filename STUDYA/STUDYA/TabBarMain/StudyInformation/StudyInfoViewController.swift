@@ -157,9 +157,6 @@ final class StudyInfoViewController: SwitchableViewController {
         studyFreeRuleVC.studyViewModel.study = studyViewModel.study
 
         let vc = UINavigationController(rootViewController: studyFreeRuleVC)
-        
-        vc.navigationBar.backgroundColor = .appColor(.keyColor1)
-        vc.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.appColor(.whiteLabel)]
         vc.modalPresentationStyle = .fullScreen
         
         present(vc, animated: true)

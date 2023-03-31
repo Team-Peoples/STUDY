@@ -27,22 +27,32 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(completeButton)
+        configureViews()
         
         freeRuletextView.delegate = self
-
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
-        setConstraints()
+        
         enableTapGesture()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
+        addNotification()
         viewDidUpdated(freeRuletextView)
-        
-        placeholderLabel.isHidden = freeRuletextView.text != "" ? true : false
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     // MARK: - Configure
+    
+    private func configureViews() {
+        view.backgroundColor = .white
+        view.addSubview(completeButton)
+        
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        
+        placeholderLabel.isHidden = freeRuletextView.text != "" ? true : false
+        
+        setConstraints()
+    }
     
     // MARK: - Actions
     
@@ -84,9 +94,14 @@ final class CreatingStudyFreeRuleViewController: UIViewController {
         view.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
+    private func addNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     // MARK: - Setting Constraints
     
-    func setConstraints() {
+    private func setConstraints() {
         completeButton.snp.makeConstraints { make in
             make.centerX.equalTo(view.safeAreaLayoutGuide)
             make.width.equalTo(320)
