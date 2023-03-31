@@ -60,6 +60,7 @@ class InviteeLandingViewController: UIViewController {
         studyInformationBackgroundView.configureBorder(color: .ppsGray2, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .ppsGray2, width: 1, radius: 14)
         studyJoinButton.addTarget(self, action: #selector(joinStudy), for: .touchUpInside)
+        dismissButton.addTarget(self, action: #selector(close), for: .touchUpInside)
     }
     
     @objc private func close() {
@@ -77,6 +78,8 @@ class InviteeLandingViewController: UIViewController {
                 switch failure {
                 case .alreadyJoined:
                     let simpleAlert = SimpleAlert(title: "스터디 참여 불가능", message: "스터디에 이미 참여중입니다.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: Constant.OK, style: .default)
+                    simpleAlert.addAction(okAction)
                     self.present(simpleAlert, animated: true)
                 default:
                     print(failure)
