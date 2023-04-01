@@ -14,7 +14,7 @@ final class AttendanceDetailsCell: UITableViewCell {
     internal var bottomSheetAddableDelegate: BottomSheetAddable?
     
     private let titleLabel = UILabel(frame: .zero)
-    private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .systemBackground, fontSize: 14, height: 30)
+    private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .white, fontSize: 14, height: 30)
     private let roundedBackgroundView = RoundableView(cornerRadius: 16)
     
     private let attendanceCountLabel = CustomLabel(title: "", tintColor: .attendedMain, size: 14)
@@ -73,6 +73,8 @@ final class AttendanceDetailsCell: UITableViewCell {
     }
     
     private func configureViews() {
+        contentView.backgroundColor = .white
+        
         titleLabel.attributedText = AttributedString.custom(image: UIImage(named: "details") ?? UIImage(), text: " 상세 내역")
         
         configurePeriodButton()

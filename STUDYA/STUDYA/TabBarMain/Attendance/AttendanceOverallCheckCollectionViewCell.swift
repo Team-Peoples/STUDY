@@ -144,6 +144,10 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        contentView.backgroundColor = .white
+        headerView.backgroundColor = .white
+        tableView.backgroundColor = .white
+        
         contentView.addSubview(headerView)
         contentView.addSubview(tableView)
         

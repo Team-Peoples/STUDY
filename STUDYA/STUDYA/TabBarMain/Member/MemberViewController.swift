@@ -222,6 +222,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsSelection = false
+        collectionView.backgroundColor = .white
         
         collectionView.register(InviteMemberCollectionViewCell.self, forCellWithReuseIdentifier: InviteMemberCollectionViewCell.identifier)
         collectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.identifier)
