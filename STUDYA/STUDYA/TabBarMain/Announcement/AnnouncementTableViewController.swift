@@ -42,8 +42,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
     private let announcementBoardTableView = UITableView()
     private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "공지추가")
     
-    weak var observer: NSObjectProtocol?
-    
     // MARK: - Life Cycle
     
     init(studyID: ID, studyName: String) {
@@ -67,6 +65,10 @@ final class AnnouncementTableViewController: SwitchableViewController {
         
         configureFloatingButton()
         fetchAnnouncement()
+        
+        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { noti in
+            self.refresh()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -165,12 +167,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
         let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
         navigationVC.modalPresentationStyle = .fullScreen
         
-        if observer == nil {
-            observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                self.fetchAnnouncement()
-            })
-        }
-        
         present(navigationVC, animated: true)
     }
     
@@ -186,10 +182,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
                 print(failure)
             }
         }
-        
-        if let observer = observer {
-            NotificationCenter.default.removeObserver(observer)
-        }
     }
     
     private func updatePin(announcement announcementID: ID, isPinned: Bool, successHandler: @escaping () -> Void) {
@@ -199,10 +191,9 @@ final class AnnouncementTableViewController: SwitchableViewController {
             switch result {
             case .success:
                 successHandler()
-            case .failure(let failure):
+            case .failure:
                 let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
                 self.present(simpleAlert)
-                print(failure)
             }
         }
     }
@@ -277,13 +268,6 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             vc.announcement = self?.announcements[indexPath.row]
             vc.title = self?.studyName
             
-            if self?.observer == nil {
-                self?.observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                    print("노티 호출")
-                    self?.fetchAnnouncement()
-                })
-            }
-            
             self?.navigationController?.pushViewController(vc, animated: true)
         }
         
@@ -307,19 +291,11 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             actionSheet.addAction(pinAction)
         } else {
             let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { [weak  self] _ in
-                guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementTableViewCell] else { return }
-                let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
                 guard let announcementID = cell.announcement?.id else { return }
                 
-                guard pinnedCell != nil else {
-                    self?.forcingUpdatePin(announcement: announcementID, successHandler: {
-                        self?.refresh()
-                    })
-                    return
-                }
-                self?.updatePin(announcement: announcementID, isPinned: true) {
+                self?.forcingUpdatePin(announcement: announcementID, successHandler: {
                     self?.refresh()
-                }
+                })
             }
             actionSheet.addAction(pinAction)
         }
@@ -333,29 +309,21 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             let navigationVC = UINavigationController(rootViewController: editingAnnouncementVC)
             navigationVC.modalPresentationStyle = .fullScreen
             
-            if observer == nil {
-                observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                    print("노티 호출")
-                    self.fetchAnnouncement()
-                })
-            }
-            
             present(navigationVC, animated: true)
         }
         
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
-            let alertController = SimpleAlert(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", firstActionTitle: Constant.delete, actionStyle: .destructive, firstActionHandler: { _ in
+            let alertController = SimpleAlert(title: "이 공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", firstActionTitle: Constant.delete, actionStyle: .destructive, firstActionHandler: { [weak self] _ in
                 if let announcementID = cell.announcement?.id {
                     Network.shared.deleteAnnouncement(announcementID) { result in
                         switch result {
-                        case .success(let success):
-                            print(success)
+                        case .success:
+                            self?.refresh()
                         case .failure(let failure):
                             print(failure)
                         }
                     }
                 }
-                self.announcements.remove(at: indexPath.row)
             }, cancelActionTitle: Constant.cancel)
             
             self.present(alertController, animated: true)

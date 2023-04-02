@@ -44,9 +44,6 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         super.viewDidLoad()
         
         studySchedulePostingViewModel.bind { [self] studySchedule in
-            topicTextView.text = studySchedule.topic
-            placeTextView.text = studySchedule.place
-            
             creatingScheduleButton.isEnabled = studySchedule.contentFormIsFilled
             creatingScheduleButton.isEnabled ? creatingScheduleButton.fillIn(title: "일정 만들기") : creatingScheduleButton.fillOut(title: "일정 만들기")
         }
@@ -103,6 +100,9 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         
         topicTextView.delegate = self
         placeTextView.delegate = self
+        
+        topicTextView.text = studySchedulePostingViewModel.studySchedule.topic
+        placeTextView.text = studySchedulePostingViewModel.studySchedule.place
         
         addNotification()
         setNavigation()

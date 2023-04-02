@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-// to be fixed: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
+// domb: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
 
 final class AnnouncementViewController: UIViewController {
     // MARK: - Properties
@@ -23,11 +23,6 @@ final class AnnouncementViewController: UIViewController {
     let studyID: ID
     let studyName: String?
     
-    var userIsEditing: (title: Bool, content: Bool) = (false, false) {
-        didSet {
-            toggleRightBarButton(when: userIsEditing)
-        }
-    }
     var isMaster = false {
         didSet {
             if isMaster == true {
@@ -140,6 +135,7 @@ final class AnnouncementViewController: UIViewController {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)
         }
+        
         addNotification()
     }
     
@@ -185,8 +181,8 @@ final class AnnouncementViewController: UIViewController {
     
     @objc func createButtonDidTapped() {
         
-        let title = titleTextView.text ?? ""
-        let content = contentTextView.text ?? ""
+        guard let title = titleTextView.text else { return }
+        guard let content = contentTextView.text else { return }
         
         Network.shared.createAnnouncement(title: title, content: content, studyID: studyID) { result in
             switch result {
@@ -201,8 +197,8 @@ final class AnnouncementViewController: UIViewController {
     
     @objc func editButtonDidTapped() {
         
-        let title = titleTextView.text ?? ""
-        let content = contentTextView.text ?? ""
+        guard let title = titleTextView.text else { return }
+        guard let content = contentTextView.text else { return }
         guard let announcementID = announcement?.id else { return }
         
         Network.shared.updateAnnouncement(title: title, content: content, announcementID: announcementID) { result in
@@ -262,28 +258,7 @@ final class AnnouncementViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .appColor(.cancel)
         navigationItem.leftBarButtonItem = cancelButton
     }
-    
-    private func toggleRightBarButton(when userIsEditing: (Bool, Bool)) {
-        switch task {
-        case .creating:
-            switch userIsEditing {
-            case (true, true):
-                createButton.isEnabled = true
-            default:
-                createButton.isEnabled = false
-            }
-        case .editing:
-            switch userIsEditing {
-            case (true, true):
-                editButton.isEnabled = true
-            default:
-                editButton.isEnabled = false
-            }
-        case .viewing:
-            return
-        }
-    }
-    
+
     private func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
@@ -369,11 +344,9 @@ extension AnnouncementViewController: UITextViewDelegate {
         switch textView {
         case titleTextView:
             titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
-            userIsEditing.title = titleTextView.text.isEmpty ? false : true
             
         case contentTextView:
             contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
-            userIsEditing.content = contentTextView.text.isEmpty ? false : true
         default:
             return
         }
@@ -403,6 +376,17 @@ extension AnnouncementViewController: UITextViewDelegate {
             if constraint.firstAttribute == .height {
                 constraint.constant = estimatedSize.height
             }
+        }
+        
+        let titleTextViewIsEmpty = titleTextView.text == nil || titleTextView.text == String()
+        let contentTextViewIsEmpty = contentTextView.text == nil || contentTextView.text == String()
+        
+        if !titleTextViewIsEmpty && !contentTextViewIsEmpty {
+            createButton.isEnabled = true
+            editButton.isEnabled = true
+        } else {
+            createButton.isEnabled = false
+            editButton.isEnabled = false
         }
     }
 }

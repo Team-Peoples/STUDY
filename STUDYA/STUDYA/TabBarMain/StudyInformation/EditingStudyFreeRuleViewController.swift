@@ -31,7 +31,12 @@ final class EditingStudyFreeRuleViewController: UIViewController {
         
         freeRuletextView.delegate = self
         
-        self.navigationItem.title = "진행방식"
+        navigationItem.title = "진행 방식 관리"
+        
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "확인", style: .done, target: self, action: #selector(ruleEditDone))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "취소", style: .done, target: self, action: #selector(cancel))

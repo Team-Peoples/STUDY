@@ -13,8 +13,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     
     var studySchedulePostingViewModel = StudySchedulePostingViewModel()
     
-    // 이미 있는 스터디 스케쥴 정보
-    
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
             selectedRepeatOptionCheckBox?.isSelected.toggle()
@@ -58,7 +56,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         super.viewDidLoad()
         
         studySchedulePostingViewModel.bind { [self] studySchedule in
-            configureUI(studySchedule)
+            configureViews(with: studySchedule)
             
             nextButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.repeatOptionFormIsFilled
             nextButton.isEnabled ? nextButton.fillIn(title: "다음") : nextButton.fillOut(title: "다음")
@@ -219,7 +217,7 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         nextButton.addTarget(self, action: #selector(nextButtonDidTapped), for: .touchUpInside)
     }
     
-    private func configureUI(_ studySchedule: StudySchedulePosting) {
+    private func configureViews(with studySchedule: StudySchedulePosting) {
     
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)

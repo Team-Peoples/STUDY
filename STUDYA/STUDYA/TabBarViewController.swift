@@ -35,6 +35,8 @@ final class TabBarViewController: UITabBarController {
         
         tabBar.tintColor = .appColor(.ppsGray1)
         tabBar.backgroundColor = .white
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         
@@ -45,12 +47,12 @@ final class TabBarViewController: UITabBarController {
         viewControllers = [homeViewController, calenderViewController, profileViewController]
     }
     
-    private func templateNavigationController(selectedImage: UIImage, unselectedImage: UIImage, rootViewController: UIViewController, title: String) -> UINavigationController {
+    private func templateNavigationController(selectedImage: UIImage?, unselectedImage: UIImage?, rootViewController: UIViewController, title: String) -> UINavigationController {
         
         let navigation = UINavigationController(rootViewController: rootViewController)
         
-        //        nav.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
-        //        nav.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 4)
+        navigation.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
+        navigation.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 4)
         
         navigation.tabBarItem.image = unselectedImage
         navigation.tabBarItem.selectedImage = selectedImage
