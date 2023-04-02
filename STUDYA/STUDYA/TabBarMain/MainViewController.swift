@@ -93,12 +93,38 @@ final class MainViewController: SwitchableViewController {
 //                print("fail")
 //            }
 //        }
-//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-03-21", repeatEndDate: "", startTime: "15:39", endTime: "16:10", repeatOption: .norepeat)) { result in
+//        Network.shared.createStudySchedule(StudySchedulePosting(studyID: 118, studyScheduleID: nil, topic: "아무거나", place: "강남역", startDate: "2023-04-02", repeatEndDate: "", startTime: "01:28", endTime: "01:29", repeatOption: .norepeat)) { result in
 //            switch result {
 //            case .success:
 //                print("suc")
+//                Network.shared.getAllStudyScheduleOfAllStudy { result in
+//                    switch result {
+//                    case .success(let all):
+//                        print(all)
+//                    case .failure:
+//                        print("fuck")
+//                    }
+//                }
 //            case .failure:
 //                print("fa")
+//            }
+//        }
+//
+//        Network.shared.getAllStudyScheduleOfAllStudy { result in
+//            switch result {
+//            case .success(let all):
+//                print(all)
+//            case .failure:
+//                print("fuck")
+//            }
+//        }
+        
+//        Network.shared.deleteStudySchedule(<#T##studyScheduleID: ID##ID#>, deleteRepeatSchedule: false) { result in
+//            switch result {
+//            case .success:
+//                print("deleted")
+//            case .failure:
+//                print("delete fail")
 //            }
 //        }
         
@@ -238,6 +264,22 @@ final class MainViewController: SwitchableViewController {
     
     @objc private func reloadCurrentStudy() {
         guard let studyID = currentStudyOverall?.study.id else { return }
+        Network.shared.getAllStudies { result in
+            switch result {
+            case .success(let studies):
+                
+                guard let currentStudy = studies.filter({ $0.id == studyID }).first,
+                      let currentStudyID = currentStudy.id else {
+                    return self.configureViewWhenNoStudy()
+                }
+                
+                self.myStudyList = studies
+                self.configureTableView(with: currentStudyID)
+                
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
+            }
+        }
         Network.shared.getStudy(studyID: studyID) { result in
             
             switch result {

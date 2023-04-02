@@ -196,6 +196,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         ) { result in
             switch result {
             case .success:
+                NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
                 successHandler()
             case .failure(let failure):
                 let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
@@ -209,6 +210,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
         Network.shared.forcingUpdatePinnedAnnouncement(announcementID) { result in
             switch result {
             case .success:
+                NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
                 successHandler()
             case .failure(let failure):
                 let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
@@ -347,6 +349,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
                     Network.shared.deleteAnnouncement(announcementID) { result in
                         switch result {
                         case .success(let success):
+                             
                             print(success)
                         case .failure(let failure):
                             print(failure)
