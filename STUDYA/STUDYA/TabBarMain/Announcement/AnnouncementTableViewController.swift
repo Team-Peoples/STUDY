@@ -42,8 +42,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
     private let announcementBoardTableView = UITableView()
     private lazy var floatingButtonView = PlusButtonWithLabelContainerView(labelText: "공지추가")
     
-    weak var observer: NSObjectProtocol?
-    
     // MARK: - Life Cycle
     
     init(studyID: ID, studyName: String) {
@@ -67,6 +65,10 @@ final class AnnouncementTableViewController: SwitchableViewController {
         
         configureFloatingButton()
         fetchAnnouncement()
+        
+        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { noti in
+            self.refresh()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -165,12 +167,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
         let navigationVC = UINavigationController(rootViewController: creatingAnnouncementVC)
         navigationVC.modalPresentationStyle = .fullScreen
         
-        if observer == nil {
-            observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                self.fetchAnnouncement()
-            })
-        }
-        
         present(navigationVC, animated: true)
     }
     
@@ -186,10 +182,6 @@ final class AnnouncementTableViewController: SwitchableViewController {
                 print(failure)
             }
         }
-        
-        if let observer = observer {
-            NotificationCenter.default.removeObserver(observer)
-        }
     }
     
     private func updatePin(announcement announcementID: ID, isPinned: Bool, successHandler: @escaping () -> Void) {
@@ -199,10 +191,9 @@ final class AnnouncementTableViewController: SwitchableViewController {
             switch result {
             case .success:
                 successHandler()
-            case .failure(let failure):
+            case .failure:
                 let simpleAlert = SimpleAlert(buttonTitle: Constant.OK, message: "핀공지 설정에 실패했어요.\n잠시후 다시 시도해주세요.", completion: nil)
                 self.present(simpleAlert)
-                print(failure)
             }
         }
     }
@@ -276,13 +267,6 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             let vc = AnnouncementViewController(task: .viewing, studyID: studyID, studyName: self?.studyName)
             vc.announcement = self?.announcements[indexPath.row]
             vc.title = self?.studyName
-            
-            if self?.observer == nil {
-                self?.observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                    print("노티 호출")
-                    self?.fetchAnnouncement()
-                })
-            }
             
             self?.navigationController?.pushViewController(vc, animated: true)
         }
