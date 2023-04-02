@@ -307,19 +307,11 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             actionSheet.addAction(pinAction)
         } else {
             let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { [weak  self] _ in
-                guard let cells = tableView.cellsForRows(at: 0) as? [AnnouncementTableViewCell] else { return }
-                let pinnedCell = cells.filter { cell in cell.announcement?.isPinned == true }.first
                 guard let announcementID = cell.announcement?.id else { return }
                 
-                guard pinnedCell != nil else {
-                    self?.forcingUpdatePin(announcement: announcementID, successHandler: {
-                        self?.refresh()
-                    })
-                    return
-                }
-                self?.updatePin(announcement: announcementID, isPinned: true) {
+                self?.forcingUpdatePin(announcement: announcementID, successHandler: {
                     self?.refresh()
-                }
+                })
             }
             actionSheet.addAction(pinAction)
         }
@@ -333,29 +325,21 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             let navigationVC = UINavigationController(rootViewController: editingAnnouncementVC)
             navigationVC.modalPresentationStyle = .fullScreen
             
-            if observer == nil {
-                observer = NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil, using: { noti in
-                    print("노티 호출")
-                    self.fetchAnnouncement()
-                })
-            }
-            
             present(navigationVC, animated: true)
         }
         
         let deleteAction = UIAlertAction(title: "삭제하기", style: .destructive) { _ in
-            let alertController = SimpleAlert(title: "이공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", firstActionTitle: Constant.delete, actionStyle: .destructive, firstActionHandler: { _ in
+            let alertController = SimpleAlert(title: "이 공지를 삭제 할까요?", message: "삭제하면 되돌릴 수 없습니다.", firstActionTitle: Constant.delete, actionStyle: .destructive, firstActionHandler: { [weak self] _ in
                 if let announcementID = cell.announcement?.id {
                     Network.shared.deleteAnnouncement(announcementID) { result in
                         switch result {
-                        case .success(let success):
-                            print(success)
+                        case .success:
+                            self?.refresh()
                         case .failure(let failure):
                             print(failure)
                         }
                     }
                 }
-                self.announcements.remove(at: indexPath.row)
             }, cancelActionTitle: Constant.cancel)
             
             self.present(alertController, animated: true)
