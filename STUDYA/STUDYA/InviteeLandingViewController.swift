@@ -9,7 +9,7 @@ import UIKit
 
 class InviteeLandingViewController: UIViewController {
     
-    let study: Study
+    let studyViewModel = StudyViewModel()
     
     let titleLabel = CustomLabel(title: "스터디에\n초대되었어요!", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
     let studyInformationBackgroundView = UIView(backgroundColor: .appColor(.background))
@@ -35,8 +35,8 @@ class InviteeLandingViewController: UIViewController {
         return button
     }()
     
-    init(study: Study) {
-        self.study = study
+    init(studyID: ID) {
+        studyViewModel.study.id = studyID
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,7 +51,9 @@ class InviteeLandingViewController: UIViewController {
         initialSetting()
         configureViews()
         
-        updateViews(with: study)
+        studyViewModel.getStudyInfo { [weak self] study in
+            self?.updateViews(with: study)
+        }
     }
     
     private func initialSetting() {
@@ -68,7 +70,7 @@ class InviteeLandingViewController: UIViewController {
     }
     
     @objc private func joinStudy() {
-        guard let studyID = study.id else { return }
+        guard let studyID = studyViewModel.study.id else { return }
         
         Network.shared.joinStudy(id: studyID) { result in
             switch result {

@@ -12,24 +12,12 @@ struct DynamicLinkBuilder {
     
     func getURL(study: Study, completion: @escaping (URL?, [String]?, Error?) -> Void) {
         
-        guard let studyID = study.id,
-              let studyName = study.studyName,
-              let studyCategory = study.category,
-              let studyMasterNickname = study.ownerNickname,
-              let studyInfo = study.studyIntroduction else { return }
-        let studyOn = study.studyOn.description
-        let studyOff = study.studyOff.description
+        guard let studyID = study.id else { return }
 
         guard let baseURL = URL(string: "https://www.notion.so/f5a505a1caa6442ca6dde83ee3a7017c") else { return }
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         components?.queryItems = [
-          URLQueryItem(name: "studyId", value: "\(studyID)"),
-          URLQueryItem(name: "studyName", value: studyName),
-          URLQueryItem(name: "studyCategory", value: studyCategory),
-          URLQueryItem(name: "masterNickname", value: studyMasterNickname),
-          URLQueryItem(name: "studyInfo", value: studyInfo),
-          URLQueryItem(name: "studyOn", value: studyOn),
-          URLQueryItem(name: "studyOff", value: studyOff)
+          URLQueryItem(name: "studyId", value: "\(studyID)")
         ]
         guard let link = components?.url else { return }
         let dynamicLinksDomain = "https://peoplesofficial.page.link"

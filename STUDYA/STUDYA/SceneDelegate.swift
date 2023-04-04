@@ -92,17 +92,9 @@ extension SceneDelegate {
                 return
             }
             // 이 후행 클로저는 main Queue 에서 실행됨.
-            if let studyID = params.first(where: { $0.name == "studyId" })?.value?.toInt(),
-               let studyName = params.first(where: { $0.name == "studyName" })?.value,
-               let studyCategory = params.first(where: { $0.name == "studyCategory" })?.value,
-               let studyMasterNickname = params.first(where: { $0.name == "masterNickname" })?.value,
-               let studyIntroduction = params.first(where: { $0.name == "studyInfo" })?.value,
-               let studyOn = params.first(where: { $0.name == "studyOn" })?.value?.toBool(),
-               let studyOff = params.first(where: { $0.name == "studyOff" })?.value?.toBool() {
+            if let studyID = params.first(where: { $0.name == "studyId" })?.value?.toInt() {
                 
-                let study = Study(id: studyID, studyName: studyName, ownerNickname: studyMasterNickname, studyOn: studyOn, studyOff: studyOff, category: StudyCategory(rawValue: studyCategory), studyIntroduction: studyIntroduction)
-                
-                let inviteeLandingViewController = InviteeLandingViewController(study: study)
+                let inviteeLandingViewController = InviteeLandingViewController(studyID: studyID)
                 let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
                 let rootViewController = sceneDelegate.window?.rootViewController
                 inviteeLandingViewController.modalPresentationStyle = .fullScreen
