@@ -27,7 +27,7 @@ class StudyViewModel: ViewModel {
         handler?(study)
     }
     
-    func getStudyInfo() {
+    func getStudyInfo(_ successHandler: @escaping (Study) -> Void) {
         guard let studyID = study.id else { return }
         
         Network.shared.getStudy(studyID: studyID) { [self] result in
@@ -35,6 +35,7 @@ class StudyViewModel: ViewModel {
             case .success(let studyOverall):
                 study = studyOverall.study
                 study.ownerNickname = studyOverall.ownerNickname
+                successHandler(study)
             case .failure(let failure):
                 print(failure)
             }

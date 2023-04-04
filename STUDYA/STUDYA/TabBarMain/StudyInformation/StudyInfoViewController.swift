@@ -72,14 +72,7 @@ final class StudyInfoViewController: SwitchableViewController {
         super.viewDidLoad()
         
         studyViewModel.study.id = studyID
-        
-        studyViewModel.bind { [weak self] study in
-            self?.configureViews(study)
-            DynamicLinkBuilder().getURL(study: study) { url, array, error in
-                self?.linkButton.setTitle(url?.absoluteString, for: .normal)
-            }
-        }
-        
+    
         getStudyInfo()
         
         addNotification()
@@ -233,7 +226,12 @@ final class StudyInfoViewController: SwitchableViewController {
     
     private func getStudyInfo() {
         
-        studyViewModel.getStudyInfo()
+        studyViewModel.getStudyInfo() { [weak self] study in
+            self?.configureViews(study)
+            DynamicLinkBuilder().getURL(study: study) { url, array, error in
+                self?.linkButton.setTitle(url?.absoluteString, for: .normal)
+            }
+        }
     }
     
     // MARK: - Configure Views

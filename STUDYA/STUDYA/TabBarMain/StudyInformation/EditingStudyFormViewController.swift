@@ -61,11 +61,11 @@ final class EditingStudyFormViewController: UIViewController {
         super.viewDidLoad()
 
         studyViewModel.bind { [self] study in
-            configureViews(study)
             doneButton.isEnabled = study.formIsFilled
         }
         
         configureViews()
+        configureViews(studyViewModel.study)
         setDelegate()
         enableTapGesture()
         setNavigation()
@@ -110,7 +110,7 @@ final class EditingStudyFormViewController: UIViewController {
         
         if studyIntroductionTextView.text != "" {
             studyIntroductionTextView.hidePlaceholder(true)
-            studyIntroductionTextView.getCharactersNumberLabel().text = "\(study.studyIntroduction!.count)/10"
+            studyIntroductionTextView.getCharactersNumberLabel().text = "\(study.studyIntroduction!.count)/50"
         }
     }
     
@@ -365,7 +365,7 @@ extension EditingStudyFormViewController: UITextViewDelegate {
             
             let maxLength = 10
             
-            limitCharactersNumber(with: studyNameTextView, maxLength: maxLength)
+            studyNameTextView.limitCharactersNumber(maxLength: maxLength)
             
             let currentTextCount = textView.text.count
             studyNameTextView.getCharactersNumberLabel().text = "\(currentTextCount)/\(maxLength)"
@@ -374,7 +374,7 @@ extension EditingStudyFormViewController: UITextViewDelegate {
             
             let maxLength = 50
             
-            limitCharactersNumber(with: studyNameTextView, maxLength: maxLength)
+            studyIntroductionTextView.limitCharactersNumber(maxLength: maxLength)
             
             let currentTextCount = textView.text.count
             studyIntroductionTextView.getCharactersNumberLabel().text = "\(currentTextCount)/\(maxLength)"
@@ -382,17 +382,6 @@ extension EditingStudyFormViewController: UITextViewDelegate {
         default:
             break
         }
-    }
-    
-    private func limitCharactersNumber(with textView: UITextView, maxLength: Int) {
-        guard let currentText = textView.text else { return }
-        guard currentText.count > maxLength else { return }
-        
-        let selection = textView.selectedTextRange
-        let newEnd = textView.position(from: selection!.start, offset: 0)!
-        
-        textView.text = String(currentText.prefix(maxLength))
-        textView.selectedTextRange = textView.textRange(from: newEnd, to: newEnd)
     }
 }
 
