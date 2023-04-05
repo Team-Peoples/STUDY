@@ -247,19 +247,18 @@ extension MemberViewController: UICollectionViewDataSource {
                
                 self?.activityIndicator.startAnimating()
                 
-                guard let nickname = KeychainService.shared.read(key: Constant.nickname) else { return }
-                guard let studyName = KeychainService.shared.read(key: Constant.currentStudyName) else { return }
-                guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
-                guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
+                guard let nickname = UserDefaults.standard.value(forKey: Constant.nickname) as? String else { return }
+                guard let studyName = UserDefaults.standard.value(forKey: Constant.currentStudyName) as? String else { return }
+                guard let studyID = UserDefaults.standard.value(forKey: Constant.currentStudyID) as? ID else { return }
 
-                DynamicLinkBuilder().getURL(study: currentStudy) { dynamicLinkURL, array, error in
+                DynamicLinkBuilder().getURL(studyID: studyID) { [weak self] dynamicLinkURL, array, error in
                     guard let link = dynamicLinkURL?.absoluteString else {
                         print("Failed to generate dynamic link URL: \(error?.localizedDescription ?? "unknown error")")
                         return
                     }
                     
                     let shareText = """
-                            "\(nickname)"님이 \(studyName)에 초대했어요!
+                            "\(nickname)"님이 "\(studyName)"에 초대했어요!
                             
                             아래 링크를 통해 스터디에
                             참여하실 수 있어요 👇🏼
@@ -277,7 +276,6 @@ extension MemberViewController: UICollectionViewDataSource {
                         activityViewController.popoverPresentationController?.permittedArrowDirections = []
 
                         self?.present(activityViewController, animated: true, completion: nil)
-
                     }
                 }
             }

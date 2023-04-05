@@ -15,14 +15,14 @@ class InviteeLandingViewController: UIViewController {
     let studyInformationBackgroundView = UIView(backgroundColor: .appColor(.background))
     let studyCategoryBackgroundView = UIView(backgroundColor: .appColor(.background))
     let studyCategoryLabel = CustomLabel(title: String(), tintColor: .keyColor1, size: 16)
-    let roundedRectangleInFrontOfstudyNameLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4)
+    let roundedRectangleInFrontOfstudyNameLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4 / 2)
     let studyNameLabel = CustomLabel(title: String(), tintColor: .keyColor1, size: 18, isBold: true)
     let studyTypeLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
     let separater = UIView(backgroundColor: .appColor(.keyColor1))
     let studyOwnerTitleLabel = CustomLabel(title: "스터디장", tintColor: .whiteLabel, size: 10, isBold: true)
     let studyOwnerNicknameLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12, isBold: true)
     let studyOwnerRitleBackgroundView = UIView(backgroundColor: .appColor(.keyColor1), cornerRadius: 10)
-    let roundedRectangleInFrontOfstudyIntroductionLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4)
+    let roundedRectangleInFrontOfstudyIntroductionLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4 / 2)
     let studyIntroductionLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
     let studyJoinButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, normalTitle: "참여하기", radiusIfNotCapsule: 25)
     let dismissButton: UIButton = {
@@ -75,6 +75,7 @@ class InviteeLandingViewController: UIViewController {
         Network.shared.joinStudy(id: studyID) { result in
             switch result {
             case .success:
+                NotificationCenter.default.post(name: .reloadStudyList, object: nil, userInfo: [Constant.studyID: studyID])
                 self.dismiss(animated: true)
             case .failure(let failure):
                 switch failure {
@@ -177,7 +178,7 @@ class InviteeLandingViewController: UIViewController {
         }
         studyTypeLabel.snp.makeConstraints { make in
             make.trailing.equalTo(studyInformationBackgroundView).inset(12)
-            make.bottom.equalTo(separater.snp.top).offset(1)
+            make.bottom.equalTo(separater.snp.top).offset(-3)
         }
         separater.snp.makeConstraints { make in
             make.top.equalTo(studyNameLabel.snp.bottom).offset(6)

@@ -92,13 +92,10 @@ extension SceneDelegate {
                 return
             }
             // 이 후행 클로저는 main Queue 에서 실행됨.
+            
             if let studyID = params.first(where: { $0.name == "studyId" })?.value?.toInt() {
-                
-                let inviteeLandingViewController = InviteeLandingViewController(studyID: studyID)
-                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
-                let rootViewController = sceneDelegate.window?.rootViewController
-                inviteeLandingViewController.modalPresentationStyle = .fullScreen
-                rootViewController?.present(inviteeLandingViewController, animated: true)
+                UserDefaults.standard.set(studyID, forKey: Constant.invitedStudyID)
+                AppController.shared.goInviteeLanding()
             } else {
                 print("params not exist")
             }

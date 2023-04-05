@@ -24,7 +24,7 @@ final class MainViewModel {
             case .success(let user):
                 guard let nickName = user.nickName else { return }
                 
-                KeychainService.shared.create(key: Constant.nickname, value: nickName)
+                UserDefaults.standard.set(nickName, forKey: Constant.nickname)
                 
                 self.getFirstStudyAfterGettingAllStudies()
                 
@@ -90,8 +90,11 @@ final class MainViewModel {
             switch result {
             case .success(let studyOverall):
                 // 스터디정보를 처음으로 가져온다.
-                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
-                KeychainService.shared.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
+                guard let currentStudyName = studyOverall.study.studyName else { return }
+                
+                UserDefaults.standard.set(currentStudyName, forKey: Constant.currentStudyName)
+                UserDefaults.standard.set(studyID, forKey: Constant.currentStudyID)
+                
                 // domb: 중복된 작업인건지 물어보기
                 self.isManager.value = studyOverall.isManager || studyOverall.isOwner
                 self.currentStudyOverall.value = studyOverall
@@ -343,6 +346,8 @@ final class MainViewController: SwitchableViewController, LinkShareable {
     private func showYesStudyViews() {
         noStudyViews.forEach { $0.isHidden = true }
         mainTableView.isHidden = false
+        
+        let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
         floatingButtonContainerView.isHidden = viewModel.isManager.value && isSwitchOn ? false : true
         floatingButton.isHidden = viewModel.isManager.value && isSwitchOn ? false : true
     }
@@ -553,7 +558,10 @@ extension MainViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MainSecondScheduleTableViewCell.identifier) as? MainSecondScheduleTableViewCell else { return MainSecondScheduleTableViewCell() }
             
             cell.navigatableManagableDelegate = self
-            cell.configureCellWith(nickName: KeychainService.shared.read(key: Constant.nickname), schedule: viewModel.currentStudyOverall.value?.studySchedule)
+            
+            let nickname = UserDefaults.standard.value(forKey: Constant.nickname) as? String
+            
+            cell.configureCellWith(nickName: nickname, schedule: viewModel.currentStudyOverall.value?.studySchedule)
 
             return cell
             
