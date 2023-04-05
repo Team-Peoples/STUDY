@@ -195,8 +195,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 popupVC.firstButtonAction = {
                     self?.dismiss(animated: true)
                     
-                    let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
-                    
+                    let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
                     let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                     navigationVC.modalPresentationStyle = .fullScreen
                     
@@ -210,7 +209,9 @@ extension StudyScheduleViewController: UITableViewDataSource {
             let popupVC = StudySchedulePopUpAlertViewController(type: Constant.edit, repeatOption: repeatOption)
             
             popupVC.firstButtonAction = {
-                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
+                self?.dismiss(animated: true)
+                
+                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen
@@ -218,7 +219,9 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 self?.present(navigationVC, animated: true)
             }
             popupVC.secondButtonAction = {
-                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule)
+                self?.dismiss(animated: true)
+                
+                let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: true)
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen
@@ -236,7 +239,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete, repeatOption: .norepeat)
                 popupVC.firstButtonAction = {
                     self?.studyAllScheduleViewModel.deleteStudySchedule(id: studySchedule.studyScheduleID!, deleteRepeatedSchedule: false) {
-                        // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
+                       
                         NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
                         self?.dismiss(animated: true)
                     }
@@ -249,7 +252,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
             let popupVC = StudySchedulePopUpAlertViewController(type: Constant.delete, repeatOption: repeatOption)
             popupVC.firstButtonAction = {
                 self?.studyAllScheduleViewModel.deleteStudySchedule(id: studySchedule.studyScheduleID!, deleteRepeatedSchedule: false) {
-                    // domb: 이부분도 노티로 처리하는게 좋을 것 같음.
+                    
                     NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
                     self?.dismiss(animated: true)
                 }

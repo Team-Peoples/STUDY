@@ -188,7 +188,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in

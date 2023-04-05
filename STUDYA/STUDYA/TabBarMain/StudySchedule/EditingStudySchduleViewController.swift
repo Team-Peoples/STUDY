@@ -73,14 +73,13 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(studySchedule: StudySchedule) {
+    init(studySchedule: StudySchedule, isUpdateRepeatDay: Bool) {
         
         let studySchedule = studySchedule.convertStudySchedulePosting()
         editingStudyScheduleViewModel.studySchedule = studySchedule
+        editingStudyScheduleViewModel.studySchedule.isUpdateRepeatDay = isUpdateRepeatDay
         
         super.init(nibName: nil, bundle: nil)
-        
-        initialConfigure(studySchedule)
     }
     
     required init?(coder: NSCoder) {
@@ -91,6 +90,8 @@ final class EditingStudySchduleViewController: UIViewController {
         super.viewDidLoad()
         
         editingStudyScheduleViewModel.bind { [self] studySchedule in
+            
+            configureViews(with: studySchedule)
             
             doneButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.contentFormIsFilled && studySchedule.repeatOptionFormIsFilled
             
@@ -121,6 +122,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     @objc private func doneButtonDidTapped() {
         editingStudyScheduleViewModel.updateStudySchedule {
+            NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
             self.dismiss(animated: true)
         }
     }
@@ -131,6 +133,7 @@ final class EditingStudySchduleViewController: UIViewController {
         let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate)!
         let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate, viewModel: editingStudyScheduleViewModel)
+        
         popUpCalendarVC.endDate = repeatEndDate
 
         present(popUpCalendarVC, animated: true)
@@ -144,6 +147,7 @@ final class EditingStudySchduleViewController: UIViewController {
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate, viewModel: editingStudyScheduleViewModel)
         
         popUpCalendarVC.startDate = startDate
+        
         present(popUpCalendarVC, animated: true)
     }
     
@@ -193,7 +197,6 @@ final class EditingStudySchduleViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
@@ -228,7 +231,6 @@ final class EditingStudySchduleViewController: UIViewController {
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
@@ -309,15 +311,14 @@ final class EditingStudySchduleViewController: UIViewController {
         addSubviewsWithConstraints()
     }
     
-    private func initialConfigure(_ studySchedule: StudySchedulePosting) {
-        
+    private func configureViews(with studySchedule: StudySchedulePosting) {
+    
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)
         }
         
         // 반복일정이 아닌경우 repeatEndDate = nil이 아니라 서버에서 startDate와 동일한 날짜로 보내준다.
-        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate),
-           repeatEndDate != DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
+        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
             repeatEndDateSelectableView.setUpCalendarLinkedDateLabel(at: repeatEndDate)
         } else {
             repeatEndDateSelectableView.calendarLinkedDateLabel.text = ""
@@ -330,7 +331,7 @@ final class EditingStudySchduleViewController: UIViewController {
             startTimeSelectButton.setTitle("--:--", for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         }
-
+        
         if let endTime = studySchedule.endTime {
             endTimeSelectButton.setTitle(endTime, for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
@@ -350,7 +351,7 @@ final class EditingStudySchduleViewController: UIViewController {
             
             selectedRepeatOptionCheckBox = shouldCheckBoxButton
         }
-
+        
         if let place = studySchedule.place, !place.isEmpty {
             placeTextView.text = studySchedule.place
             placeTextView.hidePlaceholder(true)
