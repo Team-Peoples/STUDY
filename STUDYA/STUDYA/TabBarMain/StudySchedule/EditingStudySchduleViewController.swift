@@ -13,6 +13,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // domb: 새로운 모델을 생성하는게 맞는지, 이전화면에서 할당하는 방식으로 할지..
     let editingStudyScheduleViewModel = StudySchedulePostingViewModel()
+    var existingStudyScheduleTimeTable: [DashedDate: [TimeRange]]?
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -73,14 +74,13 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // MARK: - Life Cycle
     
-    init(studySchedule: StudySchedule) {
+    init(studySchedule: StudySchedule, isUpdateRepeatDay: Bool) {
         
         let studySchedule = studySchedule.convertStudySchedulePosting()
         editingStudyScheduleViewModel.studySchedule = studySchedule
+        editingStudyScheduleViewModel.studySchedule.isUpdateRepeatDay = isUpdateRepeatDay
         
         super.init(nibName: nil, bundle: nil)
-        
-        initialConfigure(studySchedule)
     }
     
     required init?(coder: NSCoder) {
@@ -92,12 +92,20 @@ final class EditingStudySchduleViewController: UIViewController {
         
         editingStudyScheduleViewModel.bind { [self] studySchedule in
             
+            configureViews(with: studySchedule)
+            
             doneButton.isEnabled = studySchedule.periodFormIsFilled && studySchedule.contentFormIsFilled && studySchedule.repeatOptionFormIsFilled
             
             repeatEndDateSelectableView.isUserInteractionEnabled = studySchedule.repeatOption != .norepeat
             repeatEndDateSelectableView.alpha = studySchedule.repeatOption != .norepeat ? 1 : 0.5
         }
         
+        let studySchedule = editingStudyScheduleViewModel.studySchedule
+        let startDate = studySchedule.startDate
+        if let startTime = studySchedule.startTime, let endTime = studySchedule.endTime {
+            let timeRange = (StartTime: startTime, EndTime: endTime)
+            existingStudyScheduleTimeTable?.subtract(timeRange: timeRange, at: startDate)
+        }
         configureViews()
     }
     
@@ -121,6 +129,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     @objc private func doneButtonDidTapped() {
         editingStudyScheduleViewModel.updateStudySchedule {
+            NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
             self.dismiss(animated: true)
         }
     }
@@ -131,6 +140,7 @@ final class EditingStudySchduleViewController: UIViewController {
         let startDate = DateFormatter.dottedDateFormatter.date(from: studySchedule.startDate)!
         let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate)
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate, viewModel: editingStudyScheduleViewModel)
+        
         popUpCalendarVC.endDate = repeatEndDate
 
         present(popUpCalendarVC, animated: true)
@@ -144,6 +154,7 @@ final class EditingStudySchduleViewController: UIViewController {
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .end, selectedDate: repeatEndDate, viewModel: editingStudyScheduleViewModel)
         
         popUpCalendarVC.startDate = startDate
+        
         present(popUpCalendarVC, animated: true)
     }
     
@@ -180,20 +191,35 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
+        let timePicker = TimePicker(frame: .zero)
         
         if let endTime = editingStudyScheduleViewModel.studySchedule.endTime {
-            timePicker.maximumDate = DateFormatter.timeFormatter.date(from: endTime)
+            let endTimeComponets = endTime.components(separatedBy: ":")
+            guard let hour = endTimeComponets.first?.toInt(),
+                  let minute = endTimeComponets.last?.toInt() else { return }
+            
+            let maximunDate = Calendar.current.date(bySettingHour: hour, minute: minute - 5, second: 0, of: Date())
+            timePicker.maximumDate = maximunDate
         }
         
-        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let startTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            self.editingStudyScheduleViewModel.studySchedule.startTime = startTime
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
+            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
+            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
+            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
+                return selectedTime >= startTime && selectedTime <= endTime
+            })
+            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+                let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
+                
+                self?.present(alert, animated: true)
+            } else {
+                self?.editingStudyScheduleViewModel.studySchedule.startTime = selectedTime
+            }
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
@@ -215,20 +241,35 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
+        let timePicker = TimePicker(frame: .zero)
         
         if let startTime = editingStudyScheduleViewModel.studySchedule.startTime {
-            timePicker.minimumDate = DateFormatter.timeFormatter.date(from: startTime)
+            let startTimeComponets = startTime.components(separatedBy: ":")
+            guard let hour = startTimeComponets.first?.toInt(),
+                  let minute = startTimeComponets.last?.toInt() else { return }
+            
+            let minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 5, second: 0, of: Date())
+            timePicker.minimumDate = minimumDate
         }
 
-        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let endTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            self.editingStudyScheduleViewModel.studySchedule.endTime = endTime
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
+            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
+            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
+            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
+                return selectedTime >= startTime && selectedTime <= endTime
+            })
+            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+                let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
+                
+                self?.present(alert, animated: true)
+            } else {
+                self?.editingStudyScheduleViewModel.studySchedule.endTime = selectedTime
+            }
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
         
-        /// picker 수정하기
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
@@ -292,7 +333,6 @@ final class EditingStudySchduleViewController: UIViewController {
         
         scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
-    
     // MARK: - Configure
     
     private func configureViews() {
@@ -309,15 +349,14 @@ final class EditingStudySchduleViewController: UIViewController {
         addSubviewsWithConstraints()
     }
     
-    private func initialConfigure(_ studySchedule: StudySchedulePosting) {
-        
+    private func configureViews(with studySchedule: StudySchedulePosting) {
+    
         if let startDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
             startDateSelectableView.setUpCalendarLinkedDateLabel(at: startDate)
         }
         
         // 반복일정이 아닌경우 repeatEndDate = nil이 아니라 서버에서 startDate와 동일한 날짜로 보내준다.
-        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate),
-           repeatEndDate != DateFormatter.dashedDateFormatter.date(from: studySchedule.startDate) {
+        if let repeatEndDate = DateFormatter.dashedDateFormatter.date(from: studySchedule.repeatEndDate) {
             repeatEndDateSelectableView.setUpCalendarLinkedDateLabel(at: repeatEndDate)
         } else {
             repeatEndDateSelectableView.calendarLinkedDateLabel.text = ""
@@ -330,7 +369,7 @@ final class EditingStudySchduleViewController: UIViewController {
             startTimeSelectButton.setTitle("--:--", for: .normal)
             startTimeSelectButton.setTitleColor(.appColor(.ppsGray2), for: .normal)
         }
-
+        
         if let endTime = studySchedule.endTime {
             endTimeSelectButton.setTitle(endTime, for: .normal)
             endTimeSelectButton.setTitleColor(.appColor(.ppsBlack), for: .normal)
@@ -350,7 +389,7 @@ final class EditingStudySchduleViewController: UIViewController {
             
             selectedRepeatOptionCheckBox = shouldCheckBoxButton
         }
-
+        
         if let place = studySchedule.place, !place.isEmpty {
             placeTextView.text = studySchedule.place
             placeTextView.hidePlaceholder(true)
@@ -563,6 +602,14 @@ extension EditingStudySchduleViewController: UITextViewDelegate {
             editingStudyScheduleViewModel.studySchedule.place = placeTextView.text
         default:
             break
+        }
+    }
+}
+
+extension [DashedDate: [TimeRange]] {
+    mutating func subtract(timeRange: TimeRange, at date: DashedDate) {
+        if let index = self[date]?.firstIndex(where: { $0 == timeRange } ) {
+            self[date]?.remove(at: index)
         }
     }
 }

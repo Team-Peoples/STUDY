@@ -22,3 +22,4 @@ typealias Time = String
 typealias Deposit = Int
 typealias StudyID = String
 typealias AllStudyScheduleOfAllStudy = [StudyID: [StudySchedule]]
+typealias TimeRange = (StartTime: String, EndTime: String)

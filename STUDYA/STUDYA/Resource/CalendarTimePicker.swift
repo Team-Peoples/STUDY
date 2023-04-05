@@ -7,12 +7,6 @@
 
 import UIKit
 
-struct CalendarTimePicker {
-    static let shared = TimePicker()
-    
-    private init() {}
-}
-
 final class TimePicker: UIDatePicker {
     
     override init(frame: CGRect) {
@@ -29,6 +23,7 @@ final class TimePicker: UIDatePicker {
         calendar = Calendar.current
         datePickerMode = .time
         preferredDatePickerStyle = .wheels
+        minuteInterval = 5
         locale = Locale(identifier: "en_gb")
     }
 }

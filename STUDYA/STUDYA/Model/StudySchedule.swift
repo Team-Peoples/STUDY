@@ -39,6 +39,7 @@ struct StudySchedule: Codable {
     }
     
     func convertStudySchedulePosting() -> StudySchedulePosting {
+        let studyID = self.studyID?.toInt()
         let studyScheduleID = self.studyScheduleID
         let topic = self.topic
         let place = self.place
@@ -47,10 +48,17 @@ struct StudySchedule: Codable {
     
         let startDate = DateFormatter.dashedDateFormatter.string(from: self.startDateAndTime)
         let startTime = DateFormatter.timeFormatter.string(from: self.startDateAndTime)
-        let endDate = DateFormatter.dashedDateFormatter.string(from: self.endDateAndTime)
+        var endDate: String
+        
+        if repeatOption == .norepeat || repeatOption == nil {
+            endDate = String()
+        } else {
+            endDate = DateFormatter.dashedDateFormatter.string(from: self.endDateAndTime)
+        }
+        
         let endTime = DateFormatter.timeFormatter.string(from: self.endDateAndTime)
 
-        return StudySchedulePosting(studyID: nil, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: endDate, startTime: startTime, endTime: endTime, repeatOption: repeatOption ?? .norepeat)
+        return StudySchedulePosting(studyID: studyID, studyScheduleID: studyScheduleID, topic: topic, place: place, startDate: startDate, repeatEndDate: endDate, startTime: startTime, endTime: endTime, repeatOption: repeatOption ?? .norepeat)
     }
 }
 
@@ -67,6 +75,7 @@ struct StudySchedulePosting: Codable {
     var endTime: String?
     
     var repeatOption: RepeatOption = .norepeat
+    var isUpdateRepeatDay: Bool?
     
     var periodFormIsFilled: Bool {
         if repeatOption == .norepeat {
@@ -97,6 +106,7 @@ struct StudySchedulePosting: Codable {
         case repeatOption = "repeatDay"
         case startDate = "studyScheduleDate"
         case repeatEndDate = "targetDate"
+        case isUpdateRepeatDay = "isRepeat"
     }
 }
 

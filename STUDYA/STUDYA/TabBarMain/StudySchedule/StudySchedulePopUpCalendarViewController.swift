@@ -37,8 +37,6 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
-        modalTransitionStyle = .crossDissolve
-        modalPresentationStyle = .overFullScreen
     }
     
     required init(coder aDecoder: NSCoder) {

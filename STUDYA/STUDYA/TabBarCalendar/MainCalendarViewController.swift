@@ -30,7 +30,7 @@ final class MainCalendarViewController: UIViewController {
         // 스터디 스케쥴 바인딩
         studyAllScheduleViewModel.bind { [self] allStudyScheduleOfAllStudy in
             
-            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleArray()
+            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleForIncludingStudyID()
             studyAllSchedule = studySchedule
             
             // domb: 캘린더에 스터디 스케쥴과 관련된 정보를 넣을수밖에 없나...
