@@ -37,7 +37,7 @@ final class MemberBottomSheetViewController: UIViewController {
         
         f.setDelegate(to: self)
         f.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 60, height: 0))
-        f.attributedPlaceholder = NSAttributedString(string: "역할 이름을 자유롭게 정해주세요.('스터디장' 제외)", attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.boldSystemFont(ofSize: 16)])
+        f.attributedPlaceholder = NSAttributedString(string: "역할 이름을 자유롭게 정해주세요.", attributes: [.foregroundColor: UIColor.appColor(.ppsGray2), .font: UIFont.boldSystemFont(ofSize: 16)])
         f.isSecureTextEntry = false
         
         let l = CustomLabel(title: "역할", tintColor: .ppsBlack, size: 16)
@@ -125,6 +125,11 @@ final class MemberBottomSheetViewController: UIViewController {
     @objc private func doneButtonTapped() {
         hasMemeberInfoEverChanged = true
         view.endEditing(true)
+        if roleInputField.text == "스터디장" {
+            let alert = SimpleAlert(message: "'스터디장'은 역할로 사용할 수 없습니다.")
+            present(alert, animated: true)
+            return
+        }
         
         guard let memberID = member?.memberID, let newRole = newRole else { return }
         
@@ -253,6 +258,11 @@ extension MemberBottomSheetViewController: UITextFieldDelegate {
         guard let text = textField.text else { return true }
                
         let okayToEndEditing = text == "스터디장" ? false : true
+        
+        if !okayToEndEditing {
+            let alert = SimpleAlert(message: "'스터디장'은 역할로 사용할 수 없습니다.")
+            present(alert, animated: true)
+        }
         
         return okayToEndEditing
     }
