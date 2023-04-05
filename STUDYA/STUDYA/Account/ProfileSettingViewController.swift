@@ -15,8 +15,6 @@ class ProfileSettingViewController: UIViewController {
     private var nickName: String?
 //    private var isButtonFilled = false
     
-    private var profileImage: UIImage?
-    
     private let titleLabel = CustomLabel(title: "프로필 설정", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var nickNameInputView = ValidationInputView(titleText: "닉네임을 설정해주세요", fontSize: 18, titleBottomPadding: 20, placeholder: "한글/영어/숫자를 사용할 수 있어요", keyBoardType: .default, returnType: .done, isFieldSecure: false, validationText: "*닉네임은 프로필에서 언제든 변경할 수 있어요", cancelButton: true, target: self, textFieldAction: #selector(clearButtonDidTapped))
     private let askingRegisterProfileLabel = CustomLabel(title: "프로필 사진을 등록할까요?", tintColor: .ppsBlack, size: 24)
@@ -24,7 +22,6 @@ class ProfileSettingViewController: UIViewController {
     private let profileImageSelectorView = ProfileImageContainerView(size: 120)
     private let plusCircleView = PlusCircleFillView(size: 30)
     private let doneButton = BrandButton(title: Constant.done, isBold: true, isFill: false)
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,20 +36,42 @@ class ProfileSettingViewController: UIViewController {
     }
     
     @objc private func touchUpImageView() {
-        PHPhotoLibrary.requestAuthorization( { status in
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { [weak self] _ in
+            self?.openAlbum()
+        }
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
+        
+        if profileImageSelectorView.internalImage != nil {
+            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { [weak self] _ in
+                self?.profileImageSelectorView.internalImage = nil
+            }
+
+            alert.addAction(defaultImageAction)
+        }
+        
+        alert.addAction(selectImageAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func openAlbum() {
+        PHPhotoLibrary.requestAuthorization( { [weak self] status in
             
             switch status {
             case .authorized:
                 DispatchQueue.main.async {
-                    self.setupImagePicker()
+                    self?.setupImagePicker()
                 }
             case .denied:
-                if self.isAuthForAlbum == false {
+                if self?.isAuthForAlbum == false {
                     DispatchQueue.main.async {
-                        self.AuthSettingOpen()
+                        self?.AuthSettingOpen()
                     }
                 }
-                self.isAuthForAlbum = false
+                self?.isAuthForAlbum = false
                 
             case .restricted, .notDetermined:
                 break
@@ -97,6 +116,8 @@ class ProfileSettingViewController: UIViewController {
             return
         }
         
+        let profileImage = profileImageSelectorView.internalImage
+        
         Network.shared.signUp(userId: email, pw: password, pwCheck: passwordCheck, nickname: nickName, image: profileImage) { result in
             switch result {
             case .success(let user):
@@ -138,6 +159,9 @@ class ProfileSettingViewController: UIViewController {
     }
     
     private func setProfileWhenSNSSignUp() {
+        
+        let profileImage = profileImageSelectorView.internalImage
+        
         Network.shared.updateUserInfo(oldPassword: "", password: "", passwordCheck: "", nickname: nickName, image: profileImage) { result in
             switch result {
             case .success:

@@ -10,10 +10,12 @@ import KakaoSDKAuth
 import FirebaseDynamicLinks
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
-
+    
+    // open url
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        print(#function)
         if let url = URLContexts.first?.url {
             if (AuthApi.isKakaoTalkLoginUrl(url)) {
                 _ = AuthController.handleOpenUrl(url: url)
@@ -21,58 +23,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    func scene(_ scene: UIScene, willConnectTo
-               session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
-        
+    // ui인스턴스를 생성하거나 되돌릴때 호출된다.
+    // 이 메소드 안에서 새로운 씬이나 보여주려고하는 씬과 관련된 데이터를 로딩하기 시작하면된다.
+    
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        print(#function)
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
+        
         AppController.shared.show(in: window)
         
-        // Get URL components from the incoming user activity.
-        guard let userActivity = connectionOptions.userActivities.first,
-              userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-              let incomingURL = userActivity.webpageURL else {
-            return
-        }
-        
-        // domb: DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: URL)과 다른점.
-        let linkHandled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLinks, error in
-            guard let url = dynamicLinks?.url, let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
-            
-//            // Check for specific URL components that you need.
-//            guard let path = components.path,
-//                let params = components.queryItems else {
-//                return
-//            }
-//            print("path = \(path)")
-//
-//            if let albumName = params.first(where: { $0.name == "albumname" })?.value,
-//                let photoIndex = params.first(where: { $0.name == "index" })?.value {
-//                
-//                print("album = \(albumName)")
-//                print("photoIndex = \(photoIndex)")
-//            } else {
-//                print("Either album name or photo index missing")
-//            }
+        if let userActivity = connectionOptions.userActivities.first {
+            self.scene(scene, continue: userActivity)
         }
     }
     
     
     
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
-//        if let incomingURL = userActivity.webpageURL {
-//            let linkHandled = DynamicLinks.dynamicLinks().handleUniversalLink(incomingURL) { dynamicLinks, error in
-//
-//                // Dynamic Link 처리
-//                print(dynamicLinks?.url)
-//            }
-//        }
+        if let incomingURL = userActivity.webpageURL {
+            handleDynamicLinks(url: incomingURL)
+        }
     }
     
     
+    
+    func stateRestorationActivity(for: UIScene) -> NSUserActivity? { return nil }
+    // Returns a user activity object encapsulating the current state of the specified scene.
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
@@ -80,26 +59,58 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
-
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
-
+    
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
-
+    
     func sceneWillEnterForeground(_ scene: UIScene) {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
     }
-
+    
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+    }
+}
+
+extension SceneDelegate {
+    private func handleDynamicLinks(url: URL) {
+        DynamicLinks.dynamicLinks().handleUniversalLink(url) { dynamicLinks, error in
+            guard let url = dynamicLinks?.url, let components = NSURLComponents(url: url, resolvingAgainstBaseURL: true) else { return }
+            
+            // Check for specific URL components that you need.
+            guard let params = components.queryItems else {
+                return
+            }
+            // 이 후행 클로저는 main Queue 에서 실행됨.
+            if let studyID = params.first(where: { $0.name == "studyId" })?.value?.toInt(),
+               let studyName = params.first(where: { $0.name == "studyName" })?.value,
+               let studyCategory = params.first(where: { $0.name == "studyCategory" })?.value,
+               let studyMasterNickname = params.first(where: { $0.name == "masterNickname" })?.value,
+               let studyIntroduction = params.first(where: { $0.name == "studyInfo" })?.value,
+               let studyOn = params.first(where: { $0.name == "studyOn" })?.value?.toBool(),
+               let studyOff = params.first(where: { $0.name == "studyOff" })?.value?.toBool() {
+                
+                let study = Study(id: studyID, studyName: studyName, ownerNickname: studyMasterNickname, studyOn: studyOn, studyOff: studyOff, category: StudyCategory(rawValue: studyCategory), studyIntroduction: studyIntroduction)
+                
+                let inviteeLandingViewController = InviteeLandingViewController(study: study)
+                let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+                let rootViewController = sceneDelegate.window?.rootViewController
+                inviteeLandingViewController.modalPresentationStyle = .fullScreen
+                rootViewController?.present(inviteeLandingViewController, animated: true)
+            } else {
+                print("params not exist")
+            }
+        }
     }
 }
 

@@ -10,7 +10,6 @@ import UIKit
 class InviteeLandingViewController: UIViewController {
     
     let study: Study
-    let memberCount: Int
     
     let titleLabel = CustomLabel(title: "스터디에\n초대되었어요!", tintColor: .ppsBlack, size: 24, isBold: true, isNecessaryTitle: false)
     let studyInformationBackgroundView = UIView(backgroundColor: .appColor(.background))
@@ -18,8 +17,6 @@ class InviteeLandingViewController: UIViewController {
     let studyCategoryLabel = CustomLabel(title: String(), tintColor: .keyColor1, size: 16)
     let roundedRectangleInFrontOfstudyNameLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4)
     let studyNameLabel = CustomLabel(title: String(), tintColor: .keyColor1, size: 18, isBold: true)
-    let memberLogo = UIImageView(image: UIImage(named: "member"))
-    let memberCountLabel = CustomLabel(title: String(), tintColor: .ppsBlack, size: 12)
     let studyTypeLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
     let separater = UIView(backgroundColor: .appColor(.keyColor1))
     let studyOwnerTitleLabel = CustomLabel(title: "스터디장", tintColor: .whiteLabel, size: 10, isBold: true)
@@ -28,10 +25,18 @@ class InviteeLandingViewController: UIViewController {
     let roundedRectangleInFrontOfstudyIntroductionLabel = UIView(backgroundColor: .appColor(.subColor2), alpha: 1, cornerRadius: 4)
     let studyIntroductionLabel = CustomLabel(title: String(), tintColor: .ppsGray1, size: 12)
     let studyJoinButton = CustomButton(fontSize: 20, isBold: true, normalBackgroundColor: .keyColor1, normalTitleColor: .whiteLabel, normalTitle: "참여하기", radiusIfNotCapsule: 25)
+    let dismissButton: UIButton = {
+        
+        let button = UIButton()
+        let image = UIImage(named: "close")?.withTintColor(.black)
+        
+        button.setImage(image, for: .normal)
+        
+        return button
+    }()
     
-    init(study: Study, memberCount: Int) {
+    init(study: Study) {
         self.study = study
-        self.memberCount = memberCount
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -46,7 +51,7 @@ class InviteeLandingViewController: UIViewController {
         initialSetting()
         configureViews()
         
-        updateViews(with: study, memberCount: memberCount)
+        updateViews(with: study)
     }
     
     private func initialSetting() {
@@ -55,6 +60,11 @@ class InviteeLandingViewController: UIViewController {
         studyInformationBackgroundView.configureBorder(color: .ppsGray2, width: 1, radius: 24)
         studyCategoryBackgroundView.configureBorder(color: .ppsGray2, width: 1, radius: 14)
         studyJoinButton.addTarget(self, action: #selector(joinStudy), for: .touchUpInside)
+        dismissButton.addTarget(self, action: #selector(close), for: .touchUpInside)
+    }
+    
+    @objc private func close() {
+        self.dismiss(animated: true)
     }
     
     @objc private func joinStudy() {
@@ -65,12 +75,20 @@ class InviteeLandingViewController: UIViewController {
             case .success:
                 self.dismiss(animated: true)
             case .failure(let failure):
-                print(failure)
+                switch failure {
+                case .alreadyJoined:
+                    let simpleAlert = SimpleAlert(title: "스터디 참여 불가능", message: "스터디에 이미 참여중입니다.", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: Constant.OK, style: .default)
+                    simpleAlert.addAction(okAction)
+                    self.present(simpleAlert, animated: true)
+                default:
+                    print(failure)
+                }
             }
         }
     }
     
-    private func updateViews(with study: Study, memberCount: Int) {
+    private func updateViews(with study: Study) {
         
         if let studyCategory = study.category {
             studyCategoryLabel.text = StudyCategory(rawValue: studyCategory)?.translatedKorean
@@ -78,8 +96,6 @@ class InviteeLandingViewController: UIViewController {
         if let studyName = study.studyName {
             studyNameLabel.text = studyName
         }
-        
-        memberCountLabel.text = memberCount.toString()
         
         let studyOn = study.studyOn
         let studyOff = study.studyOff
@@ -107,13 +123,12 @@ class InviteeLandingViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        view.addSubview(dismissButton)
         view.addSubview(titleLabel)
         view.addSubview(studyInformationBackgroundView)
         
         studyInformationBackgroundView.addSubview(roundedRectangleInFrontOfstudyNameLabel)
         studyInformationBackgroundView.addSubview(studyNameLabel)
-        studyInformationBackgroundView.addSubview(memberLogo)
-        studyInformationBackgroundView.addSubview(memberCountLabel)
         studyInformationBackgroundView.addSubview(studyTypeLabel)
         studyInformationBackgroundView.addSubview(separater)
         studyInformationBackgroundView.addSubview(studyOwnerRitleBackgroundView)
@@ -127,6 +142,10 @@ class InviteeLandingViewController: UIViewController {
         studyCategoryBackgroundView.addSubview(studyCategoryLabel)
         
         view.addSubview(studyJoinButton)
+        
+        dismissButton.snp.makeConstraints { make in
+            make.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+        }
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(40)
@@ -154,17 +173,9 @@ class InviteeLandingViewController: UIViewController {
             make.top.equalTo(studyInformationBackgroundView).inset(20)
             make.leading.equalTo(studyInformationBackgroundView).inset(23)
         }
-        memberLogo.snp.makeConstraints { make in
-            make.height.width.equalTo(10)
-            make.trailing.equalTo(memberCountLabel.snp.leading).offset(-2)
-            make.centerY.equalTo(memberCountLabel)
-        }
-        memberCountLabel.snp.makeConstraints { make in
-            make.top.trailing.equalTo(studyInformationBackgroundView).inset(12)
-        }
         studyTypeLabel.snp.makeConstraints { make in
             make.trailing.equalTo(studyInformationBackgroundView).inset(12)
-            make.top.equalTo(memberCountLabel.snp.bottom).offset(1)
+            make.bottom.equalTo(separater.snp.top).offset(1)
         }
         separater.snp.makeConstraints { make in
             make.top.equalTo(studyNameLabel.snp.bottom).offset(6)

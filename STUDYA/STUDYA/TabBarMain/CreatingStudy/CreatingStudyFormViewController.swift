@@ -26,7 +26,7 @@ final class CreatingStudyFormViewController: UIViewController {
     /// 스크롤 구현
     private let scrollView = UIScrollView()
     private let containerView = UIView()
-    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요", tintColor: .ppsBlack, size: 24, isBold: true)
+    private let titleLabel = CustomLabel(title: "어떤 스터디를\n만들까요?", tintColor: .ppsBlack, size: 24, isBold: true)
     /// 스터디 카테고리
     private let studyCategoryLabel = CustomLabel(title: "주제", tintColor: .ppsBlack, size: 16, isNecessaryTitle: true)
     private let studyCategoryCollectionView: UICollectionView = {
@@ -35,6 +35,7 @@ final class CreatingStudyFormViewController: UIViewController {
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        cv.backgroundColor = .white
         cv.showsHorizontalScrollIndicator = false
         cv.register(CategoryCell.self, forCellWithReuseIdentifier: "CategoryCell")
         
@@ -62,7 +63,6 @@ final class CreatingStudyFormViewController: UIViewController {
         super.viewDidLoad()
         
         studyViewModel.bind { [self] study in
-            print(study)
             doneButton.isEnabled = study.formIsFilled
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }

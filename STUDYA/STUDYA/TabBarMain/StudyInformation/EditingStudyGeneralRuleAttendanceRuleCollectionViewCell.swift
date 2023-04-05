@@ -86,6 +86,10 @@ final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectio
 //        generalRuleAttendanceTableView.endEditing(true)
         generalRuleAttendanceTableView.contentInset = .zero
     }
+    
+    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
+        self.endEditing(true)
+    }
 
     @objc func dimmingViewDidTapped() {
 
@@ -112,7 +116,7 @@ final class EditingStudyGeneralRuleAttendanceRuleCollectionViewCell: UICollectio
 
     private func enableTapGesture() {
 
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(keyboardDisappear))
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
 
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true

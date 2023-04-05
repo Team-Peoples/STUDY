@@ -119,7 +119,7 @@ final class MainViewModel {
 }
 
 //🛑to be updated: 네트워크로 방장 여부 확인받은 후 switchableVC 에서 isManager 값 didset에서 수정하도록
-final class MainViewController: SwitchableViewController {
+final class MainViewController: SwitchableViewController, LinkShareable {
     // MARK: - Properties
     
     private var viewModel = MainViewModel()

@@ -62,14 +62,6 @@ final class CreatingStudyCompleteViewController: UIViewController {
         }
     }
     
-    @objc func linkShare() {
-        print(#function)
-    }
-    
-    @objc func closeButtonDidTapped() {
-        print(#function)
-    }
-    
     
     // MARK: - Configure
     

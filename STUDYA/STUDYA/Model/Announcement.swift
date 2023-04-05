@@ -7,11 +7,12 @@
 
 import Foundation
 
+
 struct Announcement: Codable {
     let id: ID?
     let title: String?
     let content: String?
-    let createdDate: Date?
+    let createdDate: Date
     var isPinned: Bool?
     
     enum CodingKeys: String, CodingKey {
@@ -22,7 +23,7 @@ struct Announcement: Codable {
         case isPinned = "pin"
     }
     
-    init(id: Int? = nil, title: String?, content: String?, createdDate: Date?, isPinned: Bool? = nil) {
+    init(id: Int? = nil, title: String?, content: String?, createdDate: Date, isPinned: Bool? = nil) {
         self.id = id
         self.title = title
         self.content = content

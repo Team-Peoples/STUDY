@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-// to be fixed: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
+// domb: textview에서 커서를 옮겼을때 레이아웃이 이상하게 잡혀버리는 현상이 발생.
 
 final class AnnouncementViewController: UIViewController {
     // MARK: - Properties
@@ -23,7 +23,6 @@ final class AnnouncementViewController: UIViewController {
     let studyID: ID
     let studyName: String?
     
-    ///사용자가 스터디장인지 확인( user의 정보안에 들어잇는걸로 확인가능)
     var isMaster = false {
         didSet {
             if isMaster == true {
@@ -96,6 +95,10 @@ final class AnnouncementViewController: UIViewController {
         return lbl
     }()
     
+    lazy var createButton = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+    lazy var editButton = UIBarButtonItem(title: Constant.edit, style: .done, target: self, action: #selector(editButtonDidTapped))
+    lazy var cancelButton = UIBarButtonItem(title: Constant.cancel, style: .done, target: self, action: #selector(cancel))
+    
     let scrollView = UIScrollView()
     let contentView = UIView()
     
@@ -120,6 +123,9 @@ final class AnnouncementViewController: UIViewController {
         
         configureViews()
         checkIfUserIsMaster()
+        
+        createButton.isEnabled = false
+        editButton.isEnabled = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,6 +135,7 @@ final class AnnouncementViewController: UIViewController {
             contentTextView.hidePlaceholder(true)
             titleTextView.hidePlaceholder(true)
         }
+        
         addNotification()
     }
     
@@ -174,8 +181,8 @@ final class AnnouncementViewController: UIViewController {
     
     @objc func createButtonDidTapped() {
         
-        let title = titleTextView.text ?? ""
-        let content = contentTextView.text ?? ""
+        guard let title = titleTextView.text else { return }
+        guard let content = contentTextView.text else { return }
         
         Network.shared.createAnnouncement(title: title, content: content, studyID: studyID) { result in
             switch result {
@@ -190,8 +197,8 @@ final class AnnouncementViewController: UIViewController {
     
     @objc func editButtonDidTapped() {
         
-        let title = titleTextView.text ?? ""
-        let content = contentTextView.text ?? ""
+        guard let title = titleTextView.text else { return }
+        guard let content = contentTextView.text else { return }
         guard let announcementID = announcement?.id else { return }
         
         Network.shared.updateAnnouncement(title: title, content: content, announcementID: announcementID) { result in
@@ -231,16 +238,16 @@ final class AnnouncementViewController: UIViewController {
     }
     
     private func checkIfCreateOrEdit() {
-    
+        
         switch task {
         case .creating:
             navigationItem.title = "공지사항 만들기"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Constant.OK, style: .done, target: self, action: #selector(createButtonDidTapped))
+            navigationItem.rightBarButtonItem = createButton
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .editing:
             navigationItem.title = "공지사항 수정"
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "수정", style: .done, target: self, action: #selector(editButtonDidTapped))
+            navigationItem.rightBarButtonItem = editButton
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .viewing:
@@ -249,9 +256,9 @@ final class AnnouncementViewController: UIViewController {
         }
         
         navigationController?.navigationBar.tintColor = .appColor(.cancel)
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Constant.cancel, style: .plain, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = cancelButton
     }
-    
+
     private func addNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
@@ -304,7 +311,7 @@ final class AnnouncementViewController: UIViewController {
                 make.leading.trailing.equalTo(contentView).inset(30)
             }
         }
-    
+        
         contentTextView.snp.makeConstraints { make in
             make.top.equalTo(titleTextView.snp.bottom).offset(25)
             make.bottom.equalTo(contentView.snp.bottom).inset(110)
@@ -324,23 +331,24 @@ extension AnnouncementViewController: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         switch textView {
-            case titleTextView:
-                titleTextView.hidePlaceholder(true)
-            case contentTextView:
-                contentTextView.hidePlaceholder(true)
-            default:
-                return
+        case titleTextView:
+            titleTextView.hidePlaceholder(true)
+        case contentTextView:
+            contentTextView.hidePlaceholder(true)
+        default:
+            return
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         switch textView {
-            case titleTextView:
-                titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
-            case contentTextView:
-                contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
-            default:
-                return
+        case titleTextView:
+            titleTextView.text.isEmpty ? titleTextView.hidePlaceholder(false) : nil
+            
+        case contentTextView:
+            contentTextView.text.isEmpty ? contentTextView.hidePlaceholder(false) : nil
+        default:
+            return
         }
     }
     
@@ -368,6 +376,17 @@ extension AnnouncementViewController: UITextViewDelegate {
             if constraint.firstAttribute == .height {
                 constraint.constant = estimatedSize.height
             }
+        }
+        
+        let titleTextViewIsEmpty = titleTextView.text == nil || titleTextView.text == String()
+        let contentTextViewIsEmpty = contentTextView.text == nil || contentTextView.text == String()
+        
+        if !titleTextViewIsEmpty && !contentTextViewIsEmpty {
+            createButton.isEnabled = true
+            editButton.isEnabled = true
+        } else {
+            createButton.isEnabled = false
+            editButton.isEnabled = false
         }
     }
 }
