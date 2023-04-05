@@ -10,13 +10,14 @@ import UIKit
 final class MainViewModel {
     var isManager = false
     
+    var dummyStudyOverall = StudyOverall(announcement: nil, ownerNickname: "dummyStudyOverall", study: Study(), isManager: false, totalFine: 999, attendedCount: 999, absentCount: 999, lateCount: 999, allowedCount: 999, timeLeftUntilNextStudy: 999, studySchedule: nil, isOwner: false)
     var nickName = ""
     var myStudyList = [Study]()
-    var currentStudyOverall: Observable<StudyOverall?> = Observable(StudyOverall(announcement: nil, ownerNickname: "", study: Study(), isManager: false, totalFine: 0, attendedCount: 0, absentCount: 0, lateCount: 0, allowedCount: 0, timeLeftUntilNextStudy: 0, studySchedule: nil, isOwner: false))
+    lazy var currentStudyOverall: Observable<StudyOverall?> = Observable(dummyStudyOverall)
     var imminentAttendanceInformation: Observable<AttendanceInformation?> = Observable(nil)
     var error = Observable(PeoplesError.noError)
     
-    func getUserInformationAndStudies(completion: @escaping (() -> Void) = {}) {
+    func getUserInformationAndStudies() {
         Network.shared.getUserInfo { result in
             switch result {
                 
@@ -77,6 +78,8 @@ final class MainViewModel {
         if let firstStudy = studies.first, let studyID = firstStudy.id {
             
             self.getStudy(with: studyID)
+        } else {
+            self.currentStudyOverall.value = nil
         }
     }
     
@@ -183,10 +186,8 @@ final class MainViewController: SwitchableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        viewModel.getUserInformationAndStudies {
-            self.setBinding()
-        }
+        
+        viewModel.getUserInformationAndStudies()
         
         view.backgroundColor = .white
         
@@ -198,6 +199,7 @@ final class MainViewController: SwitchableViewController {
         print("----------------------------------------------------------")
         configureViewsInitially()
         configureTabBarSeparator()
+        setBinding()
         
         createStudyButton.addTarget(self, action: #selector(createStudyButtonDidTapped), for: .touchUpInside)
         
@@ -307,8 +309,13 @@ final class MainViewController: SwitchableViewController {
                 showNoStudyViews()
                 
             } else{
-                showYesStudyViews()
-                mainTableView.reloadData()
+                if studyOverall == viewModel.dummyStudyOverall {
+                    print("🚨")
+                } else {
+                    print("🚨🚨")
+                    showYesStudyViews()
+                    mainTableView.reloadData()
+                }
             }
         }
         
@@ -501,8 +508,13 @@ final class MainViewController: SwitchableViewController {
             make.top.equalTo(studyEmptyLabel.snp.bottom).offset(10)
         }
         view.subviews.forEach( { $0.isHidden = true } )
+        
+        
+//        activityIndicator.center = view.center
+//        view.addSubview(activityIndicator)
+//        activityIndicator.startAnimating()
     }
-    
+//    let activityIndicator = UIActivityIndicatorView(style: .medium)
     private func configureTabBarSeparator() {
         if let tabBar = tabBarController?.tabBar {
             
