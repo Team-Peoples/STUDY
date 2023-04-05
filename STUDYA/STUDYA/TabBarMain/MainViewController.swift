@@ -291,6 +291,7 @@ final class MainViewController: SwitchableViewController, LinkShareable {
     
     @objc private func reloadCurrentStudy() {
         viewModel.getStudy(with: viewModel.currentStudyOverall.value?.study.id) {
+            self.viewModel.getImminentAttendanceInformation()
             self.mainTableView.reloadData()
         }
     }
@@ -300,8 +301,10 @@ final class MainViewController: SwitchableViewController, LinkShareable {
         let thirdCellIndexPath = IndexPath(row: 2, section: 0)
         mainTableView.reloadRows(at: [thirdCellIndexPath], with: .automatic)
         
+        guard viewModel.isManager.value == true else { return }
         notificationBtn.isHidden = isOn
         floatingButtonContainerView.isHidden = !isOn
+        floatingButton.isHidden = !isOn
         
         guard !isOn else { return }
         floatingButton.isSelected = false
@@ -357,126 +360,6 @@ final class MainViewController: SwitchableViewController, LinkShareable {
         yesStudyviews.forEach { $0.isHidden = true }
     }
     
-    private func removeSubviews() {
-        
-        for subview in self.view.subviews {
-            subview.snp.removeConstraints()
-            subview.removeFromSuperview()
-        }
-    }
-    
-//    MARK: - initializing Data
-//    private func getUserInformationAndStudies() {
-//        Network.shared.getUserInfo { result in
-//            switch result {
-//
-//            case .success(let user):
-//                self.nickName = user.nickName
-//
-//                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
-//                KeychainService.shared.create(key: Constant.nickname, value: user.nickName!)
-//                self.getAllStudies()
-//            case .failure(let error):
-//
-//                switch error {
-//                case .userNotFound:
-//                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "잘못된 접근입니다. 다시 로그인해주세요.") { finished in
-//                        AppController.shared.deleteUserInformationAndLogout()
-//                    }
-//                    self.present(alert, animated: true)
-//                default:
-//                    UIAlertController.handleCommonErros(presenter: self, error: error)
-//                }
-//            }
-//        }
-//    }
-//
-//    private func getAllStudies() {
-//        Network.shared.getAllStudies { result in
-//            switch result {
-//            case .success(let studies):
-//
-//                if let firstStudy = studies.first, let studyID = firstStudy.id {
-//                    self.myStudyList = studies
-//                    self.configureTableView(with: studyID)
-//                    print("studyID", studyID)
-//                } else {
-//                    self.configureViewWhenNoStudy()
-//                }
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//    }
-//
-//    private func configureTableView(with studyID: ID) {
-//        Network.shared.getStudy(studyID: studyID) { result in
-//
-//            switch result {
-//            case .success(let studyOverall):
-//                // 스터디정보를 처음으로 가져온다.
-//                // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
-//                KeychainService.shared.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
-//                // domb: 중복된 작업인건지 물어보기
-//                self.isManager = studyOverall.isManager || studyOverall.isOwner
-//                self.configureViewWhenYesStudy()
-//                self.reloadTableViewWithCurrentStudy(studyOverall: studyOverall)
-//
-//                self.configureTableViewThirdCell()
-//
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//    }
-//
-//    private func reloadTableViewWithCurrentStudy(studyOverall: StudyOverall) {
-//        var study = studyOverall.study
-//        let studyOwnerNickname = studyOverall.ownerNickname
-//        study.ownerNickname = studyOwnerNickname
-//
-//        DispatchQueue.global().async {
-//            let data = try? JSONEncoder().encode(study)
-//            UserDefaults.standard.removeObject(forKey: Constant.currentStudy)
-//            UserDefaults.standard.set(data, forKey: Constant.currentStudy)
-//        }
-//
-//        self.currentStudyOverall = studyOverall
-//        // domb: 중복된 작업인건지 물어보기
-//        isManager = studyOverall.isManager
-//        mainTableView.reloadData()
-//    }
-//
-//    private func configureTableViewThirdCell() {
-//        if let scheduleID = currentStudyOverall?.studySchedule?.studyScheduleID {
-//            reloadTableViewThirdCell(with: scheduleID)
-//        } else {
-//            self.imminentAttendanceInformation = nil
-//            mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
-//        }
-//    }
-//
-//    private func reloadTableViewThirdCell(with id: ID) {
-//        Network.shared.getImminentScheduleAttendance(scheduleID: id) { result in
-//            switch result {
-//            case .success(let attendanceInfo):
-//                self.reloadTableViewThirdCell(with: attendanceInfo)
-//                self.endRefreshIfIsRefreshing()
-//            case .failure(let error):
-//                UIAlertController.handleCommonErros(presenter: self, error: error)
-//            }
-//        }
-//    }
-//
-//    private func reloadTableViewThirdCell(with attendanceInfo: AttendanceInformation) {
-//        if attendanceInfo.attendanceStatus != nil {
-//            self.imminentAttendanceInformation = attendanceInfo
-//        } else {
-//            self.imminentAttendanceInformation = nil
-//        }
-//        mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
-//    }
-//
     private func configureNavigationBarNotiBtn() {
         navigationItem.leftBarButtonItems = [UIBarButtonItem(customView: notificationBtn)]
     }
