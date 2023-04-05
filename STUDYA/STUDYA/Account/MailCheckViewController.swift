@@ -10,8 +10,8 @@ import SnapKit
 
 final class MailCheckViewController: UIViewController {
  
-    private var nickName = KeyChain.read(key: Constant.tempNickname)
-    private var email = KeyChain.read(key: Constant.tempUserId)
+    private var nickName = KeychainService.shared.read(key: Constant.tempNickname)
+    private var email = KeychainService.shared.read(key: Constant.tempUserId)
     
     private lazy var helloLabel = CustomLabel(title: "반가워요\n\(nickName ?? "회원")님!😀", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var announceLabel1 = CustomLabel(title: "\(email ?? "메일")로\n인증 안내를 보내드렸어요.", tintColor: .ppsBlack, size: 18)
@@ -50,18 +50,18 @@ final class MailCheckViewController: UIViewController {
                 
                 if isCertificated {
                     
-                    if let _ = KeyChain.read(key: Constant.tempNickname),
-                       let _ = KeyChain.read(key: Constant.userId),
-                       let _ = KeyChain.read(key: Constant.tempPassword),
-                       let _ = KeyChain.read(key: Constant.tempPasswordCheck) {
-                        KeyChain.delete(key: Constant.tempNickname)
-                        KeyChain.delete(key: Constant.tempUserId)
-                        KeyChain.delete(key: Constant.tempPassword)
-                        KeyChain.delete(key: Constant.tempPasswordCheck)
+                    if let _ = KeychainService.shared.read(key: Constant.tempNickname),
+                       let _ = KeychainService.shared.read(key: Constant.userId),
+                       let _ = KeychainService.shared.read(key: Constant.tempPassword),
+                       let _ = KeychainService.shared.read(key: Constant.tempPasswordCheck) {
+                        KeychainService.shared.delete(key: Constant.tempNickname)
+                        KeychainService.shared.delete(key: Constant.tempUserId)
+                        KeychainService.shared.delete(key: Constant.tempPassword)
+                        KeychainService.shared.delete(key: Constant.tempPasswordCheck)
                     }
                     
                     UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
-                    KeyChain.create(key: Constant.isEmailCertificated, value: "1")
+                    KeychainService.shared.create(key: Constant.isEmailCertificated, value: "1")
                     NotificationCenter.default.post(name: .authStateDidChange, object: nil)
                 } else {
                     DispatchQueue.main.async {
@@ -134,7 +134,7 @@ final class MailCheckViewController: UIViewController {
         announceLabel2.centerX(inView: view)
         checkEmailCertificationButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(view).inset(100)
-            make.bottom.equalTo(view.snp.bottom).inset(300)
+            make.bottom.equalTo(retryButton.snp.top).offset(-10)
         }
         retryButton.anchor(bottom: announceLabel3.topAnchor, bottomConstant: 6, leading: view.leadingAnchor, leadingConstant: 54, trailing: view.trailingAnchor, trailingConstant: 54)
         announceLabel3.anchor(bottom: view.bottomAnchor, bottomConstant: 90)

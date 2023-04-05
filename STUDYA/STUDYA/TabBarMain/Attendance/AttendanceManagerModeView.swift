@@ -25,9 +25,18 @@ final class AttendanceManagerModeView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        backgroundColor = .white
+        
+        leftLabel.backgroundColor = .white
+        rightLabel.backgroundColor = .white
+        
+        leftLabel.textColor = .appColor(.ppsBlack)
+        rightLabel.textColor = .appColor(.ppsBlack)
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
+        collectionView.backgroundColor = .white
         
         collectionView.register(AttendanceModificationCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceModificationCollectionViewCell.identifier)
         collectionView.register(AttendanceOverallCheckCollectionViewCell.self, forCellWithReuseIdentifier: AttendanceOverallCheckCollectionViewCell.identifier)

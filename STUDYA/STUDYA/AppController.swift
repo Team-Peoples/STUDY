@@ -37,44 +37,14 @@ final class AppController {
     
     func deleteUserInformation() {
         UserDefaults.standard.set(false, forKey: Constant.isLoggedin)
-        
-        if KeyChain.read(key: Constant.accessToken) != nil {
-            KeyChain.delete(key: Constant.accessToken)
-        }
-        
-        if KeyChain.read(key: Constant.refreshToken) != nil {
-            KeyChain.delete(key: Constant.refreshToken)
-        }
-        
-        if KeyChain.read(key: Constant.userId) != nil {
-            KeyChain.delete(key: Constant.userId)
-        }
+        KeychainService.shared.removeAll()
     }
     
     func deleteUserInformationAndLogout() {
         
         UserDefaults.standard.set(false, forKey: Constant.isLoggedin)
         NotificationCenter.default.post(name: .authStateDidChange, object: nil)
-        
-        if KeyChain.read(key: Constant.accessToken) != nil {
-            KeyChain.delete(key: Constant.accessToken)
-        }
-        
-        if KeyChain.read(key: Constant.refreshToken) != nil {
-            KeyChain.delete(key: Constant.refreshToken)
-        }
-        
-        if KeyChain.read(key: Constant.userId) != nil {
-            KeyChain.delete(key: Constant.userId)
-        }
-        
-        if KeyChain.read(key: Constant.isEmailCertificated) != nil {
-            KeyChain.delete(key: Constant.isEmailCertificated)
-        }
-    
-        if let _ = KeyChain.read(key: Constant.tempIsFirstSNSLogin) {
-            KeyChain.delete(key: Constant.tempIsFirstSNSLogin)
-        }
+        KeychainService.shared.removeAll()
     }
     
     private func registerAuthStateDidChangeEvent() {
@@ -86,9 +56,9 @@ final class AppController {
         
     @objc private func checkLoginIn() {
         
-        if let _ = KeyChain.read(key: Constant.accessToken),
-           let _ = KeyChain.read(key: Constant.refreshToken),
-           let isEmailCertificated = KeyChain.read(key: Constant.isEmailCertificated),
+        if let _ = KeychainService.shared.read(key: Constant.accessToken),
+           let _ = KeychainService.shared.read(key: Constant.refreshToken),
+           let isEmailCertificated = KeychainService.shared.read(key: Constant.isEmailCertificated),
            isEmailCertificated == "1",
            UserDefaults.standard.bool(forKey: Constant.isLoggedin) == true {
             setHome()
@@ -102,6 +72,7 @@ final class AppController {
     }
 
     private func routeToLogin() {
+        deleteUserInformation()
         rootViewController = UINavigationController(rootViewController: WelcomViewController())
     }
 }

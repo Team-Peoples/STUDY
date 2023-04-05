@@ -99,7 +99,7 @@ class ProfileSettingViewController: UIViewController {
     @objc private func doneButtonDidTapped() {
         view.endEditing(true)
         
-        if let isSNSFirstLogin = KeyChain.read(key: Constant.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
+        if let isSNSFirstLogin = KeychainService.shared.read(key: Constant.tempIsFirstSNSLogin), isSNSFirstLogin == "1" {
             setProfileWhenSNSSignUp()
         } else {
             signUp()
@@ -107,9 +107,9 @@ class ProfileSettingViewController: UIViewController {
     }
     
     private func signUp() {
-        guard let email = KeyChain.read(key: Constant.tempUserId),
-              let password = KeyChain.read(key: Constant.tempPassword),
-              let passwordCheck = KeyChain.read(key: Constant.tempPasswordCheck) else {
+        guard let email = KeychainService.shared.read(key: Constant.tempUserId),
+              let password = KeychainService.shared.read(key: Constant.tempPassword),
+              let passwordCheck = KeychainService.shared.read(key: Constant.tempPasswordCheck) else {
             
             let alert = SimpleAlert(message: Constant.unknownErrorMessage)
             present(alert, animated: true)
@@ -124,7 +124,7 @@ class ProfileSettingViewController: UIViewController {
                 
                 if let nickName = user.nickName {
                     
-                    KeyChain.create(key: Constant.tempNickname, value: nickName)
+                    KeychainService.shared.create(key: Constant.tempNickname, value: nickName)
                     
                     let vc = MailCheckViewController()
                     vc.modalPresentationStyle = .fullScreen
@@ -165,7 +165,7 @@ class ProfileSettingViewController: UIViewController {
         Network.shared.updateUserInfo(oldPassword: "", password: "", passwordCheck: "", nickname: nickName, image: profileImage) { result in
             switch result {
             case .success:
-                KeyChain.delete(key: Constant.tempIsFirstSNSLogin)
+                KeychainService.shared.delete(key: Constant.tempIsFirstSNSLogin)
                 UserDefaults.standard.set(true, forKey: Constant.isLoggedin)
                 NotificationCenter.default.post(name: .authStateDidChange, object: nil)
             case .failure(let error):

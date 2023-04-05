@@ -61,6 +61,7 @@ final class AttendanceTableViewDayCell: UITableViewCell {
     }
     
     private func configureViews() {
+        contentView.backgroundColor = .white
         
         contentView.addSubview(dayLabel)
         contentView.addSubview(attendanceCapsuleView)

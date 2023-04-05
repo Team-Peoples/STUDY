@@ -114,7 +114,11 @@ struct Excommunication: Codable, Equatable {
     }
 }
 
-struct StudyOverall: Codable {
+struct StudyOverall: Codable, Equatable {
+    static func == (lhs: StudyOverall, rhs: StudyOverall) -> Bool {
+        return lhs.study.id == rhs.study.id && lhs.study.studyName == rhs.study.studyName
+    }
+    
     let announcement: Announcement?
     let ownerNickname: String
     let study: Study

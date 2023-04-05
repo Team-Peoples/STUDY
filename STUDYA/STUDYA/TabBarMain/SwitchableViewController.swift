@@ -9,11 +9,12 @@ import UIKit
 
 class SwitchableViewController: UIViewController, Navigatable {
     
-    var isManager = false { didSet { changeBarButton(by: isManager) } }
+    var isManager = false { didSet { print("isManager:", isManager); changeBarButton(by: isManager) } }
 
-    private var isSwitchOn: Bool = false {
+    var isSwitchOn: Bool = false {
         didSet {
             toggleNavigationBar(by: isSwitchOn)
+            print("isSwitchOn:", isSwitchOn)
             extraWorkWhenSwitchToggled(isOn: isSwitchOn)
         }
     }

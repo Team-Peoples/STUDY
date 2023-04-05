@@ -206,6 +206,10 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func configureViews() {
+        contentView.backgroundColor = .white
+        headerView.backgroundColor = .white
+        tableView.backgroundColor = .white
+        
         noAttendanceLabel.isHidden = true
         
         contentView.addSubview(headerView)

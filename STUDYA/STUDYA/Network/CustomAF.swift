@@ -380,8 +380,8 @@ enum RequestParameters {
 struct TokenRequestInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
-        let accessToken = KeyChain.read(key: Constant.accessToken) ?? ""
-        let refreshToken = KeyChain.read(key: Constant.refreshToken) ?? ""
+        let accessToken = KeychainService.shared.read(key: Constant.accessToken) ?? ""
+        let refreshToken = KeychainService.shared.read(key: Constant.refreshToken) ?? ""
         
         var request = urlRequest
         

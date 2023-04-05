@@ -33,7 +33,7 @@ final class AttendanceViewController: SwitchableViewController, BottomSheetAddab
     }
     
     internal func configureViewController(with studyID: ID) {
-        guard let userID = KeyChain.read(key: Constant.userId) else { return }
+        guard let userID = KeychainService.shared.read(key: Constant.userId) else { return }
         
         userView.delegate = self
         userView.configureViewWith(studyID: studyID, userID: userID)

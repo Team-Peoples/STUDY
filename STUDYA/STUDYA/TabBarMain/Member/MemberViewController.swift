@@ -222,6 +222,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsSelection = false
+        collectionView.backgroundColor = .white
         
         collectionView.register(InviteMemberCollectionViewCell.self, forCellWithReuseIdentifier: InviteMemberCollectionViewCell.identifier)
         collectionView.register(MemberCollectionViewCell.self, forCellWithReuseIdentifier: MemberCollectionViewCell.identifier)
@@ -246,8 +247,8 @@ extension MemberViewController: UICollectionViewDataSource {
                
                 self?.activityIndicator.startAnimating()
                 
-                guard let nickname = KeyChain.read(key: Constant.nickname) else { return }
-                guard let studyName = KeyChain.read(key: Constant.currentStudyName) else { return }
+                guard let nickname = KeychainService.shared.read(key: Constant.nickname) else { return }
+                guard let studyName = KeychainService.shared.read(key: Constant.currentStudyName) else { return }
                 guard let currentStudyRawData = UserDefaults.standard.object(forKey: Constant.currentStudy) as? Data else { return }
                 guard let currentStudy = try? JSONDecoder().decode(Study.self, from: currentStudyRawData) else { return }
 

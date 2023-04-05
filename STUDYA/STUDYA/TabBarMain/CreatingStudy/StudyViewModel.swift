@@ -42,11 +42,11 @@ class StudyViewModel: ViewModel {
         }
     }
     
-    func postNewStudy(_ successHandler: @escaping () -> Void) {
+    func postNewStudy(_ successHandler: @escaping (ID?) -> Void) {
         Network.shared.createStudy(study) { result in
             switch result {
-            case .success:
-                successHandler()
+            case .success(let study):
+                successHandler(study.id)
             case .failure(let error):
                 print(error)
             }

@@ -103,20 +103,14 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         self.currentStudyOverall = currentStudyOverall
         
         guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
-            configureErrorSituation()
             return
         }
-        
+        print("🇹🇳")
         if totalStudyHeldCount != 0 {
             configureProgressBarWhenYesAttendanceData(with: currentStudyOverall)
         } else {
             configureWhenNoAttendanceData()
         }
-    }
-    
-    private func configureErrorSituation() {
-        configureViewWhenNoData()
-        noAttendanceDataLabel.text = "출결 데이터를 가져오지 못했습니다.\n이용에 불편을 드려 죄송합니다"
     }
     
     private func configureProgressBarWhenYesAttendanceData(with currentStudyOverall: StudyOverall) {

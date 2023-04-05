@@ -41,8 +41,8 @@ class TokenAuthenticator: Authenticator {
         Network.shared.refreshToken { result in
             switch result {
             case .success:
-                let accessToken = KeyChain.read(key: Constant.accessToken) ?? ""
-                let refreshToken = KeyChain.read(key: Constant.refreshToken) ?? ""
+                let accessToken = KeychainService.shared.read(key: Constant.accessToken) ?? ""
+                let refreshToken = KeychainService.shared.read(key: Constant.refreshToken) ?? ""
                 print("리프레시 성공 후 api 재요청 시작","🔥")
                 completion(.success(TokenAuthenticationCredential(accessToken: accessToken, refreshToken: refreshToken)))
             case .failure(let failure):
@@ -56,7 +56,7 @@ extension AuthenticationInterceptor<TokenAuthenticator> {
     
     convenience init() {
         let authenticator = TokenAuthenticator()
-        let credential = TokenAuthenticationCredential(accessToken: KeyChain.read(key: Constant.accessToken) ?? "", refreshToken: KeyChain.read(key: Constant.refreshToken) ?? "")
+        let credential = TokenAuthenticationCredential(accessToken: KeychainService.shared.read(key: Constant.accessToken) ?? "", refreshToken: KeychainService.shared.read(key: Constant.refreshToken) ?? "")
         
         self.init(authenticator: authenticator, credential: credential)
     }
