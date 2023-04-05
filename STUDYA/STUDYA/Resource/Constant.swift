@@ -11,8 +11,9 @@ enum Constant {
     static let screenHeight = UIScreen.main.bounds.height
     static let screenWidth = UIScreen.main.bounds.width
     static let userId = "userId"
-    static let currentStudy = "currentStudy"
+    static let currentStudyID = "currentStudyID"
     static let studyID = "studyID"
+    static let invitedStudyID = "invitedStudyID"
     static let currentStudyName = "currentStudyName"
     static let isEmailCertificated = "isEmailCertificated"
     static let nickname = "nickname"

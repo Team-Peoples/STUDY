@@ -69,10 +69,23 @@ final class AppController {
     
     private func setHome() {
         rootViewController = TabBarViewController()
+        goInviteeLanding()
     }
 
     private func routeToLogin() {
         deleteUserInformation()
         rootViewController = UINavigationController(rootViewController: WelcomViewController())
+    }
+    
+    func goInviteeLanding() {
+        if UserDefaults.standard.bool(forKey: Constant.isLoggedin) {
+            guard let invitedStudyID = UserDefaults.standard.value(forKey: Constant.invitedStudyID) as? ID else { return }
+            let inviteeLandingViewController = InviteeLandingViewController(studyID: invitedStudyID)
+            let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate
+            guard let rootViewController = sceneDelegate.window?.rootViewController as? TabBarViewController else { return }
+            inviteeLandingViewController.modalPresentationStyle = .fullScreen
+            rootViewController.present(inviteeLandingViewController, animated: true)
+            UserDefaults.standard.removeObject(forKey: Constant.invitedStudyID)
+        }
     }
 }

@@ -11,7 +11,7 @@ class SwitchableViewController: UIViewController, Navigatable {
     
     var isManager = false { didSet { print("isManager:", isManager); changeBarButton(by: isManager) } }
 
-    var isSwitchOn: Bool = false {
+    private var isSwitchOn: Bool = false {
         didSet {
             toggleNavigationBar(by: isSwitchOn)
             print("isSwitchOn:", isSwitchOn)

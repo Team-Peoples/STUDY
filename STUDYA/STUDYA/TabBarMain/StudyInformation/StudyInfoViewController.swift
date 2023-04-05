@@ -228,7 +228,8 @@ final class StudyInfoViewController: SwitchableViewController {
         
         studyViewModel.getStudyInfo() { [weak self] study in
             self?.configureViews(study)
-            DynamicLinkBuilder().getURL(study: study) { url, array, error in
+            guard let studyID = study.id else { return }
+            DynamicLinkBuilder().getURL(studyID: studyID) { url, array, error in
                 self?.linkButton.setTitle(url?.absoluteString, for: .normal)
             }
         }

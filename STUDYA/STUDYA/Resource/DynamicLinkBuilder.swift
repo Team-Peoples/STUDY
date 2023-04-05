@@ -10,10 +10,8 @@ import FirebaseDynamicLinks
 
 struct DynamicLinkBuilder {
     
-    func getURL(study: Study, completion: @escaping (URL?, [String]?, Error?) -> Void) {
+    func getURL(studyID: ID, completion: @escaping (URL?, [String]?, Error?) -> Void) {
         
-        guard let studyID = study.id else { return }
-
         guard let baseURL = URL(string: "https://www.notion.so/f5a505a1caa6442ca6dde83ee3a7017c") else { return }
         var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
         components?.queryItems = [
