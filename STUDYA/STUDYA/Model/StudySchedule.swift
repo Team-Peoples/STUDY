@@ -50,7 +50,7 @@ struct StudySchedule: Codable {
         let startTime = DateFormatter.timeFormatter.string(from: self.startDateAndTime)
         var endDate: String
         
-        if repeatOption == .norepeat {
+        if repeatOption == .norepeat || repeatOption == nil {
             endDate = String()
         } else {
             endDate = DateFormatter.dashedDateFormatter.string(from: self.endDateAndTime)

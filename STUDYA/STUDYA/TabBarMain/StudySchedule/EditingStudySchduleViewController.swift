@@ -184,10 +184,15 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
+        let timePicker = TimePicker(frame: .zero)
         
         if let endTime = editingStudyScheduleViewModel.studySchedule.endTime {
-            timePicker.maximumDate = DateFormatter.timeFormatter.date(from: endTime)
+            let endTimeComponets = endTime.components(separatedBy: ":")
+            guard let hour = endTimeComponets.first?.toInt(),
+                  let minute = endTimeComponets.last?.toInt() else { return }
+            
+            let maximunDate = Calendar.current.date(bySettingHour: hour, minute: minute - 5, second: 0, of: Date())
+            timePicker.maximumDate = maximunDate
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
@@ -218,10 +223,15 @@ final class EditingStudySchduleViewController: UIViewController {
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
+        let timePicker = TimePicker(frame: .zero)
         
         if let startTime = editingStudyScheduleViewModel.studySchedule.startTime {
-            timePicker.minimumDate = DateFormatter.timeFormatter.date(from: startTime)
+            let startTimeComponets = startTime.components(separatedBy: ":")
+            guard let hour = startTimeComponets.first?.toInt(),
+                  let minute = startTimeComponets.last?.toInt() else { return }
+            
+            let minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 5, second: 0, of: Date())
+            timePicker.minimumDate = minimumDate
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in

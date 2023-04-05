@@ -136,13 +136,15 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     @objc private func startTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
-        
+        let timePicker = TimePicker(frame: .zero)
         
         if let endTime = studySchedulePostingViewModel.studySchedule.endTime {
-            guard let hour = endTime.components(separatedBy: ":").first?.toInt(),
-                  let minute = endTime.components(separatedBy: ":").last?.toInt() else { return }
-            timePicker.maximumDate = Calendar.current.date(bySettingHour: hour, minute: minute - 1, second: 0, of: Date())
+            let endTimeComponets = endTime.components(separatedBy: ":")
+            guard let hour = endTimeComponets.first?.toInt(),
+                  let minute = endTimeComponets.last?.toInt() else { return }
+            
+            let maximunDate = Calendar.current.date(bySettingHour: hour, minute: minute - 5, second: 0, of: Date())
+            timePicker.maximumDate = maximunDate
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
@@ -173,12 +175,15 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
         
         let alert = UIAlertController(title: "시간선택", message: nil, preferredStyle: .actionSheet)
-        let timePicker = CalendarTimePicker.shared
+        let timePicker = TimePicker(frame: .zero)
         
         if let startTime = studySchedulePostingViewModel.studySchedule.startTime {
-            guard let hour = startTime.components(separatedBy: ":").first?.toInt(),
-                  let minute = startTime.components(separatedBy: ":").last?.toInt() else { return }
-            timePicker.minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 1, second: 0, of: Date())
+            let startTimeComponets = startTime.components(separatedBy: ":")
+            guard let hour = startTimeComponets.first?.toInt(),
+                  let minute = startTimeComponets.last?.toInt() else { return }
+            
+            let minimumDate = Calendar.current.date(bySettingHour: hour, minute: minute + 5, second: 0, of: Date())
+            timePicker.minimumDate = minimumDate
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
