@@ -47,65 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return false
-        return application(app,
-                           open: url,
-                           sourceApplication: options[UIApplication.OpenURLOptionsKey
-                            .sourceApplication] as? String,
-                           annotation: "")
     }
-    
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?,
-                     annotation: Any) -> Bool {
-      if let dynamicLink = DynamicLinks.dynamicLinks().dynamicLink(fromCustomSchemeURL: url) {
-          print(dynamicLink.url)
-        return true
-      }
-      return true
-    }
-    
-    func application(_ application: UIApplication,
-                     continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
-    {
-        // Get URL components from the incoming user activity.
-        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-            let incomingURL = userActivity.webpageURL,
-            let components = NSURLComponents(url: incomingURL, resolvingAgainstBaseURL: true) else {
-            return false
-        }
-
-        // Check for specific URL components that you need.
-//        guard let path = components.path,
-//        let params = components.queryItems else {
-//            return false
-//        }
-//        print("path = \(path)")
-//
-//        if let albumName = params.first(where: { $0.name == "albumname" } )?.value,
-//            let photoIndex = params.first(where: { $0.name == "index" })?.value {
-//
-//            print("album = \(albumName)")
-//            print("photoIndex = \(photoIndex)")
-//            return true
-//
-//        } else {
-//            print("Either album name or photo index missing")
-//            return false
-//        }
-        return true
-    }
-    // domb: 링크가 있으면 이렇게 처리??
-//        if let appURL = URL(string: "https://myphotoapp.example.com/albums?albumname=vacation&index=1") {
-//            UIApplication.shared.open(appURL) { success in
-//                if success {
-//                    print("The URL was delivered successfully.")
-//                } else {
-//                    print("The URL failed to open.")
-//                }
-//            }
-//        } else {
-//            print("Invalid URL specified.")
-//        }
       
     // MARK: UISceneSession Lifecycle
 
