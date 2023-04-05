@@ -54,7 +54,7 @@ class StudyScheduleViewModel: ViewModel {
 
 extension AllStudyScheduleOfAllStudy {
     // 스터디 ID를 포함한 스터디 스케쥴로 매핑
-    func mappingStudyScheduleArray() -> [StudySchedule] {
+    func mappingStudyScheduleForIncludingStudyID() -> [StudySchedule] {
         let mappedStudySchedule = self.flatMap { id, studySchedules in
             studySchedules.map {
                 StudySchedule(studyName: $0.studyName, studyScheduleID: $0.studyScheduleID, studyID: id, topic: $0.topic, place: $0.place, startDateAndTime: $0.startDateAndTime, endDateAndTime: $0.endDateAndTime, repeatOption: $0.repeatOption)
@@ -119,7 +119,7 @@ extension [StudySchedule] {
         return filteredStudySchedule
     }
     
-    func filteredStudySchedule(by studyID: ID?) -> [StudySchedule] {
+    func filterStudySchedule(by studyID: ID?) -> [StudySchedule] {
         guard let studyID = studyID else { return [] }
         let filteredStudySchedule = self.filter { studySchedule in
             studySchedule.studyID == "\(studyID)"

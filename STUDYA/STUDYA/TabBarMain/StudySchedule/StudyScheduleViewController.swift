@@ -19,8 +19,24 @@ class StudyScheduleViewController: SwitchableViewController {
     private var studyScheduleOfThisStudy: [StudySchedule] = [] {
         didSet {
             studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+            
+            var studyScheduleTimeTable = [DashedDate: [TimeRange]]()
+            studyScheduleOfThisStudy.forEach { studySchedule in
+                let studyScheduleStartDay = studySchedule.startDateAndTime
+                let startDate = DateFormatter.dashedDateFormatter.string(from: studyScheduleStartDay)
+                let startTime = DateFormatter.timeFormatter.string(from: studyScheduleStartDay)
+                let endTime = DateFormatter.timeFormatter.string(from: studySchedule.endDateAndTime)
+                if studyScheduleTimeTable[startDate] == nil {
+                    studyScheduleTimeTable[startDate] = [(StartTime: startTime, EndTime: endTime)]
+                } else {
+                    studyScheduleTimeTable[startDate]?.append((StartTime: startTime, EndTime: endTime))
+                }
+            }
+            self.studyScheduleTimeTableList = studyScheduleTimeTable
         }
     }
+    
+    private var studyScheduleTimeTableList: [DashedDate: [TimeRange]]?
     
     private var studyScheduleOfThisStudyAtSelectedDate: [StudySchedule] = [] {
         didSet {
@@ -61,10 +77,12 @@ class StudyScheduleViewController: SwitchableViewController {
         calendarView.delegate = self
         
         studyAllScheduleViewModel.bind { [weak self] allStudyScheduleOfAllStudy in
+            guard !allStudyScheduleOfAllStudy.isEmpty else { return }
+            
             self?.calendarView.select(date: self?.selectedDate)
             
-            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleArray()
-            let studyScheduleThisStudy = studySchedule.filteredStudySchedule(by: self?.studyID)
+            let studySchedule = allStudyScheduleOfAllStudy.mappingStudyScheduleForIncludingStudyID()
+            let studyScheduleThisStudy = studySchedule.filterStudySchedule(by: self?.studyID)
             
             self?.calendarView.bind(studyScheduleThisStudy)
             self?.calendarView.reloadData()
@@ -85,6 +103,7 @@ class StudyScheduleViewController: SwitchableViewController {
         let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
         let dashedSelectedDate = DateFormatter.dashedDateFormatter.string(from: selectedDate)
         
+        studySchedulePriodFormVC.existingStudyScheduleTimeTable = studyScheduleTimeTableList
         studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = currentStudyID
         studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.startDate = dashedSelectedDate
         
@@ -196,6 +215,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                     self?.dismiss(animated: true)
                     
                     let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
+                    editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
                     let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                     navigationVC.modalPresentationStyle = .fullScreen
                     
@@ -212,6 +232,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 self?.dismiss(animated: true)
                 
                 let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
+                editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen
@@ -222,6 +243,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 self?.dismiss(animated: true)
                 
                 let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: true)
+                editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen

@@ -13,6 +13,7 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // domb: 새로운 모델을 생성하는게 맞는지, 이전화면에서 할당하는 방식으로 할지..
     let editingStudyScheduleViewModel = StudySchedulePostingViewModel()
+    var existingStudyScheduleTimeTable: [DashedDate: [TimeRange]]?
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -195,9 +196,19 @@ final class EditingStudySchduleViewController: UIViewController {
             timePicker.maximumDate = maximunDate
         }
         
-        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let startTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            self.editingStudyScheduleViewModel.studySchedule.startTime = startTime
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
+            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
+            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
+            existingStudyScheduleTime?.forEach({ (startTime, endTime) in
+                if selectedTime > startTime && selectedTime < endTime  {
+                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
+                    
+                    self?.present(alert, animated: true)
+                } else {
+                    self?.editingStudyScheduleViewModel.studySchedule.endTime = selectedTime
+                }
+            })
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
@@ -234,9 +245,19 @@ final class EditingStudySchduleViewController: UIViewController {
             timePicker.minimumDate = minimumDate
         }
 
-        let okAction = UIAlertAction(title: Constant.OK, style: .default) { _ in
-            let endTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            self.editingStudyScheduleViewModel.studySchedule.endTime = endTime
+        let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
+            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
+            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
+            existingStudyScheduleTime?.forEach({ (startTime, endTime) in
+                if selectedTime > startTime && selectedTime < endTime  {
+                    let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
+                    
+                    self?.present(alert, animated: true)
+                } else {
+                    self?.editingStudyScheduleViewModel.studySchedule.endTime = selectedTime
+                }
+            })
         }
         
         let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
