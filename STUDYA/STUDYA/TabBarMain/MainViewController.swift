@@ -8,7 +8,7 @@
 import UIKit
 
 final class MainViewModel {
-    var isManager = false
+    var isManager = Observable(false)
     
     var dummyStudyOverall = StudyOverall(announcement: nil, ownerNickname: "dummyStudyOverall", study: Study(), isManager: false, totalFine: 999, attendedCount: 999, absentCount: 999, lateCount: 999, allowedCount: 999, timeLeftUntilNextStudy: 999, studySchedule: nil, isOwner: false)
     var nickName = ""
@@ -27,7 +27,6 @@ final class MainViewModel {
                 KeychainService.shared.create(key: Constant.nickname, value: nickName)
                 
                 self.getFirstStudyAfterGettingAllStudies()
-                completion()
                 
             case .failure(let error):
                 self.error.value = error
@@ -94,7 +93,7 @@ final class MainViewModel {
                 // 카카오톡 사용자 초대 링크생성시 파라미터를 담아 전달해야하는데, 그떄 nickname과 studyName이 필요해서 만들었음.
                 KeychainService.shared.create(key: Constant.currentStudyName, value: studyOverall.study.studyName!)
                 // domb: 중복된 작업인건지 물어보기
-                self.isManager = studyOverall.isManager || studyOverall.isOwner
+                self.isManager.value = studyOverall.isManager || studyOverall.isOwner
                 self.currentStudyOverall.value = studyOverall
                 completion()
                 print("studyID", studyID)
@@ -244,7 +243,9 @@ final class MainViewController: SwitchableViewController {
         dimmingVC.currentStudy = viewModel.currentStudyOverall.value?.study
         dimmingVC.studyTapped = { [weak self] studyOverall in
             guard let weakSelf = self else { return }
+            
             weakSelf.viewModel.currentStudyOverall.value = studyOverall
+            weakSelf.viewModel.isManager.value = studyOverall.isManager
             weakSelf.forceSwitchStatus(isOn: false)
         }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
@@ -304,18 +305,18 @@ final class MainViewController: SwitchableViewController {
     }
     
     private func setBinding() {
+        viewModel.isManager.bind { isManager in
+            self.isManager = isManager
+        }
+        
         viewModel.currentStudyOverall.bind { [self] studyOverall in
             if studyOverall == nil {
                 showNoStudyViews()
                 
-            } else{
-                if studyOverall == viewModel.dummyStudyOverall {
-                    print("🚨")
-                } else {
-                    print("🚨🚨")
-                    showYesStudyViews()
-                    mainTableView.reloadData()
-                }
+            } else {
+                guard studyOverall != viewModel.dummyStudyOverall else { return }
+                showYesStudyViews()
+                mainTableView.reloadData()
             }
         }
         
@@ -342,8 +343,8 @@ final class MainViewController: SwitchableViewController {
     private func showYesStudyViews() {
         noStudyViews.forEach { $0.isHidden = true }
         mainTableView.isHidden = false
-        floatingButtonContainerView.isHidden = viewModel.isManager && isSwitchOn ? false : true
-        floatingButton.isHidden = viewModel.isManager && isSwitchOn ? false : true
+        floatingButtonContainerView.isHidden = viewModel.isManager.value && isSwitchOn ? false : true
+        floatingButton.isHidden = viewModel.isManager.value && isSwitchOn ? false : true
     }
     
     private func showNoStudyViews() {
