@@ -450,6 +450,8 @@ class CustomTextField: UITextField {
     init(placeholder: String, textColor: UIColor = .black, fontSize: CGFloat, isBold: Bool = false, keyBoardType: UIKeyboardType = .default, returnType: UIReturnKeyType = .default, isFieldSecure: Bool = false) {
         super.init(frame: .zero)
         
+        textColor = .appColor(.ppsBlack)
+        
         autocorrectionType = .no
         autocapitalizationType = .none
         font = isBold ? UIFont.boldSystemFont(ofSize: fontSize) : UIFont.systemFont(ofSize: fontSize)

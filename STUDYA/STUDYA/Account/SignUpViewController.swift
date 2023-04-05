@@ -142,9 +142,9 @@ class SignUpViewController: UIViewController {
     }
     
     private func saveUserInformation(email: String, password: String, passwordCheck: String) {
-        KeyChain.create(key: Constant.tempUserId, value: email)
-        KeyChain.create(key: Constant.tempPassword, value: password)
-        KeyChain.create(key: Constant.tempPasswordCheck, value: passwordCheck)
+        KeychainService.shared.create(key: Constant.tempUserId, value: email)
+        KeychainService.shared.create(key: Constant.tempPassword, value: password)
+        KeychainService.shared.create(key: Constant.tempPasswordCheck, value: passwordCheck)
     }
     
     private func checkDoneButtonPossible() {

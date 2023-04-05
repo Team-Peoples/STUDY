@@ -159,16 +159,20 @@ final class CreatingStudyRuleViewController: UIViewController {
     }
     
     @objc private func skipButtonDidTapped() {
-        creatingStudyRuleViewModel.postNewStudy {
-            let nextVC = CreatingStudyCompleteViewController()
+        creatingStudyRuleViewModel.postNewStudy { studyID in
+            guard let studyID = studyID else { return }
+            
+            let nextVC = CreatingStudyCompleteViewController(studyID: studyID)
             self.navigationController?.pushViewController(nextVC, animated: true)
         }
     }
     
     @objc private func doneButtonTapped() {
   
-        creatingStudyRuleViewModel.postNewStudy {
-            let nextVC = CreatingStudyCompleteViewController()
+        creatingStudyRuleViewModel.postNewStudy { studyID in
+            guard let studyID = studyID else { return }
+            
+            let nextVC = CreatingStudyCompleteViewController(studyID: studyID)
             self.navigationController?.pushViewController(nextVC, animated: true)
         }
     }

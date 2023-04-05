@@ -34,6 +34,7 @@ final class AttendanceBottomDaySearchSettingViewController: FullDoneButtonButton
         super.viewDidLoad()
 
         view.backgroundColor = .white
+        collectionView.backgroundColor = .white
         
         enableDoneButton()
         

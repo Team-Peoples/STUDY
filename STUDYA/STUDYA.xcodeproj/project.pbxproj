@@ -125,6 +125,7 @@
 		D39F6D852927C62C004C6E90 /* AttendanceManagerModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D842927C62C004C6E90 /* AttendanceManagerModeView.swift */; };
 		D39F6D8C2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D39F6D8A2927DB2B004C6E90 /* AttendanceModificationHeaderView.swift */; };
 		D3A4C855292E55E80052F4E0 /* AttendanceBottomDaySearchSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A4C854292E55E80052F4E0 /* AttendanceBottomDaySearchSettingViewController.swift */; };
+		D3AB908929D6F6460037D504 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = D3AB908829D6F6460037D504 /* KeychainAccess */; };
 		D3AFCE1728A7F3F4004FBAB9 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AFCE1628A7F3F4004FBAB9 /* Network.swift */; };
 		D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D3AFCE1928A7F53D004FBAB9 /* Alamofire */; };
 		D3BF053028BDF2B400AF7D3B /* AccountManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF052F28BDF2B400AF7D3B /* AccountManagementViewController.swift */; };
@@ -326,6 +327,7 @@
 			files = (
 				D3F2C6FF28B380C900CEC549 /* KakaoSDKCommon in Frameworks */,
 				72ED25C128978AA400031AD1 /* SnapKit in Frameworks */,
+				D3AB908929D6F6460037D504 /* KeychainAccess in Frameworks */,
 				D3F2C70128B380C900CEC549 /* KakaoSDKShare in Frameworks */,
 				D3F2C70528B380C900CEC549 /* KakaoSDKUser in Frameworks */,
 				D3AFCE1A28A7F53D004FBAB9 /* Alamofire in Frameworks */,
@@ -699,6 +701,7 @@
 				D3F2C70028B380C900CEC549 /* KakaoSDKShare */,
 				D3F2C70228B380C900CEC549 /* KakaoSDKTemplate */,
 				D3F2C70428B380C900CEC549 /* KakaoSDKUser */,
+				D3AB908829D6F6460037D504 /* KeychainAccess */,
 			);
 			productName = STUDYA;
 			productReference = 72ED25A42897788900031AD1 /* STUDYA.app */;
@@ -732,6 +735,7 @@
 				72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D3F2C6FB28B380C900CEC549 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				D3AB908729D6F6460037D504 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = 72ED25A52897788900031AD1 /* Products */;
 			projectDirPath = "";
@@ -1184,6 +1188,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		D3AB908729D6F6460037D504 /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		D3AFCE1828A7F53D004FBAB9 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire";
@@ -1207,6 +1219,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 72ED25BF28978AA400031AD1 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		D3AB908829D6F6460037D504 /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D3AB908729D6F6460037D504 /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 		D3AFCE1928A7F53D004FBAB9 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

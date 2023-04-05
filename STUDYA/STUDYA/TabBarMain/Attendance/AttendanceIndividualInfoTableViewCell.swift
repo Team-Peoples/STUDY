@@ -38,6 +38,7 @@ final class AttendanceIndividualInfoTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
+        contentView.backgroundColor = .white
         
         contentView.addSubview(view)
         

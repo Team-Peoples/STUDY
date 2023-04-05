@@ -119,8 +119,8 @@ final class WelcomViewController: UIViewController {
                 if let isFirstLogin = user.isFirstLogin {
                     
                     if isFirstLogin {
-                        KeyChain.create(key: Constant.tempIsFirstSNSLogin, value: "1")
-                        KeyChain.create(key: Constant.isEmailCertificated, value: "1")
+                        KeychainService.shared.create(key: Constant.tempIsFirstSNSLogin, value: "1")
+                        KeychainService.shared.create(key: Constant.isEmailCertificated, value: "1")
                         
                         let nextVC = ProfileSettingViewController()
                         self.navigationController?.pushViewController(nextVC, animated: true)
