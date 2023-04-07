@@ -72,6 +72,9 @@ final class StudyInfoViewController: SwitchableViewController {
         super.viewDidLoad()
         
         studyViewModel.study.id = studyID
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
     
         getStudyInfo()
         
@@ -160,7 +163,8 @@ final class StudyInfoViewController: SwitchableViewController {
         case UserTaskInStudyInfo.leave.translatedKorean:
             if isManager {
                 let vcToPresent = StudyInfoBottomSheetViewController(task: .resignMaster)
-                
+                vcToPresent.studyID = studyID
+                vcToPresent.studyName = studyViewModel.study.studyName
                 vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
                     if #available(iOS 16.0, *) {
@@ -174,7 +178,8 @@ final class StudyInfoViewController: SwitchableViewController {
                 present(vcToPresent, animated: true, completion: nil)
             } else {
                 let vcToPresent = StudyInfoBottomSheetViewController(task: .leave)
-                
+                vcToPresent.studyID = studyID
+                vcToPresent.studyName = studyViewModel.study.studyName
                 vcToPresent.presentingVC = self
                 if let sheet = vcToPresent.sheetPresentationController {
                     

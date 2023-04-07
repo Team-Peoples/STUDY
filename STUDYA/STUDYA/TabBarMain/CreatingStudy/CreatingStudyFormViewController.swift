@@ -66,6 +66,9 @@ final class CreatingStudyFormViewController: UIViewController {
             doneButton.isEnabled = study.formIsFilled
             doneButton.isEnabled ? doneButton.fillIn(title: "다음") : doneButton.fillOut(title: "다음")
         }
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
         
         configureViews()
         setDelegate()

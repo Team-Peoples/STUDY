@@ -100,6 +100,9 @@ final class CreatingStudyRuleViewController: UIViewController {
                 creatingStudyRuleSkipButton.isHidden = false
             }
         }
+        creatingStudyRuleViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
         
         view.backgroundColor = .white
         title = "스터디 만들기"

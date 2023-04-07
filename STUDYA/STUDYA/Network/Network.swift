@@ -1586,7 +1586,7 @@ extension Network {
 }
 
 extension UIAlertController {
-    static func handleCommonErros(presenter: UIViewController, error: PeoplesError?) {
+    static func handleCommonErros(presenter: UIViewController?, error: PeoplesError?) {
             
         var alert = SimpleAlert(message: "")
         guard let error = error else { return }
@@ -1609,11 +1609,13 @@ extension UIAlertController {
         case .unknownError(let errorCode):
             guard let errorCode = errorCode else { return }
             alert = SimpleAlert(message: Constant.unknownErrorMessage + " code = \(errorCode)")
+        case .noError:
+            return
         default:
             alert = SimpleAlert(message: Constant.unknownErrorMessage)
         }
         
-        presenter.present(alert, animated: true)
+        presenter?.present(alert, animated: true)
     }
     
     static func showDecodingError(presenter: UIViewController) {

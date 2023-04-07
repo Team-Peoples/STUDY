@@ -28,6 +28,9 @@ final class EditingStudyFreeRuleViewController: UIViewController {
             self.freeRuletextView.text = study.freeRule
             self.placeholderLabel.isHidden = study.freeRule == nil || study.freeRule == "" ? false : true
         }
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
         
         freeRuletextView.delegate = self
         

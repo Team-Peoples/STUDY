@@ -41,6 +41,10 @@ final class EditingStudyGeneralRuleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
+        
         setNavigation()
         configureViews()
         setConstraints()

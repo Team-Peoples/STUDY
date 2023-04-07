@@ -63,6 +63,9 @@ final class EditingStudyFormViewController: UIViewController {
         studyViewModel.bind { [self] study in
             doneButton.isEnabled = study.formIsFilled
         }
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
         
         configureViews()
         configureViews(studyViewModel.study)

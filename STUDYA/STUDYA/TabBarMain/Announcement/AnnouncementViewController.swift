@@ -189,8 +189,8 @@ final class AnnouncementViewController: UIViewController {
             case .success:
                 NotificationCenter.default.post(name: .updateAnnouncement, object: nil)
                 self.dismiss(animated: true)
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
@@ -206,8 +206,8 @@ final class AnnouncementViewController: UIViewController {
             case .success(_):
                 NotificationCenter.default.post(name: .updateAnnouncement, object: nil)
                 self.dismiss(animated: true)
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }

@@ -54,6 +54,9 @@ class InviteeLandingViewController: UIViewController {
         studyViewModel.getStudyInfo { [weak self] study in
             self?.updateViews(with: study)
         }
+        studyViewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
     }
     
     private func initialSetting() {
@@ -77,15 +80,15 @@ class InviteeLandingViewController: UIViewController {
             case .success:
                 NotificationCenter.default.post(name: .reloadStudyList, object: nil, userInfo: [Constant.studyID: studyID])
                 self.dismiss(animated: true)
-            case .failure(let failure):
-                switch failure {
+            case .failure(let error):
+                switch error {
                 case .alreadyJoined:
                     let simpleAlert = SimpleAlert(title: "스터디 참여 불가능", message: "스터디에 이미 참여중입니다.", preferredStyle: .alert)
                     let okAction = UIAlertAction(title: Constant.OK, style: .default)
                     simpleAlert.addAction(okAction)
                     self.present(simpleAlert, animated: true)
                 default:
-                    print(failure)
+                    UIAlertController.handleCommonErros(presenter: self, error: error)
                 }
             }
         }

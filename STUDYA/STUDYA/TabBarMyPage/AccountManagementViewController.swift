@@ -114,6 +114,9 @@ final class AccountManagementViewController: UIViewController {
             guard let imageURL = user.imageURL else { return }
             self?.profileImageView.setImageWith(imageURL)
         }
+        viewModel.error.bind { [weak self] error in
+            UIAlertController.handleCommonErros(presenter: self, error: error)
+        }
         
         addPublisher()
     }
