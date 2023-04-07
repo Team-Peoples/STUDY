@@ -18,6 +18,8 @@ class StudyScheduleViewModel: ViewModel {
         }
     }
     
+    var error: Observable<PeoplesError> = Observable(.noError)
+    
     var handler: DataHandler?
     
     init(allStudyAllSchedule: AllStudyScheduleOfAllStudy = AllStudyScheduleOfAllStudy()) {
@@ -35,7 +37,7 @@ class StudyScheduleViewModel: ViewModel {
             case .success(let allStudyAllStudySchedule):
                 self.allStudyScheduleOfAllStudy = allStudyAllStudySchedule
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }
@@ -46,7 +48,7 @@ class StudyScheduleViewModel: ViewModel {
             case .success:
                 successHandler()
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }
@@ -75,6 +77,7 @@ class StudySchedulePostingViewModel: ViewModel {
             handler?(studySchedule)
         }
     }
+    var error: Observable<PeoplesError> = Observable(.noError)
     
     var handler: DataHandler?
     
@@ -93,7 +96,7 @@ class StudySchedulePostingViewModel: ViewModel {
             case .success:
                 successHandler()
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }
@@ -104,7 +107,7 @@ class StudySchedulePostingViewModel: ViewModel {
             case .success:
                 successHandler()
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }

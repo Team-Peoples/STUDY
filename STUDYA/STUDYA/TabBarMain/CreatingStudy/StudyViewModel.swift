@@ -16,6 +16,8 @@ class StudyViewModel: ViewModel {
         }
     }
     
+    var error: Observable<PeoplesError> = Observable(.noError)
+    
     var handler: DataHandler?
     
     init(study: Study = Study()) {
@@ -36,8 +38,8 @@ class StudyViewModel: ViewModel {
                 study = studyOverall.study
                 study.ownerNickname = studyOverall.ownerNickname
                 successHandler(study)
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                self.error.value = error
             }
         }
     }
@@ -48,7 +50,7 @@ class StudyViewModel: ViewModel {
             case .success(let study):
                 successHandler(study.id)
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }
@@ -60,8 +62,8 @@ class StudyViewModel: ViewModel {
             switch result {
             case .success:
                successHandler()
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                self.error.value = error
             }
         }
     }
@@ -74,7 +76,7 @@ class StudyViewModel: ViewModel {
             case .success:
                 successHandler()
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }

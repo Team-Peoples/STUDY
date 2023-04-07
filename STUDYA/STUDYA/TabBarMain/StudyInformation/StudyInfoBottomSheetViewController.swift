@@ -113,7 +113,9 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                         
                         UserDefaults.standard.removeObject(forKey: "checkedAnnouncementIDOfStudy\(studyID)")
                         NotificationCenter.default.post(name: .reloadStudyList, object: nil)
-                        self.dismiss(animated: true)
+                        self.dismiss(animated: true) {
+                            self.presentingVC?.navigationController?.popToRootViewController(animated: true)
+                        }
                     case .failure(let error):
                         print("스터디장은 탈퇴할 수 없어요.")
                         UIAlertController.handleCommonErros(presenter: self, error: error)
@@ -131,7 +133,7 @@ final class StudyInfoBottomSheetViewController: UIViewController {
                             self.presentingVC?.navigationController?.popToRootViewController(animated: true)
                         }
                     case .failure(let error):
-                        print(error)
+                        UIAlertController.handleCommonErros(presenter: self, error: error)
                     }
                 }
             case.resignMaster:
@@ -143,7 +145,8 @@ final class StudyInfoBottomSheetViewController: UIViewController {
     }
         
     @objc func goToResignAdminButtonDidTapped() {
-        self.dismiss(animated: true)
-        print("스터디장 양도 페이지로")
+        self.dismiss(animated: true) {
+            self.presentingVC?.navigationController?.popToRootViewController(animated: true)
+        }
     }
 }

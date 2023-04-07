@@ -15,6 +15,7 @@ class AccountMangementViewModel {
     var nickName: String?
     var id: String?
     var sns: SNS = .none
+    var error: Observable<PeoplesError> = Observable(.noError)
     
     @Published var oldPassword: String = String() {
         didSet {
@@ -110,7 +111,7 @@ class AccountMangementViewModel {
                 }
                 completion(user)
             case .failure(let error):
-                print(error)
+                self?.error.value = error
             }
         }
     }
@@ -120,8 +121,8 @@ class AccountMangementViewModel {
             switch result {
             case .success:
                 completion()
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                self.error.value = error
             }
         }
     }
@@ -144,7 +145,7 @@ class AccountMangementViewModel {
             case .success(let isCorrectOldPassword):
                 completion(isCorrectOldPassword)
             case .failure(let error):
-                print(error)
+                self.error.value = error
             }
         }
     }

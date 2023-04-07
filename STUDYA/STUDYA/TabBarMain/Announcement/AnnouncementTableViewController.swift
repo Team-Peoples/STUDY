@@ -178,8 +178,8 @@ final class AnnouncementTableViewController: SwitchableViewController {
                 }
                 self.announcements = sortedAnnouncements
                 self.announcementBoardTableView.refreshControl?.endRefreshing()
-            case .failure(let failure):
-                print(failure)
+            case .failure(let error):
+                UIAlertController.handleCommonErros(presenter: self, error: error)
             }
         }
     }
@@ -321,8 +321,9 @@ extension AnnouncementTableViewController: UITableViewDataSource {
                         switch result {
                         case .success:
                             self?.refresh()
-                        case .failure(let failure):
-                            print(failure)
+                        case .failure(let error):
+                            guard let weakSelf = self else { return }
+                            UIAlertController.handleCommonErros(presenter: weakSelf, error: error)
                         }
                     }
                 }
