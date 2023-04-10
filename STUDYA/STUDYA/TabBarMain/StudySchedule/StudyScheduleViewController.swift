@@ -18,7 +18,7 @@ class StudyScheduleViewController: SwitchableViewController {
     private var selectedDate: Date = Date()
     private var studyScheduleOfThisStudy: [StudySchedule] = [] {
         didSet {
-            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
             
             var studyScheduleTimeTable = [DashedDate: [TimeRange]]()
             studyScheduleOfThisStudy.forEach { studySchedule in
@@ -35,9 +35,7 @@ class StudyScheduleViewController: SwitchableViewController {
             self.studyScheduleTimeTableList = studyScheduleTimeTable
         }
     }
-    
     private var studyScheduleTimeTableList: [DashedDate: [TimeRange]]?
-    
     private var studyScheduleOfThisStudyAtSelectedDate: [StudySchedule] = [] {
         didSet {
             scheduleTableView.reloadData()
@@ -311,7 +309,7 @@ extension StudyScheduleViewController: UITableViewDelegate {
 extension StudyScheduleViewController: CustomCalendarViewDelegate {
     func calendarView(didselectAt date: Date) {
         selectedDate = date
-        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
     }
 }
 

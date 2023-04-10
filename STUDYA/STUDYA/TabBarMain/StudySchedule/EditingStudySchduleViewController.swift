@@ -206,9 +206,18 @@ final class EditingStudySchduleViewController: UIViewController {
             let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
             guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
             let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
+            let userSelectedStartTime = self?.editingStudyScheduleViewModel.studySchedule.startTime ?? "--:--"
             let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
-                return selectedTime >= startTime && selectedTime <= endTime
+                
+                if userSelectedStartTime < startTime && selectedTime >= endTime {
+                    return true
+                } else if selectedTime > startTime && selectedTime <= endTime {
+                    return true
+                } else {
+                    return false
+                }
             })
+            
             if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
                 let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
                 
