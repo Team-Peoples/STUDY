@@ -171,13 +171,13 @@ final class AnnouncementTableViewController: SwitchableViewController {
     }
     
     @objc private func fetchAnnouncement() {
-        Network.shared.getAllAnnouncement(studyID: studyID) { result in
+        Network.shared.getAllAnnouncement(studyID: studyID) { [weak self] result in
             switch result {
             case .success(let announcements):
                 let sortedAnnouncements = announcements.sorted { $0.createdDate > $1.createdDate
                 }
-                self.announcements = sortedAnnouncements
-                self.announcementBoardTableView.refreshControl?.endRefreshing()
+                self?.announcements = sortedAnnouncements
+                self?.announcementBoardTableView.refreshControl?.endRefreshing()
             case .failure(let error):
                 UIAlertController.handleCommonErros(presenter: self, error: error)
             }
@@ -292,7 +292,7 @@ extension AnnouncementTableViewController: UITableViewDataSource {
             }
             actionSheet.addAction(pinAction)
         } else {
-            let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { [weak  self] _ in
+            let pinAction = UIAlertAction(title: "핀공지 설정", style: .default) { [weak self] _ in
                 guard let announcementID = cell.announcement?.id else { return }
                 
                 self?.forcingUpdatePin(announcement: announcementID, successHandler: {
@@ -338,7 +338,17 @@ extension AnnouncementTableViewController: UITableViewDataSource {
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
         
-        present(actionSheet, animated: true)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(actionSheet, animated: true, completion: nil)
+            }
+        } else {
+            self.present(actionSheet, animated: true, completion: nil)
+        }
     }
 }
 

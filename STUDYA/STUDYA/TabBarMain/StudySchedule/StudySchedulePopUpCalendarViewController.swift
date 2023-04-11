@@ -85,7 +85,7 @@ class StudySchedulePopUpCalendarViewController: UIViewController {
             make.edges.equalTo(view)
         }
         popUpContainerView.snp.makeConstraints { make in
-            make.center.equalTo(view.safeAreaLayoutGuide)
+            make.center.equalTo(view)
             make.height.equalTo(400)
             make.width.equalTo(300)
         }

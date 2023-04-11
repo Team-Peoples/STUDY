@@ -91,8 +91,15 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         let popUpCalendarVC = StudySchedulePopUpCalendarViewController(type: .start, selectedDate: startDate, viewModel: studySchedulePostingViewModel)
         
         popUpCalendarVC.endDate = repeatEndDate
-
-        present(popUpCalendarVC, animated: true)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            popUpCalendarVC.modalPresentationStyle = .overFullScreen
+           
+                self.present(popUpCalendarVC, animated: true, completion: nil)
+            
+        } else {
+            self.present(popUpCalendarVC, animated: true, completion: nil)
+        }
     }
     
     @objc private func repeatEndDateSelectableViewTapped() {
@@ -104,7 +111,14 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         
         popUpCalendarVC.startDate = startDate
        
-        present(popUpCalendarVC, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            popUpCalendarVC.modalPresentationStyle = .overFullScreen
+           
+                self.present(popUpCalendarVC, animated: true, completion: nil)
+            
+        } else {
+            self.present(popUpCalendarVC, animated: true, completion: nil)
+        }
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
@@ -181,7 +195,17 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = alert.popoverPresentationController {
+                
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
@@ -239,7 +263,17 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = alert.popoverPresentationController {
+                
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     private func addActionsAtButtons() {
@@ -329,17 +363,16 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
             make.width.equalTo(100)
         }
         startTimeSuffixLabel.snp.makeConstraints { make in
-            make.leading.equalTo(startTimeSelectButton.snp.trailing).offset(15)
+            make.leading.equalTo(startTimeSelectButton.snp.trailing).offset(10)
             make.centerY.equalTo(startTimeSelectButton)
         }
         endTimeSelectButton.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(startTimeSuffixLabel.snp.trailing).offset(10)
+            make.leading.equalTo(startTimeSuffixLabel.snp.trailing).offset(10)
             make.centerY.equalTo(startTimeSuffixLabel)
             make.width.equalTo(100)
         }
         endTimeSuffixLabel.snp.makeConstraints { make in
-            make.leading.equalTo(endTimeSelectButton.snp.trailing).offset(15)
-            make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(20)
+            make.leading.equalTo(endTimeSelectButton.snp.trailing).offset(10)
             make.centerY.equalTo(endTimeSelectButton)
         }
         repeatOptionTitleLabel.snp.makeConstraints { make in

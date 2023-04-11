@@ -294,7 +294,16 @@ extension StudyScheduleViewController: UITableViewDataSource {
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
         
-        present(actionSheet, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(actionSheet, animated: true, completion: nil)
+            }
+        } else {
+          self.present(actionSheet, animated: true, completion: nil)
+        }
     }
 }
 

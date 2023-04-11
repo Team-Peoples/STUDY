@@ -143,7 +143,14 @@ final class EditingStudySchduleViewController: UIViewController {
         
         popUpCalendarVC.endDate = repeatEndDate
 
-        present(popUpCalendarVC, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            popUpCalendarVC.modalPresentationStyle = .overFullScreen
+           
+                self.present(popUpCalendarVC, animated: true, completion: nil)
+            
+        } else {
+            self.present(popUpCalendarVC, animated: true, completion: nil)
+        }
     }
     
     @objc private func repeatEndDateSelectableViewTapped() {
@@ -155,7 +162,14 @@ final class EditingStudySchduleViewController: UIViewController {
         
         popUpCalendarVC.startDate = startDate
         
-        present(popUpCalendarVC, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            popUpCalendarVC.modalPresentationStyle = .overFullScreen
+           
+                self.present(popUpCalendarVC, animated: true, completion: nil)
+            
+        } else {
+            self.present(popUpCalendarVC, animated: true, completion: nil)
+        }
     }
     
     @objc private func checkboxDidTapped(_ sender: CheckBoxButton) {
@@ -244,7 +258,17 @@ final class EditingStudySchduleViewController: UIViewController {
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = alert.popoverPresentationController {
+                
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc private func endTimeSelectButtonDidTapped(_ sender: CustomButton) {
@@ -294,7 +318,17 @@ final class EditingStudySchduleViewController: UIViewController {
         alert.addAction(okAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = alert.popoverPresentationController {
+                
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(alert, animated: true, completion: nil)
+            }
+        } else {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc private func keyboardAppear(_ notification: NSNotification) {
@@ -496,13 +530,12 @@ final class EditingStudySchduleViewController: UIViewController {
             make.centerY.equalTo(startTimeSelectButton)
         }
         endTimeSelectButton.snp.makeConstraints { make in
-            make.leading.greaterThanOrEqualTo(startTimeSuffixLabel.snp.trailing).offset(10)
+            make.leading.equalTo(startTimeSuffixLabel.snp.trailing).offset(10)
             make.centerY.equalTo(startTimeSuffixLabel)
             make.width.equalTo(100)
         }
         endTimeSuffixLabel.snp.makeConstraints { make in
             make.leading.equalTo(endTimeSelectButton.snp.trailing).offset(15)
-            make.trailing.equalTo(containerView).inset(20)
             make.centerY.equalTo(endTimeSelectButton)
         }
         placeTitleLabel.snp.makeConstraints { make in
