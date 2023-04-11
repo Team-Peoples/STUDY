@@ -10,7 +10,7 @@ import UIKit
 final class MainDropDownDimmingViewController: UIViewController {
     internal var myStudyList = [Study]() {
         didSet {
-            dropdownHeight = myStudyList.count < 5 ? dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight) : dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight)
+            dropdownHeight = myStudyList.count < 5 ? dropdownContainerView.heightAnchor.constraint(equalToConstant: CGFloat(myStudyList.count * 50) + createStudyButtonHeight) : dropdownContainerView.heightAnchor.constraint(equalToConstant: 200 + createStudyButtonHeight + 25)
         }
     }
     

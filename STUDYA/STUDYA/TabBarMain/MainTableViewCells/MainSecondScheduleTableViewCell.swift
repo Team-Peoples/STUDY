@@ -83,7 +83,7 @@ class MainSecondScheduleTableViewCell: UITableViewCell {
     }
     
     private func configureLabelsWhenYesStudySchedule(schedule: StudySchedule) {
-        place.text = schedule.place
+        place.text = "장소: \(schedule.place ?? "")"
         todayContent.text = schedule.topic
         configureDateInformation(schedule.startDateAndTime)
         
