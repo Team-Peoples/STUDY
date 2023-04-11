@@ -73,7 +73,7 @@ final class MainSpreadUpDimmingViewController: UIViewController {
     
     private func spreadUp() {
         
-        let indexPaths = [IndexPath(row: 0, section: 0), IndexPath(row: 1, section: 0)]
+        let indexPaths = [IndexPath(row: 0, section: 0)]
         willSpreadUp.toggle()
         spreadUpTableView.insertRows(at: indexPaths, with: .top)
     }
@@ -87,7 +87,7 @@ final class MainSpreadUpDimmingViewController: UIViewController {
             make.edges.equalTo(view)
         }
         
-        spreadUpContainerView.anchor(bottom: view.bottomAnchor, bottomConstant: tabBarHeight! + interTabBarSpaceHeight, trailing: view.trailingAnchor, trailingConstant: 10, width: 142, height: 136)
+        spreadUpContainerView.anchor(bottom: view.bottomAnchor, bottomConstant: tabBarHeight! + interTabBarSpaceHeight, trailing: view.trailingAnchor, trailingConstant: 10, width: 142, height: 62)
         spreadUpTableView.snp.makeConstraints { make in
             make.edges.equalTo(spreadUpContainerView)
         }
@@ -96,7 +96,7 @@ final class MainSpreadUpDimmingViewController: UIViewController {
 
 extension MainSpreadUpDimmingViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        willSpreadUp ? 2 : 0
+        willSpreadUp ? 1 : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -121,18 +121,18 @@ extension MainSpreadUpDimmingViewController: UITableViewDelegate {
                 
                 self.presentNextVC(navigationVC)
             }
-        } else {
-            dismiss(animated: true) {
-                let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
-                
-                studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = self.studyID
-                
-                let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
-                
-                navigation.modalPresentationStyle = .fullScreen
-                
-                self.presentNextVC(navigation)
-            }
+//        } else {
+//            dismiss(animated: true) {
+//                let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
+//
+//                studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = self.studyID
+//
+//                let navigation = UINavigationController(rootViewController: studySchedulePriodFormVC)
+//
+//                navigation.modalPresentationStyle = .fullScreen
+//
+//                self.presentNextVC(navigation)
+//            }
         }
     }
     
