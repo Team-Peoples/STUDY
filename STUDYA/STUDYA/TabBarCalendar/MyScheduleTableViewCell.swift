@@ -134,7 +134,7 @@ extension MyScheduleTableViewCell: UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        heightCoordinator?.setPosition(UIScreen.main.bounds.height * 0.12, animated: true)
+        heightCoordinator?.setPosition(Constant.screenHeight * 0.12, animated: true)
         
         if textView.text == placeholder {
             textView.text = nil

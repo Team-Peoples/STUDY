@@ -18,7 +18,7 @@ class StudyScheduleViewController: SwitchableViewController {
     private var selectedDate: Date = Date()
     private var studyScheduleOfThisStudy: [StudySchedule] = [] {
         didSet {
-            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
             
             var studyScheduleTimeTable = [DashedDate: [TimeRange]]()
             studyScheduleOfThisStudy.forEach { studySchedule in
@@ -35,9 +35,7 @@ class StudyScheduleViewController: SwitchableViewController {
             self.studyScheduleTimeTableList = studyScheduleTimeTable
         }
     }
-    
     private var studyScheduleTimeTableList: [DashedDate: [TimeRange]]?
-    
     private var studyScheduleOfThisStudyAtSelectedDate: [StudySchedule] = [] {
         didSet {
             scheduleTableView.reloadData()
@@ -296,7 +294,16 @@ extension StudyScheduleViewController: UITableViewDataSource {
         actionSheet.addAction(deleteAction)
         actionSheet.addAction(cancelAction)
         
-        present(actionSheet, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.sourceView = self.view
+                popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+                popoverController.permittedArrowDirections = []
+                self.present(actionSheet, animated: true, completion: nil)
+            }
+        } else {
+          self.present(actionSheet, animated: true, completion: nil)
+        }
     }
 }
 
@@ -311,7 +318,7 @@ extension StudyScheduleViewController: UITableViewDelegate {
 extension StudyScheduleViewController: CustomCalendarViewDelegate {
     func calendarView(didselectAt date: Date) {
         selectedDate = date
-        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate)
+        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
     }
 }
 

@@ -16,8 +16,8 @@ final class WelcomViewController: UIViewController {
     var loginAction: (User) -> Void = { _ in }
     
     private let welcomeLabel = CustomLabel(title: "환영합니다 :)", tintColor: .ppsBlack, size: 30, isBold: true)
-    private let kakaoLoginButton = BrandButton(title: "카카오로 시작하기")
-    private let naverLoginButton = BrandButton(title: "네이버로 시작하기")
+//    private let kakaoLoginButton = BrandButton(title: "카카오로 시작하기")
+//    private let naverLoginButton = BrandButton(title: "네이버로 시작하기")
     private let emailLoginButton = BrandButton(title: "이메일로 시작하기")
     private let signUpView = CustomLabel(title: "이메일 회원가입", tintColor: .keyColor1, size: 16, isBold: true)
     private let underBar = UIView(frame: .zero)
@@ -34,8 +34,8 @@ final class WelcomViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped), for: .touchUpInside)
-        naverLoginButton.addTarget(self, action: #selector(naverLoginButtonTapped), for: .touchUpInside)
+//        kakaoLoginButton.addTarget(self, action: #selector(kakaoLoginButtonTapped), for: .touchUpInside)
+//        naverLoginButton.addTarget(self, action: #selector(naverLoginButtonTapped), for: .touchUpInside)
         emailLoginButton.addTarget(self, action: #selector(emailLoginButtonDidTapped), for: .touchUpInside)
         
         signUpView.isUserInteractionEnabled = true
@@ -172,24 +172,24 @@ final class WelcomViewController: UIViewController {
     
     private func addArangedSubviewsToStack() {
         
-        buttonsStackView.addArrangedSubview(kakaoLoginButton)
-        buttonsStackView.addArrangedSubview(naverLoginButton)
+//        buttonsStackView.addArrangedSubview(kakaoLoginButton)
+//        buttonsStackView.addArrangedSubview(naverLoginButton)
         buttonsStackView.addArrangedSubview(emailLoginButton)
     }
     
     private func configureButtons() {
         
-        kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
-        kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
-        kakaoLoginButton.backgroundColor = .appColor(.kakao)
-        kakaoLoginButton.layer.borderWidth = 0
-        kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
-        
-        naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
-        naverLoginButton.setTitleColor(.white, for: .normal)
-        naverLoginButton.backgroundColor = .appColor(.naver)
-        naverLoginButton.layer.borderWidth = 0
-        naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+//        kakaoLoginButton.setImage(UIImage(named: "kakao"), for: .normal)
+//        kakaoLoginButton.setTitleColor(UIColor.appColor(.kakaoBrown), for: .normal)
+//        kakaoLoginButton.backgroundColor = .appColor(.kakao)
+//        kakaoLoginButton.layer.borderWidth = 0
+//        kakaoLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
+//
+//        naverLoginButton.setImage(UIImage(named: "naver"), for: .normal)
+//        naverLoginButton.setTitleColor(.white, for: .normal)
+//        naverLoginButton.backgroundColor = .appColor(.naver)
+//        naverLoginButton.layer.borderWidth = 0
+//        naverLoginButton.imageEdgeInsets = .init(top: 0, left: 0, bottom: 0, right: 7)
     }
     
     private func configureStackView() {
@@ -211,7 +211,7 @@ final class WelcomViewController: UIViewController {
         underBar.anchor(top: signUpView.bottomAnchor, leading: signUpView.leadingAnchor, trailing: signUpView.trailingAnchor, height: 2)
         descriptionLabel.snp.makeConstraints { make in
             make.bottom.equalTo(view.snp.bottom).inset(28)
-            make.centerX.equalTo(view)
+            make.leading.trailing.equalTo(view).inset(10)
         }
     }
     

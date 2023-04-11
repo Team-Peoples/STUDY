@@ -520,7 +520,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         
         alert.view.removeConstraints(widthConstraints)
         
-        let newWidth = UIScreen.main.bounds.width * 0.6
+        let newWidth = Constant.screenWidth * 0.6
         let widthConstraint = NSLayoutConstraint(item: alert.view!,
                                                  attribute: .width,
                                                  relatedBy: .equal,
@@ -582,7 +582,16 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         alert.addAction(selectImageAction)
         alert.addAction(cancelAction)
         
-        present(alert, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+          if let popoverController = alert.popoverPresentationController {
+              popoverController.sourceView = self.view
+              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+              popoverController.permittedArrowDirections = []
+              self.present(alert, animated: true, completion: nil)
+          }
+        } else {
+          self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @objc private func openAlbum() {

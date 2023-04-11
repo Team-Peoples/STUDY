@@ -170,6 +170,7 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
         
         guard let viewModel = viewModel else { return }
         viewModel.getAllMembersAttendaneStatisticsBetween(studyID: studyID)
+        // to ehd: 이부분에서 break point잡아서 보면 allMembersAttendanceStatistics에 0 values
         headerView.toggleAlignment = viewModel.toggleAlginment
         setBinding()
     }

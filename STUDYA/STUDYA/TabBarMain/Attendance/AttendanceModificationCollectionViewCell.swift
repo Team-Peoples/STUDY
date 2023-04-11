@@ -33,13 +33,14 @@ final class AttendancesModificationViewModel {
             case .success(let allUsersAttendancesForADay):
                 
                 weakSelf.allUsersAttendancesForADay = allUsersAttendancesForADay
+                // to ehd: 이부분에서 break point잡아서 보면 allUsersAttendancesForADay에 "hh:mm"형식의 key는 있지만 0 values
                 weakSelf.times = allUsersAttendancesForADay.map { $0.key }.sorted()
                 
                 if let firstTime = weakSelf.times.first, let attendancesForATime = allUsersAttendancesForADay[firstTime] {
                     
                     weakSelf.selectedTime.value = firstTime
                     weakSelf.attendancesForATime = attendancesForATime
-                    
+                    // to ehd: 이부분에서 break point잡아서 보면 attendancesForATime: 0 values
                 } else {
                     weakSelf.selectedTime.value = ""
                     weakSelf.attendancesForATime = []
