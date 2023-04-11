@@ -12,6 +12,8 @@ final class SignInViewController: UIViewController {
     
     private var signInViewModel = SignInViewModel()
     
+    private let scrollView = UIScrollView()
+    private let containerView = UIView()
     private let loginLabel: UILabel = CustomLabel(title: "로그인", tintColor: .ppsBlack, size: 30, isBold: true)
     private lazy var emailInputView = BasicInputView(titleText: "이메일", placeholder: "studya@gmail.com", keyBoardType: .emailAddress, returnType: .next, isCancel: true, target: self, textFieldAction: #selector(cancelButtonDidTapped))
     private lazy var passwordInputView = BasicInputView(titleText: "패스워드", placeholder: "비밀번호를 입력해주세요.", keyBoardType: .default, returnType: .done, isFieldSecure: true, target: self, textFieldAction: #selector(secureToggleButtonDidTapped(sender:)))
@@ -29,8 +31,10 @@ final class SignInViewController: UIViewController {
         }
         
         configureViews()
+        enableScroll()
         configureCompleteButton()
         configureFindPasswordButton()
+        setupNotification()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,36 +51,61 @@ final class SignInViewController: UIViewController {
     
     // MARK: - Configure Views
     
+    private func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardAppear(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDisappear(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeNotification() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     private func configureViews() {
         
         view.backgroundColor = .white
         
-        view.addSubview(loginLabel)
-        view.addSubview(emailInputView)
-        view.addSubview(passwordInputView)
-        view.addSubview(findPasswordButton)
-        view.addSubview(completeButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        
+        containerView.addSubview(loginLabel)
+        containerView.addSubview(emailInputView)
+        containerView.addSubview(passwordInputView)
+        containerView.addSubview(findPasswordButton)
+        containerView.addSubview(completeButton)
+        
+        let safeArea = view.safeAreaLayoutGuide
+        
+        scrollView.showsVerticalScrollIndicator = false
+        
+        scrollView.anchor(top: safeArea.bottomAnchor, bottom: safeArea.bottomAnchor, leading: safeArea.leadingAnchor, trailing: safeArea.trailingAnchor)
+        scrollView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor).isActive = true
+        
+        containerView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.height.greaterThanOrEqualTo(safeArea.snp.height)
+            make.width.equalTo(scrollView.snp.width)
+        }
         
         loginLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.top.equalTo(containerView.safeAreaLayoutGuide).offset(40)
+            make.leading.equalTo(containerView.safeAreaLayoutGuide).offset(20)
         }
         
         emailInputView.snp.makeConstraints { make in
             make.top.equalTo(loginLabel).offset(70)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalTo(containerView.safeAreaLayoutGuide).inset(20)
         }
         
         passwordInputView.snp.makeConstraints { make in
             make.top.equalTo(emailInputView.snp.bottom).offset(40)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.leading.trailing.equalTo(containerView.safeAreaLayoutGuide).inset(20)
         }
         
         completeButton.snp.makeConstraints { make in
-            make.centerX.equalTo(view.safeAreaLayoutGuide)
+            make.centerX.equalTo(containerView.safeAreaLayoutGuide)
             make.height.equalTo(50)
-            make.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            make.leading.trailing.equalTo(containerView.safeAreaLayoutGuide).inset(20)
+            make.bottom.equalTo(containerView.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
         findPasswordButton.snp.makeConstraints { make in
@@ -111,37 +140,69 @@ final class SignInViewController: UIViewController {
     
     // MARK: - Actioins
     
-    @objc private func secureToggleButtonDidTapped(sender: UIView) {
+    @objc
+    private func keyboardAppear(_ notification: NSNotification) {
+        
+        guard let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        
+        let keyboardSize = keyboardFrame.cgRectValue
+        let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        
+        scrollView.contentInset = insets
+        scrollView.scrollIndicatorInsets = insets
+    }
+    
+        
+    @objc
+    private func keyboardDisappear(_ notification: NSNotification) {
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    }
+    
+    private func enableScroll() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(pullKeyboard))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    
+    @objc
+    private func secureToggleButtonDidTapped(sender: UIView) {
         
         let button = passwordInputView.getInputField().rightView as? UIButton
         button?.isSelected.toggle()
         passwordInputView.getInputField().isSecureTextEntry.toggle()
     }
     
-    @objc private func cancelButtonDidTapped() {
+    @objc
+    private func cancelButtonDidTapped() {
         
         emailInputView.getInputField().text = nil
     }
     
-    @objc private func didReceiveKeyboardNotification(_ sender: Notification) {
+    @objc
+    private func didReceiveKeyboardNotification(_ sender: Notification) {
             
         switch sender.name {
             case UIResponder.keyboardWillShowNotification:
                 guard let keyboardFrame: NSValue = sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
                 let keyboardFrameRect = keyboardFrame.cgRectValue
-                
+            if Constant.screenHeight > 700 {
                 UIView.animate(withDuration: 0.3) {
-                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardFrameRect.height + 16)
+                    self.completeButton.transform = CGAffineTransform(translationX: 0, y: -keyboardFrameRect.height)
                 }
-                
+            }
             case UIResponder.keyboardWillHideNotification :
+            if Constant.screenHeight > 700 {
                 completeButton.transform = .identity
-                
+            }
             default : break
         }
     }
     
-    @objc private func textDidChanged(_ sender: UITextField) {
+    @objc
+    private func textDidChanged(_ sender: UITextField) {
         
         switch sender.superview {
             case emailInputView:
@@ -153,14 +214,16 @@ final class SignInViewController: UIViewController {
         }
     }
     
-    @objc private func findPasswordButtonDidTapped() {
+    @objc
+    private func findPasswordButtonDidTapped() {
         
         let findPwVC = FindPasswordViewController()
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(findPwVC, animated: true)
     }
     
-    @objc private func completeButtonDidTapped() {
+    @objc
+    private func completeButtonDidTapped() {
         signInViewModel.singIn { user in
             guard let userID = user.id else { fatalError("사용자 아이디 없음") }
             guard let nickname = user.nickName else { fatalError("사용자 닉네임 없음") }
@@ -199,6 +262,10 @@ final class SignInViewController: UIViewController {
             
             self.present(alert, animated: true)
         }
+    }
+    
+    @objc func pullKeyboard(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

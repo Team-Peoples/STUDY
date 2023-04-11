@@ -520,7 +520,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
         
         alert.view.removeConstraints(widthConstraints)
         
-        let newWidth = UIScreen.main.bounds.width * 0.6
+        let newWidth = Constant.screenWidth * 0.6
         let widthConstraint = NSLayoutConstraint(item: alert.view!,
                                                  attribute: .width,
                                                  relatedBy: .equal,
