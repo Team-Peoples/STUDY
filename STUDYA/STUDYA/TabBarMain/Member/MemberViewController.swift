@@ -16,7 +16,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     internal var currentStudyID: Int?
     internal var members: Members?
     internal var isOwner: Bool?
-    private var nowLookingMemberID: ID?
+    private var nowLookingMember: Member?
     
     private let titleLabel = CustomLabel(title: "멤버", tintColor: .ppsBlack, size: 16, isBold: true)
     private let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -45,6 +45,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
        
         let vc = AskExcommunicationViewController()
         
+        vc.nickName = nowLookingMember?.nickName
         vc.navigatableDelegate = self
         
         vc.backButtonTapped = {
@@ -54,8 +55,8 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         }
 
         vc.excommunicateMember = { [self] in
-            guard let nowLookingMemberID = nowLookingMemberID else { return }
-            Network.shared.excommunicateMember(nowLookingMemberID) { result in
+            guard let nowLookingMember = nowLookingMember else { return }
+            Network.shared.excommunicateMember(nowLookingMember.memberID) { result in
                 
                 switch result {
                 case .success(let isSuccess):
@@ -99,16 +100,16 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
             }
         }
         vc.turnOverStudyOwnerAndReload = { [self] in
-            guard let nowLookingMemberID = nowLookingMemberID else { return }
+            guard let nowLookingMember = nowLookingMember else { return }
             
-            Network.shared.turnOverStudyOwnerTo(memberID: nowLookingMemberID) { result in
+            Network.shared.turnOverStudyOwnerTo(memberID: nowLookingMember.memberID) { result in
                 
                 switch result {
                 case .success(let isSuccess):
                     
                     if isSuccess {
                         vc.dismiss(animated: true) {
-                            forceSwitchStatus(isOn: false)
+                            self.forceSwitchStatus(isOn: false)
                             NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
                             self.pop()
                         }
@@ -295,7 +296,7 @@ extension MemberViewController: UICollectionViewDataSource {
                 if isSwitchOn {
                     guard let isOwner = isOwner else { return }
                     
-                    self.nowLookingMemberID = member.memberID
+                    self.nowLookingMember = member
                     memberBottomVC.configureViewControllerWith(member: member, isOwner: isOwner)
                     
                     presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)

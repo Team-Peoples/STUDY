@@ -339,7 +339,9 @@ final class AskChangingOwnerViewController: UIViewController {
 
 final class AskExcommunicationViewController: UIViewController {
     
-    private let askLabel = CustomLabel(title: "닉네임님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
+    internal var nickName: String?
+    
+    private lazy var askLabel = CustomLabel(title: "\(nickName ?? "선택하신 회원")님을 강퇴할까요?", tintColor: .ppsBlack, size: 18, isBold: true)
     private let descLabel = CustomLabel(title: "강퇴한 멤버는 이 스터디에 다시 참여할 수 없어요.", tintColor: .ppsGray1, size: 14)
     private let backButton = UIButton(frame: .zero)
     private let confirmButton = UIButton(frame: .zero)
