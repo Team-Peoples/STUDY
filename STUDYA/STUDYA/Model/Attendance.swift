@@ -158,7 +158,14 @@ struct SingleUserAnAttendanceInformationForPut: Codable {
     }
 }
 
-struct AttendanceInformation: Codable {
+struct AttendanceInformation: Codable, Equatable {
+    static func == (lhs: AttendanceInformation, rhs: AttendanceInformation) -> Bool {
+        return lhs.attendanceStatus == rhs.attendanceStatus
+        && lhs.fine == rhs.fine
+        && lhs.reason == rhs.reason
+        && lhs.userID == rhs.userID
+    }
+    
     let userID, attendanceStatus, reason: String?
     let fine: Int
 

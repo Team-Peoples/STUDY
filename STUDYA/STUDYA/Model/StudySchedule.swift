@@ -7,7 +7,18 @@
 
 import UIKit
 
-struct StudySchedule: Codable {
+struct StudySchedule: Codable, Equatable {
+    static func == (lhs: StudySchedule, rhs: StudySchedule) -> Bool {
+        return lhs.studyName == rhs.studyName
+        && lhs.studyScheduleID == rhs.studyScheduleID
+        && lhs.studyID == rhs.studyID
+        && lhs.topic == rhs.topic
+        && lhs.place == rhs.place
+        && lhs.startDateAndTime == rhs.startDateAndTime
+        && lhs.endDateAndTime == rhs.endDateAndTime
+        && lhs.repeatOption == rhs.repeatOption
+    }
+    
     let studyName: String?
     let studyScheduleID: Int?
     var studyID: StudyID?

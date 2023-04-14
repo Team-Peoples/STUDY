@@ -90,6 +90,8 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         hideEverythingForReload()
         
         switch buttonStatus {
+        case .notPreparedYet:
+            break
             
         case .managerModeButtonEnabled:
             mainButton.isHidden = false
@@ -317,6 +319,12 @@ struct ButtonStatusDivder {
     internal func getButtonStatus() -> ButtonStatus {
         if schedule == nil {
             return getButtonStatusWhenNoSchedule()
+            
+        } else if   //initializing 할 때 깜빡이는 거 보기 싫어서 더미 데이터 만들어서 네트워킹 전에 뷰 생성 안하게 하기 위함.
+            schedule == StudySchedule(studyName: "dummyStudyName", studyScheduleID: 999, studyID: "dummyStudyID", topic: "dummyTopic", place: "dummyPlace", startDateAndTime: Date(timeIntervalSince1970: 10), endDateAndTime: Date(timeIntervalSince1970: 20), repeatOption: nil)
+        && attendanceInformation == AttendanceInformation(userID: "dummyAttendanceInformation", attendanceStatus: "dummyStatus", reason: "dummyReason", fine: 999) {
+            
+            return .notPreparedYet
         } else {
             return getButtonStatusWhenYesSchedule()
         }
@@ -410,6 +418,8 @@ struct ButtonStatusDivder {
 }
 
 enum ButtonStatus {
+    case notPreparedYet
+    
     case managerModeButtonEnabled
     case managerModeButtonDisabled
     

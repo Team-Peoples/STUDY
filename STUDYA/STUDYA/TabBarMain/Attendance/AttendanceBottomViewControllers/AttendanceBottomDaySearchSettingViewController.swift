@@ -166,7 +166,7 @@ extension AttendanceBottomDaySearchSettingViewController: UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AttendanceTimeCollectionViewCell else { return }
         
         time = viewModel?.times[indexPath.item]
         
@@ -175,7 +175,7 @@ extension AttendanceBottomDaySearchSettingViewController: UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItem(at: indexPath) as! AttendanceTimeCollectionViewCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AttendanceTimeCollectionViewCell else { return }
         cell.disableButton()
     }
     

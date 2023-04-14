@@ -105,7 +105,6 @@ class MainFifthAttendanceTableViewCell: UITableViewCell {
         guard let currentStudyOverall = currentStudyOverall, let totalStudyHeldCount = currentStudyOverall.totalStudyHeldCount else {
             return
         }
-        print("🇹🇳")
         if totalStudyHeldCount != 0 {
             configureProgressBarWhenYesAttendanceData(with: currentStudyOverall)
         } else {

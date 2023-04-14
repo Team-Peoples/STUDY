@@ -10,11 +10,15 @@ import UIKit
 final class MainViewModel {
     var isManager = Observable(false)
     
-    var dummyStudyOverall = StudyOverall(announcement: nil, ownerNickname: "dummyStudyOverall", study: Study(), isManager: false, totalFine: 999, attendedCount: 999, absentCount: 999, lateCount: 999, allowedCount: 999, timeLeftUntilNextStudy: 999, studySchedule: nil, isOwner: false)
     var nickName = ""
     var myStudyList = [Study]()
+    
     lazy var currentStudyOverall: Observable<StudyOverall?> = Observable(dummyStudyOverall)
-    var imminentAttendanceInformation: Observable<AttendanceInformation?> = Observable(nil)
+    lazy var imminentAttendanceInformation: Observable<AttendanceInformation?> = Observable(dummyAttendanceInformation)
+    
+    var dummyStudyOverall = StudyOverall(announcement: nil, ownerNickname: "dummyStudyOverall", study: Study(), isManager: false, totalFine: 999, attendedCount: 999, absentCount: 999, lateCount: 999, allowedCount: 999, timeLeftUntilNextStudy: 999, studySchedule: StudySchedule(studyName: "dummyStudyName", studyScheduleID: 999, studyID: "dummyStudyID", topic: "dummyTopic", place: "dummyPlace", startDateAndTime: Date(timeIntervalSince1970: 10), endDateAndTime: Date(timeIntervalSince1970: 20), repeatOption: nil), isOwner: false)
+    var dummyAttendanceInformation = AttendanceInformation(userID: "dummyAttendanceInformation", attendanceStatus: "dummyStatus", reason: "dummyReason", fine: 999)
+    
     var error = Observable(PeoplesError.noError)
     
     func getUserInformationAndStudies() {
@@ -98,6 +102,7 @@ final class MainViewModel {
                 // domb: 중복된 작업인건지 물어보기
                 self.isManager.value = studyOverall.isManager || studyOverall.isOwner
                 self.currentStudyOverall.value = studyOverall
+                self.getImminentAttendanceInformation()
                 completion()
                 print("studyID", studyID)
                 
@@ -247,8 +252,8 @@ final class MainViewController: SwitchableViewController, LinkShareable {
         dimmingVC.studyTapped = { [weak self] studyOverall in
             guard let weakSelf = self else { return }
             
-            weakSelf.viewModel.currentStudyOverall.value = studyOverall
-            weakSelf.viewModel.isManager.value = studyOverall.isManager
+            weakSelf.viewModel.getStudy(with: studyOverall.study.id)
+            weakSelf.viewModel.isManager.value = studyOverall.isManager || studyOverall.isOwner
             weakSelf.forceSwitchStatus(isOn: false)
         }
         dimmingVC.presentCreateNewStudyVC = { sender in self.present(sender, animated: true) }
@@ -328,7 +333,7 @@ final class MainViewController: SwitchableViewController, LinkShareable {
         
         viewModel.imminentAttendanceInformation.bind { _ in
             DispatchQueue.main.async {
-                self.mainTableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
+                self.mainTableView.reloadData()
             }
         }
         

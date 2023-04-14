@@ -68,7 +68,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
         studySchedulePostingViewModel.postStudySchedule() { [weak self] in
             NotificationCenter.default.post(name: .updateStudySchedule, object: nil)
             let studyID = self?.studySchedulePostingViewModel.studySchedule.studyID
-            NotificationCenter.default.post(name: .reloadStudyList, object: nil, userInfo: [Constant.studyID: studyID])
+            NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil, userInfo: [Constant.studyID: studyID])
         }
         self.dismiss(animated: true)
     }
