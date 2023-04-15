@@ -37,6 +37,7 @@ enum PeoplesError: Error {
     case youAreNotOwner
     case ownerCantLeave
     case alreadyJoined
+    case studyScheduleDuplicate
 }
 
 enum ErrorCode {

@@ -13,7 +13,6 @@ final class EditingStudySchduleViewController: UIViewController {
     
     // domb: 새로운 모델을 생성하는게 맞는지, 이전화면에서 할당하는 방식으로 할지..
     let editingStudyScheduleViewModel = StudySchedulePostingViewModel()
-    var existingStudyScheduleTimeTable: [DashedDate: [TimeRange]]?
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -102,10 +101,14 @@ final class EditingStudySchduleViewController: UIViewController {
         
         let studySchedule = editingStudyScheduleViewModel.studySchedule
         let startDate = studySchedule.startDate
+        
         if let startTime = studySchedule.startTime, let endTime = studySchedule.endTime {
             let timeRange = (StartTime: startTime, EndTime: endTime)
-            existingStudyScheduleTimeTable?.subtract(timeRange: timeRange, at: startDate)
+            // 현재 시간은 중복가능해야하므로 그건 subtract해줘야 함.
+            
+            editingStudyScheduleViewModel.alreadyExistStudyScheduleTimeTable?.subtract(timeRange: timeRange, at: startTime)
         }
+        
         configureViews()
     }
     
@@ -217,32 +220,25 @@ final class EditingStudySchduleViewController: UIViewController {
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
-            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
-            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
-            let userSelectedStartTime = self?.editingStudyScheduleViewModel.studySchedule.startTime ?? "--:--"
-            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
-                
-                if userSelectedStartTime < startTime && selectedTime >= endTime {
-                    return true
-                } else if selectedTime > startTime && selectedTime <= endTime {
-                    return true
-                } else {
-                    return false
-                }
-            })
             
-            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+            guard let self else { return }
+            
+            let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
+            let isDuplicated = self.editingStudyScheduleViewModel.checkDuplicate(inputtedTime: selectedTime, when: .startTime)
+            
+            switch isDuplicated {
+            case .duplicated:
                 let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
                 
-                self?.present(alert, animated: true)
-            } else {
-                self?.editingStudyScheduleViewModel.studySchedule.startTime = selectedTime
+                self.present(alert, animated: true)
+            case .NotDuplicated:
+                self.editingStudyScheduleViewModel.studySchedule.startTime = selectedTime
             }
         }
         
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        
+        let cancelAction = UIAlertAction(title: "초기화", style: .destructive) { _ in
+            self.editingStudyScheduleViewModel.studySchedule.startTime = nil
+        }
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in
@@ -286,23 +282,25 @@ final class EditingStudySchduleViewController: UIViewController {
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            
+            guard let self else { return }
+            
             let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            guard let studyScheduleStartDate = self?.editingStudyScheduleViewModel.studySchedule.startDate else { return }
-            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
-            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
-                return selectedTime >= startTime && selectedTime <= endTime
-            })
-            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+            let isDuplicated = self.editingStudyScheduleViewModel.checkDuplicate(inputtedTime: selectedTime, when: .endTime)
+            
+            switch isDuplicated {
+            case .duplicated:
                 let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
                 
-                self?.present(alert, animated: true)
-            } else {
-                self?.editingStudyScheduleViewModel.studySchedule.endTime = selectedTime
+                self.present(alert, animated: true)
+            case .NotDuplicated:
+                self.editingStudyScheduleViewModel.studySchedule.endTime = selectedTime
             }
         }
         
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        
+        let cancelAction = UIAlertAction(title: "초기화", style: .destructive) { _ in
+            self.editingStudyScheduleViewModel.studySchedule.endTime = nil
+        }
         alert.view.addSubview(timePicker)
         
         alert.view.snp.makeConstraints { make in

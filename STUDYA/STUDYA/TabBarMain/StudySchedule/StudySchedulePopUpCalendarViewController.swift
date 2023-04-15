@@ -106,12 +106,23 @@ extension StudySchedulePopUpCalendarViewController {
     func configure(viewModel: StudySchedulePostingViewModel, date: Date) {
         switch calendarType {
         case .start:
-            viewModel.studySchedule.startDate = DateFormatter.dashedDateFormatter.string(from: date)
+            let startDate = DateFormatter.dashedDateFormatter.string(from: date)
+            let isDuplicated = viewModel.checkDuplicate(inputtedDate: startDate)
             
-            if viewModel.studySchedule.repeatOption != .norepeat {
-                viewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+            switch isDuplicated {
+            case .duplicated:
+                let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 날짜의 시간에 이미 스터디 스케쥴이 존재합니다. 다른 날짜로 선택해주세요!", completion: nil)
+                
+                self.present(alert, animated: true)
+            case .NotDuplicated:
+                viewModel.studySchedule.startDate = startDate
+                
+                if viewModel.studySchedule.repeatOption != .norepeat {
+                    viewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
+                }
+                
+                self.dismiss(animated: true)
             }
-            self.dismiss(animated: true)
         case .end:
             viewModel.studySchedule.repeatEndDate = DateFormatter.dashedDateFormatter.string(from: date)
             

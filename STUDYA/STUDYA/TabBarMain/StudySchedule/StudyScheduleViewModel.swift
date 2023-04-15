@@ -18,6 +18,8 @@ class StudyScheduleViewModel: ViewModel {
         }
     }
     
+    
+    
     var error: Observable<PeoplesError> = Observable(.noError)
     
     var handler: DataHandler?
@@ -68,6 +70,17 @@ extension AllStudyScheduleOfAllStudy {
 
 // MARK: - StudySchedulePostingViewModel
 
+enum TimeType {
+    case startTime
+    case endTime
+}
+
+enum DuplicateStatus{
+    case duplicated
+    case NotDuplicated
+}
+
+
 class StudySchedulePostingViewModel: ViewModel {
     typealias Model = StudySchedulePosting
     
@@ -77,6 +90,77 @@ class StudySchedulePostingViewModel: ViewModel {
             handler?(studySchedule)
         }
     }
+    
+    var alreadyExistStudyScheduleTimeTable: [DashedDate: [TimeRange]]?
+    
+    func checkDuplicate(inputtedDate: DashedDate) -> DuplicateStatus {
+        guard let selectedStartTime = studySchedule.startTime,
+              let selectedEndTime = studySchedule.endTime else { return .NotDuplicated }
+        
+        guard let alreadyExistStudyScheduleTimeList = alreadyExistStudyScheduleTimeTable?[inputtedDate] else { return .NotDuplicated }
+        
+        let isDuplicated = alreadyExistStudyScheduleTimeList.contains(where: { (startTime, endTime) in
+            
+            if selectedStartTime >= startTime && selectedStartTime < endTime {
+                return true
+            } else if selectedEndTime > startTime && selectedEndTime <= endTime {
+                return true
+            } else if selectedStartTime <= startTime && selectedEndTime >= endTime {
+                return true
+            } else {
+                return false
+            }
+        })
+        
+        if isDuplicated {
+            return .duplicated
+        } else {
+            return .NotDuplicated
+        }
+    }
+    
+    func checkDuplicate(inputtedTime: String, when selectedTimeType: TimeType) -> DuplicateStatus {
+        let selectedStartDate = studySchedule.startDate
+        
+        guard let alreadyExistStudyScheduleTimeList = alreadyExistStudyScheduleTimeTable?[selectedStartDate] else { return .NotDuplicated }
+        
+        let isDuplicated = alreadyExistStudyScheduleTimeList.contains(where: { (startTime, endTime) in
+            
+            switch selectedTimeType {
+            case .startTime:
+                guard let selectedEndTime = studySchedule.endTime else {
+                    return inputtedTime >= startTime && inputtedTime < endTime
+                }
+                
+                if inputtedTime >= startTime && inputtedTime < endTime {
+                    return true
+                } else if inputtedTime < startTime && selectedEndTime > startTime {
+                    return true
+                } else {
+                    return false
+                }
+            case .endTime:
+                guard let selectedStartTime = studySchedule.startTime else {
+                    return inputtedTime > startTime && inputtedTime <= endTime
+                }
+                
+                if inputtedTime > startTime && inputtedTime <= endTime {
+                    return true
+                } else if selectedStartTime < startTime && inputtedTime > startTime {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        })
+        
+        if isDuplicated {
+            return .duplicated
+        } else {
+            return .NotDuplicated
+        }
+    }
+        
     var error: Observable<PeoplesError> = Observable(.noError)
     
     var handler: DataHandler?
@@ -114,7 +198,7 @@ class StudySchedulePostingViewModel: ViewModel {
 }
 
 extension [StudySchedule] {
-    func filteredStudySchedule(at date: Date) -> [StudySchedule]  {
+    func filterStudySchedule(by date: Date) -> [StudySchedule]  {
         
         let filteredStudySchedule = self.filter { studySchedule in
             studySchedule.startDateAndTime.isSameDay(as: date)
@@ -128,5 +212,25 @@ extension [StudySchedule] {
             studySchedule.studyID == "\(studyID)"
         }
         return filteredStudySchedule
+    }
+    
+    func convertDashedDateAndTimeTable() -> [DashedDate: [TimeRange]] {
+        
+        var studyScheduleTimeTable = [DashedDate: [TimeRange]]()
+        
+        self.forEach { studySchedule in
+            let studyScheduleStartDay = studySchedule.startDateAndTime
+            let startDate = DateFormatter.dashedDateFormatter.string(from: studyScheduleStartDay)
+            let startTime = DateFormatter.timeFormatter.string(from: studyScheduleStartDay)
+            let endTime = DateFormatter.timeFormatter.string(from: studySchedule.endDateAndTime)
+            
+            if studyScheduleTimeTable[startDate] == nil {
+                studyScheduleTimeTable[startDate] = [(StartTime: startTime, EndTime: endTime)]
+            } else {
+                studyScheduleTimeTable[startDate]?.append((StartTime: startTime, EndTime: endTime))
+            }
+        }
+        
+        return studyScheduleTimeTable
     }
 }

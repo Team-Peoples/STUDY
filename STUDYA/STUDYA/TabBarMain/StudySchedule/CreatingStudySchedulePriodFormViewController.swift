@@ -12,7 +12,6 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
     // MARK: - Properties
     
     var studySchedulePostingViewModel = StudySchedulePostingViewModel()
-    var existingStudyScheduleTimeTable: [DashedDate: [TimeRange]]?
     
     private var selectedRepeatOptionCheckBox: CheckBoxButton? {
         didSet {
@@ -163,23 +162,23 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         }
         
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            
+            guard let self else { return }
             let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            guard let studyScheduleStartDate = self?.studySchedulePostingViewModel.studySchedule.startDate else { return }
-            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
-            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
-                return selectedTime >= startTime && selectedTime < endTime
-            })
-            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+            let isDuplicated = self.studySchedulePostingViewModel.checkDuplicate(inputtedTime: selectedTime, when: .startTime)
+            switch isDuplicated {
+            case .duplicated:
                 let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
                 
-                self?.present(alert, animated: true)
-            } else {
-                self?.studySchedulePostingViewModel.studySchedule.startTime = selectedTime
+                self.present(alert, animated: true)
+            case .NotDuplicated:
+                self.studySchedulePostingViewModel.studySchedule.startTime = selectedTime
             }
         }
         
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        
+        let cancelAction = UIAlertAction(title: "초기화", style: .destructive) { _ in
+            self.studySchedulePostingViewModel.studySchedule.startTime = nil
+        }
 
         alert.view.addSubview(timePicker)
         alert.view.snp.makeConstraints { make in
@@ -223,30 +222,24 @@ final class CreatingStudySchedulePriodFormViewController: UIViewController {
         }
 
         let okAction = UIAlertAction(title: Constant.OK, style: .default) { [weak self] _ in
+            
+            guard let self else { return }
             let selectedTime = DateFormatter.timeFormatter.string(from: timePicker.date)
-            guard let studyScheduleStartDate = self?.studySchedulePostingViewModel.studySchedule.startDate else { return }
-            let existingStudyScheduleTime = self?.existingStudyScheduleTimeTable?[studyScheduleStartDate]
-            let userSelectedStartTime = self?.studySchedulePostingViewModel.studySchedule.startTime ?? "--:--"
-            let isDuplicatedSchedule = existingStudyScheduleTime?.contains(where: { (startTime, endTime) in
-                
-                if userSelectedStartTime < startTime && selectedTime >= endTime {
-                    return true
-                } else if selectedTime > startTime && selectedTime <= endTime {
-                    return true
-                } else {
-                    return false
-                }
-            })
-            if let isDuplicatedSchedule = isDuplicatedSchedule, isDuplicatedSchedule == true {
+            
+            let isDuplicated = self.studySchedulePostingViewModel.checkDuplicate(inputtedTime: selectedTime, when: .endTime)
+            switch isDuplicated {
+            case .duplicated:
                 let alert = SimpleAlert(buttonTitle: Constant.OK, message: "선택하신 시간에 이미 스터디 스케쥴이 존재합니다. 다른 시간으로 선택해주세요!", completion: nil)
                 
-                self?.present(alert, animated: true)
-            } else {
-                self?.studySchedulePostingViewModel.studySchedule.endTime = selectedTime
+                self.present(alert, animated: true)
+            case .NotDuplicated:
+                self.studySchedulePostingViewModel.studySchedule.endTime = selectedTime
             }
         }
         
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
+        let cancelAction = UIAlertAction(title: "초기화", style: .destructive) { _ in
+            self.studySchedulePostingViewModel.studySchedule.endTime = nil
+        }
         
         alert.view.addSubview(timePicker)
         
