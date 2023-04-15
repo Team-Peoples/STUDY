@@ -18,21 +18,9 @@ class StudyScheduleViewController: SwitchableViewController {
     private var selectedDate: Date = Date()
     private var studyScheduleOfThisStudy: [StudySchedule] = [] {
         didSet {
-            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
+            studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filterStudySchedule(by: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
             
-            var studyScheduleTimeTable = [DashedDate: [TimeRange]]()
-            studyScheduleOfThisStudy.forEach { studySchedule in
-                let studyScheduleStartDay = studySchedule.startDateAndTime
-                let startDate = DateFormatter.dashedDateFormatter.string(from: studyScheduleStartDay)
-                let startTime = DateFormatter.timeFormatter.string(from: studyScheduleStartDay)
-                let endTime = DateFormatter.timeFormatter.string(from: studySchedule.endDateAndTime)
-                if studyScheduleTimeTable[startDate] == nil {
-                    studyScheduleTimeTable[startDate] = [(StartTime: startTime, EndTime: endTime)]
-                } else {
-                    studyScheduleTimeTable[startDate]?.append((StartTime: startTime, EndTime: endTime))
-                }
-            }
-            self.studyScheduleTimeTableList = studyScheduleTimeTable
+            self.studyScheduleTimeTableList = studyScheduleOfThisStudy.convertDashedDateAndTimeTable()
         }
     }
     private var studyScheduleTimeTableList: [DashedDate: [TimeRange]]?
@@ -61,7 +49,6 @@ class StudyScheduleViewController: SwitchableViewController {
     
     init(studyID: ID) {
         self.studyID = studyID
-        print(#function)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -101,7 +88,7 @@ class StudyScheduleViewController: SwitchableViewController {
         let studySchedulePriodFormVC = CreatingStudySchedulePriodFormViewController()
         let dashedSelectedDate = DateFormatter.dashedDateFormatter.string(from: selectedDate)
         
-        studySchedulePriodFormVC.existingStudyScheduleTimeTable = studyScheduleTimeTableList
+        studySchedulePriodFormVC.studySchedulePostingViewModel.alreadyExistStudyScheduleTimeTable = studyScheduleTimeTableList
         studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.studyID = currentStudyID
         studySchedulePriodFormVC.studySchedulePostingViewModel.studySchedule.startDate = dashedSelectedDate
         
@@ -213,7 +200,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                     self?.dismiss(animated: true)
                     
                     let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
-                    editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
+                    editingStudyScheduleVC.editingStudyScheduleViewModel.alreadyExistStudyScheduleTimeTable =  self?.studyScheduleTimeTableList
                     let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                     navigationVC.modalPresentationStyle = .fullScreen
                     
@@ -230,7 +217,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 self?.dismiss(animated: true)
                 
                 let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: false)
-                editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
+                editingStudyScheduleVC.editingStudyScheduleViewModel.alreadyExistStudyScheduleTimeTable = self?.studyScheduleTimeTableList
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen
@@ -241,7 +228,7 @@ extension StudyScheduleViewController: UITableViewDataSource {
                 self?.dismiss(animated: true)
                 
                 let editingStudyScheduleVC = EditingStudySchduleViewController(studySchedule: studySchedule, isUpdateRepeatDay: true)
-                editingStudyScheduleVC.existingStudyScheduleTimeTable = self?.studyScheduleTimeTableList
+                editingStudyScheduleVC.editingStudyScheduleViewModel.alreadyExistStudyScheduleTimeTable = self?.studyScheduleTimeTableList
                 
                 let navigationVC = UINavigationController(rootViewController: editingStudyScheduleVC)
                 navigationVC.modalPresentationStyle = .fullScreen
@@ -318,7 +305,7 @@ extension StudyScheduleViewController: UITableViewDelegate {
 extension StudyScheduleViewController: CustomCalendarViewDelegate {
     func calendarView(didselectAt date: Date) {
         selectedDate = date
-        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
+        studyScheduleOfThisStudyAtSelectedDate = studyScheduleOfThisStudy.filterStudySchedule(by: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
     }
 }
 

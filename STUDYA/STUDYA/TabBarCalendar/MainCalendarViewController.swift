@@ -35,7 +35,7 @@ final class MainCalendarViewController: UIViewController {
             
             // domb: 캘린더에 스터디 스케쥴과 관련된 정보를 넣을수밖에 없나...
             calendarView.bind(studySchedule)
-            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
+            calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filterStudySchedule(by: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
         }
         
         studyAllScheduleViewModel.getAllStudyScheduleOfAllStudy()
@@ -127,7 +127,7 @@ extension MainCalendarViewController: CustomCalendarViewDelegate {
    
     func calendarView(didselectAt date: Date) {
         selectedDate = date
-        calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filteredStudySchedule(at: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
+        calendarBottomSheetViewController.studyScheduleAtSelectedDate = studyAllSchedule.filterStudySchedule(by: selectedDate).sorted(by: {$0.startDateAndTime < $1.startDateAndTime})
         NotificationCenter.default.post(name: .mainCalenderDateTapped, object: date)
     }
 }

@@ -248,7 +248,7 @@ extension CustomCalendarView: FSCalendarDataSource {
     
     // 이벤트 발생 날짜에 필요한 만큼 개수 반환 (최대 3개)
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+        let studySchedule = allStudyAllSchedule.filterStudySchedule(by: date)
         let studyCount = Set(studySchedule.map { $0.studyID }).count
         return studyCount
     }
@@ -292,7 +292,7 @@ extension CustomCalendarView: FSCalendarDelegateAppearance {
     // 스터디 스케쥴 북마크컬러에따라 컬러 지정
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventDefaultColorsFor date: Date) -> [UIColor]? {
         if !allStudyAllSchedule.isEmpty {
-            let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+            let studySchedule = allStudyAllSchedule.filterStudySchedule(by: date)
             let bookmarkColors = studySchedule.compactMap { $0.bookMarkColor }
             let bookmarkColorSet = Array(Set(bookmarkColors))
             return bookmarkColorSet
@@ -303,7 +303,7 @@ extension CustomCalendarView: FSCalendarDelegateAppearance {
     
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, eventSelectionColorsFor date: Date) -> [UIColor]? {
         if !allStudyAllSchedule.isEmpty {
-            let studySchedule = allStudyAllSchedule.filteredStudySchedule(at: date)
+            let studySchedule = allStudyAllSchedule.filterStudySchedule(by: date)
             let bookmarkColors = studySchedule.compactMap { $0.bookMarkColor }
             let bookmarkColorSet = Array(Set(bookmarkColors))
             return bookmarkColorSet

@@ -402,13 +402,8 @@ final class MainViewController: SwitchableViewController, LinkShareable {
             make.top.equalTo(studyEmptyLabel.snp.bottom).offset(10)
         }
         view.subviews.forEach( { $0.isHidden = true } )
-        
-        
-//        activityIndicator.center = view.center
-//        view.addSubview(activityIndicator)
-//        activityIndicator.startAnimating()
     }
-//    let activityIndicator = UIActivityIndicatorView(style: .medium)
+    
     private func configureTabBarSeparator() {
         if let tabBar = tabBarController?.tabBar {
             
