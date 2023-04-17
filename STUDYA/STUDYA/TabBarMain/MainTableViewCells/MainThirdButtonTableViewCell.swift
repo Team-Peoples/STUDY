@@ -16,7 +16,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     private var studySchedule: StudySchedule?
 
     internal weak var navigatableDelegate: Navigatable?
-    private var divider: ButtonStatusDivder?
+    private var divider: ButtonStatusDivider?
     
     private let allowedSymbol = "allowedSymbol"
     
@@ -55,7 +55,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         self.attendanceInformation = attendanceInformation
         self.studySchedule = studySchedule
         
-        divider = ButtonStatusDivder(schedule: studySchedule, attendanceInformation: attendanceInformation)
+        divider = ButtonStatusDivider(schedule: studySchedule, attendanceInformation: attendanceInformation)
         configureButton()
     }
     
@@ -65,7 +65,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
         
         vc.scheduleID = studySchedule?.studyScheduleID
         vc.getDidAttend = {
-            vc.didAttendForButtonStatus = self.attendanceInformation == nil ? false : true
+            vc.didAttendForButtonStatus = (self.attendanceInformation == nil || self.attendanceInformation?.attendanceStatus == nil) ? false : true
         }
         
         vc.preferredContentSize = CGSize(width: 286, height: 247)
@@ -288,7 +288,7 @@ final class MainThirdButtonTableViewCell: UITableViewCell {
     }
 }
 
-struct ButtonStatusDivder {
+struct ButtonStatusDivider {
     private let schedule: StudySchedule?
     private let attendanceInformation: AttendanceInformation?
     

@@ -13,11 +13,11 @@ final class MainViewModel {
     var nickName = ""
     var myStudyList = [Study]()
     
-    lazy var currentStudyOverall: Observable<StudyOverall?> = Observable(dummyStudyOverall)
-    lazy var imminentAttendanceInformation: Observable<AttendanceInformation?> = Observable(dummyAttendanceInformation)
-    
     var dummyStudyOverall = StudyOverall(announcement: nil, ownerNickname: "dummyStudyOverall", study: Study(), isManager: false, totalFine: 999, attendedCount: 999, absentCount: 999, lateCount: 999, allowedCount: 999, timeLeftUntilNextStudy: 999, studySchedule: StudySchedule(studyName: "dummyStudyName", studyScheduleID: 999, studyID: "dummyStudyID", topic: "dummyTopic", place: "dummyPlace", startDateAndTime: Date(timeIntervalSince1970: 10), endDateAndTime: Date(timeIntervalSince1970: 20), repeatOption: nil), isOwner: false)
     var dummyAttendanceInformation = AttendanceInformation(userID: "dummyAttendanceInformation", attendanceStatus: "dummyStatus", reason: "dummyReason", fine: 999)
+    
+    lazy var currentStudyOverall: Observable<StudyOverall?> = Observable(dummyStudyOverall)
+    lazy var imminentAttendanceInformation: Observable<AttendanceInformation?> = Observable(dummyAttendanceInformation)
     
     var error = Observable(PeoplesError.noError)
     
