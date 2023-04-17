@@ -97,7 +97,7 @@ class AttendanceStatusWithProfileView: UIView {
     internal func configureViewWith(stats: UserAttendanceStatistics) {
         profileImageView.setImageWith(stats.profileImageURL)
         nickNameLabel.text = stats.nickName
-        fineLabel.text = stats.totalFine.toString()
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: stats.totalFine, valueFontSize: 24, withCurrency: true)
         
         let attendanceStats = AttendanceStats(attendedCount: stats.attendedCount, lateCount: stats.lateCount, allowedCount: stats.allowedCount, absentCount: stats.absentCount, totalCount: stats.totalAttendanceCount, totalFine: stats.totalFine)
         
