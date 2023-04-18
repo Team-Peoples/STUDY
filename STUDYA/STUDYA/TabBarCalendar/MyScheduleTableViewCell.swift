@@ -48,6 +48,8 @@ class MyScheduleTableViewCell: UITableViewCell {
         
         b.setImage(UIImage(named: "off"), for: .normal)
         b.setImage(UIImage(named: "on"), for: .selected)
+        b.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
+
         b.addTarget(self, action: #selector(checkButtonTapped), for: .touchUpInside)
         
         return b
@@ -89,11 +91,12 @@ class MyScheduleTableViewCell: UITableViewCell {
         contentView.addSubview(todoTextView)
 
         checkButton.snp.makeConstraints { make in
-            make.top.leading.equalTo(contentView)
-            make.height.width.equalTo(16)
+            make.top.equalTo(contentView)
+            make.leading.equalTo(contentView).offset(-5)
+//            make.height.width.equalTo(16)
             make.bottom.greaterThanOrEqualTo(contentView.snp.bottom).inset(65)
         }
-        todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 20, trailing: contentView.trailingAnchor)
+        todoTextView.anchor(top: contentView.topAnchor, topConstant: -5.5, bottom: contentView.bottomAnchor, bottomConstant: 20, leading: checkButton.trailingAnchor, leadingConstant: 0, trailing: contentView.trailingAnchor)
     }
     
     deinit {
