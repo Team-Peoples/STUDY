@@ -15,6 +15,11 @@ class AttendancePersonalViewController: SwitchableViewController, BottomSheetAdd
         super.viewDidLoad()
         
         view = AttendanceForAMemberView(viewer: .manager)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         navigationController?.setBrandNavigation()
     }
     
