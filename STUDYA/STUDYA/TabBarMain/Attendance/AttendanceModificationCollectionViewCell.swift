@@ -106,12 +106,12 @@ final class AttendancesModificationViewModel {
             attendancesForATime.sort { (first, second) -> Bool in
                 if first.nickName == second.nickName {
                     if AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority {
-                        return first.userID > second.userID
+                        return first.userID < second.userID
                     } else {
                         return AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority
                     }
                 } else {
-                    return first.nickName > second.nickName
+                    return first.nickName < second.nickName
                 }
             }
         } else {
@@ -119,12 +119,12 @@ final class AttendancesModificationViewModel {
                 
                 if AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority {
                     if lhs.nickName == rhs.nickName {
-                        return lhs.userID > rhs.userID
+                        return lhs.userID < rhs.userID
                     } else {
-                        return lhs.nickName > rhs.nickName
+                        return lhs.nickName < rhs.nickName
                     }
                 } else {
-                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
+                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority < AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
                 }
             }
         }
