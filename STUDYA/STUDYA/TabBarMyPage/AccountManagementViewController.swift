@@ -28,6 +28,8 @@ final class AccountManagementViewController: UIViewController {
         }
     }
     
+    internal var getUserInfo = {}
+    
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     
@@ -137,7 +139,10 @@ final class AccountManagementViewController: UIViewController {
     
     @objc private func save() {
         self.dismiss(animated: true)
-        viewModel.updateUserInfo() {}
+        viewModel.updateUserInfo() { [weak self] in
+            guard let weakSelf = self else { return }
+            weakSelf.getUserInfo()
+        }
     }
     
     @objc private func toggleIsSecureTextEntry(_ sender: UIButton) {
