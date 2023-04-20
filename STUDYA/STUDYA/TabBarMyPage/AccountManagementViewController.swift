@@ -136,9 +136,8 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
-        viewModel.updateUserInfo() {
-            self.dismiss(animated: true)
-        }
+        self.dismiss(animated: true)
+        viewModel.updateUserInfo() {}
     }
     
     @objc private func toggleIsSecureTextEntry(_ sender: UIButton) {
