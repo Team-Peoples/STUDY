@@ -26,17 +26,20 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         let vc = MemberBottomSheetViewController()
 
         vc.askExcommunicateMember = {
-            vc.dismiss(animated: true) { [self] in
-                presentBottomSheet(vc: askExcommunicationVC, detent: 300, prefersGrabberVisible: false)
+            vc.dismiss(animated: true) { [weak self] in
+                guard let weakSelf = self else { return }
+                weakSelf.presentBottomSheet(vc: weakSelf.askExcommunicationVC, detent: 300, prefersGrabberVisible: false)
             }
         }
         vc.askChangeOwner = {
-            vc.dismiss(animated: true) { [self] in
-                presentBottomSheet(vc: askChangingOwnerVC, detent: 300, prefersGrabberVisible: false)
+            vc.dismiss(animated: true) { [weak self] in
+                guard let weakSelf = self else { return }
+                weakSelf.presentBottomSheet(vc: weakSelf.askChangingOwnerVC, detent: 300, prefersGrabberVisible: false)
             }
         }
-        vc.getMemberListAgainAndReload = {
-            self.getMemberListAndReload()
+        vc.getMemberListAgainAndReload = { [weak self] in
+            guard let weakSelf = self else { return }
+            weakSelf.getMemberListAndReload()
         }
         
         return vc
@@ -49,25 +52,26 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         vc.navigatableDelegate = self
         
         vc.backButtonTapped = {
-            vc.dismiss(animated: true) { [self] in
-                presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
+            vc.dismiss(animated: true) { [weak self] in
+                guard let weakSelf = self else { return }
+                weakSelf.presentBottomSheet(vc: weakSelf.memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
 
-        vc.excommunicateMember = { [self] in
-            guard let nowLookingMember = nowLookingMember else { return }
+        vc.excommunicateMember = { [weak self] in
+            guard let weakSelf = self, let nowLookingMember = weakSelf.nowLookingMember else { return }
             Network.shared.excommunicateMember(nowLookingMember.memberID) { result in
                 
                 switch result {
                 case .success(let isSuccess):
                     if isSuccess {
                         vc.dismiss(animated: true) {
-                            self.getMemberListAndReload()
+                            weakSelf.getMemberListAndReload()
                         }
                         
                     } else {
                         let alert = SimpleAlert(message: Constant.serverErrorMessage)
-                        self.present(alert, animated: true)
+                        weakSelf.present(alert, animated: true)
                     }
                     
                     
@@ -81,7 +85,7 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     case .unauthorizedMember:
                         alert = SimpleAlert(message: "강퇴 권한이 없는 멤버입니다.")
                     default:
-                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                        UIAlertController.handleCommonErros(presenter: weakSelf, error: error)
                     }
                     vc.present(alert, animated: true)
                 }
@@ -95,12 +99,13 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
         let vc = AskChangingOwnerViewController()
         
         vc.backButtonTapped = {
-            vc.dismiss(animated: true) { [self] in
-                presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
+            vc.dismiss(animated: true) { [weak self] in
+                guard let weakSelf = self else { return }
+                weakSelf.presentBottomSheet(vc: weakSelf.memberBottomVC, detent: 300, prefersGrabberVisible: true)
             }
         }
-        vc.turnOverStudyOwnerAndReload = { [self] in
-            guard let nowLookingMember = nowLookingMember else { return }
+        vc.turnOverStudyOwnerAndReload = { [weak self] in
+            guard let weakSelf = self, let nowLookingMember = weakSelf.nowLookingMember else { return }
             
             Network.shared.turnOverStudyOwnerTo(memberID: nowLookingMember.memberID) { result in
                 
@@ -109,14 +114,14 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                     
                     if isSuccess {
                         vc.dismiss(animated: true) {
-                            self.forceSwitchStatus(isOn: false)
+                            weakSelf.forceSwitchStatus(isOn: false)
                             NotificationCenter.default.post(name: .reloadCurrentStudy, object: nil)
-                            self.pop()
+                            weakSelf.pop()
                         }
                         
                     } else {
                         let alert = SimpleAlert(message: Constant.serverErrorMessage)
-                        self.present(alert, animated: true)
+                        weakSelf.present(alert, animated: true)
                     }
                     
                 case .failure(let error):
@@ -125,10 +130,10 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
                         
                     case .youAreNotOwner:
                         let alert = SimpleAlert(message: "스터디장이 아니어서 스터디권한을 넘길 수 없습니다.")
-                        self.present(alert, animated: true)
+                        weakSelf.present(alert, animated: true)
                         
                     default:
-                        UIAlertController.handleCommonErros(presenter: self, error: error)
+                        UIAlertController.handleCommonErros(presenter: weakSelf, error: error)
                     }
                 }
             }
@@ -160,15 +165,17 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     }
     
     private func getMemberList(studyID: ID) {
-        Network.shared.getAllMembers(studyID: studyID) { result in
+        Network.shared.getAllMembers(studyID: studyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
             switch result {
             case .success(let response):
-                self.members = response.memberList
-                self.isOwner = response.isUserOwner
-                self.collectionView.reloadData()
+                weakSelf.members = response.memberList
+                weakSelf.isOwner = response.isUserOwner
+                weakSelf.collectionView.reloadData()
                 
             case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
+                UIAlertController.handleCommonErros(presenter: weakSelf, error: error)
             }
         }
     }
@@ -176,13 +183,15 @@ final class MemberViewController: SwitchableViewController, BottomSheetAddable {
     private func getMemberListAndReload() {
         guard let currentStudyID = self.currentStudyID else { return }
         
-        Network.shared.getAllMembers(studyID: currentStudyID) { result in
+        Network.shared.getAllMembers(studyID: currentStudyID) { [weak self] result in
+            guard let weakSelf = self else { return }
+            
             switch result {
             case .success(let response):
-                self.members = response.memberList
-                self.collectionView.reloadData()
+                weakSelf.members = response.memberList
+                weakSelf.collectionView.reloadData()
             case .failure(let error):
-                UIAlertController.handleCommonErros(presenter: self, error: error)
+                UIAlertController.handleCommonErros(presenter: weakSelf, error: error)
             }
         }
     }
@@ -289,17 +298,18 @@ extension MemberViewController: UICollectionViewDataSource {
             
             cell.configureCell(with: members[indexPath.item - 1])
             
-            cell.profileViewTapped = { [self] member in
+            cell.profileViewTapped = { [weak self] member in
+                guard let weakSelf = self else { return }
                 
                 let isSwitchOn = UserDefaults.standard.bool(forKey: Constant.isSwitchOn)
                 
                 if isSwitchOn {
-                    guard let isOwner = isOwner else { return }
+                    guard let isOwner = weakSelf.isOwner else { return }
                     
-                    self.nowLookingMember = member
-                    memberBottomVC.configureViewControllerWith(member: member, isOwner: isOwner)
+                    weakSelf.nowLookingMember = member
+                    weakSelf.memberBottomVC.configureViewControllerWith(member: member, isOwner: isOwner)
                     
-                    presentBottomSheet(vc: memberBottomVC, detent: 300, prefersGrabberVisible: true)
+                    weakSelf.presentBottomSheet(vc: weakSelf.memberBottomVC, detent: 300, prefersGrabberVisible: true)
                 }
             }
             return cell
