@@ -16,7 +16,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
     let studyName: String
     var announcements: [Announcement] = [] {
         didSet {
-            self.checkAnnouncementBoardIsEmpty()
+//            self.checkAnnouncementBoardIsEmpty()
         }
     }
     
@@ -66,8 +66,8 @@ final class AnnouncementTableViewController: SwitchableViewController {
         configureFloatingButton()
         fetchAnnouncement()
         
-        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { noti in
-            self.refresh()
+        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { [weak self] noti in
+            self?.refresh()
         }
     }
     

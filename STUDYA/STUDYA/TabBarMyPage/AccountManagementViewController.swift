@@ -614,8 +614,6 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
-        picker.dismiss(animated: true)
-        
         let itemProvider = results.first?.itemProvider
         
         guard let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) else { return }
@@ -633,6 +631,7 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
                 }
             }
         }
+        picker.dismiss(animated: true)
     }
 }
 
