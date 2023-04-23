@@ -145,7 +145,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     static let identifier = "AttendanceModificationCollectionViewCell"
     
     private var viewModel: AttendancesModificationViewModel?
-    internal var delegate: (BottomSheetAddable & Navigatable)? {
+    internal weak var delegate: (BottomSheetAddable & Navigatable)? {
         didSet {
             headerView.navigatableBottomSheetableDelegate = delegate
         }
@@ -196,12 +196,13 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        guard let viewModel = viewModel, let delegate = delegate else { return }
+        guard let viewModel = viewModel else { return }
         
-        viewModel.reloadTableView.bind({ _ in
-            self.tableView.reloadData()
+        viewModel.reloadTableView.bind({ [weak self] _ in
+            self?.tableView.reloadData()
         })
-        viewModel.error?.bind({ error in
+        viewModel.error?.bind({ [weak self] error in
+            guard let delegate = self?.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }

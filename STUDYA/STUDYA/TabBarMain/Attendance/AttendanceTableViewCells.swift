@@ -10,8 +10,8 @@ import UIKit
 final class AttendanceDetailsCell: UITableViewCell {
 
     // MARK: - Properties
-    internal var viewModel: AttendanceForAMemberViewModel?
-    internal var bottomSheetAddableDelegate: BottomSheetAddable?
+    internal weak var viewModel: AttendanceForAMemberViewModel?
+    internal weak var bottomSheetAddableDelegate: BottomSheetAddable?
     
     private let titleLabel = UILabel(frame: .zero)
     private let periodSettingButton = BrandButton(title: "", textColor: .ppsGray1, borderColor: .ppsGray2, backgroundColor: .white, fontSize: 14, height: 30)
@@ -67,8 +67,8 @@ final class AttendanceDetailsCell: UITableViewCell {
     
     private func setBinding() {
         guard let viewModel = viewModel else { return }
-        viewModel.followingDate.bind({ date in
-            self.periodSettingButton.setTitle("\(viewModel.precedingDate.value)~\(date)", for: .normal)
+        viewModel.followingDate.bind({ [weak self] date in
+            self?.periodSettingButton.setTitle("\(viewModel.precedingDate.value)~\(date)", for: .normal)
         })
     }
     
