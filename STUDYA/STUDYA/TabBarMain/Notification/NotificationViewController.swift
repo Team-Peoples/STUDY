@@ -85,7 +85,7 @@ final class NotificationViewController: UIViewController {
     
     private func setNavigationBar() {
         title = "알림"
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.appColor(.ppsBlack)]
     }
 }

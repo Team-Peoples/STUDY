@@ -156,7 +156,7 @@ final class AnnouncementViewController: UIViewController {
         titleTextView.delegate = self
         contentTextView.delegate = self
         
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
         enableTapGesture()
         
         addSubviewsWithConstraints()
@@ -251,7 +251,7 @@ final class AnnouncementViewController: UIViewController {
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
         case .viewing:
-            navigationItem.title = studyName
+            title = studyName
             navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         }
         

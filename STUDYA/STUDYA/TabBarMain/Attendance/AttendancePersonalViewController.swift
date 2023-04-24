@@ -15,7 +15,7 @@ class AttendancePersonalViewController: SwitchableViewController, BottomSheetAdd
         super.viewDidLoad()
         
         view = AttendanceForAMemberView(viewer: .manager)
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
     }
     
     internal func configureViewControllerWith(studyID: ID, stats: UserAttendanceStatistics) {

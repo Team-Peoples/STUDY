@@ -41,7 +41,7 @@ final class MyPageStudyHistoryViewController: UIViewController {
         view.backgroundColor = .white
         
         title = "참여한 스터디"
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
         
         tableView.dataSource = self
         

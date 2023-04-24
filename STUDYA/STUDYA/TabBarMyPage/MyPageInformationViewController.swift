@@ -45,7 +45,7 @@ final class MyPageInformationViewController: UIViewController {
         view.backgroundColor = .white
         
         title = "앱 정보"
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
         
         tableView.dataSource = self
         tableView.delegate = self

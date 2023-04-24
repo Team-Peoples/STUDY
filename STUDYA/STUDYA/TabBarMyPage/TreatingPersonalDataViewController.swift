@@ -29,7 +29,7 @@ class TreatingPersonalDataViewController: UIViewController {
         view.backgroundColor = .white
         title = "앱 정보"
         
-        navigationController?.setBrandNavigation()
+        navigationController?.setupBrandNavigation()
         
         setScrollView()
         containerView.addSubview(titleLabel)
