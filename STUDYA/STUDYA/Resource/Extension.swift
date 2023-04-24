@@ -111,7 +111,7 @@ extension AttributedString {
     }
     
     static func custom(image: UIImage, text: String) -> NSAttributedString {
-        let resizedImage = image.resize(newWidth: 20)
+        let resizedImage = image.resize(to: CGSize(width: 20, height: 20))
         let attachment = NSTextAttachment(image: resizedImage)
         let mutableAttributedText: NSMutableAttributedString = NSMutableAttributedString(attachment: attachment)
         
@@ -125,19 +125,14 @@ extension AttributedString {
 }
 
 extension UIImage {
-    
-    func resize(newWidth: CGFloat) -> UIImage {
-        let scale = newWidth / self.size.width
-        let newHeight = self.size.height * scale
-
-        let size = CGSize(width: newWidth, height: newHeight)
-        let render = UIGraphicsImageRenderer(size: size)
-        let renderImage = render.image { context in
-            self.draw(in: CGRect(origin: .zero, size: size))
+    func resize(to targetSize: CGSize) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: targetSize))
         }
-        return renderImage
     }
 }
+
 
 extension UIView {
     
@@ -269,17 +264,9 @@ extension DateComponents {
 }
 
 extension UINavigationController {
-    var backButtonImage: UIImage? {
-        UIImage(named: "back")?.withAlignmentRectInsets(UIEdgeInsets(top: 0.0, left: -12.0, bottom: 0.0, right: 0.0))
-    }
     
-    func setBrandNavigation() {
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.topItem?.title = ""
-        
-        navigationBar.backIndicatorImage = backButtonImage
-        navigationBar.backIndicatorTransitionMaskImage = backButtonImage
+    func setupNavigationBarBackButtonDisplayMode() {
+        navigationBar.topItem?.backButtonDisplayMode = .minimal
     }
 }
 

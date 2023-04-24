@@ -60,14 +60,16 @@ final class AnnouncementTableViewController: SwitchableViewController {
         title = studyName
         view.backgroundColor = .white
         
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
+        
         configureHeaderView()
         configureTableView()
         
         configureFloatingButton()
         fetchAnnouncement()
         
-        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { noti in
-            self.refresh()
+        NotificationCenter.default.addObserver(forName: .updateAnnouncement, object: nil, queue: nil) { [weak self] noti in
+            self?.refresh()
         }
     }
     
