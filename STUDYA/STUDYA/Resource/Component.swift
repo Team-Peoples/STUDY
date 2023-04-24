@@ -561,7 +561,6 @@ class ProfileImageContainerView: UIView {
    
     internal var internalImage: UIImage? {
         didSet {
-            print(internalImage)
             internalImageView.image = internalImage != nil ? internalImage : UIImage(named: Constant.defaultProfile)
         }
     }

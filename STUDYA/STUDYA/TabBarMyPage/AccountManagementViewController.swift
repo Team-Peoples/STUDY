@@ -623,8 +623,9 @@ extension AccountManagementViewController: PHPickerViewControllerDelegate {
             DispatchQueue.main.async {
 
                 guard let image = image as? UIImage else { return }
-                self?.viewModel.profileImage = image
-                self?.profileImageView.setImageWith(image)
+                let resizedImage = image.resize(to: CGSize(width: 150, height: 150))
+                self?.viewModel.profileImage = resizedImage
+                self?.profileImageView.setImageWith(resizedImage)
                 
                 if self?.viewModel.profileImageChanged == false  {
                     self?.viewModel.profileImageChanged = true

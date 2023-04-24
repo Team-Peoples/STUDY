@@ -187,7 +187,7 @@ final class CreatingStudyRuleViewController: UIViewController {
     
     private func setNavigation() {
         navigationController?.navigationBar.tintColor = .black
-        navigationController?.setBrandNavigation()
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
         self.navigationItem.title = "스터디 만들기"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.black]
         self.navigationItem.rightBarButtonItem = closeButton

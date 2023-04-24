@@ -28,7 +28,7 @@ final class MyPageSettingAlertTableViewController: UIViewController {
         view.backgroundColor = UIColor.appColor(.background)
         
         title = "푸시알림 설정"
-        navigationController?.setBrandNavigation()
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
         
         tableView.dataSource = self
         tableView.delegate = self

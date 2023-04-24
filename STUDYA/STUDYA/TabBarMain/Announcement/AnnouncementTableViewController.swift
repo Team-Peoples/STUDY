@@ -16,7 +16,7 @@ final class AnnouncementTableViewController: SwitchableViewController {
     let studyName: String
     var announcements: [Announcement] = [] {
         didSet {
-//            self.checkAnnouncementBoardIsEmpty()
+            self.checkAnnouncementBoardIsEmpty()
         }
     }
     
@@ -59,6 +59,8 @@ final class AnnouncementTableViewController: SwitchableViewController {
         
         title = studyName
         view.backgroundColor = .white
+        
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
         
         configureHeaderView()
         configureTableView()

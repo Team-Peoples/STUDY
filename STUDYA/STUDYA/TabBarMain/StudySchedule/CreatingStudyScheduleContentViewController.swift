@@ -119,7 +119,7 @@ final class CreatingStudyScheduleContentViewController: UIViewController {
 
     private func setNavigation() {
         
-        navigationController?.setBrandNavigation()
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.backgroundColor = .appColor(.keyColor1)
