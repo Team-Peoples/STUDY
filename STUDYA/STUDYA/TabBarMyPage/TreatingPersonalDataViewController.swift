@@ -28,7 +28,7 @@ class TreatingPersonalDataViewController: UIViewController {
         
         view.backgroundColor = .white
         title = "앱 정보"
-        
+
         navigationController?.setupNavigationBarBackButtonDisplayMode()
         
         setScrollView()

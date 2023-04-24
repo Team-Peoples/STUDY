@@ -32,7 +32,7 @@ final class CreatingStudyCompleteViewController: UIViewController {
         super.viewDidLoad()
         
         completeButton.addTarget(self, action: #selector(completeButtonDidTapped), for: .touchUpInside)
-        
+
         navigationController?.setupNavigationBarBackButtonDisplayMode()
         navigationController?.navigationBar.tintColor = .black
         navigationItem.hidesBackButton = true

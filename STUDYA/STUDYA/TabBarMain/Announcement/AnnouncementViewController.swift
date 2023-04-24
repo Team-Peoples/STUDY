@@ -157,6 +157,7 @@ final class AnnouncementViewController: UIViewController {
         contentTextView.delegate = self
         
         navigationController?.setupNavigationBarBackButtonDisplayMode()
+        
         enableTapGesture()
         
         addSubviewsWithConstraints()
