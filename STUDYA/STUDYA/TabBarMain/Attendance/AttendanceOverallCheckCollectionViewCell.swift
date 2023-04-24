@@ -26,13 +26,13 @@ final class AttendanceOverallCheckViewModel {
     }
     
     func getStartDateOfStudy() {
-        Network.shared.getAllParticipatedStudies { result in
+        Network.shared.getAllParticipatedStudies { [weak self] result in
             switch result {
             case .success(let studyEndToEndInformations):
-                let studyEndToEndInformation = studyEndToEndInformations.filter{ $0.studyID == self.studyID}.first
-                self.studyStartDate = studyEndToEndInformation?.start
+                let studyEndToEndInformation = studyEndToEndInformations.filter{ $0.studyID == self?.studyID}.first
+                self?.studyStartDate = studyEndToEndInformation?.start
             case .failure(let error):
-                self.error.value = error
+                self?.error.value = error
             }
         }
     }
@@ -43,24 +43,24 @@ final class AttendanceOverallCheckViewModel {
 //        let dashedToday = DateFormatter.dashedDateFormatter.string(from: Date())
         
 //        🛑전체 누적 조회 기간 동안의 통계를 받아오고 처리하기
-        Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { result in
+        Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { [weak self] result in
             switch result {
             case .success(let allMemebersAttendanceStatistics):
-                self.allMemebersAttendanceStatistics = allMemebersAttendanceStatistics
-                self.sortStatistics()
+                self?.allMemebersAttendanceStatistics = allMemebersAttendanceStatistics
+                self?.sortStatistics()
                 
             case .failure(let error):
-                self.error.value = error
+                self?.error.value = error
             }
         }
     }
 
     func getAllMembersAttendaneStatisticsBetween(studyID: ID) {
-        Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { result in
+        Network.shared.getAllMembersAttendaneStatisticsBetween(studyID: studyID) { [weak self] result in
             switch result {
             case .success(let allMemebersAttendanceStatistics):
-                self.allMemebersAttendanceStatistics = allMemebersAttendanceStatistics
-                self.sortStatistics()
+                self?.allMemebersAttendanceStatistics = allMemebersAttendanceStatistics
+                self?.sortStatistics()
                 
 //                🛑api 나온 후 이거랑 비슷한 작업 해줘야.
 //                self.precedingDate = studyStartDate
@@ -69,7 +69,7 @@ final class AttendanceOverallCheckViewModel {
 //                self.selectedPeriods.value = "\(DateFormatter.shortenDottedDateFormatter.string(from: self.precedingDate))~\(DateFormatter.shortenDottedDateFormatter.string(from: self.followingDate))"
                 
             case .failure(let error):
-                self.error.value = error
+                self?.error.value = error
             }
         }
     }
@@ -117,7 +117,7 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "AttendanceOverallCheckCollectionViewCell"
     
-    private var viewModel: AttendanceOverallCheckViewModel?
+    private weak var viewModel: AttendanceOverallCheckViewModel?
     
     weak var delegate: (BottomSheetAddable & Navigatable & Managable)?
     
@@ -178,18 +178,19 @@ final class AttendanceOverallCheckCollectionViewCell: UICollectionViewCell {
     private func setBinding() {
         guard let viewModel = viewModel, let delegate = delegate else { return }
         viewModel.alignment.bind { [weak self] alignment in
-            guard let self = self else { return }
+            guard let weakSelf = self else { return }
             
-            objc_sync_enter(self)
-            self.headerView.toggleSortyingTypeLabel(alignmet: alignment)
-            objc_sync_exit(self)
+            objc_sync_enter(weakSelf)
+            weakSelf.headerView.toggleSortyingTypeLabel(alignmet: alignment)
+            objc_sync_exit(weakSelf)
         }
         
-        viewModel.reloadTable.bind { _ in
-            self.tableView.reloadData()
+        viewModel.reloadTable.bind { [weak self] _ in
+            self?.tableView.reloadData()
         }
-        viewModel.error.bind { error in
-            UIAlertController.handleCommonErros(presenter: delegate, error: error)
+        viewModel.error.bind { [weak self] error in
+            guard let weakSelf = self else { return }
+            UIAlertController.handleCommonErros(presenter: weakSelf.delegate, error: error)
         }
     }
 }

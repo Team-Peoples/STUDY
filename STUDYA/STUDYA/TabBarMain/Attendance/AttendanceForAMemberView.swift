@@ -164,11 +164,11 @@ class AttendanceForAMemberView: UIView {
     
     private func setBinding() {
         guard let viewModel = viewModel else { return }
-        viewModel.reloadTable.bind({ _ in
-            self.attendanceDetailsTableView.reloadData()
+        viewModel.reloadTable.bind({ [weak self] _ in
+            self?.attendanceDetailsTableView.reloadData()
         })
-        viewModel.error.bind({ error in
-            guard let delegate = self.delegate else { return }
+        viewModel.error.bind({ [weak self] error in
+            guard let delegate = self?.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }
@@ -381,7 +381,7 @@ enum AttendanceReusableView {
 //
 //struct DateStorage {
 //    internal var date: Observable<Date>
-//    
+//
 //    internal var DottedDate: DottedDate {
 //        DateFormatter.dottedDateFormatter.string(from: date.value)
 //    }
@@ -391,20 +391,20 @@ enum AttendanceReusableView {
 //    internal var dashedDate: DashedDate {
 //        DateFormatter.dashedDateFormatter.string(from: date.value)
 //    }
-//    
+//
 //    init(date: Date) {
 //        self.date = Observable(date)
 //    }
-//    
+//
 //    mutating func changeDate(to date: Date) {
 //        self.date.value = date
 //    }
-//    
+//
 //    mutating func changeDateTo(shortenDottedDate: ShortenDottedDate) {
 //        guard let date = DateFormatter.shortenDottedDateFormatter.date(from: shortenDottedDate) else { return }
 //        self.date.value = date
 //    }
-//    
+//
 //    mutating func changeDateTo(dottedDate: DottedDate) {
 //        guard let date = DateFormatter.dottedDateFormatter.date(from: dottedDate) else { return }
 //        self.date.value = date

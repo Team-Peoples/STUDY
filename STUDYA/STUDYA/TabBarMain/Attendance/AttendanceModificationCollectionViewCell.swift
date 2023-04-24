@@ -106,12 +106,12 @@ final class AttendancesModificationViewModel {
             attendancesForATime.sort { (first, second) -> Bool in
                 if first.nickName == second.nickName {
                     if AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority {
-                        return first.userID > second.userID
+                        return first.userID < second.userID
                     } else {
                         return AttendanceSeperator(inputString: first.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: second.attendanceStatus).attendance.priority
                     }
                 } else {
-                    return first.nickName > second.nickName
+                    return first.nickName < second.nickName
                 }
             }
         } else {
@@ -119,12 +119,12 @@ final class AttendancesModificationViewModel {
                 
                 if AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority == AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority {
                     if lhs.nickName == rhs.nickName {
-                        return lhs.userID > rhs.userID
+                        return lhs.userID < rhs.userID
                     } else {
-                        return lhs.nickName > rhs.nickName
+                        return lhs.nickName < rhs.nickName
                     }
                 } else {
-                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority > AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
+                    return AttendanceSeperator(inputString: lhs.attendanceStatus).attendance.priority < AttendanceSeperator(inputString: rhs.attendanceStatus).attendance.priority
                 }
             }
         }
@@ -145,7 +145,7 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     static let identifier = "AttendanceModificationCollectionViewCell"
     
     private var viewModel: AttendancesModificationViewModel?
-    internal var delegate: (BottomSheetAddable & Navigatable)? {
+    internal weak var delegate: (BottomSheetAddable & Navigatable)? {
         didSet {
             headerView.navigatableBottomSheetableDelegate = delegate
         }
@@ -196,12 +196,13 @@ final class AttendanceModificationCollectionViewCell: UICollectionViewCell {
     }
     
     private func setBinding() {
-        guard let viewModel = viewModel, let delegate = delegate else { return }
+        guard let viewModel = viewModel else { return }
         
-        viewModel.reloadTableView.bind({ _ in
-            self.tableView.reloadData()
+        viewModel.reloadTableView.bind({ [weak self] _ in
+            self?.tableView.reloadData()
         })
-        viewModel.error?.bind({ error in
+        viewModel.error?.bind({ [weak self] error in
+            guard let delegate = self?.delegate else { return }
             UIAlertController.handleCommonErros(presenter: delegate, error: error)
         })
     }

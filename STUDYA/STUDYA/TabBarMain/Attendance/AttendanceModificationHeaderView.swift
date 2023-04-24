@@ -11,12 +11,12 @@ final class AttendanceModificationHeaderView: UIView {
     
     static let identifier = "AttendanceModificationHeaderView"
     
-    internal var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)!
+    internal weak var navigatableBottomSheetableDelegate: (BottomSheetAddable & Navigatable)?
     
     internal var leftButtonTapped: (() -> ()) = {}
     internal var rightButtonTapped: (() -> ()) = {}
     
-    internal var viewModel: AttendancesModificationViewModel?
+    private weak var viewModel: AttendancesModificationViewModel?
     
     @IBOutlet weak var sortingTypeLabel: UILabel!
     @IBOutlet weak var studyTimeLabel: UILabel!
@@ -38,18 +38,18 @@ final class AttendanceModificationHeaderView: UIView {
     }
     
     private func setBinding() {
-        viewModel?.selectedDate.bind({ shortDottedDate in
+        viewModel?.selectedDate.bind({ [weak self] shortDottedDate in
             print(#function)
-            self.configureRightButtonTitle(shortDottedDate)
+            self?.configureRightButtonTitle(shortDottedDate)
         })
-        viewModel?.alignment.bind({ leftButtonAlignment in
-            self.sortingTypeLabel.text = leftButtonAlignment.rawValue
+        viewModel?.alignment.bind({ [weak self] leftButtonAlignment in
+            self?.sortingTypeLabel.text = leftButtonAlignment.rawValue
         })
-        viewModel?.selectedTime.bind { time in
+        viewModel?.selectedTime.bind { [weak self] time in
             if !time.isEmpty {
-                self.studyTimeLabel.text = "·" + time
+                self?.studyTimeLabel.text = "·" + time
             } else {
-                self.studyTimeLabel.text = ""
+                self?.studyTimeLabel.text = ""
             }
         }
     }
@@ -64,12 +64,12 @@ final class AttendanceModificationHeaderView: UIView {
         
         bottomVC.configureViewWith(viewModel: viewModel)
         
-        navigatableBottomSheetableDelegate.presentBottomSheet(vc: bottomVC, detent: 316, prefersGrabberVisible: false)
+        navigatableBottomSheetableDelegate?.presentBottomSheet(vc: bottomVC, detent: 316, prefersGrabberVisible: false)
     }
     @IBAction func rightButtonTapped(_ sender: UIButton) {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel, let delegate = navigatableBottomSheetableDelegate else { return }
         
-        let vc = AttendancePopUpDayCalendarViewController(presentingVC: navigatableBottomSheetableDelegate, viewModel: viewModel)
-        navigatableBottomSheetableDelegate.present(vc)
+        let vc = AttendancePopUpDayCalendarViewController(presentingVC: delegate, viewModel: viewModel)
+        delegate.present(vc)
     }
 }

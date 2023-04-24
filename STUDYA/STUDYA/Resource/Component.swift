@@ -561,7 +561,7 @@ class ProfileImageContainerView: UIView {
    
     internal var internalImage: UIImage? {
         didSet {
-            internalImageView.image = internalImage != nil ? internalImage : UIImage(named: Constant.defaultProfile)
+            internalImageView.image = internalImage != nil ? internalImage?.resize(to: CGSize(width: 150, height: 150)) : UIImage(named: Constant.defaultProfile)
         }
     }
     

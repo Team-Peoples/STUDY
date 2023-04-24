@@ -61,6 +61,8 @@ final class MyPageMainViewController: UIViewController {
         
         view.backgroundColor = .white
         
+        getUserInfo()
+        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
@@ -79,26 +81,24 @@ final class MyPageMainViewController: UIViewController {
         // AccountManagerment에서 로그아웃하면서 이 VC가 한번 보여지고 사라지는지 이함수가 호출됨.
         
         navigationItem.title = "마이페이지"
-        getUserInfo { user in
-            self.user = user
-        }
     }
     
     @objc private func settingViewTapped() {
         
         let nextVC = AccountManagementViewController()
-        let navigationVC = UINavigationController(rootViewController: nextVC)
+        nextVC.getUserInfo = getUserInfo
         
+        let navigationVC = UINavigationController(rootViewController: nextVC)
         navigationVC.modalPresentationStyle = .fullScreen
         
         present(navigationVC, animated: true)
     }
     
-    private func getUserInfo(completion: @escaping (User) -> Void) {
+    private lazy var getUserInfo = {
         Network.shared.getUserInfo { result in
             switch result {
             case .success(let user):
-                completion(user)
+                self.user = user
             case .failure(let error):
                 switch error {
                 case .unauthorizedUser:

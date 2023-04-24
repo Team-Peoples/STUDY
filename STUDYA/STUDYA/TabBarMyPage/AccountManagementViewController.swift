@@ -28,6 +28,8 @@ final class AccountManagementViewController: UIViewController {
         }
     }
     
+    internal var getUserInfo = {}
+    
     private let scrollView = UIScrollView()
     private let containerView = UIView()
     
@@ -136,8 +138,64 @@ final class AccountManagementViewController: UIViewController {
     }
     
     @objc private func save() {
+        self.dismiss(animated: true)
         viewModel.updateUserInfo() {
-            self.dismiss(animated: true)
+            self.getUserInfo()
+        }
+    }
+    
+    @objc private func touchUpImageView() {
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { [weak self] _ in
+            guard let weakSelf = self else { return }
+            weakSelf.openAlbum()
+        }
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
+        
+        if profileImageView.internalImage != nil {
+            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { [weak self] _ in
+                self?.profileImageView.internalImage = nil
+                self?.viewModel.profileImage = nil
+                
+                if self?.viewModel.profileImageChanged == false  {
+                    self?.viewModel.profileImageChanged = true
+                }
+            }
+
+            alert.addAction(defaultImageAction)
+        }
+        
+        alert.addAction(selectImageAction)
+        alert.addAction(cancelAction)
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+          if let popoverController = alert.popoverPresentationController {
+              popoverController.sourceView = self.view
+              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+              popoverController.permittedArrowDirections = []
+              self.present(alert, animated: true, completion: nil)
+          }
+        } else {
+          self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func openAlbum() {
+        PHPhotoLibrary.requestAuthorization { [weak self] status in
+
+            switch status {
+            case .authorized:
+                DispatchQueue.main.async {
+                    self?.openImagePicker()
+                }
+            case .denied:
+                DispatchQueue.main.async {
+                    self?.requestAuthorization()
+                }
+            default:
+                break
+            }
         }
     }
     
@@ -214,6 +272,83 @@ final class AccountManagementViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    private func requestAuthorization() {
+        
+        let alert = UIAlertController(title: "", message: "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: Constant.cancel, style: .default)
+        let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }
+        
+        alert.addAction(cancelAction)
+        alert.addAction(settingAction)
+        
+        //alert 사이즈 변경
+        let widthConstraints = alert.view.constraints.filter({ return $0.firstAttribute == .width })
+        
+        alert.view.removeConstraints(widthConstraints)
+        
+        let newWidth = Constant.screenWidth * 0.6
+        let widthConstraint = NSLayoutConstraint(item: alert.view!,
+                                                 attribute: .width,
+                                                 relatedBy: .equal,
+                                                 toItem: nil,
+                                                 attribute: .notAnAttribute,
+                                                 multiplier: 1,
+                                                 constant: newWidth)
+        
+        alert.view.addConstraint(widthConstraint)
+        
+        let firstContainer = alert.view.subviews[0]
+        let constraint = firstContainer.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
+        
+        firstContainer.removeConstraints(constraint)
+        alert.view.addConstraint(NSLayoutConstraint(item: firstContainer,
+                                                    attribute: .width,
+                                                    relatedBy: .equal,
+                                                    toItem: alert.view,
+                                                    attribute: .width,
+                                                    multiplier: 1.0,
+                                                    constant: 0))
+        
+        let innerBackground = firstContainer.subviews[0]
+        let innerConstraints = innerBackground.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
+        
+        innerBackground.removeConstraints(innerConstraints)
+        firstContainer.addConstraint(NSLayoutConstraint(item: innerBackground,
+                                                        attribute: .width,
+                                                        relatedBy: .equal,
+                                                        toItem: firstContainer,
+                                                        attribute: .width,
+                                                        multiplier: 1.0,
+                                                        constant: 0))
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func openImagePicker() {
+        
+//        var configuration = PHPickerConfiguration()
+//
+//        configuration.selectionLimit = 1
+//        configuration.filter = .any(of: [.images])
+//
+//        let picker = PHPickerViewController(configuration: configuration)
+//
+//        picker.delegate = self
+//
+//        self.present(picker, animated: true, completion: nil)
+        let imagePicker = UIImagePickerController()
+        
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        imagePicker.mediaTypes = ["public.image"] // 이미지만 선택 가능
+        imagePicker.modalPresentationStyle = .automatic
+        
+        present(imagePicker, animated: true)
     }
     
     private func addPublisher() {
@@ -488,151 +623,23 @@ final class AccountManagementViewController: UIViewController {
     }
 }
 
-extension AccountManagementViewController: PHPickerViewControllerDelegate {
+extension AccountManagementViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    private func openImagePicker() {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
         
-        var configuration = PHPickerConfiguration()
-        
-        configuration.selectionLimit = 1
-        configuration.filter = .any(of: [.images])
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        
-        picker.delegate = self
-
-        self.present(picker, animated: true, completion: nil)
-    }
-    
-    private func requestAuthorization() {
-        
-        let alert = UIAlertController(title: "", message: "📌프로필 사진 변경을\n위해 사진 접근 권한이\n필요합니다", preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .default)
-        let settingAction = UIAlertAction(title: "설정하기", style: .default) { (UIAlertAction) in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }
-        
-        alert.addAction(cancelAction)
-        alert.addAction(settingAction)
-        
-        //alert 사이즈 변경
-        let widthConstraints = alert.view.constraints.filter({ return $0.firstAttribute == .width })
-        
-        alert.view.removeConstraints(widthConstraints)
-        
-        let newWidth = Constant.screenWidth * 0.6
-        let widthConstraint = NSLayoutConstraint(item: alert.view!,
-                                                 attribute: .width,
-                                                 relatedBy: .equal,
-                                                 toItem: nil,
-                                                 attribute: .notAnAttribute,
-                                                 multiplier: 1,
-                                                 constant: newWidth)
-        
-        alert.view.addConstraint(widthConstraint)
-        
-        let firstContainer = alert.view.subviews[0]
-        let constraint = firstContainer.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
-        
-        firstContainer.removeConstraints(constraint)
-        alert.view.addConstraint(NSLayoutConstraint(item: firstContainer,
-                                                    attribute: .width,
-                                                    relatedBy: .equal,
-                                                    toItem: alert.view,
-                                                    attribute: .width,
-                                                    multiplier: 1.0,
-                                                    constant: 0))
-        
-        let innerBackground = firstContainer.subviews[0]
-        let innerConstraints = innerBackground.constraints.filter({ return $0.firstAttribute == .width && $0.secondItem == nil })
-        
-        innerBackground.removeConstraints(innerConstraints)
-        firstContainer.addConstraint(NSLayoutConstraint(item: innerBackground,
-                                                        attribute: .width,
-                                                        relatedBy: .equal,
-                                                        toItem: firstContainer,
-                                                        attribute: .width,
-                                                        multiplier: 1.0,
-                                                        constant: 0))
-        
-        present(alert, animated: true, completion: nil)
-    }
-    
-    @objc private func touchUpImageView() {
-        
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let selectImageAction = UIAlertAction(title: "앨범에서 선택", style: .default) { [weak self] _ in
-            self?.openAlbum()
-        }
-        let cancelAction = UIAlertAction(title: Constant.cancel, style: .cancel)
-        
-        if profileImageView.internalImage != nil {
-            let defaultImageAction = UIAlertAction(title: "기본 이미지로 변경", style: .default) { [weak self] _ in
-                self?.profileImageView.internalImage = nil
-                self?.viewModel.profileImage = nil
+        if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            DispatchQueue.main.async { [weak self] in
                 
-                if self?.viewModel.profileImageChanged == false  {
-                    self?.viewModel.profileImageChanged = true
-                }
-            }
-
-            alert.addAction(defaultImageAction)
-        }
-        
-        alert.addAction(selectImageAction)
-        alert.addAction(cancelAction)
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-          if let popoverController = alert.popoverPresentationController {
-              popoverController.sourceView = self.view
-              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-              popoverController.permittedArrowDirections = []
-              self.present(alert, animated: true, completion: nil)
-          }
-        } else {
-          self.present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    @objc private func openAlbum() {
-        PHPhotoLibrary.requestAuthorization { [weak self] status in
-
-            switch status {
-            case .authorized:
-                DispatchQueue.main.async {
-                    self?.openImagePicker()
-                }
-            case .denied:
-                DispatchQueue.main.async {
-                    self?.requestAuthorization()
-                }
-            default:
-                break
-            }
-        }
-    }
-    
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        
-        let itemProvider = results.first?.itemProvider
-        
-        guard let itemProvider = itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) else { return }
-        
-        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (image, error) in
-            
-            DispatchQueue.main.async {
-
-                guard let image = image as? UIImage else { return }
-                let resizedImage = image.resize(to: CGSize(width: 150, height: 150))
-                self?.viewModel.profileImage = resizedImage
-                self?.profileImageView.setImageWith(resizedImage)
+                guard let weakSelf = self else { return }
+                weakSelf.viewModel.profileImage = image
+                weakSelf.profileImageView.setImageWith(image)
                 
-                if self?.viewModel.profileImageChanged == false  {
-                    self?.viewModel.profileImageChanged = true
+                if weakSelf.viewModel.profileImageChanged == false  {
+                    weakSelf.viewModel.profileImageChanged = true
                 }
             }
         }
-        picker.dismiss(animated: true)
     }
 }
 

@@ -12,7 +12,7 @@ import MultiProgressView
 class MyAttendanceStatusView: UIView {
     
     // MARK: - Properties    
-    internal var navigatable: Navigatable?
+    internal weak var navigatable: Navigatable?
     
 //    필요정보: 총벌금, 출석지각결석사유 횟수
     private let titleLabel = CustomLabel(title: "출결 현황", tintColor: .ppsBlack, size: 16, isBold: true)
@@ -34,14 +34,14 @@ class MyAttendanceStatusView: UIView {
     internal func getAttendanceStats(with studyID: ID?) {
         guard let studyID = studyID else { return }
         
-        Network.shared.getAttendanceStats(studyID: studyID) { result in
+        Network.shared.getAttendanceStats(studyID: studyID) { [weak self] result in
             switch result {
             case .success(let stats):
-                self.attendanceProgressView.configureView(with: stats)
-                self.setFineLabel(fine: stats.totalFine)
+                self?.attendanceProgressView.configureView(with: stats)
+                self?.setFineLabel(fine: stats.totalFine)
                 
             case .failure(let error):
-                guard let navigatable = self.navigatable else { return }
+                guard let navigatable = self?.navigatable else { return }
                 UIAlertController.handleCommonErros(presenter: navigatable, error: error)
             }
         }
@@ -97,7 +97,7 @@ class AttendanceStatusWithProfileView: UIView {
     internal func configureViewWith(stats: UserAttendanceStatistics) {
         profileImageView.setImageWith(stats.profileImageURL)
         nickNameLabel.text = stats.nickName
-        fineLabel.text = stats.totalFine.toString()
+        fineLabel.attributedText = AttributedString.custom(frontLabel: "총 벌금 ", labelFontSize: 12, value: stats.totalFine, valueFontSize: 24, withCurrency: true)
         
         let attendanceStats = AttendanceStats(attendedCount: stats.attendedCount, lateCount: stats.lateCount, allowedCount: stats.allowedCount, absentCount: stats.absentCount, totalCount: stats.totalAttendanceCount, totalFine: stats.totalFine)
         

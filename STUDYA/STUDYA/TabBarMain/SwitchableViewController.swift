@@ -39,6 +39,7 @@ class SwitchableViewController: UIViewController, Navigatable {
     deinit {
         NotificationCenter.default.removeObserver(self)
         print(#function)
+        print("❌❌❌❌❌❌")
     }
     
     //    needs override for each scene
