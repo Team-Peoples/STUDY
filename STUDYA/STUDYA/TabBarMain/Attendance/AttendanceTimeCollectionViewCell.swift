@@ -35,14 +35,6 @@ final class AttendanceTimeCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        if button.isSelected {
-            disableButton()
-        }
-    }
-    
     internal func enableButton() {
         button.isSelected = true
     }

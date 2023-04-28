@@ -19,8 +19,8 @@ class AttendancePersonalViewController: SwitchableViewController, BottomSheetAdd
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.setBrandNavigation()
+
+        navigationController?.setupNavigationBarBackButtonDisplayMode()
     }
     
     internal func configureViewControllerWith(studyID: ID, stats: UserAttendanceStatistics) {

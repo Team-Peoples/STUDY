@@ -144,7 +144,7 @@ class StudyScheduleViewController: SwitchableViewController {
         
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(400)
+            make.height.equalTo(Constant.screenHeight / 2)
         }
         
         scheduleTableView.snp.makeConstraints { make in

@@ -630,11 +630,11 @@ extension AccountManagementViewController: UIImagePickerControllerDelegate, UINa
         
         if let image = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             DispatchQueue.main.async { [weak self] in
-
+                
                 guard let weakSelf = self else { return }
                 weakSelf.viewModel.profileImage = image
                 weakSelf.profileImageView.setImageWith(image)
-
+                
                 if weakSelf.viewModel.profileImageChanged == false  {
                     weakSelf.viewModel.profileImageChanged = true
                 }

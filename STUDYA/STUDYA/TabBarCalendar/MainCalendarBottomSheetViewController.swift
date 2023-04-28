@@ -24,7 +24,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     }
     
     private let bar = UIView()
-    private let topScrollView = UIScrollView()
+    private let topView = UIView()
     private let collectionView: UICollectionView = {
         
         let flowLayout = UICollectionViewFlowLayout()
@@ -64,7 +64,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
             underLine.snp.remakeConstraints { make in
                 make.height.equalTo(6)
                 make.width.equalTo(86)
-                make.bottom.equalTo(topScrollView).inset( -(6 / 2))
+                make.bottom.equalTo(topView).inset( -(6 / 2))
                 make.centerX.equalTo(leftTabButton)
             }
             collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: true)
@@ -72,7 +72,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
             underLine.snp.remakeConstraints { make in
                 make.height.equalTo(6)
                 make.width.equalTo(86)
-                make.bottom.equalTo(topScrollView).inset( -(6 / 2))
+                make.bottom.equalTo(topView).inset( -(6 / 2))
                 make.centerX.equalTo(rightTabButton)
             }
             collectionView.scrollToItem(at: IndexPath(item: 1, section: 0), at: .centeredHorizontally, animated: true)
@@ -100,7 +100,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
         view.backgroundColor = .white
         
         addBar()
-        addTopScrollView()
+        addTopView()
         addContentView()
         addTabButtonAtTopScrollView()
         addUnderLine()
@@ -122,16 +122,14 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
         }
     }
     
-    private func addTopScrollView() {
+    private func addTopView() {
         
-        view.addSubview(topScrollView)
+        view.addSubview(topView)
         
-        topScrollView.backgroundColor = .white
+        topView.backgroundColor = .white
         
-        topScrollView.showsHorizontalScrollIndicator = false
-        topScrollView.showsVerticalScrollIndicator = false
         
-        topScrollView.snp.makeConstraints { make in
+        topView.snp.makeConstraints { make in
             make.top.equalTo(view).inset(18)
             make.leading.trailing.equalTo(view)
             make.height.equalTo(35)
@@ -156,7 +154,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
         collectionView.register(StudyScheduleCollectionViewCell.self, forCellWithReuseIdentifier: StudyScheduleCollectionViewCell.identifier)
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(topScrollView.snp.bottom)
+            make.top.equalTo(topView.snp.bottom)
             make.leading.trailing.bottom.equalTo(view)
         }
     }
@@ -171,7 +169,7 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
         underLine.snp.makeConstraints { make in
             make.height.equalTo(6)
             make.width.equalTo(86)
-            make.bottom.equalTo(topScrollView).inset( -(6 / 2))
+            make.bottom.equalTo(topView).inset( -(6 / 2))
             make.centerX.equalTo(leftTabButton)
         }
     }
@@ -179,19 +177,19 @@ class MainCalendarBottomSheetViewController: UIViewController, Draggable, Naviga
     
     private func addTabButtonAtTopScrollView(){
         
-        topScrollView.addSubview(leftTabButton)
-        topScrollView.addSubview(rightTabButton)
+        topView.addSubview(leftTabButton)
+        topView.addSubview(rightTabButton)
         
         leftTabButton.isSelected = true
         
         leftTabButton.snp.makeConstraints { make in
-            make.top.leading.bottom.equalTo(topScrollView)
+            make.top.leading.bottom.equalTo(topView)
             make.width.equalTo(view.frame.width / 2)
             make.height.equalTo(35)
         }
         rightTabButton.snp.makeConstraints { make in
             make.leading.equalTo(leftTabButton.snp.trailing)
-            make.top.trailing.bottom.equalTo(topScrollView)
+            make.top.trailing.bottom.equalTo(topView)
             make.width.equalTo(view.frame.width / 2)
             make.height.equalTo(35)
         }

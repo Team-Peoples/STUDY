@@ -100,7 +100,7 @@ final class MainCalendarViewController: UIViewController {
         
         calendarView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(view.frame.height / 2)
+            make.height.equalTo(Constant.screenHeight / 2)
         }
     }
 }
