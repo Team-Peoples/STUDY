@@ -8,20 +8,25 @@
 import UIKit
 
 final class TabBarViewController: UITabBarController {
-    // MARK: - Properties
-    var user: User? {
-        didSet {
-            configureTabbarController()
-        }
-    }
     
+    // MARK: - Properties
+ 
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureTabbarController()
-//        checkIfUserIsLoggedIn()
-        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        print(#function, "탭바컨트롤러에서 불림. ishidden 됐다가 풀릴 때마다 뜨는 지 확인해야.")
     }
     
     // MARK: - Configure
@@ -29,23 +34,25 @@ final class TabBarViewController: UITabBarController {
     private func configureTabbarController() {
         
         tabBar.tintColor = .appColor(.ppsGray1)
-        tabBar.backgroundColor = .systemBackground
+        tabBar.backgroundColor = .white
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage()
         
         let homeViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "home-selected"), unselectedImage: #imageLiteral(resourceName: "home-unselected"), rootViewController: MainViewController(), title: "스터디")
         
-        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: CalendarViewController(), title: "캘린더")
+        let calenderViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "calendar-selected"), unselectedImage: #imageLiteral(resourceName: "calendar-unselected"), rootViewController: MainCalendarViewController(), title: "캘린더")
         
         let profileViewController = templateNavigationController(selectedImage: #imageLiteral(resourceName: "myPage-selected"), unselectedImage: #imageLiteral(resourceName: "myPage-unselected"), rootViewController: MyPageMainViewController(), title: "마이페이지")
         
         viewControllers = [homeViewController, calenderViewController, profileViewController]
     }
     
-    private func templateNavigationController(selectedImage: UIImage, unselectedImage: UIImage, rootViewController: UIViewController, title: String) -> UINavigationController {
+    private func templateNavigationController(selectedImage: UIImage?, unselectedImage: UIImage?, rootViewController: UIViewController, title: String) -> UINavigationController {
         
         let navigation = UINavigationController(rootViewController: rootViewController)
         
-        //        nav.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
-        //        nav.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 4)
+        navigation.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: 0, right: 0)
+        navigation.tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 4)
         
         navigation.tabBarItem.image = unselectedImage
         navigation.tabBarItem.selectedImage = selectedImage
@@ -56,36 +63,6 @@ final class TabBarViewController: UITabBarController {
     }
 
     // MARK: - Actions
-    
-    @objc func login(_ sender: Notification) {
-        guard let userInfo = sender.userInfo as? [String: User], let user = userInfo["user"] else { return }
-        
-        self.user = user
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    private func presentWelcomeVC() {
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(login), name: .loginSuccess, object: User.self)
-        
-        DispatchQueue.main.async { [weak self] in
-
-            let welcomeVC = WelcomViewController()
-            let nav = UINavigationController(rootViewController: welcomeVC)
-            
-            nav.modalPresentationStyle = .fullScreen
-            
-            self?.present(nav, animated: false, completion: nil)
-        }
-    }
-    
-    private func checkIfUserIsLoggedIn() {
-        if user == nil {
-            presentWelcomeVC()
-        } else {
-            
-        }
-    }
     
     // MARK: - Setting Constraints
 }
